@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="../fragments/head :: head">
+        <title th:text="${name}">header fragment</title>
+    </head>
+    <body>
+        <header th:fragment="header" ng-controller="ThemeNavigationController" class="header-customer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 text-right">
+                        <a href="#main-content" class="sr-only">Skip to main content</a>
+                        <ul class="lang-selection pull-right text-right">
+                            <li ng-class="{ active: lang === 'fi' }"><a ng-click="changeLanguage('fi')">Suomeksi</a></li>
+                            <li ng-class="{ active: lang === 'sv' }"><a ng-click="changeLanguage('sv')">På svenska</a></li>
+                            <li ng-class="{ active: lang === 'en' }"><a ng-click="changeLanguage('en')">In English</a></li>
+                            <li ng-if="isShowLogin()" class="login-control">
+                                <a href="{{ loginPage.url}}"><i class="glyphicon {{ loginPage.icon }}"></i><i translate="{{ loginPage.title}}"></i></a>
+                            </li>
+                            <li ng-if="isShowLogout()" class="login-control">
+                                <a href="{{ logoutPage.url}}"><i class="glyphicon {{ logoutPage.icon }}"></i><i translate="{{ logoutPage.title}}"></i></a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-5 col-xs-12">
+                        <h1 class="title"><a href="/ui-customer/#/myevents/" ng-show="projectName !== undefined" translate="{{ projectName }}">Tutkimus- ja ajanvarauspalvelu</a></h1>
+                    </div>
+                    <div class="col-lg-5 col-md-6 col-sm-7 col-xs-12 thl-logo-container">
+                        <img class="thl-logo" alt="Terveyden ja hyvinvoinnin laitos" th:src="@{/images/thl-logo-fi.png}">
+                    </div>
+                </div>
+            </div>
+        </header>
+    </body>
+</html>

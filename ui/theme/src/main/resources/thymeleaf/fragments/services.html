@@ -1,0 +1,32 @@
+<script
+    th:fragment="api"
+    id="api-services"
+    th:attr="
+    localization-service-url=${localizationServiceUrl},
+    appointment-service-url=${appointmentServiceUrl},
+    customer-service-url=${customerServiceUrl},
+    protocol-service-url=${protocolServiceUrl},
+    user-service-url=${userServiceUrl},
+    site-pages-service-url=${sitePagesServiceUrl},
+    identification-service-url=${identificationServiceUrl},
+    batch-service-url=${batchServiceUrl}
+    ">
+</script>
+
+<script
+    th:fragment="ui"
+    id="ui-services"
+    th:attr="
+    main-ui-url=${mainUiUrl},
+    appointment-admin-ui-url=${appointmentAdminUiUrl},
+    appointment-customer-ui-url=${appointmentCustomerUiUrl},
+    customer-ui-url=${customerUiUrl},
+    personnel-ui-url=${personnelUiUrl},
+    ">
+</script>
+
+<script
+    th:fragment="external"
+    id="external-services"
+    th:attr="lomakepalvelu-url=${lomakepalveluUrl}">
+</script>

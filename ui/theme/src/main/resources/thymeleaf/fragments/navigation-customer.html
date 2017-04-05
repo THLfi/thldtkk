@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="../fragments/head :: head">
+        <title th:text="${name}">navigation fragment customer</title>
+    </head>
+    <body>
+        <nav th:fragment="navigation" class="navbar navbar-default navbar-customer" 
+             ng-controller="ThemeNavigationController">
+            <div class="container">
+                <div class="row">
+                    <ul class="nav navbar-nav pull-right">
+                        <li ng-repeat="link in quickLinks" ng-class="getClass(link.url)" class="">
+                            <a href="{{ link.url }}" translate="{{ link.title }}"></a>                               
+                        </li>
+                    </ul>
+                    <div class="navbar-header">
+                        <span>{{ personName.givenName }} {{ personName.surname }}</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </body>
+</html>

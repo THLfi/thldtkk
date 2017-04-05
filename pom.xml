@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fi.thl.thldtkk</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    
+    <name>DTKK</name>
+    <description>Digitaalisten tietoaineistojen kansallinen kuvausjärjestelmä</description>
+
+    <packaging>pom</packaging>
+
+    <inceptionYear>2017</inceptionYear>
+
+    <modules>
+        <module>api</module>
+        <module>ui</module>
+        <module>root</module>
+        <module>assembly</module> <!-- this _must be_ last module -->
+    </modules>
+
+    <licenses>
+        <license>
+            <name>EUPL v.1.1</name>
+            <url>http://joinup.ec.europa.eu/software/page/eupl/licence-eupl</url>
+            <distribution>manual</distribution>
+            <comments>The European OSS License</comments>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.source.version>1.8</java.source.version>
+        <java.target.version>1.8</java.target.version>
+
+        <slf4j.version>1.7.21</slf4j.version>
+        <logback.version>1.1.7</logback.version>
+        <janino.version>2.7.8</janino.version>
+
+        <junit.version>4.12</junit.version>
+        <restassured.version>2.9.0</restassured.version>
+        <oleaster.version>0.1.2</oleaster.version>
+
+        <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+        <tomcat-embed.version>7.0.68</tomcat-embed.version>
+
+        <main.class>
+            ${project.groupId}.${project.artifactId}.Application
+        </main.class>
+
+        <war.name>${project.artifactId}</war.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <version>${restassured.version}</version>
+            <artifactId>rest-assured</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>spring-mock-mvc</artifactId>
+            <version>${restassured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mscharhag.oleaster</groupId>
+            <artifactId>oleaster-matcher</artifactId>
+            <version>${oleaster.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mscharhag.oleaster</groupId>
+            <artifactId>oleaster-runner</artifactId>
+            <version>${oleaster.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>m2repo</id>
+            <url>http://source.thl.fi/m2repo</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://opensource.thl.fi/jira05/browse/THLDTKK</url>
+    </issueManagement>
+
+    <build>
+        <finalName>${war.name}</finalName>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <source>${java.source.version}</source>
+                        <target>${java.target.version}</target>
+                        <!-- NOTE: due to bug: false is true and vice versa -->
+                        <useIncrementalCompilation>false</useIncrementalCompilation>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <encoding>${project.reporting.outputEncoding}</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <header>license/license_header.txt</header>
+                    <properties>
+                        <inceptionYear>${project.inceptionYear}</inceptionYear>
+                    </properties>
+                    <includes>
+                        <include>src/**/*.java</include>
+                        <include>src/**/*.xml</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/resources/**</exclude>
+                        <exclude>**/test/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <version>1.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <web>
+                        <resources>
+                            <resource>
+                                <target>/js</target>
+                                <directory>target/${project.build.finalName}/WEB-INF/classes/static/js</directory>
+                            </resource>
+                            <resource>
+                                <target>/css</target>
+                                <directory>target/${project.build.finalName}/WEB-INF/classes/static/css</directory>
+                            </resource>
+                            <resource>
+                                <target>/partials</target>
+                                <directory>src/main/resources/static/partials</directory>
+                            </resource>
+                            <resource>
+                                <target>/directives</target>
+                                <directory>src/main/resources/static/directives</directory>
+                            </resource>
+                        </resources>
+                    </web>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}</directory>
+                            <includes>
+                                <include>rebel.xml</include>
+                                <include>phantomjsdriver.log</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>packaging-jar</id>
+            <activation>
+                <property>
+                    <name>packaging</name>
+                    <value>jar</value>
+                </property>
+            </activation>
+            <properties>
+                <module.packaging>jar</module.packaging>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot.version}</version>
+                        <configuration>
+                            <mainClass>${main.class}</mainClass>
+                            <layout>ZIP</layout>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>packaging-war</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>packaging</name>
+                    <value>war</value>
+                </property>
+            </activation>
+            <properties>
+                <module.packaging>war</module.packaging>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-core</artifactId>
+                    <version>${tomcat-embed.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-el</artifactId>
+                    <version>${tomcat-embed.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-logging-juli</artifactId>
+                    <version>${tomcat-embed.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-websocket</artifactId>
+                    <version>${tomcat-embed.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.6</version>
+                        <configuration>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
+

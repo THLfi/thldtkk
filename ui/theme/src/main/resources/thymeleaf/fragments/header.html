@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="../fragments/head :: head">
+        <title th:text="${name}">header fragment</title>
+    </head>
+    <body>
+        <header class="hidden-print" th:fragment="header" ng-controller="ThemeHeaderController">
+            <div class="container">
+                <div class="row">
+                    <div  class="col-xs-12 text-center">
+                        <ul class="quick-links center-block">
+                            <li class="dropdown" ng-repeat="link in quickLinks" ng-class="getClass(link.url)">
+                                <span ng-if="hasSubpages(link)">
+                                    <a class="dropdown-toggle personnel-tool-navbar" data-toggle="dropdown" role="button"">
+                                    <i class="glyphicon {{ link.icon }}"></i>
+                                    <div translate="{{ link.title }}"></div>
+                                    <i ng-if="hasSubpages(link)" class="glyphicon glyphicon-menu-down"></i>
+                                    </a>
+                                    <ul ng-if="hasSubpages(link)" class="dropdown-menu">
+                                        <li ng-repeat="sublink in getSubpages(link)" ng-class="getClass(link.url)">
+                                            <a class="dropdown-toggle" href="{{ sublink.url }}">
+                                            <div translate="{{ sublink.title }}"></div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </span>
+                                <span ng-if="!hasSubpages(link)">
+                                    <a class="dropdown-toggle personnel-tool-navbar" href="{{ link.url }}">
+                                    <i class="glyphicon {{ link.icon }}"></i>
+                                    <div translate="{{ link.title }}"></div>
+                                    <i ng-if="hasSubpages(link)" class="glyphicon glyphicon-menu-down"></i>
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- end: row -->
+            </div><!-- end: header container -->
+        </header>
+    </body>
+</html>

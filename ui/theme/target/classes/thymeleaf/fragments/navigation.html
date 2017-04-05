@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="../fragments/head :: head">
+        <title th:text="${name}">navigation fragment</title>
+    </head>
+    <body>
+            <nav th:fragment="navigation"
+                 class="navbar navbar-inverse navbar-fixed-top navbar-system-tools"
+                 ng-controller="ThemeNavigationController">
+                <div class="container">
+                    <div class="row">
+                        <div class="navbar-header col-xs-8">
+                           <a class="navbar-brand" href="/" ng-show="projectName !== undefined" translate="{{ projectName }}">Tutkimus- ja ajanvarauspalvelu</a>
+                        </div>
+                        <div class="col-xs-4 pull-right system-tools">
+                            <a href="#main-content" class="sr-only" translate="jump-to-content"></a>
+                            <ul class="lang-selection pull-right text-right"
+                                ng-if="showLanguageSelector">
+                                <li ng-class="{ active: lang === 'fi' }"><a ng-click="changeLanguage('fi')">Suomeksi</a></li>
+                                <li ng-class="{ active: lang === 'sv' }"><a ng-click="changeLanguage('sv')">På svenska</a></li>
+                                <li ng-class="{ active: lang === 'en' }"><a ng-click="changeLanguage('en')">In English</a></li>
+                            </ul>
+                            <ul class="nav text-capitalize pull-right" ng-if="isPersonnel">
+                                <li class="dropdown pull-right">
+                                    <button class="dropdown-toggle" data-toggle="dropdown">
+                                        {{ personName.givenName }} {{ personName.surname }}<i class="caret"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a><i class="glyphicon glyphicon-user"></i> User Profile</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header" translate="Tutkimukseni"></li>
+                                        <li ng-repeat="project in availableProjects">
+                                            <a class="projec-selector" type="button" ng-click="selectProject(project)">{{project.name}}</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li ng-if="isShowLogin()"><a href="{{ loginPage.url}}"><i class="glyphicon {{ loginPage.icon }}"></i><i class="nav-menu-text" translate="{{ loginPage.title}}"></i></a>
+                                        </li>
+                                        <li ng-if="isShowLogout()"><a href="{{ logoutPage.url}}"><i class="glyphicon {{ logoutPage.icon }}"></i><i class="nav-menu-text" translate="{{ logoutPage.title}}"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="pull-right">
+                                    <a href="https://opensource.thl.fi/jira/servicedesk/customer/portal/1/create/44" target="_blank" class="btn service-desk-link" translate="Tee tukipyyntö"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!-- End: row -->
+                </div>
+            </nav>
+    </body>
+</html>

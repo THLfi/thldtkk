@@ -1,0 +1,37 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
+
+    <id>packages-and-resources</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <moduleSets>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>fi.thl.thldtkk.api:metadata</include>
+                <include>fi.thl.thldtkk:root</include>
+            </includes>
+            <binaries>
+                <outputDirectory>/webapps</outputDirectory>
+                <outputFileNameMapping>${module.build.finalName}.${module.extension}</outputFileNameMapping>
+                <includeDependencies>false</includeDependencies>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+
+    <fileSets>
+        <fileSet>
+	    <directory>src/resources/deployment-scripts</directory>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+	    <outputDirectory>scripts</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

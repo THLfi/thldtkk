@@ -215,6 +215,7 @@
     </build>
 
     <modules>
+        <module>theme</module>
     </modules>
 </project>
 

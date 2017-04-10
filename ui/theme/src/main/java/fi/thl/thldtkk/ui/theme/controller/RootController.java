@@ -1,4 +1,4 @@
-package fi.thl.thlvi.ui.theme.controller;
+package fi.thl.thldtkk.ui.theme.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

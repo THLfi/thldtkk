@@ -1,0 +1,101 @@
+.page-main-heading {
+    border-bottom: 2px solid #7799bb;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.city-select{
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.visit-list-cell-border {
+    margin: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+.visit-list-span-font {
+    font-size: 13px;
+}
+
+.info-bulletpoint {
+    margin: 10px;
+    padding-right: 20px;
+}
+
+.info-picture {
+    width: 100%;
+    height: 320px;
+    border: solid 1px #979797;
+}
+
+.additional-info {
+    cursor: pointer;
+}
+
+.additional-info span {
+    font-size: 0.8em;
+    padding-left: 4px;
+    cursor: pointer;
+}
+
+.my-events-button-panel {
+    padding: 0;
+}
+
+span.glyphicon{
+    margin-right: -3px;
+}
+
+.text-center {
+    color: black;
+}
+
+.white {
+    color: white;
+}
+
+.date {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.legend-container {
+    padding: 20px;
+}
+
+.available-times-legend {
+    text-align: left;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.unavailable-times-legend {
+    text-align: left;
+    padding-left: 10px;
+    padding-bottom: 10px;
+
+}
+
+.available-times-legend::after {
+    position: relative;
+    float: left;
+    top: 2px;
+    left: -10px;
+    content: " ";
+    width: 20px;
+    height: 20px;
+    background: greenyellow;
+}
+
+.unavailable-times-legend::after {
+    position: relative;
+    float: left;
+    top: 2px;
+    left: -10px;
+    content: " ";
+    width: 20px;
+    height: 20px;
+    background: indianred;
+}
+

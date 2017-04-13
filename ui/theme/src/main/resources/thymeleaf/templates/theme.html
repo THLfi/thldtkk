@@ -16,17 +16,14 @@
         <script id="ui-services"
                 th:replace="../fragments/services :: ui"></script>
 
-        <script id="external-services"
-                th:replace="../fragments/services :: external"></script>
-
         <header th:replace="${header} ?: '../fragments/header' :: header">
             <h1>Index page</h1>
         </header>
-        
+
         <nav class="navigation" th:replace="${navigation} ?: '../fragments/navigation' :: navigation">
             <p>This is the navigation</p>
         </nav>
-        
+
         <section class="content" th:replace="${content} :: content">
             <p>This is the main content section.</p>
         </section>

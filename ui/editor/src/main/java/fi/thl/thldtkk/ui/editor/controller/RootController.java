@@ -1,4 +1,4 @@
-package fi.thl.thldtkk.ui.catalog.controller;
+package fi.thl.thldtkk.ui.editor.controller;
 
 import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class RootController {
     @Value("${catalog.ui.url}")
     private String catalogUiUrl;
 
-    @Value("${editur.ui.url}")
+    @Value("${editor.ui.url}")
     private String editorUiUrl;
 
     @Value("${main.ui.url}")

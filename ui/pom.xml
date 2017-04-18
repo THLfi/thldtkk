@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <war.name>ui-${project.artifactId}</war.name>
+        <war.name>${project.artifactId}</war.name>
         <thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
         <nekohtml.version>1.9.22</nekohtml.version>
         <bootstrap.version>3.3.6</bootstrap.version>
@@ -227,6 +227,7 @@
     <modules>
         <module>theme</module>
         <module>catalog</module>
+        <module>editor</module>
     </modules>
 </project>
 

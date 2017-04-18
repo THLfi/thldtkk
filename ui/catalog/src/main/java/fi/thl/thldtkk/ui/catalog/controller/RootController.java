@@ -40,7 +40,7 @@ public class RootController {
     @Value("${catalog.ui.url}")
     private String catalogUiUrl;
 
-    @Value("${editur.ui.url}")
+    @Value("${editor.ui.url}")
     private String editorUiUrl;
 
     @Value("${main.ui.url}")

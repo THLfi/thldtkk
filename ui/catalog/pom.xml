@@ -102,6 +102,24 @@
             <plugin>
                 <groupId>org.jasig.maven</groupId>
                 <artifactId>sass-maven-plugin</artifactId>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <destination>${project.basedir}/target/classes</destination>
+                        </resource>
+                        <resource>
+                            <source>
+                                <directory>${project.basedir}/target/classes/thymeleaf</directory>
+                            </source>
+                            <destination>${project.basedir}/target/classes</destination>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
     </build>

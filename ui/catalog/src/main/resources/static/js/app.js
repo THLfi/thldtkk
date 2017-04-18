@@ -16,3 +16,11 @@ app.constant("PATHS", {
 app.controller("FrontPageController", function () {
 
 });
+
+
+app.controller("DataSetsController", function ($scope, $http, PATHS) {
+    $http.get(PATHS.METADATA_API + "/termed/datasets?max=9999")
+        .then(function(response) {
+            $scope.datasets = response.data;
+        });
+});

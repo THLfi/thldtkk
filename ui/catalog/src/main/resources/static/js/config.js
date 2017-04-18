@@ -9,9 +9,15 @@ app.config(function (PATHS, $routeProvider, $httpProvider, $resourceProvider) {
         templateUrl: contextPath + "/partials/index.html",
         controller: "FrontPageController",
         reloadOnSearch: false
-    }).when("/", {
-        redirectTo: "/index"
-    }).otherwise({
+    })
+    .when("/datasets", {
+        templateUrl: contextPath + "/partials/datasets.html",
+        controller: "DataSetsController"
+    })
+    .when("/", {
+        redirectTo: "/datasets"
+    })
+    .otherwise({
         redirectTo: "/"
     });
     // disable caches for IE
@@ -22,5 +28,3 @@ app.config(function (PATHS, $routeProvider, $httpProvider, $resourceProvider) {
     $httpProvider.defaults.headers.get["Pragma"] = "no-cache";
     $resourceProvider.defaults.stripTrailingSlashes = false;
 });
-
-

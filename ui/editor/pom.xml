@@ -40,6 +40,11 @@
                                 <jsSourceFile>config.js</jsSourceFile>
                                 <jsSourceFile>services.js</jsSourceFile>
                             </jsSourceFiles>
+                            <jsSourceIncludes>
+                                <jsSourceInclude>controllers/*.js</jsSourceInclude>                              
+                                <jsSourceInclude>services/*.js</jsSourceInclude>
+                                <jsSourceInclude>views/*.js</jsSourceInclude>
+                            </jsSourceIncludes>
                             <jsSourceExcludes>
                                 <jsSourceExclude>**/*.min.js</jsSourceExclude>
                             </jsSourceExcludes>

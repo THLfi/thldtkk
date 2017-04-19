@@ -1,1 +1,7 @@
-<h3>Teaser page, editor</h3>
+<h3>Available Datasets</h3>
+
+<div ng-controller="FrontPageController">
+    <ul>
+        <li ng-repeat="dataset in datasets">{{dataset.properties.prefLabel[0].value}}</li>
+    </ul>
+</div>

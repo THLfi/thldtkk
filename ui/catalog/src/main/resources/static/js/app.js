@@ -17,10 +17,14 @@ app.controller("FrontPageController", function () {
 
 });
 
+app.controller("BrowseDataSetsController", function ($scope, dataSetService) {
+    dataSetService.getAllDataSets().then(function(dataSets) {
+        $scope.dataSets = dataSets;
+    });
+});
 
-app.controller("DataSetsController", function ($scope, $http, PATHS) {
-    $http.get(PATHS.METADATA_API + "/termed/datasets?max=9999")
-        .then(function(response) {
-            $scope.datasets = response.data;
-        });
+app.controller("ViewDataSetController", function ($scope, $routeParams, dataSetService) {
+    dataSetService.getDataSet($routeParams.dataSetId).then(function(dataSet) {
+        $scope.dataSet = dataSet;
+    });
 });

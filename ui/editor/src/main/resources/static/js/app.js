@@ -12,7 +12,3 @@ app.constant("PATHS", {
     METADATA_API: (new ThemeCommon()).getApiServiceUrl("metadata"),
     MAIN_UI: (new ThemeCommon()).getUiServiceUrl("main")
 });
-
-app.controller("FrontPageController", function () {
-
-});

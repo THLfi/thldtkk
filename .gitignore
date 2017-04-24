@@ -17,3 +17,7 @@ phantomjsdriver.log
 **/nb_jr_remoting.cfg
 **/nb-configuration.xml
 **/#*#
+node/
+node_modules/
+dist/
+etc/

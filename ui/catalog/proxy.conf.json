@@ -1,0 +1,6 @@
+{
+  "/api-metadata": {
+    "target": "http://localhost:8680",
+    "secure": false
+  }
+}

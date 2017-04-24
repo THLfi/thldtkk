@@ -1,0 +1,7 @@
+<div *ngIf="dataSet">
+    <h1>{{ dataSet.properties.prefLabel[0].value }}</h1>
+    <h2>Description</h2>
+    <p>{{ dataSet.properties.description[0].value }}</p>
+</div>
+
+<p><a routerLink="/datasets">&lt; Back to data set listing</a></p>

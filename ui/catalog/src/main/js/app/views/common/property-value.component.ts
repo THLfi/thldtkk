@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { LangValue } from '../../model/lang-value';
 
 @Component({
@@ -10,8 +11,12 @@ export class PropertyValueComponent implements OnInit {
   value: string;
 
   @Input() key: string;
-  @Input() lang: string = '';
+  @Input() lang: string;
   @Input() props: { [key: string]: LangValue[]; };
+
+  constructor(translate: TranslateService) {
+    this.lang = translate.currentLang;
+  }
 
   ngOnInit(): void {
     let values = this.props[this.key] || [];

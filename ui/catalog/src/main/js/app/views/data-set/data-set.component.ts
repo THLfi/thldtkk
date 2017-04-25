@@ -7,10 +7,9 @@ import { Organization } from '../../model/organization';
 import { OrganizationService } from '../../services/organization.service';
 
 @Component({
-    templateUrl: './view-data-set.component.html',
-    styleUrls: ['./view-data-set.component.css']
+    templateUrl: './data-set.component.html'
 })
-export class ViewDataSetComponent implements OnInit {
+export class DataSetComponent implements OnInit {
     dataSet: DataSet;
     ownerOrganization: Organization;
 
@@ -33,8 +32,8 @@ export class ViewDataSetComponent implements OnInit {
     }
 
     private getOwnerOrganization(dataSet) {
-        if (dataSet.references['owner'] && dataSet.references['owner'].length) {
-            const ownerOrganizationId: String = <String> dataSet.references['owner'][0]['id'];
+        if (dataSet.references.owner && dataSet.references.owner.length) {
+            const ownerOrganizationId: String = <String> dataSet.references.owner[0].id;
             this.organizationService.getOrganization(ownerOrganizationId)
                 .subscribe(organization => this.ownerOrganization = organization);
         }

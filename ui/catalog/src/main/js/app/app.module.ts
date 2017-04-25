@@ -5,20 +5,20 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowseDataSetsComponent } from './views/browse-data-sets/browse-data-sets.component';
+import { DataSetListComponent } from './views/data-set/data-set-list.component';
+import { DataSetComponent } from './views/data-set/data-set.component';
 import { DataSetService } from "./services/data-set.service";
-import { OrganizationComponent } from "./components/organization.component";
+import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
-import { PropertyValue } from './components/property-value.component';
-import { ViewDataSetComponent } from './views/view-data-set/view-data-set.component';
+import { PropertyValueComponent } from './views/common/property-value.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        BrowseDataSetsComponent,
+        DataSetListComponent,
+        DataSetComponent,
         OrganizationComponent,
-        PropertyValue,
-        ViewDataSetComponent
+        PropertyValueComponent
     ],
     imports: [
         BrowserModule,

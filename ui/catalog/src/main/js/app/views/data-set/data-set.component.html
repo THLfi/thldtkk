@@ -1,10 +1,10 @@
 <div *ngIf="dataSet">
     <h1>
-        <app-property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></app-property-value>
+        <property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></property-value>
     </h1>
     <h2>Description</h2>
     <p>
-        <app-property-value [props]="dataSet.properties" [key]="'description'" [lang]="'fi'"></app-property-value>
+        <property-value [props]="dataSet.properties" [key]="'description'" [lang]="'fi'"></property-value>
     </p>
     <div *ngIf="ownerOrganization">
         <h2>Organization</h2>

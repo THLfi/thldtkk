@@ -3,7 +3,7 @@
 <ul>
     <li *ngFor="let dataSet of dataSets">
         <a routerLink="/datasets/{{ dataSet.id }}">
-            <app-property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></app-property-value>
+            <property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></property-value>
         </a>
     </li>
 </ul>

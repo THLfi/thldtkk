@@ -1,3 +1,3 @@
-import { TermedNode } from './termed-node';
+import { Node } from './node';
 
-export interface DataSet extends TermedNode {}
+export interface DataSet extends Node {}

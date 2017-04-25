@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LangValue } from '../../model/lang-value';
 
 @Component({
-  selector: 'app-property-value',
+  selector: 'property-value',
   template: '{{value}}'
 })
-export class PropertyValue implements OnInit {
+export class PropertyValueComponent implements OnInit {
 
   value: string;
 
   @Input() key: string;
   @Input() lang: string = '';
-  @Input() props: { [key: string]: { lang: string, value: string }[]; };
+  @Input() props: { [key: string]: LangValue[]; };
 
   ngOnInit(): void {
     let values = this.props[this.key] || [];

@@ -1,3 +1,3 @@
-import { TermedNode } from "./termed-node";
+import { Node } from "./node";
 
-export interface Organization extends TermedNode {}
+export interface Organization extends Node { }

@@ -34,16 +34,30 @@ public class TermedProxyControllerTest {
     }
 
     @Test
-    public void testGetDataSets() {
+    public void testGetAllDataSets() {
         given()
             .standaloneSetup(controller)
         .when()
-            .get("/termed/datasets")
+            .get("/termed/datasets?max=-1")
         .then()
             .statusCode(HttpStatus.OK.value())
             .and()
             .contentType(ContentType.JSON)
             .and()
             .body(containsString("fi"));
+    }
+
+    @Test
+    public void testGetOrganizations() {
+        given()
+            .standaloneSetup(controller)
+        .when()
+            .get("/termed/types/Organization/nodes")
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .and()
+            .contentType(ContentType.JSON)
+            .and()
+            .body(containsString("THL"));
     }
 }

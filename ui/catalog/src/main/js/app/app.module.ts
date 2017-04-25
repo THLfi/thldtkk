@@ -7,15 +7,18 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowseDataSetsComponent } from './views/browse-data-sets/browse-data-sets.component';
 import { DataSetService } from "./services/data-set.service";
-import { ViewDataSetComponent } from './views/view-data-set/view-data-set.component';
+import { OrganizationComponent } from "./components/organization.component";
+import { OrganizationService } from "./services/organization.service";
 import { PropertyValue } from './components/property-value.component';
+import { ViewDataSetComponent } from './views/view-data-set/view-data-set.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BrowseDataSetsComponent,
-        ViewDataSetComponent,
-        PropertyValue
+        OrganizationComponent,
+        PropertyValue,
+        ViewDataSetComponent
     ],
     imports: [
         BrowserModule,
@@ -24,7 +27,8 @@ import { PropertyValue } from './components/property-value.component';
         AppRoutingModule
     ],
     providers: [
-        DataSetService
+        DataSetService,
+        OrganizationService
     ],
     bootstrap: [
         AppComponent

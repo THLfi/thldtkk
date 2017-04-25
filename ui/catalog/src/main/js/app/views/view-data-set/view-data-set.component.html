@@ -1,7 +1,15 @@
 <div *ngIf="dataSet">
-    <h1>{{ dataSet.properties.prefLabel[0].value }}</h1>
+    <h1>
+        <app-property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></app-property-value>
+    </h1>
     <h2>Description</h2>
-    <p>{{ dataSet.properties.description[0].value }}</p>
+    <p>
+        <app-property-value [props]="dataSet.properties" [key]="'description'" [lang]="'fi'"></app-property-value>
+    </p>
+    <div *ngIf="ownerOrganization">
+        <h2>Organization</h2>
+        <p><organization [organization]="ownerOrganization"></organization></p>
+    </div>
 </div>
 
 <p><a routerLink="/datasets">&lt; Back to data set listing</a></p>

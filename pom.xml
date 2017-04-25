@@ -16,7 +16,7 @@
     <inceptionYear>2017</inceptionYear>
 
     <modules>
-        <module>api</module>
+        <module>metadata-api</module>
         <module>ui</module>
         <module>root</module>
         <module>assembly</module> <!-- this _must be_ last module -->

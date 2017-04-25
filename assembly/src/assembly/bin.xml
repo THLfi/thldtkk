@@ -13,7 +13,7 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>fi.thl.thldtkk.api:metadata</include>
+                <include>fi.thl.thldtkk:metadata-api</include>
                 <include>fi.thl.thldtkk:root</include>
                 <include>fi.thl.thldtkk.ui:catalog</include>
                 <include>fi.thl.thldtkk.ui:editor</include>

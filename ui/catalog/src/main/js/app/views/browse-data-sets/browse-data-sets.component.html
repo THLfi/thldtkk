@@ -2,6 +2,8 @@
 
 <ul>
     <li *ngFor="let dataSet of dataSets">
-        <a routerLink="/datasets/{{ dataSet.id }}">{{ dataSet.properties.prefLabel[0].value }}</a>
+        <a routerLink="/datasets/{{ dataSet.id }}">
+            <app-property-value [props]="dataSet.properties" [key]="'prefLabel'" [lang]="'fi'"></app-property-value>
+        </a>
     </li>
 </ul>

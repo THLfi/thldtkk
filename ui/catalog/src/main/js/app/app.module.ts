@@ -8,12 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowseDataSetsComponent } from './views/browse-data-sets/browse-data-sets.component';
 import { DataSetService } from "./services/data-set.service";
 import { ViewDataSetComponent } from './views/view-data-set/view-data-set.component';
+import { PropertyValue } from './components/property-value.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BrowseDataSetsComponent,
-        ViewDataSetComponent
+        ViewDataSetComponent,
+        PropertyValue
     ],
     imports: [
         BrowserModule,

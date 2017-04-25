@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { DataSetService } from "../../services/data-set.service";
 import { DataSet } from "../../model/data-set";
+import { PropertyValue } from "../../components/property-value.component";
 
 @Component({
     templateUrl: './browse-data-sets.component.html',

@@ -10,6 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { DataSetListComponent } from './views/data-set/data-set-list.component';
 import { DataSetComponent } from './views/data-set/data-set.component';
 import { DataSetService } from "./services/data-set.service";
+import { InstanceVariableComponent } from './views/data-set/instance-variable.component';
+import { InstanceVariableService } from './services/instance-variable.service';
 import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
@@ -23,6 +25,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AppComponent,
         DataSetListComponent,
         DataSetComponent,
+        InstanceVariableComponent,
         OrganizationComponent,
         PropertyValueComponent
     ],
@@ -41,7 +44,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
     ],
     providers: [
         DataSetService,
-        OrganizationService
+        OrganizationService,
+        InstanceVariableService
     ],
     bootstrap: [
         AppComponent

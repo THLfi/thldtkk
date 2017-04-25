@@ -12,6 +12,22 @@
             <organization [organization]="ownerOrganization"></organization>
         </p>
     </div>
+
+    <div *ngIf="instanceVariables">
+        <h2>{{ 'variables' | translate }}</h2>
+        <ul>
+            <li *ngFor="let variable of instanceVariables">
+                <instance-variable [variable]="variable"></instance-variable>
+            </li>
+        </ul>
+    </div>
+
 </div>
 
-<p><a routerLink="/datasets">&lt; {{ 'back' | translate }}</a></p>
+<hr>
+
+<p>
+    <button class="btn btn-default" routerLink="/datasets">
+        <span class="glyphicon glyphicon-chevron-left"></span> {{ 'back' | translate }}
+    </button>
+</p>

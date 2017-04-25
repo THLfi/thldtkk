@@ -1,11 +1,13 @@
-<header>
-    <small>&lt;insert header here&gt;</small>
-</header>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        {{ 'datasetCatalog' | translate}}
+      </a>
+    </div>
+  </div>
+</nav>
 
-<section>
+<div class="container">
     <router-outlet></router-outlet>
-</section>
-
-<footer>
-    <small>&lt;insert footer here&gt;</small>
-</footer>
+</div>

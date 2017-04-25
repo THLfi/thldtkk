@@ -1,6 +1,7 @@
 {
-    "catalog": "Katalogi",
+    "datasetCatalog": "Aineistokatalogi",
     "datasets": "Aineistot",
+    "variables": "Muuttujat",
     "description": "Kuvaus",
     "organization": "Organisaatio",
     "back": "Takaisin"

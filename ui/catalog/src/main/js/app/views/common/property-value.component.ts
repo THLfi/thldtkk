@@ -27,7 +27,7 @@ export class PropertyValueComponent implements OnInit {
         localized.map(e => e.value).join(", ") :
         values.map(e => e.value + " (" + e.lang + ")").join(", ");
     } else {
-      this.value = "<" + this.key + "@" + this.lang + ">";
+      this.value = "";
     }
   }
 

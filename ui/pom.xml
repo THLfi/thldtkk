@@ -183,7 +183,6 @@
     </build>
 
     <modules>
-        <module>theme</module>
         <module>catalog</module>
         <module>editor</module>
     </modules>

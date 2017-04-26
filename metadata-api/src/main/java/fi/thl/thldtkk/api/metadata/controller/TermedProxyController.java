@@ -18,7 +18,7 @@ public class TermedProxyController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${termed.rootGraph}")
+    @Value("${termed.graphId}")
     private String rootGraph;
 
     @RequestMapping(path = "/datasets",

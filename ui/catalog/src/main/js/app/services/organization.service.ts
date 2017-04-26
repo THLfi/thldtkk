@@ -13,19 +13,13 @@ export class OrganizationService {
     ) {}
 
     getAllOrganizations(): Observable<Organization[]> {
-        return this._http.get('../metadata-api/termed/types/Organization/nodes')
+        return this._http.get('../metadata-api/organizations')
             .map(response => response.json() as Organization[]);
     }
 
-    getOrganization(organizationId: String): Observable<Organization> {
-        return this.getAllOrganizations()
-            .map(organizations => {
-                for (let organization of organizations) {
-                    if (organizationId === organization.id) {
-                        return organization;
-                    }
-                }
-            });
+    getOrganization(id: String): Observable<Organization> {
+        return this._http.get('../metadata-api/organizations/' + id)
+            .map(response => response.json() as Organization);
     }
 
 }

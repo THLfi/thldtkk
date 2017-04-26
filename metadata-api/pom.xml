@@ -13,7 +13,7 @@
     <groupId>fi.thl.thldtkk</groupId>
     <artifactId>metadata-api</artifactId>
     <packaging>${module.packaging}</packaging>
-    
+
     <properties>
         <war.name>${project.artifactId}</war.name>
         <service.main.class>fi.thl.thldtkk.api.metadata.Application</service.main.class>
@@ -27,6 +27,6 @@
                 <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
-    </build>    
+    </build>
 </project>
 

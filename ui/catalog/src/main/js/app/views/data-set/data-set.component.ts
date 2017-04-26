@@ -30,31 +30,19 @@ export class DataSetComponent implements OnInit {
     }
 
     private getDataSet() {
-        this.dataSetService.getDataSet(this.route.snapshot.params['id'])
-            .subscribe(dataSet => {
-                this.dataSet = dataSet;
-                this.getOwnerOrganization(dataSet);
-                this.getInstanceVariables(dataSet);
-            });
-    }
+        const datasetId = this.route.snapshot.params['id'];
 
-    private getOwnerOrganization(dataSet) {
-        if (dataSet.references.owner && dataSet.references.owner.length) {
-            const ownerOrganizationId: String = <String>dataSet.references.owner[0].id;
-            this.organizationService.getOrganization(ownerOrganizationId)
-                .subscribe(organization => this.ownerOrganization = organization);
-        }
-    }
-
-    private getInstanceVariables(dataSet) {
-        if (dataSet.references.instanceVariable && dataSet.references.instanceVariable.length) {
-            this.instanceVariables = [];
-
-            dataSet.references.instanceVariable.forEach(variable => {
-                this.instanceVariableService.getInstanceVariable(variable.id)
-                    .subscribe(v => this.instanceVariables.push(v));
-            });
-        }
+        Observable.forkJoin(
+            this.dataSetService.getDataSet(datasetId),
+            this.dataSetService.getDataSetOwners(datasetId),
+            this.dataSetService.getDataSetInstanceVariables(datasetId)
+        ).subscribe(
+            data => {
+                this.dataSet = data[0],
+                this.ownerOrganization = data[1][0],
+                this.instanceVariables = data[2]
+            }
+        );
     }
 
 }

@@ -13,19 +13,13 @@ export class InstanceVariableService {
     ) {}
 
     getAllInstanceVariables(): Observable<InstanceVariable[]> {
-        return this._http.get('../metadata-api/termed/types/InstanceVariable/nodes')
+        return this._http.get('../metadata-api/instanceVariables')
             .map(response => response.json() as InstanceVariable[]);
     }
 
     getInstanceVariable(id: String): Observable<InstanceVariable> {
-        return this.getAllInstanceVariables()
-            .map(instanceVariables => {
-                for (let instanceVariable of instanceVariables) {
-                    if (id === instanceVariable.id) {
-                        return instanceVariable;
-                    }
-                }
-            });
+        return this._http.get('../metadata-api/instanceVariables/' + id)
+            .map(response => response.json() as InstanceVariable);
     }
 
 }

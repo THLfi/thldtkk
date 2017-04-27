@@ -13,7 +13,7 @@
         </p>
     </div>
 
-    <div *ngIf="instanceVariables">
+    <div *ngIf="instanceVariables && instanceVariables.length">
         <h2>{{ 'variables' | translate }}</h2>
         <ul>
             <li *ngFor="let variable of instanceVariables">

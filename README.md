@@ -17,7 +17,7 @@ Install Angular CLI (if not already installed): `npm install -g @angular/cli`
 
 Go to Catalog UI module: `cd ui/catalog`
 
-Install dependencies (first time only): `npm install`
+Install local Node and get npm dependencies (first time only): `mvn clean package`
 
 Start dev server: `npm start`
 

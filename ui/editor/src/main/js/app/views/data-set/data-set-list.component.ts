@@ -5,10 +5,9 @@ import { DataSetService } from "../../services/data-set.service";
 import { DataSet } from "../../model/data-set";
 
 @Component({
-    templateUrl: './browse-data-sets.component.html',
-    styleUrls: ['./browse-data-sets.component.css'],
+    templateUrl: './data-set-list.component.html'
 })
-export class BrowseDataSetsComponent implements OnInit {
+export class DataSetListComponent implements OnInit {
     dataSets: DataSet[]
 
     constructor (

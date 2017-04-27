@@ -1,0 +1,45 @@
+<div *ngIf="dataSet">
+
+  <h1>
+    <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
+  </h1>
+
+  <div class="form-group">
+    <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
+    <input [(ngModel)]="dataSet.properties.prefLabel[0].value"
+      id="prefLabel"
+      name="prefLabel"
+      type="text"
+      class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="description">{{ 'description' | translate }}</label>
+    <textarea [(ngModel)]="dataSet.properties.description[0].value"
+      id="description"
+      name="description"
+      class="form-control"
+      rows="6">
+    </textarea>
+  </div>
+
+  <div class="form-group">
+    <label>{{ 'organization' | translate }}</label>
+    <p><organization [organization]="ownerOrganization"></organization></p>
+  </div>
+
+  <hr>
+
+  <div>
+    <button class="btn btn-default" (click)="goBack()">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      {{ 'cancel' | translate }}
+    </button>
+    <button class="btn btn-primary" (click)="save()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+      {{ 'save' | translate }}
+    </button>
+  </div>
+
+</div>
+

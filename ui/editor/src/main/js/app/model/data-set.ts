@@ -1,14 +1,3 @@
-export interface DataSet {
-    id: string;
-    properties: Properties;
-}
+import { Node } from './node';
 
-interface Properties {
-    prefLabel: Property[];
-    description: Property[];
-}
-
-interface Property {
-    lang: string;
-    value: string;
-}
+export interface DataSet extends Node {}

@@ -1,0 +1,21 @@
+<h1>{{'datasets' | translate}}</h1>
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>Nimi</th>
+        <th>Toiminnot</th>
+    </tr>
+    <tr *ngFor="let dataSet of dataSets">
+        <td>
+            <a routerLink="/datasets/{{ dataSet.id }}">
+                <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
+            </a>
+        </td>
+        <td>
+            <button class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/edit">
+                <span class="glyphicon glyphicon-edit"></span>
+                {{ 'edit' | translate }}
+            </button>
+        </td>
+    </tr>
+</table>

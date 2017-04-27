@@ -1,0 +1,12 @@
+{
+    "datasetEditor": "Aineistoeditori",
+    "datasets": "Aineistot",
+    "variables": "Muuttujat",
+    "prefLabel": "Nimi",
+    "description": "Kuvaus",
+    "organization": "Organisaatio",
+    "back": "Takaisin",
+    "edit": "Muokkaa",
+    "save": "Tallenna",
+    "cancel": "Peruuta"
+}

@@ -12,6 +12,7 @@ import { DataSetComponent } from './views/data-set/data-set.component';
 import { DataSetEditComponent } from "./views/data-set/data-set-edit.component";
 import { DataSetService } from "./services/data-set.service";
 import { InstanceVariableComponent } from './views/data-set/instance-variable.component';
+import { InstanceVariableEditComponent } from "./views/data-set/instance-variable-edit.component";
 import { InstanceVariableService } from './services/instance-variable.service';
 import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
@@ -28,6 +29,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DataSetComponent,
         DataSetEditComponent,
         InstanceVariableComponent,
+        InstanceVariableEditComponent,
         OrganizationComponent,
         PropertyValueComponent
     ],

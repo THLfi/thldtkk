@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from "rxjs";
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
@@ -21,5 +21,13 @@ export class InstanceVariableService {
         return this._http.get('../metadata-api/instanceVariables/' + id)
             .map(response => response.json() as InstanceVariable);
     }
+
+  updateInstanceVariable(instanceVariable: InstanceVariable): Observable<InstanceVariable> {
+    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+    const options = new RequestOptions({ headers: headers });
+
+    return this._http.post('../metadata-api/instanceVariables/' + instanceVariable.id, instanceVariable, options)
+      .map(response => response.json() as InstanceVariable);
+  }
 
 }

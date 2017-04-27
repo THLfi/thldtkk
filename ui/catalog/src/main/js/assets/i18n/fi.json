@@ -4,5 +4,8 @@
     "variables": "Muuttujat",
     "description": "Kuvaus",
     "organization": "Organisaatio",
-    "back": "Takaisin"
+    "back": "Takaisin",
+    "published":"Julkaistu",
+    "false ()":"Ei",
+    "true ()":"Kyllä"
 }

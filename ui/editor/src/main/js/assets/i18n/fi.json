@@ -8,5 +8,8 @@
     "back": "Takaisin",
     "edit": "Muokkaa",
     "save": "Tallenna",
-    "cancel": "Peruuta"
+    "cancel": "Peruuta",
+    "published":"Julkaistu",
+    "false ()":"Ei",
+    "true ()":"Kyllä"
 }

@@ -22,6 +22,7 @@
         <ul>
             <li *ngFor="let variable of instanceVariables">
                 <instance-variable [variable]="variable"></instance-variable>
+                <a routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit">Muokkaa</a>
             </li>
         </ul>
     </div>

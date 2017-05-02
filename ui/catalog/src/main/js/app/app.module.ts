@@ -5,6 +5,8 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { environment } from "../environments/environment";
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DataSetListComponent } from './views/data-set/data-set-list.component';
@@ -17,7 +19,7 @@ import { OrganizationService } from "./services/organization.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
 
 export function TranslateHttpLoaderFactory(http: Http) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');
 }
 
 @NgModule({

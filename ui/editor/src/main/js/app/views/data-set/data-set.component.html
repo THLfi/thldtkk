@@ -2,9 +2,25 @@
     <h1>
         <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
     </h1>
+    <h2 translate="altLabel"></h2>
+    <p>
+        <property-value [props]="dataSet.properties" [key]="'altLabel'"></property-value>
+    </p>
     <h2>{{ 'description' | translate }}</h2>
     <p>
         <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
+    </p>
+    <h2 translate="abbreviation"></h2>
+    <p>
+        <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
+    </p>
+    <h2 translate="abstract"></h2>
+    <p>
+        <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
+    </p>
+    <h2 translate="researchProjectURL"></h2>
+    <p>
+        <property-value [props]="dataSet.properties" [key]="'researchProjectURL'"></property-value>
     </p>
     <h2 translate="published"></h2>
     <p>

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch'
 import { DataSet } from '../model/data-set';
 import { Organization } from '../model/organization';
 import { InstanceVariable } from '../model/instance-variable';
+import { Population } from "../model/population";
 
 @Injectable()
 export class DataSetService {
@@ -29,7 +30,12 @@ export class DataSetService {
             .map(response => response.json() as Organization[]);
     }
 
-    getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {
+  getDataSetPopulations(datasetId: String): Observable<Population[]> {
+    return this._http.get('../metadata-api/datasets/' + datasetId + '/populations')
+      .map(response => response.json() as Population[]);
+  }
+
+  getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/instanceVariables')
             .map(response => response.json() as InstanceVariable[]);
     }

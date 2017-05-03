@@ -3,6 +3,7 @@
     "datasets": "Aineistot",
     "variables": "Muuttujat",
     "description": "Kuvaus",
+    "population": "Kohdejoukko",
     "organization": "Organisaatio",
     "back": "Takaisin",
     "published":"Julkaistu",

@@ -33,7 +33,14 @@
         </p>
     </div>
 
-    <div *ngIf="instanceVariables && instanceVariables.length">
+  <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
+    <h2>{{ 'population' | translate }}</h2>
+    <p>
+      <population [population]="population"></population>
+    </p>
+  </div>
+
+  <div *ngIf="instanceVariables && instanceVariables.length">
         <h2>{{ 'variables' | translate }}</h2>
         <ul>
             <li *ngFor="let variable of instanceVariables">

@@ -7,5 +7,9 @@
     "back": "Takaisin",
     "published":"Julkaistu",
     "false ()":"Ei",
-    "true ()":"Kyllä"
+    "true ()":"Kyllä",
+    "abbreviation":"Lyhenne",
+    "altLabel":"Vaihtoehtoinen nimi",
+    "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
+    "abstract":"Tiivistelmä"
 }

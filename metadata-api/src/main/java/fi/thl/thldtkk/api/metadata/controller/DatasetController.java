@@ -63,19 +63,25 @@ public class DatasetController {
     return restTemplate.getForObject(url, String.class);
   }
 
-  @PostJsonMapping(path = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<String> post(@PathVariable String id,
-                                     @RequestBody String dataset) {
+  @GetJsonMapping("/{id}/populations")
+  public String getDatasetPopulations(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath)
-            .path("/")
-            .path(id)
-            .toUriString();
+        .path("/" + id.toString())
+        .path("/references/population")
+        .toUriString();
+
+    return restTemplate.getForObject(url, String.class);
+  }
+
+  @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+  public ResponseEntity<String> post(@RequestBody String dataset) {
+    String url = fromPath(datasetsPath).toUriString();
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
     HttpEntity<String> request = new HttpEntity<>(dataset, headers);
 
-    return restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+    return restTemplate.exchange(url, HttpMethod.POST, request, String.class);
   }
 
   @DeleteMapping("/{id}")

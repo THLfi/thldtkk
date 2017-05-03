@@ -4,7 +4,7 @@ import { LangValue } from '../../model/lang-value';
 
 @Component({
   selector: 'property-value',
-  template: '<span class="preserve-line-breaks">{{ translateable? (value | translate) : value }}</span>'
+  template: '<span class="preserve-line-breaks">{{ translateable ? (value | translate) : value }}</span>'
 })
 export class PropertyValueComponent implements OnInit {
 

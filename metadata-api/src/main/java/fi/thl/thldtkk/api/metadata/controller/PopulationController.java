@@ -14,54 +14,53 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 @RestController
-@RequestMapping("/instanceVariables")
-public class InstanceVariableController {
+@RequestMapping("/populations")
+public class PopulationController {
 
   @Autowired
   private RestTemplate restTemplate;
 
-  private String instanceVariablesPath = "/types/InstanceVariable/nodes";
+  private String populationsPath = "/types/Population/nodes";
 
   @GetJsonMapping
   public String query(
-      @RequestParam(name = "query", defaultValue = "", required = false) String query,
-      @RequestParam(name = "max", defaultValue = "", required = false) Integer max) {
+    @RequestParam(name = "query", defaultValue = "", required = false) String query,
+    @RequestParam(name = "max", defaultValue = "", required = false) Integer max) {
 
-    String url = fromPath(instanceVariablesPath)
-        .queryParam("query", query)
-        .queryParam("max", max)
-        .queryParam("sort", "properties.prefLabel.fi.sortable")
-        .toUriString();
+    String url = fromPath(populationsPath)
+      .queryParam("query", query)
+      .queryParam("max", max)
+      .queryParam("sort", "properties.prefLabel.fi.sortable")
+      .toUriString();
 
     return restTemplate.getForObject(url, String.class);
   }
 
   @GetJsonMapping("/{id}")
   public String get(@PathVariable("id") UUID id) {
-    String url = fromPath(instanceVariablesPath).path("/" + id.toString()).toUriString();
+    String url = fromPath(populationsPath).path("/" + id.toString()).toUriString();
 
     return restTemplate.getForObject(url, String.class);
   }
 
-  @PostJsonMapping(path = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<String> post(@PathVariable("id") UUID id,
-                             @RequestBody String instanceVariable) {
-    String url = fromPath(instanceVariablesPath)
-      .path("/")
-      .path(id.toString())
-      .toUriString();
+  @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+  public ResponseEntity<String> post(@RequestBody String population) {
+    String url = fromPath(populationsPath).toUriString();
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-    HttpEntity<String> request = new HttpEntity<>(instanceVariable, headers);
+    HttpEntity<String> request = new HttpEntity<>(population, headers);
 
-    return restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+    return restTemplate.exchange(url, HttpMethod.POST, request, String.class);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(NO_CONTENT)
   public void delete(@PathVariable("id") UUID id) {
-    String url = fromPath(instanceVariablesPath).path("/" + id.toString()).toUriString();
+    String url = fromPath(populationsPath)
+      .path("/")
+      .path(id.toString())
+      .toUriString();
 
     restTemplate.delete(url);
   }

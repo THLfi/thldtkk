@@ -1,9 +1,11 @@
 {
     "datasetEditor": "Aineistoeditori",
     "datasets": "Aineistot",
+    "dataset": "Aineisto",
     "variables": "Muuttujat",
     "prefLabel": "Nimi",
     "description": "Kuvaus",
+    "population": "Kohdejoukko",
     "organization": "Organisaatio",
     "back": "Takaisin",
     "edit": "Muokkaa",

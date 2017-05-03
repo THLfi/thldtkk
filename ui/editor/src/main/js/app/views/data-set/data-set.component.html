@@ -26,10 +26,18 @@
     <p>
         <property-value [props]="dataSet.properties" [key]="'published'" [translateable]='true'></property-value>
     </p>
+
     <div *ngIf="ownerOrganization">
         <h2>{{ 'organization' | translate }}</h2>
         <p>
             <organization [organization]="ownerOrganization"></organization>
+        </p>
+    </div>
+
+    <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
+        <h2>{{ 'population' | translate }}</h2>
+        <p>
+          <population [population]="population"></population>
         </p>
     </div>
 

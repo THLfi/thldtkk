@@ -18,7 +18,9 @@ import { InstanceVariableEditComponent } from "./views/data-set/instance-variabl
 import { InstanceVariableService } from './services/instance-variable.service';
 import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
+import { PopulationService } from "./services/population.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
+import { PopulationComponent } from "./views/common/population.component";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');
@@ -33,6 +35,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         OrganizationComponent,
+        PopulationComponent,
         PropertyValueComponent
     ],
     imports: [
@@ -51,6 +54,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     providers: [
         DataSetService,
         OrganizationService,
+        PopulationService,
         InstanceVariableService
     ],
     bootstrap: [

@@ -1,6 +1,7 @@
 <div *ngIf="dataSet">
 
   <h1>
+    {{ 'dataset' | translate }}:
     <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
   </h1>
 
@@ -26,6 +27,16 @@
   <div *ngIf="ownerOrganization" class="form-group">
     <label>{{ 'organization' | translate }}</label>
     <p><organization [organization]="ownerOrganization"></organization></p>
+  </div>
+
+  <div class="form-group">
+    <label for="population-prefLabel">{{ 'population' | translate }}</label>
+    <textarea [(ngModel)]="population.properties.prefLabel[0].value"
+              id="population-prefLabel"
+              name="population-prefLabel"
+              class="form-control"
+              rows="3">
+    </textarea>
   </div>
 
   <hr>

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch'
 import { DataSet } from '../model/data-set';
 import { InstanceVariable } from '../model/instance-variable';
 import { Organization } from '../model/organization';
+import { Population } from "../model/population";
 
 @Injectable()
 export class DataSetService {
@@ -29,16 +30,21 @@ export class DataSetService {
             .map(response => response.json() as Organization[]);
     }
 
+    getDataSetPopulations(datasetId: String): Observable<Population[]> {
+        return this._http.get('../metadata-api/datasets/' + datasetId + '/populations')
+            .map(response => response.json() as Population[]);
+    }
+
     getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/instanceVariables')
             .map(response => response.json() as InstanceVariable[]);
     }
 
-    updateDataSet(dataSet: DataSet): Observable<DataSet> {
-        const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
-        const options = new RequestOptions({ headers: headers });
+    saveDataSet(dataSet: DataSet): Observable<DataSet> {
+      const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+      const options = new RequestOptions({ headers: headers });
 
-        return this._http.post('../metadata-api/datasets/' + dataSet.id, dataSet, options)
-            .map(response => response.json() as DataSet);
+      return this._http.post('../metadata-api/datasets', dataSet, options)
+        .map(response => response.json() as DataSet);
     }
 }

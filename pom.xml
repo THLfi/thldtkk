@@ -7,7 +7,7 @@
     <groupId>fi.thl.thldtkk</groupId>
     <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-    
+
     <name>DTKK</name>
     <description>Digitaalisten tietoaineistojen kansallinen kuvausjärjestelmä</description>
 
@@ -66,6 +66,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jackson-databind</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

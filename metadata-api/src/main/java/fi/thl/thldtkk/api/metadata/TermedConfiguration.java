@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -30,8 +31,9 @@ public class TermedConfiguration {
 
         return new RestTemplateBuilder()
                 .rootUri(baseUrl)
+                .messageConverters(new GsonHttpMessageConverter())
                 .basicAuthorization(username, password)
                 .build();
     }
-    
+
 }

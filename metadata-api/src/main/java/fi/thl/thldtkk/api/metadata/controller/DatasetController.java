@@ -1,9 +1,10 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +24,7 @@ public class DatasetController {
   private String datasetsPath = "/types/DataSet/nodes";
 
   @GetJsonMapping
-  public String query(
+  public JsonArray query(
       @RequestParam(name = "query", defaultValue = "", required = false) String query,
       @RequestParam(name = "max", defaultValue = "", required = false) Integer max) {
 
@@ -33,55 +34,51 @@ public class DatasetController {
         .queryParam("sort", "properties.prefLabel.fi.sortable")
         .toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonArray.class);
   }
 
   @GetJsonMapping("/{id}")
-  public String get(@PathVariable("id") UUID id) {
+  public JsonObject get(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath).path("/" + id.toString()).toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonObject.class);
   }
 
   @GetJsonMapping("/{id}/owners")
-  public String getDatasetOwners(@PathVariable("id") UUID id) {
+  public JsonArray getDatasetOwners(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath)
         .path("/" + id.toString())
         .path("/references/owner")
         .toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonArray.class);
   }
 
   @GetJsonMapping("/{id}/instanceVariables")
-  public String getDatasetInstanceVariables(@PathVariable("id") UUID id) {
+  public JsonObject getDatasetInstanceVariables(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath)
         .path("/" + id.toString())
         .path("/references/instanceVariable")
         .toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonObject.class);
   }
 
   @GetJsonMapping("/{id}/populations")
-  public String getDatasetPopulations(@PathVariable("id") UUID id) {
+  public JsonArray getDatasetPopulations(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath)
         .path("/" + id.toString())
         .path("/references/population")
         .toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonArray.class);
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<String> post(@RequestBody String dataset) {
+  public JsonObject post(@RequestBody JsonObject dataset) {
     String url = fromPath(datasetsPath).toUriString();
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-    HttpEntity<String> request = new HttpEntity<>(dataset, headers);
-
-    return restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+    return restTemplate.postForObject(url, dataset, JsonObject.class);
   }
 
   @DeleteMapping("/{id}")

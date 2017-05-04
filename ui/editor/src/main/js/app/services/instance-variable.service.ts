@@ -26,7 +26,7 @@ export class InstanceVariableService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
     const options = new RequestOptions({ headers: headers });
 
-    return this._http.post('../metadata-api/instanceVariables/' + instanceVariable.id, instanceVariable, options)
+    return this._http.post('../metadata-api/instanceVariables', instanceVariable, options)
       .map(response => response.json() as InstanceVariable);
   }
 

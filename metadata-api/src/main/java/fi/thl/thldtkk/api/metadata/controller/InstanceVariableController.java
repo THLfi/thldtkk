@@ -1,9 +1,10 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +24,7 @@ public class InstanceVariableController {
   private String instanceVariablesPath = "/types/InstanceVariable/nodes";
 
   @GetJsonMapping
-  public String query(
+  public JsonArray query(
       @RequestParam(name = "query", defaultValue = "", required = false) String query,
       @RequestParam(name = "max", defaultValue = "", required = false) Integer max) {
 
@@ -33,29 +34,21 @@ public class InstanceVariableController {
         .queryParam("sort", "properties.prefLabel.fi.sortable")
         .toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonArray.class);
   }
 
   @GetJsonMapping("/{id}")
-  public String get(@PathVariable("id") UUID id) {
+  public JsonObject get(@PathVariable("id") UUID id) {
     String url = fromPath(instanceVariablesPath).path("/" + id.toString()).toUriString();
 
-    return restTemplate.getForObject(url, String.class);
+    return restTemplate.getForObject(url, JsonObject.class);
   }
 
-  @PostJsonMapping(path = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<String> post(@PathVariable("id") UUID id,
-                             @RequestBody String instanceVariable) {
-    String url = fromPath(instanceVariablesPath)
-      .path("/")
-      .path(id.toString())
-      .toUriString();
+  @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+  public JsonObject post(@RequestBody JsonObject instanceVariable) {
+    String url = fromPath(instanceVariablesPath).toUriString();
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-    HttpEntity<String> request = new HttpEntity<>(instanceVariable, headers);
-
-    return restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+    return restTemplate.postForObject(url, instanceVariable, JsonObject.class);
   }
 
   @DeleteMapping("/{id}")

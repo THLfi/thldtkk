@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 
 import { DataSet } from '../../model/data-set';
 import { DataSetService } from '../../services/data-set.service';
+import { Node } from "../../model/node";
 import { Organization } from "../../model/organization";
 import { Population } from "../../model/population";
 import { PopulationService } from "../../services/population.service";
@@ -38,12 +39,12 @@ export class DataSetEditComponent implements OnInit {
       data => {
         this.dataSet = data[0],
         this.ownerOrganization = data[1][0],
-        this.population = this.initPopulationFields(data[2][0]);
+        this.population = this.initializePopulationFields(data[2][0]);
       }
     );
   }
 
-  private initPopulationFields(population: Population): Population {
+  private initializePopulationFields(population: Population): Population {
     if (!population) {
       population = {
         id: null,
@@ -53,32 +54,33 @@ export class DataSetEditComponent implements OnInit {
             id: null
           }
         },
-        properties: {
-          'prefLabel': [
-            {
-              lang: 'fi',
-              value: null
-            }
-          ]
-        },
+        properties: {},
         references: {}
       };
     }
-    else if (!population.properties['prefLabel'] || !population.properties['prefLabel'][0]) {
-      population.properties['prefLabel'] = [
-        {
-          lang: 'fi',
-          value: null
-        }
-      ];
-    }
+
+    this.initProperties(population, ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']);
+
     return population;
+  }
+
+  private initProperties(population: Node, properties: string[]) {
+    for (let property of properties) {
+      if (!population.properties[property] || !population.properties[property][0]) {
+        population.properties[property] = [
+          {
+            lang: 'fi',
+            value: null
+          }
+        ];
+      }
+    }
   }
 
   save() {
     this.populationService.savePopulation(this.population)
       .subscribe(savedPopulation => {
-          this.population = this.initPopulationFields(savedPopulation);
+          this.population = this.initializePopulationFields(savedPopulation);
 
           this.dataSet.references['population'] = [ savedPopulation ];
 

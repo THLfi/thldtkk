@@ -39,6 +39,34 @@
     </textarea>
   </div>
 
+  <div class="form-group">
+    <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
+    <textarea [(ngModel)]="population.properties.geographicalCoverage[0].value"
+              id="population-geographicalCoverage"
+              name="population-geographicalCoverage"
+              class="form-control"
+              rows="2">
+    </textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
+    <input [(ngModel)]="population.properties.sampleSize[0].value"
+           id="population-sampleSize"
+           name="population-sampleSize"
+           type="text"
+           class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="population-loss">{{ 'loss' | translate }}</label>
+    <input [(ngModel)]="population.properties.loss[0].value"
+           id="population-loss"
+           name="population-loss"
+           type="text"
+           class="form-control">
+  </div>
+
   <hr>
 
   <div>

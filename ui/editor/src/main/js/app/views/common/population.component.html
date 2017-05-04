@@ -1,0 +1,15 @@
+<div *ngIf="population">
+
+  <h2>{{ 'population' | translate }}</h2>
+  <p><property-value [props]="population.properties" [key]="'prefLabel'"></property-value></p>
+
+  <h2>{{ 'geographicalCoverage' | translate }}</h2>
+  <p><property-value [props]="population.properties" [key]="'geographicalCoverage'"></property-value></p>
+
+  <h2>{{ 'sampleSize' | translate }}</h2>
+  <p><property-value [props]="population.properties" [key]="'sampleSize'"></property-value></p>
+
+  <h2>{{ 'loss' | translate }}</h2>
+  <p><property-value [props]="population.properties" [key]="'loss'"></property-value></p>
+
+</div>

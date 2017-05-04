@@ -35,10 +35,7 @@
     </div>
 
     <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
-        <h2>{{ 'population' | translate }}</h2>
-        <p>
-          <population [population]="population"></population>
-        </p>
+        <population [population]="population"></population>
     </div>
 
     <div *ngIf="instanceVariables && instanceVariables.length">

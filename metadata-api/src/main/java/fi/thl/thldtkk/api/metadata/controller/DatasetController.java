@@ -55,13 +55,13 @@ public class DatasetController {
   }
 
   @GetJsonMapping("/{id}/instanceVariables")
-  public JsonObject getDatasetInstanceVariables(@PathVariable("id") UUID id) {
+  public JsonArray getDatasetInstanceVariables(@PathVariable("id") UUID id) {
     String url = fromPath(datasetsPath)
         .path("/" + id.toString())
         .path("/references/instanceVariable")
         .toUriString();
 
-    return restTemplate.getForObject(url, JsonObject.class);
+    return restTemplate.getForObject(url, JsonArray.class);
   }
 
   @GetJsonMapping("/{id}/populations")

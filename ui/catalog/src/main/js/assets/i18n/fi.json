@@ -4,6 +4,9 @@
     "variables": "Muuttujat",
     "description": "Kuvaus",
     "population": "Kohdejoukko",
+    "geographicalCoverage": "Alueellinen kattavuus",
+    "sampleSize": "Otoskoko",
+    "loss": "Kato",
     "organization": "Organisaatio",
     "back": "Takaisin",
     "published":"Julkaistu",
@@ -12,5 +15,6 @@
     "abbreviation":"Lyhenne",
     "altLabel":"Vaihtoehtoinen nimi",
     "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
-    "abstract":"Tiivistelmä"
+    "abstract":"Tiivistelmä",
+    "noInstanceVariables": "Muuttujia ei ole määritelty."
 }

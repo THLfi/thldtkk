@@ -64,10 +64,10 @@ export class DataSetEditComponent implements OnInit {
     return population;
   }
 
-  private initProperties(population: Node, properties: string[]) {
+  private initProperties(node: Node, properties: string[]) {
     for (let property of properties) {
-      if (!population.properties[property] || !population.properties[property][0]) {
-        population.properties[property] = [
+      if (!node.properties[property] || !node.properties[property][0]) {
+        node.properties[property] = [
           {
             lang: 'fi',
             value: null

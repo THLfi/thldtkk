@@ -1,53 +1,109 @@
-<div *ngIf="dataSet">
-    <h1>
+<div *ngIf="dataSet" class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>
         <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
-    </h1>
-    <h2 translate="altLabel"></h2>
-    <p>
+        <span *ngIf="dataSet.properties['abbreviation']">
+          (<property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>)
+        </span>
+      </h1>
+      <h2 *ngIf="dataSet.properties['altLabel']" class="alt-label">
         <property-value [props]="dataSet.properties" [key]="'altLabel'"></property-value>
-    </p>
-    <h2>{{ 'description' | translate }}</h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
-    </p>
-    <h2 translate="abbreviation"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
-    </p>
-    <h2 translate="abstract"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
-    </p>
-    <h2 translate="researchProjectURL"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'researchProjectURL'"></property-value>
-    </p>
-    <h2 translate="published"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'published'" [translateable]='true'></property-value>
-    </p>
-    <div *ngIf="ownerOrganization">
-        <h2>{{ 'organization' | translate }}</h2>
-        <p>
-            <organization [organization]="ownerOrganization"></organization>
-        </p>
+      </h2>
     </div>
-
-  <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
-    <h2>{{ 'population' | translate }}</h2>
-    <p>
-      <population [population]="population"></population>
-    </p>
   </div>
 
-  <div *ngIf="instanceVariables && instanceVariables.length">
-        <h2>{{ 'variables' | translate }}</h2>
-        <ul>
-            <li *ngFor="let variable of instanceVariables">
-                <instance-variable [variable]="variable"></instance-variable>
-            </li>
-        </ul>
+  <div class="row">
+
+    <!-- Right main column -->
+    <div class="col-sm-3 col-sm-push-9">
+
+      <h2 *ngIf="ownerOrganization">
+        <organization [organization]="ownerOrganization"></organization>
+      </h2>
+
+      <p *ngIf="dataSet.properties['researchProjectURL']">
+        <a href="{{ dataSet.properties['researchProjectURL'][0].value }}" target="_blank">
+          {{ 'researchProjectURL' | translate }}
+          <span class="glyphicon glyphicon-link"></span>
+        </a>
+      </p>
+
     </div>
+
+    <!-- Left main column -->
+    <div class="col-sm-9 col-sm-pull-3">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>{{ 'description' | translate }}</h2>
+          <p>
+              <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="dataSet.properties['abstract']" class="row">
+        <div class="col-xs-12">
+          <h2 translate="abstract"></h2>
+          <p>
+              <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <ng-container *ngIf="population">
+          <div class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'population' | translate }}</h2>
+              <p><property-value [props]="population.properties" [key]="'prefLabel'"></property-value></p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'geographicalCoverage' | translate }}</h2>
+              <p><property-value [props]="population.properties" [key]="'geographicalCoverage'"></property-value></p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'sampleSize' | translate }}</h2>
+              <p><property-value [props]="population.properties" [key]="'sampleSize'"></property-value></p>
+            </div>
+          </div>
+
+          <div class="clearfix visible-md-block"></div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'loss' | translate }}</h2>
+              <p><property-value [props]="population.properties" [key]="'loss'"></property-value></p>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'variables' | translate }}</h2>
+      <ul *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;">
+        <li *ngFor="let variable of instanceVariables">
+            <instance-variable [variable]="variable"></instance-variable>
+        </li>
+      </ul>
+      <ng-template #noInstanceVariables>
+        <p>{{ 'noInstanceVariables' | translate }}</p>
+      </ng-template>
+    </div>
+  </div>
 
 </div>
 

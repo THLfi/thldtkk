@@ -39,6 +39,7 @@ export class DataSetEditComponent implements OnInit {
       data => {
         this.dataSet = data[0],
         this.ownerOrganization = data[1][0],
+        this.initProperties(this.dataSet, ['abbreviation', 'abstract', 'altLabel', 'description', 'researchProjectURL']),
         this.population = this.initializePopulationFields(data[2][0]);
       }
     );

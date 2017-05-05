@@ -22,6 +22,15 @@
       type="text">
   </div>
   <div class="form-group">
+    <label for="altLabel" translate="altLabel"></label>
+    <input [(ngModel)]="dataSet.properties.altLabel[0].value"
+      id="altLabel"
+      name="altLabel"
+      class="form-control"
+      type="text">
+  </div>
+
+  <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
     <textarea [(ngModel)]="dataSet.properties.description[0].value"
       id="description"
@@ -56,6 +65,44 @@
       type="text">
   </div>
 
+
+  <div class="form-group">
+    <label for="abstract" translate="abstract"></label>
+    <textarea [(ngModel)]="dataSet.properties.abstract[0].value"
+      id="abstract"
+      name="abstract"
+      class="form-control"
+      rows="6">
+    </textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="abbreviation" translate="abbreviation"></label>
+    <input [(ngModel)]="dataSet.properties.abbreviation[0].value"
+      id="abbreviation"
+      name="abbreviation"
+      class="form-control"
+      type="text">
+  </div>
+
+  <div class="form-group">
+    <label for="researchProjectURL" translate="researchProjectURL"></label>
+    <input [(ngModel)]="dataSet.properties.researchProjectURL[0].value"
+      id="researchProjectURL"
+      name="researchProjectURL"
+      class="form-control"
+      type="text">
+  </div>
+
+  <div class="form-group">
+    <label for="registryPolicy" translate="registryPolicy"></label>
+    <textarea [(ngModel)]="dataSet.properties.registryPolicy[0].value"
+              id="registryPolicy"
+              name="registryPolicy"
+              class="form-control"
+              rows="2">
+    </textarea>
+  </div>
 
   <div *ngIf="ownerOrganization" class="form-group">
     <label>{{ 'organization' | translate }}</label>

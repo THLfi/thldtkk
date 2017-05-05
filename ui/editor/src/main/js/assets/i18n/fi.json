@@ -20,5 +20,6 @@
     "abbreviation":"Lyhenne",
     "altLabel":"Vaihtoehtoinen nimi",
     "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
-    "abstract":"Tiivistelmä"
+    "abstract":"Tiivistelmä",
+    "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten"
 }

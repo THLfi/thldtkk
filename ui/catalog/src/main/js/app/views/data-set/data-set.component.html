@@ -51,6 +51,15 @@
         </div>
       </div>
 
+      <div *ngIf="dataSet.properties['registryPolicy']" class="row">
+        <div class="col-xs-12">
+          <h2 translate="registryPolicy"></h2>
+          <p>
+              <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
+          </p>
+        </div>
+      </div>
+
       <div class="row">
 
         <ng-container *ngIf="population">

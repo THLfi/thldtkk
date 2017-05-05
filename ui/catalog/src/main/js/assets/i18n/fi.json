@@ -16,5 +16,6 @@
     "altLabel":"Vaihtoehtoinen nimi",
     "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
     "abstract":"Tiivistelmä",
-    "noInstanceVariables": "Muuttujia ei ole määritelty."
+    "noInstanceVariables": "Muuttujia ei ole määritelty.",
+    "registryPolicy":"Rekisterin tietosisältö rekisteriselostetta varten"
 }

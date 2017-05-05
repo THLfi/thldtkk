@@ -26,6 +26,10 @@
     <p>
         <property-value [props]="dataSet.properties" [key]="'published'" [translateable]='true'></property-value>
     </p>
+    <h2 translate="registryPolicy"></h2>
+    <p>
+        <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
+    </p>
 
     <div *ngIf="ownerOrganization">
         <h2>{{ 'organization' | translate }}</h2>

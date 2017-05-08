@@ -60,6 +60,21 @@
         </div>
       </div>
 
+      <div  class="row">
+        <div *ngIf="usageCondition || dataSet.properties.usageConditionAdditionalInformation"
+          class="col-md-6">
+          <div class="bordered-box">
+            <h2>{{ 'usageCondition' | translate }}</h2>
+            <p *ngIf="usageCondition">
+              <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+            </p>
+            <p *ngIf="dataSet.properties.usageConditionAdditionalInformation">
+              <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
 
         <ng-container *ngIf="population">

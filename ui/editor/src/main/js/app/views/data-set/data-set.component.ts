@@ -7,6 +7,7 @@ import { DataSetService } from '../../services/data-set.service';
 import { InstanceVariable } from '../../model/instance-variable';
 import { Organization } from '../../model/organization';
 import { Population } from "../../model/population";
+import { UsageCondition } from "../../model/usage-condition";
 
 @Component({
     templateUrl: './data-set.component.html'
@@ -16,6 +17,7 @@ export class DataSetComponent implements OnInit {
     dataSet: DataSet;
     ownerOrganization: Organization;
     population: Population;
+    usageCondition: UsageCondition;
     instanceVariables: InstanceVariable[];
 
     constructor(
@@ -34,13 +36,15 @@ export class DataSetComponent implements OnInit {
             this.dataSetService.getDataSet(dataSetId),
             this.dataSetService.getDataSetOwners(dataSetId),
             this.dataSetService.getDataSetPopulations(dataSetId),
+            this.dataSetService.getDataSetUsageCondition(dataSetId),
             this.dataSetService.getDataSetInstanceVariables(dataSetId)
         ).subscribe(
             data => {
                 this.dataSet = data[0],
                 this.ownerOrganization = data[1][0],
                 this.population = data[2][0],
-                this.instanceVariables = data[3]
+                this.usageCondition = data[3][0],
+                this.instanceVariables = data[4]
             }
         );
     }

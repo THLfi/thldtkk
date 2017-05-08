@@ -8,6 +8,7 @@ import { DataSet } from '../model/data-set';
 import { InstanceVariable } from '../model/instance-variable';
 import { Organization } from '../model/organization';
 import { Population } from "../model/population";
+import { UsageCondition } from "../model/usage-condition";
 
 @Injectable()
 export class DataSetService {
@@ -33,6 +34,11 @@ export class DataSetService {
     getDataSetPopulations(datasetId: String): Observable<Population[]> {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/populations')
             .map(response => response.json() as Population[]);
+    }
+
+    getDataSetUsageCondition(datasetId: String): Observable<UsageCondition[]> {
+        return this._http.get('../metadata-api/datasets/' + datasetId + '/usageConditions')
+            .map(response => response.json() as UsageCondition[]);
     }
 
     getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {

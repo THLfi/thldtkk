@@ -6,8 +6,12 @@ import { DataSet } from '../../model/data-set';
 import { DataSetService } from '../../services/data-set.service';
 import { Node } from "../../model/node";
 import { Organization } from "../../model/organization";
+import { OrganizationService } from "../../services/organization.service";
 import { Population } from "../../model/population";
 import { PopulationService } from "../../services/population.service";
+import { UsageCondition } from "../../model/usage-condition";
+import { UsageConditionService } from "../../services/usage-condition.service";
+import { NodeUtils } from "../../utils/node-utils";
 
 @Component({
   templateUrl: './data-set-edit.component.html'
@@ -15,12 +19,16 @@ import { PopulationService } from "../../services/population.service";
 export class DataSetEditComponent implements OnInit {
 
   dataSet: DataSet;
-  ownerOrganization: Organization;
   population: Population;
+  allOrganizations: Organization[];
+  allUsageConditions: UsageCondition[];
 
   constructor(
     private dataSetService: DataSetService,
+    private nodeUtils: NodeUtils,
     private populationService: PopulationService,
+    private organizationService: OrganizationService,
+    private usageConditionService: UsageConditionService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -33,14 +41,24 @@ export class DataSetEditComponent implements OnInit {
     const datasetId = this.route.snapshot.params['id'];
     Observable.forkJoin(
       this.dataSetService.getDataSet(datasetId),
-      this.dataSetService.getDataSetOwners(datasetId),
-      this.dataSetService.getDataSetPopulations(datasetId)
+      this.dataSetService.getDataSetPopulations(datasetId),
+      this.organizationService.getAllOrganizations(),
+      this.usageConditionService.getAllUsageConditions()
     ).subscribe(
       data => {
         this.dataSet = data[0],
-        this.ownerOrganization = data[1][0],
-        this.initProperties(this.dataSet, ['abbreviation', 'abstract', 'altLabel', 'description', 'researchProjectURL', 'registryPolicy']),
-        this.population = this.initializePopulationFields(data[2][0]);
+        this.initProperties(this.dataSet, [
+          'abbreviation',
+          'abstract',
+          'altLabel',
+          'description',
+          'researchProjectURL',
+          'registryPolicy',
+          'usageConditionAdditionalInformation'
+        ]),
+        this.population = this.initializePopulationFields(data[1][0]),
+        this.allOrganizations = data[2]
+        this.allUsageConditions = data[3]
       }
     );
   }

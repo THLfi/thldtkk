@@ -13,14 +13,7 @@
       type="text"
       class="form-control">
   </div>
-  <div class="form-group">
-    <label for="altLabel" translate="altLabel"></label>
-    <input [(ngModel)]="dataSet.properties.altLabel[0].value"
-      id="altLabel"
-      name="altLabel"
-      class="form-control"
-      type="text">
-  </div>
+
   <div class="form-group">
     <label for="altLabel" translate="altLabel"></label>
     <input [(ngModel)]="dataSet.properties.altLabel[0].value"
@@ -30,6 +23,30 @@
       type="text">
   </div>
 
+  <div class="form-group">
+    <label for="abbreviation" translate="abbreviation"></label>
+    <input [(ngModel)]="dataSet.properties.abbreviation[0].value"
+      id="abbreviation"
+      name="abbreviation"
+      class="form-control"
+      type="text">
+  </div>
+
+  <!-- FIXME: Organization selection does not work because in Termed the 'owner' relationship refers to old graph version (v2). -->
+<!--
+  <div class="form-group">
+    <label for="ownerOrganization">{{ 'organization' | translate }}</label>
+    <select [(ngModel)]="dataSet.references?.owner[0]"
+      [compareWith]="nodeUtils.equals"
+      id="ownerOrganization"
+      class="form-control">
+      <option *ngFor="let organization of allOrganizations"
+        [ngValue]="organization">
+        <organization [organization]="organization"></organization>
+      </option>
+    </select>
+  </div>
+-->
   <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
     <textarea [(ngModel)]="dataSet.properties.description[0].value"
@@ -39,32 +56,6 @@
       rows="6">
     </textarea>
   </div>
-  <div class="form-group">
-    <label for="abstract" translate="abstract"></label>
-    <textarea [(ngModel)]="dataSet.properties.abstract[0].value"
-      id="abstract"
-      name="abstract"
-      class="form-control"
-      rows="6">
-    </textarea>
-  </div>
-  <div class="form-group">
-    <label for="abbreviation" translate="abbreviation"></label>
-    <input [(ngModel)]="dataSet.properties.abbreviation[0].value"
-      id="abbreviation"
-      name="abbreviation"
-      class="form-control"
-      type="text">
-  </div>
-  <div class="form-group">
-    <label for="researchProjectURL" translate="researchProjectURL"></label>
-    <input [(ngModel)]="dataSet.properties.researchProjectURL[0].value"
-      id="researchProjectURL"
-      name="researchProjectURL"
-      class="form-control"
-      type="text">
-  </div>
-
 
   <div class="form-group">
     <label for="abstract" translate="abstract"></label>
@@ -74,15 +65,6 @@
       class="form-control"
       rows="6">
     </textarea>
-  </div>
-
-  <div class="form-group">
-    <label for="abbreviation" translate="abbreviation"></label>
-    <input [(ngModel)]="dataSet.properties.abbreviation[0].value"
-      id="abbreviation"
-      name="abbreviation"
-      class="form-control"
-      type="text">
   </div>
 
   <div class="form-group">
@@ -100,13 +82,31 @@
               id="registryPolicy"
               name="registryPolicy"
               class="form-control"
-              rows="2">
+              rows="6">
     </textarea>
   </div>
 
-  <div *ngIf="ownerOrganization" class="form-group">
-    <label>{{ 'organization' | translate }}</label>
-    <p><organization [organization]="ownerOrganization"></organization></p>
+  <div class="form-group">
+    <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
+    <select [(ngModel)]="dataSet.references?.usageCondition[0]"
+            [compareWith]="nodeUtils.equals"
+            id="usageCondition"
+            class="form-control">
+      <option *ngFor="let usageCondition of allUsageConditions"
+              [ngValue]="usageCondition">
+        <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
+    <textarea [(ngModel)]="dataSet.properties.usageConditionAdditionalInformation[0].value"
+              id="usageConditionAdditionalInformation"
+              name="usageConditionAdditionalInformation"
+              class="form-control"
+              rows="2">
+    </textarea>
   </div>
 
   <div class="form-group">

@@ -14,6 +14,12 @@
     <p>
         <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
     </p>
+    <div *ngIf="ownerOrganization">
+        <h2>{{ 'organization' | translate }}</h2>
+        <p>
+            <organization [organization]="ownerOrganization"></organization>
+        </p>
+    </div>
     <h2 translate="abstract"></h2>
     <p>
         <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
@@ -31,14 +37,20 @@
         <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
     </p>
 
-    <div *ngIf="ownerOrganization">
-        <h2>{{ 'organization' | translate }}</h2>
-        <p>
-            <organization [organization]="ownerOrganization"></organization>
-        </p>
+    <div *ngIf="usageCondition">
+      <h2 translate="usageCondition"></h2>
+      <p>
+          <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+      </p>
     </div>
 
-    <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
+    <h2 translate="usageConditionAdditionalInformation"></h2>
+    <p>
+      <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
+    </p>
+
+
+  <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
         <population [population]="population"></population>
     </div>
 

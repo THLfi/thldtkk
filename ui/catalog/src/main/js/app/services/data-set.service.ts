@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch'
 import { DataSet } from '../model/data-set';
 import { Organization } from '../model/organization';
 import { InstanceVariable } from '../model/instance-variable';
+import { LifecyclePhase } from "../model/lifecycle-phase";
 import { Population } from "../model/population";
 import { UsageCondition } from "../model/usage-condition";
 
@@ -34,6 +35,11 @@ export class DataSetService {
   getDataSetPopulations(datasetId: String): Observable<Population[]> {
     return this._http.get('../metadata-api/datasets/' + datasetId + '/populations')
       .map(response => response.json() as Population[]);
+  }
+  
+  getDataSetLifecyclePhases(datasetId: String): Observable<LifecyclePhase[]> {
+    return this._http.get('../metadata-api/datasets/' + datasetId + '/lifecyclePhases')
+      .map(response => response.json() as LifecyclePhase[]);
   }
 
   getDataSetUsageCondition(datasetId: String): Observable<UsageCondition[]> {

@@ -107,6 +107,13 @@
               <p><property-value [props]="population.properties" [key]="'loss'"></property-value></p>
             </div>
           </div>
+
+          <div *ngIf="lifecyclePhase" class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+                <h2 translate="lifecyclePhase"></h2>
+              <p><property-value [props]="lifecyclePhase.properties" [key]="'prefLabel'"></property-value></p>
+            </div>
+          </div>
         </ng-container>
 
       </div>

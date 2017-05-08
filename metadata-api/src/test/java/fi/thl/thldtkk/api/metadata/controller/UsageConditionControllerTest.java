@@ -42,6 +42,6 @@ public class UsageConditionControllerTest {
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType(ContentType.JSON)
-        .body(containsString("(A)"));
+        .body(containsString("fi"));
   }
 }

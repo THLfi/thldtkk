@@ -20,6 +20,7 @@ export class DataSetEditComponent implements OnInit {
 
   dataSet: DataSet;
   population: Population;
+  usageCondition: UsageCondition;
   allOrganizations: Organization[];
   allUsageConditions: UsageCondition[];
 
@@ -42,6 +43,7 @@ export class DataSetEditComponent implements OnInit {
     Observable.forkJoin(
       this.dataSetService.getDataSet(datasetId),
       this.dataSetService.getDataSetPopulations(datasetId),
+      this.dataSetService.getDataSetUsageCondition(datasetId),
       this.organizationService.getAllOrganizations(),
       this.usageConditionService.getAllUsageConditions()
     ).subscribe(
@@ -55,10 +57,11 @@ export class DataSetEditComponent implements OnInit {
           'researchProjectURL',
           'registryPolicy',
           'usageConditionAdditionalInformation'
-        ]),
-        this.population = this.initializePopulationFields(data[1][0]),
-        this.allOrganizations = data[2]
-        this.allUsageConditions = data[3]
+        ]);
+        this.population = this.initializePopulationFields(data[1][0]);
+        this.usageCondition = data[2][0];
+        this.allOrganizations = data[3];
+        this.allUsageConditions = data[4];
       }
     );
   }
@@ -102,6 +105,7 @@ export class DataSetEditComponent implements OnInit {
           this.population = this.initializePopulationFields(savedPopulation);
 
           this.dataSet.references['population'] = [ savedPopulation ];
+          this.dataSet.references['usageCondition'] = [ this.usageCondition ];
 
           this.dataSetService.saveDataSet(this.dataSet)
             .subscribe(savedDataSet => {

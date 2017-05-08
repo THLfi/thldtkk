@@ -88,10 +88,11 @@
 
   <div class="form-group">
     <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
-    <select [(ngModel)]="dataSet.references?.usageCondition[0]"
+    <select [(ngModel)]="usageCondition"
             [compareWith]="nodeUtils.equals"
             id="usageCondition"
             class="form-control">
+      <option [ngValue]="null"></option>
       <option *ngFor="let usageCondition of allUsageConditions"
               [ngValue]="usageCondition">
         <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>

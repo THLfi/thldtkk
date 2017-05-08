@@ -12,6 +12,8 @@ import { PopulationService } from "../../services/population.service";
 import { UsageCondition } from "../../model/usage-condition";
 import { UsageConditionService } from "../../services/usage-condition.service";
 import { NodeUtils } from "../../utils/node-utils";
+import { LifecyclePhase } from "../../model/lifecycle-phase";
+import { LifecyclePhaseService } from "../../services/lifecycle-phase.service";
 
 @Component({
   templateUrl: './data-set-edit.component.html'
@@ -23,6 +25,7 @@ export class DataSetEditComponent implements OnInit {
   usageCondition: UsageCondition;
   allOrganizations: Organization[];
   allUsageConditions: UsageCondition[];
+  lifecyclePhase : LifecyclePhase;
 
   constructor(
     private dataSetService: DataSetService,
@@ -30,6 +33,7 @@ export class DataSetEditComponent implements OnInit {
     private populationService: PopulationService,
     private organizationService: OrganizationService,
     private usageConditionService: UsageConditionService,
+    private lifecyclePhaseService: LifecyclePhaseService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -45,7 +49,8 @@ export class DataSetEditComponent implements OnInit {
       this.dataSetService.getDataSetPopulations(datasetId),
       this.dataSetService.getDataSetUsageCondition(datasetId),
       this.organizationService.getAllOrganizations(),
-      this.usageConditionService.getAllUsageConditions()
+      this.usageConditionService.getAllUsageConditions(),
+      this.dataSetService.getLifecyclePhases(datasetId)
     ).subscribe(
       data => {
         this.dataSet = data[0],
@@ -62,10 +67,31 @@ export class DataSetEditComponent implements OnInit {
         this.usageCondition = data[2][0];
         this.allOrganizations = data[3];
         this.allUsageConditions = data[4];
+        this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[5][0])
       }
     );
   }
 
+private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): LifecyclePhase {
+    if (!lifecyclePhase) {
+      lifecyclePhase = {
+        id: null,
+        type: {
+          id: null,
+          graph: {
+            id: null
+          }
+        },
+        properties: {},
+        references: {}
+      };
+    }
+
+    this.initProperties(lifecyclePhase, ['prefLabel']);
+
+    return lifecyclePhase;
+  }
+  
   private initializePopulationFields(population: Population): Population {
     if (!population) {
       population = {
@@ -102,15 +128,22 @@ export class DataSetEditComponent implements OnInit {
   save() {
     this.populationService.savePopulation(this.population)
       .subscribe(savedPopulation => {
-          this.population = this.initializePopulationFields(savedPopulation);
+        this.population = this.initializePopulationFields(savedPopulation);
 
-          this.dataSet.references['population'] = [ savedPopulation ];
-          this.dataSet.references['usageCondition'] = [ this.usageCondition ];
+        this.dataSet.references['population'] = [ savedPopulation ];
+        this.dataSet.references['usageCondition'] = [ this.usageCondition ];
 
-          this.dataSetService.saveDataSet(this.dataSet)
-            .subscribe(savedDataSet => {
-              this.dataSet = savedDataSet;
-              this.goBack();
+        this.lifecyclePhaseService.saveLifecyclePhase(this.lifecyclePhase)
+          .subscribe(savedLifecyclePhase => {
+            this.lifecyclePhase = this.initializeLifecyclePhaseFields(savedLifecyclePhase);
+        
+            this.dataSet.references['lifecyclePhase'] = [ savedLifecyclePhase ];
+        
+            this.dataSetService.saveDataSet(this.dataSet)
+              .subscribe(savedDataSet => {
+                this.dataSet = savedDataSet;
+                this.goBack();
+              });
             });
         });
   }

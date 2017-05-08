@@ -23,5 +23,6 @@
     "abstract":"Tiivistelmä",
     "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten",
     "usageCondition": "Käyttöehdot",
-    "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja"
+    "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
+    "lifecyclePhase":"Aineiston elinkaaren vaihe"
 }

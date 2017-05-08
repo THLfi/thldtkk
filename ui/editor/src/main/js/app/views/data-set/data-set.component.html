@@ -54,6 +54,10 @@
         <population [population]="population"></population>
     </div>
 
+    <div *ngIf="lifecyclePhase && lifecyclePhase.properties.prefLabel && lifecyclePhase.properties.prefLabel[0].value">
+        <lifecyclePhase [lifecyclePhase]="lifecyclePhase"></lifecyclePhase>
+    </div>
+
     <div *ngIf="instanceVariables && instanceVariables.length">
         <h2>{{ 'variables' | translate }}</h2>
         <ul>

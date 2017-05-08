@@ -23,6 +23,8 @@ import { PopulationService } from "./services/population.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
 import { PopulationComponent } from "./views/common/population.component";
 import { UsageConditionService } from "./services/usage-condition.service";
+import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
+import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');
@@ -38,7 +40,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableEditComponent,
         OrganizationComponent,
         PopulationComponent,
-        PropertyValueComponent
+        PropertyValueComponent,
+        LifecyclePhaseComponent
     ],
     imports: [
         BrowserModule,
@@ -59,7 +62,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         NodeUtils,
         OrganizationService,
         PopulationService,
-        UsageConditionService
+        UsageConditionService,
+        LifecyclePhaseService
     ],
     bootstrap: [
         AppComponent

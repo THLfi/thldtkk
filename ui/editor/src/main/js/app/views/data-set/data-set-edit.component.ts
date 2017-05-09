@@ -103,7 +103,9 @@ export class DataSetEditComponent implements OnInit {
       'description',
       'researchProjectURL',
       'registryPolicy',
-      'usageConditionAdditionalInformation'
+      'usageConditionAdditionalInformation',
+      'referencePeriodStart',
+      'referencePeriodEnd'
     ])
     return dataSet
   }
@@ -173,45 +175,35 @@ export class DataSetEditComponent implements OnInit {
   // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04
 
   private simplifyReferencePeriodDates() {
-
     // check if user input for reference period dates
-
     let referencePeriodStartDateSelected = !!this.selectedReferencePeriodStartDate;
     let referencePeriodEndDateSelected = !!this.selectedReferencePeriodEndDate;
 
-    // check if insertion is possible at all and reference dates have been generally defined for the data set
-    // TODO: what to do if properties do not yet exist at all in Termed? Need to insert new nodes? Now it's an error.
-
-    let referencePeriodStartExistInModel = !!this.dataSet.properties.referencePeriodStart;
-    let referencePeriodEndExistInModel = !!this.dataSet.properties.referencePeriodEnd;
-
     // only update reference period values if a date has been selected
     // also, convert long date formats to simplified date string
-
-    if(referencePeriodStartDateSelected && referencePeriodStartExistInModel) {
+    if(referencePeriodStartDateSelected) {
       let simplifiedReferencePeriodStartDate = this.simplifyDate(this.selectedReferencePeriodStartDate);
-      this.dataSet.properties.referencePeriodStart[0].value = simplifiedReferencePeriodStartDate;
+      this.dataSet.properties['referencePeriodStart'][0].value = simplifiedReferencePeriodStartDate;
+      this.dataSet.properties['referencePeriodStart'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$";
     }
 
-    if(referencePeriodEndDateSelected && referencePeriodEndExistInModel) {
+    if(referencePeriodEndDateSelected) {
       let simplifiedReferencePeriodEndDate = this.simplifyDate(this.selectedReferencePeriodEndDate);
-      this.dataSet.properties.referencePeriodEnd[0].value = simplifiedReferencePeriodEndDate;
+      this.dataSet.properties['referencePeriodEnd'][0].value = simplifiedReferencePeriodEndDate;
+      this.dataSet.properties['referencePeriodEnd'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$";
     }
-
   }
 
   // Convert a single long date to short ISO format
   // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04
   private simplifyDate(fullDate) {
-    let simplifiedDate = this.datePipe.transform(fullDate, DataSetEditComponent.DATE_FORMAT_SIMPLIFIED);
-    return simplifiedDate;
+    return this.datePipe.transform(fullDate, DataSetEditComponent.DATE_FORMAT_SIMPLIFIED);
   }
 
   // Toggle the visibility of the reference start period, showing or hiding the date picker
   public toggleReferenceStartPeriodCalendar() {
       this.showReferencePeriodStartCalendar = !this.showReferencePeriodStartCalendar;
   }
-
 
   // Toggle the visibility of the reference end period, showing or hiding the date picker
   public toggleReferenceEndPeriodCalendar() {

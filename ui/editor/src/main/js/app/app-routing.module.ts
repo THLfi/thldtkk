@@ -16,6 +16,10 @@ const routes: Routes = [
         component: InstanceVariableEditComponent,
     },
     {
+        path: 'datasets/new',
+        component: DataSetEditComponent,
+    },
+    {
         path: 'datasets/:id/edit',
         component: DataSetEditComponent,
     },

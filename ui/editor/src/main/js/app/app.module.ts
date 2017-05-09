@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DatePipe } from '@angular/common';
 
 import { environment } from "../environments/environment";
 
@@ -48,6 +50,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         FormsModule,
         HttpModule,
         AppRoutingModule,
+        DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -63,7 +66,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         OrganizationService,
         PopulationService,
         UsageConditionService,
-        LifecyclePhaseService
+        LifecyclePhaseService,
+        DatePipe
     ],
     bootstrap: [
         AppComponent

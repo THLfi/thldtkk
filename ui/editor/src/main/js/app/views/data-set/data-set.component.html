@@ -52,7 +52,15 @@
 
   <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
         <population [population]="population"></population>
-    </div>
+  </div>
+
+  <div *ngIf="dataSet.properties.referencePeriodStart">
+    <h2 translate="referencePeriod"></h2>
+    <p>{{ 'referencePeriodStart' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodStart'"></property-value></p>
+    <p>{{ 'referencePeriodEnd' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodEnd'"></property-value></p>
+  </div>
+
+
 
     <div *ngIf="lifecyclePhase && lifecyclePhase.properties.prefLabel && lifecyclePhase.properties.prefLabel[0].value">
         <lifecyclePhase [lifecyclePhase]="lifecyclePhase"></lifecyclePhase>

@@ -27,6 +27,10 @@
     "usageCondition": "Käyttöehdot",
     "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
+    "referencePeriod":"Viiteajankohta",
+    "referencePeriodStart":"Viiteajankohdan alkupäivämäärä",
+    "referencePeriodEnd":"Viiteajankohdan loppupäivämäärä",
+    "inputDateFormat" :"vvvv-kk-pp",
     "addInstanceVariable": "Lisää muuttuja",
     "newInstanceVariable": "Uusi muuttuja",
     "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?"

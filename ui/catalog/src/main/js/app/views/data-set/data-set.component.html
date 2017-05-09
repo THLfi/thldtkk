@@ -108,6 +108,14 @@
             </div>
           </div>
 
+          <div *ngIf="dataSet.properties.referencePeriodStart || dataSet.properties.referencePeriodEnd"class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'referencePeriod' | translate }}</h2>             
+              <p *ngIf="dataSet.properties.referencePeriodStart">{{ 'referencePeriodStart' | translate }}: {{dataSet.properties.referencePeriodStart[0].value | date:'dd.MM.yyyy'}}</p>
+              <p *ngIf="dataSet.properties.referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}: {{dataSet.properties.referencePeriodEnd[0].value | date:'dd.MM.yyyy'}}</p>
+            </div>
+          </div>
+
           <div *ngIf="lifecyclePhase" class="col-sm-6 col-md-4">
             <div class="bordered-box">
                 <h2 translate="lifecyclePhase"></h2>

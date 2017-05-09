@@ -8,6 +8,7 @@
 .classpath
 .metadata
 .idea
+.vscode
 *.iml
 *.swp
 **/target/

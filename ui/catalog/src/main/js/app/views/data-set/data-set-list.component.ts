@@ -17,6 +17,9 @@ export class DataSetListComponent implements OnInit {
 
     ngOnInit(): void {
         this.dataSetService.getAllDataSets()
-            .subscribe(dataSets => this.dataSets = dataSets);
+            .subscribe(dataSets => {
+                this.dataSets = dataSets.filter(
+                    ds => ds.properties["published"] && ds.properties["published"][0].value == "true");
+            });
     }
 }

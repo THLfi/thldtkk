@@ -58,15 +58,39 @@
         <lifecyclePhase [lifecyclePhase]="lifecyclePhase"></lifecyclePhase>
     </div>
 
-    <div *ngIf="instanceVariables && instanceVariables.length">
-        <h2>{{ 'variables' | translate }}</h2>
-        <ul>
-            <li *ngFor="let variable of instanceVariables">
-                <instance-variable [variable]="variable"></instance-variable>
-                <a routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit">Muokkaa</a>
-            </li>
-        </ul>
-    </div>
+    <h2>{{ 'variables' | translate }}</h2>
+    <table *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
+      class="table table-striped table-hover">
+      <tr>
+        <th>Nimi</th>
+        <th>Kuvaus</th>
+        <th>Toiminnot</th>
+      </tr>
+      <tr *ngFor="let variable of instanceVariables">
+        <td>
+          <property-value [props]="variable.properties" [key]="'prefLabel'"></property-value>
+        </td>
+        <td>
+          <property-value [props]="variable.properties" [key]="'description'"></property-value>
+        </td>
+        <td>
+          <button routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit"
+            class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{ 'edit' | translate }}
+          </button>
+        </td>
+      </tr>
+    </table>
+    <ng-template #noInstanceVariables>
+      <p>{{ 'noInstanceVariables' | translate }}</p>
+    </ng-template>
+
+    <button class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/instanceVariables/new">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{ 'addInstanceVariable' | translate }}
+    </button>
+
 </div>
 
 <hr>

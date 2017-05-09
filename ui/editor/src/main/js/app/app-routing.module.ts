@@ -8,6 +8,10 @@ import { InstanceVariableEditComponent } from "./views/data-set/instance-variabl
 
 const routes: Routes = [
     {
+        path: 'datasets/:dataSetId/instanceVariables/new',
+        component: InstanceVariableEditComponent,
+    },
+    {
         path: 'datasets/:dataSetId/instanceVariables/:instanceVariableId/edit',
         component: InstanceVariableEditComponent,
     },

@@ -12,6 +12,7 @@
     "organization": "Organisaatio",
     "back": "Takaisin",
     "edit": "Muokkaa",
+    "remove": "Poista",
     "save": "Tallenna",
     "cancel": "Peruuta",
     "published":"Julkaistu",
@@ -21,8 +22,12 @@
     "altLabel":"Vaihtoehtoinen nimi",
     "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
     "abstract":"Tiivistelmä",
+    "noInstanceVariables": "Muuttujia ei ole määritelty.",
     "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten",
     "usageCondition": "Käyttöehdot",
     "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
-    "lifecyclePhase":"Aineiston elinkaaren vaihe"
+    "lifecyclePhase":"Aineiston elinkaaren vaihe",
+    "addInstanceVariable": "Lisää muuttuja",
+    "newInstanceVariable": "Uusi muuttuja",
+    "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?"
 }

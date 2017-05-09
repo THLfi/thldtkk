@@ -1,8 +1,11 @@
 <div *ngIf="instanceVariable">
 
-  <h1>
+  <h1 *ngIf="instanceVariable.id; else newInstanceVariable;">
     <property-value [props]="instanceVariable.properties" [key]="'prefLabel'"></property-value>
   </h1>
+  <ng-template #newInstanceVariable>
+    <h1>{{ 'newInstanceVariable' | translate }}</h1>
+  </ng-template>
 
   <div class="form-group">
     <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
@@ -33,6 +36,12 @@
     <button class="btn btn-primary" (click)="save()">
       <span class="glyphicon glyphicon-floppy-disk"></span>
       {{ 'save' | translate }}
+    </button>
+
+    <button *ngIf="instanceVariable.id" (click)="confirmRemove()"
+      class="btn btn-danger pull-right">
+      <span class="glyphicon glyphicon-remove"></span>
+      {{ 'remove' | translate }}
     </button>
   </div>
 

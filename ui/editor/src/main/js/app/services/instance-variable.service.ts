@@ -30,4 +30,8 @@ export class InstanceVariableService {
       .map(response => response.json() as InstanceVariable);
   }
 
+  remove(instanceVariable: InstanceVariable): Observable<any> {
+    return this._http.delete('../metadata-api/instanceVariables/' + instanceVariable.id);
+  }
+
 }

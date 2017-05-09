@@ -54,7 +54,7 @@ export class DataSetEditComponent implements OnInit {
     ).subscribe(
       data => {
         this.dataSet = data[0],
-        this.initProperties(this.dataSet, [
+        this.nodeUtils.initProperties(this.dataSet, [
           'abbreviation',
           'abstract',
           'altLabel',
@@ -74,55 +74,22 @@ export class DataSetEditComponent implements OnInit {
 
 private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): LifecyclePhase {
     if (!lifecyclePhase) {
-      lifecyclePhase = {
-        id: null,
-        type: {
-          id: null,
-          graph: {
-            id: null
-          }
-        },
-        properties: {},
-        references: {}
-      };
+      lifecyclePhase = this.nodeUtils.createNode();
     }
 
-    this.initProperties(lifecyclePhase, ['prefLabel']);
+    this.nodeUtils.initProperties(lifecyclePhase, ['prefLabel']);
 
     return lifecyclePhase;
   }
-  
+
   private initializePopulationFields(population: Population): Population {
     if (!population) {
-      population = {
-        id: null,
-        type: {
-          id: null,
-          graph: {
-            id: null
-          }
-        },
-        properties: {},
-        references: {}
-      };
+      population = this.nodeUtils.createNode();
     }
 
-    this.initProperties(population, ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']);
+    this.nodeUtils.initProperties(population, ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']);
 
     return population;
-  }
-
-  private initProperties(node: Node, properties: string[]) {
-    for (let property of properties) {
-      if (!node.properties[property] || !node.properties[property][0]) {
-        node.properties[property] = [
-          {
-            lang: 'fi',
-            value: null
-          }
-        ];
-      }
-    }
   }
 
   save() {
@@ -136,9 +103,9 @@ private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): Lifecycl
         this.lifecyclePhaseService.saveLifecyclePhase(this.lifecyclePhase)
           .subscribe(savedLifecyclePhase => {
             this.lifecyclePhase = this.initializeLifecyclePhaseFields(savedLifecyclePhase);
-        
+
             this.dataSet.references['lifecyclePhase'] = [ savedLifecyclePhase ];
-        
+
             this.dataSetService.saveDataSet(this.dataSet)
               .subscribe(savedDataSet => {
                 this.dataSet = savedDataSet;

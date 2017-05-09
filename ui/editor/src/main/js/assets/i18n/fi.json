@@ -27,6 +27,7 @@
     "usageCondition": "Käyttöehdot",
     "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
+    "addDataset": "Lisää aineisto",
     "referencePeriod":"Viiteajankohta",
     "referencePeriodStart":"Viiteajankohdan alkupäivämäärä",
     "referencePeriodEnd":"Viiteajankohdan loppupäivämäärä",

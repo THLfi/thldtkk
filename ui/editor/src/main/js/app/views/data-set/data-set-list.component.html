@@ -1,21 +1,40 @@
-<h1>{{'datasets' | translate}}</h1>
-
-<table class="table table-striped table-hover">
-    <tr>
-        <th>Nimi</th>
-        <th>Toiminnot</th>
-    </tr>
-    <tr *ngFor="let dataSet of dataSets">
-        <td>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-9">
+      <h1>{{'datasets' | translate}}</h1>
+    </div>
+    <div class="col-xs-3">
+      <button routerLink="/datasets/new"
+        class="btn btn-default pull-right">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{ 'addDataset' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-striped table-hover">
+        <tr>
+          <th>Nimi</th>
+          <th>Toiminnot</th>
+        </tr>
+        <tr *ngFor="let dataSet of dataSets">
+          <td>
             <a routerLink="/datasets/{{ dataSet.id }}">
-                <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
+              <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
             </a>
-        </td>
-        <td>
-            <button class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/edit">
-                <span class="glyphicon glyphicon-edit"></span>
-                {{ 'edit' | translate }}
+          </td>
+          <td>
+            <button routerLink="/datasets/{{ dataSet.id }}/edit"
+              class="btn btn-default">
+              <span class="glyphicon glyphicon-edit"></span>
+              {{ 'edit' | translate }}
             </button>
-        </td>
-    </tr>
-</table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+

@@ -32,21 +32,21 @@
       type="text">
   </div>
 
-  <!-- FIXME: Organization selection does not work because in Termed the 'owner' relationship refers to old graph version (v2). -->
-<!--
-  <div class="form-group">
+  <div *ngIf="allOrganizations"
+    class="form-group">
     <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-    <select [(ngModel)]="dataSet.references?.owner[0]"
+    <select [(ngModel)]="dataSet.references.owner[0]"
       [compareWith]="nodeUtils.equals"
       id="ownerOrganization"
       class="form-control">
+      <option [ngValue]="null"></option>
       <option *ngFor="let organization of allOrganizations"
         [ngValue]="organization">
         <organization [organization]="organization"></organization>
       </option>
     </select>
   </div>
--->
+
   <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
     <textarea [(ngModel)]="dataSet.properties.description[0].value"
@@ -86,7 +86,8 @@
     </textarea>
   </div>
 
-  <div class="form-group">
+  <div *ngIf="allUsageConditions"
+    class="form-group">
     <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
     <select [(ngModel)]="usageCondition"
             [compareWith]="nodeUtils.equals"

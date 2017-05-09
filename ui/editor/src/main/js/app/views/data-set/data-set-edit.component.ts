@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 
 import { DataSet } from '../../model/data-set';
 import { DataSetService } from '../../services/data-set.service';
-import { Node } from "../../model/node";
 import { Organization } from "../../model/organization";
 import { OrganizationService } from "../../services/organization.service";
 import { Population } from "../../model/population";
@@ -29,7 +28,7 @@ export class DataSetEditComponent implements OnInit {
   showReferencePeriodStartCalendar: boolean;
   showReferencePeriodEndCalendar: boolean;
 
-  // the used short ISO date format for storing dates 
+  // the used short ISO date format for storing dates
   static readonly DATE_FORMAT_SIMPLIFIED = "yyyy-MM-dd";
 
   dataSet: DataSet;
@@ -60,43 +59,53 @@ export class DataSetEditComponent implements OnInit {
 
   private getDataSet() {
     const datasetId = this.route.snapshot.params['id'];
-    Observable.forkJoin(
-      this.dataSetService.getDataSet(datasetId),
-      this.dataSetService.getDataSetPopulations(datasetId),
-      this.dataSetService.getDataSetUsageCondition(datasetId),
-      this.organizationService.getAllOrganizations(),
-      this.usageConditionService.getAllUsageConditions(),
-      this.dataSetService.getLifecyclePhases(datasetId)
-    ).subscribe(
-      data => {
-        this.dataSet = data[0],
-        this.nodeUtils.initProperties(this.dataSet, [
-          'abbreviation',
-          'abstract',
-          'altLabel',
-          'description',
-          'researchProjectURL',
-          'registryPolicy',
-          'usageConditionAdditionalInformation'
-        ]);
-        this.population = this.initializePopulationFields(data[1][0]);
-        this.usageCondition = data[2][0];
-        this.allOrganizations = data[3];
-        this.allUsageConditions = data[4];
-        this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[5][0]),
-        this.populateReferencePeriodDates();
-      }
-    );
-  }
 
-private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): LifecyclePhase {
-    if (!lifecyclePhase) {
-      lifecyclePhase = this.nodeUtils.createNode();
+    if (datasetId) {
+      Observable.forkJoin(
+        this.dataSetService.getDataSet(datasetId),
+        this.dataSetService.getDataSetPopulations(datasetId),
+        this.dataSetService.getDataSetUsageCondition(datasetId),
+        this.dataSetService.getLifecyclePhases(datasetId)
+      ).subscribe(
+        data => {
+          this.dataSet = this.initializeDataSetProperties(data[0])
+          if (!this.dataSet.references['owner']) {
+            this.dataSet.references['owner'] = []
+          }
+          this.population = this.initializePopulationFields(data[1][0]);
+          this.usageCondition = data[2][0];
+          this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[3][0])
+          this.populateReferencePeriodDates();
+        }
+      )
+    }
+    else {
+      this.dataSet = this.initializeDataSetProperties(this.nodeUtils.createNode())
+      if (!this.dataSet.references['owner']) {
+        this.dataSet.references['owner'] = []
+      }
+      this.population = this.initializePopulationFields(this.nodeUtils.createNode())
+      this.lifecyclePhase = this.initializeLifecyclePhaseFields(this.nodeUtils.createNode())
     }
 
-    this.nodeUtils.initProperties(lifecyclePhase, ['prefLabel']);
+    this.organizationService.getAllOrganizations()
+      .subscribe(organizations => this.allOrganizations = organizations)
+    this.usageConditionService.getAllUsageConditions()
+      .subscribe(usageConditions => this.allUsageConditions = usageConditions)
+  }
 
-    return lifecyclePhase;
+  private initializeDataSetProperties(dataSet: DataSet): DataSet {
+    this.nodeUtils.initProperties(dataSet, [
+      'prefLabel',
+      'abbreviation',
+      'abstract',
+      'altLabel',
+      'description',
+      'researchProjectURL',
+      'registryPolicy',
+      'usageConditionAdditionalInformation'
+    ])
+    return dataSet
   }
 
   private initializePopulationFields(population: Population): Population {
@@ -107,6 +116,16 @@ private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): Lifecycl
     this.nodeUtils.initProperties(population, ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']);
 
     return population;
+  }
+
+  private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): LifecyclePhase {
+    if (!lifecyclePhase) {
+      lifecyclePhase = this.nodeUtils.createNode();
+    }
+
+    this.nodeUtils.initProperties(lifecyclePhase, ['prefLabel']);
+
+    return lifecyclePhase;
   }
 
   save() {
@@ -138,21 +157,21 @@ private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): Lifecycl
 
   // Fill in the date picker dates when initalizing the view
   private populateReferencePeriodDates() {
-    
+
     // check whether reference period dates have been set for the dataset or if they are empty
     let referencePeriodStartDateExists =  !!this.dataSet.properties.referencePeriodStart;
     let referencePeriodEndDateExists = !!this.dataSet.properties.referencePeriodEnd;
 
     // populate selected dates for date picker from dataset
     // don't try to read null values for dates, default to undefined if no dates defined yet
-    this.selectedReferencePeriodStartDate = referencePeriodStartDateExists ? this.dataSet.properties.referencePeriodStart[0].value : undefined ;  
-    this.selectedReferencePeriodEndDate = referencePeriodEndDateExists ? this.dataSet.properties.referencePeriodEnd[0].value : undefined;  
+    this.selectedReferencePeriodStartDate = referencePeriodStartDateExists ? this.dataSet.properties.referencePeriodStart[0].value : undefined ;
+    this.selectedReferencePeriodEndDate = referencePeriodEndDateExists ? this.dataSet.properties.referencePeriodEnd[0].value : undefined;
 }
 
 
-  // Convert and assign long dates from the date picker to shorter ones used in the data model. 
-  // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04  
-  
+  // Convert and assign long dates from the date picker to shorter ones used in the data model.
+  // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04
+
   private simplifyReferencePeriodDates() {
 
     // check if user input for reference period dates
@@ -161,8 +180,8 @@ private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): Lifecycl
     let referencePeriodEndDateSelected = !!this.selectedReferencePeriodEndDate;
 
     // check if insertion is possible at all and reference dates have been generally defined for the data set
-    // TODO: what to do if properties do not yet exist at all in Termed? Need to insert new nodes? Now it's an error.  
-    
+    // TODO: what to do if properties do not yet exist at all in Termed? Need to insert new nodes? Now it's an error.
+
     let referencePeriodStartExistInModel = !!this.dataSet.properties.referencePeriodStart;
     let referencePeriodEndExistInModel = !!this.dataSet.properties.referencePeriodEnd;
 
@@ -176,13 +195,13 @@ private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): Lifecycl
 
     if(referencePeriodEndDateSelected && referencePeriodEndExistInModel) {
       let simplifiedReferencePeriodEndDate = this.simplifyDate(this.selectedReferencePeriodEndDate);
-      this.dataSet.properties.referencePeriodEnd[0].value = simplifiedReferencePeriodEndDate; 
+      this.dataSet.properties.referencePeriodEnd[0].value = simplifiedReferencePeriodEndDate;
     }
 
   }
 
   // Convert a single long date to short ISO format
-  // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04    
+  // Example conversion: "Thu May 04 2017 00:00:00 GMT+0300 (EEST)" -> 2017-05-04
   private simplifyDate(fullDate) {
     let simplifiedDate = this.datePipe.transform(fullDate, DataSetEditComponent.DATE_FORMAT_SIMPLIFIED);
     return simplifiedDate;

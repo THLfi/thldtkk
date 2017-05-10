@@ -21,6 +21,8 @@ import { InstanceVariableService } from './services/instance-variable.service';
 import { NodeUtils } from "./utils/node-utils";
 import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
+import { OrganizationUnitComponent } from "./views/common/organization-unit.component";
+import { OrganizationUnitService } from "./services/organization-unit.service";
 import { PopulationService } from "./services/population.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
 import { PopulationComponent } from "./views/common/population.component";
@@ -41,6 +43,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         OrganizationComponent,
+        OrganizationUnitComponent,
         PopulationComponent,
         PropertyValueComponent,
         LifecyclePhaseComponent
@@ -64,6 +67,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableService,
         NodeUtils,
         OrganizationService,
+        OrganizationUnitService,
         PopulationService,
         UsageConditionService,
         LifecyclePhaseService,

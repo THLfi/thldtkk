@@ -83,6 +83,17 @@ public class DatasetController {
         return restTemplate.getForObject(url, JsonArray.class);
     }
 
+    @GetJsonMapping("/{id}/ownerOrganizationUnits")
+    public JsonArray getDatasetOrganizationUnits(@PathVariable("id") UUID id) {
+        String url = fromPath(datasetsPath)
+                .path("/")
+                .path(id.toString())
+                .path("/references/ownerOrganizationUnit")
+                .toUriString();
+
+        return restTemplate.getForObject(url, JsonArray.class);
+    }
+
     @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
     public JsonObject post(@RequestBody JsonObject dataset) {
         String url = fromPath(datasetsPath).toUriString();

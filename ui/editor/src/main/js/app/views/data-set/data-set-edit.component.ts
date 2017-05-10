@@ -7,6 +7,8 @@ import { DataSet } from '../../model/data-set';
 import { DataSetService } from '../../services/data-set.service';
 import { Organization } from "../../model/organization";
 import { OrganizationService } from "../../services/organization.service";
+import { OrganizationUnit } from "../../model/organization-unit";
+import { OrganizationUnitService } from "../../services/organization-unit.service";
 import { Population } from "../../model/population";
 import { PopulationService } from "../../services/population.service";
 import { UsageCondition } from "../../model/usage-condition";
@@ -34,7 +36,9 @@ export class DataSetEditComponent implements OnInit {
   dataSet: DataSet;
   population: Population;
   usageCondition: UsageCondition;
+  ownerOrganizationUnit : OrganizationUnit;
   allOrganizations: Organization[];
+  allOrganizationUnits: OrganizationUnit[];
   allUsageConditions: UsageCondition[];
   lifecyclePhase : LifecyclePhase;
 
@@ -43,6 +47,7 @@ export class DataSetEditComponent implements OnInit {
     private nodeUtils: NodeUtils,
     private populationService: PopulationService,
     private organizationService: OrganizationService,
+    private organizationUnitService: OrganizationUnitService,
     private usageConditionService: UsageConditionService,
     private lifecyclePhaseService: LifecyclePhaseService,
     private route: ActivatedRoute,
@@ -59,13 +64,13 @@ export class DataSetEditComponent implements OnInit {
 
   private getDataSet() {
     const datasetId = this.route.snapshot.params['id'];
-
     if (datasetId) {
       Observable.forkJoin(
         this.dataSetService.getDataSet(datasetId),
         this.dataSetService.getDataSetPopulations(datasetId),
         this.dataSetService.getDataSetUsageCondition(datasetId),
-        this.dataSetService.getLifecyclePhases(datasetId)
+        this.dataSetService.getLifecyclePhases(datasetId),
+        this.dataSetService.getDataSetOrganizationUnits(datasetId)
       ).subscribe(
         data => {
           this.dataSet = this.initializeDataSetProperties(data[0])
@@ -76,6 +81,7 @@ export class DataSetEditComponent implements OnInit {
           this.usageCondition = data[2][0];
           this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[3][0])
           this.populateReferencePeriodDates();
+          this.ownerOrganizationUnit = data[4][0];
         }
       )
     }
@@ -92,6 +98,8 @@ export class DataSetEditComponent implements OnInit {
       .subscribe(organizations => this.allOrganizations = organizations)
     this.usageConditionService.getAllUsageConditions()
       .subscribe(usageConditions => this.allUsageConditions = usageConditions)
+    this.organizationUnitService.getAllOrganizationUnits()
+      .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
   }
 
   private initializeDataSetProperties(dataSet: DataSet): DataSet {
@@ -140,6 +148,7 @@ export class DataSetEditComponent implements OnInit {
 
         this.dataSet.references['population'] = [ savedPopulation ];
         this.dataSet.references['usageCondition'] = [ this.usageCondition ];
+        this.dataSet.references['ownerOrganizationUnit'] = [ this.ownerOrganizationUnit ];
 
         this.lifecyclePhaseService.saveLifecyclePhase(this.lifecyclePhase)
           .subscribe(savedLifecyclePhase => {

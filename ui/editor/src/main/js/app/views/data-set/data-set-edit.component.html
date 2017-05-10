@@ -48,6 +48,20 @@
   </div>
 
   <div class="form-group">
+      <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
+    <select [(ngModel)]="ownerOrganizationUnit"
+            [compareWith]="nodeUtils.equals"
+            id="ownerOrganizationUnit"
+            class="form-control">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let organizationUnit of allOrganizationUnits"
+              [ngValue]="organizationUnit">
+        <property-value [props]="organizationUnit.properties" [key]="'prefLabel'"></property-value>
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
     <textarea [(ngModel)]="dataSet.properties.description[0].value"
       id="description"
@@ -155,7 +169,7 @@
       <div class="input-group">
         <input class="form-control"
              disabled
-             placeholder="{{'inputDateFormat' | translate}}"            
+             placeholder="{{'inputDateFormat' | translate}}"
              name="referencePeriodStart" [ngModel]="selectedReferencePeriodStartDate | date:'yyyy-MM-dd'">
         <span class="input-group-btn">
           <button class="btn btn-default" (click)="toggleReferenceStartPeriodCalendar()">
@@ -167,7 +181,7 @@
       <div *ngIf="showReferencePeriodStartCalendar">
         <datepicker [(ngModel)]="selectedReferencePeriodStartDate" [startingDay]="1" ></datepicker>
       </div>
-      
+
 </div>
 
 <div class="form-group">
@@ -175,7 +189,7 @@
       <div class="input-group">
       <input class="form-control"
              disabled
-             placeholder="{{'inputDateFormat' | translate}}"  
+             placeholder="{{'inputDateFormat' | translate}}"
              name="referencePeriodEnd" [ngModel]="selectedReferencePeriodEndDate | date:'yyyy-MM-dd'">
         <span class="input-group-btn">
           <button class="btn btn-default" (click)="toggleReferenceEndPeriodCalendar()">

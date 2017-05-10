@@ -34,5 +34,6 @@
     "inputDateFormat" :"vvvv-kk-pp",
     "addInstanceVariable": "Lisää muuttuja",
     "newInstanceVariable": "Uusi muuttuja",
-    "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?"
+    "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
+    "organizationUnit":"Organisaatioyksikkö"
 }

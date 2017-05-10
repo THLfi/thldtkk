@@ -20,6 +20,12 @@
             <organization [organization]="ownerOrganization"></organization>
         </p>
     </div>
+    <div *ngIf="ownerOrganizationUnit">
+        <h2 translate="organizationUnit"></h2>
+        <p>
+            <organization-unit [organizationUnit]="ownerOrganizationUnit"></organization-unit>
+        </p>
+    </div>
     <h2 translate="abstract"></h2>
     <p>
         <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>

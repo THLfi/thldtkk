@@ -65,4 +65,27 @@ export class DataSetService {
       return this._http.post('../metadata-api/datasets', dataSet, options)
         .map(response => response.json() as DataSet);
     }
+
+    publishDataSet(dataSet: DataSet): Observable<DataSet> {
+      return this.changePublishedValue(dataSet, 'true')
+    }
+
+    private changePublishedValue(dataSet: DataSet, value: string): Observable<DataSet> {
+      if (!dataSet.properties['published']) {
+        dataSet.properties['published'] = [
+          {
+            lang: null,
+            value: null
+          }
+        ]
+      }
+
+      dataSet.properties['published'][0].value = value
+
+      return this.saveDataSet(dataSet)
+    }
+
+    unpublishDataSet(dataSet: DataSet): Observable<DataSet> {
+      return this.changePublishedValue(dataSet, 'false')
+    }
 }

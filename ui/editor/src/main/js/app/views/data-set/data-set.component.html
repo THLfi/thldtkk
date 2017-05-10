@@ -1,121 +1,190 @@
-<div *ngIf="dataSet">
-    <h1>
-        <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
-    </h1>
-    <h2 translate="altLabel"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'altLabel'"></property-value>
-    </p>
-    <h2>{{ 'description' | translate }}</h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
-    </p>
-    <h2 translate="abbreviation"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
-    </p>
-    <div *ngIf="ownerOrganization">
-        <h2>{{ 'organization' | translate }}</h2>
-        <p>
-            <organization [organization]="ownerOrganization"></organization>
-        </p>
-    </div>
-    <div *ngIf="ownerOrganizationUnit">
-        <h2 translate="organizationUnit"></h2>
-        <p>
-            <organization-unit [organizationUnit]="ownerOrganizationUnit"></organization-unit>
-        </p>
-    </div>
-    <h2 translate="abstract"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
-    </p>
-    <h2 translate="researchProjectURL"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'researchProjectURL'"></property-value>
-    </p>
-    <h2 translate="published"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'published'" [translateable]='true'></property-value>
-    </p>
-    <h2 translate="registryPolicy"></h2>
-    <p>
-        <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
-    </p>
+<ng-container *ngIf="dataSet">
 
-    <div *ngIf="usageCondition">
-      <h2 translate="usageCondition"></h2>
+  <div class="row">
+    <div class="col-md-8">
+      <h1>
+        <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
+      </h1>
+    </div>
+    <div class="col-md-4">
+      <h2>
+        <ng-container *ngIf="dataSet.properties['published'] && dataSet.properties['published'][0].value === 'true'; else unpublished;">
+        <span class="label label-success">
+          {{ 'published' | translate }}
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+          &nbsp;
+          <button (click)="confirmUnpublish()" class="btn btn-warning">
+            {{ 'unpublish' | translate }}
+          </button>
+        </ng-container>
+        <ng-template #unpublished>
+          <span class="label label-default">{{ 'unpublished' | translate }}</span>
+          <button (click)="confirmPublish()" class="btn btn-warning">
+            {{ 'publish' | translate }}
+          </button>
+        </ng-template>
+      </h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 translate="altLabel"></h2>
       <p>
-          <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+          <property-value [props]="dataSet.properties" [key]="'altLabel'"></property-value>
+      </p>
+      <h2>{{ 'description' | translate }}</h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
+      </p>
+      <h2 translate="abbreviation"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
+      </p>
+      <div *ngIf="ownerOrganization">
+          <h2>{{ 'organization' | translate }}</h2>
+          <p>
+              <organization [organization]="ownerOrganization"></organization>
+          </p>
+      </div>
+      <div *ngIf="ownerOrganizationUnit">
+          <h2 translate="organizationUnit"></h2>
+          <p>
+              <organization-unit [organizationUnit]="ownerOrganizationUnit"></organization-unit>
+          </p>
+      </div>
+      <h2 translate="abstract"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
+      </p>
+      <h2 translate="researchProjectURL"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'researchProjectURL'"></property-value>
+      </p>
+      <h2 translate="registryPolicy"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
       </p>
     </div>
-
-    <h2 translate="usageConditionAdditionalInformation"></h2>
-    <p>
-      <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
-    </p>
-
-
-  <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
-        <population [population]="population"></population>
   </div>
 
-  <div *ngIf="dataSet.properties.referencePeriodStart">
-    <h2 translate="referencePeriod"></h2>
-    <p>{{ 'referencePeriodStart' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodStart'"></property-value></p>
-    <p>{{ 'referencePeriodEnd' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodEnd'"></property-value></p>
-  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 translate="altLabel"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'altLabel'"></property-value>
+      </p>
+      <h2>{{ 'description' | translate }}</h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'description'"></property-value>
+      </p>
+      <h2 translate="abbreviation"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'abbreviation'"></property-value>
+      </p>
+      <div *ngIf="ownerOrganization">
+          <h2>{{ 'organization' | translate }}</h2>
+          <p>
+              <organization [organization]="ownerOrganization"></organization>
+          </p>
+      </div>
+      <h2 translate="abstract"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>
+      </p>
+      <h2 translate="researchProjectURL"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'researchProjectURL'"></property-value>
+      </p>
+      <h2 translate="registryPolicy"></h2>
+      <p>
+          <property-value [props]="dataSet.properties" [key]="'registryPolicy'"></property-value>
+      </p>
 
+      <div *ngIf="usageCondition">
+        <h2 translate="usageCondition"></h2>
+        <p>
+            <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+        </p>
+      </div>
 
+      <h2 translate="usageConditionAdditionalInformation"></h2>
+      <p>
+        <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
+      </p>
 
-    <div *ngIf="lifecyclePhase && lifecyclePhase.properties.prefLabel && lifecyclePhase.properties.prefLabel[0].value">
-        <lifecyclePhase [lifecyclePhase]="lifecyclePhase"></lifecyclePhase>
+      <div *ngIf="population && population.properties.prefLabel && population.properties.prefLabel[0].value">
+            <population [population]="population"></population>
+      </div>
+
+      <div *ngIf="dataSet.properties.referencePeriodStart">
+        <h2 translate="referencePeriod"></h2>
+        <p>{{ 'referencePeriodStart' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodStart'"></property-value></p>
+        <p>{{ 'referencePeriodEnd' | translate }}: <property-value [props]="dataSet.properties" [key]="'referencePeriodEnd'"></property-value></p>
+      </div>
+
+      <div *ngIf="lifecyclePhase && lifecyclePhase.properties.prefLabel && lifecyclePhase.properties.prefLabel[0].value">
+          <lifecyclePhase [lifecyclePhase]="lifecyclePhase"></lifecyclePhase>
+      </div>
     </div>
+  </div>
 
-    <h2>{{ 'variables' | translate }}</h2>
-    <table *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
-      class="table table-striped table-hover">
-      <tr>
-        <th>Nimi</th>
-        <th>Kuvaus</th>
-        <th>Toiminnot</th>
-      </tr>
-      <tr *ngFor="let variable of instanceVariables">
-        <td>
-          <property-value [props]="variable.properties" [key]="'prefLabel'"></property-value>
-        </td>
-        <td>
-          <property-value [props]="variable.properties" [key]="'description'"></property-value>
-        </td>
-        <td>
-          <button routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit"
-            class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-edit"></span>
-            {{ 'edit' | translate }}
-          </button>
-        </td>
-      </tr>
-    </table>
-    <ng-template #noInstanceVariables>
-      <p>{{ 'noInstanceVariables' | translate }}</p>
-    </ng-template>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'variables' | translate }}</h2>
+      <table *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
+             class="table table-striped table-hover">
+        <tr>
+          <th>Nimi</th>
+          <th>Kuvaus</th>
+          <th>Toiminnot</th>
+        </tr>
+        <tr *ngFor="let variable of instanceVariables">
+          <td>
+            <property-value [props]="variable.properties" [key]="'prefLabel'"></property-value>
+          </td>
+          <td>
+            <property-value [props]="variable.properties" [key]="'description'"></property-value>
+          </td>
+          <td>
+            <button routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit"
+                    class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-edit"></span>
+              {{ 'edit' | translate }}
+            </button>
+          </td>
+        </tr>
+      </table>
+      <ng-template #noInstanceVariables>
+        <p>{{ 'noInstanceVariables' | translate }}</p>
+      </ng-template>
 
-    <button class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/instanceVariables/new">
-      <span class="glyphicon glyphicon-plus"></span>
-      {{ 'addInstanceVariable' | translate }}
-    </button>
+      <button class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/instanceVariables/new">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{ 'addInstanceVariable' | translate }}
+      </button>
+    </div>
+  </div>
 
-</div>
+  <div class="row">
+    <div class="col-xs-12">
+      <hr>
+    </div>
+  </div>
 
-<hr>
-
-<div>
-    <button class="btn btn-default" routerLink="/datasets">
+  <div class="row">
+    <div class="col-xs-12">
+      <button routerLink="/datasets" class="btn btn-default">
         <span class="glyphicon glyphicon-chevron-left"></span>
         {{ 'back' | translate }}
-    </button>
-    <button *ngIf="dataSet" class="btn btn-default" routerLink="/datasets/{{ dataSet.id }}/edit">
+      </button>
+      <button *ngIf="dataSet" routerLink="/datasets/{{ dataSet.id }}/edit"
+        class="btn btn-default" >
         <span class="glyphicon glyphicon-edit"></span>
         {{ 'edit' | translate }}
-    </button>
-</div>
+      </button>
+    </div>
+  </div>
+
+</ng-container>

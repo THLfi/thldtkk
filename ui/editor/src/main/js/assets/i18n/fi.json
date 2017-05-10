@@ -16,8 +16,9 @@
     "save": "Tallenna",
     "cancel": "Peruuta",
     "published":"Julkaistu",
-    "false ()":"Ei",
-    "true ()":"Kyllä",
+    "unpublished":"Julkaisematon",
+    "false":"Ei",
+    "true":"Kyllä",
     "abbreviation":"Lyhenne",
     "altLabel":"Vaihtoehtoinen nimi",
     "researchProjectURL":"Linkki projektiin jossa aineisto kerätty",
@@ -35,5 +36,10 @@
     "addInstanceVariable": "Lisää muuttuja",
     "newInstanceVariable": "Uusi muuttuja",
     "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
-    "organizationUnit":"Organisaatioyksikkö"
+    "organizationUnit":"Organisaatioyksikkö",
+    "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
+    "publish": "Julkaise",
+    "unpublish": "Peru julkaisu",
+    "confirmPublishDataset": "Haluatko varmasti julkaista aineiston?",
+    "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?"
 }

@@ -1,6 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
 
 import { DataSet } from '../../model/data-set';
 import { DataSetService } from '../../services/data-set.service';
@@ -26,7 +27,8 @@ export class DataSetComponent implements OnInit {
 
     constructor(
         private dataSetService: DataSetService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private translateService: TranslateService
     ) {}
 
     ngOnInit() {
@@ -57,4 +59,23 @@ export class DataSetComponent implements OnInit {
         );
     }
 
+    confirmPublish(): void {
+      this.translateService.get('confirmPublishDataset')
+        .subscribe((message: string) => {
+          if (confirm(message)) {
+            this.dataSetService.publishDataSet(this.dataSet)
+              .subscribe(dataSet => this.dataSet = dataSet)
+          }
+        })
+    }
+
+    confirmUnpublish(): void {
+      this.translateService.get('confirmUnpublishDataset')
+        .subscribe((message: string) => {
+          if (confirm(message)) {
+            this.dataSetService.unpublishDataSet(this.dataSet)
+              .subscribe(dataSet => this.dataSet = dataSet)
+          }
+        })
+    }
 }

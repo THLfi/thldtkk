@@ -26,8 +26,9 @@ export class PropertyValueComponent implements OnInit {
       let localized = values.filter(e => e.lang == this.lang);
       this.value = localized.length > 0 ?
         localized.map(e => e.value).join(", ") :
-        values.map(e => e.value + " (" + e.lang + ")").join(", ");
-    } else {
+        values.map(e => e.value).join(", ");
+    }
+    else {
       this.value = "";
     }
   }

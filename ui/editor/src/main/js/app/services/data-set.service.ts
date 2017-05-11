@@ -8,6 +8,7 @@ import { DataSet } from '../model/data-set';
 import { InstanceVariable } from '../model/instance-variable';
 import { Organization } from '../model/organization';
 import { OrganizationUnit } from '../model/organization-unit';
+import { PersonInRole } from "../model/person-in-role";
 import { Population } from "../model/population";
 import { UsageCondition } from "../model/usage-condition";
 import { LifecyclePhase } from "../model/lifecycle-phase";
@@ -47,10 +48,15 @@ export class DataSetService {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/usageConditions')
             .map(response => response.json() as UsageCondition[]);
     }
-    
+
     getDataSetOrganizationUnits(datasetId: String): Observable<OrganizationUnit[]> {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/ownerOrganizationUnits')
             .map(response => response.json() as OrganizationUnit[]);
+    }
+
+    getDataSetPersonsInRoles(datasetId: String): Observable<PersonInRole[]> {
+        return this._http.get('../metadata-api/datasets/' + datasetId + '/personsInRoles')
+            .map(response => response.json() as PersonInRole[]);
     }
 
     getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {

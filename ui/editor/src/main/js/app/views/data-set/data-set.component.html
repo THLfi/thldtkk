@@ -54,6 +54,18 @@
               <organization-unit [organizationUnit]="ownerOrganizationUnit"></organization-unit>
           </p>
       </div>
+      <div *ngIf="contactPerson">
+          <h2 translate="contactPerson"></h2>
+          <p>
+              <person [person]="contactPerson"></person>
+          </p>
+      </div>
+      <div *ngIf="owner">
+          <h2 translate="dataSetOwner"></h2>
+          <p>
+              <person [person]="owner"></person>
+          </p>
+      </div>
       <h2 translate="abstract"></h2>
       <p>
           <property-value [props]="dataSet.properties" [key]="'abstract'"></property-value>

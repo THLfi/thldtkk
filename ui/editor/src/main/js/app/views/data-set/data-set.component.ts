@@ -8,7 +8,10 @@ import { DataSetService } from '../../services/data-set.service';
 import { InstanceVariable } from '../../model/instance-variable';
 import { Organization } from '../../model/organization';
 import { OrganizationUnit } from '../../model/organization-unit';
+import { Person } from "../../model/person";
+import { PersonService } from "../../services/person.service";
 import { Population } from "../../model/population";
+import { RoleService } from '../../services/role.service';
 import { UsageCondition } from "../../model/usage-condition";
 import { LifecyclePhase } from "../../model/lifecycle-phase";
 
@@ -24,9 +27,13 @@ export class DataSetComponent implements OnInit {
     usageCondition: UsageCondition;
     instanceVariables: InstanceVariable[];
     lifecyclePhase : LifecyclePhase;
+    contactPerson : Person;
+    owner : Person;
 
     constructor(
         private dataSetService: DataSetService,
+        private personService : PersonService,
+        private roleService: RoleService,
         private route: ActivatedRoute,
         private translateService: TranslateService
     ) {}
@@ -45,7 +52,8 @@ export class DataSetComponent implements OnInit {
             this.dataSetService.getDataSetUsageCondition(dataSetId),
             this.dataSetService.getDataSetInstanceVariables(dataSetId),
             this.dataSetService.getLifecyclePhases(dataSetId),
-            this.dataSetService.getDataSetOrganizationUnits(dataSetId)
+            this.dataSetService.getDataSetOrganizationUnits(dataSetId),
+            this.dataSetService.getDataSetPersonsInRoles(dataSetId)
         ).subscribe(
             data => {
                 this.dataSet = data[0],
@@ -54,7 +62,21 @@ export class DataSetComponent implements OnInit {
                 this.usageCondition = data[3][0],
                 this.instanceVariables = data[4],
                 this.lifecyclePhase = data[5][0],
-                this.ownerOrganizationUnit = data[6][0]
+                this.ownerOrganizationUnit = data[6][0];
+                if (data[7]){
+                  data[7].forEach(item => {
+                      this.roleService.getRole(item.references.role[0].id)
+                      .subscribe(role => {
+                        if (role.properties.prefLabel[0].value == 'contact'){
+                            this.personService.getPerson(item.references.person[0].id)
+                            .subscribe(person => this.contactPerson = person);
+                        } else if (role.properties.prefLabel[0].value == 'owner'){
+                            this.personService.getPerson(item.references.person[0].id)
+                            .subscribe(person => this.owner = person);
+                        }
+                      })
+                  })
+                }
             }
         );
     }

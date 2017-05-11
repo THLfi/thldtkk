@@ -23,9 +23,14 @@ import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
 import { OrganizationUnitComponent } from "./views/common/organization-unit.component";
 import { OrganizationUnitService } from "./services/organization-unit.service";
+import { PersonComponent } from "./views/common/person.component";
+import { PersonService } from "./services/person.service";
+import { PersonInRoleService } from "./services/person-in-role.service";
+import { PersonInRoleComponent } from "./views/common/person-in-role.component";
 import { PopulationService } from "./services/population.service";
 import { PropertyValueComponent } from './views/common/property-value.component';
 import { PopulationComponent } from "./views/common/population.component";
+import { RoleService } from "./services/role.service";
 import { UsageConditionService } from "./services/usage-condition.service";
 import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
 import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
@@ -44,6 +49,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableEditComponent,
         OrganizationComponent,
         OrganizationUnitComponent,
+        PersonComponent,
+        PersonInRoleComponent,
         PopulationComponent,
         PropertyValueComponent,
         LifecyclePhaseComponent
@@ -68,7 +75,10 @@ export function TranslateHttpLoaderFactory(http: Http) {
         NodeUtils,
         OrganizationService,
         OrganizationUnitService,
+        PersonService,
+        PersonInRoleService,
         PopulationService,
+        RoleService,
         UsageConditionService,
         LifecyclePhaseService,
         DatePipe

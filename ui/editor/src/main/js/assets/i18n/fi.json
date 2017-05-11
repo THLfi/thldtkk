@@ -41,5 +41,7 @@
     "publish": "Julkaise",
     "unpublish": "Peru julkaisu",
     "confirmPublishDataset": "Haluatko varmasti julkaista aineiston?",
-    "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?"
+    "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
+    "dataSetOwner":"Aineiston omistaja",
+    "contactPerson":"Yhteyshenkilö"
 }

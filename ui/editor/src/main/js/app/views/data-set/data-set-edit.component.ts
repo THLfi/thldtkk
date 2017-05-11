@@ -9,8 +9,11 @@ import { Organization } from "../../model/organization";
 import { OrganizationService } from "../../services/organization.service";
 import { OrganizationUnit } from "../../model/organization-unit";
 import { OrganizationUnitService } from "../../services/organization-unit.service";
+import { PersonInRole } from "../../model/person-in-role";
+import { PersonInRoleService } from "../../services/person-in-role.service";
 import { Population } from "../../model/population";
 import { PopulationService } from "../../services/population.service";
+import { RoleService } from "../../services/role.service";
 import { UsageCondition } from "../../model/usage-condition";
 import { UsageConditionService } from "../../services/usage-condition.service";
 import { NodeUtils } from "../../utils/node-utils";
@@ -39,15 +42,22 @@ export class DataSetEditComponent implements OnInit {
   ownerOrganizationUnit : OrganizationUnit;
   allOrganizations: Organization[];
   allOrganizationUnits: OrganizationUnit[];
+  allPersonsInRoleOwner: PersonInRole[];
+  allPersonsInRoleContactPerson: PersonInRole[];
   allUsageConditions: UsageCondition[];
   lifecyclePhase : LifecyclePhase;
+  personsInRoles : PersonInRole[];
+  contactPerson: PersonInRole;
+  owner: PersonInRole;
 
   constructor(
     private dataSetService: DataSetService,
     private nodeUtils: NodeUtils,
+    private personInRoleService: PersonInRoleService,
     private populationService: PopulationService,
     private organizationService: OrganizationService,
     private organizationUnitService: OrganizationUnitService,
+    private roleService: RoleService,
     private usageConditionService: UsageConditionService,
     private lifecyclePhaseService: LifecyclePhaseService,
     private route: ActivatedRoute,
@@ -70,7 +80,8 @@ export class DataSetEditComponent implements OnInit {
         this.dataSetService.getDataSetPopulations(datasetId),
         this.dataSetService.getDataSetUsageCondition(datasetId),
         this.dataSetService.getLifecyclePhases(datasetId),
-        this.dataSetService.getDataSetOrganizationUnits(datasetId)
+        this.dataSetService.getDataSetOrganizationUnits(datasetId),
+        this.dataSetService.getDataSetPersonsInRoles(datasetId)
       ).subscribe(
         data => {
           this.dataSet = this.initializeDataSetProperties(data[0])
@@ -82,6 +93,17 @@ export class DataSetEditComponent implements OnInit {
           this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[3][0])
           this.populateReferencePeriodDates();
           this.ownerOrganizationUnit = data[4][0];
+          this.personsInRoles = data[5];
+          this.personsInRoles.forEach(item => {
+            this.roleService.getRole(item.references.role[0].id)
+              .subscribe(role => {
+                if (role.properties.prefLabel[0].value == 'contact'){
+                  this.contactPerson = item;
+                } else if (role.properties.prefLabel[0].value == 'owner'){
+                  this.owner = item;
+                }
+            })
+          })
         }
       )
     }
@@ -100,6 +122,21 @@ export class DataSetEditComponent implements OnInit {
       .subscribe(usageConditions => this.allUsageConditions = usageConditions)
     this.organizationUnitService.getAllOrganizationUnits()
       .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
+    this.personInRoleService.getAllPersonsInRoles()
+      .subscribe(personsInRole => {
+        this.allPersonsInRoleContactPerson = [];
+        this.allPersonsInRoleOwner = [];
+        personsInRole.forEach(item => {
+          this.roleService.getRole(item.references.role[0].id)
+            .subscribe(role => {
+              if (role.properties.prefLabel[0].value == 'contact'){
+                this.allPersonsInRoleContactPerson.push(item);
+              } else if (role.properties.prefLabel[0].value == 'owner'){
+                this.allPersonsInRoleOwner.push(item);
+              }
+            })
+        })
+    })
   }
 
   private initializeDataSetProperties(dataSet: DataSet): DataSet {
@@ -149,6 +186,13 @@ export class DataSetEditComponent implements OnInit {
         this.dataSet.references['population'] = [ savedPopulation ];
         this.dataSet.references['usageCondition'] = [ this.usageCondition ];
         this.dataSet.references['ownerOrganizationUnit'] = [ this.ownerOrganizationUnit ];
+        this.dataSet.references['personInRole'] = [];
+        if (this.contactPerson){
+            this.dataSet.references['personInRole'].push(this.contactPerson);
+        }
+        if (this.owner){
+            this.dataSet.references['personInRole'].push(this.owner);
+        }
 
         this.lifecyclePhaseService.saveLifecyclePhase(this.lifecyclePhase)
           .subscribe(savedLifecyclePhase => {

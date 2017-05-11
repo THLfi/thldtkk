@@ -3,14 +3,12 @@ package fi.thl.thldtkk.api.metadata.domain;
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toSingleInteger;
 import static java.util.Objects.requireNonNull;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 public class Population {
@@ -18,12 +16,26 @@ public class Population {
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
-  private Integer sampleSize;
-  private Integer loss;
+  private Map<String, String> sampleSize = new LinkedHashMap<>();
+  private Map<String, String> loss = new LinkedHashMap<>();
   private Map<String, String> geographicalCoverage = new LinkedHashMap<>();
 
   public Population(UUID id) {
     this.id = requireNonNull(id);
+  }
+
+  public Population(UUID id,
+    Map<String, String> prefLabel,
+    Map<String, String> description,
+    Map<String, String> sampleSize,
+    Map<String, String> loss,
+    Map<String, String> geographicalCoverage) {
+    this(id);
+    this.prefLabel = prefLabel;
+    this.description = description;
+    this.sampleSize = sampleSize;
+    this.loss = loss;
+    this.geographicalCoverage = geographicalCoverage;
   }
 
   public Population(Node node) {
@@ -31,8 +43,8 @@ public class Population {
     checkArgument(Objects.equals(node.getTypeId(), "Population"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.description = toLangValueMap(node.getProperties("description"));
-    this.sampleSize = toSingleInteger(node.getProperties("sampleSize"), null);
-    this.loss = toSingleInteger(node.getProperties("loss"), null);
+    this.sampleSize = toLangValueMap(node.getProperties("sampleSize"));
+    this.loss = toLangValueMap(node.getProperties("loss"));
     this.geographicalCoverage = toLangValueMap(node.getProperties("geographicalCoverage"));
   }
 
@@ -48,12 +60,12 @@ public class Population {
     return description;
   }
 
-  public Optional<Integer> getSampleSize() {
-    return Optional.ofNullable(sampleSize);
+  public Map<String, String> getSampleSize() {
+    return sampleSize;
   }
 
-  public Optional<Integer> getLoss() {
-    return Optional.ofNullable(loss);
+  public Map<String, String> getLoss() {
+    return loss;
   }
 
   public Map<String, String> getGeographicalCoverage() {
@@ -64,8 +76,8 @@ public class Population {
     Node node = new Node(id, "Population");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));
     node.addProperties("description", toPropertyValues(description));
-    getSampleSize().ifPresent(v -> node.addProperties("sampleSize", toPropertyValues(v)));
-    getLoss().ifPresent(v -> node.addProperties("loss", toPropertyValues(v)));
+    node.addProperties("sampleSize", toPropertyValues(description));
+    node.addProperties("loss", toPropertyValues(description));
     node.addProperties("geographicalCoverage", toPropertyValues(geographicalCoverage));
     return node;
   }
@@ -80,11 +92,11 @@ public class Population {
     }
     Population that = (Population) o;
     return Objects.equals(id, that.id) &&
-        Objects.equals(prefLabel, that.prefLabel) &&
-        Objects.equals(description, that.description) &&
-        Objects.equals(sampleSize, that.sampleSize) &&
-        Objects.equals(loss, that.loss) &&
-        Objects.equals(geographicalCoverage, that.geographicalCoverage);
+      Objects.equals(prefLabel, that.prefLabel) &&
+      Objects.equals(description, that.description) &&
+      Objects.equals(sampleSize, that.sampleSize) &&
+      Objects.equals(loss, that.loss) &&
+      Objects.equals(geographicalCoverage, that.geographicalCoverage);
   }
 
   @Override

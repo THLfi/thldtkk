@@ -22,6 +22,21 @@
         <organization [organization]="ownerOrganization"></organization>
       </h2>
 
+      <div *ngIf="contactPerson">
+        <b translate="contactPerson"></b>
+        <p><person [person]="contactPerson"></person></p>
+      </div>
+
+      <div *ngIf="usageCondition || dataSet.properties.usageConditionAdditionalInformation">
+        <b translate="usageCondition"></b>
+        <p *ngIf="usageCondition">
+          <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+        </p>
+        <p *ngIf="dataSet.properties.usageConditionAdditionalInformation">
+          <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
+        </p>
+      </div>
+
       <p *ngIf="dataSet.properties['researchProjectURL']">
         <a href="{{ dataSet.properties['researchProjectURL'][0].value }}" target="_blank">
           {{ 'researchProjectURL' | translate }}
@@ -60,21 +75,6 @@
         </div>
       </div>
 
-      <div  class="row">
-        <div *ngIf="usageCondition || dataSet.properties.usageConditionAdditionalInformation"
-          class="col-md-6">
-          <div class="bordered-box">
-            <h2>{{ 'usageCondition' | translate }}</h2>
-            <p *ngIf="usageCondition">
-              <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
-            </p>
-            <p *ngIf="dataSet.properties.usageConditionAdditionalInformation">
-              <property-value [props]="dataSet.properties" [key]="'usageConditionAdditionalInformation'"></property-value>
-            </p>
-          </div>
-        </div>
-      </div>
-
       <div class="row">
 
         <ng-container *ngIf="population">
@@ -110,7 +110,7 @@
 
           <div *ngIf="dataSet.properties.referencePeriodStart || dataSet.properties.referencePeriodEnd"class="col-sm-6 col-md-4">
             <div class="bordered-box">
-              <h2>{{ 'referencePeriod' | translate }}</h2>             
+              <h2>{{ 'referencePeriod' | translate }}</h2>
               <p *ngIf="dataSet.properties.referencePeriodStart">{{ 'referencePeriodStart' | translate }}: {{dataSet.properties.referencePeriodStart[0].value | date:'dd.MM.yyyy'}}</p>
               <p *ngIf="dataSet.properties.referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}: {{dataSet.properties.referencePeriodEnd[0].value | date:'dd.MM.yyyy'}}</p>
             </div>

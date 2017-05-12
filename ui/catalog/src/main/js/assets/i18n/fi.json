@@ -2,6 +2,7 @@
     "datasetCatalog": "Aineistokatalogi",
     "datasets": "Aineistot",
     "variables": "Muuttujat",
+    "contactPerson":"Yhteyshenkilö",
     "description": "Kuvaus",
     "population": "Kohdejoukko",
     "geographicalCoverage": "Alueellinen kattavuus",

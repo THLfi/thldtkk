@@ -8,6 +8,7 @@ import { DataSet } from '../model/data-set';
 import { Organization } from '../model/organization';
 import { InstanceVariable } from '../model/instance-variable';
 import { LifecyclePhase } from "../model/lifecycle-phase";
+import { PersonInRole } from "../model/person-in-role";
 import { Population } from "../model/population";
 import { UsageCondition } from "../model/usage-condition";
 
@@ -36,7 +37,7 @@ export class DataSetService {
     return this._http.get('../metadata-api/datasets/' + datasetId + '/populations')
       .map(response => response.json() as Population[]);
   }
-  
+
   getDataSetLifecyclePhases(datasetId: String): Observable<LifecyclePhase[]> {
     return this._http.get('../metadata-api/datasets/' + datasetId + '/lifecyclePhases')
       .map(response => response.json() as LifecyclePhase[]);
@@ -47,9 +48,14 @@ export class DataSetService {
       .map(response => response.json() as UsageCondition[]);
   }
 
+  getDataSetPersonsInRoles(datasetId: String): Observable<PersonInRole[]> {
+    return this._http.get('../metadata-api/datasets/' + datasetId + '/personsInRoles')
+      .map(response => response.json() as PersonInRole[]);
+  }
+
   getDataSetInstanceVariables(datasetId: String): Observable<InstanceVariable[]> {
         return this._http.get('../metadata-api/datasets/' + datasetId + '/instanceVariables')
             .map(response => response.json() as InstanceVariable[]);
-    }
+  }
 
 }

@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.domain.termed;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
@@ -35,6 +36,15 @@ public class Node {
   public Node(UUID id, String typeId) {
     this.id = id;
     this.type = new TypeId(typeId);
+  }
+
+  public Node(UUID id, String typeId,
+    Multimap<String, StrictLangValue> properties,
+    Multimap<String, Node> references) {
+    this.id = id;
+    this.type = new TypeId(typeId);
+    this.properties = properties;
+    this.references = references;
   }
 
   public UUID getId() {
@@ -142,6 +152,23 @@ public class Node {
   }
 
   @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+      .add("id", id)
+      .add("type", type)
+      .add("code", code)
+      .add("uri", uri)
+      .add("createdBy", createdBy)
+      .add("createdDate", createdDate)
+      .add("lastModifiedBy", lastModifiedBy)
+      .add("lastModifiedDate", lastModifiedDate)
+      .add("properties", properties)
+      .add("references", references)
+      .add("referrers", referrers)
+      .toString();
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -151,21 +178,21 @@ public class Node {
     }
     Node node = (Node) o;
     return Objects.equals(id, node.id) &&
-        Objects.equals(type, node.type) &&
-        Objects.equals(code, node.code) &&
-        Objects.equals(uri, node.uri) &&
-        Objects.equals(createdBy, node.createdBy) &&
-        Objects.equals(createdDate, node.createdDate) &&
-        Objects.equals(lastModifiedBy, node.lastModifiedBy) &&
-        Objects.equals(lastModifiedDate, node.lastModifiedDate) &&
-        Objects.equals(properties, node.properties) &&
-        Objects.equals(references, node.references);
+      Objects.equals(type, node.type) &&
+      Objects.equals(code, node.code) &&
+      Objects.equals(uri, node.uri) &&
+      Objects.equals(createdBy, node.createdBy) &&
+      Objects.equals(createdDate, node.createdDate) &&
+      Objects.equals(lastModifiedBy, node.lastModifiedBy) &&
+      Objects.equals(lastModifiedDate, node.lastModifiedDate) &&
+      Objects.equals(properties, node.properties) &&
+      Objects.equals(references, node.references);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, type, code, uri, createdBy, createdDate, lastModifiedBy,
-        lastModifiedDate, properties, references, referrers);
+      lastModifiedDate, properties, references, referrers);
   }
 
 }

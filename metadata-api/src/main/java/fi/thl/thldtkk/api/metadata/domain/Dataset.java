@@ -171,14 +171,14 @@ public class Dataset {
       return false;
     }
     Dataset dataset = (Dataset) o;
-    return isPublic == dataset.isPublic &&
-      Objects.equals(id, dataset.id) &&
+    return Objects.equals(id, dataset.id) &&
       Objects.equals(prefLabel, dataset.prefLabel) &&
       Objects.equals(altLabel, dataset.altLabel) &&
       Objects.equals(abbreviation, dataset.abbreviation) &&
       Objects.equals(shortDescription, dataset.shortDescription) &&
       Objects.equals(description, dataset.description) &&
       Objects.equals(registryPolicy, dataset.registryPolicy) &&
+      Objects.equals(isPublic, dataset.isPublic) &&
       Objects.equals(referencePeriodStart, dataset.referencePeriodStart) &&
       Objects.equals(referencePeriodEnd, dataset.referencePeriodEnd) &&
       Objects.equals(owner, dataset.owner) &&

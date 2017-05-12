@@ -38,6 +38,12 @@ public class Node {
     this.type = new TypeId(typeId);
   }
 
+  public Node(UUID id, String typeId, Multimap<String, StrictLangValue> properties) {
+    this.id = id;
+    this.type = new TypeId(typeId);
+    this.properties = properties;
+  }
+
   public Node(UUID id, String typeId,
     Multimap<String, StrictLangValue> properties,
     Multimap<String, Node> references) {
@@ -111,12 +117,12 @@ public class Node {
     return properties;
   }
 
-  public Collection<StrictLangValue> getProperties(String propertyKey) {
-    return properties.get(propertyKey);
-  }
-
   public void setProperties(Multimap<String, StrictLangValue> properties) {
     this.properties = properties;
+  }
+
+  public Collection<StrictLangValue> getProperties(String propertyKey) {
+    return properties.get(propertyKey);
   }
 
   public void addProperties(String property, Iterable<StrictLangValue> values) {
@@ -127,16 +133,16 @@ public class Node {
     return references;
   }
 
+  public void setReferences(Multimap<String, Node> references) {
+    this.references = references;
+  }
+
   public Collection<Node> getReferences(String referenceKey) {
     return references.get(referenceKey);
   }
 
   public Optional<Node> getReferencesFirst(String referenceKey) {
     return references.get(referenceKey).stream().findFirst();
-  }
-
-  public void setReferences(Multimap<String, Node> references) {
-    this.references = references;
   }
 
   public void addReference(String property, Node value) {

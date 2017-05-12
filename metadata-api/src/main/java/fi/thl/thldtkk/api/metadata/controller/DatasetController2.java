@@ -76,24 +76,9 @@ public class DatasetController2 {
 
     Map<UUID, InstanceVariable> instanceVariables = dataset.getInstanceVariables().stream()
       .collect(toMap(InstanceVariable::getId, identity(), illegalOperator(), LinkedHashMap::new));
-
     instanceVariables.put(instanceVariable.getId(), instanceVariable);
 
-    return datasetService.save(new Dataset(
-      dataset.getId(),
-      dataset.getPrefLabel(),
-      dataset.getAltLabel(),
-      dataset.getAbbreviation(),
-      dataset.getShortDescription(),
-      dataset.getDescription(),
-      dataset.getRegistryPolicy(),
-      dataset.isPublic().orElse(null),
-      dataset.getReferencePeriodStart().orElse(null),
-      dataset.getReferencePeriodEnd().orElse(null),
-      dataset.getOwner().orElse(null),
-      dataset.getPopulation().orElse(null),
-      new ArrayList<>(instanceVariables.values())
-    ));
+    return datasetService.save(new Dataset(dataset, new ArrayList<>(instanceVariables.values())));
   }
 
   @DeleteMapping("/{datasetId}")

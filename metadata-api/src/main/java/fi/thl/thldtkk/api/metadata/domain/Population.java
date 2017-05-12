@@ -76,8 +76,8 @@ public class Population {
     Node node = new Node(id, "Population");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));
     node.addProperties("description", toPropertyValues(description));
-    node.addProperties("sampleSize", toPropertyValues(description));
-    node.addProperties("loss", toPropertyValues(description));
+    node.addProperties("sampleSize", toPropertyValues(sampleSize));
+    node.addProperties("loss", toPropertyValues(loss));
     node.addProperties("geographicalCoverage", toPropertyValues(geographicalCoverage));
     return node;
   }

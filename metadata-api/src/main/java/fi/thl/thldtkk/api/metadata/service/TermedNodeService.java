@@ -46,8 +46,8 @@ public class TermedNodeService implements Service<NodeId, Node> {
 
   @Override
   public Stream<Node> query(String query) {
-    return termed.exchange("/node-trees?select=id,type,properties.*&where={query}&max=-1", GET, null, nodeListType, query)
-      .getBody().stream();
+    return termed.exchange("/node-trees?select=id,type,properties.*&where={query}&max=-1",
+      GET, null, nodeListType, query).getBody().stream();
   }
 
   @Override

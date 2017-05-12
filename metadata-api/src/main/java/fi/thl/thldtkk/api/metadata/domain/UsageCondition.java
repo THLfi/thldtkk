@@ -6,29 +6,29 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static java.util.Objects.requireNonNull;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Organization {
+public class UsageCondition {
 
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
-  private List<OrganizationUnit> organizationUnit = new ArrayList<>();
 
-  public Organization(UUID id) {
+  public UsageCondition(UUID id) {
     this.id = requireNonNull(id);
   }
 
-  public Organization(Node node) {
+  public UsageCondition(UUID id, Map<String, String> prefLabel) {
+    this(id);
+    this.prefLabel = prefLabel;
+  }
+
+  public UsageCondition(Node node) {
     this(node.getId());
-    checkArgument(Objects.equals(node.getTypeId(), "Organization"));
+    checkArgument(Objects.equals(node.getTypeId(), "UsageCondition"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
-    node.getReferences("organizationUnit")
-      .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
   }
 
   public UUID getId() {
@@ -39,14 +39,9 @@ public class Organization {
     return prefLabel;
   }
 
-  public List<OrganizationUnit> getOrganizationUnit() {
-    return organizationUnit;
-  }
-
   public Node toNode() {
-    Node node = new Node(id, "Organization");
+    Node node = new Node(id, "UsageCondition");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));
-    getOrganizationUnit().forEach(v -> node.addReference("instanceVariable", v.toNode()));
     return node;
   }
 
@@ -58,15 +53,13 @@ public class Organization {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Organization that = (Organization) o;
+    UsageCondition that = (UsageCondition) o;
     return Objects.equals(id, that.id) &&
-      Objects.equals(prefLabel, that.prefLabel) &&
-      Objects.equals(organizationUnit, that.organizationUnit);
+      Objects.equals(prefLabel, that.prefLabel);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, prefLabel, organizationUnit);
+    return Objects.hash(id, prefLabel);
   }
-
 }

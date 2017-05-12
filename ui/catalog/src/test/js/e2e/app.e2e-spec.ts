@@ -1,14 +1,20 @@
 import { FrontPage } from './app.po';
 
-describe('testapp App', () => {
+describe('basic tests for catalog front page', () => {
   let page: FrontPage;
 
   beforeEach(() => {
     page = new FrontPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display app name', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Aineistot');
   });
+
+  it('should list datasets', () => {
+     page.navigateTo();
+     expect(page.getDatasets().count()).toBeGreaterThan(0);
+  });
+
 });

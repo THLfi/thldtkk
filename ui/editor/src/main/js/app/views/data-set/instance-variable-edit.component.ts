@@ -37,8 +37,16 @@ export class InstanceVariableEditComponent implements OnInit {
   private initProperties(instanceVariable: InstanceVariable): InstanceVariable {
     this.nodeUtils.initProperties(instanceVariable, [
       'prefLabel',
-      'description'
+      'description',
+      'referencePeriodStart',
+      'referencePeriodEnd'
     ])
+
+    instanceVariable.properties['referencePeriodStart'][0].lang = ''
+    instanceVariable.properties['referencePeriodStart'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
+    instanceVariable.properties['referencePeriodEnd'][0].lang = ''
+    instanceVariable.properties['referencePeriodEnd'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
+
     return instanceVariable
   }
 

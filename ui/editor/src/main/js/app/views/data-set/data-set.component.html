@@ -145,11 +145,13 @@
   <div class="row">
     <div class="col-xs-12">
       <h2>{{ 'variables' | translate }}</h2>
+
       <table *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
-             class="table table-striped table-hover">
+        class="table table-striped table-hover">
         <tr>
           <th>Nimi</th>
           <th>Kuvaus</th>
+          <th>Viiteajankohta</th>
           <th>Toiminnot</th>
         </tr>
         <tr *ngFor="let variable of instanceVariables">
@@ -160,6 +162,16 @@
             <property-value [props]="variable.properties" [key]="'description'"></property-value>
           </td>
           <td>
+            <ng-container *ngIf="(variable.properties.referencePeriodStart || variable.properties.referencePeriodEnd); else inheritedReferencePeriod;">
+              <property-value [props]="variable.properties" [key]="'referencePeriodStart'"></property-value>
+              —
+              <property-value [props]="variable.properties" [key]="'referencePeriodEnd'"></property-value>
+            </ng-container>
+            <ng-template #inheritedReferencePeriod>
+              {{ 'inheritedReferencePeriod' | translate }}
+            </ng-template>
+          </td>
+          <td>
             <button routerLink="/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit"
                     class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-edit"></span>
@@ -168,6 +180,7 @@
           </td>
         </tr>
       </table>
+
       <ng-template #noInstanceVariables>
         <p>{{ 'noInstanceVariables' | translate }}</p>
       </ng-template>

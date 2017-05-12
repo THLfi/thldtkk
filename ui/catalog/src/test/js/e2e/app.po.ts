@@ -8,4 +8,8 @@ export class FrontPage {
   getParagraphText() {
     return element(by.css('app-root h1')).getText();
   }
+
+  getDatasets() {
+    return element.all(by.css('ul li'));
+  }
 }

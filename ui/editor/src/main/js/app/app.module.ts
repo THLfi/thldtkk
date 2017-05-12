@@ -15,9 +15,11 @@ import { DataSetListComponent } from './views/data-set/data-set-list.component';
 import { DataSetComponent } from './views/data-set/data-set.component';
 import { DataSetEditComponent } from "./views/data-set/data-set-edit.component";
 import { DataSetService } from "./services/data-set.service";
-import { InstanceVariableComponent } from './views/data-set/instance-variable.component';
 import { InstanceVariableEditComponent } from "./views/data-set/instance-variable-edit.component";
 import { InstanceVariableService } from './services/instance-variable.service';
+import { IsoDatePicker } from "./views/common/iso-datepicker.component";
+import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
+import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
 import { NodeUtils } from "./utils/node-utils";
 import { OrganizationComponent } from "./views/common/organization.component";
 import { OrganizationService } from "./services/organization.service";
@@ -32,8 +34,6 @@ import { PropertyValueComponent } from './views/common/property-value.component'
 import { PopulationComponent } from "./views/common/population.component";
 import { RoleService } from "./services/role.service";
 import { UsageConditionService } from "./services/usage-condition.service";
-import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
-import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');
@@ -45,8 +45,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DataSetListComponent,
         DataSetComponent,
         DataSetEditComponent,
-        InstanceVariableComponent,
         InstanceVariableEditComponent,
+        IsoDatePicker,
         OrganizationComponent,
         OrganizationUnitComponent,
         PersonComponent,

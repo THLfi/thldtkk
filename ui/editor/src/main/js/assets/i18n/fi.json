@@ -43,5 +43,7 @@
     "confirmPublishDataset": "Haluatko varmasti julkaista aineiston?",
     "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
     "dataSetOwner":"Aineiston omistaja",
-    "contactPerson":"Yhteyshenkilö"
+    "contactPerson":"Yhteyshenkilö",
+    "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
+    "inheritedReferencePeriod": "Sama kuin aineistolla"
 }

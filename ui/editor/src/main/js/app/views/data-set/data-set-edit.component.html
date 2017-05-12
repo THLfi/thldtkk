@@ -191,45 +191,23 @@
            class="form-control">
   </div>
 
+  <div class="form-group">
+    <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+    <iso-datepicker
+      [(dateAsString)]="dataSet.properties.referencePeriodStart[0].value"
+      id="referencePeriodStart"
+      name="referencePeriodStart">
+    </iso-datepicker>
+  </div>
 
-<div class="form-group">
-      <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
-      <div class="input-group">
-        <input class="form-control"
-             disabled
-             placeholder="{{'inputDateFormat' | translate}}"
-             name="referencePeriodStart" [ngModel]="selectedReferencePeriodStartDate | date:'yyyy-MM-dd'">
-        <span class="input-group-btn">
-          <button class="btn btn-default" (click)="toggleReferenceStartPeriodCalendar()">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </button>
-        </span>
-      </div>
-
-      <div *ngIf="showReferencePeriodStartCalendar">
-        <datepicker [(ngModel)]="selectedReferencePeriodStartDate" [startingDay]="1" ></datepicker>
-      </div>
-
-</div>
-
-<div class="form-group">
-      <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
-      <div class="input-group">
-      <input class="form-control"
-             disabled
-             placeholder="{{'inputDateFormat' | translate}}"
-             name="referencePeriodEnd" [ngModel]="selectedReferencePeriodEndDate | date:'yyyy-MM-dd'">
-        <span class="input-group-btn">
-          <button class="btn btn-default" (click)="toggleReferenceEndPeriodCalendar()">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </button>
-        </span>
-      </div>
-
-      <div *ngIf="showReferencePeriodEndCalendar">
-          <datepicker [(ngModel)]="selectedReferencePeriodEndDate" [startingDay]="1" ></datepicker>
-      </div>
-</div>
+  <div class="form-group">
+    <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+    <iso-datepicker
+      [(dateAsString)]="dataSet.properties.referencePeriodEnd[0].value"
+      id="referencePeriodEnd"
+      name="referencePeriodEnd">
+    </iso-datepicker>
+  </div>
 
   <div class="form-group">
     <label for="lifecyclePhase" translate="lifecyclePhase"></label>

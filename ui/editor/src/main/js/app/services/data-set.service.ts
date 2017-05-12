@@ -80,8 +80,9 @@ export class DataSetService {
       if (!dataSet.properties['published']) {
         dataSet.properties['published'] = [
           {
-            lang: null,
-            value: null
+            lang: '',
+            value: null,
+            regex: '^(true|false)$'
           }
         ]
       }

@@ -4,7 +4,6 @@ import static java.util.Arrays.stream;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
@@ -25,7 +24,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * Dataset service that converts Datasets to nodes and back, and delegates actual CRUD operations to

@@ -3,6 +3,7 @@
     "datasets": "Aineistot",
     "variables": "Muuttujat",
     "contactPerson":"Yhteyshenkilö",
+    "prefLabel": "Nimi",
     "description": "Kuvaus",
     "population": "Kohdejoukko",
     "geographicalCoverage": "Alueellinen kattavuus",

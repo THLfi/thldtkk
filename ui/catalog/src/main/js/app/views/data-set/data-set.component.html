@@ -137,9 +137,9 @@
       <table *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
              class="table table-striped table-hover">
         <tr>
-          <th>Nimi</th>
-          <th>Kuvaus</th>
-          <th>Viiteajankohta</th>
+          <th>{{ 'prefLabel' | translate }}</th>
+          <th>{{ 'description' | translate }}</th>
+          <th>{{ 'referencePeriod' | translate }}</th>
         </tr>
         <tr *ngFor="let variable of instanceVariables">
           <td>

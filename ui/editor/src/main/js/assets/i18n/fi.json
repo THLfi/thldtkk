@@ -45,5 +45,6 @@
     "dataSetOwner":"Aineiston omistaja",
     "contactPerson":"Yhteyshenkilö",
     "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
-    "inheritedReferencePeriod": "Sama kuin aineistolla"
+    "inheritedReferencePeriod": "Sama kuin aineistolla",
+    "functions": "Toiminnot"
 }

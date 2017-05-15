@@ -9,18 +9,19 @@
     <div class="col-md-4">
       <h2>
         <ng-container *ngIf="dataSet.properties['published'] && dataSet.properties['published'][0].value === 'true'; else unpublished;">
-        <span class="label label-success">
-          {{ 'published' | translate }}
-          <span class="glyphicon glyphicon-ok"></span>
-        </span>
-          &nbsp;
-          <button (click)="confirmUnpublish()" class="btn btn-warning">
+          <span class="label label-success">
+            {{ 'published' | translate }}
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          <button (click)="confirmUnpublish()" class="btn btn-warning btn-unpublish">
             {{ 'unpublish' | translate }}
           </button>
         </ng-container>
         <ng-template #unpublished>
-          <span class="label label-default">{{ 'unpublished' | translate }}</span>
-          <button (click)="confirmPublish()" class="btn btn-warning">
+          <span class="label label-default">
+            {{ 'unpublished' | translate }}
+          </span>
+          <button (click)="confirmPublish()" class="btn btn-warning btn-publish">
             {{ 'publish' | translate }}
           </button>
         </ng-template>

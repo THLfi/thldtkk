@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,7 +65,15 @@ public class DatasetController2 {
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-  public Dataset postDataset(@RequestBody Dataset dataset) {
+  public Dataset postDataset(@RequestBody Dataset dataset,
+    @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables) {
+
+    Optional<Dataset> oldDataset = datasetService.get(dataset.getId());
+
+    if (!saveInstanceVariables && oldDataset.isPresent()) {
+      return datasetService.save(new Dataset(dataset, oldDataset.get().getInstanceVariables()));
+    }
+
     return datasetService.save(dataset);
   }
 

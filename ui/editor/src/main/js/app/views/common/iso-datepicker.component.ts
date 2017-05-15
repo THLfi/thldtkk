@@ -8,7 +8,7 @@ import { DatePipe } from "@angular/common";
 })
 export class IsoDatePicker implements ControlValueAccessor {
 
-  private _isoDateRegex: string = "^\\d{4}-\\d{2}-\\d{2}$"
+  private readonly _isoDateRegex: string = "^\\d{4}-\\d{2}-\\d{2}$"
 
   public _showDatePicker: boolean = false
 

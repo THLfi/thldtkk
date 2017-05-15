@@ -24,5 +24,6 @@
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
     "referencePeriod":"Viiteajankohta",
     "referencePeriodStart":"Viiteajankohdan alkupäivämäärä",
-    "referencePeriodEnd":"Viiteajankohdan loppupäivämäärä"
+    "referencePeriodEnd":"Viiteajankohdan loppupäivämäärä",
+    "inheritedReferencePeriod": "Sama kuin aineistolla"
 }

@@ -17,17 +17,17 @@
         <th>Nimi</th>
         <th>Toiminnot</th>
       </tr>
-      <tr *ngFor="let dataSet of dataSets">
+      <tr *ngFor="let dataset of datasets">
         <td>
-          <a routerLink="/editor/datasets/{{ dataSet.id }}"><property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value></a>
-          <span *ngIf="dataSet.properties['published'] && dataSet.properties['published'][0].value === 'true'"
+          <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a>
+          <span *ngIf="dataset.published"
             class="label label-success">
             {{ 'published' | translate }}
             <span class="glyphicon glyphicon-ok"></span>
           </span>
         </td>
         <td>
-          <button routerLink="/editor/datasets/{{ dataSet.id }}/edit"
+          <button routerLink="/editor/datasets/{{ dataset.id }}/edit"
             class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
             {{ 'edit' | translate }}

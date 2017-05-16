@@ -1,5 +1,11 @@
+import { InstanceVariable } from './instance-variable';
+import { LangValues } from './lang-values';
+import { LifecyclePhase } from './lifecycle-phase';
 import { Node } from './node'
-import { LangValues } from "./lang-values";
+import { Organization } from './organization';
+import { OrganizationUnit } from './organization-unit';
+import { Population } from './population';
+import { UsageCondition } from './usage-condition';
 
 export interface Dataset extends Node {
 
@@ -23,21 +29,15 @@ export interface Dataset extends Node {
 
   referencePeriodEnd: LangValues
 
-/*
+  owner: Organization
 
-  Following will be added in future commit.
+  ownerOrganizationUnit: OrganizationUnit[]
 
-  owner: any // TODO
+  usageCondition: UsageCondition
 
-  ownerOrganizationUnit: [ any ] // TODO
+  lifecyclePhase: LifecyclePhase
 
-  usageCondition: any // TODO
+  population: Population
 
-  lifecyclePhase: any // TODO
-
-  population: any // TODO
-
-  instanceVariables: any // TODO
-
-*/
+  instanceVariables: InstanceVariable[]
 }

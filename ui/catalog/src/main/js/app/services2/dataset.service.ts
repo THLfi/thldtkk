@@ -17,4 +17,9 @@ export class DatasetService {
       .map(response => response.json() as Dataset[]);
   }
 
+  getDataset(id: string): Observable<Dataset> {
+    return this._http.get('../metadata-api/v2/datasets/' + id)
+      .map(response => response.json() as Dataset);
+  }
+
 }

@@ -16,6 +16,9 @@ export class LangPipe implements PipeTransform {
     if (langValues[lang]) {
       return langValues[lang]
     }
+    else if (langValues['']) {
+      return langValues['']
+    }
     else {
       return ''
     }

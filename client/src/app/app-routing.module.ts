@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DataSetListComponent as CatalogDataSetListComponent } from './views/catalog/data-set/data-set-list.component';
-import { DataSetComponent as CatalogDataSetComponent } from './views/catalog/data-set/data-set.component';
+import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
+import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
 import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/data-set/data-set-list.component';
 import { DataSetComponent as EditorDataSetComponent } from './views/editor/data-set/data-set.component';
@@ -12,11 +12,11 @@ import { InstanceVariableEditComponent } from "./views/editor/data-set/instance-
 const routes: Routes = [
     {
         path: 'catalog/datasets/:id',
-        component: CatalogDataSetComponent,
+        component: DatasetComponent
     },
     {
         path: 'catalog/datasets',
-        component: CatalogDataSetListComponent
+        component: DatasetListComponent
     },
     {
         path: 'catalog',

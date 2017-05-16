@@ -17,6 +17,7 @@ public class Organization {
 
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
+  private Map<String, String> abbreviation = new LinkedHashMap<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
 
   public Organization(UUID id) {
@@ -27,6 +28,7 @@ public class Organization {
     this(node.getId());
     checkArgument(Objects.equals(node.getTypeId(), "Organization"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
+    this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
   }
@@ -46,7 +48,8 @@ public class Organization {
   public Node toNode() {
     Node node = new Node(id, "Organization");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));
-    getOrganizationUnit().forEach(v -> node.addReference("instanceVariable", v.toNode()));
+    node.addProperties("abbreviation", toPropertyValues(abbreviation));
+    getOrganizationUnit().forEach(v -> node.addReference("organizationUnit", v.toNode()));
     return node;
   }
 

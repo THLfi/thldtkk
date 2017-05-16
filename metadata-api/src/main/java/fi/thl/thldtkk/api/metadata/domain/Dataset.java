@@ -88,7 +88,7 @@ public class Dataset {
     this.researchProjectURL = toLangValueMap(node.getProperties("researchProjectURL"));
     this.usageConditionAdditionalInformation = toLangValueMap(
       node.getProperties("usageConditionAdditionalInformation"));
-    this.isPublic = toBoolean(node.getProperties("isPublic"), false);
+    this.isPublic = toBoolean(node.getProperties("published"), false);
     this.referencePeriodStart = toDate(node.getProperties("referencePeriodStart"), null);
     this.referencePeriodEnd = toDate(node.getProperties("referencePeriodEnd"), null);
     node.getReferencesFirst("owner").ifPresent(v -> this.owner = new Organization(v));
@@ -189,7 +189,7 @@ public class Dataset {
     props.putAll("researchProjectURL", toPropertyValues(researchProjectURL));
     props.putAll("usageConditionAdditionalInformation",
       toPropertyValues(usageConditionAdditionalInformation));
-    isPublic().ifPresent(v -> props.put("isPublic", toPropertyValue(v)));
+    isPublic().ifPresent(v -> props.put("published", toPropertyValue(v)));
     getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
     getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
 

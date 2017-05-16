@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
-import { DataSetService } from "../../services/data-set.service";
-import { DataSet } from "../../model/data-set";
-import { PropertyValueComponent } from "../common/property-value.component";
+import { Dataset } from "../../model2/dataset";
+import { DatasetService } from "../../services2/dataset.service";
 
 @Component({
-    templateUrl: './data-set-list.component.html'
+  templateUrl: './data-set-list.component.html'
 })
-export class DataSetListComponent implements OnInit {
-    dataSets: DataSet[]
+export class DatasetListComponent implements OnInit {
 
-    constructor (
-        private dataSetService: DataSetService
-    ) {}
+  datasets: Dataset[]
 
-    ngOnInit(): void {
-        this.dataSetService.getAllDataSets()
-            .subscribe(dataSets => {
-                this.dataSets = dataSets.filter(
-                    ds => ds.properties["published"] && ds.properties["published"][0].value == "true");
-            });
-    }
+  constructor(
+    private datasetService: DatasetService
+  ) { }
+
+  ngOnInit(): void {
+    this.datasetService.getAllDatasets()
+      .subscribe(datasets => {
+        this.datasets = datasets.filter(ds => ds.isPublic == true)
+      })
+  }
+
 }

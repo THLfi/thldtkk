@@ -5,58 +5,62 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { environment } from "../environments/environment";
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DataSetListComponent } from './views/data-set/data-set-list.component';
+import { DatasetListComponent } from './views/data-set/data-set-list.component';
 import { DataSetComponent } from './views/data-set/data-set.component';
-import { DataSetService } from "./services/data-set.service";
+import { DataSetService } from './services/data-set.service';
+import { DatasetService } from "./services2/dataset.service";
 import { InstanceVariableComponent } from './views/data-set/instance-variable.component';
 import { InstanceVariableService } from './services/instance-variable.service';
-import { OrganizationComponent } from "./views/common/organization.component";
-import { OrganizationService } from "./services/organization.service";
+import { LangPipe } from "./utils/lang.pipe";
+import { OrganizationComponent } from './views/common/organization.component';
+import { OrganizationService } from './services/organization.service';
 import { PersonComponent } from './views/common/person.component';
-import { PersonService } from "./services/person.service";
+import { PersonService } from './services/person.service';
 import { PropertyValueComponent } from './views/common/property-value.component';
-import { RoleService } from "./services/role.service";
+import { RoleService } from './services/role.service';
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        DataSetListComponent,
-        DataSetComponent,
-        InstanceVariableComponent,
-        OrganizationComponent,
-        PersonComponent,
-        PropertyValueComponent
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpModule,
-        AppRoutingModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: TranslateHttpLoaderFactory,
-                deps: [Http]
-            }
-        })
-    ],
-    providers: [
-        DataSetService,
-        OrganizationService,
-        PersonService,
-        RoleService,
-        InstanceVariableService
-    ],
-    bootstrap: [
-        AppComponent
-    ]
+  declarations: [
+    AppComponent,
+    DatasetListComponent,
+    DataSetComponent,
+    InstanceVariableComponent,
+    LangPipe,
+    OrganizationComponent,
+    PersonComponent,
+    PropertyValueComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: TranslateHttpLoaderFactory,
+        deps: [Http]
+      }
+    })
+  ],
+  providers: [
+    DataSetService,
+    DatasetService,
+    InstanceVariableService,
+    OrganizationService,
+    PersonService,
+    RoleService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

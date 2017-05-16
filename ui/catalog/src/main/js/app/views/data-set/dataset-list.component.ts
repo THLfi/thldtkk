@@ -5,7 +5,7 @@ import { Dataset } from "../../model2/dataset";
 import { DatasetService } from "../../services2/dataset.service";
 
 @Component({
-  templateUrl: './data-set-list.component.html'
+  templateUrl: './dataset-list.component.html'
 })
 export class DatasetListComponent implements OnInit {
 

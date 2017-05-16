@@ -9,18 +9,14 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DatasetListComponent } from './views/data-set/data-set-list.component';
-import { DataSetComponent } from './views/data-set/data-set.component';
+import { DatasetListComponent } from './views/data-set/dataset-list.component';
+import { DataSetComponent } from './views/data-set/dataset.component';
 import { DataSetService } from './services/data-set.service';
 import { DatasetService } from "./services2/dataset.service";
-import { InstanceVariableComponent } from './views/data-set/instance-variable.component';
 import { InstanceVariableService } from './services/instance-variable.service';
 import { LangPipe } from "./utils/lang.pipe";
-import { OrganizationComponent } from './views/common/organization.component';
 import { OrganizationService } from './services/organization.service';
-import { PersonComponent } from './views/common/person.component';
 import { PersonService } from './services/person.service';
-import { PropertyValueComponent } from './views/common/property-value.component';
 import { RoleService } from './services/role.service';
 
 export function TranslateHttpLoaderFactory(http: Http) {
@@ -32,11 +28,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     AppComponent,
     DatasetListComponent,
     DataSetComponent,
-    InstanceVariableComponent,
-    LangPipe,
-    OrganizationComponent,
-    PersonComponent,
-    PropertyValueComponent
+    LangPipe
   ],
   imports: [
     BrowserModule,

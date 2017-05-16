@@ -18,6 +18,7 @@ import { DataSetService } from "./services/data-set.service";
 import { InstanceVariableEditComponent } from "./views/data-set/instance-variable-edit.component";
 import { InstanceVariableService } from './services/instance-variable.service';
 import { IsoDatePicker } from "./views/common/iso-datepicker.component";
+import { LangPipe } from "./utils/lang.pipe";
 import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
 import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
 import { NodeUtils } from "./utils/node-utils";
@@ -47,6 +48,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DataSetEditComponent,
         InstanceVariableEditComponent,
         IsoDatePicker,
+        LangPipe,
         OrganizationComponent,
         OrganizationUnitComponent,
         PersonComponent,

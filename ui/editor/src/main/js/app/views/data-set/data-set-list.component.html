@@ -19,8 +19,8 @@
       </tr>
       <tr *ngFor="let dataSet of dataSets">
         <td>
-          <a routerLink="/datasets/{{ dataSet.id }}"><property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value></a>
-          <span *ngIf="dataSet.properties['published'] && dataSet.properties['published'][0].value === 'true'"
+          <a routerLink="/datasets/{{ dataSet.id }}">{{dataSet.prefLabel | lang }}</a>
+          <span *ngIf="dataSet.isPublic"
             class="label label-success">
             {{ 'published' | translate }}
             <span class="glyphicon glyphicon-ok"></span>

@@ -20,7 +20,7 @@ export class DataSetService {
     ) {}
 
     getAllDataSets(): Observable<DataSet[]> {
-        return this._http.get('../metadata-api/datasets?max=-1')
+        return this._http.get('../metadata-api/v2/datasets')
             .map(response => response.json() as DataSet[]);
     }
 

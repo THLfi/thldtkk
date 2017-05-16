@@ -44,10 +44,10 @@ import { DatasetComponent } from './views/catalog/dataset/dataset.component';
 import { DatasetListComponent } from './views/catalog/dataset/dataset-list.component';
 
 // editor components
-import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/data-set/data-set-list.component';
-import { DataSetComponent as EditorDataSetComponent } from './views/editor/data-set/data-set.component';
-import { DataSetEditComponent } from "./views/editor/data-set/data-set-edit.component";
-import { InstanceVariableEditComponent } from "./views/editor/data-set/instance-variable-edit.component";
+import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component';
+import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
+import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
+import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json');

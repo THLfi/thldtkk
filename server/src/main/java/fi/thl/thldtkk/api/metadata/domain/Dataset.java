@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toDate;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
@@ -13,8 +13,8 @@ import com.google.common.collect.Multimap;
 import com.google.gson.annotations.SerializedName;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,8 @@ public class Dataset {
   private Map<String, String> researchProjectURL = new LinkedHashMap<>();
   private Map<String, String> usageConditionAdditionalInformation = new LinkedHashMap<>();
   private Boolean published;
-  private Date referencePeriodStart;
-  private Date referencePeriodEnd;
+  private LocalDate referencePeriodStart;
+  private LocalDate referencePeriodEnd;
   private Organization owner;
   private List<OrganizationUnit> ownerOrganizationUnit = new ArrayList<>();
   private UsageCondition usageCondition;
@@ -89,8 +89,8 @@ public class Dataset {
     this.usageConditionAdditionalInformation = toLangValueMap(
         node.getProperties("usageConditionAdditionalInformation"));
     this.published = toBoolean(node.getProperties("published"), false);
-    this.referencePeriodStart = toDate(node.getProperties("referencePeriodStart"), null);
-    this.referencePeriodEnd = toDate(node.getProperties("referencePeriodEnd"), null);
+    this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
+    this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
     node.getReferencesFirst("owner").ifPresent(v -> this.owner = new Organization(v));
     node.getReferences("ownerOrganizationUnit")
         .forEach(v -> this.ownerOrganizationUnit.add(new OrganizationUnit(v)));
@@ -143,11 +143,11 @@ public class Dataset {
     return Optional.ofNullable(published);
   }
 
-  public Optional<Date> getReferencePeriodStart() {
+  public Optional<LocalDate> getReferencePeriodStart() {
     return Optional.ofNullable(referencePeriodStart);
   }
 
-  public Optional<Date> getReferencePeriodEnd() {
+  public Optional<LocalDate> getReferencePeriodEnd() {
     return Optional.ofNullable(referencePeriodEnd);
   }
 

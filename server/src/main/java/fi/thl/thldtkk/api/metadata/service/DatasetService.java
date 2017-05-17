@@ -86,13 +86,13 @@ public class DatasetService implements Service<UUID, Dataset> {
   }
 
   private void update(Dataset newDataset, Dataset oldDataset) {
-    Changeset<NodeId, Node> changeset = Changeset.<NodeId, Node>save(newDataset.toNode())
-      .merge(buildChangeset(
+    Changeset<NodeId, Node> changeset = Changeset.<NodeId, Node>save(newDataset.toNode());
+      /**.merge(buildChangeset(
         newDataset.getPopulation().orElse(null),
         oldDataset.getPopulation().orElse(null)))
       .merge(buildChangeset(
         newDataset.getInstanceVariables(),
-        oldDataset.getInstanceVariables()));
+        oldDataset.getInstanceVariables()));**/
 
     nodeService.post(changeset);
   }

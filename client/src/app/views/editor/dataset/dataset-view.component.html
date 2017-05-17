@@ -4,10 +4,10 @@
     <div class="col-md-8">
       <h1>{{ dataset.prefLabel | lang }}</h1>
     </div>
-    <!--
+    
         <div class="col-md-4">
           <h2>
-            <ng-container *ngIf="dataSet.properties['published'] && dataSet.properties['published'][0].value === 'true'; else unpublished;">
+            <ng-container *ngIf="dataset.published; else unpublished;">
               <span class="label label-success">
                 {{ 'published' | translate }}
                 <span class="glyphicon glyphicon-ok"></span>
@@ -26,7 +26,6 @@
             </ng-template>
           </h2>
         </div>
-    -->
   </div>
 
   <div class="row">
@@ -49,15 +48,15 @@
         </span>
       </p>
 
-<!--
+
       <h2>{{ 'organizationUnit' | translate }}</h2>
-      <p>
-        {{ dataset.ownerOrganizationUnit.pre | lang }}
-        <span *ngIf="dataset.ownerOrganizationUnit.abbreviation | lang">
-          ({{ dataset.ownerOrganizationUnit.abbreviation | lang }})
+      <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
+        {{ ownerOrganizationUnit.prefLabel | lang }}
+        <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
+          ({{ ownerOrganizationUnit.abbreviation | lang }})
         </span>
       </p>
-
+<!--
       <div *ngIf="contactPerson">
         <h2 translate="contactPerson"></h2>
         <p>

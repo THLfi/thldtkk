@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.domain.termed;
 
 import static fi.thl.thldtkk.api.metadata.util.RegularExpressions.ALL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -12,8 +14,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.joda.time.DateTime;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public final class PropertyMappings {
 
+  private static final Logger log = LoggerFactory.getLogger(PropertyMappings.class);
+    
   private PropertyMappings() {
   }
 
@@ -29,12 +38,15 @@ public final class PropertyMappings {
 
   public static StrictLangValue toPropertyValue(Boolean bool) {
     Objects.requireNonNull(bool);
-    return new StrictLangValue(String.valueOf(bool));
+    return new StrictLangValue("", String.valueOf(bool), "^(true|false)$");
   }
 
-  public static StrictLangValue toPropertyValue(Date date) {
+  public static StrictLangValue toPropertyValue(LocalDate date) {
+
     Objects.requireNonNull(date);
-    return new StrictLangValue(new DateTime(date).toString());
+
+    String formattedDate = DateTimeFormatter.ISO_LOCAL_DATE.format(date);
+    return new StrictLangValue("", formattedDate, "^\\d{4}-\\d{2}-\\d{2}$");
   }
 
   public static Collection<StrictLangValue> toPropertyValues(Map<String, String> localizedString) {
@@ -70,11 +82,11 @@ public final class PropertyMappings {
       .orElse(defaultValue);
   }
 
-  public static Date toDate(Collection<StrictLangValue> values, Date defaultValue) {
-    return values.stream()
+  public static LocalDate toLocalDate(Collection<StrictLangValue> values, LocalDate defaultValue) {
+      return values.stream()
       .map(StrictLangValue::getValue)
       .findFirst()
-      .map(value -> new DateTime(value).toDate())
+      .map(value -> LocalDate.parse(value))
       .orElse(defaultValue);
   }
 

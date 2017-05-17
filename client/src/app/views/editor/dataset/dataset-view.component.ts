@@ -27,13 +27,13 @@ export class DatasetViewComponent implements OnInit {
     this.datasetService.getDataset(datasetId)
       .subscribe(dataset => this.dataset = dataset)
   }
-/*
+
   confirmPublish(): void {
     this.translateService.get('confirmPublishDataset')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          this.datasetService.publishDataSet(this.dataSet)
-            .subscribe(dataSet => this.dataSet = dataSet)
+          this.datasetService.publishDataSet(this.dataset)
+            .subscribe(dataSet => this.dataset = dataSet)
         }
       })
   }
@@ -42,10 +42,9 @@ export class DatasetViewComponent implements OnInit {
     this.translateService.get('confirmUnpublishDataset')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          this.dataSetService.unpublishDataSet(this.dataSet)
-            .subscribe(dataSet => this.dataSet = dataSet)
+          this.datasetService.unpublishDataSet(this.dataset)
+            .subscribe(dataSet => this.dataset = dataSet)
         }
       })
   }
-*/
 }

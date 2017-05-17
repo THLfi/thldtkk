@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core'
-import { Http } from '@angular/http'
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from "rxjs"
 import 'rxjs/add/operator/map'
+
 
 import { environment as env} from '../../environments/environment'
 
@@ -23,5 +24,23 @@ export class DatasetService {
     return this._http.get(env.contextPath + '/api/v2/datasets/' + id)
       .map(response => response.json() as Dataset)
   }
+
+    saveDataset(dataset: Dataset): Observable<Dataset> {
+      const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
+      const options = new RequestOptions({ headers: headers });
+
+      return this._http.post(env.contextPath + '/api/v2/datasets', dataset, options)
+        .map(response => response.json() as Dataset);
+    }
+
+   publishDataSet(dataset: Dataset): Observable<Dataset> {
+      dataset.published = true;
+      return this.saveDataset(dataset);
+    }
+
+    unpublishDataSet(dataset: Dataset): Observable<Dataset> {
+      dataset.published = false;
+      return this.saveDataset(dataset);
+    }
 
 }

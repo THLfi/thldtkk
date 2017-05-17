@@ -29,6 +29,7 @@ import { UsageConditionService } from "./services/usage-condition.service";
 import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
 
 // common components
+import { AutogrowTextarea } from "./views/common/autogrow-textarea.directive";
 import { IsoDatePicker } from "./views/common/iso-datepicker.component";
 import { LifecyclePhaseComponent } from "./views/common/lifecycle-phase.component";
 import { LangPipe } from "./utils/lang.pipe";
@@ -56,6 +57,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
 @NgModule({
     declarations: [
         AppComponent,
+        AutogrowTextarea,
         DatasetComponent,
         DatasetListComponent,
         EditorDataSetListComponent,

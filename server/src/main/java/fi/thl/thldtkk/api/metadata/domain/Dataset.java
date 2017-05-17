@@ -1,18 +1,10 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.annotations.SerializedName;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,6 +14,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static java.util.Objects.requireNonNull;
+
 public class Dataset {
 
   private UUID id;
@@ -29,8 +29,6 @@ public class Dataset {
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> altLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
-  @SerializedName("abstract")
-  private Map<String, String> abstract_ = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
   private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> researchProjectURL = new LinkedHashMap<>();
@@ -57,7 +55,6 @@ public class Dataset {
     this.prefLabel = dataset.prefLabel;
     this.altLabel = dataset.altLabel;
     this.abbreviation = dataset.abbreviation;
-    this.abstract_ = dataset.abstract_;
     this.description = dataset.description;
     this.registryPolicy = dataset.registryPolicy;
     this.researchProjectURL = dataset.researchProjectURL;
@@ -82,7 +79,6 @@ public class Dataset {
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.altLabel = toLangValueMap(node.getProperties("altLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
-    this.abstract_ = toLangValueMap(node.getProperties("abstract"));
     this.description = toLangValueMap(node.getProperties("description"));
     this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.researchProjectURL = toLangValueMap(node.getProperties("researchProjectURL"));
@@ -117,10 +113,6 @@ public class Dataset {
 
   public Map<String, String> getAbbreviation() {
     return abbreviation;
-  }
-
-  public Map<String, String> getAbstract() {
-    return abstract_;
   }
 
   public Map<String, String> getDescription() {
@@ -183,7 +175,6 @@ public class Dataset {
     props.putAll("prefLabel", toPropertyValues(prefLabel));
     props.putAll("altLabel", toPropertyValues(altLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
-    props.putAll("abstract", toPropertyValues(abstract_));
     props.putAll("description", toPropertyValues(description));
     props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("researchProjectURL", toPropertyValues(researchProjectURL));
@@ -217,7 +208,6 @@ public class Dataset {
         Objects.equals(prefLabel, dataset.prefLabel) &&
         Objects.equals(altLabel, dataset.altLabel) &&
         Objects.equals(abbreviation, dataset.abbreviation) &&
-        Objects.equals(abstract_, dataset.abstract_) &&
         Objects.equals(description, dataset.description) &&
         Objects.equals(registryPolicy, dataset.registryPolicy) &&
         Objects.equals(researchProjectURL, dataset.researchProjectURL) &&
@@ -237,7 +227,7 @@ public class Dataset {
   @Override
   public int hashCode() {
     return Objects
-        .hash(id, prefLabel, altLabel, abbreviation, abstract_, description, registryPolicy,
+        .hash(id, prefLabel, altLabel, abbreviation, description, registryPolicy,
             researchProjectURL, usageConditionAdditionalInformation, published,
             referencePeriodStart, referencePeriodEnd, owner, ownerOrganizationUnit, usageCondition,
             lifecyclePhase, population, instanceVariables);

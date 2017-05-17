@@ -1,28 +1,20 @@
 package fi.thl.thldtkk.api.metadata.domain.termed;
 
 import static fi.thl.thldtkk.api.metadata.util.RegularExpressions.ALL;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.joda.time.DateTime;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public final class PropertyMappings {
 
-  private static final Logger log = LoggerFactory.getLogger(PropertyMappings.class);
-    
   private PropertyMappings() {
   }
 
@@ -83,7 +75,7 @@ public final class PropertyMappings {
   }
 
   public static LocalDate toLocalDate(Collection<StrictLangValue> values, LocalDate defaultValue) {
-      return values.stream()
+    return values.stream()
       .map(StrictLangValue::getValue)
       .findFirst()
       .map(value -> LocalDate.parse(value))

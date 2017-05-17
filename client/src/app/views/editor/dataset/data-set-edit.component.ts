@@ -126,7 +126,6 @@ export class DataSetEditComponent implements OnInit {
     this.nodeUtils.initProperties(dataSet, [
       'prefLabel',
       'abbreviation',
-      'abstract',
       'altLabel',
       'description',
       'researchProjectURL',

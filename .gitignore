@@ -22,3 +22,5 @@ node/
 node_modules/
 dist/
 etc/
+/**/npm-debug.log
+/**/nbproject/

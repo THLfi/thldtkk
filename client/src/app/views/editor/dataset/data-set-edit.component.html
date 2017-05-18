@@ -1,13 +1,13 @@
-<div *ngIf="dataSet">
+<div *ngIf="dataset">
 
   <h1>
     {{ 'dataset' | translate }}:
-    <property-value [props]="dataSet.properties" [key]="'prefLabel'"></property-value>
+    {{dataset.prefLabel | lang}}
   </h1>
 
   <div class="form-group">
     <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
-    <input [(ngModel)]="dataSet.properties.prefLabel[0].value"
+    <input [(ngModel)]="dataset.prefLabel[language]"
       id="prefLabel"
       name="prefLabel"
       type="text"
@@ -16,7 +16,7 @@
 
   <div class="form-group">
     <label for="altLabel" translate="altLabel"></label>
-    <input [(ngModel)]="dataSet.properties.altLabel[0].value"
+    <input [(ngModel)]="dataset.altLabel[language]"
       id="altLabel"
       name="altLabel"
       class="form-control"
@@ -25,7 +25,7 @@
 
   <div class="form-group">
     <label for="abbreviation" translate="abbreviation"></label>
-    <input [(ngModel)]="dataSet.properties.abbreviation[0].value"
+    <input [(ngModel)]="dataset.abbreviation[language]"
       id="abbreviation"
       name="abbreviation"
       class="form-control"
@@ -35,63 +35,36 @@
   <div *ngIf="allOrganizations"
     class="form-group">
     <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-    <select [(ngModel)]="dataSet.references.owner[0]"
+    <select [(ngModel)]="dataset.owner"
       [compareWith]="nodeUtils.equals"
       id="ownerOrganization"
       class="form-control">
       <option [ngValue]="null"></option>
       <option *ngFor="let organization of allOrganizations"
         [ngValue]="organization">
-        <organization [organization]="organization"></organization>
+        {{organization.prefLabel | lang}}
       </option>
     </select>
   </div>
-
-  <div class="form-group">
+    <!--
+  <div *ngIf="allOrganizationUnits" class="form-group">
       <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
-    <select [(ngModel)]="ownerOrganizationUnit"
+    <select [(ngModel)]="dataset.ownerOrganizationUnit"
             [compareWith]="nodeUtils.equals"
             id="ownerOrganizationUnit"
             class="form-control">
       <option [ngValue]="null"></option>
       <option *ngFor="let organizationUnit of allOrganizationUnits"
               [ngValue]="organizationUnit">
-        <property-value [props]="organizationUnit.properties" [key]="'prefLabel'"></property-value>
+        {{organizationUnit.prefLabel | lang}}
       </option>
     </select>
   </div>
-
-  <div class="form-group">
-      <label for="contactPerson" translate="contactPerson"></label>
-    <select [(ngModel)]="contactPerson"
-            [compareWith]="nodeUtils.equals"
-            id="contactPerson"
-            class="form-control">
-      <option [ngValue]="null"></option>
-      <option *ngFor="let contact of allPersonsInRoleContactPerson"
-              [ngValue]="contact">
-        <property-value [props]="contact.properties" [key]="'prefLabel'"></property-value>
-      </option>
-    </select>
-  </div>
-
-  <div class="form-group">
-      <label for="dataSetOwner" translate="dataSetOwner"></label>
-    <select [(ngModel)]="owner"
-            [compareWith]="nodeUtils.equals"
-            id="dataSetOwner"
-            class="form-control">
-      <option [ngValue]="null"></option>
-      <option *ngFor="let dataSetOwner of allPersonsInRoleOwner"
-              [ngValue]="dataSetOwner">
-        <property-value [props]="dataSetOwner.properties" [key]="'prefLabel'"></property-value>
-      </option>
-    </select>
-  </div>
+-->
 
   <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
-    <textarea [(ngModel)]="dataSet.properties.description[0].value"
+    <textarea [(ngModel)]="dataset.description[language]"
       id="description"
       name="description"
       class="form-control"
@@ -101,7 +74,7 @@
 
   <div class="form-group">
     <label for="researchProjectURL" translate="researchProjectURL"></label>
-    <input [(ngModel)]="dataSet.properties.researchProjectURL[0].value"
+    <input [(ngModel)]="dataset.researchProjectURL[language]"
       id="researchProjectURL"
       name="researchProjectURL"
       class="form-control"
@@ -110,7 +83,7 @@
 
   <div class="form-group">
     <label for="registryPolicy" translate="registryPolicy"></label>
-    <textarea [(ngModel)]="dataSet.properties.registryPolicy[0].value"
+    <textarea [(ngModel)]="dataset.registryPolicy[language]"
               id="registryPolicy"
               name="registryPolicy"
               class="form-control"
@@ -121,31 +94,31 @@
   <div *ngIf="allUsageConditions"
     class="form-group">
     <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
-    <select [(ngModel)]="usageCondition"
+    <select [(ngModel)]="dataset.usageCondition"
             [compareWith]="nodeUtils.equals"
             id="usageCondition"
             class="form-control">
       <option [ngValue]="null"></option>
       <option *ngFor="let usageCondition of allUsageConditions"
               [ngValue]="usageCondition">
-        <property-value [props]="usageCondition.properties" [key]="'prefLabel'"></property-value>
+        {{usageCondition.prefLabel|lang}}
       </option>
     </select>
   </div>
 
   <div class="form-group">
     <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
-    <textarea [(ngModel)]="dataSet.properties.usageConditionAdditionalInformation[0].value"
+    <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
               id="usageConditionAdditionalInformation"
               name="usageConditionAdditionalInformation"
               class="form-control"
               rows="2">
     </textarea>
   </div>
-
+<!--
   <div class="form-group">
     <label for="population-prefLabel">{{ 'population' | translate }}</label>
-    <textarea [(ngModel)]="population.properties.prefLabel[0].value"
+    <textarea [(ngModel)]="dataset.population.prefLabel[language]"
               id="population-prefLabel"
               name="population-prefLabel"
               class="form-control"
@@ -155,7 +128,7 @@
 
   <div class="form-group">
     <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
-    <textarea [(ngModel)]="population.properties.geographicalCoverage[0].value"
+    <textarea [(ngModel)]="dataset.population.geographicalCoverage[language]"
               id="population-geographicalCoverage"
               name="population-geographicalCoverage"
               class="form-control"
@@ -165,7 +138,7 @@
 
   <div class="form-group">
     <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
-    <input [(ngModel)]="population.properties.sampleSize[0].value"
+    <input [(ngModel)]="dataset.population.sampleSize[language]"
            id="population-sampleSize"
            name="population-sampleSize"
            type="text"
@@ -174,17 +147,17 @@
 
   <div class="form-group">
     <label for="population-loss">{{ 'loss' | translate }}</label>
-    <input [(ngModel)]="population.properties.loss[0].value"
+    <input [(ngModel)]="dataset.population.loss[language]"
            id="population-loss"
            name="population-loss"
            type="text"
            class="form-control">
-  </div>
+  </div>-->
 
   <div class="form-group">
     <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
     <iso-datepicker
-      [(dateAsString)]="dataSet.properties.referencePeriodStart[0].value"
+      [(dateAsString)]="dataset.referencePeriodStart"
       id="referencePeriodStart"
       name="referencePeriodStart">
     </iso-datepicker>
@@ -193,19 +166,25 @@
   <div class="form-group">
     <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
     <iso-datepicker
-      [(dateAsString)]="dataSet.properties.referencePeriodEnd[0].value"
+      [(dateAsString)]="dataset.referencePeriodEnd"
       id="referencePeriodEnd"
       name="referencePeriodEnd">
     </iso-datepicker>
   </div>
 
-  <div class="form-group">
-    <label for="lifecyclePhase" translate="lifecyclePhase"></label>
-    <input [(ngModel)]="lifecyclePhase.properties.prefLabel[0].value"
-              id="lifecyclePhase"
-              name="lifecyclePhase"
-              class="form-control"
-              type='text'>
+  <div *ngIf="allLifecyclePhases"
+    class="form-group">
+      <label for="lifecyclePhase" translate="lifecyclePhase"></label>
+    <select [(ngModel)]="dataset.lifecyclePhase"
+            [compareWith]="nodeUtils.equals"
+            id="lifecyclePhase"
+            class="form-control">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let lifecyclePhase of allLifecyclePhases"
+              [ngValue]="lifecyclePhase">
+        {{lifecyclePhase.prefLabel|lang}}
+      </option>
+    </select>
   </div>
 
   <hr>

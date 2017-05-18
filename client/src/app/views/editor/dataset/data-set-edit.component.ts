@@ -1,200 +1,145 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Observable } from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from "rxjs";
+import {TranslateService} from '@ngx-translate/core';
 
-import { DataSet } from '../../../model/data-set';
-import { DataSetService } from '../../../services/data-set.service';
-import { Organization } from "../../../model/organization";
-import { OrganizationService } from "../../../services/organization.service";
-import { OrganizationUnit } from "../../../model/organization-unit";
-import { OrganizationUnitService } from "../../../services/organization-unit.service";
-import { PersonInRole } from "../../../model/person-in-role";
-import { PersonInRoleService } from "../../../services/person-in-role.service";
-import { Population } from "../../../model/population";
-import { PopulationService } from "../../../services/population.service";
-import { RoleService } from "../../../services/role.service";
-import { UsageCondition } from "../../../model/usage-condition";
-import { UsageConditionService } from "../../../services/usage-condition.service";
-import { NodeUtils } from "../../../utils/node-utils";
-import { LifecyclePhase } from "../../../model/lifecycle-phase";
-import { LifecyclePhaseService } from "../../../services/lifecycle-phase.service";
+import {Dataset} from '../../../model2/dataset';
+import {DatasetService} from '../../../services2/dataset.service';
+import {Node} from "../../../model2/node";
+import {Organization} from "../../../model2/organization";
+import {OrganizationService} from "../../../services2/organization.service";
+import {OrganizationUnit} from "../../../model2/organization-unit";
+import {OrganizationUnitService} from "../../../services2/organization-unit.service";
+import {PersonInRole} from "../../../model/person-in-role";
+import {PersonInRoleService} from "../../../services/person-in-role.service";
+import {Population} from "../../../model2/population";
+import {PopulationService} from "../../../services/population.service";
+import {RoleService} from "../../../services/role.service";
+import {UsageCondition} from "../../../model2/usage-condition";
+import {UsageConditionService} from "../../../services2/usage-condition.service";
+import {NodeUtils} from "../../../utils/node-utils";
+import {LifecyclePhase} from "../../../model2/lifecycle-phase";
+import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
 
 @Component({
-  templateUrl: './data-set-edit.component.html'
+    templateUrl: './data-set-edit.component.html'
 })
 export class DataSetEditComponent implements OnInit {
 
-  dataSet: DataSet;
-  population: Population;
-  usageCondition: UsageCondition;
-  ownerOrganizationUnit : OrganizationUnit;
-  allOrganizations: Organization[];
-  allOrganizationUnits: OrganizationUnit[];
-  allPersonsInRoleOwner: PersonInRole[];
-  allPersonsInRoleContactPerson: PersonInRole[];
-  allUsageConditions: UsageCondition[];
-  lifecyclePhase : LifecyclePhase;
-  personsInRoles : PersonInRole[];
-  contactPerson: PersonInRole;
-  owner: PersonInRole;
+    dataset: Dataset;
+    population: Population;
+    usageCondition: UsageCondition;
+    ownerOrganizationUnit: OrganizationUnit;
+    allLifecyclePhases: LifecyclePhase[];
+    allOrganizations: Organization[];
+    allOrganizationUnits: OrganizationUnit[];
+    allPersonsInRoleOwner: PersonInRole[];
+    allPersonsInRoleContactPerson: PersonInRole[];
+    allUsageConditions: UsageCondition[];
+    language: string;
+    lifecyclePhase: LifecyclePhase;
+    personsInRoles: PersonInRole[];
+    contactPerson: PersonInRole;
+    owner: PersonInRole;
 
-  constructor(
-    private dataSetService: DataSetService,
-    private nodeUtils: NodeUtils,
-    private personInRoleService: PersonInRoleService,
-    private populationService: PopulationService,
-    private organizationService: OrganizationService,
-    private organizationUnitService: OrganizationUnitService,
-    private roleService: RoleService,
-    private usageConditionService: UsageConditionService,
-    private lifecyclePhaseService: LifecyclePhaseService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    constructor(
+        private datasetService: DatasetService,
+        private nodeUtils: NodeUtils,
+        private personInRoleService: PersonInRoleService,
+        private populationService: PopulationService,
+        private organizationService: OrganizationService,
+        private organizationUnitService: OrganizationUnitService,
+        private roleService: RoleService,
+        private usageConditionService: UsageConditionService,
+        private lifecyclePhaseService: LifecyclePhaseService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private translateService: TranslateService
+    ) {}
 
-  ngOnInit() {
-    this.getDataSet();
-  }
+    ngOnInit() {
+        this.getDataset();
+        this.language = this.translateService.currentLang
+    }
 
-  private getDataSet() {
-    const datasetId = this.route.snapshot.params['id'];
-    if (datasetId) {
-      Observable.forkJoin(
-        this.dataSetService.getDataSet(datasetId),
-        this.dataSetService.getDataSetPopulations(datasetId),
-        this.dataSetService.getDataSetUsageCondition(datasetId),
-        this.dataSetService.getLifecyclePhases(datasetId),
-        this.dataSetService.getDataSetOrganizationUnits(datasetId),
-        this.dataSetService.getDataSetPersonsInRoles(datasetId)
-      ).subscribe(
-        data => {
-          this.dataSet = this.initializeDataSetProperties(data[0])
-          if (!this.dataSet.references['owner']) {
-            this.dataSet.references['owner'] = []
-          }
-          this.population = this.initializePopulationFields(data[1][0]);
-          this.usageCondition = data[2][0];
-          this.lifecyclePhase = this.initializeLifecyclePhaseFields(data[3][0])
-          this.ownerOrganizationUnit = data[4][0];
-          this.personsInRoles = data[5];
-          this.personsInRoles.forEach(item => {
-            this.roleService.getRole(item.references.role[0].id)
-              .subscribe(role => {
-                if (role.properties.prefLabel[0].value == 'contact'){
-                  this.contactPerson = item;
-                } else if (role.properties.prefLabel[0].value == 'owner'){
-                  this.owner = item;
+    private getDataset() {
+        const datasetId = this.route.snapshot.params['id'];
+        if (datasetId) {
+            Observable.forkJoin(
+                this.datasetService.getDataset(datasetId)
+            ).subscribe(
+                data => {
+                    this.dataset = this.initializeDataSetProperties(data[0]);
+                    //this.initializePopulationFields(this.dataset.population);
                 }
-            })
-          })
+                )
+        } else {
+            // TODO: creating new dataset does not work yet
+            //this.dataset = this.initializeDataSetProperties(this.nodeUtils.createNode());
+            // this.population = this.initializePopulationFields(this.nodeUtils.createNode())
+
         }
-      )
-    }
-    else {
-      this.dataSet = this.initializeDataSetProperties(this.nodeUtils.createNode())
-      if (!this.dataSet.references['owner']) {
-        this.dataSet.references['owner'] = []
-      }
-      this.population = this.initializePopulationFields(this.nodeUtils.createNode())
-      this.lifecyclePhase = this.initializeLifecyclePhaseFields(this.nodeUtils.createNode())
-    }
-
-    this.organizationService.getAllOrganizations()
-      .subscribe(organizations => this.allOrganizations = organizations)
-    this.usageConditionService.getAllUsageConditions()
-      .subscribe(usageConditions => this.allUsageConditions = usageConditions)
-    this.organizationUnitService.getAllOrganizationUnits()
-      .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
-    this.personInRoleService.getAllPersonsInRoles()
-      .subscribe(personsInRole => {
-        this.allPersonsInRoleContactPerson = [];
-        this.allPersonsInRoleOwner = [];
-        personsInRole.forEach(item => {
-          this.roleService.getRole(item.references.role[0].id)
-            .subscribe(role => {
-              if (role.properties.prefLabel[0].value == 'contact'){
-                this.allPersonsInRoleContactPerson.push(item);
-              } else if (role.properties.prefLabel[0].value == 'owner'){
-                this.allPersonsInRoleOwner.push(item);
-              }
-            })
-        })
-    })
-  }
-
-  private initializeDataSetProperties(dataSet: DataSet): DataSet {
-    this.nodeUtils.initProperties(dataSet, [
-      'prefLabel',
-      'abbreviation',
-      'altLabel',
-      'description',
-      'researchProjectURL',
-      'registryPolicy',
-      'usageConditionAdditionalInformation',
-      'referencePeriodStart',
-      'referencePeriodEnd'
-    ])
-
-    dataSet.properties['referencePeriodStart'][0].lang = ''
-    dataSet.properties['referencePeriodStart'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
-    dataSet.properties['referencePeriodEnd'][0].lang = ''
-    dataSet.properties['referencePeriodEnd'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
-
-    return dataSet
-  }
-
-  private initializePopulationFields(population: Population): Population {
-    if (!population) {
-      population = this.nodeUtils.createNode();
+        this.organizationService.getAllOrganizations()
+            .subscribe(organizations => this.allOrganizations = organizations)
+        this.lifecyclePhaseService.getAllLifecyclePhases()
+            .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
+        this.usageConditionService.getAllUsageConditions()
+            .subscribe(usageConditions => this.allUsageConditions = usageConditions)
+        this.organizationUnitService.getAllOrganizationUnits()
+            .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
     }
 
-    this.nodeUtils.initProperties(population, ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']);
-
-    return population;
-  }
-
-  private initializeLifecyclePhaseFields(lifecyclePhase: LifecyclePhase): LifecyclePhase {
-    if (!lifecyclePhase) {
-      lifecyclePhase = this.nodeUtils.createNode();
+    private initializeDataSetProperties(dataset: Dataset): Dataset {
+        [
+            'prefLabel',
+            'abbreviation',
+            'altLabel',
+            'description',
+            'researchProjectURL',
+            'registryPolicy',
+            'usageConditionAdditionalInformation'
+        ].forEach(item => this.createEmptyTranslateableProperty(dataset, item, this.language));
+        ['lifecyclePhase', 'referencePeriodStart', 'referencePeriodEnd']
+            .forEach(item => this.createNullProperty(dataset, item));
+        /* TODO: population */
+        /* TODO: personInRole[] */
+        /* TODO: ownerOrganizationUnit */
+        return dataset;
     }
 
-    this.nodeUtils.initProperties(lifecyclePhase, ['prefLabel']);
-
-    return lifecyclePhase;
-  }
-
-  save() {
-    this.populationService.savePopulation(this.population)
-      .subscribe(savedPopulation => {
-        this.population = this.initializePopulationFields(savedPopulation);
-
-        this.dataSet.references['population'] = [ savedPopulation ];
-        this.dataSet.references['usageCondition'] = [ this.usageCondition ];
-        this.dataSet.references['ownerOrganizationUnit'] = [ this.ownerOrganizationUnit ];
-        this.dataSet.references['personInRole'] = [];
-        if (this.contactPerson){
-            this.dataSet.references['personInRole'].push(this.contactPerson);
+    private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
+        if (!node[propertyName] || !node[propertyName][language]) {
+            node[propertyName] = {
+                [language]: null
+            }
         }
-        if (this.owner){
-            this.dataSet.references['personInRole'].push(this.owner);
+    }
+
+    private createNullProperty(node: any, propertyName: string) {
+        if (!node[propertyName]) {
+            node[propertyName] = null;
         }
+    }
+    /*
+      private initializePopulationFields(population: Population): Population {
+          if (!population || population === undefined ||  population === null) {
+            population = new Population();
+        }
+        ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']
+            .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
+        return population;
+      }*/
 
-        this.lifecyclePhaseService.saveLifecyclePhase(this.lifecyclePhase)
-          .subscribe(savedLifecyclePhase => {
-            this.lifecyclePhase = this.initializeLifecyclePhaseFields(savedLifecyclePhase);
-
-            this.dataSet.references['lifecyclePhase'] = [ savedLifecyclePhase ];
-
-            this.dataSetService.saveDataSet(this.dataSet)
-              .subscribe(savedDataSet => {
-                this.dataSet = savedDataSet;
+    save() {
+        console.log(this.dataset.published);
+        this.datasetService.saveDataset(this.dataset)
+            .subscribe(savedDataSet => {
+                this.dataset = savedDataSet;
                 this.goBack();
-              });
             });
-        });
-  }
+    }
 
-  goBack() {
-    this.router.navigate(['/datasets', this.dataSet.id]);
-  }
+    goBack() {
+        this.router.navigate(['/editor/datasets', this.dataset.id]);
+    }
 }

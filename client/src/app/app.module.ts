@@ -22,11 +22,11 @@ import { RoleService } from "./services/role.service";
 import { PersonService } from "./services/person.service";
 import { PersonInRoleService } from "./services/person-in-role.service";
 import { PopulationService } from "./services/population.service";
-import { OrganizationService } from "./services/organization.service";
-import { OrganizationUnitService } from "./services/organization-unit.service";
+import {OrganizationService} from "./services2/organization.service";
+import {OrganizationUnitService} from "./services2/organization-unit.service";
 import { InstanceVariableService } from './services/instance-variable.service';
-import { UsageConditionService } from "./services/usage-condition.service";
-import { LifecyclePhaseService } from "./services/lifecycle-phase.service";
+import {UsageConditionService} from "./services2/usage-condition.service";
+import {LifecyclePhaseService} from "./services2/lifecycle-phase.service";
 
 // common components
 import { AutogrowTextarea } from "./views/common/autogrow-textarea.directive";

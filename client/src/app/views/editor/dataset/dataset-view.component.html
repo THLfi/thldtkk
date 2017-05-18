@@ -4,7 +4,7 @@
     <div class="col-md-8">
       <h1>{{ dataset.prefLabel | lang }}</h1>
     </div>
-    
+
         <div class="col-md-4">
           <h2>
             <ng-container *ngIf="dataset.published; else unpublished;">
@@ -129,45 +129,38 @@
 
     </div>
   </div>
-<!--
+
   <div class="row">
     <div class="col-xs-12">
       <h2>{{ 'variables' | translate }}</h2>
 
-      <table
-        *ngIf="(instanceVariables && instanceVariables.length); else noInstanceVariables;"
+      <table *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length); else noInstanceVariables;"
         class="table table-striped table-hover">
         <tr>
-          <th>Nimi</th>
-          <th>Kuvaus</th>
-          <th>Viiteajankohta</th>
-          <th>Toiminnot</th>
+          <th>{{ 'prefLabel' | translate }}</th>
+          <th>{{ 'description' | translate }}</th>
+          <th>{{ 'referencePeriod' | translate }}</th>
+          <th>{{ 'functions' | translate }}</th>
         </tr>
-        <tr *ngFor="let variable of instanceVariables">
+        <tr *ngFor="let variable of dataset.instanceVariables">
           <td>
-            <property-value [props]="variable.properties"
-                            [key]="'prefLabel'"></property-value>
+            {{ variable.prefLabel | lang }}
           </td>
           <td>
-            <property-value [props]="variable.properties"
-                            [key]="'description'"></property-value>
+            <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
           </td>
           <td>
-            <ng-container
-              *ngIf="(variable.properties.referencePeriodStart || variable.properties.referencePeriodEnd); else inheritedReferencePeriod;">
-              <property-value [props]="variable.properties"
-                              [key]="'referencePeriodStart'"></property-value>
+            <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
+              {{ variable.referencePeriodStart }}
               —
-              <property-value [props]="variable.properties"
-                              [key]="'referencePeriodEnd'"></property-value>
+              {{ variable.referencePeriodEnd }}
             </ng-container>
             <ng-template #inheritedReferencePeriod>
               {{ 'inheritedReferencePeriod' | translate }}
             </ng-template>
           </td>
           <td>
-            <button
-              routerLink="/editor/datasets/{{ dataSet.id }}/instanceVariables/{{ variable.id }}/edit"
+            <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
               class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-edit"></span>
               {{ 'edit' | translate }}
@@ -180,14 +173,14 @@
         <p>{{ 'noInstanceVariables' | translate }}</p>
       </ng-template>
 
-      <button class="btn btn-default"
-              routerLink="/editor/datasets/{{ dataSet.id }}/instanceVariables/new">
+      <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new"
+        class="btn btn-default">
         <span class="glyphicon glyphicon-plus"></span>
         {{ 'addInstanceVariable' | translate }}
       </button>
     </div>
   </div>
--->
+
   <div class="row">
     <div class="col-xs-12">
       <hr>

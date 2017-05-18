@@ -23,11 +23,11 @@ const routes: Routes = [
         redirectTo: 'catalog/datasets',
     },
     {
-        path: 'editor/datasets/:dataSetId/instanceVariables/new',
+        path: 'editor/datasets/:datasetId/instanceVariables/new',
         component: InstanceVariableEditComponent,
     },
     {
-        path: 'editor/datasets/:dataSetId/instanceVariables/:instanceVariableId/edit',
+        path: 'editor/datasets/:datasetId/instanceVariables/:instanceVariableId/edit',
         component: InstanceVariableEditComponent,
     },
     {

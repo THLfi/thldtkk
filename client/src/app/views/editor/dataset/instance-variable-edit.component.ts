@@ -1,87 +1,86 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { DataSetService } from "../../../services/data-set.service";
-import { InstanceVariable } from '../../../model/instance-variable';
-import { InstanceVariableService } from "../../../services/instance-variable.service";
-import { NodeUtils } from "../../../utils/node-utils";
-import { TranslateService } from "@ngx-translate/core";
+import { DatasetService } from '../../../services2/dataset.service';
+import { InstanceVariable } from '../../../model2/instance-variable';
+import { InstanceVariableService } from '../../../services2/instance-variable.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './instance-variable-edit.component.html'
 })
 export class InstanceVariableEditComponent implements OnInit {
 
-  instanceVariable: InstanceVariable;
+  instanceVariable: InstanceVariable
+  currentLang: string
 
   constructor(
-    private dataSetService: DataSetService,
+    private datasetService: DatasetService,
     private instanceVariableService: InstanceVariableService,
-    private nodeUtils: NodeUtils,
     private route: ActivatedRoute,
     private router: Router,
     private translateService: TranslateService
-  ) { }
+  ) {
+    this.currentLang = translateService.currentLang
+  }
 
   ngOnInit(): void {
-    const instanceVariableId = this.route.snapshot.params['instanceVariableId'];
+    const datasetId = this.route.snapshot.params['datasetId']
+    const instanceVariableId = this.route.snapshot.params['instanceVariableId']
+
     if (instanceVariableId) {
-      this.instanceVariableService.getInstanceVariable(instanceVariableId)
-        .subscribe(instanceVariable => this.instanceVariable = this.initProperties(instanceVariable));
+      this.instanceVariableService.getInstanceVariable(datasetId, instanceVariableId)
+        .subscribe(instanceVariable => {
+          this.instanceVariable = this.initInstanceVariable(instanceVariable)
+        })
     }
     else {
-      this.instanceVariable = this.initProperties(this.nodeUtils.createNode())
+      this.instanceVariable = this.initInstanceVariable({
+        id: null,
+        prefLabel: null,
+        description: null,
+        referencePeriodStart: null,
+        referencePeriodEnd: null
+      })
     }
   }
 
-  private initProperties(instanceVariable: InstanceVariable): InstanceVariable {
-    this.nodeUtils.initProperties(instanceVariable, [
-      'prefLabel',
-      'description',
-      'referencePeriodStart',
-      'referencePeriodEnd'
-    ])
+  private initInstanceVariable(instanceVariable: InstanceVariable): InstanceVariable {
+    return this.initProperties(instanceVariable, ['prefLabel', 'description'])
+  }
 
-    instanceVariable.properties['referencePeriodStart'][0].lang = ''
-    instanceVariable.properties['referencePeriodStart'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
-    instanceVariable.properties['referencePeriodEnd'][0].lang = ''
-    instanceVariable.properties['referencePeriodEnd'][0].regex = "^\\d{4}-\\d{2}-\\d{2}$"
-
+  private initProperties(instanceVariable: InstanceVariable, properties: string[]): InstanceVariable {
+    properties.forEach(property => {
+      if (!instanceVariable[property]) {
+        instanceVariable[property] = {}
+      }
+      if (!instanceVariable[property][this.currentLang]) {
+        instanceVariable[property][this.currentLang] = ''
+      }
+    })
     return instanceVariable
   }
 
   save(): void {
-    this.instanceVariableService.updateInstanceVariable(this.instanceVariable)
-      .subscribe(savedInstanceVariable => {
-        const datasetId = this.route.snapshot.params['dataSetId']
-        this.dataSetService.getDataSet(datasetId)
-          .subscribe(dataSet => {
-            if (!dataSet.references['instanceVariable']) {
-              dataSet.references['instanceVariable'] = []
-            }
-            dataSet.references['instanceVariable'].push(savedInstanceVariable)
-
-            this.dataSetService.saveDataSet(dataSet)
-              .subscribe(() => {
-                this.instanceVariable = savedInstanceVariable
-                this.goBack()
-              })
-          })
-      });
+    const datasetId = this.route.snapshot.params['datasetId']
+    this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)
+      .subscribe(instanceVariable => {
+        this.instanceVariable = instanceVariable
+        this.goBack()
+      })
   }
 
   confirmRemove(): void {
     this.translateService.get('confirmInstanceVariableDelete')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          this.instanceVariableService.remove(this.instanceVariable)
-            .subscribe(response => this.goBack())
+          alert('TODO')
         }
       })
   }
 
   goBack(): void {
-    this.router.navigate(['/datasets', this.route.snapshot.params['dataSetId']])
+    this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId']])
   }
 
 }

@@ -43,6 +43,10 @@ public class InstanceVariable {
     return id;
   }
 
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
   public Map<String, String> getPrefLabel() {
     return prefLabel;
   }

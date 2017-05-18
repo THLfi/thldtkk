@@ -187,6 +187,60 @@
     </select>
   </div>
 
+<!--    <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'variables' | translate }}</h2>
+
+      <table
+        *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length); else noInstanceVariables;"
+        class="table table-striped table-hover">
+        <tr>
+          <th>{{ 'prefLabel' | translate }}</th>
+          <th>{{ 'description' | translate }}</th>
+          <th>{{ 'referencePeriod' | translate }}</th>
+          <th>{{ 'functions' | translate }}</th>
+        </tr>
+        <tr *ngFor="let variable of dataset.instanceVariables">
+          <td>
+              {{ variable.prefLabel | lang }}
+          </td>
+          <td>
+              {{ variable.description | lang }}
+          </td>
+          <td>
+            <ng-container
+              *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
+              {{ variable.referencePeriodStart | lang }}
+              —
+              {{ variable.referencePeriodEnd | lang }}
+            </ng-container>
+            <ng-template #inheritedReferencePeriod>
+              {{ 'inheritedReferencePeriod' | translate }}
+            </ng-template>
+          </td>
+          <td>
+            <button
+              routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
+              class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-edit"></span>
+              {{ 'edit' | translate }}
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <ng-template #noInstanceVariables>
+        <p>{{ 'noInstanceVariables' | translate }}</p>
+      </ng-template>
+
+      <button class="btn btn-default"
+              routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{ 'addInstanceVariable' | translate }}
+      </button>
+    </div>
+  </div>
+
   <hr>
 
   <div>
@@ -200,5 +254,5 @@
     </button>
   </div>
 
-</div>
+</div>-->
 

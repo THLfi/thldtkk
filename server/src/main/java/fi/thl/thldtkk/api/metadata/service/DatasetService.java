@@ -66,6 +66,10 @@ public class DatasetService implements Service<UUID, Dataset> {
   public Dataset save(Dataset dataset) {
     Optional<Dataset> old = dataset.getId() != null ? get(dataset.getId()) : empty();
 
+    dataset.getInstanceVariables().stream()
+      .filter(instanceVariable -> instanceVariable.getId() == null)
+      .forEach(instanceVariable -> instanceVariable.setId(UUID.randomUUID()));
+
     if (!old.isPresent()) {
       insert(dataset);
     } else {
@@ -86,13 +90,13 @@ public class DatasetService implements Service<UUID, Dataset> {
   }
 
   private void update(Dataset newDataset, Dataset oldDataset) {
-    Changeset<NodeId, Node> changeset = Changeset.<NodeId, Node>save(newDataset.toNode());
-      /**.merge(buildChangeset(
+    Changeset<NodeId, Node> changeset = Changeset.<NodeId, Node>save(newDataset.toNode())
+      .merge(buildChangeset(
         newDataset.getPopulation().orElse(null),
         oldDataset.getPopulation().orElse(null)))
       .merge(buildChangeset(
         newDataset.getInstanceVariables(),
-        oldDataset.getInstanceVariables()));**/
+        oldDataset.getInstanceVariables()));
 
     nodeService.post(changeset);
   }
@@ -112,7 +116,7 @@ public class DatasetService implements Service<UUID, Dataset> {
         newPopulation.getLoss(),
         newPopulation.getGeographicalCoverage()).toNode());
     }
-    if (oldPopulation != null) {
+    if (newPopulation == null && oldPopulation != null) {
       return Changeset.delete(new NodeId(oldPopulation.toNode()));
     }
     return Changeset.empty();

@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-xs-12">
       <h1 *ngIf="instanceVariable.id; else newInstanceVariable;">
-        <property-value [props]="instanceVariable.properties" [key]="'prefLabel'"></property-value>
+        {{ instanceVariable.prefLabel | lang }}
       </h1>
       <ng-template #newInstanceVariable>
         <h1>{{ 'newInstanceVariable' | translate }}</h1>
@@ -11,7 +11,7 @@
 
       <div class="form-group">
         <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
-        <input [(ngModel)]="instanceVariable.properties.prefLabel[0].value"
+        <input [(ngModel)]="instanceVariable.prefLabel[currentLang]"
           id="prefLabel"
           name="prefLabel"
           type="text"
@@ -20,11 +20,12 @@
 
       <div class="form-group">
         <label for="description">{{ 'description' | translate }}</label>
-        <textarea [(ngModel)]="instanceVariable.properties.description[0].value"
+        <textarea [(ngModel)]="instanceVariable.description[currentLang]"
+          thlAutogrow
           id="description"
           name="description"
           class="form-control"
-          rows="6">
+          rows="3">
         </textarea>
       </div>
     </div>
@@ -35,7 +36,7 @@
       <div class="form-group">
         <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
         <iso-datepicker
-          [(dateAsString)]="instanceVariable.properties.referencePeriodStart[0].value"
+          [(dateAsString)]="instanceVariable.referencePeriodStart"
           id="referencePeriodStart"
           name="referencePeriodStart">
         </iso-datepicker>
@@ -45,7 +46,7 @@
       <div class="form-group">
         <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
         <iso-datepicker
-          [(dateAsString)]="instanceVariable.properties.referencePeriodEnd[0].value"
+          [(dateAsString)]="instanceVariable.referencePeriodEnd"
           id="referencePeriodEnd"
           name="referencePeriodEnd">
         </iso-datepicker>

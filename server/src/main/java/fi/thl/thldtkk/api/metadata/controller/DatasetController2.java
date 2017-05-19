@@ -96,5 +96,22 @@ public class DatasetController2 {
   public void deleteDataset(@PathVariable("datasetId") UUID datasetId) {
     datasetService.delete(datasetId);
   }
+  
+  @DeleteMapping("/{datasetId}/instanceVariables/{instanceVariableId}")
+  @ResponseStatus(NO_CONTENT)
+  public void deleteDatasetInstanceVariable(
+    @PathVariable("datasetId") UUID datasetId,
+    @PathVariable("instanceVariableId") UUID instanceVariableId) {
+
+    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
+
+    Map<UUID, InstanceVariable> instanceVariables = dataset.getInstanceVariables().stream()
+      .filter(v -> !v.getId().equals(instanceVariableId))
+      .collect(toMap(InstanceVariable::getId, identity(), illegalOperator(), LinkedHashMap::new));
+    
+    datasetService.save(new Dataset(dataset, new ArrayList<>(instanceVariables.values())));
+    
+  }
+  
 
 }

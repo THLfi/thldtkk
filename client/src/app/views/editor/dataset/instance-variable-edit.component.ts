@@ -74,7 +74,13 @@ export class InstanceVariableEditComponent implements OnInit {
     this.translateService.get('confirmInstanceVariableDelete')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          alert('TODO')
+          
+          const datasetId = this.route.snapshot.params['datasetId'];
+          const instanceVariableId = this.route.snapshot.params['instanceVariableId'];
+
+          this.instanceVariableService.deleteInstanceVariable(datasetId, instanceVariableId).subscribe(
+            result => this.goBack()
+          );
         }
       })
   }

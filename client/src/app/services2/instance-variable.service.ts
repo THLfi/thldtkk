@@ -37,4 +37,15 @@ export class InstanceVariableService {
       .map(response => response.json() as InstanceVariable)
   }
 
+  deleteInstanceVariable(datasetId: string, instanceVariableId: string): Observable<any> {
+    const path: string = env.contextPath
+      + '/api/v2/datasets/'
+      + datasetId
+      + '/instanceVariables/'
+      + instanceVariableId;
+
+      return  this._http.delete(path)
+              .map(response => response.json());
+  }
+
 }

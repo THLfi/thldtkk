@@ -92,14 +92,11 @@ public class DatasetController2 {
         Dataset dataset = datasetService.get(datasetId).orElseThrow(
                 NotFoundException::new);
 
-        Map<UUID, InstanceVariable> instanceVariables = dataset
-                .getInstanceVariables().stream()
-                .collect(toMap(InstanceVariable::getId, identity(),
-                        illegalOperator(), LinkedHashMap::new));
-        instanceVariables.put(instanceVariable.getId(), instanceVariable);
+        List<InstanceVariable> variables = new ArrayList<>();
+        variables.addAll(dataset.getInstanceVariables());
+        variables.add(instanceVariable);
 
-        return datasetService.save(new Dataset(dataset, new ArrayList<>(
-                instanceVariables.values())));
+        return datasetService.save(new Dataset(dataset, variables));
     }
 
     @DeleteMapping("/{datasetId}")
@@ -117,14 +114,11 @@ public class DatasetController2 {
         Dataset dataset = datasetService.get(datasetId).orElseThrow(
                 NotFoundException::new);
 
-        Map<UUID, InstanceVariable> instanceVariables = dataset
-                .getInstanceVariables().stream()
-                .filter(v -> !v.getId().equals(instanceVariableId))
-                .collect(toMap(InstanceVariable::getId, identity(),
-                        illegalOperator(), LinkedHashMap::new));
+        List<InstanceVariable> variables = new ArrayList<>();
+        variables.addAll(dataset.getInstanceVariables());
+        variables.removeIf(v -> v.getId().equals(instanceVariableId));
 
-        datasetService.save(new Dataset(dataset, new ArrayList<>(
-                instanceVariables.values())));
+        datasetService.save(new Dataset(dataset, variables));
 
     }
 }

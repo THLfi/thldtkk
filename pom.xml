@@ -17,9 +17,10 @@
 
     <modules>
         <module>metadata-api</module>
-        <module>ui</module>
+        <module>server</module>
+        <!--module>ui</module>
         <module>root</module>
-        <module>assembly</module> <!-- this _must be_ last module -->
+        <module>assembly</module--> <!-- this _must be_ last module -->
     </modules>
 
     <licenses>

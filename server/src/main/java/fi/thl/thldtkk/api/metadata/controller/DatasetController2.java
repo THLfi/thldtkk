@@ -1,15 +1,9 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import static fi.thl.thldtkk.api.metadata.util.MapUtils.illegalOperator;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.service.Service;
+import static fi.thl.thldtkk.api.metadata.util.MapUtils.illegalOperator;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -19,7 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,86 +31,96 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v2/datasets")
 public class DatasetController2 {
 
-  @Autowired
-  private Service<UUID, Dataset> datasetService;
+    @Autowired
+    private Service<UUID, Dataset> datasetService;
 
-  @GetJsonMapping
-  public List<Dataset> queryDatasets() {
-    return datasetService.query().collect(toList());
-  }
-
-  @GetJsonMapping("/{datasetId}")
-  public Dataset getDataset(@PathVariable("datasetId") UUID datasetId) {
-    return datasetService.get(datasetId).orElseThrow(NotFoundException::new);
-  }
-
-  @GetJsonMapping("/{datasetId}/instanceVariables")
-  public List<InstanceVariable> getDatasetInstanceVariables(
-    @PathVariable("datasetId") UUID datasetId) {
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
-    return dataset.getInstanceVariables();
-  }
-
-  @GetJsonMapping("/{datasetId}/instanceVariables/{instanceVariableId}")
-  public InstanceVariable getDatasetInstanceVariable(
-    @PathVariable("datasetId") UUID datasetId,
-    @PathVariable("instanceVariableId") UUID instanceVariableId) {
-
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
-
-    return dataset.getInstanceVariables().stream()
-      .filter(v -> v.getId().equals(instanceVariableId))
-      .findFirst().orElseThrow(NotFoundException::new);
-  }
-
-  @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-  public Dataset postDataset(@RequestBody Dataset dataset,
-    @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables) {
-
-    Optional<Dataset> oldDataset = datasetService.get(dataset.getId());
-
-    if (!saveInstanceVariables && oldDataset.isPresent()) {
-      return datasetService.save(new Dataset(dataset, oldDataset.get().getInstanceVariables()));
+    @GetJsonMapping
+    public List<Dataset> queryDatasets() {
+        return datasetService.query().collect(toList());
     }
 
-    return datasetService.save(dataset);
-  }
+    @GetJsonMapping("/{datasetId}")
+    public Dataset getDataset(@PathVariable("datasetId") UUID datasetId) {
+        return datasetService.get(datasetId).orElseThrow(NotFoundException::new);
+    }
 
-  @PostJsonMapping(path = "/{datasetId}/instanceVariables", produces = APPLICATION_JSON_UTF8_VALUE)
-  public Dataset postDatasetInstanceVariable(
-    @PathVariable("datasetId") UUID datasetId,
-    @RequestBody InstanceVariable instanceVariable) {
+    @GetJsonMapping("/{datasetId}/instanceVariables")
+    public List<InstanceVariable> getDatasetInstanceVariables(
+            @PathVariable("datasetId") UUID datasetId) {
+        Dataset dataset = datasetService.get(datasetId).orElseThrow(
+                NotFoundException::new);
+        return dataset.getInstanceVariables();
+    }
 
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
+    @GetJsonMapping("/{datasetId}/instanceVariables/{instanceVariableId}")
+    public InstanceVariable getDatasetInstanceVariable(
+            @PathVariable("datasetId") UUID datasetId,
+            @PathVariable("instanceVariableId") UUID instanceVariableId) {
 
-    Map<UUID, InstanceVariable> instanceVariables = dataset.getInstanceVariables().stream()
-      .collect(toMap(InstanceVariable::getId, identity(), illegalOperator(), LinkedHashMap::new));
-    instanceVariables.put(instanceVariable.getId(), instanceVariable);
+        Dataset dataset = datasetService.get(datasetId).orElseThrow(
+                NotFoundException::new);
 
-    return datasetService.save(new Dataset(dataset, new ArrayList<>(instanceVariables.values())));
-  }
+        return dataset.getInstanceVariables().stream()
+                .filter(v -> v.getId().equals(instanceVariableId))
+                .findFirst().orElseThrow(NotFoundException::new);
+    }
 
-  @DeleteMapping("/{datasetId}")
-  @ResponseStatus(NO_CONTENT)
-  public void deleteDataset(@PathVariable("datasetId") UUID datasetId) {
-    datasetService.delete(datasetId);
-  }
-  
-  @DeleteMapping("/{datasetId}/instanceVariables/{instanceVariableId}")
-  @ResponseStatus(NO_CONTENT)
-  public void deleteDatasetInstanceVariable(
-    @PathVariable("datasetId") UUID datasetId,
-    @PathVariable("instanceVariableId") UUID instanceVariableId) {
+    @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+    public Dataset postDataset(@RequestBody Dataset dataset,
+            @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables) {
 
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
+        Optional<Dataset> oldDataset = datasetService.get(dataset.getId());
 
-    Map<UUID, InstanceVariable> instanceVariables = dataset.getInstanceVariables().stream()
-      .filter(v -> !v.getId().equals(instanceVariableId))
-      .collect(toMap(InstanceVariable::getId, identity(), illegalOperator(), LinkedHashMap::new));
-    
-    datasetService.save(new Dataset(dataset, new ArrayList<>(instanceVariables.values())));
-    
-  }
-  
+        if (!saveInstanceVariables && oldDataset.isPresent()) {
+            return datasetService.save(new Dataset(dataset, oldDataset.get()
+                    .getInstanceVariables()));
+        }
 
+        return datasetService.save(dataset);
+    }
+
+    @PostJsonMapping(path = "/{datasetId}/instanceVariables", produces =
+            APPLICATION_JSON_UTF8_VALUE)
+    public Dataset postDatasetInstanceVariable(
+            @PathVariable("datasetId") UUID datasetId,
+            @RequestBody InstanceVariable instanceVariable) {
+
+        Dataset dataset = datasetService.get(datasetId).orElseThrow(
+                NotFoundException::new);
+
+        Map<UUID, InstanceVariable> instanceVariables = dataset
+                .getInstanceVariables().stream()
+                .collect(toMap(InstanceVariable::getId, identity(),
+                        illegalOperator(), LinkedHashMap::new));
+        instanceVariables.put(instanceVariable.getId(), instanceVariable);
+
+        return datasetService.save(new Dataset(dataset, new ArrayList<>(
+                instanceVariables.values())));
+    }
+
+    @DeleteMapping("/{datasetId}")
+    @ResponseStatus(NO_CONTENT)
+    public void deleteDataset(@PathVariable("datasetId") UUID datasetId) {
+        datasetService.delete(datasetId);
+    }
+
+    @DeleteMapping("/{datasetId}/instanceVariables/{instanceVariableId}")
+    @ResponseStatus(NO_CONTENT)
+    public void deleteDatasetInstanceVariable(
+            @PathVariable("datasetId") UUID datasetId,
+            @PathVariable("instanceVariableId") UUID instanceVariableId) {
+
+        Dataset dataset = datasetService.get(datasetId).orElseThrow(
+                NotFoundException::new);
+
+        Map<UUID, InstanceVariable> instanceVariables = dataset
+                .getInstanceVariables().stream()
+                .filter(v -> !v.getId().equals(instanceVariableId))
+                .collect(toMap(InstanceVariable::getId, identity(),
+                        illegalOperator(), LinkedHashMap::new));
+
+        datasetService.save(new Dataset(dataset, new ArrayList<>(
+                instanceVariables.values())));
+
+    }
 }

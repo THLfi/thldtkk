@@ -69,7 +69,11 @@ public class DatasetController2 {
     public Dataset postDataset(@RequestBody Dataset dataset,
             @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables) {
 
-        Optional<Dataset> oldDataset = datasetService.get(dataset.getId());
+        Optional<Dataset> oldDataset = Optional.empty();
+
+        if (dataset.getId() != null) {
+            oldDataset = datasetService.get(dataset.getId());
+        }
 
         if (!saveInstanceVariables && oldDataset.isPresent()) {
             return datasetService.save(new Dataset(dataset, oldDataset.get()
@@ -79,8 +83,8 @@ public class DatasetController2 {
         return datasetService.save(dataset);
     }
 
-    @PostJsonMapping(path = "/{datasetId}/instanceVariables", produces =
-            APPLICATION_JSON_UTF8_VALUE)
+    @PostJsonMapping(path = "/{datasetId}/instanceVariables",
+            produces = APPLICATION_JSON_UTF8_VALUE)
     public Dataset postDatasetInstanceVariable(
             @PathVariable("datasetId") UUID datasetId,
             @RequestBody InstanceVariable instanceVariable) {

@@ -70,14 +70,27 @@ export class DataSetEditComponent implements OnInit {
             ).subscribe(
                 data => {
                     this.dataset = this.initializeDataSetProperties(data[0]);
-                    //this.initializePopulationFields(this.dataset.population);
-                }
-                )
+                })
         } else {
-            // TODO: creating new dataset does not work yet
-            //this.dataset = this.initializeDataSetProperties(this.nodeUtils.createNode());
-            // this.population = this.initializePopulationFields(this.nodeUtils.createNode())
-
+            this.dataset = this.initializeDataSetProperties({
+                id: null,
+                prefLabel: null,
+                altLabel: null,
+                abbreviation: null,
+                description: null,
+                registryPolicy: null,
+                researchProjectURL: null,
+                usageConditionAdditionalInformation: null,
+                published: null,
+                referencePeriodStart: null,
+                referencePeriodEnd: null,
+                owner: null,
+                ownerOrganizationUnit: [],
+                usageCondition: null,
+                lifecyclePhase: null,
+                population: null,
+                instanceVariables: []
+            });
         }
         this.organizationService.getAllOrganizations()
             .subscribe(organizations => this.allOrganizations = organizations)
@@ -140,6 +153,10 @@ export class DataSetEditComponent implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['/editor/datasets', this.dataset.id]);
+        if (this.dataset.id) {
+            this.router.navigate(['/editor/datasets', this.dataset.id]);
+        } else {
+            this.router.navigate(['/editor/datasets']);
+        }
     }
 }

@@ -22,141 +22,142 @@ import {LifecyclePhase} from "../../../model2/lifecycle-phase";
 import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
 
 @Component({
-    templateUrl: './data-set-edit.component.html'
+  templateUrl: './data-set-edit.component.html'
 })
 export class DataSetEditComponent implements OnInit {
 
-    dataset: Dataset;
-    population: Population;
-    usageCondition: UsageCondition;
-    ownerOrganizationUnit: OrganizationUnit;
-    allLifecyclePhases: LifecyclePhase[];
-    allOrganizations: Organization[];
-    allOrganizationUnits: OrganizationUnit[];
-    allPersonsInRoleOwner: PersonInRole[];
-    allPersonsInRoleContactPerson: PersonInRole[];
-    allUsageConditions: UsageCondition[];
-    language: string;
-    lifecyclePhase: LifecyclePhase;
-    personsInRoles: PersonInRole[];
-    contactPerson: PersonInRole;
-    owner: PersonInRole;
+  dataset: Dataset;
+  population: Population;
+  usageCondition: UsageCondition;
+  ownerOrganizationUnit: OrganizationUnit;
+  allLifecyclePhases: LifecyclePhase[];
+  allOrganizations: Organization[];
+  allOrganizationUnits: OrganizationUnit[];
+  allPersonsInRoleOwner: PersonInRole[];
+  allPersonsInRoleContactPerson: PersonInRole[];
+  allUsageConditions: UsageCondition[];
+  language: string;
+  lifecyclePhase: LifecyclePhase;
+  personsInRoles: PersonInRole[];
+  contactPerson: PersonInRole;
+  owner: PersonInRole;
 
-    constructor(
-        private datasetService: DatasetService,
-        private nodeUtils: NodeUtils,
-        private personInRoleService: PersonInRoleService,
-        private populationService: PopulationService,
-        private organizationService: OrganizationService,
-        private organizationUnitService: OrganizationUnitService,
-        private roleService: RoleService,
-        private usageConditionService: UsageConditionService,
-        private lifecyclePhaseService: LifecyclePhaseService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private translateService: TranslateService
-    ) {}
+  constructor(
+    private datasetService: DatasetService,
+    private nodeUtils: NodeUtils,
+    private personInRoleService: PersonInRoleService,
+    private populationService: PopulationService,
+    private organizationService: OrganizationService,
+    private organizationUnitService: OrganizationUnitService,
+    private roleService: RoleService,
+    private usageConditionService: UsageConditionService,
+    private lifecyclePhaseService: LifecyclePhaseService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translateService: TranslateService
+  ) {}
 
-    ngOnInit() {
-        this.getDataset();
-        this.language = this.translateService.currentLang
+  ngOnInit() {
+    this.getDataset();
+    this.language = this.translateService.currentLang
+  }
+
+  private getDataset() {
+    const datasetId = this.route.snapshot.params['id'];
+    if (datasetId) {
+      Observable.forkJoin(
+        this.datasetService.getDataset(datasetId)
+      ).subscribe(
+        data => {
+          this.dataset = this.initializeDataSetProperties(data[0]);
+        })
+    } else {
+      this.dataset = this.initializeDataSetProperties({
+        id: null,
+        prefLabel: null,
+        altLabel: null,
+        abbreviation: null,
+        description: null,
+        registryPolicy: null,
+        researchProjectURL: null,
+        usageConditionAdditionalInformation: null,
+        published: null,
+        referencePeriodStart: null,
+        referencePeriodEnd: null,
+        owner: null,
+        ownerOrganizationUnit: [],
+        usageCondition: null,
+        lifecyclePhase: null,
+        population: null,
+        instanceVariables: [],
+        comment: null
+      });
     }
+    this.organizationService.getAllOrganizations()
+      .subscribe(organizations => this.allOrganizations = organizations)
+    this.lifecyclePhaseService.getAllLifecyclePhases()
+      .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
+    this.usageConditionService.getAllUsageConditions()
+      .subscribe(usageConditions => this.allUsageConditions = usageConditions)
+    this.organizationUnitService.getAllOrganizationUnits()
+      .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
+  }
 
-    private getDataset() {
-        const datasetId = this.route.snapshot.params['id'];
-        if (datasetId) {
-            Observable.forkJoin(
-                this.datasetService.getDataset(datasetId)
-            ).subscribe(
-                data => {
-                    this.dataset = this.initializeDataSetProperties(data[0]);
-                })
-        } else {
-            this.dataset = this.initializeDataSetProperties({
-                id: null,
-                prefLabel: null,
-                altLabel: null,
-                abbreviation: null,
-                description: null,
-                registryPolicy: null,
-                researchProjectURL: null,
-                usageConditionAdditionalInformation: null,
-                published: null,
-                referencePeriodStart: null,
-                referencePeriodEnd: null,
-                owner: null,
-                ownerOrganizationUnit: [],
-                usageCondition: null,
-                lifecyclePhase: null,
-                population: null,
-                instanceVariables: []
-            });
-        }
-        this.organizationService.getAllOrganizations()
-            .subscribe(organizations => this.allOrganizations = organizations)
-        this.lifecyclePhaseService.getAllLifecyclePhases()
-            .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
-        this.usageConditionService.getAllUsageConditions()
-            .subscribe(usageConditions => this.allUsageConditions = usageConditions)
-        this.organizationUnitService.getAllOrganizationUnits()
-            .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
-    }
+  private initializeDataSetProperties(dataset: Dataset): Dataset {
+    [
+      'prefLabel',
+      'abbreviation',
+      'altLabel',
+      'description',
+      'researchProjectURL',
+      'registryPolicy',
+      'usageConditionAdditionalInformation'
+    ].forEach(item => this.createEmptyTranslateableProperty(dataset, item, this.language));
+    ['lifecyclePhase', 'referencePeriodStart', 'referencePeriodEnd']
+      .forEach(item => this.createNullProperty(dataset, item));
+    /* TODO: population */
+    /* TODO: personInRole[] */
+    /* TODO: ownerOrganizationUnit */
+    return dataset;
+  }
 
-    private initializeDataSetProperties(dataset: Dataset): Dataset {
-        [
-            'prefLabel',
-            'abbreviation',
-            'altLabel',
-            'description',
-            'researchProjectURL',
-            'registryPolicy',
-            'usageConditionAdditionalInformation'
-        ].forEach(item => this.createEmptyTranslateableProperty(dataset, item, this.language));
-        ['lifecyclePhase', 'referencePeriodStart', 'referencePeriodEnd']
-            .forEach(item => this.createNullProperty(dataset, item));
-        /* TODO: population */
-        /* TODO: personInRole[] */
-        /* TODO: ownerOrganizationUnit */
-        return dataset;
+  private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
+    if (!node[propertyName] || !node[propertyName][language]) {
+      node[propertyName] = {
+        [language]: null
+      }
     }
+  }
 
-    private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
-        if (!node[propertyName] || !node[propertyName][language]) {
-            node[propertyName] = {
-                [language]: null
-            }
-        }
+  private createNullProperty(node: any, propertyName: string) {
+    if (!node[propertyName]) {
+      node[propertyName] = null;
     }
+  }
+  /*
+    private initializePopulationFields(population: Population): Population {
+        if (!population || population === undefined ||  population === null) {
+          population = new Population();
+      }
+      ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']
+          .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
+      return population;
+    }*/
 
-    private createNullProperty(node: any, propertyName: string) {
-        if (!node[propertyName]) {
-            node[propertyName] = null;
-        }
-    }
-    /*
-      private initializePopulationFields(population: Population): Population {
-          if (!population || population === undefined ||  population === null) {
-            population = new Population();
-        }
-        ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss']
-            .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
-        return population;
-      }*/
+  save() {
+    console.log(this.dataset.published);
+    this.datasetService.saveDataset(this.dataset)
+      .subscribe(savedDataSet => {
+        this.dataset = savedDataSet;
+        this.goBack();
+      });
+  }
 
-    save() {
-        console.log(this.dataset.published);
-        this.datasetService.saveDataset(this.dataset)
-            .subscribe(savedDataSet => {
-                this.dataset = savedDataSet;
-                this.goBack();
-            });
+  goBack() {
+    if (this.dataset.id) {
+      this.router.navigate(['/editor/datasets', this.dataset.id]);
+    } else {
+      this.router.navigate(['/editor/datasets']);
     }
-
-    goBack() {
-        if (this.dataset.id) {
-            this.router.navigate(['/editor/datasets', this.dataset.id]);
-        } else {
-            this.router.navigate(['/editor/datasets']);
-        }
-    }
+  }
 }

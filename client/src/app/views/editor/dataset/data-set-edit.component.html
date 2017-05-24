@@ -254,15 +254,16 @@
 
 <hr>
 
-<div>
-  <button class="btn btn-default" (click)="goBack()">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    {{ 'cancel' | translate }}
-  </button>
-  <button class="btn btn-primary" (click)="save()">
-    <span class="glyphicon glyphicon-floppy-disk"></span>
-    {{ 'save' | translate }}
-  </button>
-</div>
-
+<div class="edit-controls-padding"></div>
+  <div class="edit-controls-fixed">
+    
+    <button class="btn btn-default" (click)="goBack()">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      {{ 'cancel' | translate }}
+    </button>
+    <button class="btn btn-primary" (click)="save()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+      {{ 'save' | translate }}
+    </button>
+  </div>
 </div>

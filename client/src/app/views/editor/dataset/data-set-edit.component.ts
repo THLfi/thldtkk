@@ -124,8 +124,10 @@ export class DataSetEditComponent implements OnInit {
                 loss: null
             });
         }
+        if (dataset.ownerOrganizationUnit.length > 0) {
+            this.ownerOrganizationUnit = dataset.ownerOrganizationUnit[0];
+        }
         /* TODO: personInRole[] */
-        /* TODO: ownerOrganizationUnit */
         return dataset;
     }
 
@@ -150,6 +152,10 @@ export class DataSetEditComponent implements OnInit {
     }
 
     save() {
+        if (this.ownerOrganizationUnit) {
+            this.dataset.ownerOrganizationUnit = [];
+            this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
+        }
         this.datasetService.saveDataset(this.dataset)
             .subscribe(savedDataSet => {
                 this.dataset = savedDataSet;

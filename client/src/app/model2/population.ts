@@ -1,10 +1,10 @@
-import { Node } from './node'
-import { LangValues } from './lang-values';
+import {Node} from './node'
+import {LangValues} from './lang-values';
 
-export class Population extends Node {
-  prefLabel: LangValues
-  description: LangValues
-  sampleSize: LangValues
-  loss: LangValues
-  geographicalCoverage: LangValues
+export class Population {
+    prefLabel: LangValues
+    description: LangValues
+    sampleSize: LangValues
+    loss: LangValues
+    geographicalCoverage: LangValues
 }

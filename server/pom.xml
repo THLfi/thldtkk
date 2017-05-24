@@ -8,6 +8,22 @@
   <artifactId>server</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
+  <name>DTKK</name>
+  <description>Digitaalisten tietoaineistojen kansallinen kuvausjärjestelmä</description>
+
+  <licenses>
+    <license>
+      <name>EUPL v.1.1</name>
+      <url>http://joinup.ec.europa.eu/software/page/eupl/licence-eupl</url>
+      <distribution>manual</distribution>
+      <comments>The European OSS License</comments>
+    </license>
+  </licenses>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://opensource.thl.fi/jira05/browse/THLDTKK</url>
+  </issueManagement>
 
   <parent>
     <groupId>org.springframework.boot</groupId>

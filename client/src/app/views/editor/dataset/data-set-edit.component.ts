@@ -5,24 +5,19 @@ import {TranslateService} from '@ngx-translate/core';
 
 import {Dataset} from '../../../model2/dataset';
 import {DatasetService} from '../../../services2/dataset.service';
-import {Node} from "../../../model2/node";
+import {LifecyclePhase} from "../../../model2/lifecycle-phase";
+import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
+import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
-import {PersonInRole} from "../../../model/person-in-role";
-import {PersonInRoleService} from "../../../services/person-in-role.service";
 import {Population} from "../../../model2/population";
-import {PopulationService} from "../../../services/population.service";
-import {RoleService} from "../../../services/role.service";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
-import {NodeUtils} from "../../../utils/node-utils";
-import {LifecyclePhase} from "../../../model2/lifecycle-phase";
-import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
 
 @Component({
-    templateUrl: './data-set-edit.component.html'
+  templateUrl: './data-set-edit.component.html'
 })
 export class DataSetEditComponent implements OnInit {
 
@@ -33,28 +28,20 @@ export class DataSetEditComponent implements OnInit {
     allLifecyclePhases: LifecyclePhase[];
     allOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
-    allPersonsInRoleOwner: PersonInRole[];
-    allPersonsInRoleContactPerson: PersonInRole[];
     allUsageConditions: UsageCondition[];
     language: string;
     lifecyclePhase: LifecyclePhase;
-    personsInRoles: PersonInRole[];
-    contactPerson: PersonInRole;
-    owner: PersonInRole;
 
     constructor(
         private datasetService: DatasetService,
+        private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
-        private personInRoleService: PersonInRoleService,
-        private populationService: PopulationService,
         private organizationService: OrganizationService,
         private organizationUnitService: OrganizationUnitService,
-        private roleService: RoleService,
-        private usageConditionService: UsageConditionService,
-        private lifecyclePhaseService: LifecyclePhaseService,
         private route: ActivatedRoute,
         private router: Router,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private usageConditionService: UsageConditionService
     ) {}
 
     ngOnInit() {

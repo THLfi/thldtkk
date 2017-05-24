@@ -1,9 +1,0 @@
-<h1>{{'datasets' | translate}}</h1>
-
-<ul>
-  <li *ngFor="let dataset of datasets">
-    <a routerLink="/datasets/{{ dataset.id }}">
-      {{ dataset.prefLabel | lang }}
-    </a>
-  </li>
-</ul>

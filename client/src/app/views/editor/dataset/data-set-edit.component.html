@@ -61,53 +61,56 @@
 </select>
 </div>
 
-<div class="form-group">
-  <label for="description">{{ 'description' | translate }}</label>
-  <textarea [(ngModel)]="dataset.description[language]"
-      id="description"
-      name="description"
-      class="form-control"
-      rows="6">
-  </textarea>
-</div>
+  <div class="form-group">
+    <label for="description">{{ 'description' | translate }}</label>
+    <textarea [(ngModel)]="dataset.description[language]"
+        thlAutogrow
+        id="description"
+        name="description"
+        class="form-control"
+        rows="6">
+    </textarea>
+  </div>
 
-<div class="form-group">
-  <label for="researchProjectURL" translate="researchProjectURL"></label>
-  <input [(ngModel)]="dataset.researchProjectURL[language]"
-      id="researchProjectURL"
-      name="researchProjectURL"
-      class="form-control"
-      type="text">
-</div>
+  <div class="form-group">
+    <label for="researchProjectURL" translate="researchProjectURL"></label>
+    <input [(ngModel)]="dataset.researchProjectURL[language]"
+        id="researchProjectURL"
+        name="researchProjectURL"
+        class="form-control"
+        type="text">
+  </div>
 
-<div class="form-group">
-  <label for="registryPolicy" translate="registryPolicy"></label>
-  <textarea [(ngModel)]="dataset.registryPolicy[language]"
-      id="registryPolicy"
-      name="registryPolicy"
-      class="form-control"
-      rows="6">
-  </textarea>
-</div>
+  <div class="form-group">
+    <label for="registryPolicy" translate="registryPolicy"></label>
+    <textarea [(ngModel)]="dataset.registryPolicy[language]"
+        thlAutogrow
+        id="registryPolicy"
+        name="registryPolicy"
+        class="form-control"
+        rows="6">
+    </textarea>
+  </div>
 
-<div *ngIf="allUsageConditions"
-    class="form-group">
-  <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
-  <select [(ngModel)]="dataset.usageCondition"
-      [compareWith]="nodeUtils.equals"
-      id="usageCondition"
-      class="form-control">
-    <option [ngValue]="null"></option>
-    <option *ngFor="let usageCondition of allUsageConditions"
-        [ngValue]="usageCondition">
-        {{usageCondition.prefLabel|lang}}
-  </option>
-</select>
-</div>
+  <div *ngIf="allUsageConditions"
+      class="form-group">
+    <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
+    <select [(ngModel)]="dataset.usageCondition"
+        [compareWith]="nodeUtils.equals"
+        id="usageCondition"
+        class="form-control">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let usageCondition of allUsageConditions"
+          [ngValue]="usageCondition">
+          {{usageCondition.prefLabel|lang}}
+    </option>
+  </select>
+  </div>
 
   <div class="form-group">
     <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
     <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
+              thlAutogrow
               id="usageConditionAdditionalInformation"
               name="usageConditionAdditionalInformation"
               class="form-control"
@@ -118,6 +121,7 @@
   <div class="form-group">
     <label for="population-prefLabel">{{ 'population' | translate }}</label>
     <textarea [(ngModel)]="dataset.population.prefLabel[language]"
+              thlAutogrow
               id="population-prefLabel"
               name="population-prefLabel"
               class="form-control"
@@ -128,6 +132,7 @@
   <div class="form-group">
     <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
     <textarea [(ngModel)]="dataset.population.geographicalCoverage[language]"
+              thlAutogrow
               id="population-geographicalCoverage"
               name="population-geographicalCoverage"
               class="form-control"
@@ -153,109 +158,56 @@
            class="form-control">
   </div>
 
-<div class="form-group">
-  <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
-  <iso-datepicker
-      [(dateAsString)]="dataset.referencePeriodStart"
-      id="referencePeriodStart"
-      name="referencePeriodStart">
-  </iso-datepicker>
-</div>
+  <div class="form-group">
+    <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+    <iso-datepicker
+        [(dateAsString)]="dataset.referencePeriodStart"
+        id="referencePeriodStart"
+        name="referencePeriodStart">
+    </iso-datepicker>
+  </div>
 
-<div class="form-group">
-  <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
-  <iso-datepicker
-      [(dateAsString)]="dataset.referencePeriodEnd"
-      id="referencePeriodEnd"
-      name="referencePeriodEnd">
-  </iso-datepicker>
-</div>
+  <div class="form-group">
+    <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+    <iso-datepicker
+        [(dateAsString)]="dataset.referencePeriodEnd"
+        id="referencePeriodEnd"
+        name="referencePeriodEnd">
+    </iso-datepicker>
+  </div>
 
-<div *ngIf="allLifecyclePhases"
-    class="form-group">
-  <label for="lifecyclePhase" translate="lifecyclePhase"></label>
-  <select [(ngModel)]="dataset.lifecyclePhase"
-      [compareWith]="nodeUtils.equals"
-      id="lifecyclePhase"
-      class="form-control">
-    <option [ngValue]="null"></option>
-    <option *ngFor="let lifecyclePhase of allLifecyclePhases"
-        [ngValue]="lifecyclePhase">
-        {{lifecyclePhase.prefLabel|lang}}
-  </option>
-</select>
-</div>
+  <div *ngIf="allLifecyclePhases"
+      class="form-group">
+    <label for="lifecyclePhase" translate="lifecyclePhase"></label>
+    <select [(ngModel)]="dataset.lifecyclePhase"
+        [compareWith]="nodeUtils.equals"
+        id="lifecyclePhase"
+        class="form-control">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let lifecyclePhase of allLifecyclePhases"
+          [ngValue]="lifecyclePhase">
+          {{lifecyclePhase.prefLabel|lang}}
+      </option>
+    </select>
+  </div>
 
-<div class="form-group">
-  <label for="comment" translate="comment"></label>
-  <textarea [(ngModel)]="dataset.comment"
-      id="comment"
-      name="comment"
-      class="form-control"
-      rows="2"
-      thlAutogrow>
-  </textarea>
-</div>
+  <div class="form-group">
+    <label for="comment" translate="comment"></label>
+    <textarea [(ngModel)]="dataset.comment"
+        thlAutogrow
+        id="comment"
+        name="comment"
+        class="form-control"
+        rows="2">
+    </textarea>
+  </div>
 
-<div class="row">
-  <div class="col-xs-12">
-    <h2>{{ 'variables' | translate }}</h2>
-
-    <table
-        *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length); else noInstanceVariables;"
-        class="table table-striped table-hover">
-        <tr>
-        <th>{{ 'prefLabel' | translate }}</th>
-        <th>{{ 'description' | translate }}</th>
-        <th>{{ 'referencePeriod' | translate }}</th>
-        <th>{{ 'functions' | translate }}</th>
-      </tr>
-      <tr *ngFor="let variable of dataset.instanceVariables">
-          <td>
-          {{ variable.prefLabel | lang }}
-        </td>
-        <td>
-          {{ variable.description | lang }}
-        </td>
-        <td>
-      <ng-container
-          *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
-          {{ variable.referencePeriodStart | lang }}
-          —
-          {{ variable.referencePeriodEnd | lang }}
-    </ng-container>
-    <ng-template #inheritedReferencePeriod>
-      {{ 'inheritedReferencePeriod' | translate }}
-    </ng-template>
-    </td>
-    <td>
-      <button
-          routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
-          class="btn btn-default btn-sm">
-        <span class="glyphicon glyphicon-edit"></span>
-        {{ 'edit' | translate }}
-      </button>
-    </td>
-    </tr>
-  </table>
-
-  <ng-template #noInstanceVariables>
-    <p>{{ 'noInstanceVariables' | translate }}</p>
-  </ng-template>
-
-  <button class="btn btn-default"
-          routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new">
-    <span class="glyphicon glyphicon-plus"></span>
-    {{ 'addInstanceVariable' | translate }}
-  </button>
-</div>
 </div>
 
 <hr>
 
-<div class="edit-controls-padding"></div>
+<div class="edit-controls-padding">
   <div class="edit-controls-fixed">
-    
     <button class="btn btn-default" (click)="goBack()">
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'cancel' | translate }}

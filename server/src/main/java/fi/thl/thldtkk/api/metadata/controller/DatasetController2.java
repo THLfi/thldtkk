@@ -87,14 +87,26 @@ public class DatasetController2 {
             produces = APPLICATION_JSON_UTF8_VALUE)
     public Dataset postDatasetInstanceVariable(
             @PathVariable("datasetId") UUID datasetId,
-            @RequestBody InstanceVariable instanceVariable) {
+            @RequestBody InstanceVariable newInstanceVariable) {
 
         Dataset dataset = datasetService.get(datasetId).orElseThrow(
                 NotFoundException::new);
 
         List<InstanceVariable> variables = new ArrayList<>();
-        variables.addAll(dataset.getInstanceVariables());
-        variables.add(instanceVariable);
+        if (newInstanceVariable.getId() == null) {
+          variables.addAll(dataset.getInstanceVariables());
+          variables.add(newInstanceVariable);
+        }
+        else {
+          for (InstanceVariable existingInstanceVariable : dataset.getInstanceVariables()) {
+            if (newInstanceVariable.getId().equals(existingInstanceVariable.getId())) {
+              variables.add(newInstanceVariable);
+            }
+            else {
+              variables.add(existingInstanceVariable);
+            }
+          }
+        }
 
         return datasetService.save(new Dataset(dataset, variables));
     }

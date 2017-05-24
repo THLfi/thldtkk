@@ -196,8 +196,8 @@
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'back' | translate }}
     </button>
-    <button *ngIf="dataSet"
-        routerLink="/editor/datasets/{{ dataSet.id }}/edit"
+    <button *ngIf="dataset"
+        routerLink="/editor/datasets/{{ dataset.id }}/edit"
         class="btn btn-default">
       <span class="glyphicon glyphicon-edit"></span>
       {{ 'edit' | translate }}

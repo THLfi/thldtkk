@@ -42,7 +42,7 @@
       </p>
 
       <p *ngIf="dataset.researchProjectURL | lang">
-        <a href="{{ dataset.researchProjectURL }}" target="_blank">
+        <a href="{{ dataset.researchProjectURL | lang }}" target="_blank">
           {{ 'researchProjectURL' | translate }}
           <span class="glyphicon glyphicon-link"></span>
         </a>

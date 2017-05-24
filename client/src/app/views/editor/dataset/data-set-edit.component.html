@@ -106,16 +106,16 @@
 </select>
 </div>
 
-<div class="form-group">
-  <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
-  <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
-      id="usageConditionAdditionalInformation"
-      name="usageConditionAdditionalInformation"
-      class="form-control"
-      rows="2">
-  </textarea>
-</div>
-<!--
+  <div class="form-group">
+    <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
+    <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
+              id="usageConditionAdditionalInformation"
+              name="usageConditionAdditionalInformation"
+              class="form-control"
+              rows="2">
+    </textarea>
+  </div>
+
   <div class="form-group">
     <label for="population-prefLabel">{{ 'population' | translate }}</label>
     <textarea [(ngModel)]="dataset.population.prefLabel[language]"
@@ -152,7 +152,7 @@
            name="population-loss"
            type="text"
            class="form-control">
-  </div>-->
+  </div>
 
 <div class="form-group">
   <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>

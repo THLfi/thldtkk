@@ -64,14 +64,16 @@ public class DatasetService implements Service<UUID, Dataset> {
 
     @Override
     public Dataset save(Dataset dataset) {
-        Optional<Dataset> old =
-                dataset.getId() != null ? get(dataset.getId()) : empty();
+        Optional<Dataset> old
+                = dataset.getId() != null ? get(dataset.getId()) : empty();
 
         dataset.getInstanceVariables().stream()
                 .filter(instanceVariable -> instanceVariable.getId() == null)
                 .forEach(instanceVariable -> instanceVariable.setId(UUID
                         .randomUUID()));
-
+        dataset.getPopulation()
+                .filter(population -> population.getId() == null)
+                .ifPresent(population -> population.setId(UUID.randomUUID()));
         if (!old.isPresent()) {
             insert(dataset);
         } else {

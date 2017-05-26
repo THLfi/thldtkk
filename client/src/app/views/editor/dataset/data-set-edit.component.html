@@ -46,13 +46,13 @@
     </option>
   </select>
 </div>
-<!--
+
 <div *ngIf="allOrganizationUnits" class="form-group">
   <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
-<select [(ngModel)]="dataset.ownerOrganizationUnit"
-        [compareWith]="nodeUtils.equals"
-        id="ownerOrganizationUnit"
-        class="form-control">
+<select [(ngModel)]="ownerOrganizationUnit"
+    [compareWith]="nodeUtils.equals"
+    id="ownerOrganizationUnit"
+    class="form-control">
   <option [ngValue]="null"></option>
   <option *ngFor="let organizationUnit of allOrganizationUnits"
           [ngValue]="organizationUnit">
@@ -60,7 +60,6 @@
   </option>
 </select>
 </div>
--->
 
 <div class="form-group">
   <label for="description">{{ 'description' | translate }}</label>

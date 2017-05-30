@@ -48,5 +48,6 @@
   "functions": "Toiminnot",
   "dataSetOwner": "Aineiston omistaja",
   "comment": "Kommentti",
-  "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä"
+  "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",
+  "technicalName": "Tekninen nimi"
 }

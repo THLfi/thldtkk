@@ -147,6 +147,7 @@
         <tr>
           <th>{{ 'prefLabel' | translate }}</th>
           <th>{{ 'description' | translate }}</th>
+          <th>{{ 'technicalName' | translate }}</th>
           <th>{{ 'referencePeriod' | translate }}</th>
         </tr>
         <tr *ngFor="let variable of dataset.instanceVariables">
@@ -155,6 +156,9 @@
           </td>
           <td>
             <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
+          </td>
+          <td>
+              {{ variable.technicalName }}
           </td>
           <td>
             <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">

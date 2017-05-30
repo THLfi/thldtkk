@@ -6,4 +6,5 @@ export class InstanceVariable {
   description: LangValues
   referencePeriodStart: string
   referencePeriodEnd: string
+  technicalName: string
 }

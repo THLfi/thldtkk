@@ -10,6 +10,17 @@ website.
 
 Install Maven 3.3 or newer (if not already installed): `brew install maven`
 
+Configure server properties:
+
+    <nano/vim/emacs> server/application.properties
+    Enter the correct values for the following properties:
+    - termed.apiUrl=http://qa-wwwapp6a.thl.fi:8580/termed/api
+    - termed.username=<termed-username-for-api-calls>
+    - termed.password=<termed-password-for-api-calls>
+    - termed.graphId=<current-termed-dtkk-graph-id>
+    - server.port=8680
+    Save the file and exit the editor.
+
 Run dev server:
 
     cd server

@@ -1,8 +1,5 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import com.google.common.collect.MapDifference;
-import com.google.common.collect.MapDifference.ValueDifference;
-import com.google.common.collect.Maps;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Population;
@@ -11,15 +8,21 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.ArrayList;
+
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.collect.Maps.difference;
+import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import static java.util.Arrays.stream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import static java.util.Optional.empty;
+
 import java.util.UUID;
-import java.util.function.Function;
+
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,16 +67,13 @@ public class DatasetService implements Service<UUID, Dataset> {
 
     @Override
     public Dataset save(Dataset dataset) {
-        Optional<Dataset> old
-                = dataset.getId() != null ? get(dataset.getId()) : empty();
+        Optional<Dataset> old = dataset.getId() != null ? get(dataset.getId()) : empty();
 
-        dataset.getInstanceVariables().stream()
-                .filter(instanceVariable -> instanceVariable.getId() == null)
-                .forEach(instanceVariable -> instanceVariable.setId(UUID
-                        .randomUUID()));
         dataset.getPopulation()
-                .filter(population -> population.getId() == null)
-                .ifPresent(population -> population.setId(UUID.randomUUID()));
+            .ifPresent(p -> p.setId(firstNonNull(p.getId(), randomUUID())));
+        dataset.getInstanceVariables()
+            .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
+
         if (!old.isPresent()) {
             insert(dataset);
         } else {
@@ -131,30 +131,19 @@ public class DatasetService implements Service<UUID, Dataset> {
             List<InstanceVariable> newInstanceVariables,
             List<InstanceVariable> oldInstanceVariables) {
 
-        Map<UUID, InstanceVariable> newVarsById = newInstanceVariables.stream()
-                .collect(toMap(InstanceVariable::getId, Function.identity()));
-        Map<UUID, InstanceVariable> oldVarsById = oldInstanceVariables.stream()
-                .collect(toMap(InstanceVariable::getId, Function.identity()));
+        Map<UUID, InstanceVariable> newVarsById =
+            index(newInstanceVariables, InstanceVariable::getId);
+        Map<UUID, InstanceVariable> oldVarsById =
+            index(oldInstanceVariables, InstanceVariable::getId);
 
-        MapDifference<UUID, InstanceVariable> diff = Maps
-                .difference(newVarsById, oldVarsById);
+        List<NodeId> deleted = difference(newVarsById, oldVarsById).entriesOnlyOnRight()
+            .values().stream().map(InstanceVariable::toNode).map(NodeId::new)
+            .collect(toList());
 
-        List<Node> save = new ArrayList<>();
+        List<Node> saved = newInstanceVariables.stream()
+            .map(InstanceVariable::toNode).collect(toList());
 
-        save.addAll(diff.entriesOnlyOnLeft().values().stream()
-                .map(InstanceVariable::toNode)
-                .collect(toList()));
-        save.addAll(diff.entriesDiffering().values().stream()
-                .map(ValueDifference::leftValue)
-                .map(InstanceVariable::toNode)
-                .collect(toList()));
-
-        List<NodeId> delete = diff.entriesOnlyOnRight().values().stream()
-                .map(InstanceVariable::toNode)
-                .map(NodeId::new)
-                .collect(toList());
-
-        return new Changeset<>(delete, save);
+        return new Changeset<>(deleted, saved);
     }
 
     @Override

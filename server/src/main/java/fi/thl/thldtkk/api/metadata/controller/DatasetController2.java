@@ -3,19 +3,20 @@ package fi.thl.thldtkk.api.metadata.controller;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.service.Service;
-import static fi.thl.thldtkk.api.metadata.util.MapUtils.illegalOperator;
+
+import static com.google.common.base.MoreObjects.firstNonNull;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import static java.util.function.Function.identity;
+
+import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -87,28 +88,17 @@ public class DatasetController2 {
             produces = APPLICATION_JSON_UTF8_VALUE)
     public Dataset postDatasetInstanceVariable(
             @PathVariable("datasetId") UUID datasetId,
-            @RequestBody InstanceVariable newInstanceVariable) {
+            @RequestBody InstanceVariable newVariable) {
 
-        Dataset dataset = datasetService.get(datasetId).orElseThrow(
-                NotFoundException::new);
+        Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
-        List<InstanceVariable> variables = new ArrayList<>();
-        if (newInstanceVariable.getId() == null) {
-          variables.addAll(dataset.getInstanceVariables());
-          variables.add(newInstanceVariable);
-        }
-        else {
-          for (InstanceVariable existingInstanceVariable : dataset.getInstanceVariables()) {
-            if (newInstanceVariable.getId().equals(existingInstanceVariable.getId())) {
-              variables.add(newInstanceVariable);
-            }
-            else {
-              variables.add(existingInstanceVariable);
-            }
-          }
-        }
+        newVariable.setId(firstNonNull(newVariable.getId(), randomUUID()));
 
-        return datasetService.save(new Dataset(dataset, variables));
+        Map<UUID, InstanceVariable> variablesById =
+            index(dataset.getInstanceVariables(), InstanceVariable::getId);
+        variablesById.put(newVariable.getId(), newVariable);
+
+        return datasetService.save(new Dataset(dataset, new ArrayList<>(variablesById.values())));
     }
 
     @DeleteMapping("/{datasetId}")

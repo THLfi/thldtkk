@@ -1,20 +1,24 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 /**
  * Termed REST API backed service for Nodes.
@@ -46,8 +50,33 @@ public class TermedNodeService implements Service<NodeId, Node> {
 
   @Override
   public Stream<Node> query(String query) {
-    return termed.exchange("/node-trees?select=id,type,properties.*&where={query}&max=-1",
-      GET, null, nodeListType, query).getBody().stream();
+    return query(
+      new NodeRequestBuilder()
+        .withQuery(query)
+        .build());
+  }
+
+  public Stream<Node> query(NodeRequest request) {
+    StringBuilder path = new StringBuilder("/node-trees?");
+    Map<String, String> params = new LinkedHashMap<>();
+
+    path.append("&select={includedAttributes}");
+    params.put("includedAttributes", request.getIncludedAttributes());
+
+    if (StringUtils.hasText(request.getQuery())) {
+      path.append("&where={query}");
+      params.put("query", request.getQuery());
+    }
+
+    if (StringUtils.hasText(request.getSort())) {
+      path.append("&sort={sort}");
+      params.put("sort", request.getSort());
+    }
+
+    path.append("&max={maxResults}");
+    params.put("maxResults", Integer.toString(request.getMaxResults()));
+
+    return termed.exchange(path.toString(), GET, null, nodeListType, params).getBody().stream();
   }
 
   @Override

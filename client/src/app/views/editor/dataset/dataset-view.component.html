@@ -130,6 +130,13 @@
 
 </ng-container>
 
+<ng-container *ngIf="dataset.datasetType">
+
+  <h2>{{ 'datasetType' | translate }}</h2>
+  <p>{{ dataset.datasetType.prefLabel | lang }}</p>
+
+</ng-container>
+
 <h2>{{ 'comment' | translate }}</h2>
 <p>{{ dataset.comment}}</p>
 

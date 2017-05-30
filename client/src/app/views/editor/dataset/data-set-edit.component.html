@@ -200,6 +200,22 @@
     </select>
   </div>
 
+
+  <div *ngIf="allDatasetTypes"
+      class="form-group">
+    <label for="datasetType" translate="datasetType"></label>
+    <select [(ngModel)]="dataset.datasetType"
+        [compareWith]="nodeUtils.equals"
+        id="datasetType"
+        class="form-control">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let datasetType of allDatasetTypes"
+          [ngValue]="datasetType">
+          {{datasetType.prefLabel|lang}}
+      </option>
+    </select>
+  </div>
+
   <div class="form-group">
     <label for="comment" translate="comment"></label>
     <textarea [(ngModel)]="dataset.comment"

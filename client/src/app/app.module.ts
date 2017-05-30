@@ -22,6 +22,7 @@ import { OrganizationUnitService } from './services2/organization-unit.service'
 import { InstanceVariableService } from './services2/instance-variable.service'
 import { UsageConditionService } from './services2/usage-condition.service'
 import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
+import { DatasetTypeService } from './services2/dataset-type.service'
 
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
@@ -77,6 +78,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         OrganizationUnitService,
         UsageConditionService,
         LifecyclePhaseService,
+        DatasetTypeService,
         DatePipe
     ],
     bootstrap: [

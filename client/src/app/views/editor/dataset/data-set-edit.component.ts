@@ -17,7 +17,7 @@ import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
 
 @Component({
-  templateUrl: './data-set-edit.component.html'
+    templateUrl: './data-set-edit.component.html'
 })
 export class DataSetEditComponent implements OnInit {
 
@@ -77,7 +77,8 @@ export class DataSetEditComponent implements OnInit {
                 lifecyclePhase: null,
                 population: null,
                 instanceVariables: [],
-                comment: null
+                comment: null,
+                numberOfObservationUnits: null
             });
         }
         this.organizationService.getAllOrganizations()

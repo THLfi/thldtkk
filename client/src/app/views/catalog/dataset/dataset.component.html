@@ -97,6 +97,13 @@
 
           <div class="col-sm-6 col-md-4">
             <div class="bordered-box">
+              <h2 translate="numberOfObservationUnits"></h2>
+              <p>{{ dataset.numberOfObservationUnits }}</p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="bordered-box">
               <h2>{{ 'loss' | translate }}</h2>
               <p>{{ dataset.population.loss | lang }}</p>
             </div>
@@ -116,6 +123,8 @@
               </p>
             </div>
           </div>
+
+          <div class="clearfix visible-md-block"></div>
 
           <div *ngIf="dataset.lifecyclePhase" class="col-sm-6 col-md-4">
             <div class="bordered-box">

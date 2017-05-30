@@ -31,8 +31,8 @@ public class Dataset {
     private Map<String, String> description = new LinkedHashMap<>();
     private Map<String, String> registryPolicy = new LinkedHashMap<>();
     private Map<String, String> researchProjectURL = new LinkedHashMap<>();
-    private Map<String, String> usageConditionAdditionalInformation =
-            new LinkedHashMap<>();
+    private Map<String, String> usageConditionAdditionalInformation
+            = new LinkedHashMap<>();
     private Boolean published;
     private LocalDate referencePeriodStart;
     private LocalDate referencePeriodEnd;
@@ -43,6 +43,7 @@ public class Dataset {
     private Population population;
     private List<InstanceVariable> instanceVariables = new ArrayList<>();
     private String comment;
+    private String numberOfObservationUnits;
 
     public Dataset(UUID id) {
         this.id = requireNonNull(id);
@@ -59,8 +60,8 @@ public class Dataset {
         this.description = dataset.description;
         this.registryPolicy = dataset.registryPolicy;
         this.researchProjectURL = dataset.researchProjectURL;
-        this.usageConditionAdditionalInformation =
-                dataset.usageConditionAdditionalInformation;
+        this.usageConditionAdditionalInformation
+                = dataset.usageConditionAdditionalInformation;
         this.published = dataset.published;
         this.referencePeriodStart = dataset.referencePeriodStart;
         this.referencePeriodEnd = dataset.referencePeriodEnd;
@@ -71,6 +72,7 @@ public class Dataset {
         this.population = dataset.population;
         this.instanceVariables = instanceVariables;
         this.comment = dataset.comment;
+        this.numberOfObservationUnits = dataset.numberOfObservationUnits;
     }
 
     /**
@@ -94,13 +96,13 @@ public class Dataset {
                 "referencePeriodStart"), null);
         this.referencePeriodEnd = toLocalDate(node.getProperties(
                 "referencePeriodEnd"), null);
-        node.getReferencesFirst("owner").ifPresent(v -> this.owner =
-                new Organization(v));
+        node.getReferencesFirst("owner").ifPresent(v -> this.owner
+                = new Organization(v));
         node.getReferences("ownerOrganizationUnit")
                 .forEach(v -> this.ownerOrganizationUnit.add(
                         new OrganizationUnit(v)));
-        node.getReferencesFirst("population").ifPresent(v -> this.population =
-                new Population(v));
+        node.getReferencesFirst("population").ifPresent(v -> this.population
+                = new Population(v));
         node.getReferencesFirst("usageCondition")
                 .ifPresent(v -> this.usageCondition = new UsageCondition(v));
         node.getReferencesFirst("lifecyclePhase")
@@ -109,10 +111,15 @@ public class Dataset {
                 .forEach(v -> this.instanceVariables
                         .add(new InstanceVariable(v)));
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
+        this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public Optional<String> getNumberOfObservationUnits() {
+        return Optional.ofNullable(numberOfObservationUnits);
     }
 
     public Map<String, String> getPrefLabel() {
@@ -214,6 +221,7 @@ public class Dataset {
         getInstanceVariables().forEach(v -> refs.put("instanceVariable", v
                 .toNode()));
         getComment().ifPresent((v -> props.put("comment", toPropertyValue(v))));
+        getNumberOfObservationUnits().ifPresent((v -> props.put("numberOfObservationUnits", toPropertyValue(v))));
         return new Node(id, "DataSet", props, refs);
     }
 
@@ -248,7 +256,8 @@ public class Dataset {
                 && Objects.equals(lifecyclePhase, dataset.lifecyclePhase)
                 && Objects.equals(population, dataset.population)
                 && Objects.equals(instanceVariables, dataset.instanceVariables)
-                && Objects.equals(comment, dataset.comment);
+                && Objects.equals(comment, dataset.comment)
+                && Objects.equals(numberOfObservationUnits, numberOfObservationUnits);
     }
 
     @Override
@@ -260,7 +269,8 @@ public class Dataset {
                         published,
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
-                        lifecyclePhase, population, instanceVariables, comment);
+                        lifecyclePhase, population, instanceVariables, comment,
+                        numberOfObservationUnits);
     }
 
 }

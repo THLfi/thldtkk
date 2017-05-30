@@ -119,6 +119,15 @@
   </div>
 
   <div class="form-group">
+    <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
+    <input [(ngModel)]="dataset.numberOfObservationUnits"
+        id="numberOfObservationUnits"
+        name="numberOfObservationUnits"
+        class="form-control"
+        type="text">
+  </div>
+
+  <div class="form-group">
     <label for="population-prefLabel">{{ 'population' | translate }}</label>
     <textarea [(ngModel)]="dataset.population.prefLabel[language]"
               thlAutogrow

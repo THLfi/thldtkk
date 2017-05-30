@@ -43,4 +43,6 @@ export interface Dataset extends Node {
 
   comment: string
 
+  numberOfObservationUnits: string
+
 }

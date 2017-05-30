@@ -89,6 +89,9 @@
 <h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
 <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
 
+<h2 translate="numberOfObservationUnits"></h2>
+<p>{{dataset.numberOfObservationUnits}}</p>
+
 <ng-container *ngIf="dataset.population">
 
   <h2>{{ 'population' | translate }}</h2>

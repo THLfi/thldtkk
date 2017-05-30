@@ -47,7 +47,8 @@
   "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
   "functions": "Toiminnot",
   "dataSetOwner": "Aineiston omistaja",
-  "comment": "Kommentti",
   "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",
-  "technicalName": "Tekninen nimi"
+  "technicalName": "Tekninen nimi",
+  "datasetType":"Aineistotyyppi",
+  "comment": "Kommentti"
 }

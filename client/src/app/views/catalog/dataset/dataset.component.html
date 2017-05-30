@@ -28,6 +28,16 @@
       <!-- TODO: Add contact person after adding it to new API. -->
 
       <p>
+        <strong *ngIf="dataset.datasetType">
+          {{ 'datasetType' | translate }}
+        </strong>
+      </p>
+
+      <p *ngIf="dataset.datasetType">
+        {{ dataset.datasetType.prefLabel | lang }}
+      </p>
+      
+      <p>
         <strong *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">
           {{ 'usageCondition' | translate }}
         </strong>
@@ -185,7 +195,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button class="btn btn-default" routerLink="/datasets">
+    <button class="btn btn-default" routerLink="/catalog/datasets">
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'back' | translate }}
     </button>

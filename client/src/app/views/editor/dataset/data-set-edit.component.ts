@@ -12,9 +12,12 @@ import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
+import {DatasetType} from "../../../model2/dataset-type"
+import {DatasetTypeService} from "../../../services2/dataset-type.service"
 import {Population} from "../../../model2/population";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
+
 
 @Component({
     templateUrl: './data-set-edit.component.html'
@@ -29,6 +32,7 @@ export class DataSetEditComponent implements OnInit {
     allOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
     allUsageConditions: UsageCondition[];
+    allDatasetTypes: DatasetType[];
     language: string;
     lifecyclePhase: LifecyclePhase;
 
@@ -41,7 +45,8 @@ export class DataSetEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private usageConditionService: UsageConditionService
+        private usageConditionService: UsageConditionService,
+        private datasetTypeService: DatasetTypeService
     ) {}
 
     ngOnInit() {
@@ -77,8 +82,10 @@ export class DataSetEditComponent implements OnInit {
                 lifecyclePhase: null,
                 population: null,
                 instanceVariables: [],
-                comment: null,
-                numberOfObservationUnits: null
+                numberOfObservationUnits: null,
+                datasetType: null,
+                comment: null
+
             });
         }
         this.organizationService.getAllOrganizations()
@@ -89,6 +96,8 @@ export class DataSetEditComponent implements OnInit {
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
+        this.datasetTypeService.getDatasetTypes()
+            .subscribe(datasetTypes => this.allDatasetTypes = datasetTypes)
     }
 
     private initializeDataSetProperties(dataset: Dataset): Dataset {

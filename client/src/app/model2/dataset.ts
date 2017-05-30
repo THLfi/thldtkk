@@ -6,6 +6,7 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {Population} from './population';
 import {UsageCondition} from './usage-condition';
+import {DatasetType} from './dataset-type'
 
 export interface Dataset extends Node {
 
@@ -45,4 +46,5 @@ export interface Dataset extends Node {
 
   numberOfObservationUnits: string
 
+  datasetType: DatasetType
 }

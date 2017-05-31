@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
-import static java.util.Arrays.stream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,16 +47,8 @@ public class DatasetService implements Service<UUID, Dataset> {
 
     @Override
     public Stream<Dataset> query(String query) {
-        List<String> byPrefLabel = stream(query.split("\\s"))
-                .map(token -> "properties.prefLabel:" + token + "*")
-                .collect(toList());
-
-        List<String> clauses = new ArrayList<>();
-        clauses.add("type.id:DataSet");
-        clauses.addAll(byPrefLabel);
-
-        return nodeService.query(String.join(" AND ", clauses))
-                .map(Dataset::new);
+        String nodeQuery = "type.id:DataSet" + (query.isEmpty() ? "" : " AND (" + query + ")");
+        return nodeService.query(nodeQuery).map(Dataset::new);
     }
 
     @Override

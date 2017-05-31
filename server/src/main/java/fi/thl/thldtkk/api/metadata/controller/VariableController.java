@@ -1,6 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
+import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.service.Service;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -13,20 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v2/organizationUnits")
-public class OrganizationUnitController2 {
+@RequestMapping("/api/v2/variables")
+public class VariableController {
 
     @Autowired
-    private Service<UUID, OrganizationUnit> organizationUnitService;
+    private Service<UUID, Variable> variableService;
 
     @GetJsonMapping
-    public List<OrganizationUnit> queryOrganizationUnits() {
-        return organizationUnitService.query().collect(toList());
+    public List<Variable> queryVariables() {
+        return variableService.query().collect(toList());
     }
 
-    @GetJsonMapping("/{organizationUnit}")
-    public OrganizationUnit getOrganizationUnit(@PathVariable("organizationUnit") UUID organizationUnitId) {
-        return organizationUnitService.get(organizationUnitId).orElseThrow(NotFoundException::new);
+    @GetJsonMapping("/{variable}")
+    public Variable getVariable(@PathVariable("variable") UUID variableId) {
+        return variableService.get(variableId).orElseThrow(NotFoundException::new);
     }
-
 }

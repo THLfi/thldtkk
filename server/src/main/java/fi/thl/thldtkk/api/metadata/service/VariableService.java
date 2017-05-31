@@ -7,7 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VariableService implements Service<UUID, Variable> {
 
     private Service<NodeId, Node> nodeService;

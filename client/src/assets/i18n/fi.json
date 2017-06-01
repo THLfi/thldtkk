@@ -51,5 +51,9 @@
   "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",
   "technicalName": "Tekninen nimi",
   "datasetType":"Aineistotyyppi",
-  "comment": "Kommentti"
+  "comment": "Kommentti",
+  "conceptsFromScheme": "Asiasanat (luokittelusta)",
+  "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
+  "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
+  "noConceptsFromScheme": "Asiasanoja ei ole määritelty."
 }

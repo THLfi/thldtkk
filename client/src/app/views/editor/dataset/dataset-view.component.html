@@ -1,146 +1,149 @@
 <ng-container *ngIf="dataset">
 
-  <div class="row">
-    <div class="col-md-8">
-      <h1>{{ dataset.prefLabel | lang }}</h1>
-    </div>
-
-    <div class="col-md-4">
-      <h2>
-        <ng-container *ngIf="dataset.published; else unpublished;">
-            <span class="label label-success">
-            {{ 'published' | translate }}
-            <span class="glyphicon glyphicon-ok"></span>
-          </span>
-          <button (click)="confirmUnpublish()" class="btn btn-warning btn-unpublish">
-            {{ 'unpublish' | translate }}
-          </button>
-        </ng-container>
-        <ng-template #unpublished>
-          <span class="label label-default">
-            {{ 'unpublished' | translate }}
-          </span>
-          <button (click)="confirmPublish()" class="btn btn-warning btn-publish">
-            {{ 'publish' | translate }}
-          </button>
-        </ng-template>
-      </h2>
-    </div>
+<div class="row">
+  <div class="col-md-8">
+    <h1>{{ dataset.prefLabel | lang }}</h1>
   </div>
 
-  <div class="row">
-    <div class="col-xs-12">
+  <div class="col-md-4">
+    <h2>
+      <ng-container *ngIf="dataset.published; else unpublished;">
+          <span class="label label-success">
+          {{ 'published' | translate }}
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+        <button (click)="confirmUnpublish()" class="btn btn-warning btn-unpublish">
+          {{ 'unpublish' | translate }}
+        </button>
+      </ng-container>
+      <ng-template #unpublished>
+        <span class="label label-default">
+          {{ 'unpublished' | translate }}
+        </span>
+        <button (click)="confirmPublish()" class="btn btn-warning btn-publish">
+          {{ 'publish' | translate }}
+        </button>
+      </ng-template>
+    </h2>
+  </div>
+</div>
 
-      <h2>{{ 'altLabel' | translate }}</h2>
-      <p>{{ dataset.altLabel | lang }}</p>
+<div class="row">
+  <div class="col-xs-12">
 
-      <h2>{{ 'description' | translate }}</h2>
-      <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>
+    <h2>{{ 'altLabel' | translate }}</h2>
+    <p>{{ dataset.altLabel | lang }}</p>
 
-      <h2>{{ 'abbreviation' | translate }}</h2>
-      <p>{{ dataset.abbreviation | lang }}</p>
+    <h2>{{ 'description' | translate }}</h2>
+    <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>
 
-      <h2>{{ 'organization' | translate }}</h2>
-      <p *ngIf="dataset.owner">
-        {{ dataset.owner.prefLabel | lang }}
-        <span *ngIf="dataset.owner.abbreviation | lang">
-            ({{ dataset.owner.abbreviation | lang }})
+    <h2>{{ 'abbreviation' | translate }}</h2>
+    <p>{{ dataset.abbreviation | lang }}</p>
+
+    <h2>{{ 'organization' | translate }}</h2>
+    <p *ngIf="dataset.owner">
+      {{ dataset.owner.prefLabel | lang }}
+      <span *ngIf="dataset.owner.abbreviation | lang">
+          ({{ dataset.owner.abbreviation | lang }})
       </span>
     </p>
-
 
     <h2>{{ 'organizationUnit' | translate }}</h2>
     <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
         {{ ownerOrganizationUnit.prefLabel | lang }}
         <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
           ({{ ownerOrganizationUnit.abbreviation | lang }})
-    </span>
-  </p>
-  <!--
-        <div *ngIf="contactPerson">
-          <h2 translate="contactPerson"></h2>
-          <p>
-            <person [person]="contactPerson"></person>
-          </p>
-        </div>
-        <div *ngIf="owner">
-          <h2 translate="dataSetOwner"></h2>
-          <p>
-            <person [person]="owner"></person>
-          </p>
-        </div>
-  -->
-  <h2>{{ 'researchProjectURL' | translate }}</h2>
-  <p>
-    <a href="{{ dataset.researchProjectURL | lang }}" target="_blank">
-      {{ dataset.researchProjectURL | lang }}
-    </a>
-  </p>
-
-  <h2>{{ 'registryPolicy' | translate }}</h2>
-  <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
-
-  <h2>{{ 'usageCondition' | translate }}</h2>
-  <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)"
-      class="preserve-line-breaks">
-      {{ dataset.usageCondition.prefLabel | lang }}
-</p>
-
-<h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
-<p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
-
-<h2 translate="numberOfObservationUnits"></h2>
-<p>{{dataset.numberOfObservationUnits}}</p>
-
-<ng-container *ngIf="dataset.population">
-
-  <h2>{{ 'population' | translate }}</h2>
-  <p>{{ dataset.population.prefLabel | lang }}</p>
-
-  <h2>{{ 'geographicalCoverage' | translate }}</h2>
-  <p>{{ dataset.population.geographicalCoverage | lang }}</p>
-
-  <h2>{{ 'sampleSize' | translate }}</h2>
-  <p>{{ dataset.population.sampleSize | lang }}</p>
-
-  <h2>{{ 'loss' | translate }}</h2>
-  <p>{{ dataset.population.loss | lang }}</p>
-
-</ng-container>
-
-
-<ng-container *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd">
-    <div class="bordered-box">
-    <h2>{{ 'referencePeriod' | translate }}</h2>
-    <p *ngIf="dataset.referencePeriodStart">
-      {{ 'referencePeriodStart' | translate }}:
-      {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+      </span>
     </p>
-    <p *ngIf="dataset.referencePeriodEnd">
-      {{ 'referencePeriodEnd' | translate }}:
-      {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+
+    <h2>{{ 'researchProjectURL' | translate }}</h2>
+    <p>
+      <a href="{{ dataset.researchProjectURL | lang }}" target="_blank">
+        {{ dataset.researchProjectURL | lang }}
+      </a>
     </p>
+
+    <h2>{{ 'registryPolicy' | translate }}</h2>
+    <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
+
+    <h2>{{ 'usageCondition' | translate }}</h2>
+    <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)"
+        class="preserve-line-breaks">
+        {{ dataset.usageCondition.prefLabel | lang }}
+    </p>
+
+    <h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
+    <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
+
+    <h2 translate="numberOfObservationUnits"></h2>
+    <p>{{dataset.numberOfObservationUnits}}</p>
+
+    <ng-container *ngIf="dataset.population">
+
+      <h2>{{ 'population' | translate }}</h2>
+      <p>{{ dataset.population.prefLabel | lang }}</p>
+
+      <h2>{{ 'geographicalCoverage' | translate }}</h2>
+      <p>{{ dataset.population.geographicalCoverage | lang }}</p>
+
+      <h2>{{ 'sampleSize' | translate }}</h2>
+      <p>{{ dataset.population.sampleSize | lang }}</p>
+
+      <h2>{{ 'loss' | translate }}</h2>
+      <p>{{ dataset.population.loss | lang }}</p>
+
+    </ng-container>
+
+    <ng-container *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd">
+        <div class="bordered-box">
+        <h2>{{ 'referencePeriod' | translate }}</h2>
+        <p *ngIf="dataset.referencePeriodStart">
+          {{ 'referencePeriodStart' | translate }}:
+          {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+        </p>
+        <p *ngIf="dataset.referencePeriodEnd">
+          {{ 'referencePeriodEnd' | translate }}:
+          {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+        </p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="dataset.lifecyclePhase">
+
+      <h2>{{ 'lifecyclePhase' | translate }}</h2>
+      <p>{{ dataset.lifecyclePhase.prefLabel | lang }}</p>
+
+    </ng-container>
+
+    <ng-container *ngIf="dataset.datasetType">
+
+      <h2>{{ 'datasetType' | translate }}</h2>
+      <p>{{ dataset.datasetType.prefLabel | lang }}</p>
+
+    </ng-container>
+
+    <h2>{{ 'conceptsFromScheme' | translate }}</h2>
+
+    <p *ngIf="dataset.conceptsFromScheme.length; else noConceptsFromScheme;">
+      <span *ngFor="let concept of dataset.conceptsFromScheme"
+        style="margin-right:.5em;">
+        {{ concept.prefLabel | lang }}
+        <span style="opacity:.6">
+          ({{ concept.conceptScheme.prefLabel | lang }})
+        </span>
+      </span>
+    </p>
+
+    <ng-template #noConceptsFromScheme>
+      <p>{{ 'noConceptsFromScheme' | translate }}</p>
+    </ng-template>
+
+    <ng-container *ngIf="dataset.comment">
+      <h2>{{ 'comment' | translate }}</h2>
+      <p>{{ dataset.comment}}</p>
+    </ng-container>
+
   </div>
-</ng-container>
-
-<ng-container *ngIf="dataset.lifecyclePhase">
-
-  <h2>{{ 'lifecyclePhase' | translate }}</h2>
-  <p>{{ dataset.lifecyclePhase.prefLabel | lang }}</p>
-
-</ng-container>
-
-<ng-container *ngIf="dataset.datasetType">
-
-  <h2>{{ 'datasetType' | translate }}</h2>
-  <p>{{ dataset.datasetType.prefLabel | lang }}</p>
-
-</ng-container>
-
-<h2>{{ 'comment' | translate }}</h2>
-<p>{{ dataset.comment}}</p>
-
-</div>
 </div>
 
 <div class="row">
@@ -163,35 +166,35 @@
           <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
         </td>
         <td>
-      <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
-          {{ variable.referencePeriodStart }}
-          —
-          {{ variable.referencePeriodEnd }}
-    </ng-container>
-    <ng-template #inheritedReferencePeriod>
-      {{ 'inheritedReferencePeriod' | translate }}
+          <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
+              {{ variable.referencePeriodStart }}
+              —
+              {{ variable.referencePeriodEnd }}
+          </ng-container>
+          <ng-template #inheritedReferencePeriod>
+            {{ 'inheritedReferencePeriod' | translate }}
+          </ng-template>
+        </td>
+        <td>
+          <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
+                  class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{ 'edit' | translate }}
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <ng-template #noInstanceVariables>
+      <p>{{ 'noInstanceVariables' | translate }}</p>
     </ng-template>
-    </td>
-    <td>
-      <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
-              class="btn btn-default btn-sm">
-        <span class="glyphicon glyphicon-edit"></span>
-        {{ 'edit' | translate }}
-      </button>
-    </td>
-    </tr>
-  </table>
 
-  <ng-template #noInstanceVariables>
-    <p>{{ 'noInstanceVariables' | translate }}</p>
-  </ng-template>
-
-  <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new"
-          class="btn btn-default">
-    <span class="glyphicon glyphicon-plus"></span>
-    {{ 'addInstanceVariable' | translate }}
-  </button>
-</div>
+    <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new"
+            class="btn btn-default">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{ 'addInstanceVariable' | translate }}
+    </button>
+  </div>
 </div>
 
 <div class="row">

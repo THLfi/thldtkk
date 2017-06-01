@@ -53,7 +53,7 @@ public class DatasetService implements Service<UUID, Dataset> {
 
     @Override
     public Optional<Dataset> get(UUID id) {
-        return nodeService.get(new NodeId(id, "DataSet")).map(Dataset::new);
+        return nodeService.get(new NodeId(id, "DataSet"), "*,references.inScheme:2").map(Dataset::new);
     }
 
     @Override

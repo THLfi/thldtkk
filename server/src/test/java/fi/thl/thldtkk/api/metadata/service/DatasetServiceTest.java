@@ -6,6 +6,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +37,8 @@ public class DatasetServiceTest {
     when(mockedNodeService.query("type.id:DataSet")).thenReturn(datasets.stream());
     when(mockedNodeService.query("type.id:DataSet AND (properties.prefLabel:hello*)"))
         .thenReturn(datasets.stream());
-    when(mockedNodeService.get(any(NodeId.class))).thenReturn(Optional.<Node>empty());
-    when(mockedNodeService.get(new NodeId(nameUUIDFromString("DS1"), "DataSet")))
+    when(mockedNodeService.get(any(NodeId.class), eq("*,references.inScheme:2"))).thenReturn(Optional.<Node>empty());
+    when(mockedNodeService.get(eq(new NodeId(nameUUIDFromString("DS1"), "DataSet")), eq("*,references.inScheme:2")))
         .thenReturn(Optional.of(datasets.get(0)));
 
     this.datasetService = new DatasetService(mockedNodeService);

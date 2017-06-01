@@ -1,8 +1,10 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
+import {Concept} from '../../../model2/concept';
+import {ConceptService} from '../../../services2/concept.service';
 import {Dataset} from '../../../model2/dataset';
 import {DatasetService} from '../../../services2/dataset.service';
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
@@ -17,7 +19,6 @@ import {DatasetTypeService} from "../../../services2/dataset-type.service"
 import {Population} from "../../../model2/population";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
-
 
 @Component({
     templateUrl: './data-set-edit.component.html'
@@ -36,6 +37,9 @@ export class DataSetEditComponent implements OnInit {
     language: string;
     lifecyclePhase: LifecyclePhase;
 
+    conceptSearchSubscription: Subscription;
+    conceptSearchResults: Concept[] = [];
+
     constructor(
         private datasetService: DatasetService,
         private lifecyclePhaseService: LifecyclePhaseService,
@@ -46,7 +50,8 @@ export class DataSetEditComponent implements OnInit {
         private router: Router,
         private translateService: TranslateService,
         private usageConditionService: UsageConditionService,
-        private datasetTypeService: DatasetTypeService
+        private datasetTypeService: DatasetTypeService,
+        private conceptService: ConceptService
     ) {}
 
     ngOnInit() {
@@ -84,8 +89,8 @@ export class DataSetEditComponent implements OnInit {
                 instanceVariables: [],
                 numberOfObservationUnits: null,
                 datasetType: null,
-                comment: null
-
+                comment: null,
+                conceptsFromScheme: []
             });
         }
         this.organizationService.getAllOrganizations()
@@ -146,6 +151,26 @@ export class DataSetEditComponent implements OnInit {
         ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss', 'description']
             .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
         return population;
+    }
+
+    searchConcept(event: any): void {
+      const searchText: string = event.query
+      if (this.conceptSearchSubscription) {
+        // Cancel possible on-going search
+        this.conceptSearchSubscription.unsubscribe()
+      }
+      this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
+        .subscribe(concepts => this.conceptSearchResults = concepts)
+    }
+
+    getConceptLanguages(concept: Concept): any {
+      const languages = []
+      for (let lang in concept.prefLabel) {
+        if (concept.prefLabel.hasOwnProperty(lang) && lang != this.language) {
+          languages.push(lang)
+        }
+      }
+      return languages
     }
 
     save() {

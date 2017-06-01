@@ -45,6 +45,7 @@ public class Dataset {
     private String comment;
     private String numberOfObservationUnits;
     private DatasetType datasetType;
+    private List<Concept> conceptsFromScheme = new ArrayList<>();
 
     public Dataset(UUID id) {
         this.id = requireNonNull(id);
@@ -80,6 +81,7 @@ public class Dataset {
         this.comment = dataset.comment;
         this.numberOfObservationUnits = dataset.numberOfObservationUnits;
         this.datasetType = dataset.datasetType;
+        this.conceptsFromScheme = dataset.conceptsFromScheme;
     }
 
     /**
@@ -120,10 +122,11 @@ public class Dataset {
         node.getReferencesFirst("datasetType")
                 .ifPresent(v -> this.datasetType = new DatasetType(v));
 
-
-
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
+
+        node.getReferences("conceptsFromScheme")
+          .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     }
 
     public UUID getId() {
@@ -206,7 +209,11 @@ public class Dataset {
         return Optional.ofNullable(comment);
     }
 
-    /**
+    public List<Concept> getConceptsFromScheme() {
+      return conceptsFromScheme;
+    }
+
+  /**
      * Transforms dataset into node
      */
     public Node toNode() {
@@ -240,6 +247,7 @@ public class Dataset {
                 .toNode()));
         getComment().ifPresent((v -> props.put("comment", toPropertyValue(v))));
         getNumberOfObservationUnits().ifPresent((v -> props.put("numberOfObservationUnits", toPropertyValue(v))));
+        getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
         return new Node(id, "DataSet", props, refs);
     }
 
@@ -276,7 +284,8 @@ public class Dataset {
                 && Objects.equals(instanceVariables, dataset.instanceVariables)
                 && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
                 && Objects.equals(datasetType, dataset.datasetType)
-                && Objects.equals(comment, dataset.comment);
+                && Objects.equals(comment, dataset.comment)
+                && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme);
 
     }
 
@@ -290,8 +299,8 @@ public class Dataset {
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, instanceVariables, comment,
-                        datasetType, numberOfObservationUnits);
-
+                        datasetType, numberOfObservationUnits,
+                        conceptsFromScheme);
     }
 
 }

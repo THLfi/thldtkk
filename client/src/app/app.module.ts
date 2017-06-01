@@ -16,6 +16,7 @@ import { environment } from '../environments/environment'
 import { NodeUtils } from './utils/node-utils'
 
 // services
+import { ConceptService } from './services2/concept.service';
 import { DatasetService } from './services2/dataset.service'
 import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
@@ -38,6 +39,7 @@ import { DataSetListComponent as EditorDataSetListComponent } from './views/edit
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
+import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -61,6 +63,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         FormsModule,
         HttpModule,
         AppRoutingModule,
+        AutoCompleteModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -79,7 +82,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UsageConditionService,
         LifecyclePhaseService,
         DatasetTypeService,
-        DatePipe
+        DatePipe,
+        ConceptService
     ],
     bootstrap: [
         AppComponent

@@ -216,6 +216,48 @@
     </select>
   </div>
 
+  <ng-container *ngIf="dataset.conceptsFromScheme">
+    <div class="form-group">
+      <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+      <br>
+      <p-autoComplete
+        [(ngModel)]="dataset.conceptsFromScheme"
+        [suggestions]="conceptSearchResults"
+        (completeMethod)="searchConcept($event)"
+        [multiple]="true"
+        dataKey="id"
+        emptyMessage="{{ 'noMatchingConcepts' | translate }}"
+        placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
+        minlength="3"
+        inputId="conceptsFromScheme">
+
+        <ng-template let-concept pTemplate="item">
+          <span>
+            {{ concept.prefLabel | lang }}
+          </span>
+          <small style="opacity:.7">
+            <span *ngFor="let lang of getConceptLanguages(concept)">
+              {{ lang }}:
+              {{ concept.prefLabel[lang] }}
+            </span>
+            ({{ concept.conceptScheme.prefLabel | lang }})
+          </small>
+        </ng-template>
+
+        <ng-template let-concept pTemplate="selectedItem">
+          <span style="margin-right:1.2em;">
+            <span>
+              {{ concept.prefLabel | lang }}
+            </span>
+            <span style="opacity:.4">
+              ({{ concept.conceptScheme.prefLabel | lang }})
+            </span>
+          </span>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+  </ng-container>
+
   <div class="form-group">
     <label for="comment" translate="comment"></label>
     <textarea [(ngModel)]="dataset.comment"

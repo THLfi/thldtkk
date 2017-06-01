@@ -37,6 +37,17 @@ public interface Service<K, V> {
   Optional<V> get(K id);
 
   /**
+   * Find one value by id
+   *
+   * @param id of the requested value
+   * @param select describing what fields should be returned
+   * @return value or empty optional
+   */
+  default Optional<V> get(K id, String select) {
+    return get(id);
+  }
+
+  /**
    * Save multiple values
    *
    * @param values to be saved

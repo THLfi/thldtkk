@@ -39,8 +39,13 @@ public class TermedNodeService implements Service<NodeId, Node> {
 
   @Override
   public Optional<Node> get(NodeId node) {
-    return Optional.of(termed.getForObject("/types/{typeId}/node-trees/{id}?select=*", Node.class,
-      node.getTypeId(), node.getId()));
+    return get(node, "*");
+  }
+
+  @Override
+  public Optional<Node> get(NodeId node, String select) {
+    return Optional.of(termed.getForObject("/types/{typeId}/node-trees/{id}?select=" + select,
+        Node.class, node.getTypeId(), node.getId()));
   }
 
   @Override

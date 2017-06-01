@@ -40,6 +40,7 @@
   "addInstanceVariable": "Lisää muuttuja",
   "newInstanceVariable": "Uusi muuttuja",
   "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
+  "organizations": "Organisaatiot",
   "organizationUnit": "Organisaatioyksikkö",
   "publish": "Julkaise",
   "unpublish": "Peru julkaisu",

@@ -25,7 +25,7 @@ public class OrganizationController2 {
     }
 
     @GetJsonMapping("/{organization}")
-    public Organization getDataset(@PathVariable("organization") UUID organizationId) {
+    public Organization getOrganization(@PathVariable("organization") UUID organizationId) {
         return organizationService.get(organizationId).orElseThrow(NotFoundException::new);
     }
 

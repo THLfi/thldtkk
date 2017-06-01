@@ -1,9 +1,33 @@
-<h1>{{'datasets' | translate}}</h1>
+<div class="row">
+  <div class="col-xs-9 col-xs-offset-3">
+    <h1>
+      {{'datasets' | translate}}
+    </h1>
+  </div>
+</div>
 
-<ul>
-  <li *ngFor="let dataset of datasets">
-    <a routerLink="/catalog/datasets/{{ dataset.id }}">
-      {{ dataset.prefLabel | lang }}
-    </a>
-  </li>
-</ul>
+<div class="row">
+  <div class="col-xs-3">
+    <label>{{'organizations' | translate}}</label>
+    <ul class="list-unstyled">
+      <li *ngFor="let organization of organizations">
+        <a *ngIf="organization.id == selectedOrganizationId" (click)="selectOrganization('')">
+          <strong>{{ organization.prefLabel | lang }}</strong>
+        </a>
+        <a *ngIf="organization.id != selectedOrganizationId" (click)="selectOrganization(organization.id)">
+          {{ organization.prefLabel | lang }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="col-xs-9">
+    <ul>
+      <li *ngFor="let dataset of datasets">
+        <a routerLink="/catalog/datasets/{{ dataset.id }}">
+          {{ dataset.prefLabel | lang }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

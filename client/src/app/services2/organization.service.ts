@@ -17,5 +17,10 @@ export class OrganizationService {
         return this._http.get(env.contextPath + '/api/v2/organizations')
             .map(response => response.json() as Organization[]);
     }
+
+    getOrganization(id: String): Observable<Organization> {
+        return this._http.get(env.contextPath + '/api/v2/organizations/' + id)
+            .map(response => response.json() as Organization);
+    }
 }
 

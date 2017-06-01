@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.service;
 
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,11 +9,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableMultimap;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
@@ -26,17 +28,17 @@ public class DatasetServiceTest {
 
   @Before
   public void setUp() {
-    List<Node> datasets = Arrays.asList(
-      new Node(nameUUIDFromString("DS1"), "DataSet"),
-      new Node(nameUUIDFromString("DS2"), "DataSet"));
+    List<Node> datasets = asList(
+        new Node(nameUUIDFromString("DS1"), "DataSet"),
+        new Node(nameUUIDFromString("DS2"), "DataSet"));
 
     this.mockedNodeService = Mockito.mock(Service.class);
     when(mockedNodeService.query("type.id:DataSet")).thenReturn(datasets.stream());
-    when(mockedNodeService.query("type.id:DataSet AND properties.prefLabel:hello*"))
-      .thenReturn(datasets.stream());
+    when(mockedNodeService.query("type.id:DataSet AND (properties.prefLabel:hello*)"))
+        .thenReturn(datasets.stream());
     when(mockedNodeService.get(any(NodeId.class))).thenReturn(Optional.<Node>empty());
     when(mockedNodeService.get(new NodeId(nameUUIDFromString("DS1"), "DataSet")))
-      .thenReturn(Optional.of(datasets.get(0)));
+        .thenReturn(Optional.of(datasets.get(0)));
 
     this.datasetService = new DatasetService(mockedNodeService);
   }
@@ -48,7 +50,7 @@ public class DatasetServiceTest {
 
   @Test
   public void shouldQueryDatasetsByPrefLabel() {
-    assertEquals(2, datasetService.query("hello").count());
+    assertEquals(2, datasetService.query("properties.prefLabel:hello*").count());
   }
 
   @Test
@@ -66,7 +68,28 @@ public class DatasetServiceTest {
   public void shouldDeleteDataset() {
     datasetService.delete(nameUUIDFromString("DS1"));
     verify(mockedNodeService)
-      .delete(singletonList(new NodeId(nameUUIDFromString("DS1"), "DataSet")));
+        .delete(singletonList(new NodeId(nameUUIDFromString("DS1"), "DataSet")));
+  }
+
+  @Test
+  public void shouldSaveDatasetWithInstanceVariables() {
+    Dataset ds = new Dataset(nameUUIDFromString("DS"), asList(
+        new InstanceVariable(nameUUIDFromString("IV1")),
+        new InstanceVariable(nameUUIDFromString("IV2")),
+        new InstanceVariable(nameUUIDFromString("IV3"))));
+
+    datasetService.save(ds);
+    verify(mockedNodeService).save(asList(
+        new Node(nameUUIDFromString("DS"), "DataSet", ImmutableMultimap.of(),
+            // dataset references
+            ImmutableMultimap.of(
+                "instanceVariable", new Node(nameUUIDFromString("IV1"), "InstanceVariable"),
+                "instanceVariable", new Node(nameUUIDFromString("IV2"), "InstanceVariable"),
+                "instanceVariable", new Node(nameUUIDFromString("IV3"), "InstanceVariable"))),
+        // actual instance variable nodes
+        new Node(nameUUIDFromString("IV1"), "InstanceVariable"),
+        new Node(nameUUIDFromString("IV2"), "InstanceVariable"),
+        new Node(nameUUIDFromString("IV3"), "InstanceVariable")));
   }
 
   @Test(expected = NotFoundException.class)

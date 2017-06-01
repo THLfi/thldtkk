@@ -50,6 +50,11 @@ public class Dataset {
         this.id = requireNonNull(id);
     }
 
+    public Dataset(UUID id, List<InstanceVariable> instanceVariables) {
+        this.id = id;
+        this.instanceVariables = instanceVariables;
+    }
+
     /**
      * Create a copy of a dataset with different instance variables
      */
@@ -114,7 +119,7 @@ public class Dataset {
                         .add(new InstanceVariable(v)));
         node.getReferencesFirst("datasetType")
                 .ifPresent(v -> this.datasetType = new DatasetType(v));
- 
+
 
 
         this.comment = PropertyMappings.toString(node.getProperties("comment"));

@@ -170,7 +170,6 @@ public class Node {
       .add("lastModifiedDate", lastModifiedDate)
       .add("properties", properties)
       .add("references", references)
-      .add("referrers", referrers)
       .toString();
   }
 
@@ -191,14 +190,13 @@ public class Node {
       Objects.equals(createdDate, node.createdDate) &&
       Objects.equals(lastModifiedBy, node.lastModifiedBy) &&
       Objects.equals(lastModifiedDate, node.lastModifiedDate) &&
-      Objects.equals(properties, node.properties) &&
-      Objects.equals(references, node.references);
+      Objects.equals(properties, node.properties);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, type, code, uri, createdBy, createdDate, lastModifiedBy,
-      lastModifiedDate, properties, references, referrers);
+      lastModifiedDate, properties, references);
   }
 
 }

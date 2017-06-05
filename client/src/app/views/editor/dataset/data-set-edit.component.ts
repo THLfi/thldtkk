@@ -39,6 +39,7 @@ export class DataSetEditComponent implements OnInit {
 
     conceptSearchSubscription: Subscription;
     conceptSearchResults: Concept[] = [];
+    freeConcepts: string[] = [];
 
     constructor(
         private datasetService: DatasetService,
@@ -52,11 +53,12 @@ export class DataSetEditComponent implements OnInit {
         private usageConditionService: UsageConditionService,
         private datasetTypeService: DatasetTypeService,
         private conceptService: ConceptService
-    ) {}
+    ) {
+      this.language = this.translateService.currentLang
+    }
 
     ngOnInit() {
         this.getDataset();
-        this.language = this.translateService.currentLang
     }
 
     private getDataset() {
@@ -90,9 +92,11 @@ export class DataSetEditComponent implements OnInit {
                 datasetType: null,
                 comment: null,
                 conceptsFromScheme: [],
-                links: []
+                links: [],
+                freeConcepts: null
             });
         }
+
         this.organizationService.getAllOrganizations()
             .subscribe(organizations => this.allOrganizations = organizations)
         this.lifecyclePhaseService.getAllLifecyclePhases()
@@ -113,10 +117,13 @@ export class DataSetEditComponent implements OnInit {
             'description',
             'researchProjectURL',
             'registryPolicy',
-            'usageConditionAdditionalInformation'
+            'usageConditionAdditionalInformation',
+            'freeConcepts'
         ].forEach(item => this.createEmptyTranslateableProperty(dataset, item, this.language));
+
         ['lifecyclePhase', 'referencePeriodStart', 'referencePeriodEnd']
             .forEach(item => this.createNullProperty(dataset, item));
+
         if (dataset.population == null) {
             dataset.population = this.initializePopulationFields({
                 prefLabel: null,
@@ -126,11 +133,16 @@ export class DataSetEditComponent implements OnInit {
                 loss: null
             });
         }
+
         if (dataset.ownerOrganizationUnit.length > 0) {
             this.ownerOrganizationUnit = dataset.ownerOrganizationUnit[0];
         }
-        /* TODO: personInRole[] */
-        return dataset;
+
+        if (dataset.freeConcepts && dataset.freeConcepts[this.language]) {
+          this.freeConcepts = dataset.freeConcepts[this.language].split(';')
+        }
+
+      return dataset;
     }
 
     private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
@@ -195,6 +207,9 @@ export class DataSetEditComponent implements OnInit {
             this.dataset.ownerOrganizationUnit = [];
             this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
         }
+
+        this.dataset.freeConcepts[this.language] = this.freeConcepts.join(';')
+
         this.datasetService.saveDataset(this.dataset)
             .subscribe(savedDataSet => {
                 this.dataset = savedDataSet;

@@ -46,6 +46,7 @@ public class Dataset {
     private DatasetType datasetType;
     private List<Link> links = new ArrayList<>();
     private List<Concept> conceptsFromScheme = new ArrayList<>();
+    private Map<String, String> freeConcepts = new LinkedHashMap<>();
 
     public Dataset(UUID id) {
         this.id = requireNonNull(id);
@@ -76,12 +77,14 @@ public class Dataset {
         this.usageCondition = dataset.usageCondition;
         this.lifecyclePhase = dataset.lifecyclePhase;
         this.population = dataset.population;
-        this.instanceVariables = instanceVariables;
         this.comment = dataset.comment;
         this.numberOfObservationUnits = dataset.numberOfObservationUnits;
         this.datasetType = dataset.datasetType;
         this.links = dataset.links;
         this.conceptsFromScheme = dataset.conceptsFromScheme;
+        this.freeConcepts = dataset.freeConcepts;
+
+        this.instanceVariables = instanceVariables;
     }
 
     /**
@@ -124,9 +127,9 @@ public class Dataset {
                         .add(new Link(v)));
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
-
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+        this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
     }
 
     public UUID getId() {
@@ -213,7 +216,11 @@ public class Dataset {
         return conceptsFromScheme;
     }
 
-    /**
+    public Map<String, String> getFreeConcepts() {
+      return freeConcepts;
+    }
+
+  /**
      * Transforms dataset into node
      */
     public Node toNode() {
@@ -230,6 +237,7 @@ public class Dataset {
                 "referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd",
                 toPropertyValue(v)));
+        props.putAll("freeConcepts", toPropertyValues(freeConcepts));
 
         Multimap<String, Node> refs = LinkedHashMultimap.create();
         getOwner().ifPresent(v -> refs.put("owner", v.toNode()));
@@ -285,7 +293,8 @@ public class Dataset {
                 && Objects.equals(datasetType, dataset.datasetType)
                 && Objects.equals(comment, dataset.comment)
                 && Objects.equals(links, dataset.links)
-                && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme);
+                && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme)
+                && Objects.equals(freeConcepts, dataset.freeConcepts);
 
     }
 
@@ -299,7 +308,7 @@ public class Dataset {
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, instanceVariables, comment,
                         datasetType, numberOfObservationUnits, links,
-                        conceptsFromScheme);
+                        conceptsFromScheme, freeConcepts);
     }
 
 }

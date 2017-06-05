@@ -12,10 +12,12 @@ import { DatasetService } from "../../../services2/dataset.service";
 export class DatasetViewComponent implements OnInit {
 
   dataset: Dataset;
+  language: string
 
   constructor(private datasetService: DatasetService,
               private route: ActivatedRoute,
               private translateService: TranslateService) {
+    this.language = this.translateService.currentLang
   }
 
   ngOnInit() {

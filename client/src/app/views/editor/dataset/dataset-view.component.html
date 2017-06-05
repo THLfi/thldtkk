@@ -69,13 +69,12 @@
     <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
 
     <h2>{{ 'usageCondition' | translate }}</h2>
-    <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)"
-        class="preserve-line-breaks">
-        {{ dataset.usageCondition.prefLabel | lang }}
+    <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)">
+      {{ dataset.usageCondition.prefLabel | lang }}
     </p>
 
     <h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
-    <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
+    <p class="preserve-line-breaks">{{ dataset.usageConditionAdditionalInformation | lang }}</p>
 
     <h2 translate="numberOfObservationUnits"></h2>
     <p>{{dataset.numberOfObservationUnits}}</p>
@@ -128,7 +127,7 @@
 
     <p *ngIf="dataset.conceptsFromScheme.length; else noConceptsFromScheme;">
       <span *ngFor="let concept of dataset.conceptsFromScheme"
-        style="margin-right:.5em;">
+        style="margin-right:.6em;">
         {{ concept.prefLabel | lang }}
         <span style="opacity:.6">
           ({{ concept.conceptScheme.prefLabel | lang }})
@@ -138,6 +137,19 @@
 
     <ng-template #noConceptsFromScheme>
       <p>{{ 'noConceptsFromScheme' | translate }}</p>
+    </ng-template>
+
+    <h2>{{ 'freeConcepts' | translate }}</h2>
+
+    <p *ngIf="dataset.freeConcepts && dataset.freeConcepts[language]; else noFreeConcepts;">
+      <span *ngFor="let concept of dataset.freeConcepts[language].split(';')"
+            style="margin-right:1em;">
+        {{ concept.trim() }}
+      </span>
+    </p>
+
+    <ng-template #noFreeConcepts>
+      <p>{{ 'noFreeConcepts' | translate }}</p>
     </ng-template>
 
     <ng-container *ngIf="dataset.comment">

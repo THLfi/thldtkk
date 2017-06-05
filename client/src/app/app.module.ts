@@ -1,5 +1,6 @@
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { BrowserModule } from '@angular/platform-browser'
+import { ChipsModule } from 'primeng/components/chips/chips';
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { HttpModule, Http } from '@angular/http'
@@ -66,6 +67,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AppRoutingModule,
         AutoCompleteModule,
         TooltipModule,
+        ChipsModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {

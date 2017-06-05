@@ -51,4 +51,7 @@ export interface Dataset extends Node {
   conceptsFromScheme: Concept[]
 
   links: Link[]
+
+  freeConcepts: LangValues
+
 }

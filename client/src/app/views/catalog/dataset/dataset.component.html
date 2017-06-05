@@ -78,7 +78,8 @@
         </div>
       </div>
 
-      <div *ngIf="dataset.conceptsFromScheme.length" class="row">
+      <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts && dataset.freeConcepts[language])"
+           class="row">
         <div class="col-xs-12">
           <h2>{{ 'concepts' | translate }}</h2>
           <p style="line-height:2.2em;">
@@ -89,6 +90,13 @@
                 {{ concept.prefLabel | lang }}
               </span>
             </span>
+            <ng-container *ngIf="dataset.freeConcepts && dataset.freeConcepts[language]">
+              <span *ngFor="let concept of dataset.freeConcepts[language].split(';')">
+                <span style="margin-right:1em;white-space:nowrap;">
+                  {{ concept }}
+                </span>
+              </span>
+            </ng-container>
           </p>
         </div>
       </div>

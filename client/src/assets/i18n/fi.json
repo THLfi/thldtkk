@@ -53,12 +53,17 @@
   "datasetType":"Aineistotyyppi",
   "comment": "Kommentti",
   "concepts": "Asiasanat",
-  "conceptsFromScheme": "Asiasanat (luokittelusta)",
+  "conceptsFromScheme": "Asiasanat luokitteluista",
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
   "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
-  "noConceptsFromScheme": "Asiasanoja ei ole määritelty.",
+  "noConceptsFromScheme": "Luokitteluihin perustuvia asiasanoja ei ole määritelty.",
+  "freeConcepts": "Vapaat asiasanat",
+  "freeConceptsHelpText": "Kirjoita asiasana kenttään ja lisää se painamalla ENTER.",
+  "noFreeConcepts": "Vapaita asiasanoja ei ole määritelty.",
   "source": "Lähde",
   "links": "Linkit",
   "linkName": "Linkin teksti",
-  "linkUrl": "Linkin URL"
+  "linkUrl": "Linkin URL",
+  "addNewLink": "Lisää uusi linkki",
+  "noDatasetLinks": "Aineistolle ei ole määritelty linkkejä."
 }

@@ -43,27 +43,28 @@
       <option *ngFor="let organization of allOrganizations"
           [ngValue]="organization">
           {{organization.prefLabel | lang}}
+      </option>
+    </select>
+  </div>
+
+<div *ngIf="allOrganizationUnits" class="form-group">
+  <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
+  <select [(ngModel)]="ownerOrganizationUnit"
+    [compareWith]="nodeUtils.equals"
+    id="ownerOrganizationUnit"
+    class="form-control">
+    <option [ngValue]="null"></option>
+    <option *ngFor="let organizationUnit of allOrganizationUnits"
+            [ngValue]="organizationUnit">
+      {{organizationUnit.prefLabel | lang}}
     </option>
   </select>
 </div>
 
-<div *ngIf="allOrganizationUnits" class="form-group">
-  <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
-<select [(ngModel)]="ownerOrganizationUnit"
-    [compareWith]="nodeUtils.equals"
-    id="ownerOrganizationUnit"
-    class="form-control">
-  <option [ngValue]="null"></option>
-  <option *ngFor="let organizationUnit of allOrganizationUnits"
-          [ngValue]="organizationUnit">
-    {{organizationUnit.prefLabel | lang}}
-  </option>
-</select>
-</div>
-
-<h3 translate="links"></h3>
-    <p *ngIf="!dataset.links" translate="noDatasetLinks"></p>
-    <table class="table" *ngIf="dataset.links && dataset.links.length">
+  <div class="form-group">
+    <label translate="links"></label>
+    <table *ngIf="dataset.links && dataset.links.length; else noDatasetLinks;"
+       class="table">
         <tr>
             <th translate="linkName"></th>
             <th translate="linkUrl"></th>
@@ -75,7 +76,13 @@
             <td><button class="btn btn-default" (click)="removeLink(link)" translate="remove"></button></td>
         </tr>
     </table>
-    <button class="btn btn-default" (click)="addLink()" translate="addNew"></button>
+
+    <ng-template #noDatasetLinks>
+      <p translate="noDatasetLinks"></p>
+    </ng-template>
+
+    <button class="btn btn-default" (click)="addLink()" translate="addNewLink"></button>
+  </div>
 
   <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
@@ -207,7 +214,6 @@
     </select>
   </div>
 
-
   <div *ngIf="allDatasetTypes"
       class="form-group">
     <label for="datasetType" translate="datasetType"></label>
@@ -223,47 +229,53 @@
     </select>
   </div>
 
-  <ng-container *ngIf="dataset.conceptsFromScheme">
-    <div class="form-group">
-      <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
-      <br>
-      <p-autoComplete
-        [(ngModel)]="dataset.conceptsFromScheme"
-        [suggestions]="conceptSearchResults"
-        (completeMethod)="searchConcept($event)"
-        [multiple]="true"
-        dataKey="id"
-        emptyMessage="{{ 'noMatchingConcepts' | translate }}"
-        placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
-        minlength="3"
-        inputId="conceptsFromScheme">
+  <div class="form-group">
+    <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+    <br>
+    <p-autoComplete
+      [(ngModel)]="dataset.conceptsFromScheme"
+      [suggestions]="conceptSearchResults"
+      (completeMethod)="searchConcept($event)"
+      [multiple]="true"
+      dataKey="id"
+      emptyMessage="{{ 'noMatchingConcepts' | translate }}"
+      placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
+      minlength="3"
+      inputId="conceptsFromScheme">
 
-        <ng-template let-concept pTemplate="item">
+      <ng-template let-concept pTemplate="item">
+        <span>
+          {{ concept.prefLabel | lang }}
+        </span>
+        <small style="opacity:.7">
+          <span *ngFor="let lang of getConceptLanguages(concept)">
+            {{ lang }}:
+            {{ concept.prefLabel[lang] }}
+          </span>
+          ({{ concept.conceptScheme.prefLabel | lang }})
+        </small>
+      </ng-template>
+
+      <ng-template let-concept pTemplate="selectedItem">
+        <span style="margin-right:1.2em;">
           <span>
             {{ concept.prefLabel | lang }}
           </span>
-          <small style="opacity:.7">
-            <span *ngFor="let lang of getConceptLanguages(concept)">
-              {{ lang }}:
-              {{ concept.prefLabel[lang] }}
-            </span>
+          <span style="opacity:.4">
             ({{ concept.conceptScheme.prefLabel | lang }})
-          </small>
-        </ng-template>
-
-        <ng-template let-concept pTemplate="selectedItem">
-          <span style="margin-right:1.2em;">
-            <span>
-              {{ concept.prefLabel | lang }}
-            </span>
-            <span style="opacity:.4">
-              ({{ concept.conceptScheme.prefLabel | lang }})
-            </span>
           </span>
-        </ng-template>
-      </p-autoComplete>
-    </div>
-  </ng-container>
+        </span>
+      </ng-template>
+    </p-autoComplete>
+  </div>
+
+  <div class="form-group">
+    <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+    <p-chips [(ngModel)]="freeConcepts"
+      inputId="freeConcepts">
+    </p-chips>
+    <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
+  </div>
 
   <div class="form-group">
     <label for="comment" translate="comment"></label>

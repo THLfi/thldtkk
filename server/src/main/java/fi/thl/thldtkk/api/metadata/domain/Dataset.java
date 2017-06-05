@@ -43,10 +43,10 @@ public class Dataset {
     private List<InstanceVariable> instanceVariables = new ArrayList<>();
     private String comment;
     private String numberOfObservationUnits;
-    private DatasetType datasetType;
     private List<Link> links = new ArrayList<>();
     private List<Concept> conceptsFromScheme = new ArrayList<>();
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
+    private List<DatasetType> datasetTypes = new ArrayList<>();
 
     public Dataset(UUID id) {
         this.id = requireNonNull(id);
@@ -79,12 +79,11 @@ public class Dataset {
         this.population = dataset.population;
         this.comment = dataset.comment;
         this.numberOfObservationUnits = dataset.numberOfObservationUnits;
-        this.datasetType = dataset.datasetType;
         this.links = dataset.links;
         this.conceptsFromScheme = dataset.conceptsFromScheme;
         this.freeConcepts = dataset.freeConcepts;
-
         this.instanceVariables = instanceVariables;
+        this.datasetTypes = dataset.datasetTypes;
     }
 
     /**
@@ -120,11 +119,13 @@ public class Dataset {
         node.getReferences("instanceVariable")
                 .forEach(v -> this.instanceVariables
                         .add(new InstanceVariable(v)));
-        node.getReferencesFirst("datasetType")
-                .ifPresent(v -> this.datasetType = new DatasetType(v));
         node.getReferences("links")
                 .forEach(v -> this.links
                         .add(new Link(v)));
+        node.getReferences("datasetType")
+                .forEach(v -> this.datasetTypes
+                        .add(new DatasetType(v)));
+
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
         node.getReferences("conceptsFromScheme")
@@ -204,8 +205,8 @@ public class Dataset {
         return instanceVariables;
     }
 
-    public Optional<DatasetType> getDatasetType() {
-        return Optional.ofNullable(datasetType);
+    public List<DatasetType> getDatasetTypes() {
+        return datasetTypes;
     }
 
     public Optional<String> getComment() {
@@ -248,8 +249,8 @@ public class Dataset {
                 .put("usageCondition", v.toNode()));
         getLifecyclePhase().ifPresent(v -> refs
                 .put("lifecyclePhase", v.toNode()));
-        getDatasetType().ifPresent(v -> refs
-                .put("datasetType", v.toNode()));
+        getDatasetTypes().forEach(v -> refs.put("datasetType", v
+                .toNode()));
         getInstanceVariables().forEach(v -> refs.put("instanceVariable", v
                 .toNode()));
         getLinks().forEach(v -> refs.put("links", v
@@ -290,11 +291,11 @@ public class Dataset {
                 && Objects.equals(population, dataset.population)
                 && Objects.equals(instanceVariables, dataset.instanceVariables)
                 && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
-                && Objects.equals(datasetType, dataset.datasetType)
                 && Objects.equals(comment, dataset.comment)
                 && Objects.equals(links, dataset.links)
                 && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme)
-                && Objects.equals(freeConcepts, dataset.freeConcepts);
+                && Objects.equals(freeConcepts, dataset.freeConcepts)
+                && Objects.equals(datasetTypes, dataset.datasetTypes);
 
     }
 
@@ -307,7 +308,7 @@ public class Dataset {
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, instanceVariables, comment,
-                        datasetType, numberOfObservationUnits, links,
+                        datasetTypes, numberOfObservationUnits, links,
                         conceptsFromScheme, freeConcepts);
     }
 

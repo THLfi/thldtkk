@@ -15,13 +15,18 @@ import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
 import {DatasetType} from "../../../model2/dataset-type"
+import {DatasetTypeItem} from "../../../model2/dataset-type-item"
 import {DatasetTypeService} from "../../../services2/dataset-type.service"
 import {Population} from "../../../model2/population";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
 
+import {SelectItem} from "primeng/primeng"
+import {LangPipe} from '../../../utils/lang.pipe'
+
 @Component({
-    templateUrl: './data-set-edit.component.html'
+    templateUrl: './data-set-edit.component.html',
+    providers: [LangPipe]
 })
 export class DataSetEditComponent implements OnInit {
 
@@ -33,13 +38,17 @@ export class DataSetEditComponent implements OnInit {
     allOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
     allUsageConditions: UsageCondition[];
-    allDatasetTypes: DatasetType[];
     language: string;
     lifecyclePhase: LifecyclePhase;
-
     conceptSearchSubscription: Subscription;
     conceptSearchResults: Concept[] = [];
     freeConcepts: string[] = [];
+
+    // separate type labels and values for multiselect, id of datasetType as value for select
+    datasetTypeItems: DatasetTypeItem[] = [];
+    selectedDatasetTypeItems: string[] = [];
+    datasetTypesById: { [datasetTypeId:string]: DatasetType } = {};
+
 
     constructor(
         private datasetService: DatasetService,
@@ -52,10 +61,12 @@ export class DataSetEditComponent implements OnInit {
         private translateService: TranslateService,
         private usageConditionService: UsageConditionService,
         private datasetTypeService: DatasetTypeService,
-        private conceptService: ConceptService
+        private conceptService: ConceptService,
+        private langPipe: LangPipe
     ) {
       this.language = this.translateService.currentLang
     }
+
 
     ngOnInit() {
         this.getDataset();
@@ -68,7 +79,8 @@ export class DataSetEditComponent implements OnInit {
                 this.datasetService.getDataset(datasetId)
             ).subscribe(
                 data => {
-                    this.dataset = this.initializeDataSetProperties(data[0]);
+                    this.dataset = this.initializeDataSetProperties(data[0])
+                    this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
                 })
         } else {
             this.dataset = this.initializeDataSetProperties({
@@ -89,11 +101,11 @@ export class DataSetEditComponent implements OnInit {
                 population: null,
                 instanceVariables: [],
                 numberOfObservationUnits: null,
-                datasetType: null,
                 comment: null,
                 conceptsFromScheme: [],
                 links: [],
-                freeConcepts: null
+                freeConcepts: null,
+                datasetTypes: []
             });
         }
 
@@ -105,8 +117,22 @@ export class DataSetEditComponent implements OnInit {
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
+        
         this.datasetTypeService.getDatasetTypes()
-            .subscribe(datasetTypes => this.allDatasetTypes = datasetTypes)
+            .subscribe(datasetTypes => {
+
+                datasetTypes.forEach(datasetType =>
+                    {                 
+                        let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
+                        this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
+
+                        this.datasetTypesById[datasetType.id] = datasetType;
+                    }
+                );
+            })
+
+        
+
     }
 
     private initializeDataSetProperties(dataset: Dataset): Dataset {
@@ -143,6 +169,12 @@ export class DataSetEditComponent implements OnInit {
         }
 
       return dataset;
+    }
+
+    private initializeSelectedDatasetTypes(dataset:Dataset): string[] {
+        let storedDatasetTypeItems = []
+        dataset.datasetTypes.forEach(datasetType => {storedDatasetTypeItems.push(datasetType.id)});
+        return storedDatasetTypeItems;
     }
 
     private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
@@ -202,6 +234,20 @@ export class DataSetEditComponent implements OnInit {
         }
     }
 
+    private resolveSelectedDatasetTypes(): DatasetType[] {
+        
+        let selectedDatasetTypes: Array<DatasetType> = [];
+        
+        if (this.selectedDatasetTypeItems) {
+            this.selectedDatasetTypeItems.forEach(datasetTypeId => {
+                let datasetType:DatasetType = this.datasetTypesById[datasetTypeId];
+                selectedDatasetTypes.push(datasetType);
+            });
+        }
+
+        return selectedDatasetTypes;
+    }
+
     save() {
         if (this.ownerOrganizationUnit) {
             this.dataset.ownerOrganizationUnit = [];
@@ -209,6 +255,9 @@ export class DataSetEditComponent implements OnInit {
         }
 
         this.dataset.freeConcepts[this.language] = this.freeConcepts.join(';')
+
+        this.dataset.datasetTypes = this.resolveSelectedDatasetTypes();
+
 
         this.datasetService.saveDataset(this.dataset)
             .subscribe(savedDataSet => {

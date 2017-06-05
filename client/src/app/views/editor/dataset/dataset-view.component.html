@@ -87,11 +87,19 @@
       <h2>{{ 'geographicalCoverage' | translate }}</h2>
       <p>{{ dataset.population.geographicalCoverage | lang }}</p>
 
+
       <h2>{{ 'sampleSize' | translate }}</h2>
       <p>{{ dataset.population.sampleSize | lang }}</p>
 
       <h2>{{ 'loss' | translate }}</h2>
       <p>{{ dataset.population.loss | lang }}</p>
+
+    </ng-container>
+
+    <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
+      
+      <h2>{{ 'datasetType' | translate }}</h2>
+      <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
 
     </ng-container>
 
@@ -113,13 +121,6 @@
 
       <h2>{{ 'lifecyclePhase' | translate }}</h2>
       <p>{{ dataset.lifecyclePhase.prefLabel | lang }}</p>
-
-    </ng-container>
-
-    <ng-container *ngIf="dataset.datasetType">
-
-      <h2>{{ 'datasetType' | translate }}</h2>
-      <p>{{ dataset.datasetType.prefLabel | lang }}</p>
 
     </ng-container>
 

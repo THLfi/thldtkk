@@ -65,5 +65,7 @@
   "linkName": "Linkin teksti",
   "linkUrl": "Linkin URL",
   "addNewLink": "Lisää uusi linkki",
-  "noDatasetLinks": "Aineistolle ei ole määritelty linkkejä."
+  "noDatasetLinks": "Aineistolle ei ole määritelty linkkejä.",
+   "selectDatasetType": "Valitse aineistotyyppi",
+   "amountDatasetTypesSelected": "aineistotyyppiä valittuna"
 }

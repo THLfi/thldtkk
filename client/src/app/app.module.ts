@@ -9,6 +9,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { DatepickerModule } from 'ngx-bootstrap/datepicker'
 import { DatePipe } from '@angular/common'
+import { MultiSelectModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -68,6 +69,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AutoCompleteModule,
         TooltipModule,
         ChipsModule,
+        MultiSelectModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {

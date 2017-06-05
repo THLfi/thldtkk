@@ -46,12 +46,11 @@ export interface Dataset extends Node {
 
   numberOfObservationUnits: string
 
-  datasetType: DatasetType
-
   conceptsFromScheme: Concept[]
 
   links: Link[]
 
   freeConcepts: LangValues
-
+  
+  datasetTypes: DatasetType[]
 }

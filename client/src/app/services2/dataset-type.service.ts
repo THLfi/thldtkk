@@ -17,5 +17,13 @@ export class DatasetTypeService {
         return this._http.get(env.contextPath + '/api/v2/datasetTypes')
             .map(response => response.json() as DatasetType[]);
     }
+
+    getDatasetType(datasetTypeId: string): Observable<DatasetType> {
+        return this._http.get(env.contextPath 
+            + '/api/v2/datasetTypes/'
+            + datasetTypeId)
+            .map(response => response.json() as DatasetType);
+    }
+
 }
 

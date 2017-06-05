@@ -27,15 +27,16 @@
 
       <!-- TODO: Add contact person after adding it to new API. -->
 
+    <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
+      
       <p>
-        <strong *ngIf="dataset.datasetType">
+        <strong *ngIf="dataset.datasetTypes">
           {{ 'datasetType' | translate }}
         </strong>
       </p>
+      <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
 
-      <p *ngIf="dataset.datasetType">
-        {{ dataset.datasetType.prefLabel | lang }}
-      </p>
+    </ng-container>
 
       <p>
         <strong *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">

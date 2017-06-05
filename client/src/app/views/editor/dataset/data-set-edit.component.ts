@@ -76,7 +76,6 @@ export class DataSetEditComponent implements OnInit {
                 abbreviation: null,
                 description: null,
                 registryPolicy: null,
-                researchProjectURL: null,
                 usageConditionAdditionalInformation: null,
                 published: null,
                 referencePeriodStart: null,
@@ -90,7 +89,8 @@ export class DataSetEditComponent implements OnInit {
                 numberOfObservationUnits: null,
                 datasetType: null,
                 comment: null,
-                conceptsFromScheme: []
+                conceptsFromScheme: [],
+                links: []
             });
         }
         this.organizationService.getAllOrganizations()
@@ -154,23 +154,40 @@ export class DataSetEditComponent implements OnInit {
     }
 
     searchConcept(event: any): void {
-      const searchText: string = event.query
-      if (this.conceptSearchSubscription) {
-        // Cancel possible on-going search
-        this.conceptSearchSubscription.unsubscribe()
-      }
-      this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
-        .subscribe(concepts => this.conceptSearchResults = concepts)
+        const searchText: string = event.query
+        if (this.conceptSearchSubscription) {
+            // Cancel possible on-going search
+            this.conceptSearchSubscription.unsubscribe()
+        }
+        this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
+            .subscribe(concepts => this.conceptSearchResults = concepts)
     }
 
     getConceptLanguages(concept: Concept): any {
-      const languages = []
-      for (let lang in concept.prefLabel) {
-        if (concept.prefLabel.hasOwnProperty(lang) && lang != this.language) {
-          languages.push(lang)
+        const languages = []
+        for (let lang in concept.prefLabel) {
+            if (concept.prefLabel.hasOwnProperty(lang) && lang != this.language) {
+                languages.push(lang)
+            }
         }
-      }
-      return languages
+        return languages
+    }
+
+    addLink() {
+        if (!this.dataset.links) {
+            this.dataset.links = []
+        }
+        var link = {prefLabel: null, linkUrl: null};
+        ['prefLabel', 'linkUrl']
+            .forEach(item => this.createEmptyTranslateableProperty(link, item, this.language))
+        this.dataset.links.push(link);
+    }
+
+    removeLink(link) {
+        let index: number = this.dataset.links.indexOf(link);
+        if (index !== -1) {
+            this.dataset.links.splice(index, 1);
+        }
     }
 
     save() {

@@ -61,6 +61,22 @@
 </select>
 </div>
 
+<h3 translate="links"></h3>
+    <p *ngIf="!dataset.links" translate="noDatasetLinks"></p>
+    <table class="table" *ngIf="dataset.links && dataset.links.length">
+        <tr>
+            <th translate="linkName"></th>
+            <th translate="linkUrl"></th>
+            <th></th>
+        </tr>
+        <tr *ngFor="let link of dataset.links">
+            <td><input class="form-control" type="text" [(ngModel)]="link.prefLabel[language]"></td>
+            <td><input class="form-control" type="text" [(ngModel)]="link.linkUrl[language]"></td>
+            <td><button class="btn btn-default" (click)="removeLink(link)" translate="remove"></button></td>
+        </tr>
+    </table>
+    <button class="btn btn-default" (click)="addLink()" translate="addNew"></button>
+
   <div class="form-group">
     <label for="description">{{ 'description' | translate }}</label>
     <textarea [(ngModel)]="dataset.description[language]"
@@ -70,15 +86,6 @@
         class="form-control"
         rows="6">
     </textarea>
-  </div>
-
-  <div class="form-group">
-    <label for="researchProjectURL" translate="researchProjectURL"></label>
-    <input [(ngModel)]="dataset.researchProjectURL[language]"
-        id="researchProjectURL"
-        name="researchProjectURL"
-        class="form-control"
-        type="text">
   </div>
 
   <div class="form-group">

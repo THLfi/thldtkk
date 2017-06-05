@@ -3,6 +3,7 @@ import {DatasetType} from './dataset-type'
 import {InstanceVariable} from './instance-variable';
 import {LangValues} from './lang-values';
 import {LifecyclePhase} from './lifecycle-phase';
+import {Link} from './link';
 import {Node} from './node'
 import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
@@ -20,8 +21,6 @@ export interface Dataset extends Node {
   description: LangValues
 
   registryPolicy: LangValues
-
-  researchProjectURL: LangValues
 
   usageConditionAdditionalInformation: LangValues
 
@@ -51,4 +50,5 @@ export interface Dataset extends Node {
 
   conceptsFromScheme: Concept[]
 
+  links: Link[]
 }

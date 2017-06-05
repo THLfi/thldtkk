@@ -56,12 +56,14 @@
       </span>
     </p>
 
-    <h2>{{ 'researchProjectURL' | translate }}</h2>
-    <p>
-      <a href="{{ dataset.researchProjectURL | lang }}" target="_blank">
-        {{ dataset.researchProjectURL | lang }}
-      </a>
-    </p>
+    <h2>{{ 'links' | translate }}</h2>
+    <ul>
+      <li *ngFor="let link of dataset.links">
+        <a href="{{ link.linkUrl | lang }}" target="_blank">
+          {{ link.prefLabel | lang }}
+        </a>
+      </li>
+    </ul>
 
     <h2>{{ 'registryPolicy' | translate }}</h2>
     <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>

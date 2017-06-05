@@ -52,8 +52,10 @@
   "technicalName": "Tekninen nimi",
   "datasetType":"Aineistotyyppi",
   "comment": "Kommentti",
+  "concepts": "Asiasanat",
   "conceptsFromScheme": "Asiasanat (luokittelusta)",
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
   "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
-  "noConceptsFromScheme": "Asiasanoja ei ole määritelty."
+  "noConceptsFromScheme": "Asiasanoja ei ole määritelty.",
+  "source": "Lähde"
 }

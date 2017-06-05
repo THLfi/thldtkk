@@ -51,13 +51,15 @@
         <span class="preserve-line-breaks">{{ dataset.usageConditionAdditionalInformation | lang }}</span>
       </p>
 
-      <p *ngIf="dataset.researchProjectURL | lang">
-        <a href="{{ dataset.researchProjectURL | lang }}" target="_blank">
-          {{ 'researchProjectURL' | translate }}
-          <span class="glyphicon glyphicon-link"></span>
-        </a>
-      </p>
-
+      <div *ngIf="dataset.links && dataset.links.length">
+        <p><strong>{{'links'|translate}}</strong></p>
+        <p *ngFor="let link of dataset.links">
+            <a href="{{ link.linkUrl | lang }}" target="_blank">
+                {{ link.prefLabel | lang }}
+            <span class="glyphicon glyphicon-link"></span>
+            </a>
+        </p>
+      </div>
     </div>
 
     <!-- Left main column -->

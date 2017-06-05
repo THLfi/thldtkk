@@ -57,5 +57,8 @@
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
   "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
   "noConceptsFromScheme": "Asiasanoja ei ole määritelty.",
-  "source": "Lähde"
+  "source": "Lähde",
+  "links": "Linkit",
+  "linkName": "Linkin teksti",
+  "linkUrl": "Linkin URL"
 }

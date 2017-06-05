@@ -36,7 +36,7 @@
       <p *ngIf="dataset.datasetType">
         {{ dataset.datasetType.prefLabel | lang }}
       </p>
-      
+
       <p>
         <strong *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">
           {{ 'usageCondition' | translate }}
@@ -76,10 +76,25 @@
         </div>
       </div>
 
+      <div *ngIf="dataset.conceptsFromScheme.length" class="row">
+        <div class="col-xs-12">
+          <h2>{{ 'concepts' | translate }}</h2>
+          <p style="line-height:2.2em;">
+            <span *ngFor="let concept of dataset.conceptsFromScheme">
+              <span pTooltip="{{ 'source' | translate }}: {{ concept.conceptScheme.prefLabel | lang }}"
+                tooltipPosition="bottom"
+                style="margin-right:1em;white-space:nowrap;">
+                {{ concept.prefLabel | lang }}
+              </span>
+            </span>
+          </p>
+        </div>
+      </div>
+
       <div class="row">
 
         <ng-container *ngIf="dataset.population">
-          <div *ngIf="dataset.population.prefLabel"
+          <div *ngIf="dataset.population.prefLabel | lang"
             class="col-sm-6 col-md-4">
             <div class="bordered-box">
               <h2>{{ 'population' | translate }}</h2>
@@ -87,7 +102,7 @@
             </div>
           </div>
 
-          <div *ngIf="dataset.population.geographicalCoverage"
+          <div *ngIf="dataset.population.geographicalCoverage | lang"
             class="col-sm-6 col-md-4">
             <div class="bordered-box">
               <h2>{{ 'geographicalCoverage' | translate }}</h2>
@@ -95,7 +110,7 @@
             </div>
           </div>
 
-          <div *ngIf="dataset.population.sampleSize"
+          <div *ngIf="dataset.population.sampleSize | lang"
             class="col-sm-6 col-md-4">
             <div class="bordered-box">
               <h2>{{ 'sampleSize' | translate }}</h2>
@@ -105,14 +120,16 @@
 
           <div class="clearfix visible-md-block"></div>
 
-          <div class="col-sm-6 col-md-4">
+          <div *ngIf="dataset.numberOfObservationUnits"
+            class="col-sm-6 col-md-4">
             <div class="bordered-box">
               <h2 translate="numberOfObservationUnits"></h2>
               <p>{{ dataset.numberOfObservationUnits }}</p>
             </div>
           </div>
 
-          <div class="col-sm-6 col-md-4">
+          <div *ngIf="dataset.population.loss | lang"
+            class="col-sm-6 col-md-4">
             <div class="bordered-box">
               <h2>{{ 'loss' | translate }}</h2>
               <p>{{ dataset.population.loss | lang }}</p>

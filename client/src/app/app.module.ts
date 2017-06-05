@@ -1,7 +1,9 @@
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { HttpModule, Http } from '@angular/http'
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { DatepickerModule } from 'ngx-bootstrap/datepicker'
@@ -39,7 +41,6 @@ import { DataSetListComponent as EditorDataSetListComponent } from './views/edit
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
-import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -64,6 +65,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         HttpModule,
         AppRoutingModule,
         AutoCompleteModule,
+        TooltipModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {

@@ -30,7 +30,6 @@ public class Dataset {
     private Map<String, String> abbreviation = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
     private Map<String, String> registryPolicy = new LinkedHashMap<>();
-    private Map<String, String> researchProjectURL = new LinkedHashMap<>();
     private Map<String, String> usageConditionAdditionalInformation
             = new LinkedHashMap<>();
     private Boolean published;
@@ -45,6 +44,7 @@ public class Dataset {
     private String comment;
     private String numberOfObservationUnits;
     private DatasetType datasetType;
+    private List<Link> links = new ArrayList<>();
     private List<Concept> conceptsFromScheme = new ArrayList<>();
 
     public Dataset(UUID id) {
@@ -66,7 +66,6 @@ public class Dataset {
         this.abbreviation = dataset.abbreviation;
         this.description = dataset.description;
         this.registryPolicy = dataset.registryPolicy;
-        this.researchProjectURL = dataset.researchProjectURL;
         this.usageConditionAdditionalInformation
                 = dataset.usageConditionAdditionalInformation;
         this.published = dataset.published;
@@ -81,6 +80,7 @@ public class Dataset {
         this.comment = dataset.comment;
         this.numberOfObservationUnits = dataset.numberOfObservationUnits;
         this.datasetType = dataset.datasetType;
+        this.links = dataset.links;
         this.conceptsFromScheme = dataset.conceptsFromScheme;
     }
 
@@ -96,8 +96,6 @@ public class Dataset {
         this.description = toLangValueMap(node.getProperties("description"));
         this.registryPolicy = toLangValueMap(node
                 .getProperties("registryPolicy"));
-        this.researchProjectURL = toLangValueMap(node.getProperties(
-                "researchProjectURL"));
         this.usageConditionAdditionalInformation = toLangValueMap(
                 node.getProperties("usageConditionAdditionalInformation"));
         this.published = toBoolean(node.getProperties("published"), false);
@@ -121,16 +119,22 @@ public class Dataset {
                         .add(new InstanceVariable(v)));
         node.getReferencesFirst("datasetType")
                 .ifPresent(v -> this.datasetType = new DatasetType(v));
-
+        node.getReferences("links")
+                .forEach(v -> this.links
+                        .add(new Link(v)));
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
 
         node.getReferences("conceptsFromScheme")
-          .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+                .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public List<Link> getLinks() {
+        return links;
     }
 
     public Optional<String> getNumberOfObservationUnits() {
@@ -155,10 +159,6 @@ public class Dataset {
 
     public Map<String, String> getRegistryPolicy() {
         return registryPolicy;
-    }
-
-    public Map<String, String> getResearchProjectURL() {
-        return researchProjectURL;
     }
 
     public Map<String, String> getUsageConditionAdditionalInformation() {
@@ -210,10 +210,10 @@ public class Dataset {
     }
 
     public List<Concept> getConceptsFromScheme() {
-      return conceptsFromScheme;
+        return conceptsFromScheme;
     }
 
-  /**
+    /**
      * Transforms dataset into node
      */
     public Node toNode() {
@@ -223,7 +223,6 @@ public class Dataset {
         props.putAll("abbreviation", toPropertyValues(abbreviation));
         props.putAll("description", toPropertyValues(description));
         props.putAll("registryPolicy", toPropertyValues(registryPolicy));
-        props.putAll("researchProjectURL", toPropertyValues(researchProjectURL));
         props.putAll("usageConditionAdditionalInformation",
                 toPropertyValues(usageConditionAdditionalInformation));
         isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
@@ -244,6 +243,8 @@ public class Dataset {
         getDatasetType().ifPresent(v -> refs
                 .put("datasetType", v.toNode()));
         getInstanceVariables().forEach(v -> refs.put("instanceVariable", v
+                .toNode()));
+        getLinks().forEach(v -> refs.put("links", v
                 .toNode()));
         getComment().ifPresent((v -> props.put("comment", toPropertyValue(v))));
         getNumberOfObservationUnits().ifPresent((v -> props.put("numberOfObservationUnits", toPropertyValue(v))));
@@ -266,8 +267,6 @@ public class Dataset {
                 && Objects.equals(abbreviation, dataset.abbreviation)
                 && Objects.equals(description, dataset.description)
                 && Objects.equals(registryPolicy, dataset.registryPolicy)
-                && Objects
-                .equals(researchProjectURL, dataset.researchProjectURL)
                 && Objects.equals(usageConditionAdditionalInformation,
                         dataset.usageConditionAdditionalInformation)
                 && Objects.equals(published, dataset.published)
@@ -285,6 +284,7 @@ public class Dataset {
                 && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
                 && Objects.equals(datasetType, dataset.datasetType)
                 && Objects.equals(comment, dataset.comment)
+                && Objects.equals(links, dataset.links)
                 && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme);
 
     }
@@ -293,13 +293,12 @@ public class Dataset {
     public int hashCode() {
         return Objects
                 .hash(id, prefLabel, altLabel, abbreviation, description,
-                        registryPolicy,
-                        researchProjectURL, usageConditionAdditionalInformation,
+                        registryPolicy, usageConditionAdditionalInformation,
                         published,
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, instanceVariables, comment,
-                        datasetType, numberOfObservationUnits,
+                        datasetType, numberOfObservationUnits, links,
                         conceptsFromScheme);
     }
 

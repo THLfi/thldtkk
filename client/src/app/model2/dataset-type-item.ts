@@ -1,7 +1,5 @@
 import { Node } from './node'
-import { LangValues } from './lang-values';
 import { SelectItem } from 'primeng/primeng';
-import { DatasetType} from './dataset-type'
 
 export class DatasetTypeItem implements SelectItem {
   
@@ -13,4 +11,17 @@ export class DatasetTypeItem implements SelectItem {
         this.value = datasetTypeId
   }
 
+
+  public static compare(compare: DatasetTypeItem, to: DatasetTypeItem): number {
+        
+        if(compare.label > to.label) {
+            return 1;
+        }
+
+        if(compare.label < to.label) {
+            return -1;
+        }
+
+        return 0;
+  }
 }

@@ -121,17 +121,19 @@ export class DataSetEditComponent implements OnInit {
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
 
+                let unsortedDatasetTypeItems:Array<DatasetTypeItem> = []
+
                 datasetTypes.forEach(datasetType =>
                     {                 
                         let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
-                        this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
+                        unsortedDatasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
 
                         this.datasetTypesById[datasetType.id] = datasetType;
                     }
                 );
-            })
 
-        
+                this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);            
+            })
 
     }
 

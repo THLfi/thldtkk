@@ -1,0 +1,106 @@
+<ng-container *ngIf="instanceVariable; else loadingInstanceVariable;">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>{{ instanceVariable.prefLabel | lang }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <p>
+        <a routerLink="/editor/datasets/{{ datasetId }}">
+          {{ 'dataset' | translate }}:
+          {{ dataset.prefLabel | lang }}
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'technicalName' | translate }}</h2>
+      <p>{{ instanceVariable.technicalName | lang }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'description' | translate }}</h2>
+      <p class="preserve-line-breaks">{{ instanceVariable.description | lang }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'conceptsFromScheme' | translate }}</h2>
+      <p *ngIf="instanceVariable.conceptsFromScheme.length; else noConceptsFromScheme;">
+      <span *ngFor="let concept of instanceVariable.conceptsFromScheme"
+            style="margin-right:.6em;">
+        {{ concept.prefLabel | lang }}
+        <span style="opacity:.6">
+          ({{ concept.conceptScheme.prefLabel | lang }})
+        </span>
+      </span>
+      </p>
+      <ng-template #noConceptsFromScheme>
+        <p>{{ 'noConceptsFromScheme' | translate }}</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'referencePeriod' | translate }}</h2>
+      <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedReferencePeriod;">
+        <p>
+          {{ instanceVariable.referencePeriodStart }}
+          —
+          {{ instanceVariable.referencePeriodEnd }}
+          <span style="margin-left:2em;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            <span *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+              {{ 'valueInDataset' | translate }}:
+              {{ dataset.referencePeriodStart }}
+              —
+              {{ dataset.referencePeriodEnd }}
+            </span>
+          </span>
+        </p>
+      </ng-container>
+      <ng-template #inheritedReferencePeriod>
+        <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+          {{ dataset.referencePeriodStart }}
+          —
+          {{ dataset.referencePeriodEnd }}
+        </p>
+      </ng-template>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-template #loadingInstanceVariable>
+  <thl-spinner></thl-spinner>
+</ng-template>
+
+<div class="row">
+  <div class="col-xs-12">
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <button routerLink="/editor/datasets/{{ datasetId }}" class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      {{ 'back' | translate }}
+    </button>
+    <button *ngIf="instanceVariable"
+            routerLink="/editor/datasets/{{ datasetId }}/instanceVariables/{{ instanceVariableId }}/edit"
+            class="btn btn-default">
+      <span class="glyphicon glyphicon-edit"></span>
+      {{ 'edit' | translate }}
+    </button>
+  </div>
+</div>

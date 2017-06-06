@@ -33,16 +33,19 @@ import { DatasetTypeService } from './services2/dataset-type.service'
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
 import { IsoDatePicker } from './views/common/iso-datepicker.component'
 import { LangPipe } from './utils/lang.pipe'
+import { LoadingSpinner } from './views/common/loading-spinner.component'
 
 // catalog components (few renamed to avoid name clash with editor)
 import { DatasetComponent } from './views/catalog/dataset/dataset.component'
 import { DatasetListComponent } from './views/catalog/dataset/dataset-list.component'
+import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 
 // editor components
 import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
+import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -57,9 +60,12 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DatasetListComponent,
         EditorDataSetListComponent,
         EditorDataSetComponent,
+        InstanceVariableComponent,
         InstanceVariableEditComponent,
+        InstanceVariableViewComponent,
         IsoDatePicker,
-        LangPipe
+        LangPipe,
+        LoadingSpinner
     ],
     imports: [
         BrowserModule,

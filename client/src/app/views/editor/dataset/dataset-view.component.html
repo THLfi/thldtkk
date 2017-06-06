@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataset">
+<ng-container *ngIf="dataset; else loadingDataset;">
 
 <div class="row">
   <div class="col-md-8">
@@ -173,21 +173,28 @@
         <th>{{ 'referencePeriod' | translate }}</th>
         <th>{{ 'functions' | translate }}</th>
       </tr>
-      <tr *ngFor="let variable of dataset.instanceVariables">
-          <td>
-          {{ variable.prefLabel | lang }}
+      <tr *ngFor="let variable of dataset.instanceVariables"
+        routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">
+        <td>
+          <a routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
         </td>
         <td>
           <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
         </td>
         <td>
           <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
+            <em>
               {{ variable.referencePeriodStart }}
               —
               {{ variable.referencePeriodEnd }}
+            </em>
           </ng-container>
           <ng-template #inheritedReferencePeriod>
-            {{ 'inheritedReferencePeriod' | translate }}
+            <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+              {{ dataset.referencePeriodStart }}
+              —
+              {{ dataset.referencePeriodEnd }}
+            </ng-container>
           </ng-template>
         </td>
         <td>
@@ -212,6 +219,12 @@
   </div>
 </div>
 
+</ng-container>
+
+<ng-template #loadingDataset>
+  <thl-spinner></thl-spinner>
+</ng-template>
+
 <div class="row">
   <div class="col-xs-12">
     <hr>
@@ -233,4 +246,3 @@
   </div>
 </div>
 
-</ng-container>

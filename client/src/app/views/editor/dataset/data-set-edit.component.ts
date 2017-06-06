@@ -49,6 +49,7 @@ export class DataSetEditComponent implements OnInit {
     selectedDatasetTypeItems: string[] = [];
     datasetTypesById: { [datasetTypeId:string]: DatasetType } = {};
 
+    savingInProgress: boolean = false
 
     constructor(
         private datasetService: DatasetService,
@@ -117,14 +118,14 @@ export class DataSetEditComponent implements OnInit {
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
-        
+
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
 
                 let unsortedDatasetTypeItems:Array<DatasetTypeItem> = []
 
                 datasetTypes.forEach(datasetType =>
-                    {                 
+                    {
                         let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
                         unsortedDatasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
 
@@ -132,7 +133,7 @@ export class DataSetEditComponent implements OnInit {
                     }
                 );
 
-                this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);            
+                this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);
             })
 
     }
@@ -237,9 +238,9 @@ export class DataSetEditComponent implements OnInit {
     }
 
     private resolveSelectedDatasetTypes(): DatasetType[] {
-        
+
         let selectedDatasetTypes: Array<DatasetType> = [];
-        
+
         if (this.selectedDatasetTypeItems) {
             this.selectedDatasetTypeItems.forEach(datasetTypeId => {
                 let datasetType:DatasetType = this.datasetTypesById[datasetTypeId];
@@ -251,6 +252,8 @@ export class DataSetEditComponent implements OnInit {
     }
 
     save() {
+        this.savingInProgress = true
+
         if (this.ownerOrganizationUnit) {
             this.dataset.ownerOrganizationUnit = [];
             this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
@@ -262,8 +265,9 @@ export class DataSetEditComponent implements OnInit {
 
 
         this.datasetService.saveDataset(this.dataset)
-            .subscribe(savedDataSet => {
-                this.dataset = savedDataSet;
+            .subscribe(savedDataset => {
+                this.dataset = savedDataset;
+                this.savingInProgress = false
                 this.goBack();
             });
     }

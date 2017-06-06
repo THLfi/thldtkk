@@ -11,7 +11,9 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import static java.util.Objects.requireNonNull;
@@ -26,6 +28,7 @@ public class InstanceVariable {
     private LocalDate referencePeriodStart;
     private LocalDate referencePeriodEnd;
     private String technicalName;
+    private List<Concept> conceptsFromScheme = new ArrayList<>();
 
     public InstanceVariable(UUID id) {
         this.id = requireNonNull(id);
@@ -39,6 +42,8 @@ public class InstanceVariable {
         this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
         this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
         this.technicalName = PropertyMappings.toString(node.getProperties("technicalName"));
+        node.getReferences("conceptsFromScheme")
+          .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     }
 
     public UUID getId() {
@@ -69,6 +74,10 @@ public class InstanceVariable {
         return Optional.ofNullable(technicalName);
     }
 
+    public List<Concept> getConceptsFromScheme() {
+      return conceptsFromScheme;
+    }
+
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
         props.putAll("prefLabel", toPropertyValues(prefLabel));
@@ -76,7 +85,11 @@ public class InstanceVariable {
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
-        return new Node(id, "InstanceVariable", props);
+
+        Multimap<String, Node> refs = LinkedHashMultimap.create();
+        getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
+
+        return new Node(id, "InstanceVariable", props, refs);
     }
 
     @Override
@@ -93,13 +106,14 @@ public class InstanceVariable {
                 && Objects.equals(description, that.description)
                 && Objects.equals(referencePeriodStart, that.referencePeriodStart)
                 && Objects.equals(referencePeriodEnd, that.referencePeriodEnd)
-                && Objects.equals(technicalName, that.technicalName);
+                && Objects.equals(technicalName, that.technicalName)
+                && Objects.equals(conceptsFromScheme, that.conceptsFromScheme);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
-                referencePeriodEnd, technicalName);
+                referencePeriodEnd, technicalName, conceptsFromScheme);
     }
 
 }

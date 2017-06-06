@@ -7,9 +7,15 @@ import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.compo
 import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component';
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
+import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
+import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 
 const routes: Routes = [
+    {
+        path: 'catalog/datasets/:datasetId/instanceVariables/:instanceVariableId',
+        component: InstanceVariableComponent
+    },
     {
         path: 'catalog/datasets/:id',
         component: DatasetComponent
@@ -29,6 +35,10 @@ const routes: Routes = [
     {
         path: 'editor/datasets/:datasetId/instanceVariables/:instanceVariableId/edit',
         component: InstanceVariableEditComponent,
+    },
+    {
+        path: 'editor/datasets/:datasetId/instanceVariables/:instanceVariableId',
+        component: InstanceVariableViewComponent,
     },
     {
         path: 'editor/datasets/new',

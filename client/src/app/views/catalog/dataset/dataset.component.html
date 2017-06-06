@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataset">
+<ng-container *ngIf="dataset; else loadingDataset;">
   <div class="row">
     <div class="col-xs-12">
       <h1>
@@ -188,9 +188,10 @@
           <th>{{ 'technicalName' | translate }}</th>
           <th>{{ 'referencePeriod' | translate }}</th>
         </tr>
-        <tr *ngFor="let variable of dataset.instanceVariables">
+        <tr *ngFor="let variable of dataset.instanceVariables"
+          routerLink="/catalog/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">
           <td>
-            {{ variable.prefLabel | lang }}
+            <a routerLink="/catalog/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
           </td>
           <td>
             <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
@@ -200,12 +201,18 @@
           </td>
           <td>
             <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
-              {{ variable.referencePeriodStart }}
-              —
-              {{ variable.referencePeriodEnd }}
+              <em>
+                {{ variable.referencePeriodStart }}
+                —
+                {{ variable.referencePeriodEnd }}
+              </em>
             </ng-container>
             <ng-template #inheritedReferencePeriod>
-              {{ 'inheritedReferencePeriod' | translate }}
+              <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+                {{ dataset.referencePeriodStart }}
+                —
+                {{ dataset.referencePeriodEnd }}
+              </ng-container>
             </ng-template>
           </td>
         </tr>
@@ -218,6 +225,10 @@
   </div>
 
 </ng-container>
+
+<ng-template #loadingDataset>
+  <thl-spinner></thl-spinner>
+</ng-template>
 
 <hr>
 

@@ -1,4 +1,4 @@
-<div *ngIf="dataset">
+<div *ngIf="dataset; else loadingDataset;">
 
   <h1>
     {{ 'dataset' | translate }}:
@@ -279,9 +279,15 @@
     </textarea>
   </div>
 
+  <hr>
+
 </div>
 
-<hr>
+<ng-template #loadingDataset>
+  <div>
+    <thl-spinner></thl-spinner>
+  </div>
+</ng-template>
 
 <div class="edit-controls-padding">
   <div class="edit-controls-fixed">
@@ -289,7 +295,9 @@
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'cancel' | translate }}
     </button>
-    <button class="btn btn-primary" (click)="save()">
+    <button (click)="save()"
+      [disabled]="!dataset || savingInProgress"
+      class="btn btn-primary">
       <span class="glyphicon glyphicon-floppy-disk"></span>
       {{ 'save' | translate }}
     </button>

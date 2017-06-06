@@ -8,6 +8,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
 import fi.thl.thldtkk.api.metadata.service.Service;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
@@ -30,6 +31,8 @@ public class InstanceVariableController {
 
   @Autowired
   private Service<UUID, Dataset> datasetService;
+  @Autowired
+  private InstanceVariableService instanceVariableService;
 
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
   public List<InstanceVariable> getDatasetInstanceVariables(
@@ -43,12 +46,8 @@ public class InstanceVariableController {
   public InstanceVariable getDatasetInstanceVariable(
       @PathVariable("datasetId") UUID datasetId,
       @PathVariable("instanceVariableId") UUID instanceVariableId) {
-
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
-
-    return dataset.getInstanceVariables().stream()
-        .filter(v -> v.getId().equals(instanceVariableId))
-        .findFirst().orElseThrow(NotFoundException::new);
+    return instanceVariableService.get(instanceVariableId)
+      .orElseThrow(NotFoundException::new);
   }
 
   @PostJsonMapping(path = "/datasets/{datasetId}/instanceVariables",

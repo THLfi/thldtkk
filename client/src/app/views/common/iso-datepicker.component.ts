@@ -35,7 +35,10 @@ export class IsoDatePicker implements ControlValueAccessor {
 
   onDateTextInputChange(event: any): void {
     const value: string = event.target.value
-    if (this.isValidIsoDate(value)) {
+    if (!value || '' == value.trim()) {
+      this.dateAsStringChange.emit(null)
+    }
+    else if (this.isValidIsoDate(value)) {
       this.dateAsStringChange.emit(value)
     }
   }

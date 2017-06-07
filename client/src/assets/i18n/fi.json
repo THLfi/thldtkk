@@ -70,5 +70,6 @@
   "noDatasetLinks": "Aineistolle ei ole määritelty linkkejä.",
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
-  "loading": "Ladataan..."
+  "loading": "Ladataan...",
+  "invalidIsoDate": "Virheellinen päivämäärä. Syötä päivämäärä ISO-muodossa 'vuosi-kuukausi-päivä', esimerkiksi '2017-06-15'."
 }

@@ -11,6 +11,7 @@ export class IsoDatePicker implements ControlValueAccessor {
   private readonly _isoDateRegex: string = "^\\d{4}-\\d{2}-\\d{2}$"
 
   public _showDatePicker: boolean = false
+  public _hasValidationErrors: boolean = false
 
   private onChange: any = Function.prototype
   private onTouched: any = Function.prototype
@@ -24,7 +25,18 @@ export class IsoDatePicker implements ControlValueAccessor {
   }
   set dateAsString(value: string) {
     this._dateAsString = value
-    this._date = this.isValidIsoDate(value) ? new Date(value) : null
+    if (!value || '' == value.trim()) {
+      this._hasValidationErrors = false
+      this._date = new Date()
+    }
+    else if (this.isValidIsoDate(value)) {
+      this._hasValidationErrors = false
+      this._date = new Date(value)
+    }
+    else {
+      this._hasValidationErrors = true
+      this._date = null
+    }
   }
 
   @Output() dateAsStringChange: EventEmitter<string> = new EventEmitter<string>()
@@ -36,15 +48,22 @@ export class IsoDatePicker implements ControlValueAccessor {
   onDateTextInputChange(event: any): void {
     const value: string = event.target.value
     if (!value || '' == value.trim()) {
+      this._hasValidationErrors = false
       this.dateAsStringChange.emit(null)
     }
     else if (this.isValidIsoDate(value)) {
+      this._hasValidationErrors = false
       this.dateAsStringChange.emit(value)
+    }
+    else {
+      this._hasValidationErrors = true
     }
   }
 
-  private isValidIsoDate(value: string): boolean {
-    return new RegExp(this._isoDateRegex).test(value)
+  isValidIsoDate(value: string): boolean {
+    const dateValue: any = new Date(value)
+    return ('Invalid Date' != dateValue
+      && new RegExp(this._isoDateRegex).test(value))
   }
 
   onSelectDateFromCalendarPopup(date: Date): void {

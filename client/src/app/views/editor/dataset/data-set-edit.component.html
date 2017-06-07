@@ -181,37 +181,46 @@
            class="form-control">
   </div>
 
-  <div class="form-group">
-    <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
-    <iso-datepicker
-        [(dateAsString)]="dataset.referencePeriodStart"
-        id="referencePeriodStart"
-        name="referencePeriodStart">
-    </iso-datepicker>
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+        <iso-datepicker
+            [(dateAsString)]="dataset.referencePeriodStart"
+            id="referencePeriodStart"
+            name="referencePeriodStart">
+        </iso-datepicker>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+        <iso-datepicker
+            [(dateAsString)]="dataset.referencePeriodEnd"
+            id="referencePeriodEnd"
+            name="referencePeriodEnd">
+        </iso-datepicker>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
-    <iso-datepicker
-        [(dateAsString)]="dataset.referencePeriodEnd"
-        id="referencePeriodEnd"
-        name="referencePeriodEnd">
-    </iso-datepicker>
-  </div>
-
-  <div *ngIf="allLifecyclePhases"
-      class="form-group">
-    <label for="lifecyclePhase" translate="lifecyclePhase"></label>
-    <select [(ngModel)]="dataset.lifecyclePhase"
-        [compareWith]="nodeUtils.equals"
-        id="lifecyclePhase"
-        class="form-control">
-      <option [ngValue]="null"></option>
-      <option *ngFor="let lifecyclePhase of allLifecyclePhases"
-          [ngValue]="lifecyclePhase">
-          {{lifecyclePhase.prefLabel|lang}}
-      </option>
-    </select>
+  <div class="row">
+    <div class="col-sm-6">
+      <div *ngIf="allLifecyclePhases"
+        class="form-group">
+        <label for="lifecyclePhase" translate="lifecyclePhase"></label>
+        <select [(ngModel)]="dataset.lifecyclePhase"
+            [compareWith]="nodeUtils.equals"
+            id="lifecyclePhase"
+            class="form-control">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let lifecyclePhase of allLifecyclePhases"
+              [ngValue]="lifecyclePhase">
+              {{lifecyclePhase.prefLabel|lang}}
+          </option>
+        </select>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
@@ -262,11 +271,16 @@
     <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
   </div>
 
-<p-multiSelect  [options]="datasetTypeItems" 
-                [(ngModel)]="selectedDatasetTypeItems"
-                defaultLabel="{{ 'selectDatasetType' | translate }}"
-                selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}">
-</p-multiSelect>
+  <div class="form-group">
+    <label for="datasetType">{{ 'datasetType' | translate }}</label>
+    <br>
+    <p-multiSelect [options]="datasetTypeItems"
+      [(ngModel)]="selectedDatasetTypeItems"
+      defaultLabel="{{ 'selectDatasetType' | translate }}"
+      selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
+      inputId="datasetType">
+    </p-multiSelect>
+  </div>
 
   <div class="form-group">
     <label for="comment" translate="comment"></label>

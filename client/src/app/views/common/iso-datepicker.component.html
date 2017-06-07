@@ -1,4 +1,4 @@
-<div class="input-group">
+<div [ngClass]="{ 'has-error': _hasValidationErrors }" class="input-group">
   <input [(ngModel)]="dateAsString"
     (change)="onDateTextInputChange($event)"
     (focus)="_showDatePicker = false"
@@ -17,3 +17,7 @@
   [startingDay]="1"
   (selectionDone)="onSelectDateFromCalendarPopup($event)">
 </datepicker>
+
+<p *ngIf="_hasValidationErrors" class="text-danger">
+  {{ 'invalidIsoDate' | translate }}
+</p>

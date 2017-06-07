@@ -15,7 +15,7 @@
     <div class="col-xs-12">
       <div class="form-group">
         <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
-        <input [(ngModel)]="instanceVariable.prefLabel[currentLang]"
+        <input [(ngModel)]="instanceVariable.prefLabel[language]"
           id="prefLabel"
           name="prefLabel"
           type="text"
@@ -41,7 +41,7 @@
     <div class="col-xs-12">
       <div class="form-group">
         <label for="description">{{ 'description' | translate }}</label>
-        <textarea [(ngModel)]="instanceVariable.description[currentLang]"
+        <textarea [(ngModel)]="instanceVariable.description[language]"
           thlAutogrow
           id="description"
           name="description"
@@ -69,29 +69,41 @@
           inputId="conceptsFromScheme">
 
           <ng-template let-concept pTemplate="item">
-        <span>
-          {{ concept.prefLabel | lang }}
-        </span>
+            <span>
+              {{ concept.prefLabel | lang }}
+            </span>
             <small style="opacity:.7">
-          <span *ngFor="let lang of getConceptLanguages(concept)">
-            {{ lang }}:
-            {{ concept.prefLabel[lang] }}
-          </span>
+              <span *ngFor="let lang of getConceptLanguages(concept)">
+                {{ lang }}:
+                {{ concept.prefLabel[lang] }}
+              </span>
               ({{ concept.conceptScheme.prefLabel | lang }})
             </small>
           </ng-template>
 
           <ng-template let-concept pTemplate="selectedItem">
-        <span style="margin-right:1.2em;">
-          <span>
-            {{ concept.prefLabel | lang }}
-          </span>
-          <span style="opacity:.4">
-            ({{ concept.conceptScheme.prefLabel | lang }})
-          </span>
-        </span>
+            <span style="margin-right:1.2em;">
+              <span>
+                {{ concept.prefLabel | lang }}
+              </span>
+              <span style="opacity:.4">
+                ({{ concept.conceptScheme.prefLabel | lang }})
+              </span>
+            </span>
           </ng-template>
         </p-autoComplete>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+        <p-chips [(ngModel)]="freeConcepts"
+           inputId="freeConcepts">
+        </p-chips>
+        <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
       </div>
     </div>
   </div>

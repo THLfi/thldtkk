@@ -28,7 +28,7 @@
       <!-- TODO: Add contact person after adding it to new API. -->
 
     <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
-      
+
       <p>
         <strong *ngIf="dataset.datasetTypes">
           {{ 'datasetType' | translate }}
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts && dataset.freeConcepts[language])"
+      <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts | lang)"
            class="row">
         <div class="col-xs-12">
           <h2>{{ 'concepts' | translate }}</h2>

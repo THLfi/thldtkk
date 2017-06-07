@@ -9,4 +9,5 @@ export class InstanceVariable {
   referencePeriodEnd: string
   technicalName: string
   conceptsFromScheme: Concept[]
+  freeConcepts: LangValues
 }

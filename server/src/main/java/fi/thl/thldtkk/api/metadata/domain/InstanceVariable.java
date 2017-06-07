@@ -25,6 +25,7 @@ public class InstanceVariable {
     private UUID id;
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
+    private Map<String, String> freeConcepts = new LinkedHashMap<>();
     private LocalDate referencePeriodStart;
     private LocalDate referencePeriodEnd;
     private String technicalName;
@@ -39,6 +40,7 @@ public class InstanceVariable {
         checkArgument(Objects.equals(node.getTypeId(), "InstanceVariable"));
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
+        this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
         this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
         this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
         this.technicalName = PropertyMappings.toString(node.getProperties("technicalName"));
@@ -78,10 +80,16 @@ public class InstanceVariable {
       return conceptsFromScheme;
     }
 
+    public Map<String, String> getFreeConcepts() {
+      return freeConcepts;
+    }
+
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
         props.putAll("prefLabel", toPropertyValues(prefLabel));
         props.putAll("description", toPropertyValues(description));
+        props.putAll("freeConcepts", toPropertyValues(freeConcepts));
+
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
@@ -107,13 +115,14 @@ public class InstanceVariable {
                 && Objects.equals(referencePeriodStart, that.referencePeriodStart)
                 && Objects.equals(referencePeriodEnd, that.referencePeriodEnd)
                 && Objects.equals(technicalName, that.technicalName)
-                && Objects.equals(conceptsFromScheme, that.conceptsFromScheme);
+                && Objects.equals(conceptsFromScheme, that.conceptsFromScheme)
+                && Objects.equals(freeConcepts, freeConcepts);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
-                referencePeriodEnd, technicalName, conceptsFromScheme);
+                referencePeriodEnd, technicalName, conceptsFromScheme, freeConcepts);
     }
 
 }

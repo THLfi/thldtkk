@@ -49,6 +49,18 @@
     </div>
   </div>
 
+  <h2>{{ 'freeConcepts' | translate }}</h2>
+
+  <p *ngIf="instanceVariable.freeConcepts && instanceVariable.freeConcepts[language]; else noFreeConcepts;">
+      <span *ngFor="let concept of instanceVariable.freeConcepts[language].split(';')"
+            style="margin-right:1em;">
+        {{ concept.trim() }}
+      </span>
+  </p>
+  <ng-template #noFreeConcepts>
+    <p>{{ 'noFreeConcepts' | translate }}</p>
+  </ng-template>
+
   <div class="row">
     <div class="col-xs-12">
       <h2>{{ 'referencePeriod' | translate }}</h2>

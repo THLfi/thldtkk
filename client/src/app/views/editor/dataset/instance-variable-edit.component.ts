@@ -14,10 +14,11 @@ import {TranslateService} from '@ngx-translate/core';
 export class InstanceVariableEditComponent implements OnInit {
 
     instanceVariable: InstanceVariable
-    currentLang: string
+    language: string
 
     conceptSearchSubscription: Subscription
     conceptSearchResults: Concept[] = []
+    freeConcepts: string[] = []
 
     savingInProgress: boolean = false
 
@@ -28,7 +29,7 @@ export class InstanceVariableEditComponent implements OnInit {
         private router: Router,
         private translateService: TranslateService
     ) {
-        this.currentLang = translateService.currentLang
+        this.language = translateService.currentLang
     }
 
     ngOnInit(): void {
@@ -38,36 +39,42 @@ export class InstanceVariableEditComponent implements OnInit {
         if (instanceVariableId) {
             this.instanceVariableService.getInstanceVariable(datasetId, instanceVariableId)
                 .subscribe(instanceVariable => {
-                    this.instanceVariable = this.initInstanceVariable(instanceVariable)
+                  this.initInstanceVariable(instanceVariable)
+                  this.instanceVariable = instanceVariable
                 })
         }
         else {
-            this.instanceVariable = this.initInstanceVariable({
+            const instanceVariable = {
                 id: null,
                 prefLabel: null,
                 description: null,
                 referencePeriodStart: null,
                 referencePeriodEnd: null,
                 technicalName: null,
-                conceptsFromScheme: []
-            })
+                conceptsFromScheme: [],
+                freeConcepts: null
+            }
+            this.initInstanceVariable(instanceVariable)
+            this.instanceVariable = instanceVariable
         }
     }
 
-    private initInstanceVariable(instanceVariable: InstanceVariable): InstanceVariable {
-        return this.initProperties(instanceVariable, ['prefLabel', 'description'])
+    private initInstanceVariable(instanceVariable: InstanceVariable): void {
+      this.initProperties(instanceVariable, ['prefLabel', 'description', 'freeConcepts'])
+      if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
+        this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
+      }
     }
 
-    private initProperties(instanceVariable: InstanceVariable, properties: string[]): InstanceVariable {
+    private initProperties(instanceVariable: InstanceVariable, properties: string[]): void {
         properties.forEach(property => {
             if (!instanceVariable[property]) {
                 instanceVariable[property] = {}
             }
-            if (!instanceVariable[property][this.currentLang]) {
-                instanceVariable[property][this.currentLang] = ''
+            if (!instanceVariable[property][this.language]) {
+                instanceVariable[property][this.language] = ''
             }
         })
-        return instanceVariable
     }
 
     searchConcept(event: any): void {
@@ -83,7 +90,7 @@ export class InstanceVariableEditComponent implements OnInit {
     getConceptLanguages(concept: Concept): any {
       const languages = []
       for (let lang in concept.prefLabel) {
-        if (concept.prefLabel.hasOwnProperty(lang) && lang != this.currentLang) {
+        if (concept.prefLabel.hasOwnProperty(lang) && lang != this.language) {
           languages.push(lang)
         }
       }
@@ -92,9 +99,13 @@ export class InstanceVariableEditComponent implements OnInit {
 
     save(): void {
         this.savingInProgress = true
+
+        this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
+
         const datasetId = this.route.snapshot.params['datasetId']
         this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)
             .subscribe(instanceVariable => {
+                this.initInstanceVariable(instanceVariable)
                 this.instanceVariable = instanceVariable
                 this.savingInProgress = false
                 this.goBackToViewInstanceVariable()

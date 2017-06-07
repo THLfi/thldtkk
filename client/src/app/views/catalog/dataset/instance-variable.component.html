@@ -31,21 +31,26 @@
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="(instanceVariable.conceptsFromScheme.length || (instanceVariable.freeConcepts | lang))"
+    class="row">
     <div class="col-xs-12">
       <h2>{{ 'conceptsFromScheme' | translate }}</h2>
-      <p *ngIf="instanceVariable.conceptsFromScheme.length; else noConceptsFromScheme;">
-      <span *ngFor="let concept of instanceVariable.conceptsFromScheme"
-            style="margin-right:.6em;">
-        {{ concept.prefLabel | lang }}
-        <span style="opacity:.6">
-          ({{ concept.conceptScheme.prefLabel | lang }})
+      <p>
+        <span *ngFor="let concept of instanceVariable.conceptsFromScheme">
+          <span pTooltip="{{ 'source' | translate }}: {{ concept.conceptScheme.prefLabel | lang }}"
+                tooltipPosition="bottom"
+                style="margin-right:1em;white-space:nowrap;">
+            {{ concept.prefLabel | lang }}
+          </span>
         </span>
-      </span>
+        <ng-container *ngIf="instanceVariable.freeConcepts && instanceVariable.freeConcepts[language]">
+          <span *ngFor="let concept of instanceVariable.freeConcepts[language].split(';')">
+            <span style="margin-right:1em;white-space:nowrap;">
+              {{ concept }}
+            </span>
+          </span>
+        </ng-container>
       </p>
-      <ng-template #noConceptsFromScheme>
-        <p>{{ 'noConceptsFromScheme' | translate }}</p>
-      </ng-template>
     </div>
   </div>
 

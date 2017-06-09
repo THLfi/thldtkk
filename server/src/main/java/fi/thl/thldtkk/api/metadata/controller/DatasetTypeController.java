@@ -25,7 +25,7 @@ public class DatasetTypeController {
     }
 
     @GetJsonMapping("/{datasetTypeId}")
-    public DatasetType getOrganization(@PathVariable("datasetTypeId") UUID datasetTypeId) {
+    public DatasetType getDatasetType(@PathVariable("datasetTypeId") UUID datasetTypeId) {
         return datasetTypeService.get(datasetTypeId).orElseThrow(NotFoundException::new);
     }
 

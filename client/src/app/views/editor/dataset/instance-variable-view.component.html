@@ -20,7 +20,7 @@
   <div class="row">
     <div class="col-xs-12">
       <h2>{{ 'technicalName' | translate }}</h2>
-      <p>{{ instanceVariable.technicalName | lang }}</p>
+      <p>{{ instanceVariable.technicalName }}</p>
     </div>
   </div>
 
@@ -90,6 +90,43 @@
             {{ 'inheritedFromDataset' | translate }}
           </span>
         </p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.valueDomainType"
+       class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'valueDomainType.label' | translate }}</h2>
+      <p>{{ 'valueDomainType.' + instanceVariable.valueDomainType | translate }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.valueDomainType == 'described'"
+       class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'quantity' | translate }}</h2>
+      <p *ngIf="instanceVariable.quantity; else noUnit;">
+        {{ instanceVariable.quantity.prefLabel | lang }}
+      </p>
+      <ng-template #noUnit>
+        <p>{{ 'noQuantity' | translate }}</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.valueDomainType == 'described'"
+       class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'unit' | translate }}</h2>
+      <p *ngIf="instanceVariable.unit; else noUnit;">
+        {{ instanceVariable.unit.prefLabel | lang }}
+        <span *ngIf="instanceVariable.unit.symbol | lang">
+          ({{ instanceVariable.unit.symbol | lang }})
+        </span>
+      </p>
+      <ng-template #noUnit>
+        <p>{{ 'noUnit' | translate }}</p>
       </ng-template>
     </div>
   </div>

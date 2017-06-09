@@ -1,11 +1,17 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable,Subscription} from 'rxjs';
+import {SelectItem} from 'primeng/components/common/api';
 
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
+import {LangPipe} from '../../../utils/lang.pipe';
+import {Quantity} from '../../../model2/quantity';
+import {QuantityService} from '../../../services2/quantity.service';
+import {Unit} from '../../../model2/unit';
+import {UnitService} from '../../../services2/unit.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -20,14 +26,25 @@ export class InstanceVariableEditComponent implements OnInit {
     conceptSearchResults: Concept[] = []
     freeConcepts: string[] = []
 
+    allQuantityItems: SelectItem[] = []
+    showAddQuantityModal: boolean = false
+    newQuantity: Quantity
+
+    allUnitItems: SelectItem[] = []
+    showAddUnitModal: boolean = false
+    newUnit: Unit
+
     savingInProgress: boolean = false
 
     constructor(
         private instanceVariableService: InstanceVariableService,
         private conceptService: ConceptService,
+        private quantityService: QuantityService,
+        private unitService: UnitService,
         private route: ActivatedRoute,
         private router: Router,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private langPipe: LangPipe
     ) {
         this.language = translateService.currentLang
     }
@@ -52,11 +69,19 @@ export class InstanceVariableEditComponent implements OnInit {
                 referencePeriodEnd: null,
                 technicalName: null,
                 conceptsFromScheme: [],
-                freeConcepts: null
+                freeConcepts: null,
+                valueDomainType: null,
+                quantity: null,
+                unit: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
         }
+
+        this.getAllQuantitiesAndUnits()
+
+        this.initNewQuantity()
+        this.initNewUnit()
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
@@ -66,15 +91,87 @@ export class InstanceVariableEditComponent implements OnInit {
       }
     }
 
-    private initProperties(instanceVariable: InstanceVariable, properties: string[]): void {
+    private initProperties(node: any, properties: string[]): void {
         properties.forEach(property => {
-            if (!instanceVariable[property]) {
-                instanceVariable[property] = {}
+            if (!node[property]) {
+                node[property] = {}
             }
-            if (!instanceVariable[property][this.language]) {
-                instanceVariable[property][this.language] = ''
+            if (!node[property][this.language]) {
+                node[property][this.language] = ''
             }
         })
+    }
+
+    private convertToQuantityItem(quantity: Quantity): SelectItem {
+      return {
+        label: this.langPipe.transform(quantity.prefLabel),
+        value: quantity
+      }
+    }
+
+    private convertToUnitItem(unit: Unit): SelectItem {
+      let label = this.langPipe.transform(unit.prefLabel)
+
+      let abbreviation = this.langPipe.transform(unit.symbol)
+      if (abbreviation && abbreviation.trim() != '') {
+        label += ' ('
+        label += this.langPipe.transform(unit.symbol)
+        label += ')'
+      }
+
+      return {
+        label: label,
+        value: unit
+      }
+    }
+
+    private getAllQuantitiesAndUnits(): void {
+      this.allQuantityItems = []
+      this.allUnitItems = []
+
+      Observable.forkJoin(
+        this.translateService.get('noQuantity'),
+        this.quantityService.getAll(),
+        this.translateService.get('noUnit'),
+        this.unitService.getAll()
+      ).subscribe(data => {
+        const noQuantityLabel: string = data[0]
+        this.allQuantityItems = []
+        this.allQuantityItems.push({
+          label: noQuantityLabel,
+          value: null
+        })
+        const quantities: Quantity[] = data[1]
+        quantities.forEach(quantity => this.allQuantityItems.push(this.convertToQuantityItem(quantity)))
+
+        const noUnitLabel: string = data[2]
+        this.allUnitItems = []
+        this.allUnitItems.push({
+          label: noUnitLabel,
+          value: null
+        })
+        const units: Unit[] = data[3]
+        units.forEach(unit => this.allUnitItems.push(this.convertToUnitItem(unit)))
+      })
+    }
+
+    private initNewQuantity() {
+      const quantity = {
+        id: null,
+        prefLabel: null
+      }
+      this.initProperties(quantity, ['prefLabel'])
+      this.newQuantity = quantity
+    }
+
+    private initNewUnit() {
+      const unit = {
+        id: null,
+        prefLabel: null,
+        symbol: null
+      }
+      this.initProperties(unit, ['prefLabel', 'symbol'])
+      this.newUnit = unit
     }
 
     searchConcept(event: any): void {
@@ -97,7 +194,35 @@ export class InstanceVariableEditComponent implements OnInit {
       return languages
     }
 
-    save(): void {
+    toggleAddQuantityModal(): void {
+      this.showAddQuantityModal = !this.showAddQuantityModal
+    }
+
+    saveQuantity(): void {
+      this.quantityService.save(this.newQuantity)
+        .subscribe(savedQuantity => {
+          this.initNewQuantity()
+          this.getAllQuantitiesAndUnits()
+          this.instanceVariable.quantity = savedQuantity
+          this.toggleAddQuantityModal()
+        })
+    }
+
+    toggleAddUnitModal(): void {
+      this.showAddUnitModal = !this.showAddUnitModal
+    }
+
+    saveUnit(): void {
+      this.unitService.save(this.newUnit)
+        .subscribe(savedUnit => {
+          this.initNewUnit()
+          this.getAllQuantitiesAndUnits()
+          this.instanceVariable.unit = savedUnit
+          this.toggleAddUnitModal()
+        })
+    }
+
+    saveInstanceVariable(): void {
         this.savingInProgress = true
 
         this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
@@ -108,7 +233,7 @@ export class InstanceVariableEditComponent implements OnInit {
                 this.initInstanceVariable(instanceVariable)
                 this.instanceVariable = instanceVariable
                 this.savingInProgress = false
-                this.goBackToViewInstanceVariable()
+                this.goBack()
             })
     }
 
@@ -130,11 +255,24 @@ export class InstanceVariableEditComponent implements OnInit {
             })
     }
 
-    goBackToViewInstanceVariable(): void {
-      this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId'], 'instanceVariables', this.route.snapshot.params['instanceVariableId']])
+    goBack(): void {
+      if (this.route.snapshot.params['instanceVariableId'] || (this.instanceVariable && this.instanceVariable.id)) {
+        this.goBackToViewInstanceVariable()
+      }
+      else {
+        this.goBackToViewDataset()
+      }
     }
 
-    goBackToViewDataset(): void {
+    private goBackToViewInstanceVariable(): void {
+      this.router.navigate([
+        '/editor/datasets',
+        this.route.snapshot.params['datasetId'],
+        'instanceVariables',
+        this.instanceVariable.id])
+    }
+
+    private goBackToViewDataset(): void {
       this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId']])
     }
 

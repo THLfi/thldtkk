@@ -131,6 +131,138 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="value-domain-type">{{ 'valueDomainType.label' | translate }}</label>
+        <div id="value-domain-type" class="radio">
+          <label>
+            <input [(ngModel)]="instanceVariable.valueDomainType" name="value-domain-type" type="radio" value="described">
+            {{ 'valueDomainType.described' | translate }}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input [(ngModel)]="instanceVariable.valueDomainType" name="value-domain-type" type="radio" value="enumerated">
+            {{ 'valueDomainType.enumerated' | translate }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="instanceVariable.valueDomainType == 'described'">
+    <ng-container *ngIf="allQuantityItems.length">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label>{{ 'quantity' | translate }}</label>
+            <br>
+            <p-dropdown [(ngModel)]="instanceVariable.quantity"
+                        [options]="allQuantityItems"
+                        filter="true">
+            </p-dropdown>
+            <button
+              (click)="toggleAddQuantityModal()"
+              class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-plus"></span>
+              {{ 'addQuantity' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <p-dialog [(visible)]="showAddQuantityModal"
+                modal="modal"
+                draggable="false"
+                resizable="false"
+                closeOnEscape="false"
+                width="500">
+        <p-header>
+          {{ 'newQuantity' | translate }}
+        </p-header>
+        <div class="form-group">
+          <label for="quantity-prefLabel">{{ 'prefLabel' | translate }}</label>
+          <input [(ngModel)]="newQuantity.prefLabel[language]"
+                 id="quantity-prefLabel"
+                 name="quantity-prefLabel"
+                 type="text"
+                 class="form-control">
+        </div>
+        <p-footer>
+          <div>
+            <button (click)="saveQuantity()"
+                    class="btn btn-primary">
+              <span class="glyphicon glyphicon-floppy-disk"></span>
+              {{ 'save' | translate }}
+            </button>
+            <button (click)="toggleAddQuantityModal()" class="btn btn-default">
+              {{ 'cancel' | translate }}
+            </button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </ng-container>
+    <ng-container *ngIf="allUnitItems.length">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label>{{ 'unit' | translate }}</label>
+            <br>
+            <p-dropdown [(ngModel)]="instanceVariable.unit"
+                        [options]="allUnitItems"
+                        filter="true">
+            </p-dropdown>
+            <button
+              (click)="toggleAddUnitModal()"
+              class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-plus"></span>
+              {{ 'addUnit' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <p-dialog [(visible)]="showAddUnitModal"
+                modal="modal"
+                draggable="false"
+                resizable="false"
+                closeOnEscape="false"
+                width="500">
+        <p-header>
+          {{ 'newUnit' | translate }}
+        </p-header>
+        <div class="form-group">
+          <label for="unit-prefLabel">{{ 'prefLabel' | translate }}</label>
+          <input [(ngModel)]="newUnit.prefLabel[language]"
+                 id="unit-prefLabel"
+                 name="unit-prefLabel"
+                 type="text"
+                 class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="unit-symbol">{{ 'symbol' | translate }}</label>
+          <input [(ngModel)]="newUnit.symbol[language]"
+                 id="unit-symbol"
+                 name="unit-symbol"
+                 type="text"
+                 class="form-control"
+                 style="width:6em;">
+        </div>
+        <p-footer>
+          <div>
+            <button (click)="saveUnit()"
+              class="btn btn-primary">
+              <span class="glyphicon glyphicon-floppy-disk"></span>
+              {{ 'save' | translate }}
+            </button>
+            <button (click)="toggleAddUnitModal()" class="btn btn-default">
+              {{ 'cancel' | translate }}
+            </button>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </ng-container>
+  </ng-container>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>
@@ -146,13 +278,15 @@
 <div class="row">
   <div class="col-xs-12">
     <div>
-      <button class="btn btn-default" (click)="goBackToViewInstanceVariable()">
+      <button (click)="goBack()"
+              [disabled]="savingInProgress"
+              class="btn btn-default">
         <span class="glyphicon glyphicon-chevron-left"></span>
         {{ 'cancel' | translate }}
       </button>
 
       <ng-container *ngIf="instanceVariable">
-        <button (click)="save()"
+        <button (click)="saveInstanceVariable()"
           [disabled]="savingInProgress"
           class="btn btn-primary">
           <span class="glyphicon glyphicon-floppy-disk"></span>

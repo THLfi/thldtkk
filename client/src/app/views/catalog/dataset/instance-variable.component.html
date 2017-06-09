@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-xs-12">
       <p>
-        <a routerLink="/editor/datasets/{{ datasetId }}">
+        <a routerLink="/catalog/datasets/{{ datasetId }}">
           {{ 'dataset' | translate }}:
           {{ dataset.prefLabel | lang }}
         </a>
@@ -17,14 +17,16 @@
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="instanceVariable.technicalName"
+       class="row" >
     <div class="col-xs-12">
       <h2>{{ 'technicalName' | translate }}</h2>
-      <p>{{ instanceVariable.technicalName | lang }}</p>
+      <p>{{ instanceVariable.technicalName }}</p>
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="instanceVariable.description | lang"
+       class="row">
     <div class="col-xs-12">
       <h2>{{ 'description' | translate }}</h2>
       <p class="preserve-line-breaks">{{ instanceVariable.description | lang }}</p>
@@ -74,11 +76,14 @@
         </p>
       </ng-container>
       <ng-template #inheritedReferencePeriod>
-        <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+        <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd); else noReferencePeriod;">
           {{ dataset.referencePeriodStart }}
           —
           {{ dataset.referencePeriodEnd }}
         </p>
+      </ng-template>
+      <ng-template #noReferencePeriod>
+        <p>{{ 'noReferencePeriod' | translate }}</p>
       </ng-template>
     </div>
   </div>
@@ -97,12 +102,12 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button routerLink="/editor/datasets/{{ datasetId }}" class="btn btn-default">
+    <button routerLink="/catalog/datasets/{{ datasetId }}" class="btn btn-default">
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'back' | translate }}
     </button>
     <button *ngIf="instanceVariable"
-            routerLink="/editor/datasets/{{ datasetId }}/instanceVariables/{{ instanceVariableId }}/edit"
+            routerLink="/catalog/datasets/{{ datasetId }}/instanceVariables/{{ instanceVariableId }}/edit"
             class="btn btn-default">
       <span class="glyphicon glyphicon-edit"></span>
       {{ 'edit' | translate }}

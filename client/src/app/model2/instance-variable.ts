@@ -1,7 +1,9 @@
 import { Concept } from './concept';
 import { LangValues } from './lang-values';
+import { Quantity } from './quantity';
+import { Unit } from './unit';
 
-export class InstanceVariable {
+export interface InstanceVariable {
   id: string
   prefLabel: LangValues
   description: LangValues
@@ -10,4 +12,7 @@ export class InstanceVariable {
   technicalName: string
   conceptsFromScheme: Concept[]
   freeConcepts: LangValues
+  valueDomainType: string
+  quantity: Quantity
+  unit: Unit
 }

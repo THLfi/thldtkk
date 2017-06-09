@@ -1,5 +1,6 @@
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipsModule } from 'primeng/components/chips/chips';
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -9,6 +10,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { DatepickerModule } from 'ngx-bootstrap/datepicker'
 import { DatePipe } from '@angular/common'
+import { DialogModule } from "primeng/components/dialog/dialog";
+import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { MultiSelectModule } from 'primeng/primeng';
 
 import { AppComponent } from './app.component'
@@ -20,14 +23,16 @@ import { environment } from '../environments/environment'
 import { NodeUtils } from './utils/node-utils'
 
 // services
-import { ConceptService } from './services2/concept.service';
+import { ConceptService } from './services2/concept.service'
 import { DatasetService } from './services2/dataset.service'
+import { DatasetTypeService } from './services2/dataset-type.service'
+import { InstanceVariableService } from './services2/instance-variable.service'
+import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
+import { UnitService } from './services2/unit.service'
 import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
-import { InstanceVariableService } from './services2/instance-variable.service'
+import { QuantityService } from "./services2/quantity.service";
 import { UsageConditionService } from './services2/usage-condition.service'
-import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
-import { DatasetTypeService } from './services2/dataset-type.service'
 
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
@@ -72,10 +77,13 @@ export function TranslateHttpLoaderFactory(http: Http) {
         FormsModule,
         HttpModule,
         AppRoutingModule,
+        BrowserAnimationsModule,
         AutoCompleteModule,
         TooltipModule,
         ChipsModule,
         MultiSelectModule,
+        DropdownModule,
+        DialogModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -95,7 +103,10 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LifecyclePhaseService,
         DatasetTypeService,
         DatePipe,
-        ConceptService
+        ConceptService,
+        UnitService,
+        QuantityService,
+        LangPipe
     ],
     bootstrap: [
         AppComponent

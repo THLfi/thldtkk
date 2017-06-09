@@ -51,7 +51,7 @@ public class DatasetService implements Service<UUID, Dataset> {
     @Override
     public Optional<Dataset> get(UUID id) {
         return nodeService.get(new NodeId(id, "DataSet"),
-            "id,type,properties.*,references.*,references.inScheme:2").map(Dataset::new);
+            "id,type,properties.*,references.*,references.inScheme:2,references.quantity:2,references.unit:2").map(Dataset::new);
     }
 
     @Override
@@ -61,9 +61,16 @@ public class DatasetService implements Service<UUID, Dataset> {
         dataset.getPopulation()
                 .ifPresent(p -> p.setId(firstNonNull(p.getId(), randomUUID())));
         dataset.getInstanceVariables()
-                .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
+                .forEach(iv -> {
+                  iv.setId(firstNonNull(iv.getId(), randomUUID()));
+                  if (InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED.equals(iv.getValueDomainType().orElse(null))) {
+                    iv.setQuantity(null);
+                    iv.setUnit(null);
+                  }
+                });
         dataset.getLinks()
                 .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
+
         if (!old.isPresent()) {
             insert(dataset);
         } else {

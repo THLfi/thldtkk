@@ -52,19 +52,26 @@ public class InstanceVariableController {
 
   @PostJsonMapping(path = "/datasets/{datasetId}/instanceVariables",
       produces = APPLICATION_JSON_UTF8_VALUE)
-  public Dataset postDatasetInstanceVariable(
+  public InstanceVariable postDatasetInstanceVariable(
       @PathVariable("datasetId") UUID datasetId,
       @RequestBody InstanceVariable instanceVariable) {
 
     Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
-    instanceVariable.setId(firstNonNull(instanceVariable.getId(), randomUUID()));
+    UUID instanceVariableId = firstNonNull(instanceVariable.getId(), randomUUID());
+    instanceVariable.setId(instanceVariableId);
 
     Map<UUID, InstanceVariable> variablesById =
         index(dataset.getInstanceVariables(), InstanceVariable::getId);
     variablesById.put(instanceVariable.getId(), instanceVariable);
 
-    return datasetService.save(new Dataset(dataset, new ArrayList<>(variablesById.values())));
+    dataset = datasetService.save(new Dataset(dataset, new ArrayList<>(variablesById.values())));
+
+    return dataset.getInstanceVariables()
+      .stream()
+      .filter(iv -> instanceVariableId.equals(iv.getId()))
+      .findFirst()
+      .orElseThrow(IllegalStateException::new);
   }
 
   @DeleteMapping("/datasets/{datasetId}/instanceVariables/{instanceVariableId}")

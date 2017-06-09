@@ -4,6 +4,7 @@ import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -13,6 +14,8 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableMultimap;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Quantity;
+import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -96,6 +99,21 @@ public class DatasetServiceTest {
   @Test(expected = NotFoundException.class)
   public void shouldThrowNotFoundWhenDeletingNonExistingDataset() {
     datasetService.delete(nameUUIDFromString("Does not exist"));
+  }
+
+  @Test
+  public void shouldClearQuantityAndUnitFieldsWhenValueDomainTypeIsNotDescribed() {
+    InstanceVariable variable = new InstanceVariable(nameUUIDFromString("IV1"));
+    variable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
+    variable.setQuantity(new Quantity(nameUUIDFromString("Q1")));
+    variable.setUnit(new Unit(nameUUIDFromString("U1")));
+    Dataset dataset = new Dataset(nameUUIDFromString("DS"), asList(variable));
+
+    Dataset savedDataset = datasetService.save(dataset);
+
+    InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
+    assertFalse(savedVariable.getQuantity().isPresent());
+    assertFalse(savedVariable.getUnit().isPresent());
   }
 
 }

@@ -30,7 +30,6 @@
   "valueInDataset": "Aineistossa",
   "inheritedFromDataset": "Periytyy aineistolta",
   "datasetEditor": "Aineistoeditori",
-  "dataset": "Aineisto",
   "prefLabel": "Nimi",
   "edit": "Muokkaa",
   "remove": "Poista",
@@ -124,5 +123,10 @@
   "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi",
   "valueRangeMin": "Muuttujan pienin sallittu arvo",
   "valueRangeMax": "Muuttujan suurin sallittu arvo",
-  "or": "tai"
+  "or": "tai",
+  "variable": "Käsitemuuttuja",
+  "addVariable": "Lisää käsitemuuttuja",
+  "newVariable": "Uusi käsitemuuttuja",
+  "noSearchResults": "Ei hakutuloksia",
+  "searchForVariables":"Hae käsitemuuttujia..."
 }

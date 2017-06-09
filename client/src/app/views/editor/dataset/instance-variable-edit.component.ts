@@ -16,10 +16,17 @@ import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services2/unit.service';
 import {StringUtils} from '../../../utils/string-utils';
+import {Variable} from '../../../model2/variable'
+import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
 
+import {DialogModule} from 'primeng/primeng'
+
+import {NodeUtils} from '../../../utils/node-utils'
+
 @Component({
-    templateUrl: './instance-variable-edit.component.html'
+    templateUrl: './instance-variable-edit.component.html',
+    styleUrls:['./instance-variable-edit.component.css']
 })
 export class InstanceVariableEditComponent implements OnInit {
 
@@ -43,11 +50,15 @@ export class InstanceVariableEditComponent implements OnInit {
     showAddCodeListModal: boolean = false
     newCodeList: CodeList
 
+    variableSearchSubscription: Subscription
+    variableSearchResults: Variable[]
+
     savingInProgress: boolean = false
 
     constructor(
         private instanceVariableService: InstanceVariableService,
         private codeListService: CodeListService,
+        private variableService: VariableService,
         private conceptService: ConceptService,
         private quantityService: QuantityService,
         private unitService: UnitService,
@@ -55,7 +66,8 @@ export class InstanceVariableEditComponent implements OnInit {
         private router: Router,
         private translateService: TranslateService,
         private langPipe: LangPipe,
-        private stringUtils: StringUtils
+        private stringUtils: StringUtils,
+        private nodeUtils: NodeUtils
     ) {
         this.language = translateService.currentLang
     }
@@ -70,7 +82,7 @@ export class InstanceVariableEditComponent implements OnInit {
                   this.initInstanceVariable(instanceVariable)
                   this.instanceVariable = instanceVariable
                 })
-        }
+         }
         else {
             const instanceVariable = {
                 id: null,
@@ -89,7 +101,8 @@ export class InstanceVariableEditComponent implements OnInit {
                 missingValues: null,
                 defaultMissingValue: null,
                 valueRangeMin: null,
-                valueRangeMax: null
+                valueRangeMax: null,
+                variable: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -338,19 +351,49 @@ export class InstanceVariableEditComponent implements OnInit {
       this.newCodeList.codeItems = validCodeItems
     }
 
+    searchVariable(event:any): void {
+        const searchText: string = event.query
+        if (this.variableSearchSubscription) {
+        // Cancel possible on-going search
+        this.variableSearchSubscription.unsubscribe()
+      }
+      this.variableSearchSubscription = this.variableService.searchVariable(searchText)
+        .subscribe(variables => this.variableSearchResults = variables)
+   }
+
+    nullifyEmptyVariable(variable:Variable): Variable {
+        // for fixing empty string JSON transport when variable removed ("" not an object)
+        let checkedVariable:Variable = !variable ? null : variable
+        return checkedVariable
+    }
+
+    isVariable(variable: any): variable is Variable {
+      return  (variable === null || (
+              (<Variable>variable).id !== undefined && 
+              (<Variable>variable).prefLabel !== undefined && 
+              (<Variable>variable).description !== undefined))
+    }
+
+    updateVariable(variable: Variable) {
+      this.instanceVariable.variable = variable
+    }
+
     saveInstanceVariable(): void {
         this.savingInProgress = true
 
         this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
+        
+        this.instanceVariable.variable = this.nullifyEmptyVariable(this.instanceVariable.variable)
+        this.instanceVariable.variable = this.isVariable(this.instanceVariable.variable) ? this.instanceVariable.variable : null
 
         const datasetId = this.route.snapshot.params['datasetId']
         this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)
-            .subscribe(instanceVariable => {
-                this.initInstanceVariable(instanceVariable)
-                this.instanceVariable = instanceVariable
-                this.savingInProgress = false
-                this.goBack()
-            })
+          .subscribe(instanceVariable => {
+            this.initInstanceVariable(instanceVariable)
+            this.instanceVariable = instanceVariable
+            this.savingInProgress = false
+            this.goBack()
+        })
     }
 
     confirmRemove(): void {
@@ -391,5 +434,4 @@ export class InstanceVariableEditComponent implements OnInit {
     private goBackToViewDataset(): void {
       this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId']])
     }
-
 }

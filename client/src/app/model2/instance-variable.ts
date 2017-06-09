@@ -1,5 +1,6 @@
 import { CodeList } from './code-list';
 import { Concept } from './concept';
+import { Variable } from './variable'
 import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
 import { Unit } from './unit';
@@ -22,4 +23,5 @@ export interface InstanceVariable {
   defaultMissingValue: string
   valueRangeMin: number
   valueRangeMax: number
+  variable: Variable
 }

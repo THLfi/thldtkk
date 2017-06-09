@@ -16,6 +16,8 @@ import { MultiSelectModule } from 'primeng/primeng';
 import { TruncateModule } from 'ng2-truncate';
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 
+
+
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
 
@@ -36,6 +38,7 @@ import { UnitService } from './services2/unit.service'
 import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
 import { QuantityService } from "./services2/quantity.service";
+import { VariableService } from './services2/variable.service'
 import { UsageConditionService } from './services2/usage-condition.service'
 
 // common components
@@ -56,6 +59,7 @@ import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/d
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
+import { VariableEditComponent } from './views/editor/dataset/variable-edit.component';
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -73,6 +77,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
+        VariableEditComponent,
         IsoDatePicker,
         LangPipe,
         LoadingSpinner,
@@ -80,6 +85,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         HttpModule,
         AppRoutingModule,
@@ -104,6 +110,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     providers: [
         DatasetService,
         InstanceVariableService,
+        VariableService,
         NodeUtils,
         OrganizationService,
         OrganizationUnitService,

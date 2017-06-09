@@ -17,6 +17,13 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="instanceVariable.variable">
+    <div class="col-xs-12">
+      <h2>{{ 'variable' | translate }}</h2>
+      <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-xs-12">
       <h2>{{ 'technicalName' | translate }}</h2>

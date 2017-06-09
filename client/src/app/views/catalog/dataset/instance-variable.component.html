@@ -179,6 +179,13 @@
     </div>
   </div>
 
+<div class="row">
+    <div class="col-xs-12" *ngIf="instanceVariable.variable">
+      <h2>{{ 'variable' | translate }}</h2>
+      <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
+    </div>
+</div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

@@ -37,8 +37,8 @@ public class DatasetServiceTest {
     when(mockedNodeService.query("type.id:DataSet")).thenReturn(datasets.stream());
     when(mockedNodeService.query("type.id:DataSet AND (properties.prefLabel:hello*)"))
         .thenReturn(datasets.stream());
-    when(mockedNodeService.get(any(NodeId.class), eq("*,references.inScheme:2"))).thenReturn(Optional.<Node>empty());
-    when(mockedNodeService.get(eq(new NodeId(nameUUIDFromString("DS1"), "DataSet")), eq("*,references.inScheme:2")))
+    when(mockedNodeService.get(any(NodeId.class), any())).thenReturn(Optional.<Node>empty());
+    when(mockedNodeService.get(eq(new NodeId(nameUUIDFromString("DS1"), "DataSet")), any()))
         .thenReturn(Optional.of(datasets.get(0)));
 
     this.datasetService = new DatasetService(mockedNodeService);

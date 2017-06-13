@@ -1,32 +1,42 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.service.Service;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import static java.util.Arrays.stream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import static java.util.stream.Collectors.toList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import org.springframework.http.MediaType;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v2/datasets")
 public class DatasetController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DatasetController.class);
 
     @Autowired
     private Service<UUID, Dataset> datasetService;
@@ -35,9 +45,9 @@ public class DatasetController {
 
     @GetJsonMapping
     public List<Dataset> queryDatasets(
-        @RequestParam(name = "organizationId", required = false) UUID organizationId,
-        @RequestParam(name = "datasetTypeId", required = false) UUID datasetTypeId,
-        @RequestParam(name = "query", defaultValue = "") String query) {
+            @RequestParam(name = "organizationId", required = false) UUID organizationId,
+            @RequestParam(name = "datasetTypeId", required = false) UUID datasetTypeId,
+            @RequestParam(name = "query", defaultValue = "") String query) {
 
         List<String> datasetQueryClauses = new ArrayList<>();
 
@@ -49,7 +59,7 @@ public class DatasetController {
         }
         if (!query.isEmpty()) {
             stream(nonWordChar.split(query)).forEach(
-                token -> datasetQueryClauses.add("properties.prefLabel:" + token + "*"));
+                    token -> datasetQueryClauses.add("properties.prefLabel:" + token + "*"));
         }
 
         return datasetService.query(String.join(" AND ", datasetQueryClauses)).collect(toList());
@@ -62,8 +72,8 @@ public class DatasetController {
 
     @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
     public Dataset postDataset(
-        @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables,
-        @RequestBody Dataset dataset) {
+            @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables,
+            @RequestBody Dataset dataset) {
 
         Optional<Dataset> oldDataset = Optional.empty();
 
@@ -73,7 +83,7 @@ public class DatasetController {
 
         if (!saveInstanceVariables && oldDataset.isPresent()) {
             return datasetService.save(
-                new Dataset(dataset, oldDataset.get().getInstanceVariables()));
+                    new Dataset(dataset, oldDataset.get().getInstanceVariables()));
         }
 
         return datasetService.save(dataset);
@@ -85,4 +95,19 @@ public class DatasetController {
         datasetService.delete(datasetId);
     }
 
+    @RequestMapping(
+            value = "/xml-import",
+            method = RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Dataset generateDatasetFromXML(MultipartHttpServletRequest request) {
+        Iterator<String> itr = request.getFileNames();
+        MultipartFile multipartFile = request.getFile(itr.next());
+        try {
+            return new XmlMapper().readValue(multipartFile.getBytes(), Dataset.class);
+        } catch (IOException e) {
+            LOG.error(e.getMessage());
+            return new Dataset();
+        }
+    }
 }

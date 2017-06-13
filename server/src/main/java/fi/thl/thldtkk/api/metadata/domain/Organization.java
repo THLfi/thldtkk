@@ -20,6 +20,10 @@ public class Organization {
   private Map<String, String> abbreviation = new LinkedHashMap<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
 
+  public Organization() {
+
+  }
+
   public Organization(UUID id) {
     this.id = requireNonNull(id);
   }

@@ -48,6 +48,10 @@ public class Dataset {
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
     private List<DatasetType> datasetTypes = new ArrayList<>();
 
+    public Dataset() {
+
+    }
+
     public Dataset(UUID id) {
         this.id = requireNonNull(id);
     }
@@ -218,10 +222,10 @@ public class Dataset {
     }
 
     public Map<String, String> getFreeConcepts() {
-      return freeConcepts;
+        return freeConcepts;
     }
 
-  /**
+    /**
      * Transforms dataset into node
      */
     public Node toNode() {

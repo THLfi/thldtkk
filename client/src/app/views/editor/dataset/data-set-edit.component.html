@@ -1,5 +1,6 @@
 <div *ngIf="dataset; else loadingDataset;">
-
+  <label for="file" translate="uploadFromFile"></label>
+  <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
   <h1>
     {{ 'dataset' | translate }}:
     {{dataset.prefLabel | lang}}

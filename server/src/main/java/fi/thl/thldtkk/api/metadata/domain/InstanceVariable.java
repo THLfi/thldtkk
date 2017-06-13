@@ -31,6 +31,10 @@ public class InstanceVariable {
     private String technicalName;
     private List<Concept> conceptsFromScheme = new ArrayList<>();
 
+    public InstanceVariable() {
+
+    }
+
     public InstanceVariable(UUID id) {
         this.id = requireNonNull(id);
     }

@@ -71,5 +71,7 @@
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
-  "invalidIsoDate": "Virheellinen päivämäärä. Syötä päivämäärä ISO-muodossa 'vuosi-kuukausi-päivä', esimerkiksi '2017-06-15'."
+  "invalidIsoDate": "Virheellinen päivämäärä. Syötä päivämäärä ISO-muodossa 'vuosi-kuukausi-päivä', esimerkiksi '2017-06-15'.",
+  "uploadFromFile": "Aineiston tuonti tiedostosta (HUOM: aineiston tuonti tyhjentää kaikki kentät)",
+  "uploadDataset": "Aineiston tuonti"
 }

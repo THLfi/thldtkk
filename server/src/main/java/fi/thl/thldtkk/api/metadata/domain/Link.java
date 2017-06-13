@@ -16,6 +16,10 @@ public class Link {
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> linkUrl = new LinkedHashMap<>();
 
+    public Link() {
+
+    }
+
     public Link(UUID id) {
         this.id = requireNonNull(id);
     }

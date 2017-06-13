@@ -49,4 +49,17 @@ export class DatasetService {
       return this.saveDataset(dataset);
     }
 
+    importDataset(event): Observable<Dataset> {
+         let fileList: FileList = event.target.files;
+         if (fileList.length > 0) {
+             let file: File = fileList[0];
+             let formData: FormData = new FormData();
+             formData.append('uploadFile', file, file.name);
+             let headers = new Headers();
+             headers.append('Accept', 'application/json');
+             let options = new RequestOptions({headers: headers});
+             return this._http.post('/api/v2/datasets/xml-import', formData, options)
+                 .map(res => res.json() as Dataset)
+         }
+     }
 }

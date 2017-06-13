@@ -47,7 +47,7 @@ export class DataSetEditComponent implements OnInit {
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
     selectedDatasetTypeItems: string[] = [];
-    datasetTypesById: { [datasetTypeId:string]: DatasetType } = {};
+    datasetTypesById: {[datasetTypeId: string]: DatasetType} = {};
 
     savingInProgress: boolean = false
 
@@ -65,7 +65,7 @@ export class DataSetEditComponent implements OnInit {
         private conceptService: ConceptService,
         private langPipe: LangPipe
     ) {
-      this.language = this.translateService.currentLang
+        this.language = this.translateService.currentLang
     }
 
 
@@ -122,15 +122,14 @@ export class DataSetEditComponent implements OnInit {
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
 
-                let unsortedDatasetTypeItems:Array<DatasetTypeItem> = []
+                let unsortedDatasetTypeItems: Array<DatasetTypeItem> = []
 
-                datasetTypes.forEach(datasetType =>
-                    {
-                        let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
-                        unsortedDatasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
+                datasetTypes.forEach(datasetType => {
+                    let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
+                    unsortedDatasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
 
-                        this.datasetTypesById[datasetType.id] = datasetType;
-                    }
+                    this.datasetTypesById[datasetType.id] = datasetType;
+                }
                 );
 
                 this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);
@@ -168,13 +167,13 @@ export class DataSetEditComponent implements OnInit {
         }
 
         if (dataset.freeConcepts && dataset.freeConcepts[this.language]) {
-          this.freeConcepts = dataset.freeConcepts[this.language].split(';')
+            this.freeConcepts = dataset.freeConcepts[this.language].split(';')
         }
 
-      return dataset;
+        return dataset;
     }
 
-    private initializeSelectedDatasetTypes(dataset:Dataset): string[] {
+    private initializeSelectedDatasetTypes(dataset: Dataset): string[] {
         let storedDatasetTypeItems = []
         dataset.datasetTypes.forEach(datasetType => {storedDatasetTypeItems.push(datasetType.id)});
         return storedDatasetTypeItems;
@@ -243,12 +242,21 @@ export class DataSetEditComponent implements OnInit {
 
         if (this.selectedDatasetTypeItems) {
             this.selectedDatasetTypeItems.forEach(datasetTypeId => {
-                let datasetType:DatasetType = this.datasetTypesById[datasetTypeId];
+                let datasetType: DatasetType = this.datasetTypesById[datasetTypeId];
                 selectedDatasetTypes.push(datasetType);
             });
         }
 
         return selectedDatasetTypes;
+    }
+
+    importXml(event) {
+        this.datasetService.importDataset(event).subscribe(
+            data => {
+                this.dataset = this.initializeDataSetProperties(data);
+            }, error => {
+                console.log(error);
+            });
     }
 
     save() {

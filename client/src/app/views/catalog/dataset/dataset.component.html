@@ -150,14 +150,15 @@
           <div *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd"
             class="col-sm-6 col-md-4">
             <div class="bordered-box">
-              <h2>{{ 'referencePeriod' | translate }}</h2>
-              <p *ngIf="dataset.referencePeriodStart">
-                {{ 'referencePeriodStart' | translate }}:
-                {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
-              </p>
-              <p *ngIf="dataset.referencePeriodEnd">
-                {{ 'referencePeriodEnd' | translate }}:
-                {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+              <h2>{{ 'catalog.referencePeriod' | translate }}</h2>
+              <p>
+                <ng-container *ngIf="dataset.referencePeriodStart">
+                  {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+                </ng-container>
+                —
+                <ng-container *ngIf="dataset.referencePeriodEnd">
+                  {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+                </ng-container>
               </p>
             </div>
           </div>
@@ -185,8 +186,7 @@
         <tr>
           <th>{{ 'prefLabel' | translate }}</th>
           <th>{{ 'description' | translate }}</th>
-          <th>{{ 'technicalName' | translate }}</th>
-          <th>{{ 'referencePeriod' | translate }}</th>
+          <th>{{ 'catalog.referencePeriod' | translate }}</th>
         </tr>
         <tr *ngFor="let variable of dataset.instanceVariables"
           routerLink="/catalog/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">
@@ -197,21 +197,18 @@
             <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
           </td>
           <td>
-              {{ variable.technicalName }}
-          </td>
-          <td>
             <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
               <em>
-                {{ variable.referencePeriodStart }}
+                {{ variable.referencePeriodStart | date:'dd.MM.yyyy' }}
                 —
-                {{ variable.referencePeriodEnd }}
+                {{ variable.referencePeriodEnd | date:'dd.MM.yyyy' }}
               </em>
             </ng-container>
             <ng-template #inheritedReferencePeriod>
               <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
-                {{ dataset.referencePeriodStart }}
+                {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
                 —
-                {{ dataset.referencePeriodEnd }}
+                {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
               </ng-container>
             </ng-template>
           </td>

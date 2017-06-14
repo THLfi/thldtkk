@@ -306,15 +306,22 @@
 
 <div class="edit-controls-padding">
   <div class="edit-controls-fixed">
-    <button class="btn btn-default" (click)="goBack()">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      {{ 'cancel' | translate }}
-    </button>
-    <button (click)="save()"
-      [disabled]="!dataset || savingInProgress"
-      class="btn btn-primary">
-      <span class="glyphicon glyphicon-floppy-disk"></span>
-      {{ 'save' | translate }}
-    </button>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <button (click)="save()"
+            [disabled]="!dataset || savingInProgress"
+            class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+          <button (click)="goBack()"
+                  [disabled]="savingInProgress"
+                  class="btn btn-default">
+            {{ 'cancel' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

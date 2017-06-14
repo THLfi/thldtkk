@@ -1,21 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
-.preserve-line-breaks {
-  white-space: pre-line;
-}
-
-.navbar-default {
-    background-color: #fff;
-    border-color: #ccc;
-    border-width: 0 0 1px 0;
-    border-radius: 0;
-    box-shadow: 0 1px 1px #ddd
-}
-.navbar-default .navbar-brand {
-    color: #333;
-}
-
 a {
-    color: #2F4752;
+  color: #2F4752;
 }
 
 h1 {
@@ -27,6 +11,10 @@ h1 {
 h2 {
     font-size: 24px;
     font-weight: 200;
+}
+
+.preserve-line-breaks {
+  white-space: pre-line;
 }
 
 .edit-controls-fixed{
@@ -43,4 +31,3 @@ h2 {
 .edit-controls-padding {
     padding-bottom: 30px;
 }
-

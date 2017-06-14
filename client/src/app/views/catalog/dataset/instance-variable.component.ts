@@ -9,7 +9,8 @@ import { InstanceVariable } from '../../../model2/instance-variable'
 import { InstanceVariableService } from '../../../services2/instance-variable.service'
 
 @Component({
-  templateUrl: './instance-variable.component.html'
+  templateUrl: './instance-variable.component.html',
+  styleUrls: [ './instance-variable.component.css' ]
 })
 export class InstanceVariableComponent implements OnInit {
 

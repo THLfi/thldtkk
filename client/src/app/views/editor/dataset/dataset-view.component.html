@@ -97,25 +97,25 @@
     </ng-container>
 
     <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
-      
+
       <h2>{{ 'datasetType' | translate }}</h2>
       <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
 
     </ng-container>
 
-    <ng-container *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd">
-        <div class="bordered-box">
-        <h2>{{ 'referencePeriod' | translate }}</h2>
-        <p *ngIf="dataset.referencePeriodStart">
-          {{ 'referencePeriodStart' | translate }}:
-          {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
-        </p>
-        <p *ngIf="dataset.referencePeriodEnd">
-          {{ 'referencePeriodEnd' | translate }}:
-          {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
-        </p>
-      </div>
-    </ng-container>
+    <h2>{{ 'referencePeriod' | translate }}</h2>
+    <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else noReferencePeriod;">
+      <ng-container *ngIf="dataset.referencePeriodStart">
+        {{ dataset.referencePeriodStart }}
+      </ng-container>
+      —
+      <ng-container *ngIf="dataset.referencePeriodEnd">
+        {{ dataset.referencePeriodEnd }}
+      </ng-container>
+    </p>
+    <ng-template #noReferencePeriod>
+      <p>{{ 'noReferencePeriod' | translate }}</p>
+    </ng-template>
 
     <ng-container *ngIf="dataset.lifecyclePhase">
 

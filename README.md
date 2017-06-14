@@ -46,3 +46,15 @@ Run dev server:
 
 UI can be accessed via `http://localhost:8082/`. Changes to source files will
 cause an automatic reload in your browser.
+
+## Transforming XML files from outside schemas to internal schema
+
+Transformation requires a specific XSLT file for the inbound format. Also, a working xalan installation is needed for the task. You can download it from: http://www.apache.org/dyn/closer.cgi/xml/xalan-j
+
+Usage:
+
+    java -jar <path-to-xalan-jar>/xalan.jar -IN <inbound file> -XSL <xsl template file> -OUT <resulting xml file>
+
+Implemented transformations:
+
+    Tilastokeskus format: TilastokeskusToAineistokatalogi.xsl

@@ -3,6 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 
+import {CodeList} from '../../../model2/code-list';
+import {CodeListService} from '../../../services2/code-list.service';
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
 import {InstanceVariable} from '../../../model2/instance-variable';
@@ -34,10 +36,15 @@ export class InstanceVariableEditComponent implements OnInit {
     showAddUnitModal: boolean = false
     newUnit: Unit
 
+    allCodeListItems: SelectItem[]
+    showAddCodeListModal: boolean = false
+    newCodeList: CodeList
+
     savingInProgress: boolean = false
 
     constructor(
         private instanceVariableService: InstanceVariableService,
+        private codeListService: CodeListService,
         private conceptService: ConceptService,
         private quantityService: QuantityService,
         private unitService: UnitService,
@@ -74,6 +81,7 @@ export class InstanceVariableEditComponent implements OnInit {
                 quantity: null,
                 unit: null,
                 qualityStatement: null,
+                codeList: null,
                 missingValues: null,
                 defaultMissingValue: null,
                 valueRangeMin: null,
@@ -84,9 +92,11 @@ export class InstanceVariableEditComponent implements OnInit {
         }
 
         this.getAllQuantitiesAndUnits()
+        this.getAllCodeLists()
 
         this.initNewQuantity()
         this.initNewUnit()
+        this.initNewCodeList()
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
@@ -161,6 +171,39 @@ export class InstanceVariableEditComponent implements OnInit {
       })
     }
 
+    private getAllCodeLists(): void {
+      this.allCodeListItems = []
+
+      Observable.forkJoin(
+        this.translateService.get('noCodeList'),
+        this.codeListService.getAll()
+      ).subscribe(data => {
+        const noCodeListLabel: string = data[0]
+        this.allCodeListItems.push({
+          label: noCodeListLabel,
+          value: null
+        })
+
+        const codeLists: CodeList[] = data[1]
+        codeLists.forEach(codeList => {
+          let codeListItemLabel = codeList.prefLabel[this.language]
+          if (codeList.referenceId) {
+            codeListItemLabel += ', '
+            codeListItemLabel += codeList.referenceId
+          }
+          if (codeList.owner[this.language]) {
+            codeListItemLabel += ', '
+            codeListItemLabel += codeList.owner[this.language]
+          }
+          this.allCodeListItems.push({
+            label: codeListItemLabel,
+            value: codeList
+          })
+        })
+      })
+
+    }
+
     private initNewQuantity() {
       const quantity = {
         id: null,
@@ -180,14 +223,31 @@ export class InstanceVariableEditComponent implements OnInit {
       this.newUnit = unit
     }
 
+    private initNewCodeList() {
+      const codeList = {
+        id: null,
+        prefLabel: null,
+        description: null,
+        owner: null,
+        referenceId: null
+      }
+      this.initProperties(codeList, ['prefLabel', 'description', 'owner'])
+      this.newCodeList = codeList
+    }
+
     searchConcept(event: any): void {
-      const searchText: string = event.query
+      this.conceptSearchResults = []
       if (this.conceptSearchSubscription) {
         // Cancel possible on-going search
         this.conceptSearchSubscription.unsubscribe()
       }
-      this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
-        .subscribe(concepts => this.conceptSearchResults = concepts)
+
+      const searchText: string = event.query
+
+      if (searchText.length >= 3) {
+        this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
+          .subscribe(concepts => this.conceptSearchResults = concepts)
+      }
     }
 
     getConceptLanguages(concept: Concept): any {
@@ -225,6 +285,20 @@ export class InstanceVariableEditComponent implements OnInit {
           this.getAllQuantitiesAndUnits()
           this.instanceVariable.unit = savedUnit
           this.toggleAddUnitModal()
+        })
+    }
+
+    toggleAddCodeListModal(): void {
+      this.showAddCodeListModal = !this.showAddCodeListModal
+    }
+
+    saveCodeList(): void {
+      this.codeListService.save(this.newCodeList)
+        .subscribe(savedCodeList => {
+          this.initNewCodeList()
+          this.getAllCodeLists()
+          this.instanceVariable.codeList = savedCodeList
+          this.toggleAddCodeListModal()
         })
     }
 

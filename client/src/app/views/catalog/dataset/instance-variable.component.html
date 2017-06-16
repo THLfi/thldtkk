@@ -99,6 +99,27 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="instanceVariable.codeList">
+    <div class="col-xs-12">
+      <h2>{{ 'codeList.label' | translate }}</h2>
+      <p>
+        <strong>{{ instanceVariable.codeList.prefLabel | lang }}</strong>
+        <span *ngIf="instanceVariable.codeList.referenceId"
+              style="opacity:.7">
+          ({{ instanceVariable.codeList.referenceId }})
+        </span>
+      </p>
+      <p *ngIf="instanceVariable.codeList.description | lang"
+         class="preserve-line-breaks">{{ instanceVariable.codeList.description | lang }}</p>
+      <p *ngIf="instanceVariable.codeList.owner | lang" >
+        <em>
+          {{ 'codeList.owner' | translate }}:
+          {{ instanceVariable.codeList.owner | lang }}
+        </em>
+      </p>
+    </div>
+  </div>
+
   <div *ngIf="instanceVariable.technicalName"
        class="row" >
     <div class="col-xs-12">

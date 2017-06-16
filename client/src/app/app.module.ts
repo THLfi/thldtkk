@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common'
 import { DialogModule } from "primeng/components/dialog/dialog";
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { MultiSelectModule } from 'primeng/primeng';
+import { TruncateModule } from 'ng2-truncate';
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -23,6 +24,7 @@ import { environment } from '../environments/environment'
 import { NodeUtils } from './utils/node-utils'
 
 // services
+import { CodeListService } from "./services2/code-list.service";
 import { ConceptService } from './services2/concept.service'
 import { DatasetService } from './services2/dataset.service'
 import { DatasetTypeService } from './services2/dataset-type.service'
@@ -84,6 +86,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         MultiSelectModule,
         DropdownModule,
         DialogModule,
+        TruncateModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -106,7 +109,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         ConceptService,
         UnitService,
         QuantityService,
-        LangPipe
+        LangPipe,
+        CodeListService
     ],
     bootstrap: [
         AppComponent

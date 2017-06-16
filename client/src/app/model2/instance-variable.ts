@@ -1,3 +1,4 @@
+import { CodeList } from './code-list';
 import { Concept } from './concept';
 import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
@@ -16,6 +17,7 @@ export interface InstanceVariable {
   quantity: Quantity
   unit: Unit
   qualityStatement: LangValues
+  codeList: CodeList
   missingValues: LangValues
   defaultMissingValue: string
   valueRangeMin: number

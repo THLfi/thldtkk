@@ -15,6 +15,7 @@ h2 {
 
 .preserve-line-breaks {
   white-space: pre-line;
+  line-height: 1.1em;
 }
 
 .edit-controls-fixed{
@@ -30,4 +31,11 @@ h2 {
 
 .edit-controls-padding {
     padding-bottom: 30px;
+}
+
+/* PrimeNG custom styles */
+
+/* Dropdown component's search bar (shown when filtering is enabled) */
+.ui-dropdown-filter-container {
+  width: 100%;
 }

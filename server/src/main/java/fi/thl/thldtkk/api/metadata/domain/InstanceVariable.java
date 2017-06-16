@@ -36,6 +36,7 @@ public class InstanceVariable {
     private String valueDomainType;
     private Quantity quantity;
     private Unit unit;
+    private CodeList codeList;
     private List<Concept> conceptsFromScheme = new ArrayList<>();
     private Map<String, String> qualityStatement = new LinkedHashMap<>();
     private Map<String, String> missingValues = new LinkedHashMap<>();
@@ -70,6 +71,8 @@ public class InstanceVariable {
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
                 .stream().findFirst().ifPresent(unit -> this.unit = new Unit(unit));
+        node.getReferences("codeList")
+          .stream().findFirst().ifPresent(codeList -> this.codeList = new CodeList(codeList));
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     }
@@ -138,6 +141,14 @@ public class InstanceVariable {
         this.unit = unit;
     }
 
+    public Optional<CodeList> getCodeList() {
+      return Optional.ofNullable(codeList);
+    }
+
+    public void setCodeList(CodeList codeList) {
+      this.codeList = codeList;
+    }
+
     public List<Concept> getConceptsFromScheme() {
         return conceptsFromScheme;
     }
@@ -173,6 +184,7 @@ public class InstanceVariable {
         Multimap<String, Node> refs = LinkedHashMultimap.create();
         getQuantity().ifPresent(quantity -> refs.put("quantity", quantity.toNode()));
         getUnit().ifPresent(unit -> refs.put("unit", unit.toNode()));
+        getCodeList().ifPresent(codeList -> refs.put("codeList", codeList.toNode()));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
 
         return new Node(id, "InstanceVariable", props, refs);
@@ -196,6 +208,7 @@ public class InstanceVariable {
                 && Objects.equals(valueDomainType, that.valueDomainType)
                 && Objects.equals(quantity, that.quantity)
                 && Objects.equals(unit, that.unit)
+                && Objects.equals(codeList, that.codeList)
                 && Objects.equals(conceptsFromScheme, that.conceptsFromScheme)
                 && Objects.equals(freeConcepts, that.freeConcepts)
                 && Objects.equals(qualityStatement, that.qualityStatement)
@@ -208,7 +221,7 @@ public class InstanceVariable {
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
-                referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
+                referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
                 defaultMissingValue, valueRangeMax, valueRangeMin);
     }

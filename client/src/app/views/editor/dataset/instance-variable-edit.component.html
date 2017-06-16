@@ -162,6 +162,7 @@
                         [options]="allQuantityItems"
                         filter="true">
             </p-dropdown>
+            <span style="padding-left:1em;padding-right:1em">|</span>
             <button
               (click)="toggleAddQuantityModal()"
               class="btn btn-default btn-sm">
@@ -212,6 +213,7 @@
                         [options]="allUnitItems"
                         filter="true">
             </p-dropdown>
+            <span style="padding-left:1em;padding-right:1em">|</span>
             <button
               (click)="toggleAddUnitModal()"
               class="btn btn-default btn-sm">
@@ -261,30 +263,139 @@
         </p-footer>
       </p-dialog>
     </ng-container>
+
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="form-group">
+          <label for="valueRangeMin">{{ 'valueRangeMin' | translate }}</label>
+          <input [(ngModel)]="instanceVariable.valueRangeMin"
+                 id="valueRangeMin"
+                 name="valueRangeMin"
+                 class="form-control"
+                 type="number">
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="form-group">
+          <label for="valueRangeMax">{{ 'valueRangeMax' | translate }}</label>
+          <input [(ngModel)]="instanceVariable.valueRangeMax"
+                 id="valueRangeMax"
+                 name="valueRangeMax"
+                 class="form-control"
+                 type="number">
+        </div>
+      </div>
+    </div>
+
   </ng-container>
 
-  <div class="row">
-    <div class="col-sm-6 col-md-4">
-      <div class="form-group">
-        <label for="valueRangeMin">{{ 'valueRangeMin' | translate }}</label>
-        <input [(ngModel)]="instanceVariable.valueRangeMin"
-               id="valueRangeMin"
-               name="valueRangeMin"
-               class="form-control"
-               type="number">
+  <ng-container *ngIf="instanceVariable.valueDomainType == 'enumerated'">
+    <div *ngIf="allCodeListItems.length"
+         class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="codeList">{{ 'codeList.label' | translate }}</label>
+          <br>
+          <p-dropdown [(ngModel)]="instanceVariable.codeList"
+                      [options]="allCodeListItems"
+                      filter="true"
+                      autoWidth="false"
+                      [style]="{'width':'60%','min-width':'400px'}"
+                      inputId="codeList">
+            <ng-template let-codeListItem pTemplate="item">
+              <ng-container *ngIf="codeListItem.value; else nullValueCodeListItem;">
+                <p>
+                  {{ codeListItem.value.prefLabel | lang }}
+                  <span *ngIf="codeListItem.value.referenceId"
+                        style="opacity:.7">
+                    ({{ codeListItem.value.referenceId }})
+                  </span>
+                  <small style="opacity:.7">
+                    <ng-container *ngIf="codeListItem.value.description | lang">
+                      <br>
+                      {{ codeListItem.value.description | lang | truncate:70 }}
+                    </ng-container>
+                    <ng-container *ngIf="codeListItem.value.owner | lang">
+                      <br>
+                      <em>
+                        {{ 'codeList.owner' | translate }}:
+                        {{ codeListItem.value.owner | lang }}
+                      </em>
+                    </ng-container>
+                  </small>
+                </p>
+              </ng-container>
+              <ng-template #nullValueCodeListItem>
+                <p>{{ codeListItem.label }}</p>
+              </ng-template>
+            </ng-template>
+          </p-dropdown>
+          <span style="padding-left: 1em; padding-right:1em">|</span>
+          <button (click)="toggleAddCodeListModal()"
+                  class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addCodeList' | translate }}
+          </button>
+        </div>
       </div>
     </div>
-    <div class="col-sm-6 col-md-4">
+    <p-dialog [(visible)]="showAddCodeListModal"
+              modal="modal"
+              draggable="false"
+              resizable="false"
+              closeOnEscape="false"
+              width="500">
+      <p-header>
+        {{ 'newCodeList' | translate }}
+      </p-header>
       <div class="form-group">
-        <label for="valueRangeMax">{{ 'valueRangeMax' | translate }}</label>
-        <input [(ngModel)]="instanceVariable.valueRangeMax"
-               id="valueRangeMax"
-               name="valueRangeMax"
-               class="form-control"
-               type="number">
+        <label for="codeList-prefLabel">{{ 'codeList.prefLabel' | translate }}</label>
+        <input [(ngModel)]="newCodeList.prefLabel[language]"
+               id="codeList-prefLabel"
+               name="codeList-prefLabel"
+               type="text"
+               class="form-control">
       </div>
-    </div>
-  </div>
+      <div class="form-group">
+        <label for="codeList-referenceId">{{ 'codeList.referenceId' | translate }}</label>
+        <input [(ngModel)]="newCodeList.referenceId"
+               id="codeList-referenceId"
+               name="codeList-referenceId"
+               type="text"
+               class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="codeList-description">{{ 'codeList.description' | translate }}</label>
+        <textarea [(ngModel)]="newCodeList.description[language]"
+                  thlAutogrow
+                  rows="2"
+                  id="codeList-description"
+                  name="codeList-description"
+                  class="form-control">
+        </textarea>
+      </div>
+      <div class="form-group">
+        <label for="codeList-owner">{{ 'codeList.owner' | translate }}</label>
+        <input [(ngModel)]="newCodeList.owner[language]"
+               id="codeList-owner"
+               name="codeList-owner"
+               type="text"
+               class="form-control">
+      </div>
+      <p-footer>
+        <div>
+          <button (click)="saveCodeList()"
+                  class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+          <button (click)="toggleAddCodeListModal()" class="btn btn-default">
+            {{ 'cancel' | translate }}
+          </button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </ng-container>
 
   <div class="row">
     <div class="col-xs-12">

@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,52 +16,58 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class QuantityService implements Service<UUID, Quantity> {
+public class CodeListService implements Service<UUID, CodeList> {
 
   private TermedNodeService nodeService;
 
   @Autowired
-  public QuantityService(TermedNodeService nodeService) {
+  public CodeListService(TermedNodeService nodeService) {
     this.nodeService = nodeService;
   }
 
   @Override
-  public Stream<Quantity> query() {
+  public Stream<CodeList> query() {
     return query("");
   }
 
   @Override
-  public Stream<Quantity> query(String query) {
+  public Stream<CodeList> query(String query) {
     return query(query, -1);
   }
 
-  public Stream<Quantity> query(String query, int maxResults) {
+  public Stream<CodeList> query(String query, int maxResults) {
     List<String> byPrefLabel = stream(query.split("\\s"))
       .map(token -> "properties.prefLabel:" + token + "*")
       .collect(toList());
+    List<String> byOwner = stream(query.split("\\s"))
+      .map(token -> "properties.owner:" + token + "*")
+      .collect(toList());
 
-    List<String> clauses = new ArrayList<>();
-    clauses.add("type.id:Quantity");
-    clauses.addAll(byPrefLabel);
+    StringBuilder queryBuilder = new StringBuilder();
+    queryBuilder.append("type.id:CodeList AND ((");
+    queryBuilder.append(String.join(" AND ", byPrefLabel));
+    queryBuilder.append(") OR (");
+    queryBuilder.append(String.join(" AND ", byOwner));
+    queryBuilder.append("))");
 
     return nodeService.query(
       new NodeRequestBuilder()
-        .withQuery(String.join(" AND ", clauses))
+        .withQuery(queryBuilder.toString())
         .addSort("prefLabel")
         .withMaxResults(maxResults)
         .build()
-    ).map(Quantity::new);
+    ).map(CodeList::new);
   }
 
   @Override
-  public Optional<Quantity> get(UUID id) {
-    return nodeService.get(new NodeId(id, "Quantity")).map(Quantity::new);
+  public Optional<CodeList> get(UUID id) {
+    return nodeService.get(new NodeId(id, "CodeList")).map(CodeList::new);
   }
 
   @Override
-  public Quantity save(Quantity unit) {
-    Node savedNode = nodeService.save(unit.toNode());
-    return new Quantity(savedNode);
+  public CodeList save(CodeList codeList) {
+    Node savedNode = nodeService.save(codeList.toNode());
+    return new CodeList(savedNode);
   }
 
   @Override

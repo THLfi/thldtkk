@@ -47,8 +47,6 @@ public class UnitService implements Service<UUID, Unit> {
     return nodeService.query(
       new NodeRequestBuilder()
         .withQuery(String.join(" AND ", clauses))
-        .addDefaultIncludedAttributes()
-        .addIncludedAttribute("references.*")
         .addSort("prefLabel")
         .withMaxResults(maxResults)
         .build()

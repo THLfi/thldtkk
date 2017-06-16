@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMultimap;
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
@@ -114,6 +115,19 @@ public class DatasetServiceTest {
     InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
     assertFalse(savedVariable.getQuantity().isPresent());
     assertFalse(savedVariable.getUnit().isPresent());
+  }
+
+  @Test
+  public void shouldClearCodeListWhenValueDomainTypeIsNotEnumerated() {
+    InstanceVariable variable = new InstanceVariable(nameUUIDFromString("IV1"));
+    variable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_DESCRIBED);
+    variable.setCodeList(new CodeList(nameUUIDFromString("CL1")));
+    Dataset dataset = new Dataset(nameUUIDFromString("DS"), asList(variable));
+
+    Dataset savedDataset = datasetService.save(dataset);
+
+    InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
+    assertFalse(savedVariable.getCodeList().isPresent());
   }
 
 }

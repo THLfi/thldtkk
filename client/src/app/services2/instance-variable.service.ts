@@ -33,9 +33,12 @@ export class InstanceVariableService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    if (instanceVariable.valueDomainType == 'enumerated') {
+    if (instanceVariable.valueDomainType != 'described') {
       instanceVariable.quantity = null
       instanceVariable.unit = null
+    }
+    if (instanceVariable.valueDomainType != 'enumerated') {
+      instanceVariable.codeList = null
     }
 
     return this._http.post(path, instanceVariable, options)

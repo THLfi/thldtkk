@@ -72,7 +72,8 @@ export class InstanceVariableEditComponent implements OnInit {
                 freeConcepts: null,
                 valueDomainType: null,
                 quantity: null,
-                unit: null
+                unit: null,
+                qualityStatement: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -85,7 +86,7 @@ export class InstanceVariableEditComponent implements OnInit {
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
-      this.initProperties(instanceVariable, ['prefLabel', 'description', 'freeConcepts'])
+      this.initProperties(instanceVariable, ['prefLabel', 'description', 'freeConcepts', 'qualityStatement'])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
       }

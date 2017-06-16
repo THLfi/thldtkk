@@ -93,5 +93,6 @@
   "newUnit": "Uusi mittayksikkö",
   "catalog": {
     "referencePeriod": "Ajankohta"
-  }
+  },
+  "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot"
 }

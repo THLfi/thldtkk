@@ -15,4 +15,5 @@ export interface InstanceVariable {
   valueDomainType: string
   quantity: Quantity
   unit: Unit
+  qualityStatement: LangValues
 }

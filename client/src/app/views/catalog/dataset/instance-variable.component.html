@@ -107,6 +107,14 @@
     </div>
   </div>
 
+  <div *ngIf="instanceVariable.qualityStatement"
+       class="row" >
+    <div class="col-xs-12">
+      <h2>{{ 'qualityStatement' | translate }}</h2>
+      <p>{{ instanceVariable.qualityStatement | lang }}</p>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

@@ -263,6 +263,21 @@
     </ng-container>
   </ng-container>
 
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="qualityStatement">{{ 'qualityStatement' | translate }}</label>
+        <textarea [(ngModel)]="instanceVariable.qualityStatement[language]"
+                  thlAutogrow
+                  id="qualityStatement"
+                  name="qualityStatement"
+                  class="form-control"
+                  rows="3">
+        </textarea>
+      </div>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

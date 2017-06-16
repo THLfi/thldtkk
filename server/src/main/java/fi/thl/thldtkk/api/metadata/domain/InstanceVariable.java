@@ -10,7 +10,6 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocal
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -37,6 +36,7 @@ public class InstanceVariable {
     private Quantity quantity;
     private Unit unit;
     private List<Concept> conceptsFromScheme = new ArrayList<>();
+    private Map<String, String> qualityStatement = new LinkedHashMap<>();
 
     public InstanceVariable() {
 
@@ -56,12 +56,13 @@ public class InstanceVariable {
         this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
         this.technicalName = PropertyMappings.toString(node.getProperties("technicalName"));
         this.valueDomainType = PropertyMappings.toString(node.getProperties("valueDomainType"));
+        this.qualityStatement = toLangValueMap(node.getProperties("qualityStatement"));
         node.getReferences("quantity")
-          .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
+                .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
-          .stream().findFirst().ifPresent(unit -> this.unit = new Unit(unit));
+                .stream().findFirst().ifPresent(unit -> this.unit = new Unit(unit));
         node.getReferences("conceptsFromScheme")
-          .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+                .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     }
 
     public UUID getId() {
@@ -80,6 +81,10 @@ public class InstanceVariable {
         return description;
     }
 
+    public Map<String, String> getQualityStatement() {
+        return qualityStatement;
+    }
+
     public Optional<LocalDate> getReferencePeriodStart() {
         return Optional.ofNullable(referencePeriodStart);
     }
@@ -93,11 +98,11 @@ public class InstanceVariable {
     }
 
     public Optional<String> getValueDomainType() {
-        return Optional.ofNullable(valueDomainType );
+        return Optional.ofNullable(valueDomainType);
     }
 
     public void setValueDomainType(String valueDomainType) {
-      this.valueDomainType = valueDomainType;
+        this.valueDomainType = valueDomainType;
     }
 
     public Optional<Quantity> getQuantity() {
@@ -105,7 +110,7 @@ public class InstanceVariable {
     }
 
     public void setQuantity(Quantity quantity) {
-      this.quantity = quantity;
+        this.quantity = quantity;
     }
 
     public Optional<Unit> getUnit() {
@@ -113,15 +118,15 @@ public class InstanceVariable {
     }
 
     public void setUnit(Unit unit) {
-      this.unit = unit;
+        this.unit = unit;
     }
 
     public List<Concept> getConceptsFromScheme() {
-      return conceptsFromScheme;
+        return conceptsFromScheme;
     }
 
     public Map<String, String> getFreeConcepts() {
-      return freeConcepts;
+        return freeConcepts;
     }
 
     public Node toNode() {
@@ -129,6 +134,7 @@ public class InstanceVariable {
         props.putAll("prefLabel", toPropertyValues(prefLabel));
         props.putAll("description", toPropertyValues(description));
         props.putAll("freeConcepts", toPropertyValues(freeConcepts));
+        props.putAll("qualityStatement", toPropertyValues(qualityStatement));
 
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
@@ -162,14 +168,15 @@ public class InstanceVariable {
                 && Objects.equals(quantity, that.quantity)
                 && Objects.equals(unit, that.unit)
                 && Objects.equals(conceptsFromScheme, that.conceptsFromScheme)
-                && Objects.equals(freeConcepts, freeConcepts);
+                && Objects.equals(freeConcepts, that.freeConcepts)
+                && Objects.equals(qualityStatement, that.qualityStatement);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
-          referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
-          conceptsFromScheme, freeConcepts);
+                referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
+                conceptsFromScheme, freeConcepts, qualityStatement);
     }
 
 }

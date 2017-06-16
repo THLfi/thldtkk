@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row dataset-reference">
     <div class="col-xs-12">
       <p>
         <a routerLink="/catalog/datasets/{{ datasetId }}">
@@ -17,18 +17,9 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.technicalName"
-       class="row" >
-    <div class="col-xs-12">
-      <h2>{{ 'technicalName' | translate }}</h2>
-      <p>{{ instanceVariable.technicalName }}</p>
-    </div>
-  </div>
-
   <div *ngIf="instanceVariable.description | lang"
-       class="row">
+       class="row description">
     <div class="col-xs-12">
-      <h2>{{ 'description' | translate }}</h2>
       <p class="preserve-line-breaks">{{ instanceVariable.description | lang }}</p>
     </div>
   </div>
@@ -58,19 +49,19 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <h2>{{ 'referencePeriod' | translate }}</h2>
+      <h2>{{ 'catalog.referencePeriod' | translate }}</h2>
       <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedReferencePeriod;">
         <p>
-          {{ instanceVariable.referencePeriodStart }}
+          {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
           —
-          {{ instanceVariable.referencePeriodEnd }}
+          {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
           <span style="margin-left:2em;">
             <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <span *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
               {{ 'valueInDataset' | translate }}:
-              {{ dataset.referencePeriodStart }}
+              {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
               —
-              {{ dataset.referencePeriodEnd }}
+              {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
             </span>
           </span>
         </p>
@@ -85,6 +76,34 @@
       <ng-template #noReferencePeriod>
         <p>{{ 'noReferencePeriod' | translate }}</p>
       </ng-template>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.valueDomainType"
+       class="row" >
+    <div class="col-xs-12">
+      <h2>{{ 'valueDomain' | translate }}</h2>
+      <p>{{ 'valueDomainType.' + instanceVariable.valueDomainType | translate }}</p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="instanceVariable.unit">
+    <div class="col-xs-12">
+      <h2>{{ 'unit' | translate }}</h2>
+      <p>
+        {{ instanceVariable.unit.prefLabel | lang }}
+        <span *ngIf="instanceVariable.unit.symbol | lang">
+          ({{ instanceVariable.unit.symbol | lang }})
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.technicalName"
+       class="row" >
+    <div class="col-xs-12">
+      <h2>{{ 'technicalName' | translate }}</h2>
+      <p>{{ instanceVariable.technicalName }}</p>
     </div>
   </div>
 
@@ -105,12 +124,6 @@
     <button routerLink="/catalog/datasets/{{ datasetId }}" class="btn btn-default">
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ 'back' | translate }}
-    </button>
-    <button *ngIf="instanceVariable"
-            routerLink="/catalog/datasets/{{ datasetId }}/instanceVariables/{{ instanceVariableId }}/edit"
-            class="btn btn-default">
-      <span class="glyphicon glyphicon-edit"></span>
-      {{ 'edit' | translate }}
     </button>
   </div>
 </div>

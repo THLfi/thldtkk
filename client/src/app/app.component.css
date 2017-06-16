@@ -1,0 +1,14 @@
+.navbar-default {
+  background-color: #fff;
+  border-color: #ccc;
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+  box-shadow: 0 1px 1px #ddd
+}
+.navbar-default .navbar-brand {
+  color: #333;
+  font-weight: bold;
+}
+.navbar-default .navbar-brand sup {
+  color: #01A197;
+}

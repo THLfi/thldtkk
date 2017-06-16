@@ -37,6 +37,7 @@ public class InstanceVariable {
     private Unit unit;
     private List<Concept> conceptsFromScheme = new ArrayList<>();
     private Map<String, String> qualityStatement = new LinkedHashMap<>();
+    private Map<String, String> missingValues = new LinkedHashMap<>();
 
     public InstanceVariable() {
 
@@ -57,6 +58,7 @@ public class InstanceVariable {
         this.technicalName = PropertyMappings.toString(node.getProperties("technicalName"));
         this.valueDomainType = PropertyMappings.toString(node.getProperties("valueDomainType"));
         this.qualityStatement = toLangValueMap(node.getProperties("qualityStatement"));
+        this.missingValues = toLangValueMap(node.getProperties("missingValues"));
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -71,6 +73,10 @@ public class InstanceVariable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Map<String, String> getMissingValues() {
+        return missingValues;
     }
 
     public Map<String, String> getPrefLabel() {
@@ -135,6 +141,7 @@ public class InstanceVariable {
         props.putAll("description", toPropertyValues(description));
         props.putAll("freeConcepts", toPropertyValues(freeConcepts));
         props.putAll("qualityStatement", toPropertyValues(qualityStatement));
+        props.putAll("missingValues", toPropertyValues(missingValues));
 
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
@@ -169,14 +176,15 @@ public class InstanceVariable {
                 && Objects.equals(unit, that.unit)
                 && Objects.equals(conceptsFromScheme, that.conceptsFromScheme)
                 && Objects.equals(freeConcepts, that.freeConcepts)
-                && Objects.equals(qualityStatement, that.qualityStatement);
+                && Objects.equals(qualityStatement, that.qualityStatement)
+                && Objects.equals(missingValues, that.missingValues);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
-                conceptsFromScheme, freeConcepts, qualityStatement);
+                conceptsFromScheme, freeConcepts, qualityStatement, missingValues);
     }
 
 }

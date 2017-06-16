@@ -94,5 +94,6 @@
   "catalog": {
     "referencePeriod": "Ajankohta"
   },
-  "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot"
+  "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
+  "missingValues": "Muuttujan puuttuvien tietojen selite"
 }

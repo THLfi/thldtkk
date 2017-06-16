@@ -16,4 +16,5 @@ export interface InstanceVariable {
   quantity: Quantity
   unit: Unit
   qualityStatement: LangValues
+  missingValues: LangValues
 }

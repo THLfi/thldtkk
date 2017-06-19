@@ -96,5 +96,7 @@
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
   "missingValues": "Muuttujan puuttuvien tietojen selite",
-  "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi"
+  "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi",
+  "valueRangeMin": "Muuttujan pienin sallittu arvo",
+  "valueRangeMax": "Muuttujan suurin sallittu arvo"
 }

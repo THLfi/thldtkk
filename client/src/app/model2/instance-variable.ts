@@ -18,4 +18,6 @@ export interface InstanceVariable {
   qualityStatement: LangValues
   missingValues: LangValues
   defaultMissingValue: string
+  valueRangeMin: number
+  valueRangeMax: number
 }

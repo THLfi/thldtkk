@@ -131,6 +131,20 @@
     </div>
   </div>
 
+  <div *ngIf="instanceVariable.valueRangeMin" class="row">
+    <div class="col-xs-12">
+      <h2>{{'valueRangeMin'|translate}}</h2>
+      <p class="preserve-line-breaks">{{ instanceVariable.valueRangeMin }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.valueRangeMax" class="row">
+    <div class="col-xs-12">
+      <h2>{{'valueRangeMax'|translate}}</h2>
+      <p class="preserve-line-breaks">{{ instanceVariable.valueRangeMax }}</p>
+    </div>
+  </div>
+
   <div *ngIf="instanceVariable.missingValues && instanceVariable.missingValues[language]" class="row">
     <div class="col-xs-12">
       <h2>{{'missingValues'|translate}}</h2>

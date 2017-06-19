@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import java.math.BigDecimal;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +23,11 @@ public final class PropertyMappings {
   public static StrictLangValue toPropertyValue(Integer integer) {
     Objects.requireNonNull(integer);
     return new StrictLangValue(String.valueOf(integer));
+  }
+
+  public static StrictLangValue toPropertyValue(BigDecimal bigDecimal) {
+    Objects.requireNonNull(bigDecimal);
+    return new StrictLangValue(String.valueOf(bigDecimal));
   }
 
   public static StrictLangValue toPropertyValue(String string) {
@@ -71,6 +78,14 @@ public final class PropertyMappings {
       .map(StrictLangValue::getValue)
       .findFirst()
       .map(Boolean::valueOf)
+      .orElse(defaultValue);
+  }
+
+  public static BigDecimal toBigDecimal(Collection<StrictLangValue> values, BigDecimal defaultValue) {
+    return values.stream()
+      .map(StrictLangValue::getValue)
+      .findFirst()
+      .map(BigDecimal::new)
       .orElse(defaultValue);
   }
 

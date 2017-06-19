@@ -264,6 +264,29 @@
   </ng-container>
 
   <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="valueRangeMin">{{ 'valueRangeMin' | translate }}</label>
+        <input [(ngModel)]="instanceVariable.valueRangeMin"
+               id="valueRangeMin"
+               name="valueRangeMin"
+               class="form-control"
+               type="number">
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="valueRangeMax">{{ 'valueRangeMax' | translate }}</label>
+        <input [(ngModel)]="instanceVariable.valueRangeMax"
+               id="valueRangeMax"
+               name="valueRangeMax"
+               class="form-control"
+               type="number">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
         <label for="missingValues">{{ 'missingValues' | translate }}</label>

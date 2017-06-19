@@ -10,6 +10,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocal
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -39,6 +40,8 @@ public class InstanceVariable {
     private Map<String, String> qualityStatement = new LinkedHashMap<>();
     private Map<String, String> missingValues = new LinkedHashMap<>();
     private String defaultMissingValue;
+    private BigDecimal valueRangeMax;
+    private BigDecimal valueRangeMin;
 
     public InstanceVariable() {
 
@@ -61,6 +64,8 @@ public class InstanceVariable {
         this.qualityStatement = toLangValueMap(node.getProperties("qualityStatement"));
         this.missingValues = toLangValueMap(node.getProperties("missingValues"));
         this.defaultMissingValue = PropertyMappings.toString(node.getProperties("defaultMissingValue"));
+        this.valueRangeMax = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMax"), null);
+        this.valueRangeMin = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMin"), null);
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -141,6 +146,14 @@ public class InstanceVariable {
         return freeConcepts;
     }
 
+    public Optional<BigDecimal> getValueRangeMax() {
+        return Optional.ofNullable(valueRangeMax);
+    }
+
+    public Optional<BigDecimal> getValueRangeMin() {
+        return Optional.ofNullable(valueRangeMin);
+    }
+
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
         props.putAll("prefLabel", toPropertyValues(prefLabel));
@@ -154,6 +167,8 @@ public class InstanceVariable {
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
         getValueDomainType().ifPresent((v -> props.put("valueDomainType", toPropertyValue(v))));
         getDefaultMissingValue().ifPresent((v -> props.put("defaultMissingValue", toPropertyValue(v))));
+        getValueRangeMax().ifPresent((v -> props.put("valueRangeMax", toPropertyValue(v))));
+        getValueRangeMin().ifPresent((v -> props.put("valueRangeMin", toPropertyValue(v))));
 
         Multimap<String, Node> refs = LinkedHashMultimap.create();
         getQuantity().ifPresent(quantity -> refs.put("quantity", quantity.toNode()));
@@ -185,7 +200,9 @@ public class InstanceVariable {
                 && Objects.equals(freeConcepts, that.freeConcepts)
                 && Objects.equals(qualityStatement, that.qualityStatement)
                 && Objects.equals(missingValues, that.missingValues)
-                && Objects.equals(defaultMissingValue, that.defaultMissingValue);
+                && Objects.equals(defaultMissingValue, that.defaultMissingValue)
+                && Objects.equals(valueRangeMax, that.valueRangeMax)
+                && Objects.equals(valueRangeMin, that.valueRangeMin);
     }
 
     @Override
@@ -193,7 +210,7 @@ public class InstanceVariable {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
-                defaultMissingValue);
+                defaultMissingValue, valueRangeMax, valueRangeMin);
     }
 
 }

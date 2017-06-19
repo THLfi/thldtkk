@@ -281,6 +281,19 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
+        <label for="missingValues">{{ 'defaultMissingValue' | translate }}</label>
+        <input [(ngModel)]="instanceVariable.defaultMissingValue"
+                  id="missingValues"
+                  name="missingValues"
+                  class="form-control"
+                  type="text">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
         <label for="qualityStatement">{{ 'qualityStatement' | translate }}</label>
         <textarea [(ngModel)]="instanceVariable.qualityStatement[language]"
                   thlAutogrow

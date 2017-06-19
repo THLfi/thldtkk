@@ -74,7 +74,8 @@ export class InstanceVariableEditComponent implements OnInit {
                 quantity: null,
                 unit: null,
                 qualityStatement: null,
-                missingValues: null
+                missingValues: null,
+                defaultMissingValue: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable

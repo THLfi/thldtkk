@@ -17,4 +17,5 @@ export interface InstanceVariable {
   unit: Unit
   qualityStatement: LangValues
   missingValues: LangValues
+  defaultMissingValue: string
 }

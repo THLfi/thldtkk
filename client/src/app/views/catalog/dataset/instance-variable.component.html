@@ -107,7 +107,7 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.missingValues"
+  <div *ngIf="instanceVariable.missingValues && instanceVariable.missingValues[language]"
        class="row" >
     <div class="col-xs-12">
       <h2>{{ 'missingValues' | translate }}</h2>
@@ -115,7 +115,15 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.qualityStatement"
+  <div *ngIf="instanceVariable.defaultMissingValue"
+       class="row" >
+    <div class="col-xs-12">
+      <h2>{{ 'defaultMissingValue' | translate }}</h2>
+      <p>{{ instanceVariable.defaultMissingValue }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.qualityStatement && instanceVariable.qualityStatement[language]"
        class="row" >
     <div class="col-xs-12">
       <h2>{{ 'qualityStatement' | translate }}</h2>

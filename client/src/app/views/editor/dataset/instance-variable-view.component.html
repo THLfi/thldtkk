@@ -131,14 +131,21 @@
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="instanceVariable.missingValues && instanceVariable.missingValues[language]" class="row">
     <div class="col-xs-12">
       <h2>{{'missingValues'|translate}}</h2>
       <p class="preserve-line-breaks">{{ instanceVariable.missingValues | lang }}</p>
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="instanceVariable.defaultMissingValue" class="row">
+    <div class="col-xs-12">
+      <h2>{{'defaultMissingValue'|translate}}</h2>
+      <p class="preserve-line-breaks">{{ instanceVariable.defaultMissingValue }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.qualityStatement && instanceVariable.qualityStatement[language]" class="row">
     <div class="col-xs-12">
       <h2>{{'qualityStatement'|translate}}</h2>
       <p class="preserve-line-breaks">{{ instanceVariable.qualityStatement | lang }}</p>

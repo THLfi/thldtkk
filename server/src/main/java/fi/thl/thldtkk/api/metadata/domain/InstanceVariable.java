@@ -38,6 +38,7 @@ public class InstanceVariable {
     private List<Concept> conceptsFromScheme = new ArrayList<>();
     private Map<String, String> qualityStatement = new LinkedHashMap<>();
     private Map<String, String> missingValues = new LinkedHashMap<>();
+    private String defaultMissingValue;
 
     public InstanceVariable() {
 
@@ -59,12 +60,17 @@ public class InstanceVariable {
         this.valueDomainType = PropertyMappings.toString(node.getProperties("valueDomainType"));
         this.qualityStatement = toLangValueMap(node.getProperties("qualityStatement"));
         this.missingValues = toLangValueMap(node.getProperties("missingValues"));
+        this.defaultMissingValue = PropertyMappings.toString(node.getProperties("defaultMissingValue"));
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
                 .stream().findFirst().ifPresent(unit -> this.unit = new Unit(unit));
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+    }
+
+    public Optional<String> getDefaultMissingValue() {
+        return Optional.ofNullable(defaultMissingValue);
     }
 
     public UUID getId() {
@@ -147,6 +153,7 @@ public class InstanceVariable {
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
         getValueDomainType().ifPresent((v -> props.put("valueDomainType", toPropertyValue(v))));
+        getDefaultMissingValue().ifPresent((v -> props.put("defaultMissingValue", toPropertyValue(v))));
 
         Multimap<String, Node> refs = LinkedHashMultimap.create();
         getQuantity().ifPresent(quantity -> refs.put("quantity", quantity.toNode()));
@@ -177,14 +184,16 @@ public class InstanceVariable {
                 && Objects.equals(conceptsFromScheme, that.conceptsFromScheme)
                 && Objects.equals(freeConcepts, that.freeConcepts)
                 && Objects.equals(qualityStatement, that.qualityStatement)
-                && Objects.equals(missingValues, that.missingValues);
+                && Objects.equals(missingValues, that.missingValues)
+                && Objects.equals(defaultMissingValue, that.defaultMissingValue);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit,
-                conceptsFromScheme, freeConcepts, qualityStatement, missingValues);
+                conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
+                defaultMissingValue);
     }
 
 }

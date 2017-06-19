@@ -95,5 +95,6 @@
     "referencePeriod": "Ajankohta"
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
-  "missingValues": "Muuttujan puuttuvien tietojen selite"
+  "missingValues": "Muuttujan puuttuvien tietojen selite",
+  "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi"
 }

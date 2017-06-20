@@ -193,6 +193,24 @@
     </div>
 </div>
 
+  <div *ngIf="instanceVariable.source || (instanceVariable.sourceDescription | lang)">
+    <h2>{{ 'instanceVariableSource' | translate }}</h2>
+    <div *ngIf="instanceVariable.source"
+         class="row" >
+      <div class="col-xs-12">
+        <p><a routerLink="/catalog/datasets/{{ instanceVariable.source.id }}" class="btn btn-link">{{ instanceVariable.source.prefLabel | lang }}
+          <span class="glyphicon glyphicon-link"></span></a></p>
+      </div>
+    </div>
+
+    <div *ngIf="instanceVariable.sourceDescription && (instanceVariable.sourceDescription | lang)"
+         class="row" >
+      <div class="col-xs-12">
+        <p>{{ instanceVariable.sourceDescription | lang }}</p>
+      </div>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

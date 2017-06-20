@@ -40,7 +40,7 @@
           </ng-template>
 
         </p-autoComplete>
-        
+
         <span style="padding-left: 1em; padding-right:1em">|</span>
 
         <button (click)="editVariableDialog.show()"
@@ -52,9 +52,9 @@
       </div>
     </div>
   </div>
-  
-    <edit-variable 
-        (variableSaved)="updateVariable($event)" 
+
+    <edit-variable
+        (variableSaved)="updateVariable($event)"
         [showTitle]="false"
         #editVariableDialog>
     </edit-variable>
@@ -576,9 +576,53 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <hr>
+      <div class="form-group">
+        <label for="source">{{ 'instanceVariableSource' | translate }}</label>
+        <br>
+        <p-autoComplete
+                [(ngModel)]="instanceVariable.source"
+                [suggestions]="sourceSearchResults"
+                (completeMethod)="searchSource($event)"
+                dataKey="id"
+                emptyMessage="{{ 'noMatchingSources' | translate }}"
+                placeholder="{{ 'sourcePlaceholder' | translate }}"
+                minlength="3"
+                inputId="source" *ngIf="!instanceVariable.source || !instanceVariable.source.prefLabel">
+
+          <ng-template let-source pTemplate="item">
+            <span>
+              {{ source.prefLabel | lang }}
+            </span>
+          </ng-template>
+
+        </p-autoComplete>
+        <div *ngIf="instanceVariable.source && instanceVariable.source.prefLabel">
+          <span>{{instanceVariable.source.prefLabel|lang}}</span>
+          <button (click)="instanceVariable.source = null" class="btn btn-default" translate="remove">{{'remove'|translate}} <span class="glyphicon glyphicon-trash"></span></button>
+        </div>
+
+      </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="form-group">
+        <label for="sourceDescription">{{ 'sourceDescription' | translate }}</label>
+        <input [(ngModel)]="instanceVariable.sourceDescription[language]"
+               id="sourceDescription"
+               name="sourceDescription"
+               class="form-control"
+               type="text">
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <hr>
+  </div>
+</div>
 
 </ng-container>
 

@@ -1,5 +1,6 @@
 import { CodeList } from './code-list';
 import { Concept } from './concept';
+import { Dataset } from './dataset';
 import { Variable } from './variable'
 import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
@@ -25,4 +26,6 @@ export interface InstanceVariable {
   valueRangeMax: number
   variable: Variable
   partOfGroup: LangValues
+  source: Dataset
+  sourceDescription: LangValues
 }

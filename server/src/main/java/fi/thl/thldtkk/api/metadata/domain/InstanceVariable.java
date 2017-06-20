@@ -43,6 +43,8 @@ public class InstanceVariable {
     private String defaultMissingValue;
     private BigDecimal valueRangeMax;
     private BigDecimal valueRangeMin;
+    private Dataset source;
+    private Map<String, String> sourceDescription = new LinkedHashMap<>();
     private Variable variable;
     private Map<String, String> partOfGroup = new LinkedHashMap<>();
 
@@ -70,6 +72,7 @@ public class InstanceVariable {
         this.valueRangeMax = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMax"), null);
         this.valueRangeMin = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMin"), null);
         this.partOfGroup = toLangValueMap(node.getProperties("partOfGroup"));
+        this.sourceDescription = toLangValueMap(node.getProperties("sourceDescription"));
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -80,6 +83,8 @@ public class InstanceVariable {
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
         node.getReferencesFirst("variable")
                 .ifPresent(v -> this.variable = new Variable(v));
+        node.getReferences("source")
+                .stream().findFirst().ifPresent(source -> this.source = new Dataset(source));
     }
 
     public Optional<String> getDefaultMissingValue() {
@@ -120,6 +125,14 @@ public class InstanceVariable {
 
     public Optional<LocalDate> getReferencePeriodEnd() {
         return Optional.ofNullable(referencePeriodEnd);
+    }
+
+    public Optional<Dataset> getSource() {
+        return Optional.ofNullable(source);
+    }
+
+    public Map<String, String> getSourceDescription() {
+        return sourceDescription;
     }
 
     public Optional<String> getTechnicalName() {
@@ -194,6 +207,7 @@ public class InstanceVariable {
         props.putAll("qualityStatement", toPropertyValues(qualityStatement));
         props.putAll("missingValues", toPropertyValues(missingValues));
         props.putAll("partOfGroup", toPropertyValues(partOfGroup));
+        props.putAll("sourceDescription", toPropertyValues(sourceDescription));
 
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
@@ -208,6 +222,8 @@ public class InstanceVariable {
         getUnit().ifPresent(unit -> refs.put("unit", unit.toNode()));
         getCodeList().ifPresent(codeList -> refs.put("codeList", codeList.toNode()));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
+        getSource().ifPresent(source -> refs.put("source", source.toNode()));
+
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
 
         return new Node(id, "InstanceVariable", props, refs);
@@ -240,6 +256,8 @@ public class InstanceVariable {
                 && Objects.equals(valueRangeMax, that.valueRangeMax)
                 && Objects.equals(valueRangeMin, that.valueRangeMin)
                 && Objects.equals(partOfGroup, that.partOfGroup)
+                && Objects.equals(source, that.source)
+                && Objects.equals(sourceDescription, that.sourceDescription)
                 && Objects.equals(valueRangeMin, that.valueRangeMin)
                 && Objects.equals(variable, that.variable);
     }
@@ -249,7 +267,8 @@ public class InstanceVariable {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
-                defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable);
+                defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable,
+                source, sourceDescription);
     }
 
 }

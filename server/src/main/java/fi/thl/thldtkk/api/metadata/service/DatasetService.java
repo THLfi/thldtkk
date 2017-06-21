@@ -76,6 +76,8 @@ public class DatasetService implements Service<UUID, Dataset> {
                   else if (InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED.equals(iv.getValueDomainType().orElse(null))) {
                     iv.setQuantity(null);
                     iv.setUnit(null);
+                    iv.setValueRangeMax(null);
+                    iv.setValueRangeMin(null);
                   }
                 });
         dataset.getLinks()

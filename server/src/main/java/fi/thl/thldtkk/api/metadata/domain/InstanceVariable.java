@@ -77,7 +77,7 @@ public class InstanceVariable {
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
         node.getReferencesFirst("variable")
-                .ifPresent(v -> this.variable = new Variable(v));           
+                .ifPresent(v -> this.variable = new Variable(v));
     }
 
     public Optional<String> getDefaultMissingValue() {
@@ -164,10 +164,18 @@ public class InstanceVariable {
         return Optional.ofNullable(valueRangeMax);
     }
 
+    public void setValueRangeMax(BigDecimal valueRangeMax) {
+      this.valueRangeMax = valueRangeMax;
+    }
+
     public Optional<BigDecimal> getValueRangeMin() {
         return Optional.ofNullable(valueRangeMin);
     }
-    
+
+    public void setValueRangeMin(BigDecimal valueRangeMin) {
+      this.valueRangeMin = valueRangeMin;
+    }
+
     public Optional<Variable> getVariable() {
         return Optional.ofNullable(variable);
     }
@@ -194,7 +202,7 @@ public class InstanceVariable {
         getCodeList().ifPresent(codeList -> refs.put("codeList", codeList.toNode()));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
-        
+
         return new Node(id, "InstanceVariable", props, refs);
     }
 

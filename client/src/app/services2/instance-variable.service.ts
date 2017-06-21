@@ -36,6 +36,8 @@ export class InstanceVariableService {
     if (instanceVariable.valueDomainType != 'described') {
       instanceVariable.quantity = null
       instanceVariable.unit = null
+      instanceVariable.valueRangeMin = null
+      instanceVariable.valueRangeMax = null
     }
     if (instanceVariable.valueDomainType != 'enumerated') {
       instanceVariable.codeList = null

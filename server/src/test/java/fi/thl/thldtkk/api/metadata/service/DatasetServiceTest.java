@@ -20,6 +20,8 @@ import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
@@ -106,11 +108,13 @@ public class DatasetServiceTest {
   }
 
   @Test
-  public void shouldClearQuantityAndUnitFieldsWhenValueDomainTypeIsNotDescribed() {
+  public void shouldClearQuantityAndUnitAndValueRangeFieldsWhenValueDomainTypeIsNotDescribed() {
     InstanceVariable variable = new InstanceVariable(nameUUIDFromString("IV1"));
     variable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
     variable.setQuantity(new Quantity(nameUUIDFromString("Q1")));
     variable.setUnit(new Unit(nameUUIDFromString("U1")));
+    variable.setValueRangeMax(new BigDecimal("10"));
+    variable.setValueRangeMin(new BigDecimal("11"));
     Dataset dataset = new Dataset(nameUUIDFromString("DS"), asList(variable));
 
     Dataset savedDataset = datasetService.save(dataset);
@@ -118,6 +122,8 @@ public class DatasetServiceTest {
     InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
     assertFalse(savedVariable.getQuantity().isPresent());
     assertFalse(savedVariable.getUnit().isPresent());
+    assertFalse(savedVariable.getValueRangeMax().isPresent());
+    assertFalse(savedVariable.getValueRangeMin().isPresent());
   }
 
   @Test

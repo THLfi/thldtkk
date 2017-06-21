@@ -28,9 +28,15 @@
           placeholder="{{'searchForVariables' | translate}}">
 
           <ng-template let-variable pTemplate="item">
-            <span>
-              {{ variable.prefLabel | lang }}
-            </span>
+            <ng-container>
+                {{ variable.prefLabel | lang }}
+                <small style="opacity:.7">
+                  <ng-container *ngIf="variable.description | lang">
+                        <br>
+                        {{ variable.description | lang | truncate:70 }}
+                  </ng-container>
+                </small>
+            </ng-container>            
           </ng-template>
 
         </p-autoComplete>

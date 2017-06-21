@@ -20,7 +20,7 @@ public class InstanceVariableService {
   }
 
   public Optional<InstanceVariable> get(UUID id) {
-    return nodeService.get(new NodeId(id, "InstanceVariable"), "*,references.inScheme:2").map(InstanceVariable::new);
+    return nodeService.get(new NodeId(id, "InstanceVariable"), "*,references.inScheme:2,references.codeItems:2").map(InstanceVariable::new);
   }
 
 }

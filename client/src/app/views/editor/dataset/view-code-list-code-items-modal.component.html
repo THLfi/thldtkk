@@ -1,0 +1,35 @@
+<p-dialog [(visible)]="visible"
+          modal="true"
+          draggable="false"
+          resizable="false"
+          width="600"
+          positionTop="10"
+          [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
+  <p-header *ngIf="codeList">
+    {{ codeList.prefLabel | lang }}
+    —
+    {{ 'codeItems' | translate }}
+  </p-header>
+  <div>
+    <table *ngIf="codeList"
+           class="table table-striped table-hover">
+      <tr>
+        <th>{{ 'codeItem.code' | translate }}</th>
+        <th>{{ 'codeItem.prefLabel' | translate }}</th>
+      </tr>
+      <tr *ngFor="let codeItem of codeList.codeItems">
+        <td>
+          {{ codeItem.code }}
+        </td>
+        <td>
+          {{ codeItem.prefLabel | lang }}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <p-footer>
+    <button (click)="$event.stopPropagation(); visible = false" class="btn btn-default">
+      {{ 'close' | translate }}
+    </button>
+  </p-footer>
+</p-dialog>

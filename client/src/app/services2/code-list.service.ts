@@ -32,6 +32,13 @@ export class CodeListService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
+    if ('external' == codeList.codeListType) {
+      codeList.codeItems = []
+    }
+    else if ('internal' == codeList.codeListType) {
+      codeList.referenceId = null
+    }
+
     return this._http.post(path, codeList, options)
       .map(response => response.json() as CodeList)
   }

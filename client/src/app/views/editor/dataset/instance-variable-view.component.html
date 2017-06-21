@@ -151,6 +151,17 @@
             {{ instanceVariable.codeList.owner | lang }}
           </em>
         </p>
+        <div *ngIf="instanceVariable.codeList.codeItems.length">
+          <button (click)="viewCodeListCodeItemsModal.toggle()"
+                  class="btn btn-default btn-sm">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            {{ 'viewCodeItems' | translate }}
+          </button>
+          <viewCodeListCodeItemsModal
+            #viewCodeListCodeItemsModal
+            [codeList]="instanceVariable.codeList">
+          </viewCodeListCodeItemsModal>
+        </div>
       </ng-container>
       <ng-template #noCodeList>
         <p>{{ 'noCodeList' | translate }}</p>
@@ -158,17 +169,17 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.valueRangeMin" class="row">
+  <div *ngIf="instanceVariable.valueRangeMin !== undefined" class="row">
     <div class="col-xs-12">
       <h2>{{'valueRangeMin'|translate}}</h2>
-      <p class="preserve-line-breaks">{{ instanceVariable.valueRangeMin }}</p>
+      <p>{{ instanceVariable.valueRangeMin }}</p>
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.valueRangeMax" class="row">
+  <div *ngIf="instanceVariable.valueRangeMax !== undefined" class="row">
     <div class="col-xs-12">
       <h2>{{'valueRangeMax'|translate}}</h2>
-      <p class="preserve-line-breaks">{{ instanceVariable.valueRangeMax }}</p>
+      <p>{{ instanceVariable.valueRangeMax }}</p>
     </div>
   </div>
 
@@ -182,7 +193,7 @@
   <div *ngIf="instanceVariable.defaultMissingValue" class="row">
     <div class="col-xs-12">
       <h2>{{'defaultMissingValue'|translate}}</h2>
-      <p class="preserve-line-breaks">{{ instanceVariable.defaultMissingValue }}</p>
+      <p>{{ instanceVariable.defaultMissingValue }}</p>
     </div>
   </div>
 

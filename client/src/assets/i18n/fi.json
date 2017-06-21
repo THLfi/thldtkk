@@ -36,6 +36,7 @@
   "remove": "Poista",
   "save": "Tallenna",
   "cancel": "Peruuta",
+  "close": "Sulje",
   "unpublished": "Julkaisematon",
   "false": "Ei",
   "true": "Kyllä",
@@ -98,17 +99,30 @@
   "codeList": {
     "label": "Koodisto",
     "prefLabel": "Nimi",
-    "referenceId": "Tunniste",
+    "referenceId": "Ulkoinen tunniste",
     "description": "Kuvaus",
     "owner": "Omistaja"
   },
-  "codeListsPlaceholder": "Hae koodistoja...",
+  "codeListType": {
+    "external": "Viittaus ulkoiseen koodistoon",
+    "internal": "Itse määritelty koodisto"
+  },
+  "codeListPlaceholder": "Valitse koodisto...",
   "noMatchingCodeLists": "Haulla ei löytynyt koodistoja.",
   "noCodeList": "Ei koodistoa",
   "addCodeList": "Lisää koodisto...",
   "newCodeList": "Uusi koodisto",
+  "codeItems": "Koodit",
+  "codeItem": {
+    "code": "Koodi",
+    "prefLabel": "Selite"
+  },
+  "noCodeItems": "Koodeja ei ole määritelty.",
+  "addCodeItem": "Lisää koodi",
+  "viewCodeItems": "Katso koodit",
   "missingValues": "Muuttujan puuttuvien tietojen selite",
   "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi",
   "valueRangeMin": "Muuttujan pienin sallittu arvo",
-  "valueRangeMax": "Muuttujan suurin sallittu arvo"
+  "valueRangeMax": "Muuttujan suurin sallittu arvo",
+  "or": "tai"
 }

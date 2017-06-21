@@ -117,6 +117,17 @@
           {{ instanceVariable.codeList.owner | lang }}
         </em>
       </p>
+      <div *ngIf="instanceVariable.codeList.codeItems.length">
+        <button (click)="viewCodeListCodeItemsModal.toggle()"
+                class="btn btn-default btn-sm">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          {{ 'viewCodeItems' | translate }}
+        </button>
+        <viewCodeListCodeItemsModal
+          #viewCodeListCodeItemsModal
+          [codeList]="instanceVariable.codeList">
+        </viewCodeListCodeItemsModal>
+      </div>
     </div>
   </div>
 

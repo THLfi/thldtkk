@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 
+import {CodeItem} from '../../../model2/code-item';
 import {CodeList} from '../../../model2/code-list';
 import {CodeListService} from '../../../services2/code-list.service';
 import {Concept} from '../../../model2/concept';
@@ -14,6 +15,7 @@ import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services2/unit.service';
+import {StringUtils} from '../../../utils/string-utils';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -37,6 +39,7 @@ export class InstanceVariableEditComponent implements OnInit {
     newUnit: Unit
 
     allCodeListItems: SelectItem[]
+    viewCodeList: CodeList
     showAddCodeListModal: boolean = false
     newCodeList: CodeList
 
@@ -51,7 +54,8 @@ export class InstanceVariableEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private langPipe: LangPipe
+        private langPipe: LangPipe,
+        private stringUtils: StringUtils
     ) {
         this.language = translateService.currentLang
     }
@@ -226,10 +230,12 @@ export class InstanceVariableEditComponent implements OnInit {
     private initNewCodeList() {
       const codeList = {
         id: null,
+        codeListType: null,
+        referenceId: null,
         prefLabel: null,
         description: null,
         owner: null,
-        referenceId: null
+        codeItems: []
       }
       this.initProperties(codeList, ['prefLabel', 'description', 'owner'])
       this.newCodeList = codeList
@@ -292,7 +298,26 @@ export class InstanceVariableEditComponent implements OnInit {
       this.showAddCodeListModal = !this.showAddCodeListModal
     }
 
+    addCodeItem(): void {
+      const newCodeItem = {
+        id: null,
+        code: null,
+        prefLabel: null
+      }
+      this.initProperties(newCodeItem, ['prefLabel'])
+      this.newCodeList.codeItems.push(newCodeItem);
+    }
+
+    removeCodeItem(codeItem: CodeItem): void {
+      const index: number = this.newCodeList.codeItems.indexOf(codeItem)
+      if (index !== -1) {
+        this.newCodeList.codeItems.splice(index, 1)
+      }
+    }
+
     saveCodeList(): void {
+      this.removeInvalidCodeItemsFromNewCodeList()
+
       this.codeListService.save(this.newCodeList)
         .subscribe(savedCodeList => {
           this.initNewCodeList()
@@ -300,6 +325,17 @@ export class InstanceVariableEditComponent implements OnInit {
           this.instanceVariable.codeList = savedCodeList
           this.toggleAddCodeListModal()
         })
+    }
+
+    private removeInvalidCodeItemsFromNewCodeList() {
+      const validCodeItems: CodeItem[] = []
+      this.newCodeList.codeItems.forEach(codeItem => {
+        if (this.stringUtils.isNotBlank(codeItem.code)
+          && this.stringUtils.isNotBlank(codeItem.prefLabel[this.language])) {
+          validCodeItems.push(codeItem)
+        }
+      })
+      this.newCodeList.codeItems = validCodeItems
     }
 
     saveInstanceVariable(): void {

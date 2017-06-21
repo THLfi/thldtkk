@@ -14,6 +14,7 @@ import { DialogModule } from "primeng/components/dialog/dialog";
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { MultiSelectModule } from 'primeng/primeng';
 import { TruncateModule } from 'ng2-truncate';
+import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -22,6 +23,7 @@ import { environment } from '../environments/environment'
 
 // utils
 import { NodeUtils } from './utils/node-utils'
+import { StringUtils } from './utils/string-utils'
 
 // services
 import { CodeListService } from "./services2/code-list.service";
@@ -41,6 +43,7 @@ import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
 import { IsoDatePicker } from './views/common/iso-datepicker.component'
 import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
+import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view-code-list-code-items-modal.component'
 
 // catalog components (few renamed to avoid name clash with editor)
 import { DatasetComponent } from './views/catalog/dataset/dataset.component'
@@ -72,7 +75,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableViewComponent,
         IsoDatePicker,
         LangPipe,
-        LoadingSpinner
+        LoadingSpinner,
+        ViewCodeListCodeItemsModalComponent
     ],
     imports: [
         BrowserModule,
@@ -87,6 +91,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DropdownModule,
         DialogModule,
         TruncateModule,
+        OverlayPanelModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -110,7 +115,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UnitService,
         QuantityService,
         LangPipe,
-        CodeListService
+        CodeListService,
+        StringUtils
     ],
     bootstrap: [
         AppComponent

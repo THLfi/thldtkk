@@ -301,10 +301,16 @@
                       filter="true"
                       autoWidth="false"
                       [style]="{'width':'60%','min-width':'400px'}"
-                      inputId="codeList">
+                      inputId="codeList" placeholder="{{ 'codeListPlaceholder' | translate }}">
             <ng-template let-codeListItem pTemplate="item">
               <ng-container *ngIf="codeListItem.value; else nullValueCodeListItem;">
-                <p>
+                <div style="min-height:2em;">
+                  <button *ngIf="codeListItem.value.codeItems.length"
+                          (click)="$event.preventDefault(); $event.stopPropagation(); viewCodeList = codeListItem.value; viewCodeListCodeItemsModal.toggle()"
+                          class="btn btn-default btn-xs pull-right">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    {{ 'viewCodeItems' | translate }}
+                  </button>
                   {{ codeListItem.value.prefLabel | lang }}
                   <span *ngIf="codeListItem.value.referenceId"
                         style="opacity:.7">
@@ -323,14 +329,14 @@
                       </em>
                     </ng-container>
                   </small>
-                </p>
+                </div>
               </ng-container>
               <ng-template #nullValueCodeListItem>
                 <p>{{ codeListItem.label }}</p>
               </ng-template>
             </ng-template>
           </p-dropdown>
-          <span style="padding-left: 1em; padding-right:1em">|</span>
+          <span style="padding-left: 1em; padding-right:1em;">{{ 'or' | translate | uppercase }}</span>
           <button (click)="toggleAddCodeListModal()"
                   class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-plus"></span>
@@ -339,48 +345,115 @@
         </div>
       </div>
     </div>
+
+    <viewCodeListCodeItemsModal
+      #viewCodeListCodeItemsModal
+      [codeList]="viewCodeList">
+    </viewCodeListCodeItemsModal>
+
     <p-dialog [(visible)]="showAddCodeListModal"
-              modal="modal"
+              modal="true"
               draggable="false"
               resizable="false"
               closeOnEscape="false"
-              width="500">
+              width="600"
+              positionTop="10"
+              [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
       <p-header>
         {{ 'newCodeList' | translate }}
       </p-header>
-      <div class="form-group">
-        <label for="codeList-prefLabel">{{ 'codeList.prefLabel' | translate }}</label>
-        <input [(ngModel)]="newCodeList.prefLabel[language]"
-               id="codeList-prefLabel"
-               name="codeList-prefLabel"
-               type="text"
-               class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="codeList-referenceId">{{ 'codeList.referenceId' | translate }}</label>
-        <input [(ngModel)]="newCodeList.referenceId"
-               id="codeList-referenceId"
-               name="codeList-referenceId"
-               type="text"
-               class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="codeList-description">{{ 'codeList.description' | translate }}</label>
-        <textarea [(ngModel)]="newCodeList.description[language]"
-                  thlAutogrow
-                  rows="2"
-                  id="codeList-description"
-                  name="codeList-description"
-                  class="form-control">
-        </textarea>
-      </div>
-      <div class="form-group">
-        <label for="codeList-owner">{{ 'codeList.owner' | translate }}</label>
-        <input [(ngModel)]="newCodeList.owner[language]"
-               id="codeList-owner"
-               name="codeList-owner"
-               type="text"
-               class="form-control">
+      <div>
+        <div class="form-group"
+             style="padding-left:2px;">
+          <div class="radio">
+            <label>
+              <input [(ngModel)]="newCodeList.codeListType" type="radio" name="codeListType" value="external">
+              {{ 'codeListType.external' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input [(ngModel)]="newCodeList.codeListType" type="radio" name="codeListType" value="internal">
+              {{ 'codeListType.internal' | translate }}
+            </label>
+          </div>
+        </div>
+        <ng-container *ngIf="newCodeList.codeListType">
+          <div *ngIf="newCodeList.codeListType == 'external'" class="form-group">
+            <label for="codeList-referenceId">{{ 'codeList.referenceId' | translate }}</label>
+            <input [(ngModel)]="newCodeList.referenceId"
+                   id="codeList-referenceId"
+                   name="codeList-referenceId"
+                   type="text"
+                   class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="codeList-prefLabel">{{ 'codeList.prefLabel' | translate }}</label>
+            <input [(ngModel)]="newCodeList.prefLabel[language]"
+                   id="codeList-prefLabel"
+                   name="codeList-prefLabel"
+                   type="text"
+                   class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="codeList-description">{{ 'codeList.description' | translate }}</label>
+            <textarea [(ngModel)]="newCodeList.description[language]"
+                      thlAutogrow
+                      rows="2"
+                      id="codeList-description"
+                      name="codeList-description"
+                      class="form-control">
+            </textarea>
+          </div>
+          <div class="form-group">
+            <label for="codeList-owner">{{ 'codeList.owner' | translate }}</label>
+            <input [(ngModel)]="newCodeList.owner[language]"
+                   id="codeList-owner"
+                   name="codeList-owner"
+                   type="text"
+                   class="form-control">
+          </div>
+          <div *ngIf="newCodeList.codeListType == 'internal'">
+            <label>{{ 'codeItems' | translate }}</label>
+            <table *ngIf="newCodeList.codeItems.length; else noCodeItems;"
+                   class="table table-striped">
+              <tr>
+                <th>{{ 'codeItem.code' | translate }}</th>
+                <th>{{ 'codeItem.prefLabel' | translate }}</th>
+                <th>{{ 'functions' | translate }}</th>
+              </tr>
+              <tr *ngFor="let codeItem of newCodeList.codeItems">
+                <td>
+                  <input [(ngModel)]="codeItem.code"
+                         type="text"
+                         class="form-control">
+                </td>
+                <td>
+                  <textarea [(ngModel)]="codeItem.prefLabel[language]"
+                            thlAutogrow
+                            rows="1"
+                            class="form-control">
+                    </textarea>
+                </td>
+                <td>
+                  <button (click)="removeCodeItem(codeItem)"
+                          class="btn btn-default">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    {{ 'remove' | translate }}
+                  </button>
+                </td>
+              </tr>
+            </table>
+            <ng-template #noCodeItems>
+              <p>{{ 'noCodeItems' | translate }}</p>
+            </ng-template>
+            <button (click)="addCodeItem()"
+                    class="btn btn-default btn-xs">
+              <span class="glyphicon glyphicon-plus"></span>
+              {{ 'addCodeItem' | translate }}
+            </button>
+          </div>
+        </ng-container>
       </div>
       <p-footer>
         <div>
@@ -415,10 +488,10 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
-        <label for="missingValues">{{ 'defaultMissingValue' | translate }}</label>
+        <label for="defaultMissingValue">{{ 'defaultMissingValue' | translate }}</label>
         <input [(ngModel)]="instanceVariable.defaultMissingValue"
-                  id="missingValues"
-                  name="missingValues"
+                  id="defaultMissingValue"
+                  name="defaultMissingValue"
                   class="form-control"
                   type="text">
       </div>
@@ -440,17 +513,17 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-xs-12">
+      <hr>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>
   <thl-spinner></thl-spinner>
 </ng-template>
-
-<div class="row">
-  <div class="col-xs-12">
-    <hr>
-  </div>
-</div>
 
 <div class="edit-controls-padding">
   <div class="edit-controls-fixed">
@@ -472,7 +545,7 @@
                   (click)="confirmRemove()"
                   [disabled]="savingInProgress"
                   class="btn btn-danger pull-right">
-            <span class="glyphicon glyphicon-remove"></span>
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
             {{ 'remove' | translate }}
           </button>
         </div>

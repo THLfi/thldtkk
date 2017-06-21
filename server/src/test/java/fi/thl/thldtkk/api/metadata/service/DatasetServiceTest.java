@@ -29,7 +29,7 @@ import org.mockito.Mockito;
 public class DatasetServiceTest {
 
   private DatasetService datasetService;
-  private Service<NodeId, Node> mockedNodeService;
+  private TermedNodeService mockedNodeService;
 
   @Before
   public void setUp() {
@@ -37,9 +37,12 @@ public class DatasetServiceTest {
         new Node(nameUUIDFromString("DS1"), "DataSet"),
         new Node(nameUUIDFromString("DS2"), "DataSet"));
 
-    this.mockedNodeService = Mockito.mock(Service.class);
-    when(mockedNodeService.query("type.id:DataSet")).thenReturn(datasets.stream());
-    when(mockedNodeService.query("type.id:DataSet AND (properties.prefLabel:hello*)"))
+    this.mockedNodeService = Mockito.mock(TermedNodeService.class);
+    when(mockedNodeService.query(eq(new NodeRequest("type.id:DataSet",
+      "id,type,properties.*", "properties.prefLabel.sortable", -1))))
+        .thenReturn(datasets.stream());
+    when(mockedNodeService.query(eq(new NodeRequest("type.id:DataSet AND (properties.prefLabel:hello*)",
+      "id,type,properties.*", "properties.prefLabel.sortable", -1))))
         .thenReturn(datasets.stream());
     when(mockedNodeService.get(any(NodeId.class), any())).thenReturn(Optional.<Node>empty());
     when(mockedNodeService.get(eq(new NodeId(nameUUIDFromString("DS1"), "DataSet")), any()))

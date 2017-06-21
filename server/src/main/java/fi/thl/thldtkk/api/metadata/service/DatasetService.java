@@ -1,7 +1,5 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.collect.Maps.difference;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Link;
@@ -9,19 +7,23 @@ import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import static java.util.Optional.empty;
 import java.util.UUID;
+import java.util.stream.Stream;
+
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.collect.Maps.difference;
+import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
+import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Dataset service that converts Datasets to nodes and back, and delegates
@@ -30,22 +32,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatasetService implements Service<UUID, Dataset> {
 
-    private Service<NodeId, Node> nodeService;
+    private TermedNodeService nodeService;
 
     @Autowired
-    public DatasetService(Service<NodeId, Node> nodeService) {
+    public DatasetService(TermedNodeService nodeService) {
         this.nodeService = nodeService;
     }
 
     @Override
     public Stream<Dataset> query() {
-        return nodeService.query("type.id:DataSet").map(Dataset::new);
+        return query("");
     }
 
     @Override
     public Stream<Dataset> query(String query) {
-        String nodeQuery = "type.id:DataSet" + (query.isEmpty() ? "" : " AND (" + query + ")");
-        return nodeService.query(nodeQuery).map(Dataset::new);
+      String nodeQuery = "type.id:DataSet" + (query.isEmpty() ? "" : " AND (" + query + ")");
+      return nodeService.query(
+        new NodeRequestBuilder()
+          .withQuery(nodeQuery)
+          .addSort("prefLabel")
+          .build()
+      ).map(Dataset::new);
     }
 
     @Override

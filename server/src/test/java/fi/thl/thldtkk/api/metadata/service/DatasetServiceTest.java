@@ -5,6 +5,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -105,6 +106,13 @@ public class DatasetServiceTest {
   @Test(expected = NotFoundException.class)
   public void shouldThrowNotFoundWhenDeletingNonExistingDataset() {
     datasetService.delete(nameUUIDFromString("Does not exist"));
+  }
+
+  @Test
+  public void datasetShouldHaveIdAfterSaving() {
+    Dataset savedDataset = datasetService.save(new Dataset());
+
+    assertNotNull(savedDataset.getId());
   }
 
   @Test

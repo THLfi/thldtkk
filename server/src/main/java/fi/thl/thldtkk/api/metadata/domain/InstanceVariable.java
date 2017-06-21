@@ -44,6 +44,7 @@ public class InstanceVariable {
     private BigDecimal valueRangeMax;
     private BigDecimal valueRangeMin;
     private Variable variable;
+    private Map<String, String> partOfGroup = new LinkedHashMap<>();
 
     public InstanceVariable() {
 
@@ -68,6 +69,7 @@ public class InstanceVariable {
         this.defaultMissingValue = PropertyMappings.toString(node.getProperties("defaultMissingValue"));
         this.valueRangeMax = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMax"), null);
         this.valueRangeMin = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMin"), null);
+        this.partOfGroup = toLangValueMap(node.getProperties("partOfGroup"));
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -94,6 +96,10 @@ public class InstanceVariable {
 
     public Map<String, String> getMissingValues() {
         return missingValues;
+    }
+
+    public Map<String, String> getPartOfGroup() {
+        return partOfGroup;
     }
 
     public Map<String, String> getPrefLabel() {
@@ -145,11 +151,11 @@ public class InstanceVariable {
     }
 
     public Optional<CodeList> getCodeList() {
-      return Optional.ofNullable(codeList);
+        return Optional.ofNullable(codeList);
     }
 
     public void setCodeList(CodeList codeList) {
-      this.codeList = codeList;
+        this.codeList = codeList;
     }
 
     public List<Concept> getConceptsFromScheme() {
@@ -165,7 +171,7 @@ public class InstanceVariable {
     }
 
     public void setValueRangeMax(BigDecimal valueRangeMax) {
-      this.valueRangeMax = valueRangeMax;
+        this.valueRangeMax = valueRangeMax;
     }
 
     public Optional<BigDecimal> getValueRangeMin() {
@@ -173,7 +179,7 @@ public class InstanceVariable {
     }
 
     public void setValueRangeMin(BigDecimal valueRangeMin) {
-      this.valueRangeMin = valueRangeMin;
+        this.valueRangeMin = valueRangeMin;
     }
 
     public Optional<Variable> getVariable() {
@@ -187,6 +193,7 @@ public class InstanceVariable {
         props.putAll("freeConcepts", toPropertyValues(freeConcepts));
         props.putAll("qualityStatement", toPropertyValues(qualityStatement));
         props.putAll("missingValues", toPropertyValues(missingValues));
+        props.putAll("partOfGroup", toPropertyValues(partOfGroup));
 
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
@@ -232,6 +239,8 @@ public class InstanceVariable {
                 && Objects.equals(defaultMissingValue, that.defaultMissingValue)
                 && Objects.equals(valueRangeMax, that.valueRangeMax)
                 && Objects.equals(valueRangeMin, that.valueRangeMin)
+                && Objects.equals(partOfGroup, that.partOfGroup)
+                && Objects.equals(valueRangeMin, that.valueRangeMin)
                 && Objects.equals(variable, that.variable);
     }
 
@@ -240,7 +249,7 @@ public class InstanceVariable {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
-                defaultMissingValue, valueRangeMax, valueRangeMin, variable);
+                defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable);
     }
 
 }

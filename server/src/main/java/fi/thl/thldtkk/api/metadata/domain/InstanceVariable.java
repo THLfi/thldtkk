@@ -43,6 +43,7 @@ public class InstanceVariable {
     private String defaultMissingValue;
     private BigDecimal valueRangeMax;
     private BigDecimal valueRangeMin;
+    private Variable variable;
 
     public InstanceVariable() {
 
@@ -72,9 +73,11 @@ public class InstanceVariable {
         node.getReferences("unit")
                 .stream().findFirst().ifPresent(unit -> this.unit = new Unit(unit));
         node.getReferences("codeList")
-          .stream().findFirst().ifPresent(codeList -> this.codeList = new CodeList(codeList));
+                .stream().findFirst().ifPresent(codeList -> this.codeList = new CodeList(codeList));
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+        node.getReferencesFirst("variable")
+                .ifPresent(v -> this.variable = new Variable(v));           
     }
 
     public Optional<String> getDefaultMissingValue() {
@@ -164,6 +167,10 @@ public class InstanceVariable {
     public Optional<BigDecimal> getValueRangeMin() {
         return Optional.ofNullable(valueRangeMin);
     }
+    
+    public Optional<Variable> getVariable() {
+        return Optional.ofNullable(variable);
+    }
 
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
@@ -186,7 +193,8 @@ public class InstanceVariable {
         getUnit().ifPresent(unit -> refs.put("unit", unit.toNode()));
         getCodeList().ifPresent(codeList -> refs.put("codeList", codeList.toNode()));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
-
+        getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
+        
         return new Node(id, "InstanceVariable", props, refs);
     }
 
@@ -215,7 +223,8 @@ public class InstanceVariable {
                 && Objects.equals(missingValues, that.missingValues)
                 && Objects.equals(defaultMissingValue, that.defaultMissingValue)
                 && Objects.equals(valueRangeMax, that.valueRangeMax)
-                && Objects.equals(valueRangeMin, that.valueRangeMin);
+                && Objects.equals(valueRangeMin, that.valueRangeMin)
+                && Objects.equals(variable, that.variable);
     }
 
     @Override
@@ -223,7 +232,7 @@ public class InstanceVariable {
         return Objects.hash(id, prefLabel, description, referencePeriodStart,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
-                defaultMissingValue, valueRangeMax, valueRangeMin);
+                defaultMissingValue, valueRangeMax, valueRangeMin, variable);
     }
 
 }

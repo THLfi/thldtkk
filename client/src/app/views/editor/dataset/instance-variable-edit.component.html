@@ -12,6 +12,48 @@
   </div>
 
   <div class="row">
+    <div class="col-xs-12 variable-field-highlight">
+      <div class="form-group">
+        <label for="variable">{{ 'variable' | translate }}</label>
+        <br>
+        <p-autoComplete
+          [(ngModel)]="instanceVariable.variable"
+          [suggestions]="variableSearchResults"
+          (completeMethod)="searchVariable($event)"
+          dataKey="id"
+          minLength="2"
+          inputId="variable"
+          field="{{'prefLabel.'+language}}"
+          emptyMessage="{{'noSearchResults' | translate}}"
+          placeholder="{{'searchForVariables' | translate}}">
+
+          <ng-template let-variable pTemplate="item">
+            <span>
+              {{ variable.prefLabel | lang }}
+            </span>
+          </ng-template>
+
+        </p-autoComplete>
+        
+        <span style="padding-left: 1em; padding-right:1em">|</span>
+
+        <button (click)="editVariableDialog.show()"
+          class="btn btn-sm btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{ 'addVariable' | translate }}
+        </button>
+
+      </div>
+    </div>
+  </div>
+  
+    <edit-variable 
+        (variableSaved)="updateVariable($event)" 
+        [showTitle]="false"
+        #editVariableDialog>
+    </edit-variable>
+
+  <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
         <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
@@ -68,7 +110,7 @@
           minlength="3"
           inputId="conceptsFromScheme">
 
-          <ng-template let-concept pTemplate="item">
+         <ng-template let-concept pTemplate="item">
             <span>
               {{ concept.prefLabel | lang }}
             </span>

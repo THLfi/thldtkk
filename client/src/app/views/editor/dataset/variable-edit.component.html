@@ -1,0 +1,72 @@
+<p-dialog 
+    header="{{ 'newVariable' | translate }}"
+    modal="true"
+    [(visible)]="showDialog"
+    (onHide)="clear()">
+
+  <ng-container *ngIf="variable">
+
+    <div class="row" *ngIf="showTitle">
+      <div class="col-xs-12">
+          <h1>{{ 'newVariable' | translate }}</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
+          <input [(ngModel)]="variable.prefLabel[language]"
+            id="prefLabel"
+            name="prefLabel"
+            type="text"
+            class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="description">{{ 'description' | translate }}</label>
+          <textarea [(ngModel)]="variable.description[language]"
+            thlAutogrow
+            id="description"
+            name="description"
+            class="form-control"
+            rows="3">
+          </textarea>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <div class="row">
+      <div class="col-xs-12">
+        <hr>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div>
+
+        <ng-container>
+          <button (click)="save()"
+            [disabled]="savingInProgress"
+            class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+
+        </ng-container>
+
+        <button class="btn btn-default" (click)="goBack()">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

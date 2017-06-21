@@ -2,8 +2,13 @@
   <label for="file" translate="uploadFromFile"></label>
   <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
   <h1>
-    {{ 'dataset' | translate }}:
-    {{dataset.prefLabel | lang}}
+    <ng-container *ngIf="dataset.id; else newDatasetHeader;">
+      {{ 'dataset' | translate }}:
+      {{ dataset.prefLabel | lang }}
+    </ng-container>
+    <ng-template #newDatasetHeader>
+      {{ 'newDataset' | translate }}
+    </ng-template>
   </h1>
 
   <div class="form-group">

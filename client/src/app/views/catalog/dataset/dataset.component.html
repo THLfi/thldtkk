@@ -65,7 +65,7 @@
 
     <!-- Left main column -->
     <div class="col-sm-9 col-sm-pull-3">
-      <div class="row">
+      <div *ngIf="dataset.description | lang" class="row">
         <div class="col-xs-12">
           <h2>{{ 'description' | translate }}</h2>
           <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>

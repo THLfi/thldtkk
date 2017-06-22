@@ -1,6 +1,10 @@
-<p-dialog 
+<p-dialog
     header="{{ 'newVariable' | translate }}"
-    modal="true"
+    modal="modal"
+    draggable="false"
+    resizable="false"
+    closeOnEscape="false"
+    width="500"
     [(visible)]="showDialog"
     (onHide)="clear()">
 
@@ -50,23 +54,15 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <div>
-
-        <ng-container>
-          <button (click)="save()"
-            [disabled]="savingInProgress"
-            class="btn btn-primary">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            {{ 'save' | translate }}
-          </button>
-
-        </ng-container>
-
-        <button class="btn btn-default" (click)="goBack()">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-          {{ 'cancel' | translate }}
-        </button>
-      </div>
+      <button (click)="save()"
+        [disabled]="savingInProgress"
+        class="btn btn-primary">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        {{ 'save' | translate }}
+      </button>
+      <button class="btn btn-default" (click)="goBack()">
+        {{ 'cancel' | translate }}
+      </button>
     </div>
   </div>
 </p-dialog>

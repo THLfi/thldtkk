@@ -36,7 +36,7 @@
                         {{ variable.description | lang | truncate:70 }}
                   </ng-container>
                 </small>
-            </ng-container>            
+            </ng-container>
           </ng-template>
 
         </p-autoComplete>
@@ -598,7 +598,11 @@
         </p-autoComplete>
         <div *ngIf="instanceVariable.source && instanceVariable.source.prefLabel">
           <span>{{instanceVariable.source.prefLabel|lang}}</span>
-          <button (click)="instanceVariable.source = null" class="btn btn-default" translate="remove">{{'remove'|translate}} <span class="glyphicon glyphicon-trash"></span></button>
+          <button (click)="instanceVariable.source = null"
+                  class="btn btn-default btn-sm">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            {{ 'remove' | translate }}
+          </button>
         </div>
 
       </div>

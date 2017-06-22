@@ -127,6 +127,7 @@
   "instanceVariableSource": "Muuttujan tietolähde",
   "sourceDescription": "Tietolähde, vapaatekstikenttä",
   "sourcePlaceholder": "Hae aineistoja...",
+  "noMatchingSources": "Haulla ei löytynyt aineistoja.",
   "or": "tai",
   "variable": "Käsitemuuttuja",
   "addVariable": "Lisää käsitemuuttuja",

@@ -102,7 +102,8 @@ export class InstanceVariableEditComponent implements OnInit {
                 defaultMissingValue: null,
                 valueRangeMin: null,
                 valueRangeMax: null,
-                variable: null
+                variable: null,
+                partOfGroup: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -118,7 +119,7 @@ export class InstanceVariableEditComponent implements OnInit {
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
       this.initProperties(instanceVariable,
-      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues'])
+      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup'])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
       }
@@ -369,8 +370,8 @@ export class InstanceVariableEditComponent implements OnInit {
 
     isVariable(variable: any): variable is Variable {
       return  (variable === null || (
-              (<Variable>variable).id !== undefined && 
-              (<Variable>variable).prefLabel !== undefined && 
+              (<Variable>variable).id !== undefined &&
+              (<Variable>variable).prefLabel !== undefined &&
               (<Variable>variable).description !== undefined))
     }
 
@@ -382,7 +383,7 @@ export class InstanceVariableEditComponent implements OnInit {
         this.savingInProgress = true
 
         this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
-        
+
         this.instanceVariable.variable = this.nullifyEmptyVariable(this.instanceVariable.variable)
         this.instanceVariable.variable = this.isVariable(this.instanceVariable.variable) ? this.instanceVariable.variable : null
 

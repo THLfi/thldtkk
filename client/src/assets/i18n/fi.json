@@ -129,5 +129,7 @@
   "addVariable": "Lisää käsitemuuttuja",
   "newVariable": "Uusi käsitemuuttuja",
   "noSearchResults": "Ei hakutuloksia",
-  "searchForVariables":"Hae käsitemuuttujia..."
+  "searchForVariables":"Hae käsitemuuttujia...",
+  "or": "tai",
+  "partOfGroup": "Muuttujaryhmä"
 }

@@ -97,6 +97,19 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
+        <label for="partOfGroup">{{ 'partOfGroup' | translate }}</label>
+        <input [(ngModel)]="instanceVariable.partOfGroup[language]"
+               id="partOfGroup"
+               name="partOfGroup"
+               type="text"
+               class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
         <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
         <br>
         <p-autoComplete

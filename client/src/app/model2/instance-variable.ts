@@ -24,4 +24,5 @@ export interface InstanceVariable {
   valueRangeMin: number
   valueRangeMax: number
   variable: Variable
+  partOfGroup: LangValues
 }

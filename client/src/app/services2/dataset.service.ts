@@ -62,4 +62,9 @@ export class DatasetService {
                  .map(res => res.json() as Dataset)
          }
      }
+
+     searchDataset(searchText: string): Observable<Dataset[]> {
+         return this._http.get(env.contextPath + '/api/v2/datasets?query=' + searchText + '&max=50')
+           .map(response => response.json() as Dataset[])
+     }
 }

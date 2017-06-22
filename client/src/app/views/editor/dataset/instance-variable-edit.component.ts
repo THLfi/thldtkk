@@ -8,6 +8,8 @@ import {CodeList} from '../../../model2/code-list';
 import {CodeListService} from '../../../services2/code-list.service';
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
+import {Dataset} from '../../../model2/dataset';
+import {DatasetService} from '../../../services2/dataset.service';
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
 import {LangPipe} from '../../../utils/lang.pipe';
@@ -37,6 +39,9 @@ export class InstanceVariableEditComponent implements OnInit {
     conceptSearchResults: Concept[] = []
     freeConcepts: string[] = []
 
+    sourceSearchSubscription: Subscription
+    sourceSearchResults: Dataset[] = []
+
     allQuantityItems: SelectItem[] = []
     showAddQuantityModal: boolean = false
     newQuantity: Quantity
@@ -57,6 +62,7 @@ export class InstanceVariableEditComponent implements OnInit {
 
     constructor(
         private instanceVariableService: InstanceVariableService,
+        private datasetService: DatasetService,
         private codeListService: CodeListService,
         private variableService: VariableService,
         private conceptService: ConceptService,
@@ -103,7 +109,9 @@ export class InstanceVariableEditComponent implements OnInit {
                 valueRangeMin: null,
                 valueRangeMax: null,
                 variable: null,
-                partOfGroup: null
+                partOfGroup: null,
+                source: null,
+                sourceDescription: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -119,7 +127,7 @@ export class InstanceVariableEditComponent implements OnInit {
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
       this.initProperties(instanceVariable,
-      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup'])
+      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup', 'sourceDescription'])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
       }
@@ -270,6 +278,21 @@ export class InstanceVariableEditComponent implements OnInit {
       }
     }
 
+    searchSource(event: any): void {
+          this.sourceSearchResults = []
+          if (this.sourceSearchSubscription) {
+            // Cancel possible on-going search
+            this.sourceSearchSubscription.unsubscribe()
+          }
+
+          const searchText: string = event.query
+
+          if (searchText.length >= 3) {
+            this.sourceSearchSubscription = this.datasetService.searchDataset(searchText)
+              .subscribe(datasets => this.sourceSearchResults = datasets)
+          }
+        }
+
     getConceptLanguages(concept: Concept): any {
       const languages = []
       for (let lang in concept.prefLabel) {
@@ -368,6 +391,12 @@ export class InstanceVariableEditComponent implements OnInit {
         return checkedVariable
     }
 
+    nullifyEmptySource(){
+        if (this.instanceVariable.source && !this.instanceVariable.source.prefLabel){
+            this.instanceVariable.source = null;
+        }
+    }
+
     isVariable(variable: any): variable is Variable {
       return  (variable === null || (
               (<Variable>variable).id !== undefined &&
@@ -386,6 +415,8 @@ export class InstanceVariableEditComponent implements OnInit {
 
         this.instanceVariable.variable = this.nullifyEmptyVariable(this.instanceVariable.variable)
         this.instanceVariable.variable = this.isVariable(this.instanceVariable.variable) ? this.instanceVariable.variable : null
+
+        this.nullifyEmptySource();
 
         const datasetId = this.route.snapshot.params['datasetId']
         this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)

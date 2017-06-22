@@ -141,6 +141,10 @@ public class Dataset {
         return id;
     }
 
+    public void setId(UUID id) {
+      this.id = id;
+    }
+
     public List<Link> getLinks() {
         return links;
     }

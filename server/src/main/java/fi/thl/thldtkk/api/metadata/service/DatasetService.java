@@ -63,7 +63,14 @@ public class DatasetService implements Service<UUID, Dataset> {
 
     @Override
     public Dataset save(Dataset dataset) {
-        Optional<Dataset> old = dataset.getId() != null ? get(dataset.getId()) : empty();
+        Optional<Dataset> old;
+        if (dataset.getId() == null) {
+          old = empty();
+          dataset.setId(randomUUID());
+        }
+        else {
+          old = get(dataset.getId());
+        }
 
         dataset.getPopulation()
                 .ifPresent(p -> p.setId(firstNonNull(p.getId(), randomUUID())));

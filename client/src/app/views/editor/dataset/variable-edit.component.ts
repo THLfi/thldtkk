@@ -1,12 +1,8 @@
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common'
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Subscription} from 'rxjs';
 
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
-
 
 @Component({
     templateUrl: './variable-edit.component.html',
@@ -22,7 +18,7 @@ export class VariableEditComponent implements OnInit {
     @Input() showTitle: boolean = true
     @Output() variableSaved:EventEmitter<Variable>
 
-    showDialog: boolean = false  
+    showDialog: boolean = false
     constructor(
         private variableService: VariableService,
         private translateService: TranslateService
@@ -70,9 +66,11 @@ export class VariableEditComponent implements OnInit {
         this.savingInProgress = true
 
         this.variableService.saveVariable(this.variable)
+            .finally(() => {
+              this.savingInProgress = false
+            })
             .subscribe(variable => {
                 this.variable = variable
-                this.savingInProgress = false
                 this.variableSaved.emit(variable)
                 this.goBack()
             })
@@ -80,7 +78,6 @@ export class VariableEditComponent implements OnInit {
 
     show(): void {
         this.showDialog = true;
-        
     }
 
     hide(): void {

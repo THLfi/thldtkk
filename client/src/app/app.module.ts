@@ -15,6 +15,7 @@ import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { MultiSelectModule } from 'primeng/primeng';
 import { TruncateModule } from 'ng2-truncate';
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
+import { GrowlModule } from 'primeng/components/growl/growl'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -30,6 +31,7 @@ import { CodeListService } from "./services2/code-list.service";
 import { ConceptService } from './services2/concept.service'
 import { DatasetService } from './services2/dataset.service'
 import { DatasetTypeService } from './services2/dataset-type.service'
+import { GrowlMessageService } from './services2/growl-message.service'
 import { InstanceVariableService } from './services2/instance-variable.service'
 import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
 import { UnitService } from './services2/unit.service'
@@ -98,6 +100,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DialogModule,
         TruncateModule,
         OverlayPanelModule,
+        GrowlModule,
         DatepickerModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
@@ -123,7 +126,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         QuantityService,
         LangPipe,
         CodeListService,
-        StringUtils
+        StringUtils,
+        GrowlMessageService
     ],
     bootstrap: [
         AppComponent

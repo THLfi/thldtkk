@@ -5,12 +5,15 @@ import 'rxjs/add/operator/map'
 
 import { environment as env} from '../../environments/environment'
 
+import { GrowlMessageService } from './growl-message.service'
+import { HttpMessageHelper } from '../utils/http-message-helper'
 import { Variable } from '../model2/variable';
 
 @Injectable()
 export class VariableService {
 
   constructor(
+    private growlMessageService: GrowlMessageService,
     private _http: Http
   ) { }
 
@@ -27,6 +30,15 @@ export class VariableService {
 
     return this._http.post(path, variable, options)
       .map(response => response.json() as Variable)
+      .catch(error => {
+        this.growlMessageService.buildAndShowMessage('error',
+          'operations.variable.save.result.fail',
+          HttpMessageHelper.getErrorMessageByStatusCode(error.status))
+        return Observable.throw(error)
+      })
+      .do(variable => {
+        this.growlMessageService.buildAndShowMessage('success', 'operations.variable.save.result.success')
+      })
   }
 
   searchVariable(searchText: string): Observable<Variable[]> {

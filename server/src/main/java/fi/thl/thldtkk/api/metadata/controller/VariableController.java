@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v2/variables")
 public class VariableController {
@@ -31,14 +33,14 @@ public class VariableController {
     @RequestParam(value = "max", required = false, defaultValue = "10") Integer maxResults) {
         return variableService.query(query, maxResults).collect(toList());
   }
-    
+
     @GetJsonMapping("/{variable}")
     public Variable getVariable(@PathVariable("variable") UUID variableId) {
         return variableService.get(variableId).orElseThrow(NotFoundException::new);
     }
-    
+
     @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-    public Variable postVariable(@RequestBody Variable variable) {
+    public Variable postVariable(@RequestBody @Valid Variable variable) {
         variable.setId(randomUUID());
         return variableService.save(variable);
     }

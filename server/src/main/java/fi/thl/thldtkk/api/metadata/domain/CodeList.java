@@ -2,7 +2,9 @@ package fi.thl.thldtkk.api.metadata.domain;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,8 +26,10 @@ public class CodeList {
   private static final String TERMED_NODE_CLASS = "CodeList";
 
   private UUID id;
+  @NotNull
   private String codeListType;
   private String referenceId;
+  @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
   private Map<String, String> owner = new LinkedHashMap<>();

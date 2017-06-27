@@ -536,6 +536,7 @@
       <p-footer>
         <div>
           <button (click)="saveCodeList()"
+                  [disabled]="!newCodeList.codeListType"
                   class="btn btn-primary">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             {{ 'save' | translate }}

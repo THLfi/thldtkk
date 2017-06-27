@@ -271,11 +271,12 @@ export class DataSetEditComponent implements OnInit {
 
         this.dataset.datasetTypes = this.resolveSelectedDatasetTypes();
 
-
         this.datasetService.saveDataset(this.dataset)
+            .finally(() => {
+              this.savingInProgress = false
+            })
             .subscribe(savedDataset => {
                 this.dataset = savedDataset;
-                this.savingInProgress = false
                 this.goBack();
             });
     }

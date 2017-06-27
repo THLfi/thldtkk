@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class Quantity {
   private static final String TERMED_NODE_CLASS = "Quantity";
 
   private UUID id;
+  @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
 
   public Quantity(UUID id) {

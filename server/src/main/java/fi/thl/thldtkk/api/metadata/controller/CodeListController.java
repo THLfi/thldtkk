@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class CodeListController {
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-  public CodeList save(@RequestBody CodeList codeList) {
+  public CodeList save(@RequestBody @Valid CodeList codeList) {
     return codeListService.save(codeList);
   }
 

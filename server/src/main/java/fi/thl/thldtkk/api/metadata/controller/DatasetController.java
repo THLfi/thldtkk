@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v2/datasets")
 public class DatasetController {
@@ -73,7 +75,7 @@ public class DatasetController {
     @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
     public Dataset postDataset(
             @RequestParam(name = "saveInstanceVariables", defaultValue = "true") boolean saveInstanceVariables,
-            @RequestBody Dataset dataset) {
+            @RequestBody @Valid Dataset dataset) {
 
         Optional<Dataset> oldDataset = Optional.empty();
 

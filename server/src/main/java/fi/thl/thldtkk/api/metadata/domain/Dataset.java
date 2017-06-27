@@ -1,30 +1,33 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static java.util.Objects.requireNonNull;
 
 public class Dataset {
 
     private UUID id;
-
+    @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> altLabel = new LinkedHashMap<>();
     private Map<String, String> abbreviation = new LinkedHashMap<>();

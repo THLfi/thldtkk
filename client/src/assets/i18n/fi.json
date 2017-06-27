@@ -135,7 +135,96 @@
   "noSearchResults": "Ei hakutuloksia",
   "searchForVariables":"Hae käsitemuuttujia...",
   "or": "tai",
-  "requiredField": "Pakollinen tieto",
   "partOfGroup": "Muuttujaryhmä",
-  "dataType":"Tietotyyppi"
+  "dataType":"Tietotyyppi",
+  "requiredField": "Pakollinen tieto",
+  "errors": {
+    "server": {
+      "operationFailed": "Pyyntö epäonnistui",
+      "saveFailed": "Tallennus epäonnistui",
+      "deleteFailed": "Poisto epäonnistui",
+      "notFound": "Annetulla tunnisteella ei löytynyt entiteettiä.",
+      "badRequest": "Lähetetyt tiedot olivat virheelliset.",
+      "unavailable": "Palvelimeen ei saada yhteyttä, yritä hetken päästä uudelleen.",
+      "unknownError": "Tuntematon virhetilanne palvelimella, yritä hetken päästä uudelleen."
+    }
+  },
+  "operations": {
+    "dataset": {
+      "get": {
+        "result": {
+          "fail": "Aineiston hakeminen epäonnistui"
+        }
+      },
+      "save": {
+        "result": {
+          "success": "Aineisto tallennettu",
+          "fail": "Aineiston tallennus epäonnistui"
+        }
+      },
+      "publish": {
+        "result": {
+          "success": "Aineisto julkaistu",
+          "fail": "Aineiston julkaisu epäonnistui"
+        }
+      },
+      "unpublish": {
+        "result": {
+          "success": "Aineiston julkaisu peruttu",
+          "fail": "Aineiston julkaisun peruminen epäonnistui"
+        }
+      }
+    },
+    "instanceVariable": {
+      "get": {
+        "result": {
+          "fail": "Muuttujan hakeminen epäonnistui"
+        }
+      },
+      "save": {
+        "result": {
+          "success": "Muuttuja tallennettu",
+          "fail": "Muuttujan tallennus epäonnistui"
+        }
+      },
+      "delete": {
+        "result": {
+          "success": "Muuttuja poistettu",
+          "fail": "Muuttujan poisto epäonnistui"
+        }
+      }
+    },
+    "variable": {
+      "save": {
+        "result": {
+          "success": "Käsitemuuttuja tallennettu",
+          "fail": "Käsitemuuttujan tallennus epäonnistui"
+        }
+      }
+    },
+    "quantity": {
+      "save": {
+        "result": {
+          "success": "Suure tallennettu",
+          "fail": "Suureen tallennus epäonnistui"
+        }
+      }
+    },
+    "unit": {
+      "save": {
+        "result": {
+          "success": "Mittayksikkö tallennettu",
+          "fail": "Mittayksikön tallennus epäonnistui"
+        }
+      }
+    },
+    "codeList": {
+      "save": {
+        "result": {
+          "success": "Koodisto tallennettu",
+          "fail": "Koodiston tallennus epäonnistui"
+        }
+      }
+    }
+  }
 }

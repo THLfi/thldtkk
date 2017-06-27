@@ -9,6 +9,10 @@
   </div>
 </nav>
 
+<p-growl [(value)]="growlMessageService.messages"
+         life="6000">
+</p-growl>
+
 <div class="container">
     <router-outlet></router-outlet>
 </div>

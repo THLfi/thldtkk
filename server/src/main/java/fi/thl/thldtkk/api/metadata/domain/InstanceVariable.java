@@ -10,6 +10,8 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocal
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class InstanceVariable {
     public static final String VALUE_DOMAIN_TYPE_ENUMERATED = "enumerated";
 
     private UUID id;
+    @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
     private Map<String, String> freeConcepts = new LinkedHashMap<>();

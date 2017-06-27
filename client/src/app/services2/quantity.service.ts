@@ -4,12 +4,15 @@ import { Observable } from 'rxjs'
 
 import { environment as env} from '../../environments/environment'
 
+import { GrowlMessageService } from './growl-message.service'
+import { HttpMessageHelper } from '../utils/http-message-helper'
 import { Quantity } from '../model2/quantity'
 
 @Injectable()
 export class QuantityService {
 
   constructor(
+    private growlMessageService: GrowlMessageService,
     private _http: Http
   ) { }
 
@@ -30,6 +33,15 @@ export class QuantityService {
 
     return this._http.post(path, quantity, options)
       .map(response => response.json() as Quantity)
+      .catch(error => {
+        this.growlMessageService.buildAndShowMessage('error',
+          'operations.quantity.save.result.fail',
+          HttpMessageHelper.getErrorMessageByStatusCode(error.status))
+        return Observable.throw(error)
+      })
+      .do(quantity => {
+        this.growlMessageService.buildAndShowMessage('success', 'operations.quantity.save.result.success')
+      })
   }
 
 }

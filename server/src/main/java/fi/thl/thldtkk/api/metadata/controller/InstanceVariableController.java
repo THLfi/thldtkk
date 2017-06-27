@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v2")
 public class InstanceVariableController {
@@ -54,7 +56,7 @@ public class InstanceVariableController {
       produces = APPLICATION_JSON_UTF8_VALUE)
   public InstanceVariable postDatasetInstanceVariable(
       @PathVariable("datasetId") UUID datasetId,
-      @RequestBody InstanceVariable instanceVariable) {
+      @RequestBody @Valid InstanceVariable instanceVariable) {
 
     Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
 

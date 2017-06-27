@@ -7,6 +7,8 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class Variable {
 
     private UUID id;
+    @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
 

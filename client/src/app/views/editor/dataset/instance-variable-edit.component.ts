@@ -22,10 +22,6 @@ import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
 
-import {DialogModule} from 'primeng/primeng'
-
-import {NodeUtils} from '../../../utils/node-utils'
-
 @Component({
     templateUrl: './instance-variable-edit.component.html',
     styleUrls:['./instance-variable-edit.component.css']
@@ -73,7 +69,6 @@ export class InstanceVariableEditComponent implements OnInit {
         private translateService: TranslateService,
         private langPipe: LangPipe,
         private stringUtils: StringUtils,
-        private nodeUtils: NodeUtils
     ) {
         this.language = translateService.currentLang
     }
@@ -421,12 +416,14 @@ export class InstanceVariableEditComponent implements OnInit {
 
         const datasetId = this.route.snapshot.params['datasetId']
         this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)
+          .finally(() => {
+            this.savingInProgress = false
+          })
           .subscribe(instanceVariable => {
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
-            this.savingInProgress = false
             this.goBack()
-        })
+          })
     }
 
     confirmRemove(): void {
@@ -438,8 +435,11 @@ export class InstanceVariableEditComponent implements OnInit {
                     const datasetId = this.route.snapshot.params['datasetId'];
                     const instanceVariableId = this.route.snapshot.params['instanceVariableId'];
 
-                    this.instanceVariableService.deleteInstanceVariable(datasetId, instanceVariableId).subscribe(() => {
+                    this.instanceVariableService.deleteInstanceVariable(datasetId, instanceVariableId)
+                      .finally(() => {
                         this.savingInProgress = false
+                      })
+                      .subscribe(() => {
                         this.goBackToViewDataset()
                       }
                     );

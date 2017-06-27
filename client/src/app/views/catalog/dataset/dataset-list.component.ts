@@ -14,7 +14,8 @@ export class DatasetListComponent implements OnInit {
   organizations: Organization[]
   datasets: Dataset[]
 
-  selectedOrganizationId: string
+  datasetQuery = ""
+  selectedOrganizationId = ""
 
   constructor(
     private organizationService: OrganizationService,
@@ -34,7 +35,15 @@ export class DatasetListComponent implements OnInit {
 
   selectOrganization(organizationId: string) {
     this.selectedOrganizationId = organizationId
-    this.datasetService.getDatasets(organizationId)
+    this.datasetService.getDatasets(organizationId, this.datasetQuery)
+      .subscribe(datasets => {
+        this.datasets = datasets.filter(dataset => dataset.published == true)
+      })
+  }
+
+  search(query: string) {
+    this.datasetQuery = query;
+    this.datasetService.getDatasets(this.selectedOrganizationId, query)
       .subscribe(datasets => {
         this.datasets = datasets.filter(dataset => dataset.published == true)
       })

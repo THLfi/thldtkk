@@ -16,8 +16,6 @@ import { MultiSelectModule } from 'primeng/primeng';
 import { TruncateModule } from 'ng2-truncate';
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 
-
-
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
 
@@ -46,6 +44,7 @@ import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
 import { IsoDatePicker } from './views/common/iso-datepicker.component'
 import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
+import { RequiredFieldIndicator } from './views/common/required-field-indicator.component'
 import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view-code-list-code-items-modal.component'
 
 // catalog components (few renamed to avoid name clash with editor)
@@ -77,10 +76,11 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
-        VariableEditComponent,
         IsoDatePicker,
         LangPipe,
         LoadingSpinner,
+        RequiredFieldIndicator,
+        VariableEditComponent,
         ViewCodeListCodeItemsModalComponent
     ],
     imports: [

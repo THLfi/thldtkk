@@ -12,7 +12,10 @@
   </h1>
 
   <div class="form-group">
-    <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
+    <label for="prefLabel">
+      {{ 'prefLabel' | translate }}
+      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+    </label>
     <input [(ngModel)]="dataset.prefLabel[language]"
         id="prefLabel"
         name="prefLabel"

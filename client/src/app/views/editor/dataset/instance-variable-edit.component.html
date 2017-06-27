@@ -64,7 +64,10 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group">
-        <label for="prefLabel">{{ 'prefLabel' | translate }}</label>
+        <label for="prefLabel">
+          {{ 'prefLabel' | translate }}
+          <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+        </label>
         <input [(ngModel)]="instanceVariable.prefLabel[language]"
           id="prefLabel"
           name="prefLabel"
@@ -245,7 +248,10 @@
           {{ 'newQuantity' | translate }}
         </p-header>
         <div class="form-group">
-          <label for="quantity-prefLabel">{{ 'prefLabel' | translate }}</label>
+          <label for="quantity-prefLabel">
+            {{ 'prefLabel' | translate }}
+            <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+          </label>
           <input [(ngModel)]="newQuantity.prefLabel[language]"
                  id="quantity-prefLabel"
                  name="quantity-prefLabel"
@@ -296,7 +302,10 @@
           {{ 'newUnit' | translate }}
         </p-header>
         <div class="form-group">
-          <label for="unit-prefLabel">{{ 'prefLabel' | translate }}</label>
+          <label for="unit-prefLabel">
+            {{ 'prefLabel' | translate }}
+            <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+          </label>
           <input [(ngModel)]="newUnit.prefLabel[language]"
                  id="unit-prefLabel"
                  name="unit-prefLabel"
@@ -304,7 +313,10 @@
                  class="form-control">
         </div>
         <div class="form-group">
-          <label for="unit-symbol">{{ 'symbol' | translate }}</label>
+          <label for="unit-symbol">
+            {{ 'symbol' | translate }}
+            <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+          </label>
           <input [(ngModel)]="newUnit.symbol[language]"
                  id="unit-symbol"
                  name="unit-symbol"
@@ -451,7 +463,10 @@
                    class="form-control">
           </div>
           <div class="form-group">
-            <label for="codeList-prefLabel">{{ 'codeList.prefLabel' | translate }}</label>
+            <label for="codeList-prefLabel">
+              {{ 'codeList.prefLabel' | translate }}
+              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+            </label>
             <input [(ngModel)]="newCodeList.prefLabel[language]"
                    id="codeList-prefLabel"
                    name="codeList-prefLabel"

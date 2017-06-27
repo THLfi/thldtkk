@@ -47,6 +47,7 @@ public class Dataset {
     private List<Concept> conceptsFromScheme = new ArrayList<>();
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
     private List<DatasetType> datasetTypes = new ArrayList<>();
+    private UnitType unitType;
 
     public Dataset() {
 
@@ -88,6 +89,7 @@ public class Dataset {
         this.freeConcepts = dataset.freeConcepts;
         this.instanceVariables = instanceVariables;
         this.datasetTypes = dataset.datasetTypes;
+        this.unitType = dataset.unitType;
     }
 
     /**
@@ -129,6 +131,8 @@ public class Dataset {
         node.getReferences("datasetType")
                 .forEach(v -> this.datasetTypes
                         .add(new DatasetType(v)));
+        node.getReferencesFirst("unitType")
+                .ifPresent(v -> this.unitType = new UnitType(v));
 
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
@@ -142,7 +146,7 @@ public class Dataset {
     }
 
     public void setId(UUID id) {
-      this.id = id;
+        this.id = id;
     }
 
     public List<Link> getLinks() {
@@ -171,6 +175,10 @@ public class Dataset {
 
     public Map<String, String> getRegistryPolicy() {
         return registryPolicy;
+    }
+
+    public Optional<UnitType> getUnitType() {
+        return Optional.ofNullable(unitType);
     }
 
     public Map<String, String> getUsageConditionAdditionalInformation() {
@@ -266,6 +274,8 @@ public class Dataset {
         getComment().ifPresent((v -> props.put("comment", toPropertyValue(v))));
         getNumberOfObservationUnits().ifPresent((v -> props.put("numberOfObservationUnits", toPropertyValue(v))));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
+        getUnitType().ifPresent(v -> refs
+                .put("unitType", v.toNode()));
         return new Node(id, "DataSet", props, refs);
     }
 
@@ -303,7 +313,8 @@ public class Dataset {
                 && Objects.equals(links, dataset.links)
                 && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme)
                 && Objects.equals(freeConcepts, dataset.freeConcepts)
-                && Objects.equals(datasetTypes, dataset.datasetTypes);
+                && Objects.equals(datasetTypes, dataset.datasetTypes)
+                && Objects.equals(unitType, dataset.unitType);
 
     }
 
@@ -317,7 +328,7 @@ public class Dataset {
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, instanceVariables, comment,
                         datasetTypes, numberOfObservationUnits, links,
-                        conceptsFromScheme, freeConcepts);
+                        conceptsFromScheme, freeConcepts, unitType);
     }
 
 }

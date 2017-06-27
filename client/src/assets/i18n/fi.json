@@ -128,7 +128,6 @@
   "sourceDescription": "Tietolähde, vapaatekstikenttä",
   "sourcePlaceholder": "Hae aineistoja...",
   "noMatchingSources": "Haulla ei löytynyt aineistoja.",
-  "or": "tai",
   "variable": "Käsitemuuttuja",
   "variableHelpText": "Käsitemuuttuja on muuttuja, joka yhdistää kaikki eri aineistoissa samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.\n\nKäsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.",
   "addVariable": "Lisää käsitemuuttuja",
@@ -137,5 +136,6 @@
   "searchForVariables":"Hae käsitemuuttujia...",
   "or": "tai",
   "requiredField": "Pakollinen tieto",
-  "partOfGroup": "Muuttujaryhmä"
+  "partOfGroup": "Muuttujaryhmä",
+  "dataType":"Tietotyyppi"
 }

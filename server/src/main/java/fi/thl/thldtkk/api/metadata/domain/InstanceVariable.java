@@ -47,6 +47,7 @@ public class InstanceVariable {
     private Map<String, String> sourceDescription = new LinkedHashMap<>();
     private Variable variable;
     private Map<String, String> partOfGroup = new LinkedHashMap<>();
+    private String dataType;
 
     public InstanceVariable() {
 
@@ -73,6 +74,7 @@ public class InstanceVariable {
         this.valueRangeMin = PropertyMappings.toBigDecimal(node.getProperties("valueRangeMin"), null);
         this.partOfGroup = toLangValueMap(node.getProperties("partOfGroup"));
         this.sourceDescription = toLangValueMap(node.getProperties("sourceDescription"));
+        this.dataType = PropertyMappings.toString(node.getProperties("dataType"));
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -141,6 +143,10 @@ public class InstanceVariable {
 
     public Optional<String> getValueDomainType() {
         return Optional.ofNullable(valueDomainType);
+    }
+    
+    public Optional<String> getDataType() {
+        return Optional.ofNullable(dataType);
     }
 
     public void setValueDomainType(String valueDomainType) {
@@ -223,6 +229,7 @@ public class InstanceVariable {
         getCodeList().ifPresent(codeList -> refs.put("codeList", codeList.toNode()));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
         getSource().ifPresent(source -> refs.put("source", source.toNode()));
+        getDataType().ifPresent((v -> props.put("dataType", toPropertyValue(v))));
 
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
 
@@ -259,7 +266,8 @@ public class InstanceVariable {
                 && Objects.equals(source, that.source)
                 && Objects.equals(sourceDescription, that.sourceDescription)
                 && Objects.equals(valueRangeMin, that.valueRangeMin)
-                && Objects.equals(variable, that.variable);
+                && Objects.equals(variable, that.variable)
+                && Objects.equals(dataType, that.dataType);
     }
 
     @Override
@@ -268,7 +276,7 @@ public class InstanceVariable {
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
                 defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable,
-                source, sourceDescription);
+                source, sourceDescription, dataType);
     }
 
 }

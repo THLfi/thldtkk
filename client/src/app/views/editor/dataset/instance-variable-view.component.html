@@ -233,6 +233,13 @@
     </div>
   </div>
 
+  <div *ngIf="instanceVariable.dataType" class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'dataType' | translate }}</h2>
+      <p>{{ instanceVariable.dataType }}</p>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

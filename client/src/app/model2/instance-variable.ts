@@ -28,4 +28,5 @@ export interface InstanceVariable {
   partOfGroup: LangValues
   source: Dataset
   sourceDescription: LangValues
+  dataType: string
 }

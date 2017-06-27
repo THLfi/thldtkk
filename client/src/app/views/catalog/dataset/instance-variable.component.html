@@ -203,11 +203,18 @@
       </div>
     </div>
 
-    <div *ngIf="instanceVariable.sourceDescription && (instanceVariable.sourceDescription | lang)"
+  <div *ngIf="instanceVariable.sourceDescription && (instanceVariable.sourceDescription | lang)"
          class="row" >
       <div class="col-xs-12">
         <p>{{ instanceVariable.sourceDescription | lang }}</p>
       </div>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.dataType" class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'dataType' | translate }}</h2>
+      <p>{{ instanceVariable.dataType }}</p>
     </div>
   </div>
 

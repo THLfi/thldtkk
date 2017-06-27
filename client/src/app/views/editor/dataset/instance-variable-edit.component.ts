@@ -111,7 +111,8 @@ export class InstanceVariableEditComponent implements OnInit {
                 variable: null,
                 partOfGroup: null,
                 source: null,
-                sourceDescription: null
+                sourceDescription: null,
+                dataType: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable

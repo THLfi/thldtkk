@@ -52,7 +52,7 @@ export class InstanceVariableService {
 
     return this._http.post(path, instanceVariable, options)
       .map(response => response.json() as InstanceVariable)
-      .catch(error => this.handleHttpError(error, 'operations.instanceVariable.save.result.fail'))
+      .catch(error => this.handleHttpError(error, 'operations.common.save.result.fail'))
       .do(iv => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
       })
@@ -73,7 +73,7 @@ export class InstanceVariableService {
 
     return this._http.delete(path)
       .map(response => response.json())
-      .catch(error => this.handleHttpError(error, 'operations.instanceVariable.delete.result.fail'))
+      .catch(error => this.handleHttpError(error, 'operations.common.delete.result.fail'))
       .do(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.instanceVariable.delete.result.success')
       })

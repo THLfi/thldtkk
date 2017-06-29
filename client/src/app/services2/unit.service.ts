@@ -35,7 +35,7 @@ export class UnitService {
       .map(response => response.json() as Unit)
       .catch(error => {
         this.growlMessageService.buildAndShowMessage('error',
-          'operations.unit.save.result.fail',
+          'operations.common.save.result.fail',
           HttpMessageHelper.getErrorMessageByStatusCode(error.status))
         return Observable.throw(error)
       })

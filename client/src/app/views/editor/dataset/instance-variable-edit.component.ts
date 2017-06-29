@@ -1,5 +1,9 @@
 import {ActivatedRoute, Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import {
+  Component, OnInit, ViewChild,
+  AfterContentChecked
+} from '@angular/core'
+import {NgForm} from '@angular/forms'
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 
@@ -10,6 +14,7 @@ import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
 import {Dataset} from '../../../model2/dataset';
 import {DatasetService} from '../../../services2/dataset.service';
+import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
 import {LangPipe} from '../../../utils/lang.pipe';
@@ -23,13 +28,18 @@ import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-    templateUrl: './instance-variable-edit.component.html',
-    styleUrls:['./instance-variable-edit.component.css']
+    templateUrl: './instance-variable-edit.component.html'
 })
-export class InstanceVariableEditComponent implements OnInit {
+export class InstanceVariableEditComponent implements OnInit, AfterContentChecked {
 
     instanceVariable: InstanceVariable
     language: string
+
+    @ViewChild('datasetForm') instanceVariableForm: NgForm
+    currentForm: NgForm
+    formErrors: any = {
+      'prefLabel': []
+    }
 
     conceptSearchSubscription: Subscription
     conceptSearchResults: Concept[] = []
@@ -55,6 +65,7 @@ export class InstanceVariableEditComponent implements OnInit {
     variableSearchResults: Variable[]
 
     savingInProgress: boolean = false
+    savingHasFailed: boolean = false
 
     constructor(
         private instanceVariableService: InstanceVariableService,
@@ -64,11 +75,11 @@ export class InstanceVariableEditComponent implements OnInit {
         private conceptService: ConceptService,
         private quantityService: QuantityService,
         private unitService: UnitService,
+        private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private langPipe: LangPipe,
-        private stringUtils: StringUtils,
+        private langPipe: LangPipe
     ) {
         this.language = translateService.currentLang
     }
@@ -259,6 +270,27 @@ export class InstanceVariableEditComponent implements OnInit {
       this.newCodeList = codeList
     }
 
+    ngAfterContentChecked(): void {
+      if (this.instanceVariableForm) {
+        if (this.instanceVariableForm !== this.currentForm) {
+          this.currentForm = this.instanceVariableForm
+          this.currentForm.valueChanges.subscribe(data => this.validate(data))
+        }
+      }
+    }
+
+    private validate(data?: any): void {
+      for (const field in this.formErrors) {
+        this.formErrors[field] = []
+        const control = this.currentForm.form.get(field)
+        if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
+          for (const key in control.errors) {
+            this.formErrors[field] = [ ...this.formErrors[field], 'errors.form.' + key ]
+          }
+        }
+      }
+    }
+
     searchConcept(event: any): void {
       this.conceptSearchResults = []
       if (this.conceptSearchSubscription) {
@@ -363,8 +395,8 @@ export class InstanceVariableEditComponent implements OnInit {
     private removeInvalidCodeItemsFromNewCodeList() {
       const validCodeItems: CodeItem[] = []
       this.newCodeList.codeItems.forEach(codeItem => {
-        if (this.stringUtils.isNotBlank(codeItem.code)
-          && this.stringUtils.isNotBlank(codeItem.prefLabel[this.language])) {
+        if (StringUtils.isNotBlank(codeItem.code)
+          && StringUtils.isNotBlank(codeItem.prefLabel[this.language])) {
           validCodeItems.push(codeItem)
         }
       })
@@ -406,6 +438,16 @@ export class InstanceVariableEditComponent implements OnInit {
 
     saveInstanceVariable(): void {
         this.savingInProgress = true
+
+        this.validate()
+
+        if (this.currentForm.invalid) {
+          this.growlMessageService.buildAndShowMessage('error',
+            'operations.common.save.result.fail')
+          this.savingInProgress = false
+          this.savingHasFailed = true
+          return
+        }
 
         this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
 

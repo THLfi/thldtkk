@@ -1,4 +1,6 @@
-<div *ngIf="dataset; else loadingDataset;">
+<form #datasetForm="ngForm"
+      *ngIf="dataset; else loadingDataset;">
+
   <label for="file" translate="uploadFromFile"></label>
   <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
   <h1>
@@ -11,16 +13,28 @@
     </ng-template>
   </h1>
 
-  <div class="form-group">
-    <label for="prefLabel">
-      {{ 'prefLabel' | translate }}
-      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-    </label>
-    <input [(ngModel)]="dataset.prefLabel[language]"
-        id="prefLabel"
-        name="prefLabel"
-        type="text"
-        class="form-control">
+  <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+       class="row">
+    <div class="col-xs-12">
+      <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+           class="form-group">
+        <label for="prefLabel">
+          {{ 'prefLabel' | translate }}
+          <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+        </label>
+        <input [(ngModel)]="dataset.prefLabel[language]"
+            id="prefLabel"
+            name="prefLabel"
+            type="text"
+            class="form-control"
+            required>
+        <p *ngFor="let errorKey of formErrors.prefLabel"
+           class="text-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ errorKey | translate }}
+        </p>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">
@@ -47,6 +61,7 @@
     <select [(ngModel)]="dataset.owner"
         [compareWith]="nodeUtils.equals"
         id="ownerOrganization"
+        name="ownerOrganization"
         class="form-control">
       <option [ngValue]="null"></option>
       <option *ngFor="let organization of allOrganizations"
@@ -61,6 +76,7 @@
   <select [(ngModel)]="ownerOrganizationUnit"
     [compareWith]="nodeUtils.equals"
     id="ownerOrganizationUnit"
+    name="ownerOrganizationUnit"
     class="form-control">
     <option [ngValue]="null"></option>
     <option *ngFor="let organizationUnit of allOrganizationUnits"
@@ -73,16 +89,21 @@
   <div class="form-group">
     <label translate="links"></label>
     <table *ngIf="dataset.links && dataset.links.length; else noDatasetLinks;"
-       class="table">
+       class="table table-striped">
         <tr>
             <th translate="linkName"></th>
             <th translate="linkUrl"></th>
-            <th></th>
+            <th translate="functions"></th>
         </tr>
         <tr *ngFor="let link of dataset.links">
             <td><input class="form-control" type="text" [(ngModel)]="link.prefLabel[language]"></td>
             <td><input class="form-control" type="text" [(ngModel)]="link.linkUrl[language]"></td>
-            <td><button class="btn btn-default" (click)="removeLink(link)" translate="remove"></button></td>
+            <td>
+              <button class="btn btn-default" (click)="removeLink(link)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ 'remove' | translate }}
+              </button>
+            </td>
         </tr>
     </table>
 
@@ -90,7 +111,10 @@
       <p translate="noDatasetLinks"></p>
     </ng-template>
 
-    <button class="btn btn-default" (click)="addLink()" translate="addNewLink"></button>
+    <button class="btn btn-default" (click)="addLink()">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{ 'addNewLink' | translate }}
+    </button>
   </div>
 
   <div class="form-group">
@@ -121,6 +145,7 @@
     <select [(ngModel)]="dataset.usageCondition"
         [compareWith]="nodeUtils.equals"
         id="usageCondition"
+        name="usageCondition"
         class="form-control">
       <option [ngValue]="null"></option>
       <option *ngFor="let usageCondition of allUsageConditions"
@@ -289,6 +314,7 @@
         <select [(ngModel)]="dataset.lifecyclePhase"
             [compareWith]="nodeUtils.equals"
             id="lifecyclePhase"
+            name="lifecyclePhase"
             class="form-control">
           <option [ngValue]="null"></option>
           <option *ngFor="let lifecyclePhase of allLifecyclePhases"
@@ -305,6 +331,7 @@
     <br>
     <p-autoComplete
       [(ngModel)]="dataset.conceptsFromScheme"
+      [ngModelOptions]="{ standalone: true }"
       [suggestions]="conceptSearchResults"
       (completeMethod)="searchConcept($event)"
       [multiple]="true"
@@ -343,7 +370,8 @@
   <div class="form-group">
     <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
     <p-chips [(ngModel)]="freeConcepts"
-      inputId="freeConcepts">
+             [ngModelOptions]="{ standalone: true }"
+             inputId="freeConcepts">
     </p-chips>
     <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
   </div>
@@ -351,8 +379,9 @@
   <div class="form-group">
     <label for="datasetType">{{ 'datasetType' | translate }}</label>
     <br>
-    <p-multiSelect [options]="datasetTypeItems"
-      [(ngModel)]="selectedDatasetTypeItems"
+    <p-multiSelect [(ngModel)]="selectedDatasetTypeItems"
+      [ngModelOptions]="{ standalone: true }"
+      [options]="datasetTypeItems"
       defaultLabel="{{ 'selectDatasetType' | translate }}"
       selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
       inputId="datasetType">
@@ -372,7 +401,7 @@
 
   <hr>
 
-</div>
+</form>
 
 <ng-template #loadingDataset>
   <div>

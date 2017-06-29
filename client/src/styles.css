@@ -33,6 +33,18 @@ h2 {
     padding-bottom: 30px;
 }
 
+.row.bg-highlight,
+.row.bg-danger {
+  margin-bottom: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-radius: 2px;
+}
+
+.row.bg-highlight {
+  background-color: lightgray;
+}
+
 /* PrimeNG custom styles */
 
 /* Dropdown component's search bar (shown when filtering is enabled) */

@@ -137,11 +137,14 @@
   "or": "tai",
   "partOfGroup": "Muuttujaryhmä",
   "dataType":"Tietotyyppi",
-  "requiredField": "Pakollinen tieto",
+  "requiredField": "Tieto on pakollinen",
   "unitType": "Havaintoyksikkö",
   "addUnitType": "Lisää havaintoyksikkö",
   "newUnitType": "Uusi havaintoyksikkö",
   "errors": {
+    "form": {
+      "required": "Tieto on pakollinen"
+    },
     "server": {
       "operationFailed": "Pyyntö epäonnistui",
       "saveFailed": "Tallennus epäonnistui",
@@ -153,6 +156,14 @@
     }
   },
   "operations": {
+    "common": {
+      "save": {
+        "result": {
+          "success": "Tallennus onnistui",
+          "fail": "Tallennus epäonnistui"
+        }
+      }
+    },
     "dataset": {
       "get": {
         "result": {
@@ -161,8 +172,7 @@
       },
       "save": {
         "result": {
-          "success": "Aineisto tallennettu",
-          "fail": "Aineiston tallennus epäonnistui"
+          "success": "Aineisto tallennettu"
         }
       },
       "publish": {
@@ -186,46 +196,40 @@
       },
       "save": {
         "result": {
-          "success": "Muuttuja tallennettu",
-          "fail": "Muuttujan tallennus epäonnistui"
+          "success": "Muuttuja tallennettu"
         }
       },
       "delete": {
         "result": {
-          "success": "Muuttuja poistettu",
-          "fail": "Muuttujan poisto epäonnistui"
+          "success": "Muuttuja poistettu"
         }
       }
     },
     "variable": {
       "save": {
         "result": {
-          "success": "Käsitemuuttuja tallennettu",
-          "fail": "Käsitemuuttujan tallennus epäonnistui"
+          "success": "Käsitemuuttuja tallennettu"
         }
       }
     },
     "quantity": {
       "save": {
         "result": {
-          "success": "Suure tallennettu",
-          "fail": "Suureen tallennus epäonnistui"
+          "success": "Suure tallennettu"
         }
       }
     },
     "unit": {
       "save": {
         "result": {
-          "success": "Mittayksikkö tallennettu",
-          "fail": "Mittayksikön tallennus epäonnistui"
+          "success": "Mittayksikkö tallennettu"
         }
       }
     },
     "codeList": {
       "save": {
         "result": {
-          "success": "Koodisto tallennettu",
-          "fail": "Koodiston tallennus epäonnistui"
+          "success": "Koodisto tallennettu"
         }
       }
     }

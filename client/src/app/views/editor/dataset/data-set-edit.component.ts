@@ -1,5 +1,9 @@
 import {ActivatedRoute, Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import {
+  Component, OnInit, ViewChild,
+  AfterContentChecked
+} from '@angular/core'
+import {NgForm} from '@angular/forms'
 import {Observable, Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -7,6 +11,11 @@ import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
 import {Dataset} from '../../../model2/dataset';
 import {DatasetService} from '../../../services2/dataset.service';
+import {DatasetType} from '../../../model2/dataset-type'
+import {DatasetTypeItem} from '../../../model2/dataset-type-item'
+import {DatasetTypeService} from '../../../services2/dataset-type.service'
+import {GrowlMessageService} from '../../../services2/growl-message.service'
+import {LangPipe} from '../../../utils/lang.pipe'
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
 import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
 import {NodeUtils} from '../../../utils/node-utils';
@@ -14,28 +23,28 @@ import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
-import {DatasetType} from "../../../model2/dataset-type"
-import {DatasetTypeItem} from "../../../model2/dataset-type-item"
-import {DatasetTypeService} from "../../../services2/dataset-type.service"
 import {Population} from "../../../model2/population";
 import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from "../../../services2/unit-type.service";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
 
-import {SelectItem} from "primeng/primeng"
-import {LangPipe} from '../../../utils/lang.pipe'
 
 @Component({
     templateUrl: './data-set-edit.component.html',
     providers: [LangPipe]
 })
-export class DataSetEditComponent implements OnInit {
+export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     dataset: Dataset;
-    population: Population;
-    usageCondition: UsageCondition;
     ownerOrganizationUnit: OrganizationUnit;
+
+    @ViewChild('datasetForm') datasetForm: NgForm
+    currentForm: NgForm
+    formErrors: any = {
+      'prefLabel': []
+    }
+
     allLifecyclePhases: LifecyclePhase[];
     allOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
@@ -56,6 +65,7 @@ export class DataSetEditComponent implements OnInit {
     datasetTypesById: {[datasetTypeId: string]: DatasetType} = {};
 
     savingInProgress: boolean = false
+    savingHasFailed: boolean = false
 
     constructor(
         private datasetService: DatasetService,
@@ -63,6 +73,7 @@ export class DataSetEditComponent implements OnInit {
         private nodeUtils: NodeUtils,
         private organizationService: OrganizationService,
         private organizationUnitService: OrganizationUnitService,
+        private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
@@ -216,6 +227,27 @@ export class DataSetEditComponent implements OnInit {
         this.createEmptyTranslateableProperty(this.newUnitType, item, this.language));
     }
 
+    ngAfterContentChecked(): void {
+      if (this.datasetForm) {
+        if (this.datasetForm !== this.currentForm) {
+          this.currentForm = this.datasetForm
+          this.currentForm.valueChanges.subscribe(data => this.validate(data))
+        }
+      }
+    }
+
+    private validate(data?: any): void {
+      for (const field in this.formErrors) {
+        this.formErrors[field] = []
+        const control = this.currentForm.form.get(field)
+        if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
+          for (const key in control.errors) {
+            this.formErrors[field] = [ ...this.formErrors[field], 'errors.form.' + key ]
+          }
+        }
+      }
+    }
+
     searchConcept(event: any): void {
         const searchText: string = event.query
         if (this.conceptSearchSubscription) {
@@ -297,6 +329,16 @@ export class DataSetEditComponent implements OnInit {
 
     save() {
         this.savingInProgress = true
+
+        this.validate()
+
+        if (this.currentForm.invalid) {
+          this.growlMessageService.buildAndShowMessage('error',
+            'operations.common.save.result.fail')
+          this.savingInProgress = false
+          this.savingHasFailed = true
+          return
+        }
 
         if (this.ownerOrganizationUnit) {
             this.dataset.ownerOrganizationUnit = [];

@@ -46,7 +46,7 @@ export class CodeListService {
       .map(response => response.json() as CodeList)
       .catch(error => {
         this.growlMessageService.buildAndShowMessage('error',
-          'operations.codeList.save.result.fail',
+          'operations.common.save.result.fail',
           HttpMessageHelper.getErrorMessageByStatusCode(error.status))
         return Observable.throw(error)
       })

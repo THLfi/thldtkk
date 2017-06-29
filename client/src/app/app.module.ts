@@ -24,7 +24,6 @@ import { environment } from '../environments/environment'
 
 // utils
 import { NodeUtils } from './utils/node-utils'
-import { StringUtils } from './utils/string-utils'
 
 // services
 import { CodeListService } from "./services2/code-list.service";
@@ -61,7 +60,7 @@ import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/d
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
-import { VariableEditComponent } from './views/editor/dataset/variable-edit.component';
+import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component';
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -83,7 +82,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LangPipe,
         LoadingSpinner,
         RequiredFieldIndicator,
-        VariableEditComponent,
+        VariableEditModalComponent,
         ViewCodeListCodeItemsModalComponent
     ],
     imports: [
@@ -128,7 +127,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         QuantityService,
         LangPipe,
         CodeListService,
-        StringUtils,
         GrowlMessageService
     ],
     bootstrap: [

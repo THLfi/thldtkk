@@ -43,7 +43,7 @@ export class DatasetService {
 
   saveDataset(dataset: Dataset): Observable<Dataset> {
     return this.saveDatasetInternal(dataset)
-      .catch(error => this.handleHttpError(error, 'operations.dataset.save.result.fail'))
+      .catch(error => this.handleHttpError(error, 'operations.common.save.result.fail'))
       .do(dataset => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.dataset.save.result.success')
       })

@@ -32,7 +32,7 @@ export class VariableService {
       .map(response => response.json() as Variable)
       .catch(error => {
         this.growlMessageService.buildAndShowMessage('error',
-          'operations.variable.save.result.fail',
+          'operations.common.save.result.fail',
           HttpMessageHelper.getErrorMessageByStatusCode(error.status))
         return Observable.throw(error)
       })

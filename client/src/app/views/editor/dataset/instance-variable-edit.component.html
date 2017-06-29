@@ -1,4 +1,5 @@
-<ng-container *ngIf="instanceVariable; else loadingInstanceVariable;">
+<form #instanceVariableForm="ngForm"
+      *ngIf="instanceVariable; else loadingInstanceVariable;">
 
   <div class="row">
     <div class="col-xs-12">
@@ -11,13 +12,14 @@
     </div>
   </div>
 
-  <div class="row variable-field-highlight">
+  <div class="row bg-highlight">
     <div class="col-md-4">
       <div class="form-group">
         <label for="variable">{{ 'variable' | translate }}</label>
         <br>
         <p-autoComplete
           [(ngModel)]="instanceVariable.variable"
+          [ngModelOptions]="{ standalone: true }"
           [suggestions]="variableSearchResults"
           (completeMethod)="searchVariable($event)"
           dataKey="id"
@@ -43,10 +45,10 @@
 
         <span style="padding-left: 1em; padding-right:1em">|</span>
 
-        <button (click)="editVariableDialog.show()"
+        <button (click)="editVariableModal.show()"
           class="btn btn-sm btn-default">
-        <span class="glyphicon glyphicon-plus"></span>
-        {{ 'addVariable' | translate }}
+          <span class="glyphicon glyphicon-plus"></span>
+          {{ 'addVariable' | translate }}
         </button>
       </div>
     </div>
@@ -55,15 +57,16 @@
     </div>
   </div>
 
-    <edit-variable
-        (variableSaved)="updateVariable($event)"
-        [showTitle]="false"
-        #editVariableDialog>
-    </edit-variable>
+  <edit-variable-modal
+      (variableSaved)="updateVariable($event)"
+      #editVariableModal>
+  </edit-variable-modal>
 
-  <div class="row">
+  <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+       class="row">
     <div class="col-xs-12">
-      <div class="form-group">
+      <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+           class="form-group">
         <label for="prefLabel">
           {{ 'prefLabel' | translate }}
           <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
@@ -72,7 +75,13 @@
           id="prefLabel"
           name="prefLabel"
           type="text"
-          class="form-control">
+          class="form-control"
+          required>
+        <p *ngFor="let errorKey of formErrors.prefLabel"
+             class="text-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ errorKey | translate }}
+        </p>
       </div>
     </div>
   </div>
@@ -125,13 +134,14 @@
         <br>
         <p-autoComplete
           [(ngModel)]="instanceVariable.conceptsFromScheme"
+          [ngModelOptions]="{ standalone: true }"
           [suggestions]="conceptSearchResults"
           (completeMethod)="searchConcept($event)"
           [multiple]="true"
           dataKey="id"
           emptyMessage="{{ 'noMatchingConcepts' | translate }}"
           placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
-          minlength="3"
+          minLength="2"
           inputId="conceptsFromScheme">
 
          <ng-template let-concept pTemplate="item">
@@ -167,6 +177,7 @@
       <div class="form-group">
         <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
         <p-chips [(ngModel)]="freeConcepts"
+           [ngModelOptions]="{ standalone: true }"
            inputId="freeConcepts">
         </p-chips>
         <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
@@ -225,6 +236,7 @@
             <label>{{ 'quantity' | translate }}</label>
             <br>
             <p-dropdown [(ngModel)]="instanceVariable.quantity"
+                        [ngModelOptions]="{ standalone: true }"
                         [options]="allQuantityItems"
                         filter="true">
             </p-dropdown>
@@ -256,7 +268,8 @@
                  id="quantity-prefLabel"
                  name="quantity-prefLabel"
                  type="text"
-                 class="form-control">
+                 class="form-control"
+                 required>
         </div>
         <p-footer>
           <div>
@@ -279,6 +292,7 @@
             <label>{{ 'unit' | translate }}</label>
             <br>
             <p-dropdown [(ngModel)]="instanceVariable.unit"
+                        [ngModelOptions]="{ standalone: true }"
                         [options]="allUnitItems"
                         filter="true">
             </p-dropdown>
@@ -310,7 +324,8 @@
                  id="unit-prefLabel"
                  name="unit-prefLabel"
                  type="text"
-                 class="form-control">
+                 class="form-control"
+                 required>
         </div>
         <div class="form-group">
           <label for="unit-symbol">
@@ -344,6 +359,7 @@
         <div class="form-group">
           <label for="valueRangeMin">{{ 'valueRangeMin' | translate }}</label>
           <input [(ngModel)]="instanceVariable.valueRangeMin"
+                 [ngModelOptions]="{ standalone: true }"
                  id="valueRangeMin"
                  name="valueRangeMin"
                  class="form-control"
@@ -354,6 +370,7 @@
         <div class="form-group">
           <label for="valueRangeMax">{{ 'valueRangeMax' | translate }}</label>
           <input [(ngModel)]="instanceVariable.valueRangeMax"
+                 [ngModelOptions]="{ standalone: true }"
                  id="valueRangeMax"
                  name="valueRangeMax"
                  class="form-control"
@@ -372,6 +389,7 @@
           <label for="codeList">{{ 'codeList.label' | translate }}</label>
           <br>
           <p-dropdown [(ngModel)]="instanceVariable.codeList"
+                      [ngModelOptions]="{ standalone: true }"
                       [options]="allCodeListItems"
                       filter="true"
                       autoWidth="false"
@@ -598,14 +616,16 @@
         <label for="source">{{ 'instanceVariableSource' | translate }}</label>
         <br>
         <p-autoComplete
+                *ngIf="!instanceVariable.source || !instanceVariable.source.prefLabel"
                 [(ngModel)]="instanceVariable.source"
+                [ngModelOptions]="{ standalone: true }"
                 [suggestions]="sourceSearchResults"
                 (completeMethod)="searchSource($event)"
                 dataKey="id"
                 emptyMessage="{{ 'noMatchingSources' | translate }}"
                 placeholder="{{ 'sourcePlaceholder' | translate }}"
-                minlength="3"
-                inputId="source" *ngIf="!instanceVariable.source || !instanceVariable.source.prefLabel">
+                minLength="2"
+                inputId="source">
 
           <ng-template let-source pTemplate="item">
             <span>
@@ -660,7 +680,7 @@
   </div>
 </div>
 
-</ng-container>
+</form>
 
 <ng-template #loadingInstanceVariable>
   <thl-spinner></thl-spinner>

@@ -35,7 +35,7 @@ export class QuantityService {
       .map(response => response.json() as Quantity)
       .catch(error => {
         this.growlMessageService.buildAndShowMessage('error',
-          'operations.quantity.save.result.fail',
+          'operations.common.save.result.fail',
           HttpMessageHelper.getErrorMessageByStatusCode(error.status))
         return Observable.throw(error)
       })

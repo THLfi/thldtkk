@@ -8,17 +8,13 @@
     [(visible)]="showDialog"
     (onHide)="clear()">
 
-  <ng-container *ngIf="variable">
+  <form #variableForm="ngForm" *ngIf="variable">
 
-    <div class="row" *ngIf="showTitle">
+    <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+         class="row">
       <div class="col-xs-12">
-          <h1>{{ 'newVariable' | translate }}</h1>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group">
+        <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+             class="form-group">
           <label for="prefLabel">
             {{ 'prefLabel' | translate }}
             <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
@@ -27,7 +23,12 @@
             id="prefLabel"
             name="prefLabel"
             type="text"
-            class="form-control">
+            class="form-control"
+            required>
+          <p *ngFor="let errorKey of formErrors.prefLabel" class="text-danger">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            {{ errorKey | translate }}
+          </p>
         </div>
       </div>
     </div>
@@ -47,7 +48,7 @@
       </div>
     </div>
 
-  </ng-container>
+  </form>
 
   <div class="row">
       <div class="col-xs-12">
@@ -63,7 +64,7 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
         {{ 'save' | translate }}
       </button>
-      <button class="btn btn-default" (click)="goBack()">
+      <button class="btn btn-default" (click)="hide()">
         {{ 'cancel' | translate }}
       </button>
     </div>

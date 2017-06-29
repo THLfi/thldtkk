@@ -20,9 +20,9 @@ export class DatasetService {
       .map(response => response.json() as Dataset[])
   }
 
-  getDatasets(organizationId: string): Observable<Dataset[]> {
+  getDatasets(organizationId: string, query: string): Observable<Dataset[]> {
     return this._http.get(env.contextPath + 
-      '/api/v2/datasets?organizationId=' + organizationId)
+      '/api/v2/datasets?organizationId=' + organizationId + '&query=' + query)
       .map(response => response.json() as Dataset[])
   }
 

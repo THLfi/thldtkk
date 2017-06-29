@@ -26,6 +26,16 @@
   </div>
 
   <div class="col-xs-9">
+    
+    <div class="input-group">
+      <input type="text" class="form-control" #query (keyup)="search(query.value)">
+      <div class="input-group-addon">
+        <span class="glyphicon glyphicon-search"></span>
+      </div>
+    </div>
+  
+    <br>
+
     <ul>
       <li *ngFor="let dataset of datasets">
         <a routerLink="/catalog/datasets/{{ dataset.id }}">

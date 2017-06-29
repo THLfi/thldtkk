@@ -39,6 +39,7 @@ import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
 import { QuantityService } from "./services2/quantity.service";
 import { VariableService } from './services2/variable.service'
+import { UnitTypeService } from './services2/unit-type.service'
 import { UsageConditionService } from './services2/usage-condition.service'
 
 // common components
@@ -117,6 +118,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         NodeUtils,
         OrganizationService,
         OrganizationUnitService,
+        UnitTypeService,
         UsageConditionService,
         LifecyclePhaseService,
         DatasetTypeService,

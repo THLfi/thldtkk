@@ -102,6 +102,13 @@
         </div>
       </div>
 
+      <div *ngIf="dataset.unitType" class="row">
+        <div class="col-xs-12">
+          <h2 translate="unitType"></h2>
+          <p>{{dataset.unitType.prefLabel|lang}}</p>
+        </div>
+      </div>
+
       <div class="row">
 
         <ng-container *ngIf="dataset.population">

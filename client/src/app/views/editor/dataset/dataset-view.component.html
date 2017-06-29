@@ -79,6 +79,11 @@
     <h2 translate="numberOfObservationUnits"></h2>
     <p>{{dataset.numberOfObservationUnits}}</p>
 
+    <ng-container *ngIf="dataset.unitType">
+      <h2 translate="unitType"></h2>
+      <p>{{dataset.unitType.prefLabel | lang}}</p>
+    </ng-container>
+
     <ng-container *ngIf="dataset.population">
 
       <h2>{{ 'population' | translate }}</h2>

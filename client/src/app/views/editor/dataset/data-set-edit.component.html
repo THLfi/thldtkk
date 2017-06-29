@@ -150,6 +150,74 @@
         type="text">
   </div>
 
+  <ng-container *ngIf="allUnitTypes.length">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="unitType">{{ 'unitType' | translate }}</label>
+          <br>
+          <select [(ngModel)]="dataset.unitType"
+                  [compareWith]="nodeUtils.equals"
+                  id="unitType"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let unitType of allUnitTypes"
+                    [ngValue]="unitType">
+              {{unitType.prefLabel|lang}}
+            </option>
+          </select>
+          <button
+            (click)="toggleShowAddUnitTypeModal()"
+            class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addUnitType' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <p-dialog [(visible)]="showAddUnitTypeModal"
+              modal="modal"
+              draggable="false"
+              resizable="false"
+              closeOnEscape="false"
+              width="500">
+      <p-header>
+        {{ 'newUnitType' | translate }}
+      </p-header>
+      <div class="form-group">
+        <label for="unit-type-prefLabel">
+          {{ 'prefLabel' | translate }}
+          <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+        </label>
+        <input [(ngModel)]="newUnitType.prefLabel[language]"
+               id="unit-type-prefLabel"
+               name="unit-type-prefLabel"
+               type="text"
+               class="form-control">
+        <label for="unit-type-description">
+          {{ 'description' | translate }}
+        </label>
+        <input [(ngModel)]="newUnitType.description[language]"
+               id="unit-type-description"
+               name="unit-type-description"
+               type="text"
+               class="form-control">
+      </div>
+      <p-footer>
+        <div>
+          <button (click)="saveUnitType()"
+                  class="btn btn-primary">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+          <button (click)="toggleShowAddUnitTypeModal()" class="btn btn-default">
+            {{ 'cancel' | translate }}
+          </button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </ng-container>
+
   <div class="form-group">
     <label for="population-prefLabel">{{ 'population' | translate }}</label>
     <textarea [(ngModel)]="dataset.population.prefLabel[language]"

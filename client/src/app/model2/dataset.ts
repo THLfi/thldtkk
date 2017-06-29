@@ -8,6 +8,7 @@ import {Node} from './node'
 import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {Population} from './population';
+import {UnitType} from './unit-type';
 import {UsageCondition} from './usage-condition';
 
 export interface Dataset extends Node {
@@ -51,6 +52,8 @@ export interface Dataset extends Node {
   links: Link[]
 
   freeConcepts: LangValues
-  
+
   datasetTypes: DatasetType[]
+
+  unitType: UnitType
 }

@@ -18,6 +18,8 @@ import {DatasetType} from "../../../model2/dataset-type"
 import {DatasetTypeItem} from "../../../model2/dataset-type-item"
 import {DatasetTypeService} from "../../../services2/dataset-type.service"
 import {Population} from "../../../model2/population";
+import {UnitType} from "../../../model2/unit-type";
+import {UnitTypeService} from "../../../services2/unit-type.service";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
 
@@ -44,6 +46,10 @@ export class DataSetEditComponent implements OnInit {
     conceptSearchResults: Concept[] = [];
     freeConcepts: string[] = [];
 
+    allUnitTypes: UnitType[] = []
+    showAddUnitTypeModal: boolean = false
+    newUnitType: UnitType
+
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
     selectedDatasetTypeItems: string[] = [];
@@ -60,6 +66,7 @@ export class DataSetEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
+        private unitTypeService: UnitTypeService,
         private usageConditionService: UsageConditionService,
         private datasetTypeService: DatasetTypeService,
         private conceptService: ConceptService,
@@ -106,7 +113,8 @@ export class DataSetEditComponent implements OnInit {
                 conceptsFromScheme: [],
                 links: [],
                 freeConcepts: null,
-                datasetTypes: []
+                datasetTypes: [],
+                unitType: null
             });
         }
 
@@ -118,6 +126,7 @@ export class DataSetEditComponent implements OnInit {
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
+        this.getAllUnitTypes();
 
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
@@ -134,6 +143,8 @@ export class DataSetEditComponent implements OnInit {
 
                 this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);
             })
+
+            this.initNewUnitType()
 
     }
 
@@ -199,6 +210,12 @@ export class DataSetEditComponent implements OnInit {
         return population;
     }
 
+    private initNewUnitType(): void {
+      this.newUnitType = {prefLabel: null, description: null};
+      ['prefLabel', 'description'].forEach(item =>
+        this.createEmptyTranslateableProperty(this.newUnitType, item, this.language));
+    }
+
     searchConcept(event: any): void {
         const searchText: string = event.query
         if (this.conceptSearchSubscription) {
@@ -257,6 +274,25 @@ export class DataSetEditComponent implements OnInit {
             }, error => {
                 console.log(error);
             });
+    }
+
+    toggleShowAddUnitTypeModal(): void {
+      this.showAddUnitTypeModal = !this.showAddUnitTypeModal;
+    }
+
+    saveUnitType(): void {
+          this.unitTypeService.save(this.newUnitType)
+            .subscribe(savedUnitType => {
+              this.initNewUnitType();
+              this.getAllUnitTypes();
+              this.dataset.unitType = savedUnitType;
+              this.toggleShowAddUnitTypeModal();
+            })
+        }
+
+    private getAllUnitTypes() {
+        this.unitTypeService.getAllUnitTypes()
+            .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes);
     }
 
     save() {

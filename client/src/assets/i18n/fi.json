@@ -138,6 +138,9 @@
   "partOfGroup": "Muuttujaryhmä",
   "dataType":"Tietotyyppi",
   "requiredField": "Pakollinen tieto",
+  "unitType": "Havaintoyksikkö",
+  "addUnitType": "Lisää havaintoyksikkö",
+  "newUnitType": "Uusi havaintoyksikkö",
   "errors": {
     "server": {
       "operationFailed": "Pyyntö epäonnistui",

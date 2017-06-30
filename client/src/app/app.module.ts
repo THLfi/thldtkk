@@ -60,6 +60,7 @@ import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/d
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
+import { QuantityEditModalComponent } from "./views/editor/dataset/quantity-edit-modal.component";
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component';
 
@@ -84,6 +85,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LoadingSpinner,
         RequiredFieldIndicator,
         VariableEditModalComponent,
+        QuantityEditModalComponent,
         UnitEditModalComponent,
         ViewCodeListCodeItemsModalComponent
     ],

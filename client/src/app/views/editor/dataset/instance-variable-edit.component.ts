@@ -49,7 +49,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     sourceSearchResults: Dataset[] = []
 
     allQuantityItems: SelectItem[] = []
-    showAddQuantityModal: boolean = false
     newQuantity: Quantity
 
     allUnitItems: SelectItem[] = []
@@ -126,7 +125,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         this.getAllQuantitiesAndUnits()
         this.getAllCodeLists()
 
-        this.initNewQuantity()
         this.initNewCodeList()
     }
 
@@ -235,15 +233,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     }
 
-    private initNewQuantity() {
-      const quantity = {
-        id: null,
-        prefLabel: null
-      }
-      this.initProperties(quantity, ['prefLabel'])
-      this.newQuantity = quantity
-    }
-
     private initNewCodeList() {
       const codeList = {
         id: null,
@@ -319,18 +308,30 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       return languages
     }
 
-    toggleAddQuantityModal(): void {
-      this.showAddQuantityModal = !this.showAddQuantityModal
+    showAddQuantityModal(): void {
+      this.initNewQuantity()
     }
 
-    saveQuantity(): void {
-      this.quantityService.save(this.newQuantity)
+    private initNewQuantity() {
+      const quantity = {
+        id: null,
+        prefLabel: null
+      }
+      this.initProperties(quantity, ['prefLabel'])
+      this.newQuantity = quantity
+    }
+
+    saveQuantity(quantity): void {
+      this.quantityService.save(quantity)
         .subscribe(savedQuantity => {
-          this.initNewQuantity()
           this.getAllQuantitiesAndUnits()
           this.instanceVariable.quantity = savedQuantity
-          this.toggleAddQuantityModal()
+          this.closeAddQuantityModal()
         })
+    }
+
+    closeAddQuantityModal(): void {
+      this.newQuantity = null
     }
 
     showAddUnitModal(): void {

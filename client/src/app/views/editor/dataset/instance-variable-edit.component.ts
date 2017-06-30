@@ -35,7 +35,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     instanceVariable: InstanceVariable
     language: string
 
-    @ViewChild('datasetForm') instanceVariableForm: NgForm
+    @ViewChild('instanceVariableForm') instanceVariableForm: NgForm
     currentForm: NgForm
     formErrors: any = {
       'prefLabel': []

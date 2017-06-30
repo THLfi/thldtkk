@@ -184,6 +184,7 @@
           <select [(ngModel)]="dataset.unitType"
                   [compareWith]="nodeUtils.equals"
                   id="unitType"
+                  name="unitType"
                   class="form-control">
             <option [ngValue]="null"></option>
             <option *ngFor="let unitType of allUnitTypes"

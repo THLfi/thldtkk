@@ -7,7 +7,6 @@ import {NgForm} from '@angular/forms'
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 
-import {CodeItem} from '../../../model2/code-item';
 import {CodeList} from '../../../model2/code-list';
 import {CodeListService} from '../../../services2/code-list.service';
 import {Concept} from '../../../model2/concept';
@@ -22,7 +21,6 @@ import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services2/unit.service';
-import {StringUtils} from '../../../utils/string-utils';
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -56,7 +54,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     allCodeListItems: SelectItem[]
     viewCodeList: CodeList
-    showAddCodeListModal: boolean = false
     newCodeList: CodeList
 
     variableSearchSubscription: Subscription
@@ -233,20 +230,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     }
 
-    private initNewCodeList() {
-      const codeList = {
-        id: null,
-        codeListType: null,
-        referenceId: null,
-        prefLabel: null,
-        description: null,
-        owner: null,
-        codeItems: []
-      }
-      this.initProperties(codeList, ['prefLabel', 'description', 'owner'])
-      this.newCodeList = codeList
-    }
-
     ngAfterContentChecked(): void {
       if (this.instanceVariableForm) {
         if (this.instanceVariableForm !== this.currentForm) {
@@ -361,48 +344,35 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       this.newUnit = null
     }
 
-    toggleAddCodeListModal(): void {
-      this.showAddCodeListModal = !this.showAddCodeListModal
+    showAddCodeListModal(): void {
+      this.initNewCodeList()
     }
 
-    addCodeItem(): void {
-      const newCodeItem = {
+    private initNewCodeList() {
+      const codeList = {
         id: null,
-        code: null,
-        prefLabel: null
+        codeListType: null,
+        referenceId: null,
+        prefLabel: null,
+        description: null,
+        owner: null,
+        codeItems: []
       }
-      this.initProperties(newCodeItem, ['prefLabel'])
-      this.newCodeList.codeItems.push(newCodeItem);
+      this.initProperties(codeList, ['prefLabel', 'description', 'owner'])
+      this.newCodeList = codeList
     }
 
-    removeCodeItem(codeItem: CodeItem): void {
-      const index: number = this.newCodeList.codeItems.indexOf(codeItem)
-      if (index !== -1) {
-        this.newCodeList.codeItems.splice(index, 1)
-      }
-    }
-
-    saveCodeList(): void {
-      this.removeInvalidCodeItemsFromNewCodeList()
-
+    saveCodeList(codeList: CodeList): void {
       this.codeListService.save(this.newCodeList)
         .subscribe(savedCodeList => {
-          this.initNewCodeList()
           this.getAllCodeLists()
           this.instanceVariable.codeList = savedCodeList
-          this.toggleAddCodeListModal()
+          this.closeAddCodeListModal()
         })
     }
 
-    private removeInvalidCodeItemsFromNewCodeList() {
-      const validCodeItems: CodeItem[] = []
-      this.newCodeList.codeItems.forEach(codeItem => {
-        if (StringUtils.isNotBlank(codeItem.code)
-          && StringUtils.isNotBlank(codeItem.prefLabel[this.language])) {
-          validCodeItems.push(codeItem)
-        }
-      })
-      this.newCodeList.codeItems = validCodeItems
+    closeAddCodeListModal(): void {
+      this.newCodeList = null
     }
 
     searchVariable(event:any): void {

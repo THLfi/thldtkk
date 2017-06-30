@@ -360,7 +360,7 @@
             </ng-template>
           </p-dropdown>
           <span style="padding-left: 1em; padding-right:1em;">{{ 'or' | translate | uppercase }}</span>
-          <button (click)="toggleAddCodeListModal()"
+          <button (click)="showAddCodeListModal()"
                   class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'addCodeList' | translate }}
@@ -374,127 +374,11 @@
       [codeList]="viewCodeList">
     </viewCodeListCodeItemsModal>
 
-    <p-dialog [(visible)]="showAddCodeListModal"
-              modal="true"
-              draggable="false"
-              resizable="false"
-              closeOnEscape="false"
-              width="600"
-              positionTop="10"
-              [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
-      <p-header>
-        {{ 'newCodeList' | translate }}
-      </p-header>
-      <div>
-        <div class="form-group"
-             style="padding-left:2px;">
-          <div class="radio">
-            <label>
-              <input [(ngModel)]="newCodeList.codeListType" type="radio" name="codeListType" value="external">
-              {{ 'codeListType.external' | translate }}
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input [(ngModel)]="newCodeList.codeListType" type="radio" name="codeListType" value="internal">
-              {{ 'codeListType.internal' | translate }}
-            </label>
-          </div>
-        </div>
-        <ng-container *ngIf="newCodeList.codeListType">
-          <div *ngIf="newCodeList.codeListType == 'external'" class="form-group">
-            <label for="codeList-referenceId">{{ 'codeList.referenceId' | translate }}</label>
-            <input [(ngModel)]="newCodeList.referenceId"
-                   id="codeList-referenceId"
-                   name="codeList-referenceId"
-                   type="text"
-                   class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="codeList-prefLabel">
-              {{ 'codeList.prefLabel' | translate }}
-              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-            </label>
-            <input [(ngModel)]="newCodeList.prefLabel[language]"
-                   id="codeList-prefLabel"
-                   name="codeList-prefLabel"
-                   type="text"
-                   class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="codeList-description">{{ 'codeList.description' | translate }}</label>
-            <textarea [(ngModel)]="newCodeList.description[language]"
-                      thlAutogrow
-                      rows="2"
-                      id="codeList-description"
-                      name="codeList-description"
-                      class="form-control">
-            </textarea>
-          </div>
-          <div class="form-group">
-            <label for="codeList-owner">{{ 'codeList.owner' | translate }}</label>
-            <input [(ngModel)]="newCodeList.owner[language]"
-                   id="codeList-owner"
-                   name="codeList-owner"
-                   type="text"
-                   class="form-control">
-          </div>
-          <div *ngIf="newCodeList.codeListType == 'internal'">
-            <label>{{ 'codeItems' | translate }}</label>
-            <table *ngIf="newCodeList.codeItems.length; else noCodeItems;"
-                   class="table table-striped">
-              <tr>
-                <th>{{ 'codeItem.code' | translate }}</th>
-                <th>{{ 'codeItem.prefLabel' | translate }}</th>
-                <th>{{ 'functions' | translate }}</th>
-              </tr>
-              <tr *ngFor="let codeItem of newCodeList.codeItems">
-                <td>
-                  <input [(ngModel)]="codeItem.code"
-                         type="text"
-                         class="form-control">
-                </td>
-                <td>
-                  <textarea [(ngModel)]="codeItem.prefLabel[language]"
-                            thlAutogrow
-                            rows="1"
-                            class="form-control">
-                    </textarea>
-                </td>
-                <td>
-                  <button (click)="removeCodeItem(codeItem)"
-                          class="btn btn-default">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    {{ 'remove' | translate }}
-                  </button>
-                </td>
-              </tr>
-            </table>
-            <ng-template #noCodeItems>
-              <p>{{ 'noCodeItems' | translate }}</p>
-            </ng-template>
-            <button (click)="addCodeItem()"
-                    class="btn btn-default btn-xs">
-              <span class="glyphicon glyphicon-plus"></span>
-              {{ 'addCodeItem' | translate }}
-            </button>
-          </div>
-        </ng-container>
-      </div>
-      <p-footer>
-        <div>
-          <button (click)="saveCodeList()"
-                  [disabled]="!newCodeList.codeListType"
-                  class="btn btn-primary">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
-            {{ 'save' | translate }}
-          </button>
-          <button (click)="toggleAddCodeListModal()" class="btn btn-default">
-            {{ 'cancel' | translate }}
-          </button>
-        </div>
-      </p-footer>
-    </p-dialog>
+    <code-list-edit-modal *ngIf="newCodeList"
+                     [codeList]="newCodeList"
+                     (onSave)="saveCodeList($event)"
+                     (onCancel)="closeAddCodeListModal()">
+    </code-list-edit-modal>
   </ng-container>
 
   <div class="row">

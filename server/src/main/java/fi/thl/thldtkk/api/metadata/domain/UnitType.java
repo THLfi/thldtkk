@@ -2,6 +2,8 @@ package fi.thl.thldtkk.api.metadata.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
+
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import java.util.LinkedHashMap;
@@ -13,6 +15,7 @@ import java.util.UUID;
 public class UnitType {
 
     private UUID id;
+    @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
 

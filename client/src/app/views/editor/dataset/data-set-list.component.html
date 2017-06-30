@@ -10,7 +10,9 @@
     </button>
   </div>
 </div>
-<div class="row">
+
+<div *ngIf="datasets.length; else loadingDatasets;"
+     class="row">
   <div class="col-xs-12">
     <table class="table table-striped table-hover">
       <tr>
@@ -38,4 +40,6 @@
   </div>
 </div>
 
-
+<ng-template #loadingDatasets>
+  <thl-spinner></thl-spinner>
+</ng-template>

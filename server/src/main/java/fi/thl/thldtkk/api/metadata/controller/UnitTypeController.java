@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v2/unitTypes")
 public class UnitTypeController {
@@ -28,7 +30,8 @@ public class UnitTypeController {
     }
 
     @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
-    public UnitType save(@RequestBody UnitType unitType) {
+    public UnitType save(@RequestBody @Valid UnitType unitType) {
         return unitTypeService.save(unitType);
     }
+
 }

@@ -8,7 +8,7 @@ import { Dataset } from "../../../model2/dataset";
     templateUrl: './data-set-list.component.html'
 })
 export class DataSetListComponent implements OnInit {
-    datasets: Dataset[]
+    datasets: Dataset[] = []
 
     constructor (
         private dataSetService: DatasetService

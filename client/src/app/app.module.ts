@@ -55,14 +55,15 @@ import { DatasetListComponent } from './views/catalog/dataset/dataset-list.compo
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 
 // editor components
+import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
-import { QuantityEditModalComponent } from "./views/editor/dataset/quantity-edit-modal.component";
+import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
-import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component';
+import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -87,6 +88,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         VariableEditModalComponent,
         QuantityEditModalComponent,
         UnitEditModalComponent,
+        CodeListEditModalComponent,
         ViewCodeListCodeItemsModalComponent
     ],
     imports: [

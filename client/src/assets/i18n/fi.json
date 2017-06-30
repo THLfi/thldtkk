@@ -160,7 +160,10 @@
       "save": {
         "result": {
           "success": "Tallennus onnistui",
-          "fail": "Tallennus epäonnistui"
+          "fail": {
+            "summary": "Tallennus epäonnistui",
+            "detail": "Tarkista syötetyt tiedot."
+          }
         }
       }
     },

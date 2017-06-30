@@ -52,7 +52,7 @@ export class InstanceVariableService {
 
     return this._http.post(path, instanceVariable, options)
       .map(response => response.json() as InstanceVariable)
-      .catch(error => this.handleHttpError(error, 'operations.common.save.result.fail'))
+      .catch(error => this.handleHttpError(error, 'operations.common.save.result.fail.summary'))
       .do(iv => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
       })

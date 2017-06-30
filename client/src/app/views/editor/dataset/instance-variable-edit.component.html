@@ -268,8 +268,7 @@
                  id="quantity-prefLabel"
                  name="quantity-prefLabel"
                  type="text"
-                 class="form-control"
-                 required>
+                 class="form-control">
         </div>
         <p-footer>
           <div>
@@ -298,7 +297,7 @@
             </p-dropdown>
             <span style="padding-left:1em;padding-right:1em">|</span>
             <button
-              (click)="toggleAddUnitModal()"
+              (click)="showAddUnitModal()"
               class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-plus"></span>
               {{ 'addUnit' | translate }}
@@ -306,52 +305,11 @@
           </div>
         </div>
       </div>
-      <p-dialog [(visible)]="showAddUnitModal"
-                modal="modal"
-                draggable="false"
-                resizable="false"
-                closeOnEscape="false"
-                width="500">
-        <p-header>
-          {{ 'newUnit' | translate }}
-        </p-header>
-        <div class="form-group">
-          <label for="unit-prefLabel">
-            {{ 'prefLabel' | translate }}
-            <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-          </label>
-          <input [(ngModel)]="newUnit.prefLabel[language]"
-                 id="unit-prefLabel"
-                 name="unit-prefLabel"
-                 type="text"
-                 class="form-control"
-                 required>
-        </div>
-        <div class="form-group">
-          <label for="unit-symbol">
-            {{ 'symbol' | translate }}
-            <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-          </label>
-          <input [(ngModel)]="newUnit.symbol[language]"
-                 id="unit-symbol"
-                 name="unit-symbol"
-                 type="text"
-                 class="form-control"
-                 style="width:6em;">
-        </div>
-        <p-footer>
-          <div>
-            <button (click)="saveUnit()"
-              class="btn btn-primary">
-              <span class="glyphicon glyphicon-floppy-disk"></span>
-              {{ 'save' | translate }}
-            </button>
-            <button (click)="toggleAddUnitModal()" class="btn btn-default">
-              {{ 'cancel' | translate }}
-            </button>
-          </div>
-        </p-footer>
-      </p-dialog>
+      <unit-edit-modal *ngIf="newUnit"
+                       [unit]="newUnit"
+                       (onSave)="saveUnit($event)"
+                       (onCancel)="closeAddUnitModal()">
+      </unit-edit-modal>
     </ng-container>
 
     <div class="row">

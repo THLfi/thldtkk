@@ -53,7 +53,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     newQuantity: Quantity
 
     allUnitItems: SelectItem[] = []
-    showAddUnitModal: boolean = false
     newUnit: Unit
 
     allCodeListItems: SelectItem[]
@@ -128,7 +127,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         this.getAllCodeLists()
 
         this.initNewQuantity()
-        this.initNewUnit()
         this.initNewCodeList()
     }
 
@@ -246,16 +244,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       this.newQuantity = quantity
     }
 
-    private initNewUnit() {
-      const unit = {
-        id: null,
-        prefLabel: null,
-        symbol: null
-      }
-      this.initProperties(unit, ['prefLabel', 'symbol'])
-      this.newUnit = unit
-    }
-
     private initNewCodeList() {
       const codeList = {
         id: null,
@@ -345,18 +333,31 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         })
     }
 
-    toggleAddUnitModal(): void {
-      this.showAddUnitModal = !this.showAddUnitModal
+    showAddUnitModal(): void {
+      this.initNewUnit()
     }
 
-    saveUnit(): void {
-      this.unitService.save(this.newUnit)
+    private initNewUnit() {
+      const unit = {
+        id: null,
+        prefLabel: null,
+        symbol: null
+      }
+      this.initProperties(unit, ['prefLabel', 'symbol'])
+      this.newUnit = unit
+    }
+
+    saveUnit(unit): void {
+      this.unitService.save(unit)
         .subscribe(savedUnit => {
-          this.initNewUnit()
           this.getAllQuantitiesAndUnits()
           this.instanceVariable.unit = savedUnit
-          this.toggleAddUnitModal()
+          this.closeAddUnitModal()
         })
+    }
+
+    closeAddUnitModal(): void {
+      this.newUnit = null
     }
 
     toggleAddCodeListModal(): void {
@@ -443,7 +444,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail')
+            'operations.common.save.result.fail.summary',
+            'operations.common.save.result.fail.detail')
           this.savingInProgress = false
           this.savingHasFailed = true
           return

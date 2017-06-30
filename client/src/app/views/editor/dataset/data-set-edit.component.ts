@@ -334,7 +334,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail')
+            'operations.common.save.result.fail.summary',
+            'operations.common.save.result.fail.detail')
           this.savingInProgress = false
           this.savingHasFailed = true
           return

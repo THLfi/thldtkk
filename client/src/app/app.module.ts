@@ -63,6 +63,7 @@ import { InstanceVariableEditComponent } from './views/editor/dataset/instance-v
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
+import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
@@ -85,6 +86,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LangPipe,
         LoadingSpinner,
         RequiredFieldIndicator,
+        UnitTypeEditModalComponent,
         VariableEditModalComponent,
         QuantityEditModalComponent,
         UnitEditModalComponent,

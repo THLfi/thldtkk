@@ -14,7 +14,8 @@
         <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
              class="row">
           <div class="col-xs-12">
-            <div class="form-group">
+            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+                 class="form-group">
               <label for="prefLabel">
                 {{ 'prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
@@ -36,7 +37,8 @@
         <div [ngClass]="{ 'bg-danger': formErrors.symbol && formErrors.symbol.length }"
              class="row">
           <div class="col-xs-6">
-            <div class="form-group">
+            <div [ngClass]="{ 'has-error': formErrors.symbol && formErrors.symbol.length }"
+                 class="form-group">
               <label for="symbol">
                 {{ 'symbol' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>

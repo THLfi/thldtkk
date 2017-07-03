@@ -52,6 +52,7 @@
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
               </label>
               <input [(ngModel)]="codeList.prefLabel[language]"
+                     [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
                      id="prefLabel"
                      name="prefLabel"
                      type="text"

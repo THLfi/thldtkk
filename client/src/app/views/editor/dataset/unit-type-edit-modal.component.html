@@ -1,0 +1,65 @@
+<ng-container *ngIf="unitType">
+  <p-dialog [visible]="unitType"
+          (onHide)="doCancel()"
+          modal="modal"
+          draggable="false"
+          resizable="false"
+          closeOnEscape="false"
+          width="500">
+    <p-header>
+      {{ 'newUnitType' | translate }}
+    </p-header>
+    <form #unitTypeForm="ngForm">
+      <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+           class="row">
+        <div class="col-xs-12">
+          <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+               class="form-group">
+            <label for="prefLabel">
+              {{ 'prefLabel' | translate }}
+              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+            </label>
+            <input [(ngModel)]="unitType.prefLabel[language]"
+                   id="prefLabel"
+                   name="prefLabel"
+                   type="text"
+                   class="form-control"
+                   required>
+            <p *ngFor="let errorKey of formErrors.prefLabel"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="description">
+              {{ 'description' | translate }}
+            </label>
+            <textarea [(ngModel)]="unitType.description[language]"
+                   id="description"
+                   name="description"
+                   rows="2"
+                   class="form-control">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doSave()"
+                class="btn btn-primary">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{ 'save' | translate }}
+        </button>
+        <button (click)="doCancel()" class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

@@ -56,7 +56,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     freeConcepts: string[] = [];
 
     allUnitTypes: UnitType[] = []
-    showAddUnitTypeModal: boolean = false
     newUnitType: UnitType
 
     // separate type labels and values for multiselect, id of datasetType as value for select
@@ -154,9 +153,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
                 this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);
             })
-
-            this.initNewUnitType()
-
     }
 
     private initializeDataSetProperties(dataset: Dataset): Dataset {
@@ -219,12 +215,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss', 'description']
             .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
         return population;
-    }
-
-    private initNewUnitType(): void {
-      this.newUnitType = {prefLabel: null, description: null};
-      ['prefLabel', 'description'].forEach(item =>
-        this.createEmptyTranslateableProperty(this.newUnitType, item, this.language));
     }
 
     ngAfterContentChecked(): void {
@@ -308,19 +298,32 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             });
     }
 
-    toggleShowAddUnitTypeModal(): void {
-      this.showAddUnitTypeModal = !this.showAddUnitTypeModal;
+    showAddUnitTypeModal(): void {
+      this.initNewUnitType()
+    }
+
+    private initNewUnitType(): void {
+      const unitType = {
+        prefLabel: null,
+        description: null
+      };
+      ['prefLabel', 'description'].forEach(item =>
+        this.createEmptyTranslateableProperty(unitType, item, this.language))
+      this.newUnitType = unitType
     }
 
     saveUnitType(): void {
-          this.unitTypeService.save(this.newUnitType)
-            .subscribe(savedUnitType => {
-              this.initNewUnitType();
-              this.getAllUnitTypes();
-              this.dataset.unitType = savedUnitType;
-              this.toggleShowAddUnitTypeModal();
-            })
-        }
+      this.unitTypeService.save(this.newUnitType)
+        .subscribe(savedUnitType => {
+          this.getAllUnitTypes()
+          this.dataset.unitType = savedUnitType
+          this.closeAddUnitTypeModal()
+        })
+    }
+
+    closeAddUnitTypeModal() {
+      this.newUnitType = null
+    }
 
     private getAllUnitTypes() {
         this.unitTypeService.getAllUnitTypes()

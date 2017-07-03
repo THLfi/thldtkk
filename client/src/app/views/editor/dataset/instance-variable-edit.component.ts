@@ -121,8 +121,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
         this.getAllQuantitiesAndUnits()
         this.getAllCodeLists()
-
-        this.initNewCodeList()
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {

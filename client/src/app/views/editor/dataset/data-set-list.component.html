@@ -19,7 +19,8 @@
         <th>Nimi</th>
         <th>Toiminnot</th>
       </tr>
-      <tr *ngFor="let dataset of datasets">
+      <tr *ngFor="let dataset of datasets"
+          routerLink="/editor/datasets/{{ dataset.id }}">
         <td>
           <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a>
           <span *ngIf="dataset.published"

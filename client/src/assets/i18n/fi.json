@@ -130,7 +130,7 @@
   "noMatchingSources": "Haulla ei löytynyt aineistoja.",
   "variable": "Käsitemuuttuja",
   "variableHelpText": "Käsitemuuttuja on muuttuja, joka yhdistää kaikki eri aineistoissa samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.\n\nKäsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.",
-  "addVariable": "Lisää käsitemuuttuja",
+  "addVariable": "Lisää käsitemuuttuja...",
   "newVariable": "Uusi käsitemuuttuja",
   "noSearchResults": "Ei hakutuloksia",
   "searchForVariables":"Hae käsitemuuttujia...",
@@ -139,7 +139,7 @@
   "dataType":"Tietotyyppi",
   "requiredField": "Tieto on pakollinen",
   "unitType": "Havaintoyksikkö",
-  "addUnitType": "Lisää havaintoyksikkö",
+  "addUnitType": "Lisää havaintoyksikkö...",
   "newUnitType": "Uusi havaintoyksikkö",
   "errors": {
     "form": {

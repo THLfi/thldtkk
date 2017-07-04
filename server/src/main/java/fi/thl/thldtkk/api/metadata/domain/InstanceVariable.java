@@ -99,6 +99,10 @@ public class InstanceVariable {
         return Optional.ofNullable(defaultMissingValue);
     }
 
+    public void setDefaultMissingValue(String defaultMissingValue) {
+      this.defaultMissingValue = defaultMissingValue;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -131,8 +135,16 @@ public class InstanceVariable {
         return Optional.ofNullable(referencePeriodStart);
     }
 
+    public void setReferencePeriodStart(LocalDate referencePeriodStart) {
+      this.referencePeriodStart = referencePeriodStart;
+    }
+
     public Optional<LocalDate> getReferencePeriodEnd() {
         return Optional.ofNullable(referencePeriodEnd);
+    }
+
+    public void setReferencePeriodEnd(LocalDate referencePeriodEnd) {
+      this.referencePeriodEnd = referencePeriodEnd;
     }
 
     public Optional<Dataset> getSource() {
@@ -147,6 +159,10 @@ public class InstanceVariable {
         return Optional.ofNullable(technicalName);
     }
 
+    public void setTechnicalName(String technicalName) {
+      this.technicalName = technicalName;
+    }
+
     public Optional<UnitType> getUnitType() {
         return Optional.ofNullable(unitType);
     }
@@ -155,12 +171,16 @@ public class InstanceVariable {
         return Optional.ofNullable(valueDomainType);
     }
 
+    public void setValueDomainType(String valueDomainType) {
+        this.valueDomainType = valueDomainType;
+    }
+
     public Optional<String> getDataType() {
         return Optional.ofNullable(dataType);
     }
 
-    public void setValueDomainType(String valueDomainType) {
-        this.valueDomainType = valueDomainType;
+    public void setDataType(String dataType) {
+      this.dataType = dataType;
     }
 
     public Optional<Quantity> getQuantity() {

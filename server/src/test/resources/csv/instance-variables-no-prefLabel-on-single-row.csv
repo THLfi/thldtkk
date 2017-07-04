@@ -1,0 +1,3 @@
+description;prefLabel
+Tässä on kuvausteksti, mutta riviltä puuttuu arvo prefLabel-sarakkeesta.;
+Tämä rivi on validi, koska sillä on prefLabel-arvo.;Toinen nimi

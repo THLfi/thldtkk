@@ -1,0 +1,3 @@
+# Override default editors config with no config to keep files as-is
+
+root = true

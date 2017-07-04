@@ -1,31 +1,41 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.Service;
+import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvParser;
+import fi.thl.thldtkk.api.metadata.service.csv.ParsingResult;
+import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
+import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import static java.util.UUID.randomUUID;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
-import fi.thl.thldtkk.api.metadata.service.Service;
-import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
-import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v2")
@@ -53,8 +63,9 @@ public class InstanceVariableController {
   }
 
   @PostJsonMapping(path = "/datasets/{datasetId}/instanceVariables",
+      headers = "content-type=application/json",
       produces = APPLICATION_JSON_UTF8_VALUE)
-  public InstanceVariable postDatasetInstanceVariable(
+  public InstanceVariable saveInstanceVariableAsJson(
       @PathVariable("datasetId") UUID datasetId,
       @RequestBody @Valid InstanceVariable instanceVariable) {
 
@@ -74,6 +85,54 @@ public class InstanceVariableController {
       .filter(iv -> instanceVariableId.equals(iv.getId()))
       .findFirst()
       .orElseThrow(IllegalStateException::new);
+  }
+
+  @RequestMapping(
+    path = "/datasets/{datasetId}/instanceVariables",
+    method = RequestMethod.POST,
+    headers = "content-type=text/csv",
+    produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+  )
+  public @ResponseBody ParsingResult<List<ParsingResult<InstanceVariable>>> importInstanceVariablesAsCsv(
+    @PathVariable("datasetId") UUID datasetId,
+    @RequestHeader("content-type") String contentType,
+    HttpServletRequest request) throws IOException {
+
+    Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
+
+    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = new InstanceVariableCsvParser(request.getInputStream(), getCharset(contentType)).parse();
+    if (parsingResult.getParsedObject().get().isEmpty()) {
+      return parsingResult;
+    }
+
+    List<InstanceVariable> instanceVariables = getInstanceVariables(parsingResult);
+
+    datasetService.save(new Dataset(dataset, instanceVariables));
+
+    return parsingResult;
+  }
+
+  private String getCharset(String contentType) {
+    if (StringUtils.hasText(contentType)) {
+      String charsetString = ";charset=";
+      int index = contentType.indexOf(charsetString);
+      if (index > -1) {
+        return contentType.substring(index + charsetString.length());
+      }
+    }
+    return null;
+  }
+
+  private List<InstanceVariable> getInstanceVariables(ParsingResult<List<ParsingResult<InstanceVariable>>> instanceVariableResults) {
+    List<InstanceVariable> instanceVariables = instanceVariableResults.getParsedObject().get()
+      .stream()
+      .filter(result -> result.getParsedObject().isPresent())
+      .map(result -> result.getParsedObject().get())
+      .collect(Collectors.toList());
+
+    instanceVariables.forEach(iv -> iv.setId(randomUUID()));
+
+    return instanceVariables;
   }
 
   @DeleteMapping("/datasets/{datasetId}/instanceVariables/{instanceVariableId}")

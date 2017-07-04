@@ -5,6 +5,7 @@ import { Variable } from './variable'
 import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
 import { Unit } from './unit';
+import { UnitType } from './unit-type';
 
 export interface InstanceVariable {
   id: string
@@ -29,4 +30,5 @@ export interface InstanceVariable {
   source: Dataset
   sourceDescription: LangValues
   dataType: string
+  unitType: UnitType
 }

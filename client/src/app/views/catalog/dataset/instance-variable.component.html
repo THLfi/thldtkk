@@ -62,22 +62,21 @@
           {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
           —
           {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
-          <span style="margin-left:2em;">
+          <span *ngIf="((dataset.referencePeriodStart && dataset.referencePeriodStart != instanceVariable.referencePeriodStart) || (dataset.referencePeriodEnd && dataset.referencePeriodEnd != instanceVariable.referencePeriodEnd))"
+                style="margin-left:2em;">
             <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-            <span *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
-              {{ 'valueInDataset' | translate }}:
-              {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
-              —
-              {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
-            </span>
+            {{ 'valueInDataset' | translate }}:
+            {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+            —
+            {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
           </span>
         </p>
       </ng-container>
       <ng-template #inheritedReferencePeriod>
         <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd); else noReferencePeriod;">
-          {{ dataset.referencePeriodStart }}
+          {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
           —
-          {{ dataset.referencePeriodEnd }}
+          {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
         </p>
       </ng-template>
       <ng-template #noReferencePeriod>
@@ -215,6 +214,27 @@
     <div class="col-xs-12">
       <h2>{{ 'dataType' | translate }}</h2>
       <p>{{ instanceVariable.dataType }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariable.unitType || dataset.unitType"
+       class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'unitType' | translate }}</h2>
+      <p>
+        <ng-container *ngIf="instanceVariable.unitType">
+          {{ instanceVariable.unitType.prefLabel | lang }}
+          <span *ngIf="dataset.unitType && dataset.unitType.id != instanceVariable.unitType.id"
+                style="margin-left:2em;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            {{ 'valueInDataset' | translate }}:
+            {{ dataset.unitType.prefLabel | lang }}
+          </span>
+        </ng-container>
+        <ng-template #unitTypeFromDataset>
+          {{ dataset.unitType.prefLabel | lang }}
+        </ng-template>
+      </p>
     </div>
   </div>
 

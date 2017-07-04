@@ -17,10 +17,13 @@ import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
 import {LangPipe} from '../../../utils/lang.pipe';
+import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services2/unit.service';
+import {UnitType} from '../../../model2/unit-type'
+import {UnitTypeService} from '../../../services2/unit-type.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -56,6 +59,9 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     viewCodeList: CodeList
     newCodeList: CodeList
 
+    allUnitTypes: UnitType[] = []
+    newUnitType: UnitType
+
     variableSearchSubscription: Subscription
     variableSearchResults: Variable[]
 
@@ -70,6 +76,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private conceptService: ConceptService,
         private quantityService: QuantityService,
         private unitService: UnitService,
+        private unitTypeService: UnitTypeService,
+        private nodeUtils: NodeUtils,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -113,7 +121,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 partOfGroup: null,
                 source: null,
                 sourceDescription: null,
-                dataType: null
+                dataType: null,
+                unitType: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -121,6 +130,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
         this.getAllQuantitiesAndUnits()
         this.getAllCodeLists()
+        this.getAllUnitTypes()
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
@@ -132,37 +142,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     private initProperties(node: any, properties: string[]): void {
-        properties.forEach(property => {
-            if (!node[property]) {
-                node[property] = {}
-            }
-            if (!node[property][this.language]) {
-                node[property][this.language] = ''
-            }
-        })
-    }
-
-    private convertToQuantityItem(quantity: Quantity): SelectItem {
-      return {
-        label: this.langPipe.transform(quantity.prefLabel),
-        value: quantity
-      }
-    }
-
-    private convertToUnitItem(unit: Unit): SelectItem {
-      let label = this.langPipe.transform(unit.prefLabel)
-
-      let abbreviation = this.langPipe.transform(unit.symbol)
-      if (abbreviation && abbreviation.trim() != '') {
-        label += ' ('
-        label += this.langPipe.transform(unit.symbol)
-        label += ')'
-      }
-
-      return {
-        label: label,
-        value: unit
-      }
+      this.nodeUtils.initLangValuesProperties(node, properties, [ this.language ])
     }
 
     private getAllQuantitiesAndUnits(): void {
@@ -195,6 +175,29 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       })
     }
 
+    private convertToQuantityItem(quantity: Quantity): SelectItem {
+      return {
+        label: this.langPipe.transform(quantity.prefLabel),
+        value: quantity
+      }
+    }
+
+    private convertToUnitItem(unit: Unit): SelectItem {
+      let label = this.langPipe.transform(unit.prefLabel)
+
+      let abbreviation = this.langPipe.transform(unit.symbol)
+      if (abbreviation && abbreviation.trim() != '') {
+        label += ' ('
+        label += this.langPipe.transform(unit.symbol)
+        label += ')'
+      }
+
+      return {
+        label: label,
+        value: unit
+      }
+    }
+
     private getAllCodeLists(): void {
       this.allCodeListItems = []
 
@@ -225,7 +228,11 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
           })
         })
       })
+    }
 
+    private getAllUnitTypes() {
+      this.unitTypeService.getAllUnitTypes()
+        .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
     }
 
     ngAfterContentChecked(): void {
@@ -371,6 +378,27 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     closeAddCodeListModal(): void {
       this.newCodeList = null
+    }
+
+    showAddUnitTypeModal(): void {
+      this.initNewUnitType()
+    }
+
+    private initNewUnitType(): void {
+      this.newUnitType = this.unitTypeService.initNew()
+    }
+
+    saveUnitType(): void {
+      this.unitTypeService.save(this.newUnitType)
+        .subscribe(savedUnitType => {
+          this.getAllUnitTypes()
+          this.instanceVariable.unitType = savedUnitType
+          this.closeAddUnitTypeModal()
+        })
+    }
+
+    closeAddUnitTypeModal() {
+      this.newUnitType = null
     }
 
     searchVariable(event:any): void {

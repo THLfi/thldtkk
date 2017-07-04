@@ -256,6 +256,7 @@
                        (onCancel)="closeAddQuantityModal()">
       </quantity-edit-modal>
     </ng-container>
+
     <ng-container *ngIf="allUnitItems.length">
       <div class="row">
         <div class="col-xs-12">
@@ -487,6 +488,41 @@
     </div>
   </div>
 
+  <ng-container *ngIf="allUnitTypes.length">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label for="unitType">{{ 'unitType' | translate }}</label>
+          <br>
+          <div style="display:inline-block">
+            <select [(ngModel)]="instanceVariable.unitType"
+                    [compareWith]="nodeUtils.equals"
+                    id="unitType"
+                    name="unitType"
+                    class="form-control">
+              <option [ngValue]="null"></option>
+              <option *ngFor="let unitType of allUnitTypes"
+                      [ngValue]="unitType">
+                {{ unitType.prefLabel | lang }}
+              </option>
+            </select>
+          </div>
+          <span style="padding-left:1em;padding-right:1em">|</span>
+          <button
+            (click)="showAddUnitTypeModal()"
+            class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addUnitType' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <unit-type-edit-modal *ngIf="newUnitType"
+                          [unitType]="newUnitType"
+                          (onSave)="saveUnitType($event)"
+                          (onCancel)="closeAddUnitTypeModal()">
+    </unit-type-edit-modal>
+  </ng-container>
 
 <div class="row">
   <div class="col-xs-12">

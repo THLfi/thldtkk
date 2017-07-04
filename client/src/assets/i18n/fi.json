@@ -28,7 +28,7 @@
   "referencePeriodStart": "Viiteajankohdan alkupäivämäärä",
   "referencePeriodEnd": "Viiteajankohdan loppupäivämäärä",
   "noReferencePeriod": "Viiteajankohtaa ei ole määritelty.",
-  "valueInDataset": "Aineistossa",
+  "valueInDataset": "Aineiston oletus",
   "inheritedFromDataset": "Periytyy aineistolta",
   "datasetEditor": "Aineistoeditori",
   "prefLabel": "Nimi",

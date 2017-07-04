@@ -95,9 +95,21 @@
             <th translate="linkUrl"></th>
             <th translate="functions"></th>
         </tr>
-        <tr *ngFor="let link of dataset.links">
-            <td><input class="form-control" type="text" [(ngModel)]="link.prefLabel[language]"></td>
-            <td><input class="form-control" type="text" [(ngModel)]="link.linkUrl[language]"></td>
+        <tr *ngFor="let link of dataset.links; let linkNumber = index;">
+            <td>
+              <input [(ngModel)]="link.prefLabel[language]"
+                     id="link-prefLabel-{{ linkNumber }}"
+                     name="link-prefLabel-{{ linkNumber }}"
+                     type="text"
+                     class="form-control">
+            </td>
+            <td>
+              <input [(ngModel)]="link.linkUrl[language]"
+                     id="link-linkUrl-{{ linkNumber }}"
+                     name="link-linkUrl-{{ linkNumber }}"
+                     type="text"
+                     class="form-control">
+            </td>
             <td>
               <button class="btn btn-default" (click)="removeLink(link)">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>

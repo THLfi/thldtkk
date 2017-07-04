@@ -29,7 +29,6 @@ import {UnitTypeService} from "../../../services2/unit-type.service";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
 
-
 @Component({
     templateUrl: './data-set-edit.component.html',
     providers: [LangPipe]
@@ -97,11 +96,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                 this.datasetService.getDataset(datasetId)
             ).subscribe(
                 data => {
-                    this.dataset = this.initializeDataSetProperties(data[0])
+                    this.dataset = this.initializeDatasetProperties(data[0])
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
                 })
         } else {
-            this.dataset = this.initializeDataSetProperties({
+            this.dataset = this.initializeDatasetProperties({
                 id: null,
                 prefLabel: null,
                 altLabel: null,
@@ -136,7 +135,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
-        this.getAllUnitTypes();
+        this.getAllUnitTypes()
 
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
@@ -155,29 +154,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             })
     }
 
-    private initializeDataSetProperties(dataset: Dataset): Dataset {
-        [
-            'prefLabel',
-            'abbreviation',
-            'altLabel',
-            'description',
-            'researchProjectURL',
-            'registryPolicy',
-            'usageConditionAdditionalInformation',
-            'freeConcepts'
-        ].forEach(item => this.createEmptyTranslateableProperty(dataset, item, this.language));
+    private initializeDatasetProperties(dataset: Dataset): Dataset {
+        this.initProperties(dataset, [
+          'prefLabel',
+          'abbreviation',
+          'altLabel',
+          'description',
+          'researchProjectURL',
+          'registryPolicy',
+          'usageConditionAdditionalInformation',
+          'freeConcepts'
+        ])
 
-        ['lifecyclePhase', 'referencePeriodStart', 'referencePeriodEnd']
-            .forEach(item => this.createNullProperty(dataset, item));
-
-        if (dataset.population == null) {
-            dataset.population = this.initializePopulationFields({
-                prefLabel: null,
-                description: null,
-                geographicalCoverage: null,
-                sampleSize: null,
-                loss: null
-            });
+        if (!dataset.population) {
+          const population = {
+            prefLabel: null,
+            description: null,
+            geographicalCoverage: null,
+            sampleSize: null,
+            loss: null
+          }
+          dataset.population = this.initializePopulationFields(population)
         }
 
         if (dataset.ownerOrganizationUnit.length > 0) {
@@ -197,24 +194,24 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         return storedDatasetTypeItems;
     }
 
-    private createEmptyTranslateableProperty(node: any, propertyName: string, language: string) {
-        if (!node[propertyName] || !node[propertyName][language]) {
-            node[propertyName] = {
-                [language]: null
-            }
-        }
-    }
-
-    private createNullProperty(node: any, propertyName: string) {
-        if (!node[propertyName]) {
-            node[propertyName] = null;
-        }
+    private initProperties(node: any, properties: string[]): void {
+      this.nodeUtils.initLangValuesProperties(node, properties, [ this.language ])
     }
 
     private initializePopulationFields(population: Population): Population {
-        ['prefLabel', 'geographicalCoverage', 'sampleSize', 'loss', 'description']
-            .forEach(item => this.createEmptyTranslateableProperty(population, item, this.language))
-        return population;
+      this.initProperties(population, [
+        'prefLabel',
+        'description',
+        'geographicalCoverage',
+        'sampleSize',
+        'loss'
+      ])
+      return population
+    }
+
+    private getAllUnitTypes() {
+      this.unitTypeService.getAllUnitTypes()
+        .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
     }
 
     ngAfterContentChecked(): void {
@@ -259,13 +256,15 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     addLink() {
-        if (!this.dataset.links) {
-            this.dataset.links = []
-        }
-        var link = {prefLabel: null, linkUrl: null};
-        ['prefLabel', 'linkUrl']
-            .forEach(item => this.createEmptyTranslateableProperty(link, item, this.language))
-        this.dataset.links.push(link);
+      if (!this.dataset.links) {
+          this.dataset.links = []
+      }
+      const link = {
+        prefLabel: null,
+        linkUrl: null
+      }
+      this.initProperties(link, [ 'prefLabel', 'linkUrl' ])
+      this.dataset.links = [ ...this.dataset.links, link ]
     }
 
     removeLink(link) {
@@ -292,7 +291,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     importXml(event) {
         this.datasetService.importDataset(event).subscribe(
             data => {
-                this.dataset = this.initializeDataSetProperties(data);
+                this.dataset = this.initializeDatasetProperties(data);
             }, error => {
                 console.log(error);
             });
@@ -303,13 +302,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     private initNewUnitType(): void {
-      const unitType = {
-        prefLabel: null,
-        description: null
-      };
-      ['prefLabel', 'description'].forEach(item =>
-        this.createEmptyTranslateableProperty(unitType, item, this.language))
-      this.newUnitType = unitType
+      this.newUnitType = this.unitTypeService.initNew()
     }
 
     saveUnitType(): void {
@@ -323,11 +316,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     closeAddUnitTypeModal() {
       this.newUnitType = null
-    }
-
-    private getAllUnitTypes() {
-        this.unitTypeService.getAllUnitTypes()
-            .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes);
     }
 
     save() {

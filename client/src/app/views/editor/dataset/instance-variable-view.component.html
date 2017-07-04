@@ -116,34 +116,33 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.valueDomainType == 'described'"
-       class="row">
-    <div class="col-xs-12">
-      <h2>{{ 'quantity' | translate }}</h2>
-      <p *ngIf="instanceVariable.quantity; else noUnit;">
-        {{ instanceVariable.quantity.prefLabel | lang }}
-      </p>
-      <ng-template #noUnit>
-        <p>{{ 'noQuantity' | translate }}</p>
-      </ng-template>
+  <ng-container *ngIf="instanceVariable.valueDomainType == 'described'">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>{{ 'quantity' | translate }}</h2>
+        <p *ngIf="instanceVariable.quantity; else noUnit;">
+          {{ instanceVariable.quantity.prefLabel | lang }}
+        </p>
+        <ng-template #noUnit>
+          <p>{{ 'noQuantity' | translate }}</p>
+        </ng-template>
+      </div>
     </div>
-  </div>
-
-  <div *ngIf="instanceVariable.valueDomainType == 'described'"
-       class="row">
-    <div class="col-xs-12">
-      <h2>{{ 'unit' | translate }}</h2>
-      <p *ngIf="instanceVariable.unit; else noUnit;">
-        {{ instanceVariable.unit.prefLabel | lang }}
-        <span *ngIf="instanceVariable.unit.symbol | lang">
-          ({{ instanceVariable.unit.symbol | lang }})
-        </span>
-      </p>
-      <ng-template #noUnit>
-        <p>{{ 'noUnit' | translate }}</p>
-      </ng-template>
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>{{ 'unit' | translate }}</h2>
+        <p *ngIf="instanceVariable.unit; else noUnit;">
+          {{ instanceVariable.unit.prefLabel | lang }}
+          <span *ngIf="instanceVariable.unit.symbol | lang">
+            ({{ instanceVariable.unit.symbol | lang }})
+          </span>
+        </p>
+        <ng-template #noUnit>
+          <p>{{ 'noUnit' | translate }}</p>
+        </ng-template>
+      </div>
     </div>
-  </div>
+  </ng-container>
 
   <div *ngIf="instanceVariable.valueDomainType == 'enumerated'"
        class="row">
@@ -237,6 +236,30 @@
     <div class="col-xs-12">
       <h2>{{ 'dataType' | translate }}</h2>
       <p>{{ instanceVariable.dataType }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'unitType' | translate }}</h2>
+      <p>
+        <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
+          {{ instanceVariable.unitType.prefLabel | lang }}
+          <span *ngIf="dataset.unitType && dataset.unitType.id != instanceVariable.unitType.id"
+                style="margin-left:2em;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            {{ 'valueInDataset' | translate }}:
+            {{ dataset.unitType.prefLabel | lang }}
+          </span>
+        </ng-container>
+        <ng-template #unitTypeFromDataset>
+          {{ dataset.unitType.prefLabel | lang }}
+          <span style="margin-left:2em;opacity:.6;">
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            {{ 'inheritedFromDataset' | translate }}
+          </span>
+        </ng-template>
+      </p>
     </div>
   </div>
 

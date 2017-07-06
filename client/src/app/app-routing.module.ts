@@ -11,6 +11,8 @@ import { InstanceVariableComponent } from "./views/catalog/dataset/instance-vari
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 
+import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
+
 const routes: Routes = [
     {
         path: 'catalog/datasets/:datasetId/instanceVariables/:instanceVariableId',
@@ -23,6 +25,10 @@ const routes: Routes = [
     {
         path: 'catalog/datasets',
         component: DatasetListComponent
+    },
+    {
+        path: 'catalog/instancevariables',
+        component: InstanceVariableSearchComponent
     },
     {
         path: 'catalog',

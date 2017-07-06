@@ -52,6 +52,7 @@ public class InstanceVariable {
     private Map<String, String> partOfGroup = new LinkedHashMap<>();
     private String dataType;
     private UnitType unitType;
+    private Dataset dataset;
 
     public InstanceVariable() {
 
@@ -93,6 +94,9 @@ public class InstanceVariable {
                 .stream().findFirst().ifPresent(source -> this.source = new Dataset(source));
         node.getReferences("unitType")
                 .stream().findFirst().ifPresent(unitType -> this.unitType = new UnitType(unitType));
+
+        node.getReferrers("instanceVariable")
+                .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
     }
 
     public Optional<String> getDefaultMissingValue() {
@@ -234,6 +238,10 @@ public class InstanceVariable {
     public Optional<Variable> getVariable() {
         return Optional.ofNullable(variable);
     }
+    
+    public Optional<Dataset> getDataset() {
+        return Optional.ofNullable(dataset);
+    }
 
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
@@ -262,8 +270,11 @@ public class InstanceVariable {
         getDataType().ifPresent((v -> props.put("dataType", toPropertyValue(v))));
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
         getUnitType().ifPresent((ut -> refs.put("unitType", ut.toNode())));
+        
+        Multimap<String, Node> referrers = LinkedHashMultimap.create();      
+        getDataset().ifPresent((v -> referrers.put("dataset", v.toNode())));
 
-        return new Node(id, "InstanceVariable", props, refs);
+        return new Node(id, "InstanceVariable", props, refs, referrers);
     }
 
     @Override

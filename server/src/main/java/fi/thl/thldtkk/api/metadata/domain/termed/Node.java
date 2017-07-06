@@ -52,6 +52,17 @@ public class Node {
     this.properties = properties;
     this.references = references;
   }
+  
+  public Node(UUID id, String typeId,
+    Multimap<String, StrictLangValue> properties,
+    Multimap<String, Node> references,
+    Multimap<String, Node> referrers) {
+    this.id = id;
+    this.type = new TypeId(typeId);
+    this.properties = properties;
+    this.references = references;
+    this.referrers = referrers;
+  }
 
   public UUID getId() {
     return id;
@@ -156,6 +167,10 @@ public class Node {
   public void setReferrers(Multimap<String, Node> referrers) {
     this.referrers = referrers;
   }
+  
+  public Collection<Node> getReferrers(String referrerKey) {
+    return referrers.get(referrerKey);
+  }
 
   @Override
   public String toString() {
@@ -170,6 +185,7 @@ public class Node {
       .add("lastModifiedDate", lastModifiedDate)
       .add("properties", properties)
       .add("references", references)
+      .add("referrers", referrers)
       .toString();
   }
 
@@ -196,7 +212,7 @@ public class Node {
   @Override
   public int hashCode() {
     return Objects.hash(id, type, code, uri, createdBy, createdDate, lastModifiedBy,
-      lastModifiedDate, properties, references);
+      lastModifiedDate, properties, references, referrers);
   }
 
 }

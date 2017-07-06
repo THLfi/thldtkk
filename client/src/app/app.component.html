@@ -1,10 +1,14 @@
 <nav class="navbar navbar-default">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" routerLink="/catalog">
         {{ 'datasetCatalog' | translate }}
         <sup>{{ 'beta' | translate }}</sup>
       </a>
+        <ul class="nav navbar-nav">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/catalog/datasets/">{{'datasets' | translate}}</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" ><a routerLink="/catalog/instancevariables">{{'instanceVariables' | translate}}</a></li>
+        </ul>
     </div>
   </div>
 </nav>

@@ -93,7 +93,15 @@
   "addUnit": "Lisää mittayksikkö...",
   "newUnit": "Uusi mittayksikkö",
   "catalog": {
-    "referencePeriod": "Ajankohta"
+    "referencePeriod": "Ajankohta",
+    "searchInstanceVariable": {
+      "foundInDataset": "Aineistossa",
+      "searchForVariables":"Hae muuttujia...",
+      "noVariable": "Ei käsitemuuttujaa",
+      "noReferencePeriod": "Ei määritetty",
+      "noAssociatedDataset":"Ei liittyvää aineistoa",
+      "searchSummary": "Löytyi {{resultCount}} muuttujaa haulla "
+    }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
   "codeList": {

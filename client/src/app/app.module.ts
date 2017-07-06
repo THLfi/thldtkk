@@ -53,6 +53,8 @@ import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view
 import { DatasetComponent } from './views/catalog/dataset/dataset.component'
 import { DatasetListComponent } from './views/catalog/dataset/dataset-list.component'
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
+import { InstanceVariableSearchComponent } from './views/catalog/instancevariables/instance-variable-search.component'
+import { InstanceVariableSearchResultComponent } from './views/catalog/instancevariables/instance-variable-search-result.component'
 
 // editor components
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
@@ -83,6 +85,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
+        InstanceVariableSearchComponent,
+        InstanceVariableSearchResultComponent,
         IsoDatePicker,
         LangPipe,
         LoadingSpinner,

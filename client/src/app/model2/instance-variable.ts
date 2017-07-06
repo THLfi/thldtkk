@@ -31,4 +31,5 @@ export interface InstanceVariable {
   sourceDescription: LangValues
   dataType: string
   unitType: UnitType
+  dataset: Dataset
 }

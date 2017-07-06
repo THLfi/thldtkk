@@ -122,7 +122,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 source: null,
                 sourceDescription: null,
                 dataType: null,
-                unitType: null
+                unitType: null,
+                dataset: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable

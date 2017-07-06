@@ -206,6 +206,12 @@
         "result": {
           "success": "Muuttuja poistettu"
         }
+      },
+      "import": {
+        "result": {
+          "success": "Muuttujien tuonti onnistui",
+          "fail": "Muuttujien tuonti epäonnistui"
+        }
       }
     },
     "variable": {
@@ -235,6 +241,21 @@
           "success": "Koodisto tallennettu"
         }
       }
+    }
+  },
+  "importInstanceVariablesAsCsvButton": "Tuo muuttujat CSV-tiedostosta...",
+  "importInstanceVariablesModal": {
+    "header": "Muuttujien tuonti CSV-tiedostosta",
+    "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa aineiston nykyiset muuttujat.",
+    "file": {
+      "label": "Tuotava CSV-tiedosto"
+    },
+    "encoding": {
+      "label": "Tiedoston merkistö",
+      "helpText": "Merkistö vaikuttaa siihen, näkyvätkö ääkköset ja muut erikoismerkit oikein tuonnin jälkeen. Windows-käyttöjärjestelmän Excelillä tallennetun CSV-tiedoston merkistö on yleensä <em>ISO-8859-15</em>. Mac-tietokoneen Excelillä merkistö on yleensä <em>MacRoman</em>."
+    },
+    "buttons": {
+      "import": "Tuo muuttujat"
     }
   }
 }

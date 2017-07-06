@@ -221,8 +221,20 @@
       <span class="glyphicon glyphicon-plus"></span>
       {{ 'addInstanceVariable' | translate }}
     </button>
+
+    <button (click)="showImportInstanceVariablesModal()"
+      class="btn btn-default pull-right">
+      <i class="fa fa-upload" aria-hidden="true"></i>
+      {{ 'importInstanceVariablesAsCsvButton' | translate }}
+    </button>
   </div>
 </div>
+
+<instance-variables-import-modal
+  [dataset]="datasetForImportInstanceVariablesModal"
+  (onImport)="getDataSet(); closeImportInstanceVariablesModal()"
+  (onCancel)="closeImportInstanceVariablesModal()">
+</instance-variables-import-modal>
 
 </ng-container>
 

@@ -34,6 +34,10 @@ h2 {
 }
 
 .row.bg-highlight,
+.row.bg-primary,
+.row.bg-success,
+.row.bg-info,
+.row.bg-warning,
 .row.bg-danger {
   margin-bottom: 1em;
   padding-top: 1em;

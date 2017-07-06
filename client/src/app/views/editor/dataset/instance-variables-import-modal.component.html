@@ -1,0 +1,85 @@
+<ng-container *ngIf="dataset">
+  <p-dialog [visible]="dataset"
+            (onHide)="doCancel()"
+            modal="true"
+            draggable="false"
+            resizable="false"
+            closeOnEscape="false"
+            width="600"
+            positionTop="10"
+            [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
+    <p-header>
+      {{ 'importInstanceVariablesModal.header' | translate }}
+    </p-header>
+    <form #importForm="ngForm">
+      <div class="container-fluid">
+        <div class="row bg-warning">
+          <div class="col-xs-12">
+            <p>
+              {{ 'importInstanceVariablesModal.existingInstanceVariablesWillBeRemovedNotification' | translate }}
+            </p>
+          </div>
+        </div>
+        <div [ngClass]="{ 'bg-danger': formErrors.file && formErrors.file.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="file">
+                {{ 'importInstanceVariablesModal.file.label' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input (change)="doUpdateFile($event)"
+                     id="file"
+                     name="file"
+                     type="file"
+                     class="form-control"
+                     accept=".csv"
+                     required>
+              <p *ngFor="let errorKey of formErrors.file"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="{ 'bg-danger': formErrors.encoding && formErrors.encoding.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div class="form-group"></div>
+            <label for="encoding">
+              {{ 'importInstanceVariablesModal.encoding.label' | translate }}
+              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+            </label>
+            <input [(ngModel)]="encoding"
+                   id="encoding"
+                   name="encoding"
+                   type="text"
+                   class="form-control"
+                   required>
+            <p *ngFor="let errorKey of formErrors.encoding"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+            <p [innerHtml]="'importInstanceVariablesModal.encoding.helpText' | translate" class="help-block"></p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doImport()"
+                [disabled]="importInProgress"
+                class="btn btn-primary">
+          {{ 'importInstanceVariablesModal.buttons.import' | translate }}
+        </button>
+        <button (click)="doCancel()"
+                [disabled]="importInProgress"
+                class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

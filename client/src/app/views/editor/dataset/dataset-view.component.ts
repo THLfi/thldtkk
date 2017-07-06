@@ -11,8 +11,10 @@ import { DatasetService } from "../../../services2/dataset.service";
 })
 export class DatasetViewComponent implements OnInit {
 
-  dataset: Dataset;
+  dataset: Dataset
   language: string
+
+  datasetForImportInstanceVariablesModal: Dataset
 
   constructor(private datasetService: DatasetService,
               private route: ActivatedRoute,
@@ -24,7 +26,7 @@ export class DatasetViewComponent implements OnInit {
     this.getDataSet();
   }
 
-  private getDataSet() {
+  getDataSet() {
     const datasetId = this.route.snapshot.params['id'];
     this.datasetService.getDataset(datasetId)
       .subscribe(dataset => this.dataset = dataset)
@@ -49,4 +51,13 @@ export class DatasetViewComponent implements OnInit {
         }
       })
   }
+
+  showImportInstanceVariablesModal() {
+    this.datasetForImportInstanceVariablesModal = this.dataset
+  }
+
+  closeImportInstanceVariablesModal(): void {
+    this.datasetForImportInstanceVariablesModal = null
+  }
+
 }

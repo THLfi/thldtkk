@@ -253,11 +253,13 @@
           </span>
         </ng-container>
         <ng-template #unitTypeFromDataset>
-          {{ dataset.unitType.prefLabel | lang }}
-          <span style="margin-left:2em;opacity:.6;">
-            <i class="fa fa-info-circle" aria-hidden="true"></i>
-            {{ 'inheritedFromDataset' | translate }}
-          </span>
+          <ng-container *ngIf="dataset.unitType">
+            {{ dataset.unitType.prefLabel | lang }}
+            <span style="margin-left:2em;opacity:.6;">
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+              {{ 'inheritedFromDataset' | translate }}
+            </span>
+          </ng-container>
         </ng-template>
       </p>
     </div>

@@ -51,6 +51,10 @@ public class CodeList {
       .forEach(ci -> this.codeItems.add(new CodeItem(ci)));
   }
 
+  public CodeList() {
+      
+  }
+  
   public UUID getId() {
     return id;
   }
@@ -69,6 +73,10 @@ public class CodeList {
 
   public void setReferenceId(String referenceId) {
     this.referenceId = referenceId;
+  }
+  
+  public void setCodeListType(String codeListType) {
+      this.codeListType = codeListType;
   }
 
   public Map<String, String> getPrefLabel() {

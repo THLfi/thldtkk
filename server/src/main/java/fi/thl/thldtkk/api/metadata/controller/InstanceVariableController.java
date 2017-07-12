@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import static java.util.UUID.randomUUID;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -49,7 +50,9 @@ public class InstanceVariableController {
   private Service<UUID, Dataset> datasetService;
   @Autowired
   private InstanceVariableService instanceVariableService;
-
+  @Autowired
+  private Service<UUID, CodeList> codeListService;
+  
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
   public List<InstanceVariable> getDatasetInstanceVariables(
       @PathVariable("datasetId") UUID datasetId) {
@@ -104,7 +107,7 @@ public class InstanceVariableController {
 
     Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = new InstanceVariableCsvParser(request.getInputStream(), getCharset(contentType)).parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = new InstanceVariableCsvParser(request.getInputStream(), getCharset(contentType), this.codeListService).parse();
     if (parsingResult.getParsedObject().get().isEmpty()) {
       return new ResponseEntity<>(parsingResult, HttpStatus.BAD_REQUEST);
     }

@@ -1,26 +1,35 @@
 package fi.thl.thldtkk.api.metadata.service.csv;
 
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.Service;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class InstanceVariableCsvParserTest {
 
+  @Autowired
+  private Service<UUID, CodeList> codeListService;
+    
   @Test
   public void noEncodingProvided() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-all-fields.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, null).parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, null, codeListService).parse();
     assertThat(results.getMessages()).containsExactly("import.csv.error.noEncoding");
 
-    results = new InstanceVariableCsvParser(csv, "    ").parse();
+    results = new InstanceVariableCsvParser(csv, "    ", codeListService).parse();
     assertThat(results.getMessages()).containsExactly("import.csv.error.noEncoding");
   }
 
@@ -28,7 +37,7 @@ public class InstanceVariableCsvParserTest {
   public void unsupportedEncoding() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-all-fields.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "this is not valid encoding").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "this is not valid encoding", codeListService).parse();
 
     assertThat(results.getMessages()).containsExactly("import.csv.error.unsupportedEncoding");
   }
@@ -37,7 +46,7 @@ public class InstanceVariableCsvParserTest {
   public void csvWithAllFields() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-all-fields.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
 
     assertThat(results.getParsedObject().get()).hasSize(1);
     InstanceVariable iv = results.getParsedObject().get().iterator().next().getParsedObject().get();
@@ -60,7 +69,7 @@ public class InstanceVariableCsvParserTest {
   public void csvWithPrefLabelAndDescriptionOnly() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-description-and-prefLabel-only.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
 
     assertThat(results.getParsedObject().get()).hasSize(1);
     InstanceVariable iv = results.getParsedObject().get().iterator().next().getParsedObject().get();
@@ -72,7 +81,7 @@ public class InstanceVariableCsvParserTest {
   public void missingPrefLabelColumn() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-no-prefLabel-column.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
 
     assertThat(results.getParsedObject().get()).isEmpty();
     assertThat(results.getMessages()).containsExactly("import.csv.error.missingRequiredColumn.prefLabel");
@@ -82,7 +91,7 @@ public class InstanceVariableCsvParserTest {
   public void missingPrefLabelOnSingleRow() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-no-prefLabel-on-single-row.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
 
     assertThat(results.getParsedObject().get()).hasSize(2);
     ParsingResult<InstanceVariable> firstResult = results.getParsedObject().get().iterator().next();
@@ -94,7 +103,7 @@ public class InstanceVariableCsvParserTest {
   public void invalidReferencePeriod() throws Exception {
     InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-invalid-reference-period.csv");
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman").parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
 
     assertThat(results.getParsedObject().get()).hasSize(1);
     ParsingResult<InstanceVariable> firstResult = results.getParsedObject().get().iterator().next();

@@ -51,10 +51,15 @@ public class CodeListService implements Service<UUID, CodeList> {
     List<String> byOwner = stream(query.split("\\s"))
       .map(token -> "properties.owner:" + token + "*")
       .collect(toList());
+    List<String> byReferenceId = stream(query.split("\\s"))
+      .map(token -> "properties.referenceId:" + token + "*")
+      .collect(toList());
 
     StringBuilder queryBuilder = new StringBuilder();
     queryBuilder.append("type.id:CodeList AND ((");
     queryBuilder.append(String.join(" AND ", byPrefLabel));
+    queryBuilder.append(") OR (");
+    queryBuilder.append(String.join(" AND ", byReferenceId));
     queryBuilder.append(") OR (");
     queryBuilder.append(String.join(" AND ", byOwner));
     queryBuilder.append("))");
@@ -69,7 +74,7 @@ public class CodeListService implements Service<UUID, CodeList> {
         .build()
     ).map(CodeList::new);
   }
-
+ 
   @Override
   public Optional<CodeList> get(UUID id) {
     return nodeService.get(new NodeId(id, "CodeList")).map(CodeList::new);

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.Service;
+import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -16,9 +19,13 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class InstanceVariableCsvParser {
 
@@ -29,12 +36,16 @@ public class InstanceVariableCsvParser {
 
   private final List<ParsingResult<InstanceVariable>> results;
   private final List<String> messages;
-
-  public InstanceVariableCsvParser(InputStream csv, String encoding) {
+  
+  private Service<UUID, CodeList> codeListService;
+  
+  public InstanceVariableCsvParser(InputStream csv, String encoding, Service<UUID, CodeList> codeListService) {
     this.csv = csv;
     this.encoding = encoding;
     this.results = new LinkedList<>();
     this.messages = new LinkedList<>();
+    
+    this.codeListService = codeListService;
   }
 
   public ParsingResult<List<ParsingResult<InstanceVariable>>> parse() {
@@ -117,6 +128,33 @@ public class InstanceVariableCsvParser {
     instanceVariable.getQualityStatement().put(language, row.get("qualityStatement"));
     instanceVariable.getSourceDescription().put(language, row.get("sourceDescription"));
     instanceVariable.setDataType(row.get("dataType"));
+    
+    Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
+    Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
+
+    if((codeListPrefLabel.isPresent() && !StringUtils.isEmpty(codeListPrefLabel.get())) 
+            || (codeListReferenceId.isPresent() && !StringUtils.isEmpty(codeListReferenceId.get()))) {
+
+      Optional<String> codeListDescription = sanitize(row.get("codeList.description"));
+      Optional<String> codeListOwner = sanitize(row.get("codeList.owner"));
+      
+      try {
+          Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, language, rowMessages);
+          if(!codeList.isPresent()) {
+              codeList = createCodeList(codeListPrefLabel, language, codeListReferenceId, codeListDescription, codeListOwner);
+          }
+          codeList.ifPresent(cl -> {
+                  instanceVariable.setCodeList(cl);
+                  instanceVariable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
+                });
+      }
+      
+      catch(UndefinedLabelException e) {
+          isRowValid = false;
+          rowMessages.add("import.csv.error.missingRequiredValue.codeList.prefLabel");
+      }
+
+    }
 
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
@@ -134,5 +172,83 @@ public class InstanceVariableCsvParser {
     }
     return date;
   }
+  
+  private Optional<String> sanitize(String columnEntry) {
+    return Optional.ofNullable(columnEntry).map(String::trim);
+  }
+  
+  private List<CodeList> searchCodeListsByReferenceId(String referenceId) {
+      return codeListService.query(referenceId).filter(codeList -> {
+              Optional<String> storedReferenceId = codeList.getReferenceId();
+              return storedReferenceId.isPresent() ? storedReferenceId.get().equalsIgnoreCase(referenceId) : false;
+          }).collect(Collectors.toList());
+  }
+  
+  private List<CodeList> searchCodeListsByLabel(String label, String language) {
+      return codeListService.query(label).filter(codeList -> {
+          String storedLabel = codeList.getPrefLabel().get(language);
+          return storedLabel != null ? storedLabel.equalsIgnoreCase(label) : false;
+      }).collect(Collectors.toList());
+  }
+  
+  private Optional<CodeList> getCodeList(Optional<String> label, Optional<String> referenceId, String language, List<String> rowMessages) {
+                  
+      List<CodeList> bestMatches = new ArrayList<>();
+      List<CodeList> codeListsByLabel = new ArrayList<>();
+      List<CodeList> codeListsByReferenceId = new ArrayList<>();
+            
+      if(label.isPresent() && !StringUtils.isEmpty(label.get())) {
+         codeListsByLabel = searchCodeListsByLabel(label.get(), language);
+      }
+      
+      if(referenceId.isPresent() && !StringUtils.isEmpty(referenceId.get())) {
+         codeListsByReferenceId = searchCodeListsByReferenceId(referenceId.get());
+      }
+      
+      // match order (1.) label and ref. id; (2.) ref. id only; (3.) label only
+      
+      if(!codeListsByLabel.isEmpty() && !codeListsByReferenceId.isEmpty()) {
+          for(CodeList referenceIdCodeList : codeListsByReferenceId) {
+              if(codeListsByLabel.contains(referenceIdCodeList)) {
+                  bestMatches.add(referenceIdCodeList);
+              }
+          }
+      }
+      
+      if(bestMatches.isEmpty()) {
+          if(!codeListsByReferenceId.isEmpty()) {
+              bestMatches = codeListsByReferenceId;
+          }
+          
+          else if (!codeListsByLabel.isEmpty()) {
+              bestMatches = codeListsByLabel;
+          }
+      }
+      
+      if(bestMatches.size() > 1) {
+          rowMessages.add("import.csv.warn.ambigiousCodeList"); // should fail import?
+      }
+      
+      Optional<CodeList> existingCodeList = bestMatches.size() >= 1 ? Optional.of(bestMatches.get(0)) : Optional.empty();
+      return existingCodeList;
+  }
 
+  private Optional<CodeList> createCodeList(Optional<String> label, String language, Optional<String> referenceId, Optional<String> description, Optional<String> owner) throws UndefinedLabelException {
+      
+      if(!label.isPresent() || (label.isPresent() && StringUtils.isEmpty(label.get())) ) {
+          throw new UndefinedLabelException();
+      }
+      
+      CodeList codeList = new CodeList();
+      codeList.getPrefLabel().put(language, label.get());
+      
+      codeList.setCodeListType(CodeList.CODE_LIST_TYPE_EXTERNAL);
+      
+      referenceId.ifPresent(refId -> codeList.setReferenceId(refId));
+      description.ifPresent(localizedDescription -> codeList.getDescription().put(language, localizedDescription));
+      owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
+      
+      return Optional.ofNullable(codeListService.save(codeList));
+  }
+  
 }

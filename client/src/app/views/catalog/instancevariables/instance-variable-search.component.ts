@@ -26,6 +26,14 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.searchText = params['query'];
+
+      if(this.searchText != null && this.searchText != "") {
+        this.searchInstanceVariables(this.searchText)
+      }
+
+    })
   }
 
   searchInstanceVariables(searchText: string) {

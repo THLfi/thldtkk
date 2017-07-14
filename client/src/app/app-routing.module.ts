@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-front-page.component"
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
@@ -13,7 +14,13 @@ import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-v
 
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
 
+
+
 const routes: Routes = [
+    {
+        path:'catalog',
+        component: CatalogFrontPageComponent
+    },
     {
         path: 'catalog/datasets/:datasetId/instanceVariables/:instanceVariableId',
         component: InstanceVariableComponent
@@ -29,10 +36,6 @@ const routes: Routes = [
     {
         path: 'catalog/instancevariables',
         component: InstanceVariableSearchComponent
-    },
-    {
-        path: 'catalog',
-        redirectTo: 'catalog/datasets',
     },
     {
         path: 'editor/datasets/:datasetId/instanceVariables/new',

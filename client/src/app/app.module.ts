@@ -55,6 +55,7 @@ import { DatasetListComponent } from './views/catalog/dataset/dataset-list.compo
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableSearchComponent } from './views/catalog/instancevariables/instance-variable-search.component'
 import { InstanceVariableSearchResultComponent } from './views/catalog/instancevariables/instance-variable-search-result.component'
+import { CatalogFrontPageComponent } from './views/catalog/frontpage/catalog-front-page.component'
 
 // editor components
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
@@ -97,7 +98,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UnitEditModalComponent,
         CodeListEditModalComponent,
         ViewCodeListCodeItemsModalComponent,
-        InstanceVariablesImportModalComponent
+        InstanceVariablesImportModalComponent,
+        CatalogFrontPageComponent
     ],
     imports: [
         BrowserModule,

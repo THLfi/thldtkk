@@ -101,6 +101,11 @@
       "noReferencePeriod": "Ei määritetty",
       "noAssociatedDataset":"Ei liittyvää aineistoa",
       "searchSummary": "Löytyi {{resultCount}} muuttujaa haulla "
+    },
+    "frontpage": {
+      "datasets": "Aineistot",
+      "searchVariables": "Hae muuttujia!",
+      "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -266,4 +271,5 @@
       "import": "Tuo muuttujat"
     }
   }
+
 }

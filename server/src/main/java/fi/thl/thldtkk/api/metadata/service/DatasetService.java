@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
+import java.util.Comparator;
+import java.util.Date;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -198,4 +200,18 @@ public class DatasetService implements Service<UUID, Dataset> {
         nodeService.delete(delete.stream().map(NodeId::new).collect(toList()));
     }
 
+    public Stream<Dataset> getRecentAndPublished(int maxResults) {
+      String nodeQuery = "type.id:DataSet AND properties.published:true*";
+      Comparator<Date> dateComparator = (date, anotherDate) -> date.compareTo(anotherDate);
+      
+      return nodeService.query(
+        new NodeRequestBuilder()
+          .addDefaultIncludedAttributes()
+          .addIncludedAttribute("lastModifiedDate")
+          .withQuery(nodeQuery)
+          .build()
+      ).sorted(Comparator.comparing(Node::getLastModifiedDate, dateComparator).reversed())
+       .limit(maxResults)
+       .map(Dataset::new);
+    }
 }

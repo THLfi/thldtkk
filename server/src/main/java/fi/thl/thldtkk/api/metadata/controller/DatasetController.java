@@ -2,7 +2,8 @@ package fi.thl.thldtkk.api.metadata.controller;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.service.Service;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.service.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ public class DatasetController {
     private static final Logger LOG = LoggerFactory.getLogger(DatasetController.class);
 
     @Autowired
-    private Service<UUID, Dataset> datasetService;
+    private DatasetService datasetService;
 
     private Pattern nonWordChar = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
 
@@ -112,4 +114,11 @@ public class DatasetController {
             return new Dataset();
         }
     }
+    
+    @GetJsonMapping(path="/published/recent/{maxResults}")
+    public List<Dataset> getRecentAndPublishedDatasets(
+            @PathVariable("maxResults") int maxResults) {
+        return datasetService.getRecentAndPublished(maxResults).collect(toList());
+    }
+    
 }

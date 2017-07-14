@@ -29,6 +29,11 @@ export class DatasetService {
       .map(response => response.json() as Dataset[])
   }
 
+  getRecentDatasets(maxResults=10): Observable<Dataset[]> {
+    return this._http.get(env.contextPath + '/api/v2/datasets/published/recent/' +maxResults)
+      .map(response => response.json() as Dataset[])
+  }
+
   getDatasets(organizationId: string, query: string): Observable<Dataset[]> {
     return this._http.get(env.contextPath +
       '/api/v2/datasets?organizationId=' + organizationId + '&query=' + query)

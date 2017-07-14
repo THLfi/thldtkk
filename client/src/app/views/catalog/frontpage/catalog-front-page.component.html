@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <div class="frontpage-datasets col-xs-12 col-sm-offset-2 col-sm-4">
+            <h1>{{'catalog.frontpage.datasets' | translate | uppercase}}</h1>
+            <ul>
+                <li *ngFor="let dataset of datasets">
+                    <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a></li>
+            </ul>
+        </div>
+        <div class="frontpage-variable-search col-xs-12 col-sm-4">
+            <h1>{{'catalog.frontpage.searchVariables' | translate | uppercase}}</h1>
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="searchText" (keyup.enter)="searchVariables(searchText)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default search-icon-background" (click)="searchVariables(searchText)" type="button"><i class="fa fa-search search-icon" aria-hidden="true"></i></button>
+                    </span>
+                </div>
+            <p>{{'catalog.frontpage.searchVariableInfo' | translate}}</p>
+        <div class="search-box-arrow"></div>
+        </div>
+    </div>
+</div>

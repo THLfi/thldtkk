@@ -238,6 +238,15 @@
     </div>
   </div>
 
+  <div *ngIf="instanceVariable.instanceQuestions.length" class="row">
+    <div class="col-xs-12">
+      <h2>{{ 'instanceQuestions' | translate }}</h2>
+      <ul>
+          <li class="preserve-line-breaks" *ngFor="let question of instanceVariable.instanceQuestions">{{question.prefLabel | lang }}</li>
+      </ul>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>

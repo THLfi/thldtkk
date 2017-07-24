@@ -524,6 +524,58 @@
     </unit-type-edit-modal>
   </ng-container>
 
+  <ng-container>
+    <div class="row">
+      <div class="form-group">
+        <div class="col-xs-12 col-sm-8">
+          <label for="instanceQuestions">{{ 'instanceQuestions' | translate }}</label>
+          <br>
+          <p-autoComplete
+            [(ngModel)]="instanceVariable.instanceQuestions"
+            [ngModelOptions]="{ standalone: true }"
+            [suggestions]="instanceQuestionSearchResults"
+            (completeMethod)="searchInstanceQuestion($event)"
+            [multiple]="true"
+            [style]="{'vertical-align':'middle'}"
+            dataKey="id"
+            emptyMessage="{{ 'noMatchingInstanceQuestions' | translate }}"
+            placeholder="{{ 'instanceQuestionsPlaceholder' | translate }}"
+            minLength="2"
+            inputId="instanceQuestions">
+            <ng-template let-instanceQuestion pTemplate="item">
+                <span>
+                  {{ instanceQuestion.prefLabel | lang | truncate:70 }}
+                </span>
+            </ng-template>
+
+            <ng-template let-instanceQuestion pTemplate="selectedItem">
+                <span style="margin-right:1.2em;">
+                  {{ instanceQuestion.prefLabel | lang | truncate:70 }}
+                </span>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+          <div class="input-group">
+            <span style="padding-left: 1em; padding-right:1em;margin-top:2em;display:inline-block;">{{ 'or' | translate | uppercase }}</span>
+            <span class="input-group-btn">
+              <button (click)="showAddInstanceQuestionModal()" style="margin-top:2em"
+                class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-plus"></span>
+                {{ 'addInstanceQuestion' | translate }}
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <instance-question-edit-modal *ngIf="newInstanceQuestion"
+                      [question]="newInstanceQuestion"
+                      (onSave)="saveInstanceQuestion($event)"
+                      (onCancel)="closeAddInstanceQuestionModal()">
+    </instance-question-edit-modal>
+  </ng-container>
+
 <div class="row">
   <div class="col-xs-12">
     <hr>

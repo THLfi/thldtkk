@@ -6,6 +6,7 @@ import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
 import { Unit } from './unit';
 import { UnitType } from './unit-type';
+import { InstanceQuestion } from './instance-question'
 
 export interface InstanceVariable {
   id: string
@@ -32,4 +33,5 @@ export interface InstanceVariable {
   dataType: string
   unitType: UnitType
   dataset: Dataset
+  instanceQuestions: InstanceQuestion[]
 }

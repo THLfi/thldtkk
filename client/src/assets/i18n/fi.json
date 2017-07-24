@@ -254,6 +254,13 @@
           "success": "Koodisto tallennettu"
         }
       }
+    },
+    "instanceQuestion": {
+      "save": {
+        "result": {
+          "success": "Kyselykysymys tallennettu"
+        }
+      }
     }
   },
   "importInstanceVariablesAsCsvButton": "Tuo muuttujat CSV-tiedostosta...",
@@ -270,6 +277,11 @@
     "buttons": {
       "import": "Tuo muuttujat"
     }
-  }
-
+  },
+  "instanceQuestions":"Muuttujaan liittyvät kyselykysymykset",
+  "noMatchingInstanceQuestions":"Haulla ei löytynyt kysymyksiä",
+  "instanceQuestionsPlaceholder":"Hae kyselykysymyksiä...",
+  "newInstanceQuestion": "Uusi kyselykysymys",
+  "questionText":"Kysymysteksti",
+  "addInstanceQuestion":"Lisää kyselykysymys"
 }

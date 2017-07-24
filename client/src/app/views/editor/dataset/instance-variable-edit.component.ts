@@ -16,6 +16,8 @@ import {DatasetService} from '../../../services2/dataset.service';
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
+import {InstanceQuestion} from '../../../model2/instance-question';
+import {InstanceQuestionService} from '../../../services2/instance-question.service';
 import {LangPipe} from '../../../utils/lang.pipe';
 import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
@@ -65,11 +67,16 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     variableSearchSubscription: Subscription
     variableSearchResults: Variable[]
 
+    instanceQuestionSearchSubscription: Subscription
+    instanceQuestionSearchResults: InstanceQuestion[] = []
+    newInstanceQuestion: InstanceQuestion
+
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
 
     constructor(
         private instanceVariableService: InstanceVariableService,
+        private instanceQuestionService: InstanceQuestionService,
         private datasetService: DatasetService,
         private codeListService: CodeListService,
         private variableService: VariableService,
@@ -123,6 +130,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 sourceDescription: null,
                 dataType: null,
                 unitType: null,
+                instanceQuestions: [],
                 dataset: null
             }
             this.initInstanceVariable(instanceVariable)
@@ -466,6 +474,49 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
             this.instanceVariable = instanceVariable
             this.goBack()
           })
+    }
+    
+    searchInstanceQuestion(event: any): void {
+      this.instanceQuestionSearchResults = []
+      if (this.instanceQuestionSearchSubscription) {
+        // Cancel possible on-going search
+        this.instanceQuestionSearchSubscription.unsubscribe()
+      }
+
+      const searchText: string = event.query
+      const datasetId = this.route.snapshot.params['datasetId'];
+
+      this.instanceQuestionSearchSubscription = this.instanceQuestionService.searchQuestion(searchText, datasetId)
+        .subscribe(instanceQuestions => {
+          this.instanceQuestionSearchResults = instanceQuestions
+        })
+    }
+
+    showAddInstanceQuestionModal(): void {
+      this.initNewInstanceQuestion()
+    }
+
+    private initNewInstanceQuestion() {
+      let question: InstanceQuestion = {
+                id: null,
+                prefLabel: null
+              }
+      
+      this.initProperties(question, ['prefLabel'])
+      this.newInstanceQuestion = question
+    }
+
+    saveInstanceQuestion(instanceQuestion:InstanceQuestion): void {
+      this.instanceQuestionService.save(instanceQuestion)
+        .subscribe(savedQuestion => {
+          if(!this.instanceVariable.instanceQuestions) { this.instanceVariable.instanceQuestions = []}
+          this.instanceVariable.instanceQuestions.push(savedQuestion)
+          this.closeAddInstanceQuestionModal()
+        })
+    }
+
+    closeAddInstanceQuestionModal(): void {
+      this.newInstanceQuestion = null
     }
 
     confirmRemove(): void {

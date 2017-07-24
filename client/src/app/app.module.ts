@@ -32,6 +32,7 @@ import { DatasetService } from './services2/dataset.service'
 import { DatasetTypeService } from './services2/dataset-type.service'
 import { GrowlMessageService } from './services2/growl-message.service'
 import { InstanceVariableService } from './services2/instance-variable.service'
+import { InstanceQuestionService } from './services2/instance-question.service'
 import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
 import { UnitService } from './services2/unit.service'
 import { OrganizationService} from './services2/organization.service'
@@ -69,6 +70,7 @@ import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
+import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -99,6 +101,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CodeListEditModalComponent,
         ViewCodeListCodeItemsModalComponent,
         InstanceVariablesImportModalComponent,
+        InstanceQuestionEditModalComponent,
         CatalogFrontPageComponent
     ],
     imports: [
@@ -129,6 +132,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     providers: [
         DatasetService,
         InstanceVariableService,
+        InstanceQuestionService,
         VariableService,
         NodeUtils,
         OrganizationService,

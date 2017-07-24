@@ -52,6 +52,8 @@ public class InstanceVariable {
     private Map<String, String> partOfGroup = new LinkedHashMap<>();
     private String dataType;
     private UnitType unitType;
+
+    private List<InstanceQuestion> instanceQuestions = new ArrayList<>();
     private Dataset dataset;
 
     public InstanceVariable() {
@@ -94,7 +96,10 @@ public class InstanceVariable {
                 .stream().findFirst().ifPresent(source -> this.source = new Dataset(source));
         node.getReferences("unitType")
                 .stream().findFirst().ifPresent(unitType -> this.unitType = new UnitType(unitType));
+        node.getReferences("instanceQuestions")
+        .forEach(q -> this.instanceQuestions.add(new InstanceQuestion(q)));
 
+        
         node.getReferrers("instanceVariable")
                 .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
     }
@@ -239,6 +244,10 @@ public class InstanceVariable {
         return Optional.ofNullable(variable);
     }
     
+    public List<InstanceQuestion> getInstanceQuestions() {
+        return instanceQuestions;
+    }
+    
     public Optional<Dataset> getDataset() {
         return Optional.ofNullable(dataset);
     }
@@ -270,6 +279,7 @@ public class InstanceVariable {
         getDataType().ifPresent((v -> props.put("dataType", toPropertyValue(v))));
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
         getUnitType().ifPresent((ut -> refs.put("unitType", ut.toNode())));
+        getInstanceQuestions().forEach(q -> refs.put("instanceQuestions", q.toNode()));
         
         Multimap<String, Node> referrers = LinkedHashMultimap.create();      
         getDataset().ifPresent((v -> referrers.put("dataset", v.toNode())));
@@ -309,7 +319,8 @@ public class InstanceVariable {
                 && Objects.equals(valueRangeMin, that.valueRangeMin)
                 && Objects.equals(variable, that.variable)
                 && Objects.equals(dataType, that.dataType)
-                && Objects.equals(unitType, that.unitType);
+                && Objects.equals(unitType, that.unitType)
+                && Objects.equals(instanceQuestions, that.instanceQuestions);
     }
 
     @Override
@@ -318,7 +329,7 @@ public class InstanceVariable {
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
                 defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable,
-                source, sourceDescription, dataType, unitType);
+                source, sourceDescription, dataType, unitType, instanceQuestions);
     }
 
 }

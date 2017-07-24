@@ -4,7 +4,7 @@
             <h1>{{'catalog.frontpage.datasets' | translate | uppercase}}</h1>
             <ul>
                 <li *ngFor="let dataset of datasets">
-                    <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a></li>
+                    <a routerLink="/catalog/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a></li>
             </ul>
         </div>
         <div class="frontpage-variable-search col-xs-12 col-sm-4">

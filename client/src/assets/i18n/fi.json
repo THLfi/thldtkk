@@ -283,5 +283,25 @@
   "instanceQuestionsPlaceholder":"Hae kyselykysymyksiä...",
   "newInstanceQuestion": "Uusi kyselykysymys",
   "questionText":"Kysymysteksti",
-  "addInstanceQuestion":"Lisää kyselykysymys"
+  "addInstanceQuestion":"Lisää kyselykysymys",
+
+  "pageTitles": {
+    "editor": {
+      "suffix": "Aineistokatalogin editori",
+      "datasetList": "Aineistot",
+      "editInstanceVariable": "Muokkaa muuttujaa",
+      "newInstanceVariable": "Uusi muuttuja",
+      "editDataset": "Muokkaa aineistoa",
+      "newDataset": "Uusi aineisto"
+
+    }
+    ,
+    "catalog": {
+      "suffix": "Aineistokatalogi",
+      "frontpage": "Etusivu",
+      "datasetList": "Aineistot",
+      "instanceVariableSearch": "Muuttujahaku"
+    }
+  }
+
 }

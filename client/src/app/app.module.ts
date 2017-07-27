@@ -1,5 +1,5 @@
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
-import { BrowserModule } from '@angular/platform-browser'
+import { BrowserModule, Title } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipsModule } from 'primeng/components/chips/chips';
 import { NgModule } from '@angular/core'
@@ -147,7 +147,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         QuantityService,
         LangPipe,
         CodeListService,
-        GrowlMessageService
+        GrowlMessageService,
+        Title
     ],
     bootstrap: [
         AppComponent

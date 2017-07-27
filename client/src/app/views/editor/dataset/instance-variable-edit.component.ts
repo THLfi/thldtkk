@@ -30,6 +30,8 @@ import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
 
+import { Title } from '@angular/platform-browser'
+
 @Component({
     templateUrl: './instance-variable-edit.component.html'
 })
@@ -89,7 +91,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private langPipe: LangPipe
+        private langPipe: LangPipe,
+        private titleService: Title
     ) {
         this.language = translateService.currentLang
     }
@@ -103,6 +106,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 .subscribe(instanceVariable => {
                   this.initInstanceVariable(instanceVariable)
                   this.instanceVariable = instanceVariable
+                  this.updatePageTitle();
                 })
          }
         else {
@@ -152,6 +156,14 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     private initProperties(node: any, properties: string[]): void {
       this.nodeUtils.initLangValuesProperties(node, properties, [ this.language ])
+    }
+
+    private updatePageTitle():void {
+      if(this.instanceVariable.prefLabel) {
+        let translatedLabel:string = this.langPipe.transform(this.instanceVariable.prefLabel)
+        let bareTitle:string = this.titleService.getTitle();
+        this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+      }
     }
 
     private getAllQuantitiesAndUnits(): void {

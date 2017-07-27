@@ -28,6 +28,8 @@ import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from "../../../services2/unit-type.service";
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
+import { Title } from '@angular/platform-browser'
+
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -79,7 +81,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private usageConditionService: UsageConditionService,
         private datasetTypeService: DatasetTypeService,
         private conceptService: ConceptService,
-        private langPipe: LangPipe
+        private langPipe: LangPipe,
+        private titleService: Title
     ) {
         this.language = this.translateService.currentLang
     }
@@ -98,6 +101,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                 data => {
                     this.dataset = this.initializeDatasetProperties(data[0])
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
+                    this.updatePageTitle()
                 })
         } else {
             this.dataset = this.initializeDatasetProperties({
@@ -207,6 +211,14 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         'loss'
       ])
       return population
+    }
+
+    private updatePageTitle():void {
+        if(this.dataset.prefLabel) {
+            let translatedLabel:string = this.langPipe.transform(this.dataset.prefLabel)
+            let bareTitle:string = this.titleService.getTitle();
+            this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+        }
     }
 
     private getAllUnitTypes() {

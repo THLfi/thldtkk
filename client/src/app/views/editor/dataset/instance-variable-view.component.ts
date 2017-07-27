@@ -8,6 +8,9 @@ import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { InstanceVariableService } from '../../../services2/instance-variable.service'
 
+import { Title } from '@angular/platform-browser'
+import { LangPipe } from '../../../utils/lang.pipe'
+
 @Component({
   templateUrl: './instance-variable-view.component.html'
 })
@@ -22,7 +25,9 @@ export class InstanceVariableViewComponent implements OnInit {
   constructor(private instanceVariableService: InstanceVariableService,
               private datasetService: DatasetService,
               private route: ActivatedRoute,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private titleService: Title,
+              private langPipe: LangPipe) {
     this.datasetId = this.route.snapshot.params['datasetId']
     this.instanceVariableId = this.route.snapshot.params['instanceVariableId']
     this.language = this.translateService.currentLang
@@ -39,7 +44,16 @@ export class InstanceVariableViewComponent implements OnInit {
     ).subscribe(data => {
       this.instanceVariable = data[0]
       this.dataset = data[1]
+      this.updatePageTitle();
     })
+  }
+
+  updatePageTitle():void {
+    if(this.instanceVariable.prefLabel) {
+      let translatedLabel:string = this.langPipe.transform(this.instanceVariable.prefLabel)
+      let bareTitle:string = this.titleService.getTitle();
+      this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+    }
   }
 
 }

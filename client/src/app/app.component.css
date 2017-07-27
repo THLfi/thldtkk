@@ -12,3 +12,10 @@
 .navbar-default .navbar-brand sup {
   color: #01A197;
 }
+
+@media (max-width: 768px) {
+  .navbar-nav>li, .navbar-nav {
+      float: left;
+      margin-left: 0;
+  }
+}

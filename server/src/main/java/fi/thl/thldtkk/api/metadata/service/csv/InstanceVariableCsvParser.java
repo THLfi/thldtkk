@@ -131,6 +131,7 @@ public class InstanceVariableCsvParser {
     
     sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
     sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
+    sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(language, dataFormat));
     
     Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
     Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));

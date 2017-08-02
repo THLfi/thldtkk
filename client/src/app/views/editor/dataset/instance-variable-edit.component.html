@@ -488,6 +488,19 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="dataFormat"> {{'dataFormat' | translate}} </label>
+        <input [(ngModel)]="instanceVariable.dataFormat[language]"
+          id="dataFormat"
+          name="dataFormat"
+          type="text"
+          class="form-control">
+      </div>
+    </div>
+  </div>
+
   <ng-container *ngIf="allUnitTypes.length">
     <div class="row">
       <div class="col-xs-12">

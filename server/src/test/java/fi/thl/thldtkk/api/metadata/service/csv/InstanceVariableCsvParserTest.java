@@ -63,6 +63,7 @@ public class InstanceVariableCsvParserTest {
     assertThat(iv.getQualityStatement().get("fi")).isEqualTo("Ei ole muita laatuun vaikuttavia tietoja.");
     assertThat(iv.getSourceDescription().get("fi")).isEqualTo("Väestörekisteri");
     assertThat(iv.getDataType().orElse(null)).isEqualTo("integer");
+    assertThat(iv.getDataFormat().get("fi")).isEqualTo("(mies|nainen|muu)");
   }
 
   @Test

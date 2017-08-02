@@ -217,6 +217,13 @@
     </div>
   </div>
 
+  <div *ngIf="instanceVariable.dataFormat | lang" class="row">
+      <div class="col-xs-12">
+        <h2>{{'dataFormat' | translate}}</h2>
+        <p>{{ instanceVariable.dataFormat | lang }}</p>
+      </div>
+  </div>
+
   <div *ngIf="instanceVariable.unitType || dataset.unitType"
        class="row">
     <div class="col-xs-12">

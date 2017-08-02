@@ -135,6 +135,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 dataType: null,
                 unitType: null,
                 instanceQuestions: [],
+                dataFormat: null,
                 dataset: null
             }
             this.initInstanceVariable(instanceVariable)
@@ -148,7 +149,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
       this.initProperties(instanceVariable,
-      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup', 'sourceDescription'])
+      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup', 'sourceDescription', 'dataFormat'])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
       }

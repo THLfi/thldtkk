@@ -302,6 +302,7 @@
       "datasetList": "Aineistot",
       "instanceVariableSearch": "Muuttujahaku"
     }
-  }
+  },
+  "dataFormat": "Tiedon muoto"
 
 }

@@ -33,5 +33,6 @@ export interface InstanceVariable {
   dataType: string
   unitType: UnitType
   dataset: Dataset
-  instanceQuestions: InstanceQuestion[]
+  instanceQuestions: InstanceQuestion[],
+  dataFormat: LangValues
 }

@@ -58,7 +58,7 @@ public class InstanceVariableCsvParserTest {
     assertThat(iv.getReferencePeriodStart().orElse(null)).isEqualTo(LocalDate.of(2017, 7, 1));
     assertThat(iv.getReferencePeriodEnd().orElse(null)).isEqualTo(LocalDate.of(2017, 7, 30));
     assertThat(iv.getValueDomainType().orElse(null)).isEqualTo("enumerated");
-    assertThat(iv.getMissingValues().get("fi")).isEqualTo("Joitain arvoja saattaa puuttua.\r\rTässä kentässä on myös rivivaihtoja.");
+    assertThat(iv.getMissingValues().get("fi")).isEqualTo("Joitain arvoja saattaa puuttua.\n\nTässä kentässä on myös rivivaihtoja.");
     assertThat(iv.getDefaultMissingValue().orElse(null)).isEqualTo("-1");
     assertThat(iv.getQualityStatement().get("fi")).isEqualTo("Ei ole muita laatuun vaikuttavia tietoja.");
     assertThat(iv.getSourceDescription().get("fi")).isEqualTo("Väestörekisteri");
@@ -112,4 +112,32 @@ public class InstanceVariableCsvParserTest {
       "import.csv.warn.invalidIsoDate.referencePeriodEnd");
   }
 
+  @Test
+  public void multilineDescriptionWindowsLineBreaks() throws Exception {
+    InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-multiline-windows.csv");
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
+    
+    assertThat(results.getParsedObject().get()).hasSize(1);
+    InstanceVariable iv = results.getParsedObject().get().iterator().next().getParsedObject().get();    
+    String description = iv.getDescription().get("fi");
+    
+    int expectedLineCount = 5;
+    assertThat(description.split("\n")).hasSize(expectedLineCount);
+    assertThat(description.indexOf("\r")).isEqualTo(-1);
+  }
+  
+   @Test
+  public void multilineDescriptionMacLineBreaks() throws Exception {
+    InputStream csv = getClass().getResourceAsStream("/csv/instance-variables-multiline-mac.csv");
+    ParsingResult<List<ParsingResult<InstanceVariable>>> results = new InstanceVariableCsvParser(csv, "MacRoman", codeListService).parse();
+    
+    assertThat(results.getParsedObject().get()).hasSize(1);
+    InstanceVariable iv = results.getParsedObject().get().iterator().next().getParsedObject().get();
+    String description = iv.getDescription().get("fi");
+    
+    int expectedLineCount = 5;
+    assertThat(description.split("\n")).hasSize(expectedLineCount);
+    assertThat(description.indexOf("\r")).isEqualTo(-1);
+  }
+  
 }

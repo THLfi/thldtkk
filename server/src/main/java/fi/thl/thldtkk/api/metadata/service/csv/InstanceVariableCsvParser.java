@@ -116,18 +116,21 @@ public class InstanceVariableCsvParser {
       rowMessages.add("import.csv.error.missingRequiredValue.prefLabel");
     }
 
-    instanceVariable.setTechnicalName(row.get("technicalName"));
-    instanceVariable.getDescription().put(language, row.get("description"));
-    instanceVariable.getPartOfGroup().put(language, row.get("partOfGroup"));
-    instanceVariable.getFreeConcepts().put(language, row.get("freeConcepts"));
+    sanitize(row.get("technicalName")).ifPresent(technicalName -> instanceVariable.setTechnicalName(technicalName));
+    sanitize(row.get("description")).ifPresent(description -> instanceVariable.getDescription().put(language,description));
+    sanitize(row.get("partOfGroup")).ifPresent(partOfGroup -> instanceVariable.getPartOfGroup().put(language, partOfGroup));
+    sanitize(row.get("freeConcepts")).ifPresent(freeConcepts -> instanceVariable.getFreeConcepts().put(language, freeConcepts));
+    
     instanceVariable.setReferencePeriodStart(parseLocalDate(row, "referencePeriodStart", rowMessages));
     instanceVariable.setReferencePeriodEnd(parseLocalDate(row, "referencePeriodEnd", rowMessages));
-    instanceVariable.setValueDomainType(row.get("valueDomainType"));
-    instanceVariable.getMissingValues().put(language, row.get("missingValues"));
-    instanceVariable.setDefaultMissingValue(row.get("defaultMissingValue"));
-    instanceVariable.getQualityStatement().put(language, row.get("qualityStatement"));
-    instanceVariable.getSourceDescription().put(language, row.get("sourceDescription"));
-    instanceVariable.setDataType(row.get("dataType"));
+    
+    sanitize(row.get("valueDomainType")).ifPresent(valueDomainType -> instanceVariable.setValueDomainType(valueDomainType));
+    sanitize(row.get("missingValues")).ifPresent((missingValues -> instanceVariable.getMissingValues().put(language, missingValues)));
+    sanitize(row.get("defaultMissingValue")).ifPresent(defaultMissingValue -> instanceVariable.setDefaultMissingValue(defaultMissingValue));
+    sanitize(row.get("qualityStatement")).ifPresent(qualityStatement -> instanceVariable.getQualityStatement().put(language, qualityStatement));
+    
+    sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
+    sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
     
     Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
     Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
@@ -155,7 +158,6 @@ public class InstanceVariableCsvParser {
       }
 
     }
-
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
 
@@ -174,7 +176,15 @@ public class InstanceVariableCsvParser {
   }
   
   private Optional<String> sanitize(String columnEntry) {
-    return Optional.ofNullable(columnEntry).map(String::trim);
+    return Optional.ofNullable(columnEntry)
+            .map(String::trim)
+            .map(this::normalizeLineBreaks);
+  }
+  
+  private String normalizeLineBreaks(String columnEntry) {    
+    String windowsStyleLineBreaksReplaced = columnEntry.replaceAll("\r\n", "\n"); // CR+LF -> LF
+    String linefeedsOnlyReplaced = windowsStyleLineBreaksReplaced.replaceAll("\r", "\n"); // CR -> LF
+    return linefeedsOnlyReplaced;
   }
   
   private List<CodeList> searchCodeListsByReferenceId(String referenceId) {

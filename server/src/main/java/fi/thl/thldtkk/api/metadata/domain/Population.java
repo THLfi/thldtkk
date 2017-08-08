@@ -29,7 +29,7 @@ public class Population {
             Map<String, String> sampleSize,
             Map<String, String> loss,
             Map<String, String> geographicalCoverage) {
-        this(id);
+        this.id = id;
         this.prefLabel = prefLabel;
         this.description = description;
         this.sampleSize = sampleSize;
@@ -45,6 +45,15 @@ public class Population {
         this.sampleSize = toLangValueMap(node.getProperties("sampleSize"));
         this.loss = toLangValueMap(node.getProperties("loss"));
         this.geographicalCoverage = toLangValueMap(node.getProperties("geographicalCoverage"));
+    }
+
+    /**
+     * Constructor for testing purposes. Add attributes if needed.
+     */
+    public Population(UUID id,
+                      Map<String, String> prefLabel) {
+      this.id = id;
+      this.prefLabel = prefLabel;
     }
 
     public UUID getId() {

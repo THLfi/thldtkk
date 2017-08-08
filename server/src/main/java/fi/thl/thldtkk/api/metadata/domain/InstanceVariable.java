@@ -53,8 +53,6 @@ public class InstanceVariable {
     private String dataType;
     private UnitType unitType;
     private Map<String, String> dataFormat = new LinkedHashMap<>();
-    
-    
     private List<InstanceQuestion> instanceQuestions = new ArrayList<>();
     private Dataset dataset;
 
@@ -85,7 +83,7 @@ public class InstanceVariable {
         this.sourceDescription = toLangValueMap(node.getProperties("sourceDescription"));
         this.dataType = PropertyMappings.toString(node.getProperties("dataType"));
         this.dataFormat = toLangValueMap(node.getProperties("dataFormat"));
-        
+
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
         node.getReferences("unit")
@@ -103,7 +101,6 @@ public class InstanceVariable {
         node.getReferences("instanceQuestions")
         .forEach(q -> this.instanceQuestions.add(new InstanceQuestion(q)));
 
-        
         node.getReferrers("instanceVariable")
                 .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
     }
@@ -247,15 +244,15 @@ public class InstanceVariable {
     public Optional<Variable> getVariable() {
         return Optional.ofNullable(variable);
     }
-    
+
     public List<InstanceQuestion> getInstanceQuestions() {
         return instanceQuestions;
     }
-    
+
     public Map<String, String> getDataFormat() {
       return dataFormat;
     }
-    
+
     public Optional<Dataset> getDataset() {
         return Optional.ofNullable(dataset);
     }
@@ -270,7 +267,7 @@ public class InstanceVariable {
         props.putAll("partOfGroup", toPropertyValues(partOfGroup));
         props.putAll("sourceDescription", toPropertyValues(sourceDescription));
         props.putAll("dataFormat", toPropertyValues(dataFormat));
-        
+
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
@@ -289,8 +286,8 @@ public class InstanceVariable {
         getVariable().ifPresent((v -> refs.put("variable", v.toNode())));
         getUnitType().ifPresent((ut -> refs.put("unitType", ut.toNode())));
         getInstanceQuestions().forEach(q -> refs.put("instanceQuestions", q.toNode()));
-        
-        Multimap<String, Node> referrers = LinkedHashMultimap.create();      
+
+        Multimap<String, Node> referrers = LinkedHashMultimap.create();
         getDataset().ifPresent((v -> referrers.put("dataset", v.toNode())));
 
         return new Node(id, "InstanceVariable", props, refs, referrers);

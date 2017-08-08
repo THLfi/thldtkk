@@ -1,33 +1,41 @@
 package fi.thl.thldtkk.api.metadata.service;
 
+import com.google.common.collect.ImmutableMultimap;
+import fi.thl.thldtkk.api.metadata.domain.CodeList;
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Population;
+import fi.thl.thldtkk.api.metadata.domain.Quantity;
+import fi.thl.thldtkk.api.metadata.domain.Unit;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import fi.thl.thldtkk.api.metadata.test.a;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import com.google.common.collect.ImmutableMultimap;
-import fi.thl.thldtkk.api.metadata.domain.CodeList;
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 public class DatasetServiceTest {
 
@@ -71,8 +79,18 @@ public class DatasetServiceTest {
 
   @Test
   public void shouldSaveSimpleDataset() {
-    datasetService.save(new Dataset(nameUUIDFromString("DS")));
-    verify(mockedNodeService).save(singletonList(new Node(nameUUIDFromString("DS"), "DataSet")));
+    Dataset dataset = a.dataset()
+      .withIdFromString("DS")
+      .withPrefLabel("DS")
+      .build();
+
+    datasetService.save(dataset);
+
+    Node datasetNode = a.datasetNode()
+      .withIdFromString("DS")
+      .withProperty("prefLabel", "fi", "DS")
+      .build();
+    verify(mockedNodeService).save(singletonList(datasetNode));
   }
 
   @Test
@@ -110,7 +128,7 @@ public class DatasetServiceTest {
 
   @Test
   public void datasetShouldHaveIdAfterSaving() {
-    Dataset savedDataset = datasetService.save(new Dataset());
+    Dataset savedDataset = datasetService.save(a.dataset().build());
 
     assertNotNull(savedDataset.getId());
   }
@@ -145,6 +163,72 @@ public class DatasetServiceTest {
 
     InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
     assertFalse(savedVariable.getCodeList().isPresent());
+  }
+
+  @Test
+  public void populationShouldBeSavedWhenNewDatasetIsSaved() {
+    Population p1 = a.population()
+      .withPrefLabel("POP1")
+      .build();
+    Dataset ds1 = a.dataset()
+      .withPrefLabel("DS1")
+      .withPopulation(p1)
+      .build();
+
+    datasetService.save(ds1);
+
+    ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
+    verify(mockedNodeService).save(captor.capture());
+    List<Node> savedNodes = captor.getValue();
+    assertThat(savedNodes).hasSize(2);
+
+    Node datasetNode = savedNodes.get(0);
+    StrictLangValue datasetNodePrefLabel = datasetNode.getProperties().get("prefLabel").iterator().next();
+    assertThat(datasetNodePrefLabel.getValue()).isEqualTo("DS1");
+
+    Node populationNode = savedNodes.get(1);
+    assertThat(populationNode.getId()).isNotNull();
+    StrictLangValue populationNodePrefLabel = populationNode.getProperties().get("prefLabel").iterator().next();
+    assertThat(populationNodePrefLabel.getValue()).isEqualTo("POP1");
+
+    assertThat(datasetNode.getReferences("population")).containsOnly(populationNode);
+  }
+
+  @Test
+  public void populationShouldBeSavedWhenExistingDatasetIsSaved() {
+    Population p1 = a.population()
+      .withPrefLabel("POP1")
+      .build();
+    UUID ds1Id = nameUUIDFromString("DS1");
+    Dataset ds1 = a.dataset()
+      .withId(ds1Id)
+      .withPrefLabel("DS1")
+      .withPopulation(p1)
+      .build();
+
+    // This has no prior population
+    Node existingDatasetNode = a.datasetNode()
+      .withId(ds1Id)
+      .build();
+    when(mockedNodeService.get(eq(new NodeId(ds1.getId(), "DataSet")), anyString()))
+      .thenReturn(Optional.of(existingDatasetNode));
+
+    datasetService.save(ds1);
+
+    ArgumentCaptor<Changeset> captor = ArgumentCaptor.forClass(Changeset.class);
+    verify(mockedNodeService).post(captor.capture());
+    Changeset<UUID, Node> changeset = captor.getValue();
+    assertThat(changeset.getSave()).hasSize(2);
+
+    Node datasetNode = changeset.getSave().get(0);
+    StrictLangValue datasetNodePrefLabel = datasetNode.getProperties().get("prefLabel").iterator().next();
+    assertThat(datasetNodePrefLabel.getValue()).isEqualTo("DS1");
+
+    Node populationNode = changeset.getSave().get(1);
+    StrictLangValue populationNodePrefLabel = populationNode.getProperties().get("prefLabel").iterator().next();
+    assertThat(populationNodePrefLabel.getValue()).isEqualTo("POP1");
+
+    assertThat(datasetNode.getReferences("population")).containsOnly(populationNode);
   }
 
 }

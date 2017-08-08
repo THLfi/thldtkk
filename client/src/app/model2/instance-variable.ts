@@ -1,12 +1,13 @@
 import { CodeList } from './code-list';
 import { Concept } from './concept';
 import { Dataset } from './dataset';
-import { Variable } from './variable'
+import { InstanceQuestion } from './instance-question'
 import { LangValues } from './lang-values';
+import { Population } from './population'
 import { Quantity } from './quantity';
 import { Unit } from './unit';
 import { UnitType } from './unit-type';
-import { InstanceQuestion } from './instance-question'
+import { Variable } from './variable'
 
 export interface InstanceVariable {
   id: string

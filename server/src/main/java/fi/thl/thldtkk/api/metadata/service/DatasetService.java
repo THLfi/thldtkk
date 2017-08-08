@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,8 +23,6 @@ import java.util.stream.Stream;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
-import java.util.Comparator;
-import java.util.Date;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -60,7 +60,7 @@ public class DatasetService implements Service<UUID, Dataset> {
     @Override
     public Optional<Dataset> get(UUID id) {
         return nodeService.get(new NodeId(id, "DataSet"),
-            "id,type,properties.*,references.*,references.inScheme:2,references.conceptsFromScheme:2,references.variable:2,references.quantity:2,references.unit:2,references.codeList:2,references.source:2, references.instanceQuestions:2").map(Dataset::new);
+            "id,type,properties.*,references.*,references.inScheme:2,references.conceptsFromScheme:2,references.variable:2,references.quantity:2,references.unit:2,references.codeList:2,references.source:2,references.instanceQuestions:2").map(Dataset::new);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class DatasetService implements Service<UUID, Dataset> {
 
         save.add(dataset.toNode());
         dataset.getPopulation().ifPresent(v -> save.add(v.toNode()));
-        dataset.getInstanceVariables().forEach(v -> save.add(v.toNode()));
+        dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
         dataset.getLinks().forEach(v -> save.add(v.toNode()));
 
         nodeService.save(save);
@@ -203,7 +203,7 @@ public class DatasetService implements Service<UUID, Dataset> {
     public Stream<Dataset> getRecentAndPublished(int maxResults) {
       String nodeQuery = "type.id:DataSet AND properties.published:true*";
       Comparator<Date> dateComparator = (date, anotherDate) -> date.compareTo(anotherDate);
-      
+
       return nodeService.query(
         new NodeRequestBuilder()
           .addDefaultIncludedAttributes()

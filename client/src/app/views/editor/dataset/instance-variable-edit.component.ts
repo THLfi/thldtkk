@@ -6,6 +6,7 @@ import {
 import {NgForm} from '@angular/forms'
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
+import {Title} from '@angular/platform-browser'
 
 import {CodeList} from '../../../model2/code-list';
 import {CodeListService} from '../../../services2/code-list.service';
@@ -19,7 +20,9 @@ import {InstanceVariableService} from '../../../services2/instance-variable.serv
 import {InstanceQuestion} from '../../../model2/instance-question';
 import {InstanceQuestionService} from '../../../services2/instance-question.service';
 import {LangPipe} from '../../../utils/lang.pipe';
+import {LangValuesUtils} from '../../../utils/lang-values-utils'
 import {NodeUtils} from '../../../utils/node-utils'
+import {PopulationService} from '../../../services2/population.service'
 import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
@@ -29,8 +32,6 @@ import {UnitTypeService} from '../../../services2/unit-type.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
 import {TranslateService} from '@ngx-translate/core';
-
-import { Title } from '@angular/platform-browser'
 
 @Component({
     templateUrl: './instance-variable-edit.component.html'
@@ -92,7 +93,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private router: Router,
         private translateService: TranslateService,
         private langPipe: LangPipe,
-        private titleService: Title
+        private titleService: Title,
+        private populationService: PopulationService
     ) {
         this.language = translateService.currentLang
     }
@@ -136,7 +138,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 unitType: null,
                 instanceQuestions: [],
                 dataFormat: null,
-                dataset: null
+                dataset: null,
+                population: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
@@ -148,8 +151,16 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     private initInstanceVariable(instanceVariable: InstanceVariable): void {
-      this.initProperties(instanceVariable,
-      ['prefLabel', 'description', 'freeConcepts', 'qualityStatement', 'missingValues', 'partOfGroup', 'sourceDescription', 'dataFormat'])
+      this.initProperties(instanceVariable, [
+        'prefLabel',
+        'description',
+        'freeConcepts',
+        'qualityStatement',
+        'missingValues',
+        'partOfGroup',
+        'sourceDescription',
+        'dataFormat'
+      ])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
       }
@@ -440,7 +451,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     nullifyEmptySource(){
-        if (this.instanceVariable.source && !this.instanceVariable.source.prefLabel){
+        if (this.instanceVariable.source != undefined && !this.instanceVariable.source.prefLabel){
             this.instanceVariable.source = null;
         }
     }
@@ -488,7 +499,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
             this.goBack()
           })
     }
-    
+
     searchInstanceQuestion(event: any): void {
       this.instanceQuestionSearchResults = []
       if (this.instanceQuestionSearchSubscription) {
@@ -514,7 +525,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 id: null,
                 prefLabel: null
               }
-      
+
       this.initProperties(question, ['prefLabel'])
       this.newInstanceQuestion = question
     }

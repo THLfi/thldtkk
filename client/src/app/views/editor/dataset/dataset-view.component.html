@@ -76,12 +76,18 @@
     <h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
     <p class="preserve-line-breaks">{{ dataset.usageConditionAdditionalInformation | lang }}</p>
 
+    <h2 translate="unitType"></h2>
+    <p *ngIf="dataset.unitType">{{dataset.unitType.prefLabel | lang}}</p>
+
     <h2 translate="numberOfObservationUnits"></h2>
     <p>{{dataset.numberOfObservationUnits}}</p>
 
-    <ng-container *ngIf="dataset.unitType">
-      <h2 translate="unitType"></h2>
-      <p>{{dataset.unitType.prefLabel | lang}}</p>
+    <h2 translate="universe"></h2>
+    <ng-container *ngIf="dataset.universe">
+      <p>{{dataset.universe.prefLabel | lang}}</p>
+      <p *ngIf="dataset.universe.description | lang">
+        {{ dataset.universe.description | lang }}
+      </p>
     </ng-container>
 
     <ng-container *ngIf="dataset.population">

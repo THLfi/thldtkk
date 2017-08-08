@@ -178,15 +178,6 @@
     </textarea>
   </div>
 
-  <div class="form-group">
-    <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
-    <input [(ngModel)]="dataset.numberOfObservationUnits"
-        id="numberOfObservationUnits"
-        name="numberOfObservationUnits"
-        class="form-control"
-        type="text">
-  </div>
-
   <ng-container *ngIf="allUnitTypes.length">
     <div class="row">
       <div class="col-xs-12">
@@ -221,6 +212,63 @@
                      (onSave)="saveUnitType($event)"
                      (onCancel)="closeAddUnitTypeModal()">
     </unit-type-edit-modal>
+  </ng-container>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
+        <input [(ngModel)]="dataset.numberOfObservationUnits"
+               id="numberOfObservationUnits"
+               name="numberOfObservationUnits"
+               class="form-control"
+               type="text">
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="allUniverseItems.length">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <label>{{ 'universe' | translate }}</label>
+          <br>
+          <p-dropdown [(ngModel)]="dataset.universe"
+                      [ngModelOptions]="{ standalone: true }"
+                      [options]="allUniverseItems"
+                      filter="true">
+            <ng-template let-universeItem pTemplate="item">
+              <ng-container *ngIf="universeItem.value; else nullValueUniverseItem;">
+                <div>
+                  {{ universeItem.value.prefLabel | lang }}
+                  <ng-container *ngIf="universeItem.value.description | lang">
+                    <br>
+                    <small style="opacity:.7">
+                      {{ universeItem.value.description | lang }}
+                    </small>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <ng-template #nullValueUniverseItem>
+                {{ universeItem.label }}
+              </ng-template>
+            </ng-template>
+          </p-dropdown>
+          <span style="padding-left:1em;padding-right:1em">|</span>
+          <button
+            (click)="showAddUniverseModal()"
+            class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addUniverse' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <universe-edit-modal *ngIf="newUniverse"
+                     [universe]="newUniverse"
+                     (onSave)="saveUniverse($event)"
+                     (onCancel)="closeAddUniverseModal()">
+    </universe-edit-modal>
   </ng-container>
 
   <div class="form-group">

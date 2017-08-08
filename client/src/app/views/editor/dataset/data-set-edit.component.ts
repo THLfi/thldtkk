@@ -5,7 +5,10 @@ import {
 } from '@angular/core'
 import {NgForm} from '@angular/forms'
 import {Observable, Subscription} from 'rxjs';
+import {SelectItem} from 'primeng/components/common/api'
+import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
+import {TruncateCharactersPipe} from 'ng2-truncate/dist/truncate-characters.pipe'
 
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
@@ -23,13 +26,14 @@ import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
-import {Population} from "../../../model2/population";
+import {PopulationService} from '../../../services2/population.service'
+import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from "../../../services2/unit-type.service";
+import {Universe} from '../../../model2/universe'
+import {UniverseService} from '../../../services2/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
-import { Title } from '@angular/platform-browser'
-
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -59,6 +63,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     allUnitTypes: UnitType[] = []
     newUnitType: UnitType
 
+    allUniverseItems: SelectItem[] = []
+    newUniverse: Universe
+
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
     selectedDatasetTypeItems: string[] = [];
@@ -82,7 +89,10 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private datasetTypeService: DatasetTypeService,
         private conceptService: ConceptService,
         private langPipe: LangPipe,
-        private titleService: Title
+        private truncatePipe: TruncateCharactersPipe,
+        private titleService: Title,
+        private populationService: PopulationService,
+        private universeService: UniverseService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -127,7 +137,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                 links: [],
                 freeConcepts: null,
                 datasetTypes: [],
-                unitType: null
+                unitType: null,
+                universe: null
             });
         }
 
@@ -140,6 +151,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
         this.getAllUnitTypes()
+        this.getAllUniverses()
 
         this.datasetTypeService.getDatasetTypes()
             .subscribe(datasetTypes => {
@@ -171,14 +183,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         ])
 
         if (!dataset.population) {
-          const population = {
-            prefLabel: null,
-            description: null,
-            geographicalCoverage: null,
-            sampleSize: null,
-            loss: null
-          }
-          dataset.population = this.initializePopulationFields(population)
+          dataset.population = this.populationService.initNew()
         }
 
         if (dataset.ownerOrganizationUnit.length > 0) {
@@ -202,17 +207,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       this.nodeUtils.initLangValuesProperties(node, properties, [ this.language ])
     }
 
-    private initializePopulationFields(population: Population): Population {
-      this.initProperties(population, [
-        'prefLabel',
-        'description',
-        'geographicalCoverage',
-        'sampleSize',
-        'loss'
-      ])
-      return population
-    }
-
     private updatePageTitle():void {
         if(this.dataset.prefLabel) {
             let translatedLabel:string = this.langPipe.transform(this.dataset.prefLabel)
@@ -224,6 +218,36 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     private getAllUnitTypes() {
       this.unitTypeService.getAllUnitTypes()
         .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
+    }
+
+    private getAllUniverses() {
+      this.allUniverseItems = []
+
+      Observable.forkJoin(
+        this.translateService.get('noUniverse'),
+        this.universeService.getAllUniverses()
+      ).subscribe(data => {
+        this.allUniverseItems.push({
+          label: data[0],
+          value: null
+        })
+
+        data[1].forEach(universe => this.allUniverseItems.push(this.convertToUniverseItem(universe)))
+      })
+    }
+
+    private convertToUniverseItem(universe: Universe): SelectItem {
+      let label = this.langPipe.transform(universe.prefLabel);
+
+      let description = this.langPipe.transform(universe.description)
+      if (StringUtils.isNotBlank(description)) {
+        label += (' - ' + this.truncatePipe.transform(description, 50))
+      }
+
+      return {
+        label: label,
+        value: universe
+      }
     }
 
     ngAfterContentChecked(): void {
@@ -328,6 +352,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     closeAddUnitTypeModal() {
       this.newUnitType = null
+    }
+
+    showAddUniverseModal(): void {
+      this.initNewUniverse()
+    }
+
+    private initNewUniverse(): void {
+      this.newUniverse = this.universeService.initNew()
+    }
+
+    saveUniverse(): void {
+      this.universeService.save(this.newUniverse)
+        .subscribe(savedUniverse => {
+          this.getAllUniverses()
+          this.dataset.universe = savedUniverse
+          this.closeAddUniverseModal()
+        })
+    }
+
+    closeAddUniverseModal() {
+      this.newUniverse = null
     }
 
     save() {

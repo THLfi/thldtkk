@@ -110,6 +110,16 @@
       </div>
 
       <div class="row">
+        <div *ngIf="dataset.universe"
+          class="col-sm-6 col-md-4">
+          <div class="bordered-box">
+            <h2>{{ 'universe' | translate }}</h2>
+            <p>{{ dataset.universe.prefLabel | lang }}</p>
+            <p *ngIf="dataset.universe.description | lang">
+              {{ dataset.universe.description | lang }}
+            </p>
+          </div>
+        </div>
 
         <ng-container *ngIf="dataset.population">
           <div *ngIf="dataset.population.prefLabel | lang"

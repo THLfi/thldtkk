@@ -303,6 +303,9 @@
       "instanceVariableSearch": "Muuttujahaku"
     }
   },
-  "dataFormat": "Tiedon muoto"
-
+  "dataFormat": "Tiedon muoto",
+  "universe": "Perusjoukko",
+  "noUniverse": "Ei perusjoukkoa",
+  "addUniverse": "Lisää perusjoukko...",
+  "newUniverse": "Uusi perusjoukko"
 }

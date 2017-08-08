@@ -43,6 +43,7 @@ public class Dataset {
     private UsageCondition usageCondition;
     private LifecyclePhase lifecyclePhase;
     private Population population;
+    private Universe universe;
     private List<InstanceVariable> instanceVariables = new ArrayList<>();
     private String comment;
     private String numberOfObservationUnits;
@@ -85,6 +86,7 @@ public class Dataset {
         this.usageCondition = dataset.usageCondition;
         this.lifecyclePhase = dataset.lifecyclePhase;
         this.population = dataset.population;
+        this.universe = dataset.universe;
         this.comment = dataset.comment;
         this.numberOfObservationUnits = dataset.numberOfObservationUnits;
         this.links = dataset.links;
@@ -121,6 +123,8 @@ public class Dataset {
                         new OrganizationUnit(v)));
         node.getReferencesFirst("population").ifPresent(v -> this.population
                 = new Population(v));
+        node.getReferencesFirst("universe").ifPresent(v -> this.universe
+                = new Universe(v));
         node.getReferencesFirst("usageCondition")
                 .ifPresent(v -> this.usageCondition = new UsageCondition(v));
         node.getReferencesFirst("lifecyclePhase")
@@ -144,7 +148,20 @@ public class Dataset {
         this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
     }
 
-    public UUID getId() {
+  /**
+   * Constructor for testing purposes. Add attributes if needed.
+   */
+  public Dataset(UUID id,
+                 Map<String, String> prefLabel,
+                 Population population,
+                 List<InstanceVariable> instanceVariables) {
+    this.id = id;
+    this.prefLabel = prefLabel;
+    this.population = population;
+    this.instanceVariables = instanceVariables;
+  }
+
+  public UUID getId() {
         return id;
     }
 
@@ -212,6 +229,10 @@ public class Dataset {
         return Optional.ofNullable(population);
     }
 
+    public Optional<Universe> getUniverse() {
+        return Optional.ofNullable(universe);
+    }
+
     public Optional<UsageCondition> getUsageCondition() {
         return Optional.ofNullable(usageCondition);
     }
@@ -264,6 +285,7 @@ public class Dataset {
         getOwnerOrganizationUnit().forEach(v -> refs
                 .put("ownerOrganizationUnit", v.toNode()));
         getPopulation().ifPresent(v -> refs.put("population", v.toNode()));
+        getUniverse().ifPresent(v -> refs.put("universe", v.toNode()));
         getUsageCondition().ifPresent(v -> refs
                 .put("usageCondition", v.toNode()));
         getLifecyclePhase().ifPresent(v -> refs
@@ -310,6 +332,7 @@ public class Dataset {
                 && Objects.equals(usageCondition, dataset.usageCondition)
                 && Objects.equals(lifecyclePhase, dataset.lifecyclePhase)
                 && Objects.equals(population, dataset.population)
+                && Objects.equals(universe, dataset.universe)
                 && Objects.equals(instanceVariables, dataset.instanceVariables)
                 && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
                 && Objects.equals(comment, dataset.comment)
@@ -329,7 +352,7 @@ public class Dataset {
                         published,
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
-                        lifecyclePhase, population, instanceVariables, comment,
+                        lifecyclePhase, population, universe, instanceVariables, comment,
                         datasetTypes, numberOfObservationUnits, links,
                         conceptsFromScheme, freeConcepts, unitType);
     }

@@ -1,6 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import fi.thl.thldtkk.api.metadata.domain.UnitType;
+import fi.thl.thldtkk.api.metadata.domain.Universe;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,12 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class UnitTypeService implements Service<UUID, UnitType> {
+public class UniverseService implements Service<UUID, Universe> {
 
     private TermedNodeService nodeService;
 
     @Autowired
-    public UnitTypeService(TermedNodeService nodeService) {
+    public UniverseService(TermedNodeService nodeService) {
         this.nodeService = nodeService;
     }
 
@@ -30,22 +30,22 @@ public class UnitTypeService implements Service<UUID, UnitType> {
     }
 
     @Override
-    public Stream<UnitType> query() {
+    public Stream<Universe> query() {
         return query("");
     }
 
     @Override
-    public Stream<UnitType> query(String query) {
+    public Stream<Universe> query(String query) {
         return query(query, -1);
     }
 
-    public Stream<UnitType> query(String query, int maxResults) {
+    public Stream<Universe> query(String query, int maxResults) {
         List<String> byPrefLabel = stream(query.split("\\s"))
                 .map(token -> "properties.prefLabel:" + token + "*")
                 .collect(toList());
 
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("type.id:UnitType AND ");
+        queryBuilder.append("type.id:Universe AND ");
         queryBuilder.append(String.join(" AND ", byPrefLabel));
 
         return nodeService.query(
@@ -56,18 +56,18 @@ public class UnitTypeService implements Service<UUID, UnitType> {
                 .addSort("prefLabel")
                 .withMaxResults(maxResults)
                 .build()
-        ).map(UnitType::new);
+        ).map(Universe::new);
     }
 
     @Override
-    public Optional<UnitType> get(UUID id) {
-        return nodeService.get(new NodeId(id, "UnitType")).map(UnitType::new);
+    public Optional<Universe> get(UUID id) {
+        return nodeService.get(new NodeId(id, "Universe")).map(Universe::new);
     }
 
     @Override
-    public UnitType save(UnitType value) {
+    public Universe save(Universe value) {
         Node savedNode = nodeService.save(value.toNode());
-        return new UnitType(savedNode);
+        return new Universe(savedNode);
     }
 
 }

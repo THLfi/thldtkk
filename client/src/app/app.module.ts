@@ -14,6 +14,7 @@ import { DialogModule } from "primeng/components/dialog/dialog";
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { MultiSelectModule } from 'primeng/primeng';
 import { TruncateModule } from 'ng2-truncate';
+import { TruncateCharactersPipe } from 'ng2-truncate/dist/truncate-characters.pipe'
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 import { GrowlModule } from 'primeng/components/growl/growl'
 
@@ -37,6 +38,7 @@ import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
 import { UnitService } from './services2/unit.service'
 import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
+import { PopulationService } from './services2/population.service'
 import { QuantityService } from "./services2/quantity.service";
 import { VariableService } from './services2/variable.service'
 import { UnitTypeService } from './services2/unit-type.service'
@@ -63,14 +65,16 @@ import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edi
 import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
+import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { InstanceVariablesImportModalComponent } from './views/editor/dataset/instance-variables-import-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
+import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
+import { UniverseService } from './services2/universe.service'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
-import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -95,6 +99,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LoadingSpinner,
         RequiredFieldIndicator,
         UnitTypeEditModalComponent,
+        UniverseEditModalComponent,
         VariableEditModalComponent,
         QuantityEditModalComponent,
         UnitEditModalComponent,
@@ -148,7 +153,10 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LangPipe,
         CodeListService,
         GrowlMessageService,
-        Title
+        Title,
+        PopulationService,
+        UniverseService,
+        TruncateCharactersPipe
     ],
     bootstrap: [
         AppComponent

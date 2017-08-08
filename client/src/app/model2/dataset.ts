@@ -9,6 +9,7 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {Population} from './population';
 import {UnitType} from './unit-type';
+import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
 
 export interface Dataset extends Node {
@@ -56,4 +57,7 @@ export interface Dataset extends Node {
   datasetTypes: DatasetType[]
 
   unitType: UnitType
+
+  universe: Universe
+
 }

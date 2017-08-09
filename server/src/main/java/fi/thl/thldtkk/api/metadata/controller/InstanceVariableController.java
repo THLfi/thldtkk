@@ -49,9 +49,9 @@ public class InstanceVariableController {
   @Autowired
   private Service<UUID, Dataset> datasetService;
   @Autowired
-  private InstanceVariableService instanceVariableService;
+  private InstanceVariableService instanceVariableService;  
   @Autowired
-  private Service<UUID, CodeList> codeListService;
+  private InstanceVariableCsvParser csvParser;
   
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
   public List<InstanceVariable> getDatasetInstanceVariables(
@@ -107,7 +107,7 @@ public class InstanceVariableController {
 
     Dataset dataset = datasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
-    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = new InstanceVariableCsvParser(request.getInputStream(), getCharset(contentType), this.codeListService).parse();
+    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = csvParser.parse(request.getInputStream(), getCharset(contentType));
     if (parsingResult.getParsedObject().get().isEmpty()) {
       return new ResponseEntity<>(parsingResult, HttpStatus.BAD_REQUEST);
     }

@@ -7,8 +7,12 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.service.Service;
+import fi.thl.thldtkk.api.metadata.service.UnitService;
+import fi.thl.thldtkk.api.metadata.service.csv.exception.AmbiguousUnitSymbolException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException;
+import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedUnitSymbolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -20,38 +24,38 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import static java.util.UUID.randomUUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class InstanceVariableCsvParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(InstanceVariableCsvParser.class);
-
-  private final InputStream csv;
-  private final String encoding;
-
-  private final List<ParsingResult<InstanceVariable>> results;
-  private final List<String> messages;
   
+  @Autowired
   private Service<UUID, CodeList> codeListService;
   
-  public InstanceVariableCsvParser(InputStream csv, String encoding, Service<UUID, CodeList> codeListService) {
-    this.csv = csv;
-    this.encoding = encoding;
-    this.results = new LinkedList<>();
-    this.messages = new LinkedList<>();
-    
-    this.codeListService = codeListService;
-  }
+  @Autowired
+  private UnitService unitService;
+  
 
-  public ParsingResult<List<ParsingResult<InstanceVariable>>> parse() {
+  public ParsingResult<List<ParsingResult<InstanceVariable>>> parse(InputStream csv, String encoding) {
+    
+    List<ParsingResult<InstanceVariable>> results = new LinkedList<>();
+    List<String> messages = new LinkedList<>();
+    
     if (!StringUtils.hasText(encoding)) {
       messages.add("import.csv.error.noEncoding");
-      return done();
+      return done(results, messages);
     }
 
     CsvMapper mapper = new CsvMapper();
@@ -70,12 +74,12 @@ public class InstanceVariableCsvParser {
     catch (UnsupportedEncodingException e) {
       LOG.warn("Invalid encoding: {}", encoding, e);
       messages.add("import.csv.error.unsupportedEncoding");
-      return done();
+      return done(results, messages);
     }
     catch (IOException e) {
       LOG.warn("Failed to read CSV", e);
       messages.add("import.csv.error.unknown");
-      return done();
+      return done(results, messages);
     }
 
     boolean firstRow = true;
@@ -85,22 +89,22 @@ public class InstanceVariableCsvParser {
       if (firstRow) {
         if (!row.keySet().contains("prefLabel")) {
           messages.add("import.csv.error.missingRequiredColumn.prefLabel");
-          return done();
+          return done(results, messages);
         }
         firstRow = false;
       }
 
-      handleRow(row);
+      handleRow(row, results);
     }
 
-    return done();
+    return done(results, messages);
   }
 
-  private ParsingResult<List<ParsingResult<InstanceVariable>>> done() {
+  private ParsingResult<List<ParsingResult<InstanceVariable>>> done(List<ParsingResult<InstanceVariable>> results, List<String> messages) {
     return new ParsingResult<>(results, messages);
   }
 
-  private void handleRow(Map<String, String> row) {
+  private void handleRow(Map<String, String> row, List<ParsingResult<InstanceVariable>> results) {
     final String language = "fi";
     InstanceVariable instanceVariable = new InstanceVariable();
     List<String> rowMessages = new LinkedList<>();
@@ -156,12 +160,25 @@ public class InstanceVariableCsvParser {
       catch(UndefinedLabelException e) {
           isRowValid = false;
           rowMessages.add("import.csv.error.missingRequiredValue.codeList.prefLabel");
-      }
-
+      }           
     }
+    
+    try {
+        parseUnit(row, language).ifPresent(unit -> instanceVariable.setUnit(unit));
+      } catch (UndefinedLabelException ex) {
+        isRowValid = false;
+        rowMessages.add("import.csv.error.missingRequiredValue.unit.prefLabel");
+      } catch (UndefinedUnitSymbolException ex) {
+        isRowValid = false;
+        rowMessages.add("import.csv.error.missingRequiredValue.unit.symbol");
+      } catch (AmbiguousUnitSymbolException ex) {
+        isRowValid = false;
+        rowMessages.add("import.csv.warn.ambiguousUnitSymbol");
+    }
+    
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
-
+  
   private LocalDate parseLocalDate(Map<String, String> row, String field, List<String> rowMessages) {
     String dateString = row.get(field);
     LocalDate date = null;
@@ -237,7 +254,7 @@ public class InstanceVariableCsvParser {
       }
       
       if(bestMatches.size() > 1) {
-          rowMessages.add("import.csv.warn.ambigiousCodeList"); // should fail import?
+          rowMessages.add("import.csv.warn.ambiguousCodeList"); // should fail import?
       }
       
       Optional<CodeList> existingCodeList = bestMatches.size() >= 1 ? Optional.of(bestMatches.get(0)) : Optional.empty();
@@ -260,6 +277,66 @@ public class InstanceVariableCsvParser {
       owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
       
       return Optional.ofNullable(codeListService.save(codeList));
+  }
+  
+    private Optional<Unit> parseUnit(Map<String, String> row, String language)
+          throws UndefinedLabelException, UndefinedUnitSymbolException, AmbiguousUnitSymbolException {
+    Optional<Unit> unit = Optional.empty();
+
+    Optional<String> unitSymbol = sanitize(row.get("unit.symbol"));
+    Optional<String> unitLabel = sanitize(row.get("unit.prefLabel"));
+
+    if(unitSymbol.isPresent() && StringUtils.hasText(unitSymbol.get())) {
+        unit = searchUnitBySymbol(unitSymbol.get(), language);
+        unit = unit.isPresent() ? unit : Optional.of(createUnit(unitLabel, unitSymbol, language));
+    }
+    return unit;
+  }
+  
+  private Optional<Unit> searchUnitBySymbol(String symbol, String language) throws AmbiguousUnitSymbolException{
+    
+    Optional<Unit> unit = Optional.empty();
+    List<Unit> units = unitService.queryBySymbol(symbol).collect(Collectors.toList());
+       
+    if(units.size() == 1) {
+      Iterator<Unit> iterator = units.listIterator();
+      unit = Optional.of(iterator.next());
+    }
+    
+    else if(units.size() > 1) {
+      // case sensitive filtering for unit symbols (e.g. 'v' and 'V')
+      units = units.stream().filter(u -> u.getSymbol().containsKey(language) && 
+              u.getSymbol().get(language).equals(symbol))
+              .collect(Collectors.toList());
+      
+      if(units.size() > 1) {
+        throw new AmbiguousUnitSymbolException(symbol);
+      }
+      
+      else {
+        Iterator<Unit> iterator = units.listIterator();
+        unit = Optional.of(iterator.next());
+      }
+      
+    }
+   
+    return unit;
+  }
+  
+  private Unit createUnit(Optional<String> label, Optional<String> symbol, String language) throws UndefinedLabelException, UndefinedUnitSymbolException {
+    
+    if(!label.isPresent() || !StringUtils.hasText(label.get())) {
+      throw new UndefinedLabelException();
+    }
+
+    if(!symbol.isPresent() || !StringUtils.hasText(symbol.get())) {
+      throw new UndefinedUnitSymbolException();
+    }
+    
+    Unit unit = new Unit(randomUUID());
+    unit.getPrefLabel().put(language, label.get());
+    unit.getSymbol().put(language, symbol.get());
+    return unitService.save(unit);
   }
   
 }

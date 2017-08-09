@@ -52,6 +52,25 @@ public class UnitService implements Service<UUID, Unit> {
         .build()
     ).map(Unit::new);
   }
+  
+  
+  public Stream<Unit> queryBySymbol(String symbol) {    
+    return queryBySymbol(symbol, -1);
+  }
+  
+  public Stream<Unit> queryBySymbol(String symbol, int maxResults) {    
+    List<String> clauses = new ArrayList<>();
+    clauses.add("type.id:Unit");
+    clauses.add("properties.symbol:\""+symbol+"\"");
+
+    return nodeService.query(
+      new NodeRequestBuilder()
+        .withQuery(String.join(" AND ", clauses))
+        .addSort("symbol")
+        .withMaxResults(maxResults)
+        .build()
+    ).map(Unit::new);
+  }
 
   @Override
   public Optional<Unit> get(UUID id) {

@@ -117,11 +117,11 @@
     <h2>{{ 'referencePeriod' | translate }}</h2>
     <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else noReferencePeriod;">
       <ng-container *ngIf="dataset.referencePeriodStart">
-        {{ dataset.referencePeriodStart }}
+        {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
       </ng-container>
       —
       <ng-container *ngIf="dataset.referencePeriodEnd">
-        {{ dataset.referencePeriodEnd }}
+        {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
       </ng-container>
     </p>
     <ng-template #noReferencePeriod>
@@ -195,16 +195,16 @@
         <td>
           <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
             <em>
-              {{ variable.referencePeriodStart }}
+              {{ variable.referencePeriodStart | date:'dd.MM.yyyy' }}
               —
-              {{ variable.referencePeriodEnd }}
+              {{ variable.referencePeriodEnd | date:'dd.MM.yyyy' }}
             </em>
           </ng-container>
           <ng-template #inheritedReferencePeriod>
             <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
-              {{ dataset.referencePeriodStart }}
+              {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
               —
-              {{ dataset.referencePeriodEnd }}
+              {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
             </ng-container>
           </ng-template>
         </td>

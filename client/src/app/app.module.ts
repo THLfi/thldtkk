@@ -8,7 +8,6 @@ import { HttpModule, Http } from '@angular/http'
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
-import { DatepickerModule } from 'ngx-bootstrap/datepicker'
 import { DatePipe } from '@angular/common'
 import { DialogModule } from "primeng/components/dialog/dialog";
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
@@ -17,6 +16,7 @@ import { TruncateModule } from 'ng2-truncate';
 import { TruncateCharactersPipe } from 'ng2-truncate/dist/truncate-characters.pipe'
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 import { GrowlModule } from 'primeng/components/growl/growl'
+import { CalendarModule } from 'primeng/components/calendar/calendar'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -46,7 +46,7 @@ import { UsageConditionService } from './services2/usage-condition.service'
 
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
-import { IsoDatePicker } from './views/common/iso-datepicker.component'
+import { DateUtils } from './utils/date-utils'
 import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
 import { RequiredFieldIndicator } from './views/common/required-field-indicator.component'
@@ -94,7 +94,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableViewComponent,
         InstanceVariableSearchComponent,
         InstanceVariableSearchResultComponent,
-        IsoDatePicker,
         LangPipe,
         LoadingSpinner,
         RequiredFieldIndicator,
@@ -125,7 +124,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         TruncateModule,
         OverlayPanelModule,
         GrowlModule,
-        DatepickerModule.forRoot(),
+        CalendarModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -156,7 +155,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         Title,
         PopulationService,
         UniverseService,
-        TruncateCharactersPipe
+        TruncateCharactersPipe,
+        DateUtils
     ],
     bootstrap: [
         AppComponent

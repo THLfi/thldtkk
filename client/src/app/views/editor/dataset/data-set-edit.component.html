@@ -311,25 +311,50 @@
            class="form-control">
   </div>
 
-  <div class="row">
+  <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
+       class="row">
     <div class="col-sm-6 col-md-4">
       <div class="form-group">
         <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
-        <iso-datepicker
-            [(dateAsString)]="dataset.referencePeriodStart"
-            id="referencePeriodStart"
-            name="referencePeriodStart">
-        </iso-datepicker>
+        <br>
+        <p-calendar [(ngModel)]="referencePeriodStart"
+                    dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                    monthNavigator="true"
+                    yearNavigator="true"
+                    [yearRange]="yearRangeForReferencePeriodFields"
+                    showIcon="true"
+                    [locale]="dateUtils.getLocaleSettings() | async"
+                    placeholder="{{ 'date.placeholder' | translate }}"
+                    inputId="referencePeriodStart"
+                    name="referencePeriodStart">
+        </p-calendar>
+        <p *ngFor="let errorKey of formErrors.referencePeriodStart"
+           class="text-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ errorKey | translate }}
+        </p>
       </div>
     </div>
     <div class="col-sm-6 col-md-4">
       <div class="form-group">
         <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
-        <iso-datepicker
-            [(dateAsString)]="dataset.referencePeriodEnd"
-            id="referencePeriodEnd"
-            name="referencePeriodEnd">
-        </iso-datepicker>
+        <br>
+        <p-calendar [(ngModel)]="referencePeriodEnd"
+                    dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                    monthNavigator="true"
+                    yearNavigator="true"
+                    [yearRange]="yearRangeForReferencePeriodFields"
+                    showIcon="true"
+                    [locale]="dateUtils.getLocaleSettings() | async"
+                    placeholder="{{ 'date.placeholder' | translate }}"
+                    inputId="referencePeriodEnd"
+                    name="referencePeriodEnd">
+        </p-calendar>
+        <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
+           class="text-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ errorKey | translate }}
+        </p>
       </div>
     </div>
   </div>

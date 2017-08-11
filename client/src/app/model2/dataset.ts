@@ -28,9 +28,9 @@ export interface Dataset extends Node {
 
   published: boolean
 
-  referencePeriodStart: LangValues
+  referencePeriodStart: string
 
-  referencePeriodEnd: LangValues
+  referencePeriodEnd: string
 
   owner: Organization
 

@@ -75,6 +75,8 @@ import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edi
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseService } from './services2/universe.service'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
+import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
+import { VariableSearchResultComponent } from './views/editor/variable/variable-search-result.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -107,7 +109,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         ViewCodeListCodeItemsModalComponent,
         InstanceVariablesImportModalComponent,
         InstanceQuestionEditModalComponent,
-        CatalogFrontPageComponent
+        CatalogFrontPageComponent,
+        VariableSearchComponent,
+        VariableSearchResultComponent
     ],
     imports: [
         BrowserModule,

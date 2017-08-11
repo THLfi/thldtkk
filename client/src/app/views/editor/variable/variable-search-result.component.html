@@ -1,0 +1,12 @@
+<div class="search-result">
+    <div class="row">
+        <div *ngIf="variable.prefLabel" class="col-xs-9 variable-header">
+            <ng-container>
+                {{variable.prefLabel | lang}}
+            </ng-container>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-9">{{variable.description | lang }}</div>
+    </div>
+</div>

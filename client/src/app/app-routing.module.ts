@@ -12,6 +12,7 @@ import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.compo
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
+import { VariableSearchComponent } from "./views/editor/variable/variable-search.component";
 
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
 
@@ -76,6 +77,11 @@ const routes: Routes = [
         path: 'editor/datasets',
         component: EditorDataSetListComponent,
         data: {title:'pageTitles.editor.datasetList',pageType:PageIdentifier.EDITOR}
+    },
+    {
+        path: 'editor/variables',
+        component: VariableSearchComponent,
+        data: {title:'pageTitles.editor.variableList',pageType:PageIdentifier.EDITOR}
     },
     {
         path: 'editor',

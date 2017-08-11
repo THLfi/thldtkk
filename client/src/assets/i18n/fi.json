@@ -83,6 +83,7 @@
     "described": "Jatkuva",
     "enumerated": "Luokiteltu"
   },
+  "variables": "Käsitemuuttujat",
   "quantity": "Suure",
   "noQuantity": "Ei suuretta",
   "addQuantity": "Lisää suure...",
@@ -106,6 +107,10 @@
       "datasets": "Aineistot",
       "searchVariables": "Hae muuttujia!",
       "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli"
+    },
+    "searchVariable":{
+      "searchForVariables":"Hae käsitemuuttujia...",
+      "searchSummary": "Löytyi {{resultCount}} käsitemuuttujaa haulla "
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -292,7 +297,8 @@
       "editInstanceVariable": "Muokkaa muuttujaa",
       "newInstanceVariable": "Uusi muuttuja",
       "editDataset": "Muokkaa aineistoa",
-      "newDataset": "Uusi aineisto"
+      "newDataset": "Uusi aineisto",
+      "variableList": "Käsitemuuttujat"
 
     }
     ,

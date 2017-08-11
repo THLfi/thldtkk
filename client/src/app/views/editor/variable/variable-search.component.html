@@ -1,0 +1,19 @@
+<div class="input-group">
+      <input type="text" [(ngModel)]="searchText" (keyup)="searchVariables(searchText)" placeholder="{{'catalog.searchVariable.searchForVariables' | translate}}" class="form-control">
+      <span class="input-group-btn">
+        <button class="btn btn-default" (click)="searchVariables(searchText)">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+      </span>
+</div>
+
+<ng-container *ngIf="variables">
+    <div class="search-results-summary">
+        <span>{{'catalog.searchVariable.searchSummary' | translate:{resultCount: variables.length} | uppercase}} "{{searchText}}"</span>
+    </div>
+</ng-container>
+
+<ng-container *ngFor="let variable of variables">
+    <variable-search-result [variable]="variable"></variable-search-result>
+    <hr>
+</ng-container>

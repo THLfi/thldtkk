@@ -14,15 +14,14 @@ import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services2/concept.service';
 import {Dataset} from '../../../model2/dataset';
 import {DatasetService} from '../../../services2/dataset.service';
+import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
 import {InstanceVariableService} from '../../../services2/instance-variable.service';
 import {InstanceQuestion} from '../../../model2/instance-question';
 import {InstanceQuestionService} from '../../../services2/instance-question.service';
 import {LangPipe} from '../../../utils/lang.pipe';
-import {LangValuesUtils} from '../../../utils/lang-values-utils'
 import {NodeUtils} from '../../../utils/node-utils'
-import {PopulationService} from '../../../services2/population.service'
 import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
 import {Unit} from '../../../model2/unit';
@@ -44,12 +43,18 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     @ViewChild('instanceVariableForm') instanceVariableForm: NgForm
     currentForm: NgForm
     formErrors: any = {
-      'prefLabel': []
+      'prefLabel': [],
+      'referencePeriodStart': [],
+      'referencePeriodEnd': []
     }
 
     conceptSearchSubscription: Subscription
     conceptSearchResults: Concept[] = []
     freeConcepts: string[] = []
+
+    yearRangeForReferencePeriodFields: string =  ('1900:' + (new Date().getFullYear() + 20))
+    referencePeriodStart: Date
+    referencePeriodEnd: Date
 
     sourceSearchSubscription: Subscription
     sourceSearchResults: Dataset[] = []
@@ -94,7 +99,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private translateService: TranslateService,
         private langPipe: LangPipe,
         private titleService: Title,
-        private populationService: PopulationService
+        private dateUtils: DateUtils
     ) {
         this.language = translateService.currentLang
     }
@@ -163,6 +168,12 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       ])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
+      }
+      if (instanceVariable.referencePeriodStart) {
+        this.referencePeriodStart = new Date(instanceVariable.referencePeriodStart)
+      }
+      if (instanceVariable.referencePeriodEnd) {
+        this.referencePeriodEnd = new Date(instanceVariable.referencePeriodEnd)
       }
     }
 
@@ -482,6 +493,11 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         }
 
         this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
+
+        this.instanceVariable.referencePeriodStart = this.referencePeriodStart ?
+          this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null
+        this.instanceVariable.referencePeriodEnd = this.referencePeriodEnd ?
+          this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null
 
         this.instanceVariable.variable = this.nullifyEmptyVariable(this.instanceVariable.variable)
         this.instanceVariable.variable = this.isVariable(this.instanceVariable.variable) ? this.instanceVariable.variable : null

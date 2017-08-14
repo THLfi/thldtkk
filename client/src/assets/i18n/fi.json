@@ -16,6 +16,16 @@
   "published": "Julkaistu",
   "false ()": "Ei",
   "true ()": "Kyllä",
+  "date.placeholder": "esim. 23.06.2017",
+  "pcalendar": {
+    "dateFormat": "dd.mm.yy",
+    "firstDayOfWeek": 1,
+    "dayNames": [ "sunnuntai", "maanantai", "tiistai", "keskiviikko", "torstai", "perjantai", "lauantai" ],
+    "dayNamesShort": [ "su", "ma", "ti", "ke", "to", "pe", "la" ],
+    "dayNamesMin": [ "su", "ma", "ti", "ke", "to", "pe", "la" ],
+    "monthNames": [ "tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu" ],
+    "monthNamesShort": [ "tammi", "helmi", "maalis", "huhti", "touko", "kesä","heinä", "elo", "syys", "loka", "marras", "joulu" ]
+  },
   "abbreviation": "Lyhenne",
   "altLabel": "Vaihtoehtoinen nimi",
   "researchProjectURL": "Linkki projektiin jossa aineisto kerätty",
@@ -74,7 +84,6 @@
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
-  "invalidIsoDate": "Virheellinen päivämäärä. Syötä päivämäärä ISO-muodossa 'vuosi-kuukausi-päivä', esimerkiksi '2017-06-15'.",
   "uploadFromFile": "Aineiston tuonti tiedostosta (HUOM: aineiston tuonti tyhjentää kaikki kentät)",
   "uploadDataset": "Aineiston tuonti",
   "valueDomain": "Arvoalue",
@@ -161,7 +170,8 @@
   "newUnitType": "Uusi havaintoyksikkö",
   "errors": {
     "form": {
-      "required": "Tieto on pakollinen"
+      "required": "Tieto on pakollinen",
+      "invalidDate": "Virheellinen päivämäärä."
     },
     "server": {
       "operationFailed": "Pyyntö epäonnistui",

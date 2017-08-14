@@ -17,6 +17,7 @@ import {DatasetService} from '../../../services2/dataset.service';
 import {DatasetType} from '../../../model2/dataset-type'
 import {DatasetTypeItem} from '../../../model2/dataset-type-item'
 import {DatasetTypeService} from '../../../services2/dataset-type.service'
+import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
@@ -47,8 +48,14 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     @ViewChild('datasetForm') datasetForm: NgForm
     currentForm: NgForm
     formErrors: any = {
-      'prefLabel': []
+      'prefLabel': [],
+      'referencePeriodStart': [],
+      'referencePeriodEnd': []
     }
+
+    yearRangeForReferencePeriodFields: string =  ('1900:' + (new Date().getFullYear() + 20))
+    referencePeriodStart: Date
+    referencePeriodEnd: Date
 
     allLifecyclePhases: LifecyclePhase[];
     allOrganizations: Organization[];
@@ -92,7 +99,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private truncatePipe: TruncateCharactersPipe,
         private titleService: Title,
         private populationService: PopulationService,
-        private universeService: UniverseService
+        private universeService: UniverseService,
+        private dateUtils: DateUtils
     ) {
         this.language = this.translateService.currentLang
     }
@@ -181,6 +189,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           'usageConditionAdditionalInformation',
           'freeConcepts'
         ])
+
+        if (dataset.referencePeriodStart) {
+          this.referencePeriodStart = new Date(dataset.referencePeriodStart)
+        }
+        if (dataset.referencePeriodEnd) {
+          this.referencePeriodEnd = new Date(dataset.referencePeriodEnd)
+        }
 
         if (!dataset.population) {
           dataset.population = this.populationService.initNew()
@@ -388,6 +403,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.savingHasFailed = true
           return
         }
+
+        this.dataset.referencePeriodStart = this.referencePeriodStart ?
+          this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null
+        this.dataset.referencePeriodEnd = this.referencePeriodEnd ?
+          this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null
 
         if (this.ownerOrganizationUnit) {
             this.dataset.ownerOrganizationUnit = [];

@@ -80,25 +80,25 @@
       <h2>{{ 'referencePeriod' | translate }}</h2>
       <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedReferencePeriod;">
         <p>
-          {{ instanceVariable.referencePeriodStart }}
+          {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
           —
-          {{ instanceVariable.referencePeriodEnd }}
+          {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
           <span style="margin-left:2em;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
             <span *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
               {{ 'valueInDataset' | translate }}:
-              {{ dataset.referencePeriodStart }}
+              {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
               —
-              {{ dataset.referencePeriodEnd }}
+              {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
             </span>
           </span>
         </p>
       </ng-container>
       <ng-template #inheritedReferencePeriod>
         <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
-          {{ dataset.referencePeriodStart }}
+          {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
           —
-          {{ dataset.referencePeriodEnd }}
+          {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
           <span style="margin-left:2em;opacity:.6;">
             <i class="fa fa-info-circle" aria-hidden="true"></i>
             {{ 'inheritedFromDataset' | translate }}

@@ -33,13 +33,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
+import java.time.format.DateTimeParseException;
 import static java.util.UUID.randomUUID;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import org.springframework.web.bind.annotation.RequestParam;
-import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -161,8 +160,30 @@ public class InstanceVariableController {
   @GetJsonMapping("/instanceVariables")
   public List<InstanceVariable> getInstanceVariables(
           @RequestParam(value = "query", required = false, defaultValue = "") String query,
-          @RequestParam(value = "max", required = false, defaultValue = "10") Integer maxResults) {
-      return instanceVariableService.query(query, maxResults).collect(toList());
+          @RequestParam(value = "max", required = false, defaultValue = "10") Integer maxResults,
+          @RequestParam(value = "requirePublished", required = false, defaultValue = "false") boolean requirePublished,
+          @RequestParam(value = "broadSearch", required = false, defaultValue = "false") boolean broadSearch) {
+    
+    if(broadSearch) {
+      try {
+        return instanceVariableService.extendedQuery(query, maxResults)
+                .filter(instanceVariable -> !requirePublished || (instanceVariable.getDataset().isPresent() && 
+                      instanceVariable.getDataset().get().isPublished().isPresent() && 
+                      instanceVariable.getDataset().get().isPublished().get()))
+              .collect(Collectors.toList());
+      }
+      // TODO: what to do with e.g. instance variables with invalid non-ISO reference dates?
+      catch (DateTimeParseException dateTimeEx) {
+        return new ArrayList<>(); 
+      }
+    }
+    else {
+      return instanceVariableService.query(query, maxResults)
+              .filter(instanceVariable -> !requirePublished || (instanceVariable.getDataset().isPresent() && 
+                      instanceVariable.getDataset().get().isPublished().isPresent() && 
+                      instanceVariable.getDataset().get().isPublished().get()))
+              .collect(Collectors.toList());
+    }
   }
   
 }

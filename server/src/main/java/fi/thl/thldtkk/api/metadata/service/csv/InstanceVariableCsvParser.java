@@ -163,19 +163,8 @@ public class InstanceVariableCsvParser {
       }           
     }
     
-    try {
-        parseUnit(row, language).ifPresent(unit -> instanceVariable.setUnit(unit));
-      } catch (UndefinedLabelException ex) {
-        isRowValid = false;
-        rowMessages.add("import.csv.error.missingRequiredValue.unit.prefLabel");
-      } catch (UndefinedUnitSymbolException ex) {
-        isRowValid = false;
-        rowMessages.add("import.csv.error.missingRequiredValue.unit.symbol");
-      } catch (AmbiguousUnitSymbolException ex) {
-        isRowValid = false;
-        rowMessages.add("import.csv.warn.ambiguousUnitSymbol");
-    }
-    
+    parseUnit(row, language, rowMessages).ifPresent(unit -> instanceVariable.setUnit(unit));
+
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
   
@@ -279,17 +268,25 @@ public class InstanceVariableCsvParser {
       return Optional.ofNullable(codeListService.save(codeList));
   }
   
-    private Optional<Unit> parseUnit(Map<String, String> row, String language)
-          throws UndefinedLabelException, UndefinedUnitSymbolException, AmbiguousUnitSymbolException {
+    private Optional<Unit> parseUnit(Map<String, String> row, String language, List<String> rowMessages) {
     Optional<Unit> unit = Optional.empty();
 
     Optional<String> unitSymbol = sanitize(row.get("unit.symbol"));
     Optional<String> unitLabel = sanitize(row.get("unit.prefLabel"));
 
     if(unitSymbol.isPresent() && StringUtils.hasText(unitSymbol.get())) {
+      try {
         unit = searchUnitBySymbol(unitSymbol.get(), language);
         unit = unit.isPresent() ? unit : Optional.of(createUnit(unitLabel, unitSymbol, language));
+      } catch (AmbiguousUnitSymbolException ex) {
+        rowMessages.add("import.csv.warn.ambiguousUnitSymbol");
+      } catch (UndefinedLabelException ex) {
+        rowMessages.add("import.csv.warn.missingRequiredValue.unit.prefLabel");
+      } catch (UndefinedUnitSymbolException ex) {
+        rowMessages.add("import.csv.warn.missingRequiredValue.unit.symbol");
+      }
     }
+    
     return unit;
   }
   

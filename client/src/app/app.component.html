@@ -1,3 +1,6 @@
+<div [ngClass]="{ 'catalog': currentPageType == PageIdentifier.CATALOG, 'editor': currentPageType == PageIdentifier.EDITOR }"
+  class="background-container">
+
 <nav class="navbar" [ngClass]="{'navbar-editor':currentPageType == PageIdentifier.EDITOR,
  'navbar-default':currentPageType == PageIdentifier.CATALOG}">
   <div class="container-fluid">
@@ -32,9 +35,8 @@
          life="6000">
 </p-growl>
 
-<div class="container">
-    <router-outlet></router-outlet>
+<div [ngClass]="mainContainerClasses">
+  <router-outlet></router-outlet>
 </div>
 
-<footer style="height:2em;clear:both;">
-</footer>
+</div>

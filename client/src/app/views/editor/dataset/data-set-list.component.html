@@ -1,44 +1,66 @@
-<div class="row">
-  <div class="col-xs-9">
-    <h1>{{'datasets' | translate}}</h1>
-  </div>
-  <div class="col-xs-3">
-    <button routerLink="/editor/datasets/new"
-      class="btn btn-default pull-right">
-      <span class="glyphicon glyphicon-plus"></span>
-      {{ 'addDataset' | translate }}
-    </button>
-  </div>
-</div>
-
 <div *ngIf="datasets.length; else loadingDatasets;"
-     class="row">
-  <div class="col-xs-12">
-    <table class="table table-striped table-hover">
-      <tr>
-        <th>Nimi</th>
-        <th>Toiminnot</th>
-      </tr>
-      <tr *ngFor="let dataset of datasets"
-          routerLink="/editor/datasets/{{ dataset.id }}">
-        <td>
-          <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a>
-          <span *ngIf="dataset.published"
-            class="label label-success">
-            {{ 'published' | translate }}
-            <span class="glyphicon glyphicon-ok"></span>
-          </span>
-        </td>
-        <td>
-          <button routerLink="/editor/datasets/{{ dataset.id }}/edit"
-            class="btn btn-default">
-            <span class="glyphicon glyphicon-edit"></span>
-            {{ 'edit' | translate }}
-          </button>
-        </td>
-      </tr>
-    </table>
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{'datasets' | translate}}</h1>
+    </div>
   </div>
+
+  <div class="content-body container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="pull-right">
+          <button routerLink="/editor/datasets/new"
+                  class="btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addDataset' | translate }}
+          </button>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <tr *ngFor="let dataset of datasets"
+              routerLink="/editor/datasets/{{ dataset.id }}"
+              style="cursor: pointer;">
+            <td>
+              <a routerLink="/editor/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a>
+              <span *ngIf="dataset.published"
+                    class="label label-success">
+                {{ 'published' | translate }}
+                <span class="glyphicon glyphicon-ok"></span>
+              </span>
+            </td>
+            <td>
+              <button routerLink="/editor/datasets/{{ dataset.id }}/edit"
+                      class="btn btn-sm btn-default">
+                <span class="glyphicon glyphicon-edit"></span>
+                {{ 'edit' | translate }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="pull-right">
+          <button routerLink="/editor/datasets/new"
+                  class="btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addDataset' | translate }}
+          </button>
+        </h2>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <ng-template #loadingDatasets>

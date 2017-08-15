@@ -1,31 +1,37 @@
-<div class="input-group">
-      <input type="text" [(ngModel)]="searchText" (keyup)="delayedSearchInstanceVariables(searchText)" placeholder="{{'catalog.searchInstanceVariable.searchForVariables' | translate}}" class="form-control">
+<div class="row">
+  <div class="col-xs-12">
+    <div class="input-group">
+      <input [(ngModel)]="searchText"
+             (keyup)="delayedSearchInstanceVariables(searchText)"
+             placeholder="{{ 'catalog.searchInstanceVariable.searchForVariables' | translate }}"
+             type="text"
+             class="form-control">
       <span class="input-group-btn">
-        <button class="btn btn-default" (click)="delayedSearchInstanceVariables(searchText)">
-            <span class="glyphicon glyphicon-search"></span>
-        </button>       
+        <button class="btn btn-default"
+                (click)="delayedSearchInstanceVariables(searchText)">
+          <span class="glyphicon glyphicon-search"></span>
+        </button>
       </span>
+    </div>
+  </div>
 </div>
 
 <ng-container *ngIf="instanceVariables">
-    <div class="search-results-summary">
-        <span>{{'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase}} "{{searchText}}"</span>
-    </div>
-
-    <ng-container *ngFor="let variable of instanceVariables">
-        <instance-variable-search-result [instanceVariable]="variable"></instance-variable-search-result>
-    </ng-container>
-
-    <hr>
+  <div class="search-results-summary">
+    <span>{{'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase}} "{{searchText}}"</span>
+  </div>
+  <ng-container *ngFor="let variable of instanceVariables">
+    <instance-variable-search-result [instanceVariable]="variable"></instance-variable-search-result>
+  </ng-container>
+  <hr>
 </ng-container>
 
 <div *ngIf="searchInProgress">
-    <thl-spinner></thl-spinner>
+  <thl-spinner></thl-spinner>
 </div>
-      
-<ng-container *ngIf="instanceVariables && !searchInProgress">
-    <button class="btn btn-sm btn-default" (click)="loadMoreResults()">
-        {{ 'loadMoreResults' | translate }}
-    </button>
-</ng-container>
 
+<ng-container *ngIf="instanceVariables && !searchInProgress">
+  <button class="btn btn-sm btn-default" (click)="loadMoreResults()">
+    {{ 'loadMoreResults' | translate }}
+  </button>
+</ng-container>

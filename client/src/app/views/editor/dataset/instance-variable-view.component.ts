@@ -1,15 +1,15 @@
 import { ActivatedRoute } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
+import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
 
 import { Dataset } from '../../../model2/dataset'
 import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { InstanceVariableService } from '../../../services2/instance-variable.service'
-
-import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
+import { SidebarActiveSection } from './sidebar/sidebar-active-section'
 
 @Component({
   templateUrl: './instance-variable-view.component.html'
@@ -21,6 +21,8 @@ export class InstanceVariableViewComponent implements OnInit {
   instanceVariableId: string
   datasetId: string
   language: string
+
+  sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
 
   constructor(private instanceVariableService: InstanceVariableService,
               private datasetService: DatasetService,

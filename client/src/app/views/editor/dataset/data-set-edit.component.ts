@@ -28,6 +28,7 @@ import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
 import {PopulationService} from '../../../services2/population.service'
+import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from "../../../services2/unit-type.service";
@@ -80,6 +81,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
+
+    sidebarActiveSection = SidebarActiveSection.DATASET
 
     constructor(
         private datasetService: DatasetService,

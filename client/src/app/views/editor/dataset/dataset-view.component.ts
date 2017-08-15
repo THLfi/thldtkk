@@ -6,6 +6,7 @@ import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from "../../../model2/dataset";
 import { DatasetService } from "../../../services2/dataset.service";
+import { SidebarActiveSection } from './sidebar/sidebar-active-section'
 
 @Component({
   templateUrl: './dataset-view.component.html',
@@ -16,7 +17,7 @@ export class DatasetViewComponent implements OnInit {
   dataset: Dataset
   language: string
 
-  datasetForImportInstanceVariablesModal: Dataset
+  sidebarActiveSection = SidebarActiveSection.DATASET
 
   constructor(private datasetService: DatasetService,
               private route: ActivatedRoute,
@@ -35,7 +36,7 @@ export class DatasetViewComponent implements OnInit {
     this.datasetService.getDataset(datasetId)
       .subscribe(dataset => {
         this.dataset = dataset
-        this.updatePageTitle()  
+        this.updatePageTitle()
       })
   }
 
@@ -65,14 +66,6 @@ export class DatasetViewComponent implements OnInit {
             .subscribe(dataSet => this.dataset = dataSet)
         }
       })
-  }
-
-  showImportInstanceVariablesModal() {
-    this.datasetForImportInstanceVariablesModal = this.dataset
-  }
-
-  closeImportInstanceVariablesModal(): void {
-    this.datasetForImportInstanceVariablesModal = null
   }
 
 }

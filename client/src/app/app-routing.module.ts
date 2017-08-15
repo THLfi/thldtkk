@@ -15,6 +15,7 @@ import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-v
 import { VariableSearchComponent } from "./views/editor/variable/variable-search.component";
 
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
+import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 
 const routes: Routes = [
     {
@@ -45,33 +46,62 @@ const routes: Routes = [
     {
         path: 'editor/datasets/:datasetId/instanceVariables/new',
         component: InstanceVariableEditComponent,
-        data: {title:'pageTitles.editor.newInstanceVariable', pageType:PageIdentifier.EDITOR}
+        data: {
+          title: 'pageTitles.editor.newInstanceVariable',
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets/:datasetId/instanceVariables/:instanceVariableId/edit',
         component: InstanceVariableEditComponent,
-        data: {title:'pageTitles.editor.editInstanceVariable',pageType:PageIdentifier.EDITOR}
+        data: {
+          title: 'pageTitles.editor.editInstanceVariable',
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets/:datasetId/instanceVariables/:instanceVariableId',
         component: InstanceVariableViewComponent,
-        data: {pageType:PageIdentifier.EDITOR}
+        data: {
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
+    },
+    {
+        path: 'editor/datasets/:datasetId/instanceVariables',
+        component: DatasetInstanceVariablesViewComponent,
+        data: {
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets/new',
         component: DataSetEditComponent,
-        data: {title:'pageTitles.editor.newDataset',pageType:PageIdentifier.EDITOR}
+        data: {
+          title: 'pageTitles.editor.newDataset',
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets/:id/edit',
         component: DataSetEditComponent,
-        data: {title:'pageTitles.editor.editDataset',pageType:PageIdentifier.EDITOR}
+        data: {
+          title: 'pageTitles.editor.editDataset',
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets/:id',
         component: EditorDataSetComponent,
-        data: {pageType:PageIdentifier.EDITOR}
-
+        data: {
+          pageType: PageIdentifier.EDITOR,
+          hasSidebar: true
+        }
     },
     {
         path: 'editor/datasets',

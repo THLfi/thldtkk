@@ -7,6 +7,7 @@ import {NgForm} from '@angular/forms'
 import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 import {Title} from '@angular/platform-browser'
+import {TranslateService} from '@ngx-translate/core';
 
 import {CodeList} from '../../../model2/code-list';
 import {CodeListService} from '../../../services2/code-list.service';
@@ -24,19 +25,20 @@ import {LangPipe} from '../../../utils/lang.pipe';
 import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services2/quantity.service';
+import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services2/unit.service';
 import {UnitType} from '../../../model2/unit-type'
 import {UnitTypeService} from '../../../services2/unit-type.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services2/variable.service';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     templateUrl: './instance-variable-edit.component.html'
 })
 export class InstanceVariableEditComponent implements OnInit, AfterContentChecked {
 
+    dataset: Dataset
     instanceVariable: InstanceVariable
     language: string
 
@@ -82,6 +84,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
 
+    sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
+
     constructor(
         private instanceVariableService: InstanceVariableService,
         private instanceQuestionService: InstanceQuestionService,
@@ -109,14 +113,21 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         const instanceVariableId = this.route.snapshot.params['instanceVariableId']
 
         if (instanceVariableId) {
-            this.instanceVariableService.getInstanceVariable(datasetId, instanceVariableId)
-                .subscribe(instanceVariable => {
-                  this.initInstanceVariable(instanceVariable)
-                  this.instanceVariable = instanceVariable
-                  this.updatePageTitle();
-                })
+            Observable.forkJoin(
+              this.datasetService.getDataset(datasetId),
+              this.instanceVariableService.getInstanceVariable(datasetId, instanceVariableId)
+            ).subscribe(data => {
+              this.dataset = data[0]
+
+              const instanceVariable = data[1]
+              this.initInstanceVariable(instanceVariable)
+              this.instanceVariable = instanceVariable
+              this.updatePageTitle();
+            })
          }
         else {
+            this.datasetService.getDataset(datasetId).subscribe(dataset => this.dataset = dataset)
+
             const instanceVariable = {
                 id: null,
                 prefLabel: null,
@@ -600,6 +611,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     private goBackToViewDataset(): void {
-      this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId']])
+      this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId'], 'instanceVariables'])
     }
 }

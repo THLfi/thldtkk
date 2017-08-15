@@ -1,413 +1,435 @@
-<form #datasetForm="ngForm"
-      *ngIf="dataset; else loadingDataset;">
+<ng-container *ngIf="dataset; else loadingDataset;">
 
-  <label for="file" translate="uploadFromFile"></label>
-  <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
-  <h1>
-    <ng-container *ngIf="dataset.id; else newDatasetHeader;">
-      {{ 'dataset' | translate }}:
-      {{ dataset.prefLabel | lang }}
-    </ng-container>
-    <ng-template #newDatasetHeader>
-      {{ 'newDataset' | translate }}
-    </ng-template>
-  </h1>
+  <dataset-sidebar [dataset]="dataset"
+                   [activeSection]="sidebarActiveSection">
+  </dataset-sidebar>
 
-  <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
-       class="row">
-    <div class="col-xs-12">
-      <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
-           class="form-group">
-        <label for="prefLabel">
-          {{ 'prefLabel' | translate }}
-          <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-        </label>
-        <input [(ngModel)]="dataset.prefLabel[language]"
-            id="prefLabel"
-            name="prefLabel"
-            type="text"
-            class="form-control"
-            required>
-        <p *ngFor="let errorKey of formErrors.prefLabel"
-           class="text-danger">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          {{ errorKey | translate }}
-        </p>
-      </div>
-    </div>
-  </div>
+  <div class="content-container">
 
-  <div class="form-group">
-    <label for="altLabel" translate="altLabel"></label>
-    <input [(ngModel)]="dataset.altLabel[language]"
-        id="altLabel"
-        name="altLabel"
-        class="form-control"
-        type="text">
-  </div>
-
-  <div class="form-group">
-    <label for="abbreviation" translate="abbreviation"></label>
-    <input [(ngModel)]="dataset.abbreviation[language]"
-        id="abbreviation"
-        name="abbreviation"
-        class="form-control"
-        type="text">
-  </div>
-
-  <div *ngIf="allOrganizations"
-      class="form-group">
-    <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-    <select [(ngModel)]="dataset.owner"
-        [compareWith]="nodeUtils.equals"
-        id="ownerOrganization"
-        name="ownerOrganization"
-        class="form-control">
-      <option [ngValue]="null"></option>
-      <option *ngFor="let organization of allOrganizations"
-          [ngValue]="organization">
-          {{organization.prefLabel | lang}}
-      </option>
-    </select>
-  </div>
-
-<div *ngIf="allOrganizationUnits" class="form-group">
-  <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
-  <select [(ngModel)]="ownerOrganizationUnit"
-    [compareWith]="nodeUtils.equals"
-    id="ownerOrganizationUnit"
-    name="ownerOrganizationUnit"
-    class="form-control">
-    <option [ngValue]="null"></option>
-    <option *ngFor="let organizationUnit of allOrganizationUnits"
-            [ngValue]="organizationUnit">
-      {{organizationUnit.prefLabel | lang}}
-    </option>
-  </select>
-</div>
-
-  <div class="form-group">
-    <label translate="links"></label>
-    <table *ngIf="dataset.links && dataset.links.length; else noDatasetLinks;"
-       class="table table-striped">
-        <tr>
-            <th translate="linkName"></th>
-            <th translate="linkUrl"></th>
-            <th translate="functions"></th>
-        </tr>
-        <tr *ngFor="let link of dataset.links; let linkNumber = index;">
-            <td>
-              <input [(ngModel)]="link.prefLabel[language]"
-                     id="link-prefLabel-{{ linkNumber }}"
-                     name="link-prefLabel-{{ linkNumber }}"
-                     type="text"
-                     class="form-control">
-            </td>
-            <td>
-              <input [(ngModel)]="link.linkUrl[language]"
-                     id="link-linkUrl-{{ linkNumber }}"
-                     name="link-linkUrl-{{ linkNumber }}"
-                     type="text"
-                     class="form-control">
-            </td>
-            <td>
-              <button class="btn btn-default" (click)="removeLink(link)">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                {{ 'remove' | translate }}
-              </button>
-            </td>
-        </tr>
-    </table>
-
-    <ng-template #noDatasetLinks>
-      <p translate="noDatasetLinks"></p>
-    </ng-template>
-
-    <button class="btn btn-default" (click)="addLink()">
-      <span class="glyphicon glyphicon-plus"></span>
-      {{ 'addNewLink' | translate }}
-    </button>
-  </div>
-
-  <div class="form-group">
-    <label for="description">{{ 'description' | translate }}</label>
-    <textarea [(ngModel)]="dataset.description[language]"
-        thlAutogrow
-        id="description"
-        name="description"
-        class="form-control"
-        rows="6">
-    </textarea>
-  </div>
-
-  <div class="form-group">
-    <label for="registryPolicy" translate="registryPolicy"></label>
-    <textarea [(ngModel)]="dataset.registryPolicy[language]"
-        thlAutogrow
-        id="registryPolicy"
-        name="registryPolicy"
-        class="form-control"
-        rows="6">
-    </textarea>
-  </div>
-
-  <div *ngIf="allUsageConditions"
-      class="form-group">
-    <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
-    <select [(ngModel)]="dataset.usageCondition"
-        [compareWith]="nodeUtils.equals"
-        id="usageCondition"
-        name="usageCondition"
-        class="form-control">
-      <option [ngValue]="null"></option>
-      <option *ngFor="let usageCondition of allUsageConditions"
-          [ngValue]="usageCondition">
-          {{usageCondition.prefLabel|lang}}
-    </option>
-  </select>
-  </div>
-
-  <div class="form-group">
-    <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
-    <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
-              thlAutogrow
-              id="usageConditionAdditionalInformation"
-              name="usageConditionAdditionalInformation"
-              class="form-control"
-              rows="2">
-    </textarea>
-  </div>
-
-  <ng-container *ngIf="allUnitTypes.length">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group">
-          <label for="unitType">{{ 'unitType' | translate }}</label>
-          <br>
-          <div style="display:inline-block">
-            <select [(ngModel)]="dataset.unitType"
-                    [compareWith]="nodeUtils.equals"
-                    id="unitType"
-                    name="unitType"
-                    class="form-control">
-              <option [ngValue]="null"></option>
-              <option *ngFor="let unitType of allUnitTypes"
-                      [ngValue]="unitType">
-                {{ unitType.prefLabel | lang }}
-              </option>
-            </select>
-          </div>
-          <span style="padding-left:1em;padding-right:1em">|</span>
-          <button
-            (click)="showAddUnitTypeModal()"
-            class="btn btn-default">
-            <span class="glyphicon glyphicon-plus"></span>
-            {{ 'addUnitType' | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
-    <unit-type-edit-modal *ngIf="newUnitType"
-                     [unitType]="newUnitType"
-                     (onSave)="saveUnitType($event)"
-                     (onCancel)="closeAddUnitTypeModal()">
-    </unit-type-edit-modal>
-  </ng-container>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="form-group">
-        <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
-        <input [(ngModel)]="dataset.numberOfObservationUnits"
-               id="numberOfObservationUnits"
-               name="numberOfObservationUnits"
-               class="form-control"
-               type="text">
-      </div>
-    </div>
-  </div>
-
-  <ng-container *ngIf="allUniverseItems.length">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group">
-          <label>{{ 'universe' | translate }}</label>
-          <br>
-          <p-dropdown [(ngModel)]="dataset.universe"
-                      [ngModelOptions]="{ standalone: true }"
-                      [options]="allUniverseItems"
-                      filter="true">
-            <ng-template let-universeItem pTemplate="item">
-              <ng-container *ngIf="universeItem.value; else nullValueUniverseItem;">
-                <div>
-                  {{ universeItem.value.prefLabel | lang }}
-                  <ng-container *ngIf="universeItem.value.description | lang">
-                    <br>
-                    <small style="opacity:.7">
-                      {{ universeItem.value.description | lang }}
-                    </small>
-                  </ng-container>
-                </div>
-              </ng-container>
-              <ng-template #nullValueUniverseItem>
-                {{ universeItem.label }}
-              </ng-template>
+    <div class="content-header container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>
+            <ng-container *ngIf="dataset.id; else newDatasetHeader;">
+              {{ 'dataset' | translate }}:
+              {{ dataset.prefLabel | lang }}
+            </ng-container>
+            <ng-template #newDatasetHeader>
+              {{ 'newDataset' | translate }}
             </ng-template>
-          </p-dropdown>
-          <span style="padding-left:1em;padding-right:1em">|</span>
-          <button
-            (click)="showAddUniverseModal()"
-            class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-plus"></span>
-            {{ 'addUniverse' | translate }}
-          </button>
+          </h1>
         </div>
       </div>
     </div>
-    <universe-edit-modal *ngIf="newUniverse"
-                     [universe]="newUniverse"
-                     (onSave)="saveUniverse($event)"
-                     (onCancel)="closeAddUniverseModal()">
-    </universe-edit-modal>
-  </ng-container>
 
-  <div class="form-group">
-    <label for="population-prefLabel">{{ 'population' | translate }}</label>
-    <textarea [(ngModel)]="dataset.population.prefLabel[language]"
-              thlAutogrow
-              id="population-prefLabel"
-              name="population-prefLabel"
-              class="form-control"
-              rows="3">
+    <div class="content-body container-fluid">
+
+      <form #datasetForm="ngForm">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="file" translate="uploadFromFile"></label>
+              <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
+            </div>
+          </div>
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+                 class="form-group">
+              <label for="prefLabel">
+                {{ 'prefLabel' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input [(ngModel)]="dataset.prefLabel[language]"
+                     id="prefLabel"
+                     name="prefLabel"
+                     type="text"
+                     class="form-control"
+                     required>
+              <p *ngFor="let errorKey of formErrors.prefLabel"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="altLabel" translate="altLabel"></label>
+          <input [(ngModel)]="dataset.altLabel[language]"
+                 id="altLabel"
+                 name="altLabel"
+                 class="form-control"
+                 type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="abbreviation" translate="abbreviation"></label>
+          <input [(ngModel)]="dataset.abbreviation[language]"
+                 id="abbreviation"
+                 name="abbreviation"
+                 class="form-control"
+                 type="text">
+        </div>
+
+        <div *ngIf="allOrganizations"
+             class="form-group">
+          <label for="ownerOrganization">{{ 'organization' | translate }}</label>
+          <select [(ngModel)]="dataset.owner"
+                  [compareWith]="nodeUtils.equals"
+                  id="ownerOrganization"
+                  name="ownerOrganization"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let organization of allOrganizations"
+                    [ngValue]="organization">
+              {{organization.prefLabel | lang}}
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="allOrganizationUnits" class="form-group">
+          <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
+          <select [(ngModel)]="ownerOrganizationUnit"
+                  [compareWith]="nodeUtils.equals"
+                  id="ownerOrganizationUnit"
+                  name="ownerOrganizationUnit"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let organizationUnit of allOrganizationUnits"
+                    [ngValue]="organizationUnit">
+              {{organizationUnit.prefLabel | lang}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label translate="links"></label>
+          <table *ngIf="dataset.links && dataset.links.length; else noDatasetLinks;"
+                 class="table table-striped">
+            <tr>
+              <th translate="linkName"></th>
+              <th translate="linkUrl"></th>
+              <th translate="functions"></th>
+            </tr>
+            <tr *ngFor="let link of dataset.links; let linkNumber = index;">
+              <td>
+                <input [(ngModel)]="link.prefLabel[language]"
+                       id="link-prefLabel-{{ linkNumber }}"
+                       name="link-prefLabel-{{ linkNumber }}"
+                       type="text"
+                       class="form-control">
+              </td>
+              <td>
+                <input [(ngModel)]="link.linkUrl[language]"
+                       id="link-linkUrl-{{ linkNumber }}"
+                       name="link-linkUrl-{{ linkNumber }}"
+                       type="text"
+                       class="form-control">
+              </td>
+              <td>
+                <button class="btn btn-default" (click)="removeLink(link)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  {{ 'remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </table>
+
+          <ng-template #noDatasetLinks>
+            <p translate="noDatasetLinks"></p>
+          </ng-template>
+
+          <button class="btn btn-default" (click)="addLink()">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addNewLink' | translate }}
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="description">{{ 'description' | translate }}</label>
+          <textarea [(ngModel)]="dataset.description[language]"
+                    thlAutogrow
+                    id="description"
+                    name="description"
+                    class="form-control"
+                    rows="6">
     </textarea>
-  </div>
+        </div>
 
-  <div class="form-group">
-    <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
-    <textarea [(ngModel)]="dataset.population.geographicalCoverage[language]"
-              thlAutogrow
-              id="population-geographicalCoverage"
-              name="population-geographicalCoverage"
-              class="form-control"
-              rows="2">
+        <div class="form-group">
+          <label for="registryPolicy" translate="registryPolicy"></label>
+          <textarea [(ngModel)]="dataset.registryPolicy[language]"
+                    thlAutogrow
+                    id="registryPolicy"
+                    name="registryPolicy"
+                    class="form-control"
+                    rows="6">
     </textarea>
-  </div>
+        </div>
 
-  <div class="form-group">
-    <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
-    <input [(ngModel)]="dataset.population.sampleSize[language]"
-           id="population-sampleSize"
-           name="population-sampleSize"
-           type="text"
-           class="form-control">
-  </div>
+        <div *ngIf="allUsageConditions"
+             class="form-group">
+          <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
+          <select [(ngModel)]="dataset.usageCondition"
+                  [compareWith]="nodeUtils.equals"
+                  id="usageCondition"
+                  name="usageCondition"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let usageCondition of allUsageConditions"
+                    [ngValue]="usageCondition">
+              {{usageCondition.prefLabel|lang}}
+            </option>
+          </select>
+        </div>
 
-  <div class="form-group">
-    <label for="population-loss">{{ 'loss' | translate }}</label>
-    <input [(ngModel)]="dataset.population.loss[language]"
-           id="population-loss"
-           name="population-loss"
-           type="text"
-           class="form-control">
-  </div>
+        <div class="form-group">
+          <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
+          <textarea [(ngModel)]="dataset.usageConditionAdditionalInformation[language]"
+                    thlAutogrow
+                    id="usageConditionAdditionalInformation"
+                    name="usageConditionAdditionalInformation"
+                    class="form-control"
+                    rows="2">
+    </textarea>
+        </div>
 
-  <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
-       class="row">
-    <div class="col-sm-6 col-md-4">
-      <div class="form-group">
-        <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
-        <br>
-        <p-calendar [(ngModel)]="referencePeriodStart"
-                    dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
-                    monthNavigator="true"
-                    yearNavigator="true"
-                    [yearRange]="yearRangeForReferencePeriodFields"
-                    showIcon="true"
-                    [locale]="dateUtils.getLocaleSettings() | async"
-                    placeholder="{{ 'date.placeholder' | translate }}"
-                    inputId="referencePeriodStart"
-                    name="referencePeriodStart">
-        </p-calendar>
-        <p *ngFor="let errorKey of formErrors.referencePeriodStart"
-           class="text-danger">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          {{ errorKey | translate }}
-        </p>
-      </div>
-    </div>
-    <div class="col-sm-6 col-md-4">
-      <div class="form-group">
-        <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
-        <br>
-        <p-calendar [(ngModel)]="referencePeriodEnd"
-                    dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
-                    monthNavigator="true"
-                    yearNavigator="true"
-                    [yearRange]="yearRangeForReferencePeriodFields"
-                    showIcon="true"
-                    [locale]="dateUtils.getLocaleSettings() | async"
-                    placeholder="{{ 'date.placeholder' | translate }}"
-                    inputId="referencePeriodEnd"
-                    name="referencePeriodEnd">
-        </p-calendar>
-        <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
-           class="text-danger">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          {{ errorKey | translate }}
-        </p>
-      </div>
-    </div>
-  </div>
+        <ng-container *ngIf="allUnitTypes.length">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="unitType">{{ 'unitType' | translate }}</label>
+                <br>
+                <div style="display:inline-block">
+                  <select [(ngModel)]="dataset.unitType"
+                          [compareWith]="nodeUtils.equals"
+                          id="unitType"
+                          name="unitType"
+                          class="form-control">
+                    <option [ngValue]="null"></option>
+                    <option *ngFor="let unitType of allUnitTypes"
+                            [ngValue]="unitType">
+                      {{ unitType.prefLabel | lang }}
+                    </option>
+                  </select>
+                </div>
+                <span style="padding-left:1em;padding-right:1em">|</span>
+                <button
+                  (click)="showAddUnitTypeModal()"
+                  class="btn btn-default">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addUnitType' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <unit-type-edit-modal *ngIf="newUnitType"
+                                [unitType]="newUnitType"
+                                (onSave)="saveUnitType($event)"
+                                (onCancel)="closeAddUnitTypeModal()">
+          </unit-type-edit-modal>
+        </ng-container>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <div *ngIf="allLifecyclePhases"
-        class="form-group">
-        <label for="lifecyclePhase" translate="lifecyclePhase"></label>
-        <select [(ngModel)]="dataset.lifecyclePhase"
-            [compareWith]="nodeUtils.equals"
-            id="lifecyclePhase"
-            name="lifecyclePhase"
-            class="form-control">
-          <option [ngValue]="null"></option>
-          <option *ngFor="let lifecyclePhase of allLifecyclePhases"
-              [ngValue]="lifecyclePhase">
-              {{lifecyclePhase.prefLabel|lang}}
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
+              <input [(ngModel)]="dataset.numberOfObservationUnits"
+                     id="numberOfObservationUnits"
+                     name="numberOfObservationUnits"
+                     class="form-control"
+                     type="text">
+            </div>
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
-    <br>
-    <p-autoComplete
-      [(ngModel)]="dataset.conceptsFromScheme"
-      [ngModelOptions]="{ standalone: true }"
-      [suggestions]="conceptSearchResults"
-      (completeMethod)="searchConcept($event)"
-      [multiple]="true"
-      dataKey="id"
-      emptyMessage="{{ 'noMatchingConcepts' | translate }}"
-      placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
-      minLength="3"
-      inputId="conceptsFromScheme">
+        <ng-container *ngIf="allUniverseItems.length">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label>{{ 'universe' | translate }}</label>
+                <br>
+                <p-dropdown [(ngModel)]="dataset.universe"
+                            [ngModelOptions]="{ standalone: true }"
+                            [options]="allUniverseItems"
+                            filter="true">
+                  <ng-template let-universeItem pTemplate="item">
+                    <ng-container *ngIf="universeItem.value; else nullValueUniverseItem;">
+                      <div>
+                        {{ universeItem.value.prefLabel | lang }}
+                        <ng-container *ngIf="universeItem.value.description | lang">
+                          <br>
+                          <small style="opacity:.7">
+                            {{ universeItem.value.description | lang }}
+                          </small>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                    <ng-template #nullValueUniverseItem>
+                      {{ universeItem.label }}
+                    </ng-template>
+                  </ng-template>
+                </p-dropdown>
+                <span style="padding-left:1em;padding-right:1em">|</span>
+                <button
+                  (click)="showAddUniverseModal()"
+                  class="btn btn-default btn-sm">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addUniverse' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <universe-edit-modal *ngIf="newUniverse"
+                               [universe]="newUniverse"
+                               (onSave)="saveUniverse($event)"
+                               (onCancel)="closeAddUniverseModal()">
+          </universe-edit-modal>
+        </ng-container>
 
-      <ng-template let-concept pTemplate="item">
+        <div class="form-group">
+          <label for="population-prefLabel">{{ 'population' | translate }}</label>
+          <textarea [(ngModel)]="dataset.population.prefLabel[language]"
+                    thlAutogrow
+                    id="population-prefLabel"
+                    name="population-prefLabel"
+                    class="form-control"
+                    rows="3">
+    </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
+          <textarea [(ngModel)]="dataset.population.geographicalCoverage[language]"
+                    thlAutogrow
+                    id="population-geographicalCoverage"
+                    name="population-geographicalCoverage"
+                    class="form-control"
+                    rows="2">
+    </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
+          <input [(ngModel)]="dataset.population.sampleSize[language]"
+                 id="population-sampleSize"
+                 name="population-sampleSize"
+                 type="text"
+                 class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="population-loss">{{ 'loss' | translate }}</label>
+          <input [(ngModel)]="dataset.population.loss[language]"
+                 id="population-loss"
+                 name="population-loss"
+                 type="text"
+                 class="form-control">
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
+             class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="referencePeriodStart"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="referencePeriodStart"
+                          name="referencePeriodStart">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.referencePeriodStart"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="referencePeriodEnd"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="referencePeriodEnd"
+                          name="referencePeriodEnd">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div *ngIf="allLifecyclePhases"
+                 class="form-group">
+              <label for="lifecyclePhase" translate="lifecyclePhase"></label>
+              <select [(ngModel)]="dataset.lifecyclePhase"
+                      [compareWith]="nodeUtils.equals"
+                      id="lifecyclePhase"
+                      name="lifecyclePhase"
+                      class="form-control">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let lifecyclePhase of allLifecyclePhases"
+                        [ngValue]="lifecyclePhase">
+                  {{lifecyclePhase.prefLabel|lang}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+          <br>
+          <p-autoComplete
+            [(ngModel)]="dataset.conceptsFromScheme"
+            [ngModelOptions]="{ standalone: true }"
+            [suggestions]="conceptSearchResults"
+            (completeMethod)="searchConcept($event)"
+            [multiple]="true"
+            dataKey="id"
+            emptyMessage="{{ 'noMatchingConcepts' | translate }}"
+            placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
+            minLength="3"
+            inputId="conceptsFromScheme">
+
+            <ng-template let-concept pTemplate="item">
         <span>
           {{ concept.prefLabel | lang }}
         </span>
-        <small style="opacity:.7">
+              <small style="opacity:.7">
           <span *ngFor="let lang of getConceptLanguages(concept)">
             {{ lang }}:
             {{ concept.prefLabel[lang] }}
           </span>
-          ({{ concept.conceptScheme.prefLabel | lang }})
-        </small>
-      </ng-template>
+                ({{ concept.conceptScheme.prefLabel | lang }})
+              </small>
+            </ng-template>
 
-      <ng-template let-concept pTemplate="selectedItem">
+            <ng-template let-concept pTemplate="selectedItem">
         <span style="margin-right:1.2em;">
           <span>
             {{ concept.prefLabel | lang }}
@@ -416,60 +438,57 @@
             ({{ concept.conceptScheme.prefLabel | lang }})
           </span>
         </span>
-      </ng-template>
-    </p-autoComplete>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+
+        <div class="form-group">
+          <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+          <p-chips [(ngModel)]="freeConcepts"
+                   [ngModelOptions]="{ standalone: true }"
+                   inputId="freeConcepts">
+          </p-chips>
+          <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="datasetType">{{ 'datasetType' | translate }}</label>
+          <br>
+          <p-multiSelect [(ngModel)]="selectedDatasetTypeItems"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="datasetTypeItems"
+                         defaultLabel="{{ 'selectDatasetType' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
+                         inputId="datasetType">
+          </p-multiSelect>
+        </div>
+
+        <div class="form-group">
+          <label for="comment" translate="comment"></label>
+          <textarea [(ngModel)]="dataset.comment"
+                    thlAutogrow
+                    id="comment"
+                    name="comment"
+                    class="form-control"
+                    rows="2">
+        </textarea>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="edit-controls-padding"></div>
+
   </div>
 
-  <div class="form-group">
-    <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
-    <p-chips [(ngModel)]="freeConcepts"
-             [ngModelOptions]="{ standalone: true }"
-             inputId="freeConcepts">
-    </p-chips>
-    <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
-  </div>
-
-  <div class="form-group">
-    <label for="datasetType">{{ 'datasetType' | translate }}</label>
-    <br>
-    <p-multiSelect [(ngModel)]="selectedDatasetTypeItems"
-      [ngModelOptions]="{ standalone: true }"
-      [options]="datasetTypeItems"
-      defaultLabel="{{ 'selectDatasetType' | translate }}"
-      selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
-      inputId="datasetType">
-    </p-multiSelect>
-  </div>
-
-  <div class="form-group">
-    <label for="comment" translate="comment"></label>
-    <textarea [(ngModel)]="dataset.comment"
-        thlAutogrow
-        id="comment"
-        name="comment"
-        class="form-control"
-        rows="2">
-    </textarea>
-  </div>
-
-  <hr>
-
-</form>
-
-<ng-template #loadingDataset>
-  <div>
-    <thl-spinner></thl-spinner>
-  </div>
-</ng-template>
-
-<div class="edit-controls-padding">
   <div class="edit-controls-fixed">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <button (click)="save()"
-            [disabled]="!dataset || savingInProgress"
-            class="btn btn-primary">
+                  [disabled]="savingInProgress"
+                  class="btn btn-primary">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             {{ 'save' | translate }}
           </button>
@@ -482,4 +501,9 @@
       </div>
     </div>
   </div>
-</div>
+
+</ng-container>
+
+<ng-template #loadingDataset>
+  <thl-spinner></thl-spinner>
+</ng-template>

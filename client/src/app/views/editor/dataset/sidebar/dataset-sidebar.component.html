@@ -1,0 +1,21 @@
+<nav class="sidebar" role="navigation">
+  <ul>
+    <li [ngClass]="{ active: activeSection == SidebarActiveSection.DATASET }">
+      <a routerLink="{{ '/editor/datasets/' + dataset.id }}">
+        <div class="icon">
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        </div>
+        {{ 'datasetSidebar.datasetDescription' | translate }}
+      </a>
+    </li>
+    <li *ngIf="dataset.id"
+        [ngClass]="{ active: activeSection == SidebarActiveSection.INSTANCE_VARIABLES }">
+      <a routerLink="{{ '/editor/datasets/' + dataset.id + '/instanceVariables' }}">
+        <div class="icon">
+          <i class="fa fa-th-large" aria-hidden="true"></i>
+        </div>
+        {{ 'datasetSidebar.instanceVariables' | translate }}
+      </a>
+    </li>
+  </ul>
+</nav>

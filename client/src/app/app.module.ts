@@ -62,9 +62,11 @@ import { CatalogFrontPageComponent } from './views/catalog/frontpage/catalog-fro
 
 // editor components
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
-import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
-import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
+import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
+import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
+import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
+import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
 import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
@@ -89,7 +91,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AutogrowTextarea,
         DatasetComponent,
         DataSetEditComponent,
+        DatasetInstanceVariablesViewComponent,
         DatasetListComponent,
+        DatasetSidebarComponent,
         EditorDataSetListComponent,
         EditorDataSetComponent,
         InstanceVariableComponent,

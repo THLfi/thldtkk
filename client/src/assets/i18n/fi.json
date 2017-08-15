@@ -4,6 +4,10 @@
   "dataset": "Aineisto",
   "datasets": "Aineistot",
   "newDataset": "Uusi aineisto",
+  "datasetSidebar": {
+    "datasetDescription": "Aineiston kuvaus",
+    "instanceVariables": "Muuttujien kuvaus"
+  },
   "instanceVariables": "Muuttujat",
   "contactPerson": "Yhteyshenkilö",
   "description": "Kuvaus",

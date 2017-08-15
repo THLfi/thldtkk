@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
 
   public PageIdentifier = PageIdentifier
   currentPageType: PageIdentifier
+  mainContainerClasses: any = {}
 
   constructor(
     public growlMessageService: GrowlMessageService,
@@ -46,14 +47,23 @@ export class AppComponent implements OnInit {
         let titleTranslationKey: string = event['title']
         let pageType: PageIdentifier = event['pageType']
 
-        if(pageType != null) { this.currentPageType = pageType }
-        
         this.setPageTitle(titleTranslationKey, pageType)
+
+        this.currentPageType = pageType | this.currentPageType
+
+        this.mainContainerClasses['main-container'] = true
+        this.mainContainerClasses['has-sidebar'] = event['hasSidebar']
+
+        this.mainContainerClasses['catalog'] = this.currentPageType == PageIdentifier.CATALOG
+        this.mainContainerClasses['container'] = this.currentPageType == PageIdentifier.CATALOG
+
+        this.mainContainerClasses['editor'] = this.currentPageType == PageIdentifier.EDITOR
+        this.mainContainerClasses['container-fluid'] = this.currentPageType == PageIdentifier.EDITOR && !event['hasSidebar']
       });
   }
 
   private setPageTitle(translationKey: string, pageType: PageIdentifier):void {
-    
+
     let validPageType: PageIdentifier = pageType != null ? pageType : this.currentPageType
 
     if(translationKey) {
@@ -63,10 +73,10 @@ export class AppComponent implements OnInit {
           this.titleService.setTitle(fullTitle)
         })
       })
-    } // for routes without a set title, use only the generic suffix for titles 
-    else if(validPageType != null) { 
+    } // for routes without a set title, use only the generic suffix for titles
+    else if(validPageType != null) {
       this.getPageTitleSuffix(validPageType).subscribe(suffix => {
-        this.titleService.setTitle(suffix)  
+        this.titleService.setTitle(suffix)
       })
     }
   }
@@ -76,15 +86,15 @@ export class AppComponent implements OnInit {
   }
 
   private getPageTitleSuffix(pageType:PageIdentifier):Observable<string> {
-       
+
     let suffix:Observable<string> = Observable.of("")
 
     if(pageType === PageIdentifier.CATALOG) {
       suffix = this.translateService.get('pageTitles.catalog.suffix');
     }
-    
+
     else if(pageType === PageIdentifier.EDITOR) {
-      suffix = this.translateService.get('pageTitles.editor.suffix'); 
+      suffix = this.translateService.get('pageTitles.editor.suffix');
     }
       return suffix
   }

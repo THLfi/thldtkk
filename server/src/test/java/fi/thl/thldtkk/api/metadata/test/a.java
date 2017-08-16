@@ -21,5 +21,9 @@ public class a {
   public static NodeBuilder datasetNode() {
     return node().withType("DataSet");
   }
+  
+  public static UnitBuilder unit() {
+    return new UnitBuilder();
+  }
 
 }

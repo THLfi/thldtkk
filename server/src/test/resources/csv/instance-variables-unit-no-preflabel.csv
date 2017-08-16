@@ -1,0 +1,2 @@
+prefLabel;technicalName;description;partOfGroup;freeConcepts;referencePeriodStart;referencePeriodEnd;valueDomainType;missingValues;defaultMissingValue;qualityStatement;sourceDescription;dataType;dataFormat;codeList.prefLabel;codeList.referenceId;codeList.description;codeList.owner;unit.prefLabel;unit.symbol
+Ikä;ika_2017;Henkilön ikä vuosina;Taustatiedot;"ikä;nuoruus;vanhuus";2017-07-01;2017-07-30;described;;-1;;Väestörekisteri;integer;([0-9]+);;;;;;v

@@ -158,6 +158,7 @@
   "variable": "Käsitemuuttuja",
   "variableHelpText": "Käsitemuuttuja on muuttuja, joka yhdistää kaikki eri aineistoissa samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.\n\nKäsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.",
   "addVariable": "Lisää käsitemuuttuja...",
+  "editVariable": "Muokkaa käsitemuuttujaa",
   "newVariable": "Uusi käsitemuuttuja",
   "noSearchResults": "Ei hakutuloksia",
   "searchForVariables":"Hae käsitemuuttujia...",

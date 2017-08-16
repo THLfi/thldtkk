@@ -75,6 +75,7 @@ import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edi
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseService } from './services2/universe.service'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
+import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
 import { VariableSearchResultComponent } from './views/editor/variable/variable-search-result.component'
 
@@ -109,6 +110,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariablesImportModalComponent,
         InstanceQuestionEditModalComponent,
         CatalogFrontPageComponent,
+        VariableModalComponent,
         VariableSearchComponent,
         VariableSearchResultComponent
     ],

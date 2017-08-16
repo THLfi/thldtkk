@@ -19,9 +19,27 @@ export class VariableSearchResultComponent {
   language: string
 
   @Input() variable: Variable
+  editVariable : boolean
 
   constructor(private route: ActivatedRoute,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private variableService: VariableService) {
     this.language = this.translateService.currentLang
   }
+
+  showVariableModal(variable): void {
+    this.editVariable = true
+    }
+
+  saveVariable(variable): void {
+    this.variableService.saveVariable(variable)
+      .subscribe(savedVariable => {
+        this.closeVariableModal()
+    })
+  }
+
+  closeVariableModal(): void {
+    this.editVariable = false
+  }
+
 }

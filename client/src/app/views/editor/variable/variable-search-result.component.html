@@ -1,11 +1,26 @@
 <div class="search-result">
     <div class="row">
-        <div *ngIf="variable.prefLabel" class="col-xs-9 variable-header">
+        <div *ngIf="variable.prefLabel" class="col-xs-10 variable-header">
             <ng-container>
                 {{variable.prefLabel | lang}}
             </ng-container>
         </div>
+
+      <div class="col-xs-2">
+        <button
+          (click)="showVariableModal(variable)"
+          class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-pencil"></span>
+          {{ 'edit' | translate }}
+        </button>
+        <variable-modal *ngIf="editVariable"
+                        [variable]="variable"
+                        (onSave)="saveVariable($event)"
+                        (onCancel)="closeVariableModal()">
+        </variable-modal>
+      </div>
     </div>
+
     <div class="row">
         <div class="col-xs-9">{{variable.description | lang }}</div>
     </div>

@@ -168,6 +168,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       ])
       if (instanceVariable.freeConcepts && instanceVariable.freeConcepts[this.language]) {
         this.freeConcepts = instanceVariable.freeConcepts[this.language].split(';')
+        this.freeConcepts = this.freeConcepts.map(freeConcept => freeConcept.trim())
       }
       if (instanceVariable.referencePeriodStart) {
         this.referencePeriodStart = new Date(instanceVariable.referencePeriodStart)
@@ -492,7 +493,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
           return
         }
 
-        this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join(';')
+        // trailing white space to separate free concepts in search queries
+        this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join('; ') 
 
         this.instanceVariable.referencePeriodStart = this.referencePeriodStart ?
           this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null

@@ -8,6 +8,7 @@ import static java.util.Arrays.stream;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VariableService implements Service<UUID, Variable> {
-    
+
     private TermedNodeService nodeService;
-    
 
     @Autowired
     public VariableService(TermedNodeService nodeService) {
@@ -41,6 +41,9 @@ public class VariableService implements Service<UUID, Variable> {
 
     @Override
     public Variable save(Variable value) {
+        if (value.getId() == null) {
+            value.setId(randomUUID());
+        }
         Node saved = nodeService.save(value.toNode());
         return new Variable(saved);
     }
@@ -49,23 +52,23 @@ public class VariableService implements Service<UUID, Variable> {
     public void delete(UUID id) {
         throw new UnsupportedOperationException();
     }
-    
+
     public Stream<Variable> query(String query, int maxResults) {
-    List<String> byPrefLabel = stream(query.split("\\s"))
-      .map(token -> "properties.prefLabel:" + token + "*")
-      .collect(toList());
+        List<String> byPrefLabel = stream(query.split("\\s"))
+                .map(token -> "properties.prefLabel:" + token + "*")
+                .collect(toList());
 
-    List<String> clauses = new ArrayList<>();
-    clauses.add("type.id:Variable");
-    clauses.addAll(byPrefLabel);
+        List<String> clauses = new ArrayList<>();
+        clauses.add("type.id:Variable");
+        clauses.addAll(byPrefLabel);
 
-    return nodeService.query(
-      new NodeRequestBuilder()
-        .withQuery(String.join(" AND ", clauses))
-        .addDefaultIncludedAttributes()
-        .addSort("prefLabel")
-        .withMaxResults(maxResults)
-        .build()
-    ).map(Variable::new);
-  }
+        return nodeService.query(
+                new NodeRequestBuilder()
+                .withQuery(String.join(" AND ", clauses))
+                .addDefaultIncludedAttributes()
+                .addSort("prefLabel")
+                .withMaxResults(maxResults)
+                .build()
+        ).map(Variable::new);
+    }
 }

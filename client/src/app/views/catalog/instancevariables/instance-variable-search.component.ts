@@ -27,6 +27,7 @@ export class InstanceVariableSearchComponent implements OnInit {
   language: string
   instanceVariables: InstanceVariable[]
   searchText: string
+  maxResults: number
   searchTerms: Subject<string>
   searchInProgress: boolean
   latestLookupTerm: string
@@ -45,8 +46,10 @@ export class InstanceVariableSearchComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.searchText = params['query'];
+      this.maxResults = Number(params['max'] || 100);
       if(this.searchText != null && this.searchText != "") {
-        this.searchInstanceVariables(this.searchText).subscribe(instanceVariables => this.instanceVariables = instanceVariables)
+        this.searchInstanceVariables(this.searchText)
+          .subscribe(instanceVariables => this.instanceVariables = instanceVariables)
         this.updateQueryParam(this.searchText)
       }
     })
@@ -54,16 +57,28 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   delayedSearchInstanceVariables(searchText:string): void {
-      this.searchTerms.next(searchText)
+    this.searchTerms.next(searchText)
+  }
+
+  loadMoreResults(): void {
+    this.maxResults += 100;
+    this.searchInProgress = true;
+    this.instanceVariableService.searchInstanceVariable(this.searchText, this.maxResults)
+      .subscribe(instanceVariables => {
+        this.updateQueryParam(this.searchText)
+        this.instanceVariables = instanceVariables;
+        this.searchInProgress = false;
+      });
   }
 
   searchInstanceVariables(searchText: string):Observable<InstanceVariable[]> {
-    return this.instanceVariableService.searchInstanceVariable(searchText);
+    return this.instanceVariableService.searchInstanceVariable(searchText, this.maxResults);
   }
 
   private updateQueryParam(searchText:string):void {
     let urlTree:UrlTree = this.router.parseUrl(this.router.url)
     urlTree.queryParams['query'] = this.searchText
+    urlTree.queryParams['max'] = String(this.maxResults)
 
     let updatedUrl = this.router.serializeUrl(urlTree);
     this.location.replaceState(updatedUrl);

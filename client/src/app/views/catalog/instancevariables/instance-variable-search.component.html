@@ -7,16 +7,25 @@
       </span>
 </div>
 
-<ng-container *ngIf="searchInProgress">
-  <thl-spinner></thl-spinner>
-</ng-container>
-
-<ng-container *ngIf="instanceVariables && !searchInProgress">
+<ng-container *ngIf="instanceVariables">
     <div class="search-results-summary">
         <span>{{'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase}} "{{searchText}}"</span>
     </div>
+
     <ng-container *ngFor="let variable of instanceVariables">
         <instance-variable-search-result [instanceVariable]="variable"></instance-variable-search-result>
-        <hr>
     </ng-container>
+
+    <hr>
 </ng-container>
+
+<div *ngIf="searchInProgress">
+    <thl-spinner></thl-spinner>
+</div>
+      
+<ng-container *ngIf="instanceVariables && !searchInProgress">
+    <button class="btn btn-sm btn-default" (click)="loadMoreResults()">
+        {{ 'loadMoreResults' | translate }}
+    </button>
+</ng-container>
+

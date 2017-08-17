@@ -84,6 +84,7 @@
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
+  "loadMoreResults": "Näytä lisää hakutuloksia", 
   "uploadFromFile": "Aineiston tuonti tiedostosta (HUOM: aineiston tuonti tyhjentää kaikki kentät)",
   "uploadDataset": "Aineiston tuonti",
   "valueDomain": "Arvoalue",

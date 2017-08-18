@@ -40,7 +40,8 @@
   height: 55px;
   background-color: #01837A;
   color: white;
-  border-radius:0;
+  border-radius: 0;
+  border-bottom: 1px solid #006860;
 }
 .navbar-editor .navbar-nav > li > a {
     color:white;

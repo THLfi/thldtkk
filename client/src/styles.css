@@ -99,6 +99,7 @@ h2 {
 }
 
 .main-container.editor {
+  max-width: 1200px;
   margin-top: 55px;
 }
 
@@ -171,8 +172,6 @@ h2 {
 .edit-controls-padding {
   padding-bottom: 55px;
 }
-
-/* TODO: RUUDUN MAX LEVEYDEKSI 1200px */
 
 /* PrimeNG custom styles */
 

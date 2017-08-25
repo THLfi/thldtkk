@@ -109,6 +109,109 @@
         </div>
 
         <div class="form-group">
+          <label for="personInRoles">{{ 'personInRoles.label' | translate }}</label>
+          <table *ngIf="dataset.personInRoles.length; else noDatasetPersonInRoles;"
+                 id="personsInRole"
+                 class="table table-striped">
+            <tr>
+              <th>
+                {{ 'personInRoles.person' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </th>
+              <th translate="personInRoles.role"></th>
+              <th translate="personInRoles.public.title"></th>
+              <th translate="functions"></th>
+            </tr>
+            <tr *ngFor="let personInRole of dataset.personInRoles; let index = index;"
+                [ngClass]="{ 'bg-danger': formErrors['personInRole-person-' + index] && formErrors['personInRole-person-' + index].length }">
+              <td>
+                <p-dropdown *ngIf="allPersonItems && allPersonItems.length"
+                            [(ngModel)]="personInRole.person"
+                            [options]="allPersonItems"
+                            filter="true"
+                            autoWidth="false"
+                            [style]="{ 'max-width': '400px' }"
+                            name="{{ 'personInRole-person-' + index }}"
+                            required>
+                  <ng-template let-personItem pTemplate="item">
+                    <ng-container *ngIf="personItem.value; else nullPersonItem;">
+                      {{ personItem.value.firstName }}
+                      <ng-container *ngIf="personItem.value.lastName">
+                        {{ personItem.value.lastName }}
+                      </ng-container>
+                      <small *ngIf="personItem.value.email || personItem.value.phone" style="opacity:.7">
+                        <br>
+                        {{ personItem.value.email }}
+                        {{ personItem.value.phone }}
+                      </small>
+                    </ng-container>
+                    <ng-template #nullPersonItem>
+                      <div style="opacity:.7; min-height: 2em;">
+                          {{ personItem.label }}
+                      </div>
+                    </ng-template>
+                  </ng-template>
+                </p-dropdown>
+                <button (click)="showAddPersonModal(personInRole)"
+                        type="button"
+                        class="btn btn-default btn-sm">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addNewPerson' | translate }}
+                </button>
+                <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
+                   class="text-danger">
+                  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  {{ errorKey | translate }}
+                </p>
+                <person-edit-modal *ngIf="newPerson"
+                                   [person]="newPerson"
+                                   (onSave)="savePerson($event)"
+                                   (onCancel)="closeAddPersonModal()">
+                </person-edit-modal>
+              </td>
+              <td>
+                <select *ngIf="allRoles && allRoles.length"
+                        [(ngModel)]="personInRole.role"
+                        [compareWith]="nodeUtils.equals"
+                        dataKey="id"
+                        name="{{ 'personInRole-role-' + index }}"
+                        class="form-control">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let role of allRoles"
+                          [ngValue]="role">
+                    {{ role.prefLabel | lang }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <div class="checkbox">
+                  <label>
+                    <input [checked]="personInRole.public"
+                           (change)="personInRole.public = !personInRole.public"
+                           name="{{ 'personInRole.public.' + index }}"
+                           type="checkbox">
+                    {{ 'personInRoles.public.checkbox' | translate }}
+                  </label>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-default" (click)="removePersonInRole(personInRole)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  {{ 'remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </table>
+          <ng-template #noDatasetPersonInRoles>
+            <p translate="noDatasetPersonInRoles"></p>
+          </ng-template>
+          <button class="btn btn-default" (click)="addPersonInRole()">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addNewPersonInRole' | translate }}
+          </button>
+        </div>
+
+        <div class="form-group">
           <label translate="links"></label>
           <table *ngIf="dataset.links && dataset.links.length; else noDatasetLinks;"
                  class="table table-striped">
@@ -197,7 +300,7 @@
                     name="usageConditionAdditionalInformation"
                     class="form-control"
                     rows="2">
-    </textarea>
+          </textarea>
         </div>
 
         <ng-container *ngIf="allUnitTypes.length">

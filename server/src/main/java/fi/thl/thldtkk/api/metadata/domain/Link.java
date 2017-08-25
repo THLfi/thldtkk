@@ -10,7 +10,7 @@ import java.util.Objects;
 import static java.util.Objects.requireNonNull;
 import java.util.UUID;
 
-public class Link {
+public class Link implements NodeEntity {
 
     private UUID id;
     private Map<String, String> prefLabel = new LinkedHashMap<>();

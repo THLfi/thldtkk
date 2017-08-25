@@ -3,7 +3,7 @@ import {
   Component, OnInit, ViewChild,
   AfterContentChecked
 } from '@angular/core'
-import {NgForm} from '@angular/forms'
+import {NgForm, AbstractControl} from '@angular/forms'
 import {Observable, Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api'
 import {Title} from '@angular/platform-browser'
@@ -27,7 +27,12 @@ import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {OrganizationUnitService} from "../../../services2/organization-unit.service";
+import {Person} from '../../../model2/person'
+import {PersonService} from '../../../services2/person.service'
+import {PersonInRole} from '../../../model2/person-in-role'
 import {PopulationService} from '../../../services2/population.service'
+import {Role} from '../../../model2/role'
+import {RoleService} from '../../../services2/role.service'
 import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
@@ -48,11 +53,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     @ViewChild('datasetForm') datasetForm: NgForm
     currentForm: NgForm
-    formErrors: any = {
-      'prefLabel': [],
-      'referencePeriodStart': [],
-      'referencePeriodEnd': []
-    }
+    formErrors: any = {}
 
     yearRangeForReferencePeriodFields: string =  ('1900:' + (new Date().getFullYear() + 20))
     referencePeriodStart: Date
@@ -61,6 +62,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     allLifecyclePhases: LifecyclePhase[];
     allOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
+
+    allPersonItems: SelectItem[]
+    allRoles: Role[]
+
+    personInRoleForNewPerson: PersonInRole
+    newPerson: Person
+
     allUsageConditions: UsageCondition[];
     language: string;
     lifecyclePhase: LifecyclePhase;
@@ -103,7 +111,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private titleService: Title,
         private populationService: PopulationService,
         private universeService: UniverseService,
-        private dateUtils: DateUtils
+        private dateUtils: DateUtils,
+        private personService: PersonService,
+        private roleService: RoleService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -149,12 +159,15 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                 freeConcepts: null,
                 datasetTypes: [],
                 unitType: null,
-                universe: null
+                universe: null,
+                personInRoles: []
             });
         }
 
         this.organizationService.getAllOrganizations()
             .subscribe(organizations => this.allOrganizations = organizations)
+        this.getAllPersons()
+        this.getAllRoles()
         this.lifecyclePhaseService.getAllLifecyclePhases()
             .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
         this.usageConditionService.getAllUsageConditions()
@@ -233,6 +246,45 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         }
     }
 
+    private getAllPersons() {
+      this.allPersonItems = []
+
+      Observable.forkJoin(
+        this.translateService.get('noPerson'),
+        this.personService.getAll()
+      ).subscribe(data => {
+        this.allPersonItems.push({
+          label: data[0],
+          value: null
+        })
+        data[1].forEach(person => this.allPersonItems.push(this.convertToPersonItem(person)))
+      })
+
+    }
+
+    private convertToPersonItem(person: Person): SelectItem {
+      let label = person.firstName
+
+      if (StringUtils.isNotBlank(person.lastName)) {
+        label += ' '
+        label += person.lastName
+      }
+      if (StringUtils.isNotBlank(person.email)) {
+        label += ', '
+        label += person.email
+      }
+
+      return {
+        label: label,
+        value: person
+      }
+    }
+
+    private getAllRoles() {
+      this.roleService.getAll()
+        .subscribe(roles => this.allRoles = roles)
+    }
+
     private getAllUnitTypes() {
       this.unitTypeService.getAllUnitTypes()
         .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
@@ -278,12 +330,19 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     private validate(data?: any): void {
-      for (const field in this.formErrors) {
-        this.formErrors[field] = []
-        const control = this.currentForm.form.get(field)
+      this.formErrors = []
+
+      for (const name in this.currentForm.form.controls) {
+        const control: AbstractControl = this.currentForm.form.get(name)
         if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
-          for (const key in control.errors) {
-            this.formErrors[field] = [ ...this.formErrors[field], 'errors.form.' + key ]
+          for (const errorKey in control.errors) {
+            if (!this.formErrors[name]) {
+              this.formErrors[name] = []
+            }
+            this.formErrors[name] = [
+              ...this.formErrors[name],
+              'errors.form.' + errorKey
+            ]
           }
         }
       }
@@ -307,6 +366,51 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             }
         }
         return languages
+    }
+
+    addPersonInRole() {
+      if (!this.dataset.personInRoles) {
+          this.dataset.personInRoles = []
+      }
+      const personInRole = {
+        id: null,
+        person: null,
+        role: null,
+        public: true
+      }
+      this.dataset.personInRoles = [ ...this.dataset.personInRoles, personInRole ]
+    }
+
+    removePersonInRole(personInRole: PersonInRole) {
+      let index: number = this.dataset.personInRoles.indexOf(personInRole)
+      if (index !== -1) {
+        this.dataset.personInRoles.splice(index, 1)
+      }
+    }
+
+    showAddPersonModal(personInRole: PersonInRole): void {
+      this.personInRoleForNewPerson = personInRole
+      this.initNewPerson()
+    }
+
+    private initNewPerson(): void {
+      this.newPerson = this.personService.initNew()
+    }
+
+    savePerson(event): void {
+      this.personService.save(this.newPerson)
+        .subscribe(savedPerson => {
+          this.getAllPersons()
+          if (this.personInRoleForNewPerson) {
+            this.personInRoleForNewPerson.person = savedPerson
+          }
+          this.closeAddPersonModal()
+        })
+    }
+
+    closeAddPersonModal() {
+      this.newPerson = null
+      this.personInRoleForNewPerson = null
     }
 
     addLink() {

@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.UUID;
 
-public class InstanceVariable {
+public class InstanceVariable implements NodeEntity {
 
     public static final String VALUE_DOMAIN_TYPE_DESCRIBED = "described";
     public static final String VALUE_DOMAIN_TYPE_ENUMERATED = "enumerated";

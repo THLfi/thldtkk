@@ -80,6 +80,29 @@
   "freeConceptsHelpText": "Kirjoita asiasana kenttään ja lisää se painamalla ENTER.",
   "noFreeConcepts": "Vapaita asiasanoja ei ole määritelty.",
   "source": "Lähde",
+  "personInRoles": {
+    "label": "Aineistoon liittyvät henkilöt",
+    "person": "Henkilö",
+    "role": "Rooli",
+    "public": {
+      "title": "Näkyvyys katalogissa",
+      "checkbox": "Näytä katalogissa",
+      "true": "Näytetään katalogissa",
+      "false": "Ei näytetä katalogissa"
+    }
+  },
+  "noDatasetPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
+  "addNewPersonInRole": "Lisää henkilö",
+  "addNewPerson": "Lisää uusi henkilö...",
+  "newPerson": "Uusi henkilö",
+  "person": {
+    "firstName": "Etunimi",
+    "lastName": "Sukunimi",
+    "email": "Sähköposti",
+    "phone": "Puhelin"
+  },
+  "noPerson": "Ei henkilöä",
+  "noRole": "Ei roolia",
   "links": "Linkit",
   "linkName": "Linkin teksti",
   "linkUrl": "Linkin URL",
@@ -269,6 +292,20 @@
         },
         "confirmVariableDelete": "Haluatko varmasti poistaa käsitemuuttujan?",
         "referencingInstanceVariables": "Seuraavat muuttujat viittaavat poistettavaan käsitemuuttujaan:"
+      }
+    },
+    "person": {
+      "save": {
+        "result": {
+          "success": "Henkilö tallennettu"
+        }
+      }
+    },
+    "role": {
+      "save": {
+        "result": {
+          "success": "Rooli tallennettu"
+        }
       }
     },
     "quantity": {

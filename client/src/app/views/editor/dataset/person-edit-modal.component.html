@@ -1,0 +1,97 @@
+<ng-container *ngIf="person">
+  <p-dialog [visible]="person"
+            (onHide)="doCancel()"
+            modal="modal"
+            draggable="false"
+            resizable="false"
+            closeOnEscape="false"
+            width="500">
+    <p-header>
+      {{ 'newPerson' | translate }}
+    </p-header>
+    <form #personForm="ngForm">
+      <div class="container-fluid">
+        <div [ngClass]="{ 'bg-danger': formErrors.firstName && formErrors.firstName.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.firstName && formErrors.firstName.length }"
+                 class="form-group">
+              <label for="firstName">
+                {{ 'person.firstName' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input [(ngModel)]="person.firstName"
+                     id="firstName"
+                     name="firstName"
+                     type="text"
+                     class="form-control"
+                     required>
+              <p *ngFor="let errorKey of formErrors.firstName"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="lastName">
+                {{ 'person.lastName' | translate }}
+              </label>
+              <input [(ngModel)]="person.lastName"
+                     id="lastName"
+                     name="lastName"
+                     type="text"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="email">
+                {{ 'person.email' | translate }}
+              </label>
+              <input [(ngModel)]="person.email"
+                     id="email"
+                     name="email"
+                     type="email"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="phone">
+                {{ 'person.phone' | translate }}
+              </label>
+              <input [(ngModel)]="person.phone"
+                     id="phone"
+                     name="phone"
+                     type="text"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doSave()"
+                [disabled]="savingInProgress"
+                class="btn btn-primary">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{ 'save' | translate }}
+        </button>
+        <button (click)="doCancel()"
+                [disabled]="savingInProgress"
+                class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata.service;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.Link;
+import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -60,7 +60,7 @@ public class DatasetService implements Service<UUID, Dataset> {
     @Override
     public Optional<Dataset> get(UUID id) {
         return nodeService.get(new NodeId(id, "DataSet"),
-            "id,type,properties.*,references.*,references.inScheme:2,references.conceptsFromScheme:2,references.variable:2,references.quantity:2,references.unit:2,references.codeList:2,references.source:2,references.instanceQuestions:2").map(Dataset::new);
+            "id,type,properties.*,references.*,references.inScheme:2,references.conceptsFromScheme:2,references.variable:2,references.quantity:2,references.unit:2,references.codeList:2,references.source:2,references.instanceQuestions:2,references.personInRoles:2,references.person:2,references.role:2").map(Dataset::new);
     }
 
     @Override
@@ -91,6 +91,8 @@ public class DatasetService implements Service<UUID, Dataset> {
                 });
         dataset.getLinks()
                 .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
+        dataset.getPersonInRoles()
+                .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
 
         if (!old.isPresent()) {
             insert(dataset);
@@ -108,6 +110,7 @@ public class DatasetService implements Service<UUID, Dataset> {
         dataset.getPopulation().ifPresent(v -> save.add(v.toNode()));
         dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
         dataset.getLinks().forEach(v -> save.add(v.toNode()));
+        dataset.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
 
         nodeService.save(save);
     }
@@ -121,9 +124,12 @@ public class DatasetService implements Service<UUID, Dataset> {
                 .merge(buildChangeset(
                         newDataset.getInstanceVariables(),
                         oldDataset.getInstanceVariables()))
-                .merge(buildLinkChangeset(
+                .merge(buildChangeset(
                         newDataset.getLinks(),
-                        oldDataset.getLinks()));
+                        oldDataset.getLinks()))
+                .merge(buildChangeset(
+                        newDataset.getPersonInRoles(),
+                        oldDataset.getPersonInRoles()));
 
         nodeService.post(changeset);
     }
@@ -149,38 +155,22 @@ public class DatasetService implements Service<UUID, Dataset> {
         return Changeset.empty();
     }
 
-    private Changeset<NodeId, Node> buildLinkChangeset(List<Link> newLinks,
-            List<Link> oldLinks) {
-        Map<UUID, Link> newLinksById
-                = index(newLinks, Link::getId);
-        Map<UUID, Link> oldLinksById
-                = index(oldLinks, Link::getId);
+    private <T extends NodeEntity> Changeset<NodeId, Node> buildChangeset(
+            List<T> newNodeEntities,
+            List<T> oldNodeEntities) {
 
-        List<NodeId> deleted = difference(newLinksById, oldLinksById).entriesOnlyOnRight()
-                .values().stream().map(Link::toNode).map(NodeId::new)
+        Map<UUID, T> newNodeEntitiesById
+                = index(newNodeEntities, T::getId);
+        Map<UUID, T> oldNodeEntitiesById
+                = index(oldNodeEntities, T::getId);
+
+        List<NodeId> deleted = difference(newNodeEntitiesById, oldNodeEntitiesById)
+                .entriesOnlyOnRight()
+                .values().stream().map(T::toNode).map(NodeId::new)
                 .collect(toList());
 
-        List<Node> saved = newLinks.stream()
-                .map(Link::toNode).collect(toList());
-
-        return new Changeset<>(deleted, saved);
-    }
-
-    private Changeset<NodeId, Node> buildChangeset(
-            List<InstanceVariable> newInstanceVariables,
-            List<InstanceVariable> oldInstanceVariables) {
-
-        Map<UUID, InstanceVariable> newVarsById
-                = index(newInstanceVariables, InstanceVariable::getId);
-        Map<UUID, InstanceVariable> oldVarsById
-                = index(oldInstanceVariables, InstanceVariable::getId);
-
-        List<NodeId> deleted = difference(newVarsById, oldVarsById).entriesOnlyOnRight()
-                .values().stream().map(InstanceVariable::toNode).map(NodeId::new)
-                .collect(toList());
-
-        List<Node> saved = newInstanceVariables.stream()
-                .map(InstanceVariable::toNode).collect(toList());
+        List<Node> saved = newNodeEntities.stream()
+                .map(NodeEntity::toNode).collect(toList());
 
         return new Changeset<>(deleted, saved);
     }
@@ -196,6 +186,7 @@ public class DatasetService implements Service<UUID, Dataset> {
         dataset.getPopulation().ifPresent(v -> delete.add(v.toNode()));
         dataset.getInstanceVariables().forEach(v -> delete.add(v.toNode()));
         dataset.getLinks().forEach(v -> delete.add(v.toNode()));
+        dataset.getPersonInRoles().forEach(pir -> delete.add(pir.toNode()));
 
         nodeService.delete(delete.stream().map(NodeId::new).collect(toList()));
     }

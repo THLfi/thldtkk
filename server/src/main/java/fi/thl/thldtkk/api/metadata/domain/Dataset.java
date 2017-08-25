@@ -7,6 +7,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,6 +53,8 @@ public class Dataset {
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
     private List<DatasetType> datasetTypes = new ArrayList<>();
     private UnitType unitType;
+    @Valid
+    private List<PersonInRole> personInRoles = new ArrayList<>();
 
     public Dataset() {
 
@@ -95,6 +98,7 @@ public class Dataset {
         this.instanceVariables = instanceVariables;
         this.datasetTypes = dataset.datasetTypes;
         this.unitType = dataset.unitType;
+        this.personInRoles = dataset.personInRoles;
     }
 
     /**
@@ -140,6 +144,8 @@ public class Dataset {
                         .add(new DatasetType(v)));
         node.getReferencesFirst("unitType")
                 .ifPresent(v -> this.unitType = new UnitType(v));
+        node.getReferences("personInRoles")
+                .forEach(pir -> this.personInRoles.add(new PersonInRole(pir)));
 
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
@@ -261,6 +267,10 @@ public class Dataset {
         return freeConcepts;
     }
 
+    public List<PersonInRole> getPersonInRoles() {
+      return personInRoles;
+    }
+
     /**
      * Transforms dataset into node
      */
@@ -301,6 +311,7 @@ public class Dataset {
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
         getUnitType().ifPresent(v -> refs
                 .put("unitType", v.toNode()));
+        getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
         return new Node(id, "DataSet", props, refs);
     }
 
@@ -340,7 +351,8 @@ public class Dataset {
                 && Objects.equals(conceptsFromScheme, dataset.conceptsFromScheme)
                 && Objects.equals(freeConcepts, dataset.freeConcepts)
                 && Objects.equals(datasetTypes, dataset.datasetTypes)
-                && Objects.equals(unitType, dataset.unitType);
+                && Objects.equals(unitType, dataset.unitType)
+                && Objects.equals(personInRoles, dataset.personInRoles);
 
     }
 
@@ -354,7 +366,8 @@ public class Dataset {
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, universe, instanceVariables, comment,
                         datasetTypes, numberOfObservationUnits, links,
-                        conceptsFromScheme, freeConcepts, unitType);
+                        conceptsFromScheme, freeConcepts, unitType,
+                        personInRoles);
     }
 
 }

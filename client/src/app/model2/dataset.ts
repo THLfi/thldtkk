@@ -7,6 +7,7 @@ import {Link} from './link';
 import {Node} from './node'
 import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
+import {PersonInRole} from './person-in-role'
 import {Population} from './population';
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
@@ -59,5 +60,7 @@ export interface Dataset extends Node {
   unitType: UnitType
 
   universe: Universe
+
+  personInRoles: PersonInRole[]
 
 }

@@ -40,8 +40,10 @@ import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
 import { UnitService } from './services2/unit.service'
 import { OrganizationService} from './services2/organization.service'
 import { OrganizationUnitService } from './services2/organization-unit.service'
+import { PersonService } from './services2/person.service'
 import { PopulationService } from './services2/population.service'
 import { QuantityService } from "./services2/quantity.service";
+import { RoleService } from './services2/role.service'
 import { VariableService } from './services2/variable.service'
 import { UnitTypeService } from './services2/unit-type.service'
 import { UsageConditionService } from './services2/usage-condition.service'
@@ -74,6 +76,7 @@ import { InstanceQuestionEditModalComponent } from './views/editor/dataset/insta
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { InstanceVariablesImportModalComponent } from './views/editor/dataset/instance-variables-import-modal.component'
+import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
@@ -106,6 +109,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableSearchResultComponent,
         LangPipe,
         LoadingSpinner,
+        PersonEditModalComponent,
         RequiredFieldIndicator,
         UnitTypeEditModalComponent,
         UniverseEditModalComponent,
@@ -172,7 +176,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         PopulationService,
         UniverseService,
         TruncateCharactersPipe,
-        DateUtils
+        DateUtils,
+        PersonService,
+        RoleService
     ],
     bootstrap: [
         AppComponent

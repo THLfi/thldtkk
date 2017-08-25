@@ -13,6 +13,7 @@ import { InstanceVariableComponent } from "./views/catalog/dataset/instance-vari
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 import { VariableSearchComponent } from "./views/editor/variable/variable-search.component";
+import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
@@ -39,10 +40,16 @@ const routes: Routes = [
         data: {title:'pageTitles.catalog.datasetList',pageType:PageIdentifier.CATALOG}
     },
     {
+        path: 'catalog/variables/:id',
+        component: VariableViewComponent,
+        data: {pageType:PageIdentifier.CATALOG}
+    },
+    {
         path: 'catalog/instancevariables',
         component: InstanceVariableSearchComponent,
         data: {title:'pageTitles.catalog.instanceVariableSearch',pageType:PageIdentifier.CATALOG}
     },
+
     {
         path: 'editor/datasets/:datasetId/instanceVariables/new',
         component: InstanceVariableEditComponent,

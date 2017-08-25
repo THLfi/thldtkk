@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service;
 
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
@@ -70,5 +71,23 @@ public class VariableService implements Service<UUID, Variable> {
                 .withMaxResults(maxResults)
                 .build()
         ).map(Variable::new);
+    }
+    
+    public Stream<InstanceVariable> getInstanceVariables(UUID variableId, int maxResults) {
+        StringBuilder query = new StringBuilder();
+        query.append("type.id:InstanceVariable");
+        query.append(" AND ");
+        query.append("references.variable.id:").append(variableId);
+
+        return nodeService.query(
+                new NodeRequestBuilder()
+                .withQuery(query.toString())
+                .addDefaultIncludedAttributes()
+                .addIncludedAttribute("references.*")
+                .addIncludedAttribute("referrers.*")
+                .addSort("prefLabel")
+                .withMaxResults(maxResults)
+                .build()
+        ).map(InstanceVariable::new);
     }
 }

@@ -125,6 +125,10 @@
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",
       "searchSummary": "Löytyi {{resultCount}} käsitemuuttujaa haulla "
+    },
+    "variableData": {
+      "instanceVariableColumnHeading": "Muuttuja",
+      "datasetColumnHeading": "Aineisto"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -252,6 +256,11 @@
       "save": {
         "result": {
           "success": "Käsitemuuttuja tallennettu"
+        }
+      },
+      "get": {
+        "result": {
+          "fail": "Käsitemuuttujan haku epäonnistui"
         }
       }
     },

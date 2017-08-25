@@ -1,7 +1,34 @@
 .search-results-summary {
     margin-top: 2em;
     margin-bottom: 2em;
-    margin-left: 1em;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+}
+
+.variable-label-side {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #01A197;
+    text-align: center;
+    color: #01A197;
+    margin-bottom: 0.5em;
+}
+
+.variable-side {
+    margin-top: 1em;
+}
+
+.variable-side h3 {
+    font-size: 1em;
+    font-style: bold;
+}
+
+.search-results-container {
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    box-shadow: 2px 2px 1px lightgray;
+}
+
+.show-more-results {
+    margin-top: 1em;
 }

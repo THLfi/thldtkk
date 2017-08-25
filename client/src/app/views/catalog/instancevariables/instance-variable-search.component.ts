@@ -7,6 +7,7 @@ import { Location } from '@angular/common'
 import { Dataset } from '../../../model2/dataset'
 import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
+import { Variable } from '../../../model2/variable'
 import { InstanceVariableService } from '../../../services2/instance-variable.service'
 import { LangPipe } from '../../../utils/lang.pipe';
 
@@ -26,10 +27,12 @@ export class InstanceVariableSearchComponent implements OnInit {
 
   language: string
   instanceVariables: InstanceVariable[]
+  variables: Variable[]
   searchText: string
   maxResults: number
   searchTerms: Subject<string>
   searchInProgress: boolean
+  searchingMoreResults: boolean
   latestLookupTerm: string
 
   static readonly searchDelay = 500;
@@ -48,8 +51,11 @@ export class InstanceVariableSearchComponent implements OnInit {
       this.searchText = params['query'];
       this.maxResults = Number(params['max'] || 100);
       if(this.searchText != null && this.searchText != "") {
-        this.searchInstanceVariables(this.searchText)
-          .subscribe(instanceVariables => this.instanceVariables = instanceVariables)
+        this.searchInstanceVariables(this.searchText).subscribe(instanceVariables => {
+          this.instanceVariables = instanceVariables
+          this.variables = this.extractVariables(this.instanceVariables)
+          this.latestLookupTerm = this.searchText
+        })
         this.updateQueryParam(this.searchText)
       }
     })
@@ -61,21 +67,25 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   loadMoreResults(): void {
-    this.maxResults += 100;
+    this.maxResults += 100
+    this.searchingMoreResults = true
     this.searchInProgress = true;
+
     this.instanceVariableService.searchInstanceVariable(this.searchText, this.maxResults)
       .subscribe(instanceVariables => {
         this.updateQueryParam(this.searchText)
         this.instanceVariables = instanceVariables;
+        this.variables = this.extractVariables(this.instanceVariables)
         this.searchInProgress = false;
+        this.searchingMoreResults = false;
       });
   }
 
-  searchInstanceVariables(searchText: string):Observable<InstanceVariable[]> {
+  searchInstanceVariables(searchText: string): Observable<InstanceVariable[]> {
     return this.instanceVariableService.searchInstanceVariable(searchText, this.maxResults);
   }
 
-  private updateQueryParam(searchText:string):void {
+  private updateQueryParam(searchText:string): void {
     let urlTree:UrlTree = this.router.parseUrl(this.router.url)
     urlTree.queryParams['query'] = this.searchText
     urlTree.queryParams['max'] = String(this.maxResults)
@@ -84,12 +94,27 @@ export class InstanceVariableSearchComponent implements OnInit {
     this.location.replaceState(updatedUrl);
   }
 
+  private extractVariables(instanceVariables:InstanceVariable[]):Variable[] {
+    let variablesById: {[id:string]:Variable} = {};
+    let variables: Variable[] = []
+
+    instanceVariables
+      .filter(iv => iv.variable)
+      .map(iv => variablesById[iv.variable.id] = iv.variable)
+    
+    for (let variableId in variablesById) {
+      variables.push(variablesById[variableId])
+    }
+
+    return variables;
+  }
+
   private initSearchSubscription(searchTerms:Subject<string> ): void {
     searchTerms.debounceTime(InstanceVariableSearchComponent.searchDelay)
       .distinctUntilChanged()
       .switchMap(term => {
-        this.latestLookupTerm = term;
         this.searchInProgress = true;
+        this.latestLookupTerm = term;
         return term ? this.searchInstanceVariables(term) : Observable.of<InstanceVariable[]>([])
       })
       .catch(error => {
@@ -99,6 +124,7 @@ export class InstanceVariableSearchComponent implements OnInit {
       .subscribe(instanceVariables => {
         this.updateQueryParam(this.searchText)
         this.instanceVariables = instanceVariables
+        this.variables = this.extractVariables(instanceVariables)
         this.searchInProgress = false})
   }
 

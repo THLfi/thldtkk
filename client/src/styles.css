@@ -179,3 +179,31 @@ h2 {
 .ui-dropdown-filter-container {
   width: 100%;
 }
+
+/* Table format of e.g. the variable table in catalog  */
+
+.data-table-plain {
+    margin-top: 2em;
+    border: none;
+}
+
+.data-table-plain thead {
+  border-bottom: 1px solid black;
+}
+
+.data-table-plain tbody {
+  border: none;
+}
+
+.data-table-plain .ui-column-title {
+  font-weight: bold;
+  color: black;
+}
+
+.data-table-plain thead th {
+  text-align: left;
+}
+
+.data-table-plain>tbody>tr {
+  border: none;
+}

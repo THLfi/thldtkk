@@ -11,7 +11,7 @@
         
         <div class="col-xs-3" [ngClass]="{'variable-label':instanceVariable.variable, 'variable-label-inactive':!instanceVariable.variable }">
             <ng-container *ngIf="instanceVariable.variable">
-                {{instanceVariable.variable.prefLabel | lang }}
+                <a routerLink="/catalog/variables/{{instanceVariable.variable.id}}">{{instanceVariable.variable.prefLabel | lang }}</a>
             </ng-container>
             <ng-container *ngIf="!instanceVariable.variable">
                 {{'catalog.searchInstanceVariable.noVariable' | translate }}

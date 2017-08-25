@@ -1,5 +1,6 @@
 .search-result {
     margin: 1em 1em;
+    padding-right: 1em;
 }
 
 .instance-variable-header {
@@ -13,6 +14,10 @@
     border-width: 2px;
     border-color: #01A197;
     text-align: center;
+    color: #01A197;
+}
+
+.variable-label a {
     color: #01A197;
 }
 

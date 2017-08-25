@@ -17,6 +17,8 @@ import { TruncateCharactersPipe } from 'ng2-truncate/dist/truncate-characters.pi
 import { OverlayPanelModule } from 'primeng/components/overlaypanel/overlaypanel';
 import { GrowlModule } from 'primeng/components/growl/growl'
 import { CalendarModule } from 'primeng/components/calendar/calendar'
+import { DataTableModule } from 'primeng/primeng'
+import { SharedModule } from 'primeng/primeng'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -59,6 +61,7 @@ import { InstanceVariableComponent } from "./views/catalog/dataset/instance-vari
 import { InstanceVariableSearchComponent } from './views/catalog/instancevariables/instance-variable-search.component'
 import { InstanceVariableSearchResultComponent } from './views/catalog/instancevariables/instance-variable-search-result.component'
 import { CatalogFrontPageComponent } from './views/catalog/frontpage/catalog-front-page.component'
+import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 // editor components
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
@@ -116,7 +119,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CatalogFrontPageComponent,
         VariableModalComponent,
         VariableSearchComponent,
-        VariableSearchResultComponent
+        VariableSearchResultComponent,
+        VariableViewComponent
     ],
     imports: [
         BrowserModule,
@@ -135,6 +139,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         OverlayPanelModule,
         GrowlModule,
         CalendarModule,
+        DataTableModule,
+        SharedModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

@@ -1,0 +1,32 @@
+<div class="container-fluid">
+  <div class="row" *ngIf="variable">
+    <div class="col-xs-12">
+        <h1>{{variable.prefLabel | lang}}</h1>
+        <p>{{variable.description | lang}}</p>    
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-10" style="padding-left: 0">
+    <p-dataTable tableStyleClass="data-table-plain" [value]="instanceVariables">
+        <p-column field="prefLabel" [style]="{'border':'none','background-color':'white'}" header="{{'catalog.variableData.instanceVariableColumnHeading' | translate}}">
+            <ng-template let-instanceVariable="rowData" pTemplate="body">
+                <ng-container *ngIf="instanceVariable.dataset">
+                    <span><a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang }}</a></span>
+                </ng-container>
+                <ng-container *ngIf="!instanceVariable.dataset">
+                    <span>{{instanceVariable.prefLabel | lang }}</span>
+                </ng-container>
+            </ng-template>
+        </p-column>
+        <p-column field="dataset.prefLabel" [style]="{'border':'none','background-color':'white'}" header="{{'catalog.variableData.datasetColumnHeading' | translate}}">
+            <ng-template let-instanceVariable="rowData" pTemplate="body">
+                <ng-container *ngIf="instanceVariable.dataset">
+                    <span><a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a></span>
+                </ng-container>
+                <ng-container *ngIf="!instanceVariable.dataset">
+                    <span>{{instanceVariable.dataset.prefLabel | lang }}</span>
+                </ng-container>
+            </ng-template>
+        </p-column>
+    </p-dataTable>
+  </div>
+</div>

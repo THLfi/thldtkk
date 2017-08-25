@@ -98,8 +98,8 @@ export class InstanceVariableService {
       })
   }
 
-  searchInstanceVariable(searchText="", maxResults=100): Observable<InstanceVariable[]> {
-    return this._http.get(env.contextPath + '/api/v2/instanceVariables?query=' + searchText + '&max=' +maxResults + '&broadSearch=true&requirePublished=true')
+  searchInstanceVariable(searchText="", maxResults=100, broadSearch=true, requirePublished=true): Observable<InstanceVariable[]> {
+    return this._http.get(env.contextPath + '/api/v2/instanceVariables?query=' + searchText + '&max=' +maxResults + '&broadSearch=' +broadSearch +'&requirePublished=' +requirePublished)
       .map(response => response.json() as InstanceVariable[])
   }
 

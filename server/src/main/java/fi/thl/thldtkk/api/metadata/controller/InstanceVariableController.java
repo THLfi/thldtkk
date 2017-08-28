@@ -11,6 +11,8 @@ import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(description = "API for instance variables")
 @RestController
 @RequestMapping("/api/v2")
 public class InstanceVariableController {
@@ -49,6 +52,7 @@ public class InstanceVariableController {
     @Autowired
     private InstanceVariableCsvParser csvParser;
 
+    @ApiOperation("List instance variables of given dataset")
     @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
     public List<InstanceVariable> getDatasetInstanceVariables(
             @PathVariable("datasetId") UUID datasetId) {
@@ -57,6 +61,7 @@ public class InstanceVariableController {
         return dataset.getInstanceVariables();
     }
 
+    @ApiOperation("Get one instance variable by ID")
     @GetJsonMapping("/datasets/{datasetId}/instanceVariables/{instanceVariableId}")
     public InstanceVariable getDatasetInstanceVariable(
             @PathVariable("datasetId") UUID datasetId,
@@ -115,11 +120,8 @@ public class InstanceVariableController {
         return new ResponseEntity<>(parsingResult, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            path = "/variables/{variableId}/instanceVariables",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
+    @ApiOperation("List all instances of given variable")
+    @GetJsonMapping("/variables/{variableId}/instanceVariables")
     public ResponseEntity<List<InstanceVariable>> getInstanceVariablesOfVariable(
             @PathVariable("variableId") UUID variableId) throws IOException {
 
@@ -165,6 +167,7 @@ public class InstanceVariableController {
         datasetService.save(new Dataset(dataset, variables));
     }
 
+    @ApiOperation("List all instance variables")
     @GetJsonMapping("/instanceVariables")
     public List<InstanceVariable> getInstanceVariables(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,

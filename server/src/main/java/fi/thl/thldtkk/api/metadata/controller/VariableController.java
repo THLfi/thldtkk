@@ -6,6 +6,8 @@ import fi.thl.thldtkk.api.metadata.service.VariableService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(description = "API for variables")
 @RestController
 @RequestMapping("/api/v2/variables")
 public class VariableController {
@@ -29,6 +32,7 @@ public class VariableController {
     @Autowired
     private VariableService variableService;
 
+    @ApiOperation("List all variables")
     @GetJsonMapping
     public List<Variable> queryVariables(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
@@ -36,6 +40,7 @@ public class VariableController {
         return variableService.query(query, maxResults).collect(toList());
     }
 
+    @ApiOperation("Get one variable by ID")
     @GetJsonMapping("/{variable}")
     public Variable getVariable(@PathVariable("variable") UUID variableId) {
         return variableService.get(variableId).orElseThrow(NotFoundException::new);

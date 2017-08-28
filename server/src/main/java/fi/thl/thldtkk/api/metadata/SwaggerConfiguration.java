@@ -1,9 +1,11 @@
 package fi.thl.thldtkk.api.metadata;
 
+import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +24,11 @@ public class SwaggerConfiguration implements ApplicationListener<ObjectMapperCon
   public Docket productApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.any())
-        .paths(regex("/api/.*"))
+        .apis(RequestHandlerSelectors.withMethodAnnotation(GetJsonMapping.class))
+        .paths(or(
+            regex("/api/v2/datasets.*"),
+            regex("/api/v2/instanceVariables.*"),
+            regex("/api/v2/variables.*")))
         .build()
         .apiInfo(new ApiInfo(
             "Metadata Service API",

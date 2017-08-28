@@ -6,6 +6,7 @@ import fi.thl.thldtkk.api.metadata.service.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.validation.Valid;
 
+@Api(description = "API for datasets")
 @RestController
 @RequestMapping("/api/v2/datasets")
 public class DatasetController {
@@ -46,7 +48,7 @@ public class DatasetController {
 
     private Pattern nonWordChar = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
 
-    @ApiOperation("List datasets")
+    @ApiOperation("List all datasets")
     @GetJsonMapping
     public List<Dataset> queryDatasets(
             @RequestParam(name = "organizationId", required = false) UUID organizationId,
@@ -69,7 +71,7 @@ public class DatasetController {
         return datasetService.query(String.join(" AND ", datasetQueryClauses)).collect(toList());
     }
 
-  @ApiOperation("Get one dataset by id")
+  @ApiOperation("Get one dataset by ID")
   @GetJsonMapping("/{datasetId}")
     public Dataset getDataset(@PathVariable("datasetId") UUID datasetId) {
         return datasetService.get(datasetId).orElseThrow(NotFoundException::new);
@@ -116,6 +118,7 @@ public class DatasetController {
         }
     }
 
+    @ApiOperation("List last published datasets")
     @GetJsonMapping(path="/published/recent/{maxResults}")
     public List<Dataset> getRecentAndPublishedDatasets(
             @PathVariable("maxResults") int maxResults) {

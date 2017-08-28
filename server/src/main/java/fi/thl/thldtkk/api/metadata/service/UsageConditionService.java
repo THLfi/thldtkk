@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service;
 
 import fi.thl.thldtkk.api.metadata.domain.UsageCondition;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,16 +11,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsageConditionService implements Service<UUID, UsageCondition> {
 
-    private Service<NodeId, Node> nodeService;
+    private TermedNodeService nodeService;
 
     @Autowired
-    public UsageConditionService(Service<NodeId, Node> nodeService) {
+    public UsageConditionService(TermedNodeService nodeService) {
         this.nodeService = nodeService;
     }
 
     @Override
     public Stream<UsageCondition> query() {
-        return nodeService.query("type.id:UsageCondition").map(UsageCondition::new);
+      NodeRequestBuilder builder = new NodeRequestBuilder();
+      builder.addDefaultIncludedAttributes();
+      builder.withQuery("type.id:UsageCondition");
+      builder.addSort("prefLabel");
+      return nodeService.query(builder.build()).map(UsageCondition::new);
     }
 
     @Override

@@ -261,7 +261,8 @@
       "get": {
         "result": {
           "fail": "Käsitemuuttujan haku epäonnistui"
-        },
+        }
+      },
       "delete": {
         "result": {
           "success": "Käsitemuuttuja poistettu"

@@ -1,12 +1,12 @@
 <div class="search-result">
     <div class="row">
-        <div *ngIf="variable.prefLabel" class="col-xs-10 variable-header">
+        <div *ngIf="variable.prefLabel" class="col-xs-9 variable-header">
             <ng-container>
                 {{variable.prefLabel | lang}}
             </ng-container>
         </div>
 
-      <div class="col-xs-2">
+      <div class="col-xs-3 input-group">
         <button
           (click)="showVariableModal(variable)"
           class="btn btn-default btn-sm">
@@ -18,6 +18,12 @@
                         (onSave)="saveVariable($event)"
                         (onCancel)="closeVariableModal()">
         </variable-modal>
+        <button
+          (click)="confirmRemove(variable.id)"
+          class="btn btn-danger btn-sm">
+          <span class="glyphicon glyphicon-trash"></span>
+          {{ 'remove' | translate }}
+        </button>
       </div>
     </div>
 

@@ -12,11 +12,14 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,4 +53,10 @@ public class VariableController {
         return variableService.save(variable);
     }
 
+    @DeleteMapping("/{variableId}")
+    @ResponseStatus(NO_CONTENT)
+    public void deleteDatasetInstanceVariable(
+            @PathVariable("variableId") UUID variableId) {
+        variableService.delete(variableId);
+    }
 }

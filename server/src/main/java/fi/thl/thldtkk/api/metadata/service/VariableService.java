@@ -4,8 +4,10 @@ import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.ArrayList;
 import static java.util.Arrays.stream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,7 +53,12 @@ public class VariableService implements Service<UUID, Variable> {
 
     @Override
     public void delete(UUID id) {
-        throw new UnsupportedOperationException();
+        List<Node> nodesToDelete = new LinkedList<>();
+
+        Variable variable = get(id).orElseThrow(NotFoundException::new);
+        nodesToDelete.add(variable.toNode());
+
+        nodeService.delete(nodesToDelete.stream().map(NodeId::new).collect(toList()));
     }
 
     public Stream<Variable> query(String query, int maxResults) {

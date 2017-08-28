@@ -103,4 +103,8 @@ export class InstanceVariableService {
       .map(response => response.json() as InstanceVariable[])
   }
 
+  searchInstanceVariableByVariableId(variableId, maxResults=100): Observable<InstanceVariable[]> {
+      return this._http.get(env.contextPath + '/api/v2/variables/'+variableId+'/instanceVariables?max=' +maxResults)
+        .map(response => response.json() as InstanceVariable[])
+    }
 }

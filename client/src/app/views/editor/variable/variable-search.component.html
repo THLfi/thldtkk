@@ -31,7 +31,7 @@
       </div>
     </div>
     <ng-container *ngFor="let variable of variables">
-      <variable-search-result [variable]="variable"></variable-search-result>
+      <variable-search-result [variable]="variable" [parent]="this"></variable-search-result>
       <hr>
     </ng-container>
   </div>

@@ -43,6 +43,10 @@ export class VariableSearchComponent implements OnInit {
     })
   }
 
+  refresh(){
+    this.searchVariables(this.searchText)
+  }
+
   searchVariables(searchText: string) {
     if(this.variableSearchSubscription) {
       this.variableSearchSubscription.unsubscribe();

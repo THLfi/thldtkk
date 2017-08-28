@@ -57,7 +57,7 @@ export class VariableService {
   getInstanceVariables(id:string):Observable<InstanceVariable[]> {
       return this._http.get(env.contextPath + '/api/v2/variables/'+id+'/instanceVariables')
       .map(response => response.json() as InstanceVariable[])
-    
+
   }
 
   private handleHttpError(error: any, summaryMessageKey: string): ObservableInput<any> {
@@ -66,4 +66,16 @@ export class VariableService {
     return Observable.throw(error)
   }
 
+  deleteVariable(variableId: string): Observable<any> {
+    const path: string = env.contextPath
+      + '/api/v2/variables/'
+      + variableId
+
+    return this._http.delete(path)
+      .map(response => response.json())
+      .catch(error => this.handleHttpError(error, 'operations.common.delete.result.fail'))
+      .do(() => {
+        this.growlMessageService.buildAndShowMessage('info', 'operations.variable.delete.result.success')
+      })
+  }
 }

@@ -88,7 +88,7 @@
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
-  "loadMoreResults": "Näytä lisää hakutuloksia", 
+  "loadMoreResults": "Näytä lisää hakutuloksia",
   "uploadFromFile": "Aineiston tuonti tiedostosta (HUOM: aineiston tuonti tyhjentää kaikki kentät)",
   "uploadDataset": "Aineiston tuonti",
   "valueDomain": "Arvoalue",
@@ -261,7 +261,13 @@
       "get": {
         "result": {
           "fail": "Käsitemuuttujan haku epäonnistui"
-        }
+        },
+      "delete": {
+        "result": {
+          "success": "Käsitemuuttuja poistettu"
+        },
+        "confirmVariableDelete": "Haluatko varmasti poistaa käsitemuuttujan?",
+        "referencingInstanceVariables": "Seuraavat muuttujat viittaavat poistettavaan käsitemuuttujaan:"
       }
     },
     "quantity": {

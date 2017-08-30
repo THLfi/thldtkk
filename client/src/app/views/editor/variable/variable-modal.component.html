@@ -37,19 +37,21 @@
 
         <div [ngClass]="{ 'bg-danger': formErrors.description && formErrors.description.length }"
              class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-12">
             <div [ngClass]="{ 'has-error': formErrors.description && formErrors.description.length }"
                  class="form-group">
               <label for="description">
                 {{ 'description' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
               </label>
-              <input [(ngModel)]="variable.description[language]"
-                     id="description"
-                     name="description"
-                     type="text"
-                     class="form-control"
-                     required>
+              <textarea [(ngModel)]="variable.description[language]"
+                        thlAutogrow
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="3"
+                        required>
+              </textarea>
               <p *ngFor="let errorKey of formErrors.description"
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

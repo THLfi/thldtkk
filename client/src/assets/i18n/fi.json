@@ -131,6 +131,7 @@
   "addUnit": "Lisää mittayksikkö...",
   "newUnit": "Uusi mittayksikkö",
   "catalog": {
+    "personInRoles": "Yhteystiedot",
     "referencePeriod": "Ajankohta",
     "searchInstanceVariable": {
       "foundInDataset": "Aineistossa",

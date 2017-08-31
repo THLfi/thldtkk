@@ -7,58 +7,81 @@
           ({{ dataset.abbreviation | lang }})
         </span>
       </h1>
-      <h2 *ngIf="dataset.altLabel | lang" class="alt-label">
+      <h2 class="sr-only">{{ 'altLabel' | translate }}</h2>
+      <p *ngIf="dataset.altLabel | lang" class="alt-label">
         {{ dataset.altLabel | lang }}
-      </h2>
+      </p>
     </div>
   </div>
 
   <div class="row">
 
-    <!-- Right main column -->
-    <div class="col-sm-3 col-sm-push-9">
+    <div class="col-sm-3 col-sm-push-9 right-main-column">
 
-      <h2 *ngIf="dataset.owner">
-        {{ dataset.owner.prefLabel | lang }}
-        <span *ngIf="dataset.owner.abbreviation | lang">
-          ({{ dataset.owner.abbreviation | lang }})
-        </span>
-      </h2>
+      <ng-container *ngIf="dataset.owner">
+        <h2 class="sr-only">{{ 'organization' }}</h2>
+        <p class="owner-organization">
+          {{ dataset.owner.prefLabel | lang }}
+          <span *ngIf="dataset.owner.abbreviation | lang">
+            ({{ dataset.owner.abbreviation | lang }})
+          </span>
+        </p>
+      </ng-container>
 
-      <!-- TODO: Add contact person after adding it to new API. -->
 
-    <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
+      <ng-container *ngIf="dataset.personInRoles && dataset.personInRoles.length">
+        <h2>{{ 'catalog.personInRoles' | translate }}</h2>
+        <ng-container *ngFor="let personInRole of dataset.personInRoles">
+          <p *ngIf="personInRole.public">
+            <span class="person-name">
+              {{ personInRole.person.firstName }}
+              {{ personInRole.person.lastName }}
+            </span>
+            <ng-container *ngIf="personInRole.role">
+              <br>
+              <em>{{ personInRole.role.prefLabel | lang }}</em>
+            </ng-container>
+            <ng-container *ngIf="personInRole.person.phone">
+              <br>
+              <em>{{ personInRole.person.phone }}</em>
+            </ng-container>
+            <ng-container *ngIf="personInRole.person.email">
+              <br>
+              <a href="mailto:{{ personInRole.person.email }}"
+                 class="person-email">
+                {{ personInRole.person.email }}
+              </a>
+            </ng-container>
+          </p>
+        </ng-container>
+      </ng-container>
 
-      <p>
-        <strong *ngIf="dataset.datasetTypes">
+      <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
+        <h2 *ngIf="dataset.datasetTypes">
           {{ 'datasetType' | translate }}
-        </strong>
-      </p>
-      <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
+        </h2>
+        <p *ngFor="let datasetType of dataset.datasetTypes">
+          {{ datasetType.prefLabel | lang }}
+        </p>
+      </ng-container>
 
-    </ng-container>
-
-      <p>
-        <strong *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">
-          {{ 'usageCondition' | translate }}
-        </strong>
-      </p>
-
+      <h2 *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">
+        {{ 'usageCondition' | translate }}
+      </h2>
       <p *ngIf="dataset.usageCondition">
         {{ dataset.usageCondition.prefLabel | lang }}
       </p>
-
       <p *ngIf="dataset.usageConditionAdditionalInformation">
         <span class="preserve-line-breaks">{{ dataset.usageConditionAdditionalInformation | lang }}</span>
       </p>
 
       <div *ngIf="dataset.links && dataset.links.length">
-        <p><strong>{{'links'|translate}}</strong></p>
+        <h2>{{'links'|translate}}</h2>
         <p *ngFor="let link of dataset.links">
-            <a href="{{ link.linkUrl | lang }}" target="_blank">
-                {{ link.prefLabel | lang }}
+          <a href="{{ link.linkUrl | lang }}" target="_blank">
+            {{ link.prefLabel | lang }}
             <span class="glyphicon glyphicon-link"></span>
-            </a>
+          </a>
         </p>
       </div>
     </div>

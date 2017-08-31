@@ -37,6 +37,10 @@ h2 {
 .row.bg-highlight {
   background-color: lightgray;
 }
+/* !important needed for overriding background color in striped tables */
+.bg-danger {
+  background-color: #f2dede !important;
+}
 
 /* Left sidebar */
 

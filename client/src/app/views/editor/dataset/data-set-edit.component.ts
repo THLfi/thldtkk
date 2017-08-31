@@ -22,6 +22,7 @@ import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
 import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
+import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
 import {OrganizationService} from "../../../services2/organization.service";
@@ -92,6 +93,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     sidebarActiveSection = SidebarActiveSection.DATASET
 
+    urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*'
+    urlSchemeHttpPrefix: string = "http://"
+    partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/ // e.g. 'http:/thl.fi'
+    validUrlExpression: RegExp
+
     constructor(
         private datasetService: DatasetService,
         private lifecyclePhaseService: LifecyclePhaseService,
@@ -121,6 +127,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     ngOnInit() {
         this.getDataset();
+        this.validUrlExpression = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
     }
 
     private getDataset() {
@@ -430,6 +437,15 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         if (index !== -1) {
             this.dataset.links.splice(index, 1);
         }
+    }
+
+    correctLinkUrlFormat(link: Link): void {
+      let linkUrl: string = link.linkUrl[this.language]
+      
+      let isValidUrl: boolean = this.validUrlExpression.test(linkUrl)
+      let isPartiallyValidUrlScheme: boolean = this.partiallyValidUrlSchemeExpression.test(linkUrl)
+
+      link.linkUrl[this.language] = isValidUrl || (!isValidUrl && isPartiallyValidUrlScheme) ? linkUrl :  this.urlSchemeHttpPrefix+linkUrl
     }
 
     private resolveSelectedDatasetTypes(): DatasetType[] {

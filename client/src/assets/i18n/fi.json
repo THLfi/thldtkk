@@ -205,7 +205,8 @@
   "errors": {
     "form": {
       "required": "Tieto on pakollinen",
-      "invalidDate": "Virheellinen päivämäärä."
+      "invalidDate": "Virheellinen päivämäärä.",
+      "invalidLinkUrlFormat": "Virheellinen URL. Täytä etuliite esim. 'http://osoite.fi'"
     },
     "server": {
       "operationFailed": "Pyyntö epäonnistui",

@@ -195,7 +195,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn btn-default" (click)="removePersonInRole(personInRole)">
+                <button type="button" class="btn btn-default" (click)="removePersonInRole(personInRole)">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                   {{ 'remove' | translate }}
                 </button>
@@ -205,7 +205,7 @@
           <ng-template #noDatasetPersonInRoles>
             <p translate="noDatasetPersonInRoles"></p>
           </ng-template>
-          <button class="btn btn-default" (click)="addPersonInRole()">
+          <button type="button" class="btn btn-default" (click)="addPersonInRole()">
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'addNewPersonInRole' | translate }}
           </button>
@@ -220,7 +220,8 @@
               <th translate="linkUrl"></th>
               <th translate="functions"></th>
             </tr>
-            <tr *ngFor="let link of dataset.links; let linkNumber = index;">
+            <tr *ngFor="let link of dataset.links; let linkNumber = index;"
+                [ngClass]="{ 'bg-danger': formErrors['link-linkUrl-' + linkNumber] && formErrors['link-linkUrl-' + linkNumber].length }">
               <td>
                 <input [(ngModel)]="link.prefLabel[language]"
                        id="link-prefLabel-{{ linkNumber }}"
@@ -230,13 +231,25 @@
               </td>
               <td>
                 <input [(ngModel)]="link.linkUrl[language]"
+                       (blur)="correctLinkUrlFormat(link)"
                        id="link-linkUrl-{{ linkNumber }}"
                        name="link-linkUrl-{{ linkNumber }}"
                        type="text"
-                       class="form-control">
+                       class="form-control"
+                       pattern="{{urlFieldValidatorPattern}}">
+                <p *ngFor="let errorKey of formErrors['link-linkUrl-' + linkNumber]"
+                   class="text-danger">
+                  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  <ng-container *ngIf="errorKey == 'errors.form.pattern'; else nonLinkPatternError">
+                    {{ 'errors.form.invalidLinkUrlFormat' | translate }}
+                  </ng-container>
+                  <ng-template #nonLinkPatternError>
+                    {{ errorKey | translate }}
+                  </ng-template>
+                </p>
               </td>
               <td>
-                <button class="btn btn-default" (click)="removeLink(link)">
+                <button type="button" class="btn btn-default" (click)="removeLink(link)">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                   {{ 'remove' | translate }}
                 </button>
@@ -248,7 +261,7 @@
             <p translate="noDatasetLinks"></p>
           </ng-template>
 
-          <button class="btn btn-default" (click)="addLink()">
+          <button type="button" class="btn btn-default" (click)="addLink()">
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'addNewLink' | translate }}
           </button>
@@ -325,7 +338,8 @@
                 <span style="padding-left:1em;padding-right:1em">|</span>
                 <button
                   (click)="showAddUnitTypeModal()"
-                  class="btn btn-default">
+                  class="btn btn-default"
+                  type="button">
                   <span class="glyphicon glyphicon-plus"></span>
                   {{ 'addUnitType' | translate }}
                 </button>
@@ -382,7 +396,8 @@
                 <span style="padding-left:1em;padding-right:1em">|</span>
                 <button
                   (click)="showAddUniverseModal()"
-                  class="btn btn-default btn-sm">
+                  class="btn btn-default btn-sm"
+                  type="button">
                   <span class="glyphicon glyphicon-plus"></span>
                   {{ 'addUniverse' | translate }}
                 </button>
@@ -591,13 +606,15 @@
         <div class="col-xs-12">
           <button (click)="save()"
                   [disabled]="savingInProgress"
-                  class="btn btn-primary">
+                  class="btn btn-primary"
+                  type="button">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             {{ 'save' | translate }}
           </button>
           <button (click)="goBack()"
                   [disabled]="savingInProgress"
-                  class="btn btn-default">
+                  class="btn btn-default"
+                  type="button">
             {{ 'cancel' | translate }}
           </button>
         </div>

@@ -45,7 +45,8 @@ public class VariableController {
     public Variable getVariable(@PathVariable("variable") UUID variableId) {
         return variableService.get(variableId).orElseThrow(NotFoundException::new);
     }
-    
+
+    @ApiOperation("List all instances of given variable")
     @GetJsonMapping("/{variable}/instanceVariables")
     public List<InstanceVariable> getInstanceVariables(
             @PathVariable("variable") UUID variableId,

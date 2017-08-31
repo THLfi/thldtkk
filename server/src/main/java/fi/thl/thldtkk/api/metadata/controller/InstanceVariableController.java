@@ -120,14 +120,6 @@ public class InstanceVariableController {
         return new ResponseEntity<>(parsingResult, HttpStatus.OK);
     }
 
-    @ApiOperation("List all instances of given variable")
-    @GetJsonMapping("/variables/{variableId}/instanceVariables")
-    public ResponseEntity<List<InstanceVariable>> getInstanceVariablesOfVariable(
-            @PathVariable("variableId") UUID variableId) throws IOException {
-
-        return ResponseEntity.ok(instanceVariableService.getInstanceVariablesByVariableId(variableId, 100));
-    }
-
     private String getCharset(String contentType) {
         if (StringUtils.hasText(contentType)) {
             String charsetString = ";charset=";

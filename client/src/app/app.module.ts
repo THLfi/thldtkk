@@ -35,6 +35,7 @@ import { DatasetService } from './services2/dataset.service'
 import { DatasetTypeService } from './services2/dataset-type.service'
 import { GrowlMessageService } from './services2/growl-message.service'
 import { InstanceVariableService } from './services2/instance-variable.service'
+import { PublicInstanceVariableService } from './services2/public-instance-variable.service'
 import { InstanceQuestionService } from './services2/instance-question.service'
 import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
 import { UnitService } from './services2/unit.service'
@@ -156,6 +157,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
     providers: [
         DatasetService,
         InstanceVariableService,
+        PublicInstanceVariableService,
         InstanceQuestionService,
         VariableService,
         NodeUtils,

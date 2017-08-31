@@ -51,7 +51,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 show-more-results" *ngIf="instanceVariables && instanceVariables.length">
+    <div class="col-xs-12 show-more-results" *ngIf="instanceVariables 
+     && instanceVariables.length && instanceVariables.length >= maxResults">
         <ng-container *ngIf="!searchInProgress && !searchingMoreResults">
           <button class="btn btn-sm btn-default" (click)="loadMoreResults()">
             {{ 'loadMoreResults' | translate }}

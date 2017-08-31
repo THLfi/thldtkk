@@ -1,24 +1,24 @@
 package fi.thl.thldtkk.api.metadata.service;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.domain.query.Query;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 /**
  * Termed REST API backed service for Nodes.
@@ -59,6 +59,16 @@ public class TermedNodeService implements Service<NodeId, Node> {
       new NodeRequestBuilder()
         .withQuery(query)
         .build());
+  }
+
+  @Override
+  public Stream<Node> query(Query query) {
+    return termed.exchange("/node-trees?"
+            + "select=" + query.getSelect() + "&"
+            + "where=" + query.getWhere() + "&"
+            + "sort=" + query.getSort() + "&"
+            + "max=" + query.getMax(), GET, null,
+        nodeListType).getBody().stream();
   }
 
   public Stream<Node> query(NodeRequest request) {

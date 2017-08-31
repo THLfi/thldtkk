@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.service;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.SetMultimap;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.collect.ImmutableMultimap.of;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -107,18 +110,22 @@ public class DatasetServiceTest {
         new InstanceVariable(nameUUIDFromString("IV2")),
         new InstanceVariable(nameUUIDFromString("IV3"))));
 
+    SetMultimap<String,StrictLangValue> props = LinkedHashMultimap.create(
+        ImmutableMultimap.of("published", new StrictLangValue("", "false", "^(true|false)$")));
+
     datasetService.save(ds);
+
     verify(mockedNodeService).save(asList(
-        new Node(nameUUIDFromString("DS"), "DataSet", ImmutableMultimap.of(),
+        new Node(nameUUIDFromString("DS"), "DataSet", of(),
             // dataset references
             ImmutableMultimap.of(
-                "instanceVariable", new Node(nameUUIDFromString("IV1"), "InstanceVariable"),
-                "instanceVariable", new Node(nameUUIDFromString("IV2"), "InstanceVariable"),
-                "instanceVariable", new Node(nameUUIDFromString("IV3"), "InstanceVariable"))),
+                "instanceVariable", new Node(nameUUIDFromString("IV1"), "InstanceVariable", props),
+                "instanceVariable", new Node(nameUUIDFromString("IV2"), "InstanceVariable", props),
+                "instanceVariable", new Node(nameUUIDFromString("IV3"), "InstanceVariable", props))),
         // actual instance variable nodes
-        new Node(nameUUIDFromString("IV1"), "InstanceVariable"),
-        new Node(nameUUIDFromString("IV2"), "InstanceVariable"),
-        new Node(nameUUIDFromString("IV3"), "InstanceVariable")));
+        new Node(nameUUIDFromString("IV1"), "InstanceVariable", props),
+        new Node(nameUUIDFromString("IV2"), "InstanceVariable", props),
+        new Node(nameUUIDFromString("IV3"), "InstanceVariable", props)));
   }
 
   @Test(expected = NotFoundException.class)

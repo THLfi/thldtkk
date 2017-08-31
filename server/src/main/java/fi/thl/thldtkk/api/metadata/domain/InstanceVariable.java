@@ -5,6 +5,8 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
+
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
@@ -33,6 +35,7 @@ public class InstanceVariable implements NodeEntity {
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
+    private Boolean published;
     private LocalDate referencePeriodStart;
     private LocalDate referencePeriodEnd;
     private String technicalName;
@@ -70,6 +73,7 @@ public class InstanceVariable implements NodeEntity {
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
         this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
+        this.published = toBoolean(node.getProperties("published"), false);
         this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
         this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
         this.technicalName = PropertyMappings.toString(node.getProperties("technicalName"));
@@ -225,6 +229,14 @@ public class InstanceVariable implements NodeEntity {
         return freeConcepts;
     }
 
+    public Optional<Boolean> isPublished() {
+        return Optional.ofNullable(published);
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+
     public Optional<BigDecimal> getValueRangeMax() {
         return Optional.ofNullable(valueRangeMax);
     }
@@ -268,6 +280,7 @@ public class InstanceVariable implements NodeEntity {
         props.putAll("sourceDescription", toPropertyValues(sourceDescription));
         props.putAll("dataFormat", toPropertyValues(dataFormat));
 
+        isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
         getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
         getTechnicalName().ifPresent((v -> props.put("technicalName", toPropertyValue(v))));
@@ -327,6 +340,7 @@ public class InstanceVariable implements NodeEntity {
                 && Objects.equals(dataType, that.dataType)
                 && Objects.equals(unitType, that.unitType)
                 && Objects.equals(instanceQuestions, that.instanceQuestions)
+                && Objects.equals(published, that.published)
                 && Objects.equals(dataFormat, that.dataFormat);
     }
 
@@ -336,7 +350,7 @@ public class InstanceVariable implements NodeEntity {
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
                 defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable,
-                source, sourceDescription, dataType, unitType, instanceQuestions, dataFormat);
+                source, sourceDescription, dataType, unitType, instanceQuestions, published, dataFormat);
     }
 
 }

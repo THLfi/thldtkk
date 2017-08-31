@@ -8,7 +8,7 @@ import { Dataset } from '../../../model2/dataset'
 import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { Variable } from '../../../model2/variable'
-import { InstanceVariableService } from '../../../services2/instance-variable.service'
+import { PublicInstanceVariableService } from '../../../services2/public-instance-variable.service'
 import { LangPipe } from '../../../utils/lang.pipe';
 
 // Observable operators
@@ -37,7 +37,7 @@ export class InstanceVariableSearchComponent implements OnInit {
 
   static readonly searchDelay = 500;
 
-  constructor(private instanceVariableService: InstanceVariableService,
+  constructor(private instanceVariableService: PublicInstanceVariableService,
               private route: ActivatedRoute,
               private router: Router,
               private location: Location,

@@ -1,6 +1,10 @@
 package fi.thl.thldtkk.api.metadata.service;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Query;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
+import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -27,6 +31,28 @@ public interface Service<K, V> {
    * @return matching values
    */
   Stream<V> query(String query);
+
+  /**
+   * Find values by query object
+   *
+   * @param query to search with
+   * @return matching values
+   */
+  default Stream<V> query(Query query) {
+    return query(query.toString());
+  }
+
+  default Stream<V> query(Select select, Criteria criteria) {
+    return query(Query.query(select, criteria));
+  }
+
+  default Stream<V> query(Select select, Criteria criteria, Sort sort) {
+    return query(Query.query(select, criteria, sort));
+  }
+
+  default Stream<V> query(Select select, Criteria criteria, Sort sort, int max) {
+    return query(Query.query(select, criteria, sort, max));
+  }
 
   /**
    * Find one value by id

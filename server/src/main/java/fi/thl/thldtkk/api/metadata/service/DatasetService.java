@@ -74,11 +74,14 @@ public class DatasetService implements Service<UUID, Dataset> {
           old = get(dataset.getId());
         }
 
+        boolean isDatasetPublished = dataset.isPublished().orElse(false);
+
         dataset.getPopulation()
                 .ifPresent(p -> p.setId(firstNonNull(p.getId(), randomUUID())));
         dataset.getInstanceVariables()
                 .forEach(iv -> {
                   iv.setId(firstNonNull(iv.getId(), randomUUID()));
+                  iv.setPublished(isDatasetPublished);
                   if (InstanceVariable.VALUE_DOMAIN_TYPE_DESCRIBED.equals(iv.getValueDomainType().orElse(null))) {
                     iv.setCodeList(null);
                   }

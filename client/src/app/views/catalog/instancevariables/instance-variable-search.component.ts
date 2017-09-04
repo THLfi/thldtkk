@@ -35,6 +35,7 @@ export class InstanceVariableSearchComponent implements OnInit {
   searchingMoreResults: boolean
   latestLookupTerm: string
 
+  static readonly defaultMaxResults = 100
   static readonly searchDelay = 500;
 
   constructor(private instanceVariableService: PublicInstanceVariableService,
@@ -49,12 +50,14 @@ export class InstanceVariableSearchComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.searchText = params['query'];
-      this.maxResults = Number(params['max'] || 100);
+      this.maxResults = Number(params['max'] || InstanceVariableSearchComponent.defaultMaxResults);
       if(this.searchText != null && this.searchText != "") {
+        this.searchInProgress = true
         this.searchInstanceVariables(this.searchText).subscribe(instanceVariables => {
           this.instanceVariables = instanceVariables
           this.variables = this.extractVariables(this.instanceVariables)
           this.latestLookupTerm = this.searchText
+          this.searchInProgress = false
         })
         this.updateQueryParam(this.searchText)
       }
@@ -115,6 +118,7 @@ export class InstanceVariableSearchComponent implements OnInit {
       .switchMap(term => {
         this.searchInProgress = true;
         this.latestLookupTerm = term;
+        this.maxResults = InstanceVariableSearchComponent.defaultMaxResults
         return term ? this.searchInstanceVariables(term) : Observable.of<InstanceVariable[]>([])
       })
       .catch(error => {
@@ -127,5 +131,4 @@ export class InstanceVariableSearchComponent implements OnInit {
         this.variables = this.extractVariables(instanceVariables)
         this.searchInProgress = false})
   }
-
 }

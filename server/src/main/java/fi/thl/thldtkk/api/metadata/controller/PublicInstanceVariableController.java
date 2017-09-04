@@ -109,7 +109,7 @@ public class PublicInstanceVariableController {
     }
 
     return nodeService.query(
-        select("id", "type", "properties.*", "references.*"),
+        select("id", "type", "properties.*", "references.*", "referrers.instanceVariable"),
         and(criteria),
         sort("properties.prefLabel.sortable"), maxResults)
         .map(InstanceVariable::new)

@@ -15,6 +15,7 @@
         </button>
         <variable-modal *ngIf="editVariable"
                         [variable]="variable"
+                        [searchComponent]="parent"
                         (onSave)="saveVariable($event)"
                         (onCancel)="closeVariableModal()">
         </variable-modal>

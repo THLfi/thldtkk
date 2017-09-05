@@ -30,6 +30,7 @@ import { NodeUtils } from './utils/node-utils'
 
 // services
 import { CodeListService } from "./services2/code-list.service";
+import { CommonErrorHandlingHttpService } from './services2/common-error-handling-http.service'
 import { ConceptService } from './services2/concept.service'
 import { DatasetService } from './services2/dataset.service'
 import { DatasetTypeService } from './services2/dataset-type.service'
@@ -180,7 +181,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         TruncateCharactersPipe,
         DateUtils,
         PersonService,
-        RoleService
+        RoleService,
+        { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [
         AppComponent

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs'
-import { ObservableInput } from 'rxjs/Observable'
 import 'rxjs/add/operator/do'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/map'
@@ -10,7 +9,6 @@ import { environment as env} from '../../environments/environment'
 
 import { GrowlMessageService } from './growl-message.service'
 import { InstanceVariable } from '../model2/instance-variable';
-import { HttpMessageHelper } from "../utils/http-message-helper";
 
 @Injectable()
 export class InstanceVariableService {
@@ -29,7 +27,6 @@ export class InstanceVariableService {
 
     return this._http.get(path)
       .map(response => response.json() as InstanceVariable)
-      .catch(error => this.handleHttpError(error, 'operations.instanceVariable.get.result.fail'))
   }
 
   saveInstanceVariable(datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
@@ -52,16 +49,9 @@ export class InstanceVariableService {
 
     return this._http.post(path, instanceVariable, options)
       .map(response => response.json() as InstanceVariable)
-      .catch(error => this.handleHttpError(error, 'operations.common.save.result.fail.summary'))
       .do(iv => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
       })
-  }
-
-  private handleHttpError(error: any, summaryMessageKey: string): ObservableInput<any> {
-    this.growlMessageService.buildAndShowMessage('error', summaryMessageKey,
-      HttpMessageHelper.getErrorMessageByStatusCode(error.status))
-    return Observable.throw(error)
   }
 
   deleteInstanceVariable(datasetId: string, instanceVariableId: string): Observable<any> {
@@ -73,7 +63,6 @@ export class InstanceVariableService {
 
     return this._http.delete(path)
       .map(response => response.json())
-      .catch(error => this.handleHttpError(error, 'operations.common.delete.result.fail'))
       .do(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.instanceVariable.delete.result.success')
       })
@@ -92,7 +81,6 @@ export class InstanceVariableService {
 
     return this._http.post(path, file, options)
       .map(response => response.json() as InstanceVariable)
-      .catch(error => this.handleHttpError(error, 'operations.instanceVariable.import.result.fail'))
       .do(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.import.result.success')
       })
@@ -106,5 +94,6 @@ export class InstanceVariableService {
   searchInstanceVariableByVariableId(variableId, maxResults=100): Observable<InstanceVariable[]> {
       return this._http.get(env.contextPath + '/api/v2/variables/'+variableId+'/instanceVariables?max=' +maxResults)
         .map(response => response.json() as InstanceVariable[])
-    }
+  }
+
 }

@@ -6,7 +6,6 @@ import { environment as env} from '../../environments/environment'
 
 import { CodeList } from '../model2/code-list'
 import { GrowlMessageService } from './growl-message.service'
-import { HttpMessageHelper } from '../utils/http-message-helper'
 
 @Injectable()
 export class CodeListService {
@@ -44,12 +43,6 @@ export class CodeListService {
 
     return this._http.post(path, codeList, options)
       .map(response => response.json() as CodeList)
-      .catch(error => {
-        this.growlMessageService.buildAndShowMessage('error',
-          'operations.common.save.result.fail.summary',
-          HttpMessageHelper.getErrorMessageByStatusCode(error.status))
-        return Observable.throw(error)
-      })
       .do(codeList => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.codeList.save.result.success')
       })

@@ -209,11 +209,13 @@
       "invalidLinkUrlFormat": "Virheellinen URL. Täytä etuliite esim. 'http://osoite.fi'"
     },
     "server": {
-      "operationFailed": "Pyyntö epäonnistui",
+      "operationFailed": "Toiminto epäonnistui",
       "saveFailed": "Tallennus epäonnistui",
       "deleteFailed": "Poisto epäonnistui",
       "notFound": "Annetulla tunnisteella ei löytynyt entiteettiä.",
       "badRequest": "Lähetetyt tiedot olivat virheelliset.",
+      "forbidden": "Sinulla ei ole tarvittavia oikeuksia toiminnon suorittamiseen.",
+      "unauthorized": "Sinun täytyy kirjautua sisään suorittaaksesi toiminnon.",
       "unavailable": "Palvelimeen ei saada yhteyttä, yritä hetken päästä uudelleen.",
       "unknownError": "Tuntematon virhetilanne palvelimella, yritä hetken päästä uudelleen."
     }

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs'
 import { environment as env} from '../../environments/environment'
 
 import { GrowlMessageService } from './growl-message.service'
-import { HttpMessageHelper } from '../utils/http-message-helper'
 import { Person } from '../model2/person'
 
 @Injectable()
@@ -33,12 +32,6 @@ export class PersonService {
 
     return this._http.post(path, person, options)
       .map(response => response.json() as Person)
-      .catch(error => {
-        this.growlMessageService.buildAndShowMessage('error',
-          'operations.common.save.result.fail.summary',
-          HttpMessageHelper.getErrorMessageByStatusCode(error.status))
-        return Observable.throw(error)
-      })
       .do(role => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.person.save.result.success')
       })

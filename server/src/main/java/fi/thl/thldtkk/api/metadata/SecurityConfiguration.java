@@ -1,25 +1,45 @@
 package fi.thl.thldtkk.api.metadata;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private static final Logger LOG = LoggerFactory.getLogger(SecurityConfiguration.class);
+
+  @Value("${users.properties.resource}")
+  private Resource usersPropertiesResource;
+
+  @Bean
+  public UserDetailsService propertiesBasedUserDetailsService() throws Exception {
+    Properties properties = PropertiesLoaderUtils.loadProperties(
+      new EncodedResource(usersPropertiesResource, "UTF-8"));
+    LOG.info("Loaded {} users from {}", properties.size(), usersPropertiesResource);
+    return new InMemoryUserDetailsManager(properties);
+  }
+
   @Autowired
   public void configureAuthenticationManager(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
-    authManagerBuilder
-      .inMemoryAuthentication()
-      .withUser("user")
-        .password("password")
-        .authorities("AINEISTOEDITORI.FI_USER");
+    authManagerBuilder.userDetailsService(propertiesBasedUserDetailsService());
   }
 
   @Override

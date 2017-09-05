@@ -19,7 +19,13 @@ Configure server properties:
     - termed.password=<termed-password-for-api-calls>
     - termed.graphId=<current-termed-dtkk-graph-id>
     - server.port=8680
+    - users.properties.resource=<users-file-location-as-spring-resource>
     Save the file and exit the editor.
+
+Add users to user properties file you configured above. See
+`src/main/resources/users.properties` for example. Note 1: The application
+will start without any configured users but credentials are required if you
+want to access the editor. Note 2: Users file must be UTF-8 encoded.
 
 Run dev server:
 

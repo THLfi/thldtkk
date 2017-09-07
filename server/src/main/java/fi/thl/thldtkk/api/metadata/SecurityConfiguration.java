@@ -1,5 +1,8 @@
 package fi.thl.thldtkk.api.metadata;
 
+import fi.thl.thldtkk.api.metadata.security.UserDirectory;
+import fi.thl.thldtkk.api.metadata.security.UserWithProfileUserDetailsManager;
+import fi.thl.thldtkk.api.metadata.service.UserProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +32,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Value("${users.properties.resource}")
   private Resource usersPropertiesResource;
 
+  @Autowired
+  private UserProfileService userProfileService;
+
   @Bean
   public UserDetailsService propertiesBasedUserDetailsService() throws Exception {
     Properties properties = PropertiesLoaderUtils.loadProperties(
       new EncodedResource(usersPropertiesResource, "UTF-8"));
+
     LOG.info("Loaded {} users from {}", properties.size(), usersPropertiesResource);
-    return new InMemoryUserDetailsManager(properties);
+
+    return new UserWithProfileUserDetailsManager(
+      UserDirectory.LOCAL,
+      new InMemoryUserDetailsManager(properties),
+      userProfileService);
   }
 
   @Autowired

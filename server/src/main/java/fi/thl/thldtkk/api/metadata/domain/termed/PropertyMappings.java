@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public final class PropertyMappings {
@@ -51,6 +52,12 @@ public final class PropertyMappings {
   public static Collection<StrictLangValue> toPropertyValues(Map<String, String> localizedString) {
     return localizedString.entrySet().stream()
       .map(e -> new StrictLangValue(e.getKey(), e.getValue(), ALL))
+      .collect(toList());
+  }
+
+  public static Collection<StrictLangValue> toPropertyValues(Collection<String> nonLocalizedStrings) {
+    return nonLocalizedStrings.stream()
+      .map(string -> new StrictLangValue("", string, ALL))
       .collect(toList());
   }
 
@@ -96,5 +103,12 @@ public final class PropertyMappings {
       .map(value -> LocalDate.parse(value))
       .orElse(defaultValue);
   }
+
+  public static <T extends Collection<String>> T valuesToCollection(Collection<StrictLangValue> langValues, Supplier<T> collectionSupplier) {
+    return langValues.stream()
+      .map(langValue -> langValue.getValue())
+      .collect(Collectors.toCollection(collectionSupplier));
+  }
+
 
 }

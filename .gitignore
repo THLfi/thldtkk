@@ -24,5 +24,7 @@ dist/
 etc/
 /**/npm-debug.log
 /**/nbproject/
-/server/application.properties
+server/application.properties
+/server/src/main/resources/config/application.properties
+/server/src/main/resources/config/users.properties
 /server/nbactions.xml

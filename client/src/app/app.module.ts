@@ -84,6 +84,7 @@ import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.c
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseService } from './services2/universe.service'
+import { UserService } from './services2/user.service'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
@@ -182,6 +183,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DateUtils,
         PersonService,
         RoleService,
+        UserService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

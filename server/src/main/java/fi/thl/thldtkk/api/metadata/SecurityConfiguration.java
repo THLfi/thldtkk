@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
@@ -36,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private UserProfileService userProfileService;
 
   @Bean
-  public UserDetailsService propertiesBasedUserDetailsService() throws Exception {
+  public UserDetailsService propertiesBasedUserDetailsService() throws IOException {
     Properties properties = PropertiesLoaderUtils.loadProperties(
       new EncodedResource(usersPropertiesResource, "UTF-8"));
 

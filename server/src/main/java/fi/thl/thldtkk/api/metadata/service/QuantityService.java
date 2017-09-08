@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import org.springframework.beans.factory.annotation.Autowired;

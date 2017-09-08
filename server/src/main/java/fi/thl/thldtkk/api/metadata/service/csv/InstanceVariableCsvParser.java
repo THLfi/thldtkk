@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import static java.util.UUID.randomUUID;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -250,8 +249,7 @@ public class InstanceVariableCsvParser {
           rowMessages.add("import.csv.warn.ambiguousCodeList"); // should fail import?
       }
       
-      Optional<CodeList> existingCodeList = bestMatches.size() >= 1 ? Optional.of(bestMatches.get(0)) : Optional.empty();
-      return existingCodeList;
+      return bestMatches.isEmpty() ? Optional.empty() : Optional.of(bestMatches.get(0));
   }
 
   private Optional<CodeList> createCodeList(Optional<String> label, String language, Optional<String> referenceId, Optional<String> description, Optional<String> owner) throws UndefinedLabelException {

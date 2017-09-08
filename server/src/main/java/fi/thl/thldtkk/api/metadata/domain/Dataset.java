@@ -306,8 +306,8 @@ public class Dataset {
                 .toNode()));
         getLinks().forEach(v -> refs.put("links", v
                 .toNode()));
-        getComment().ifPresent((v -> props.put("comment", toPropertyValue(v))));
-        getNumberOfObservationUnits().ifPresent((v -> props.put("numberOfObservationUnits", toPropertyValue(v))));
+        getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
+        getNumberOfObservationUnits().ifPresent(v -> props.put("numberOfObservationUnits", toPropertyValue(v)));
         getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
         getUnitType().ifPresent(v -> refs
                 .put("unitType", v.toNode()));

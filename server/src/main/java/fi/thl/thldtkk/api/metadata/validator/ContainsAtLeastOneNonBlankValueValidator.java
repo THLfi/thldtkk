@@ -9,7 +9,9 @@ import java.util.Map;
 public class ContainsAtLeastOneNonBlankValueValidator implements ConstraintValidator<ContainsAtLeastOneNonBlankValue, Map<?, String>> {
 
   @Override
-  public void initialize(ContainsAtLeastOneNonBlankValue constraintAnnotation) { }
+  public void initialize(ContainsAtLeastOneNonBlankValue constraintAnnotation) {
+    // Nothing to initialize
+  }
 
   @Override
   public boolean isValid(Map<?, String> map, ConstraintValidatorContext context) {

@@ -113,7 +113,7 @@ public class DatasetController {
         try {
             return new XmlMapper().readValue(multipartFile.getBytes(), Dataset.class);
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOG.error("Failed to read XML file", e);
             return new Dataset();
         }
     }

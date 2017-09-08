@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.service.QuantityService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;

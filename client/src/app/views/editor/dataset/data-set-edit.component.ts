@@ -42,6 +42,7 @@ import {Universe} from '../../../model2/universe'
 import {UniverseService} from '../../../services2/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from "../../../services2/usage-condition.service";
+import {UserService} from '../../../services2/user.service'
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -61,7 +62,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     referencePeriodEnd: Date
 
     allLifecyclePhases: LifecyclePhase[];
-    allOrganizations: Organization[];
+    availableOrganizations: Organization[];
     allOrganizationUnits: OrganizationUnit[];
 
     allPersonItems: SelectItem[]
@@ -119,7 +120,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private universeService: UniverseService,
         private dateUtils: DateUtils,
         private personService: PersonService,
-        private roleService: RoleService
+        private roleService: RoleService,
+        private userService: UserService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -171,8 +173,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             });
         }
 
-        this.organizationService.getAllOrganizations()
-            .subscribe(organizations => this.allOrganizations = organizations)
+        this.getAvailableOrganizations()
         this.getAllPersons()
         this.getAllRoles()
         this.lifecyclePhaseService.getAllLifecyclePhases()
@@ -251,6 +252,20 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             let bareTitle:string = this.titleService.getTitle();
             this.titleService.setTitle(translatedLabel + " - " + bareTitle)
         }
+    }
+
+    private getAvailableOrganizations() {
+      this.userService.isUserAdmin()
+        .subscribe(isAdmin => {
+          if (isAdmin) {
+            this.organizationService.getAllOrganizations()
+              .subscribe(organizations => this.availableOrganizations = organizations)
+          }
+          else {
+            this.userService.getUserOrganizations()
+              .subscribe(organizations => this.availableOrganizations = organizations)
+          }
+        })
     }
 
     private getAllPersons() {
@@ -441,7 +456,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     correctLinkUrlFormat(link: Link): void {
       let linkUrl: string = link.linkUrl[this.language]
-      
+
       let isValidUrl: boolean = this.validUrlExpression.test(linkUrl)
       let isPartiallyValidUrlScheme: boolean = this.partiallyValidUrlSchemeExpression.test(linkUrl)
 

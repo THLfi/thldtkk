@@ -3,7 +3,7 @@ package fi.thl.thldtkk.api.metadata.domain.query;
 import static java.lang.String.join;
 import static java.util.stream.Collectors.toList;
 
-import java.util.Arrays;
+import com.google.common.collect.Lists;
 import java.util.List;
 
 public class OrCriteria implements Criteria {
@@ -14,8 +14,8 @@ public class OrCriteria implements Criteria {
     this.clauses = clauses;
   }
 
-  public static OrCriteria or(Criteria... clauses) {
-    return new OrCriteria(Arrays.asList(clauses));
+  public static OrCriteria or(Criteria first, Criteria... rest) {
+    return new OrCriteria(Lists.asList(first, rest));
   }
 
   public static OrCriteria or(List<Criteria> clauses) {

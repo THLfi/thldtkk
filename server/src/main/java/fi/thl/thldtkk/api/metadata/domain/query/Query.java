@@ -1,5 +1,8 @@
 package fi.thl.thldtkk.api.metadata.domain.query;
 
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.selectAll;
+import static fi.thl.thldtkk.api.metadata.domain.query.Sort.sort;
+
 public class Query {
 
   private Select select;
@@ -23,9 +26,16 @@ public class Query {
   }
 
   public static Query query(Select select, Criteria where) {
-    return new Query(select, where, Sort.sort(), -1);
+    return new Query(select, where, sort(), -1);
   }
 
+  public static Query query(Criteria where, int max) {
+    return new Query(selectAll(), where, sort(), max);
+  }
+
+  public static Query query(Criteria where) {
+    return new Query(selectAll(), where, sort(), -1);
+  }
 
   public Select getSelect() {
     return select;

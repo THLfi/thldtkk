@@ -1,0 +1,204 @@
+[
+  {
+    "id": "UnitType",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      }
+    ]
+  },
+  {
+    "id": "CodeList",
+    "textAttributes": [
+      {
+        "id": "codeListType"
+      },
+      {
+        "id": "referenceId"
+      },
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      },
+      {
+        "id": "owner"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "codeItems",
+        "range": {
+          "id": "CodeItem"
+        }
+      }
+    ]
+  },
+  {
+    "id": "CodeItem",
+    "textAttributes": [
+      {
+        "id": "code"
+      },
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Quantity",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Unit",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "symbol"
+      }
+    ]
+  },
+  {
+    "id": "DatasetType",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Variable",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      }
+    ]
+  },
+  {
+    "id": "Concept",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "inScheme",
+        "range": {
+          "id": "ConceptScheme"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ConceptScheme",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Universe",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      }
+    ]
+  },
+  {
+    "id": "RelationType",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Person",
+    "textAttributes": [
+      {
+        "id": "firstName"
+      },
+      {
+        "id": "lastName"
+      },
+      {
+        "id": "email"
+      },
+      {
+        "id": "phone"
+      }
+    ]
+  },
+  {
+    "id": "Role",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Organization",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "abbreviation"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "organizationUnit",
+        "range": {
+          "id": "OrganizationUnit"
+        }
+      }
+    ]
+  },
+  {
+    "id": "OrganizationUnit",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "abbreviation"
+      }
+    ]
+  },
+  {
+    "id": "LifecyclePhase",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "UsageCondition",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  }
+]

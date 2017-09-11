@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.domain.query;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 
 public class Select {
@@ -12,7 +14,14 @@ public class Select {
   }
 
   public static Select select(String... fields) {
-    return new Select(Arrays.asList(fields));
+    return new Select(asList(fields));
+  }
+
+  /**
+   * Same as Select.select("*")
+   */
+  public static Select selectAll() {
+    return new Select(singletonList("*"));
   }
 
   public List<String> getFields() {

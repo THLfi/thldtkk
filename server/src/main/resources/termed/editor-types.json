@@ -1,0 +1,371 @@
+[
+  {
+    "id": "DataSet",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      },
+      {
+        "id": "altLabel"
+      },
+      {
+        "id": "abbreviation"
+      },
+      {
+        "id": "abstract"
+      },
+      {
+        "id": "freeConcepts"
+      },
+      {
+        "id": "referencePeriodStart",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "referencePeriodEnd",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "registryPolicy"
+      },
+      {
+        "id": "researchProjectURL"
+      },
+      {
+        "id": "usageConditionAdditionalInformation"
+      },
+      {
+        "id": "comment"
+      },
+      {
+        "id": "numberOfObservationUnits"
+      },
+      {
+        "id": "ValueDomainType"
+      },
+      {
+        "id": "published",
+        "regex": "^(true|false)$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "ownerOrganizationUnit",
+        "range": {
+          "id": "OrganizationUnit",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "population",
+        "range": {
+          "id": "Population"
+        }
+      },
+      {
+        "id": "universe",
+        "range": {
+          "id": "Universe",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "usageCondition",
+        "range": {
+          "id": "UsageCondition",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "lifecyclePhase",
+        "range": {
+          "id": "LifecyclePhase",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "dataSetRelation",
+        "range": {
+          "id": "DataSetRelation"
+        }
+      },
+      {
+        "id": "owner",
+        "range": {
+          "id": "Organization",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "instanceVariable",
+        "range": {
+          "id": "InstanceVariable"
+        }
+      },
+      {
+        "id": "datasetType",
+        "range": {
+          "id": "DatasetType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "links",
+        "range": {
+          "id": "Link"
+        }
+      },
+      {
+        "id": "conceptsFromScheme",
+        "range": {
+          "id": "Concept",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "unitType",
+        "range": {
+          "id": "UnitType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "personInRoles",
+        "range": {
+          "id": "PersonInRole"
+        }
+      }
+    ]
+  },
+  {
+    "id": "InstanceVariable",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "technicalName"
+      },
+      {
+        "id": "description"
+      },
+      {
+        "id": "freeConcepts"
+      },
+      {
+        "id": "referencePeriodStart",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "referencePeriodEnd",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "valueDomainType"
+      },
+      {
+        "id": "qualityStatement"
+      },
+      {
+        "id": "missingValues"
+      },
+      {
+        "id": "defaultMissingValue"
+      },
+      {
+        "id": "valueRangeMin"
+      },
+      {
+        "id": "valueRangeMax"
+      },
+      {
+        "id": "sourceDescription"
+      },
+      {
+        "id": "partOfGroup"
+      },
+      {
+        "id": "dataType"
+      },
+      {
+        "id": "dataFormat"
+      },
+      {
+        "id": "published",
+        "regex": "^(true|false)$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "variable",
+        "range": {
+          "id": "Variable",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "conceptsFromScheme",
+        "range": {
+          "id": "Concept",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "quantity",
+        "range": {
+          "id": "Quantity",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "unit",
+        "range": {
+          "id": "Unit",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "codeList",
+        "range": {
+          "id": "CodeList",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "source",
+        "range": {
+          "id": "DataSet"
+        }
+      },
+      {
+        "id": "unitType",
+        "range": {
+          "id": "UnitType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "instanceQuestions",
+        "range": {
+          "id": "InstanceQuestion"
+        }
+      }
+    ]
+  },
+  {
+    "id": "InstanceQuestion",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "Link",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "linkUrl"
+      }
+    ]
+  },
+  {
+    "id": "Population",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "sampleSize"
+      },
+      {
+        "id": "loss"
+      },
+      {
+        "id": "geographicalCoverage"
+      }
+    ]
+  },
+  {
+    "id": "DataSetRelation",
+    "referenceAttributes": [
+      {
+        "id": "dataSet",
+        "range": {
+          "id": "DataSet"
+        }
+      },
+      {
+        "id": "relationType",
+        "range": {
+          "id": "RelationType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "PersonInRole",
+    "textAttributes": [
+      {
+        "id": "public",
+        "regex": "^(true|false)$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "person",
+        "range": {
+          "id": "Person",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "role",
+        "range": {
+          "id": "Role",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
+    ]
+  }
+]

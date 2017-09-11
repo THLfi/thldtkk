@@ -3,7 +3,7 @@ package fi.thl.thldtkk.api.metadata.domain.query;
 import static java.lang.String.join;
 import static java.util.stream.Collectors.toList;
 
-import java.util.Arrays;
+import com.google.common.collect.Lists;
 import java.util.List;
 
 public class AndCriteria implements Criteria {
@@ -14,8 +14,8 @@ public class AndCriteria implements Criteria {
     this.clauses = clauses;
   }
 
-  public static AndCriteria and(Criteria... clauses) {
-    return new AndCriteria(Arrays.asList(clauses));
+  public static AndCriteria and(Criteria first, Criteria... rest) {
+    return new AndCriteria(Lists.asList(first, rest));
   }
 
   public static AndCriteria and(List<Criteria> clauses) {

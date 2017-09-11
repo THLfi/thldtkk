@@ -1,10 +1,9 @@
 package fi.thl.thldtkk.api.metadata.controller.v3;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.Role;
-import fi.thl.thldtkk.api.metadata.service.RoleService;
+import fi.thl.thldtkk.api.metadata.service.v3.RoleService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import java.util.List;
@@ -24,7 +23,7 @@ public class RoleController3 {
 
   @GetJsonMapping
   public List<Role> query(@RequestParam(value = "query", defaultValue = "") String query) {
-    return roleService.query(query).collect(toList());
+    return roleService.find(query, -1);
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)

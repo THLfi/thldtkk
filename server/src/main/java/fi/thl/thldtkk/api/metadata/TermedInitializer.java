@@ -65,7 +65,7 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
     commonTypes.forEach(e -> e.getAsJsonObject().add("graph", commonGraph));
     JsonArray commonNodes = jsonParser.parse(
         resourceToString("termed/common-nodes.json")).getAsJsonArray();
-    commonNodes.forEach(e -> e.getAsJsonObject().add("graph", commonGraph));
+    commonNodes.forEach(e -> e.getAsJsonObject().getAsJsonObject("type").add("graph", commonGraph));
 
     String editorTypesJson = resolveReferenceAttributeRangeGraphId(
         resourceToString("termed/editor-types.json"));
@@ -75,7 +75,7 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
     editorTypes.forEach(e -> e.getAsJsonObject().add("graph", editorGraph));
     JsonArray editorNodes = jsonParser.parse(resourceToString("termed/editor-nodes.json"))
         .getAsJsonArray();
-    editorNodes.forEach(e -> e.getAsJsonObject().add("graph", editorGraph));
+    editorNodes.forEach(e -> e.getAsJsonObject().getAsJsonObject("type").add("graph", editorGraph));
 
     // use editor types as basis for public types, just put them to a different graph
     JsonArray publicTypes = jsonParser.parse(editorTypesJson).getAsJsonArray();

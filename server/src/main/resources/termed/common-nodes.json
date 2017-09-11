@@ -1,1 +1,1910 @@
-[]
+[
+  {
+    "id": "2be7059a-bed5-4054-8094-4374940265a6",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Hoitojakso tai -käynti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "239471d8-3a8c-4ca2-b569-0fb0e58e7830",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Henkilö, yleensä ihminen"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Henkilö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "08a93a92-91b8-472f-8760-92d7de6830be",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Henkilön yksittäisen nivelen primaari implantointi tai vanhan implantoinnin korjausleikkaus. Yksikäsitteinen avain koostuu henkilön tunnisteesta, leikkauspäivämäärästä, nivelestä (lonkka, polvi, olkapää, kyynärpää, nilkka, ranne jne.), puoleisuudesta (vasen vs. oikea) sekä leikkaushistoriasta (primaari/uusinta). On mahdollista, joskin harvinaista, että leikkaus joudutaan uusimaan saman päivän kuluessa."
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Implantointileikkaus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8e2b4b96-1294-435d-8cdb-5e1c8fe5f614",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Selkäkirurginen leikkaus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a0959e1b-0b53-4502-9bdd-d4eeefdb4f7d",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Hoitojakso"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8b38987b-7aa7-42a0-bcbf-dcfd9631f296",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Esim. patologian, kuvantamisen tai laboratorion tutkimus."
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Potilaaseen kohdistuva tutkimus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "b62748d7-9af4-4b98-9829-eb6e75e5b26b",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Diagnoosikirjaus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "20041d4a-fad8-4741-a36d-5bcadce5a542",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Hoitotapahtuma"
+        }
+      ]
+    }
+  },
+  {
+    "id": "916c021b-2ccf-4b00-8e1e-df406104faad",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Useammasta henkilöstä koostuva ihmisjoukko"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Perhekunta"
+        }
+      ]
+    }
+  },
+  {
+    "id": "04ccc4ce-4249-4c16-a99d-337782dac969",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Yritys"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Yritys"
+        }
+      ]
+    }
+  },
+  {
+    "id": "36a77c52-d27e-401f-ba9b-f0aec3aa791f",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Bakteeri"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Bakteeri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a1c17ed2-fe30-4758-86a0-2db5f919d15b",
+    "type": {
+      "id": "UnitType"
+    },
+    "properties": {
+      "description": [
+        {
+          "lang": "fi",
+          "value": "Yhteisö"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Yhteisö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "2fdb0101-9a91-480c-a8e1-71e11be1b9c5",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "aika"
+        }
+      ]
+    }
+  },
+  {
+    "id": "66237baa-397c-479f-bc4e-d183e83a3725",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "teho"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d78d27da-e44c-48a8-835f-aebcbe30e7ab",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "raha, valuutta"
+        }
+      ]
+    }
+  },
+  {
+    "id": "e4c8e86b-d416-4695-93a4-033b45c82693",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "pituus (korkeus, leveys, syvyys)"
+        }
+      ]
+    }
+  },
+  {
+    "id": "93b207cb-37f5-4a5d-b0d4-7e43b984698d",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "massa (paino)"
+        }
+      ]
+    }
+  },
+  {
+    "id": "bd170671-dea7-408c-a2a8-901a3d727c3a",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "tilavuus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a64e1a99-412d-4221-8a58-318775bc8122",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "lämpötila"
+        }
+      ]
+    }
+  },
+  {
+    "id": "f4c27c52-df72-4d24-aec3-df839a4dc157",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "pinta-ala"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1a832a9d-c7ce-41d8-ad89-43c57f421aec",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "nopeus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "133985b7-da60-46ad-81f2-7e5c8584b296",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kiihtyvyys"
+        }
+      ]
+    }
+  },
+  {
+    "id": "c5132989-350b-4d94-85f7-c62a03eba66d",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "konsentraatio"
+        }
+      ]
+    }
+  },
+  {
+    "id": "2e28b51c-8771-4ecf-ad3c-9ed33240a5e2",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "paine"
+        }
+      ]
+    }
+  },
+  {
+    "id": "c585270a-7038-431b-8e5c-5f1a58319ed0",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "jännitys"
+        }
+      ]
+    }
+  },
+  {
+    "id": "84768302-2060-40e9-814f-31e2d03020a3",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kimmokerroin"
+        }
+      ]
+    }
+  },
+  {
+    "id": "c6892901-c0ad-4f75-a995-51f5e4f753b7",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "energia"
+        }
+      ]
+    }
+  },
+  {
+    "id": "70e18b80-f4d6-43f5-be05-5aca8e13be13",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "jännite"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a639d685-058b-4d13-af63-4d2995ddc142",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "taajuus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cd525e6b-dd7d-4fd2-a6fb-0bdbbf34c2b7",
+    "type": {
+      "id": "Quantity"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "verenpaine"
+        }
+      ]
+    }
+  },
+  {
+    "id": "29040da5-f67e-4ecc-ace1-026f556b7ab4",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "J"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "joule"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07bd6184-ce5e-4bd5-a363-96850f3dbca1",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "",
+          "value": "m"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "metri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "f7ddbcd5-7bec-466b-bc40-c21494cc74ed",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "",
+          "value": "kg"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilogramma"
+        }
+      ]
+    }
+  },
+  {
+    "id": "66b2435a-f755-405d-beec-f4fbd45d1175",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "km"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilometri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "68bea549-d70a-4ac7-9932-ff600391ccda",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "kWh"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilowattitunti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "f094c54c-4ec9-40b8-a7f6-20bf5d2eeaad",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "MWh"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "megawattitunti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "76a1424c-7de7-4182-beaf-53bed906f2ed",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "t"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "tonni, tuhat kilogrammaa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "606d121b-1bdb-43c2-9aed-239abad76c94",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "W"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "watti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "706889ff-6f06-4676-9cab-efdef5c58c4f",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "cm"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "senttimetri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "23de78e2-da50-4ef0-818a-2d232ed5b8b3",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "mm"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "millimetri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "643bbd0f-2ad0-43c5-8fcc-a2c0cdd878b9",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "v"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "vuosi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "179a0c01-a932-4a8a-8b39-0c04c0518853",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "€"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "euro"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cbded7e7-5108-491e-bb7d-256f897c10af",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "min"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "minuutti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "fee2f7af-c349-4e18-92cf-6ebd3915db03",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "cal"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kalori"
+        }
+      ]
+    }
+  },
+  {
+    "id": "27879422-0097-4d04-9b66-6fae7ddcb31c",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "oz"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "unssi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "f68860f6-f308-430a-8521-99dfb2a35a43",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "gal"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "gallona"
+        }
+      ]
+    }
+  },
+  {
+    "id": "9467124b-a0b9-4bbf-8ee0-96ba2be497cb",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "Pa"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "pascal"
+        }
+      ]
+    }
+  },
+  {
+    "id": "12d677fd-2534-4310-8fe2-71f0d1ab20dd",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "E12/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "biljoonaa yksikköä per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "36470359-0c78-43d2-afda-77f2502a2780",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "11dd5492-79ac-48d0-abb0-69d17d765237",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "ml"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "millilitra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "821a7556-dac2-4499-beff-61339397ba39",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "dl"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "desilitra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "413f0366-b05a-4e39-9f8f-a649c1233340",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "m²"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "neliömetri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "4a64787c-5e74-4188-a2b0-91cd02a1d6c1",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "m³"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kuutiometri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d51ef3e5-3992-4277-a694-ab176669e54f",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "km/h"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilometriä tunnissa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "2f9fc068-d8ed-46f1-b342-229bd4266bbc",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "m/s"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "metriä sekunnissa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d603d45d-a54d-491d-98d8-7538eeedfeac",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "m/s²"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "metriä per sekunnin neliö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ea7af266-cfd7-4124-9c06-186af84733a0",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "ft"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "jalka"
+        }
+      ]
+    }
+  },
+  {
+    "id": "0a12a1cc-3e5c-4fde-8359-032e3b8e8e27",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "a"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "aari"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ef6a4daa-9124-4921-8786-0b23128e6c6f",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "ha"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "hehtaari"
+        }
+      ]
+    }
+  },
+  {
+    "id": "2d5fa8dc-f802-4aa6-a3e7-366ef8824246",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "bar"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "baari"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cb885bc0-0270-4175-94b6-4fccafcab171",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "mmol/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "millimoolia per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "986b38f4-d6f2-4539-a2aa-38ecfd9987f7",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "g/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "grammaa per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "402e3799-b2f6-4c4b-95b5-8a068ca7012e",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "%"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "prosentti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "77907b5f-f872-474f-adb1-183c2430dea1",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "pmol/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "pikomoolia per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "6231b91c-c7f7-4087-818f-bf5d265177a2",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "fl"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "femtolitra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "79396411-bfc4-4232-9a27-e8142d6ec46b",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "kPa"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilopascal"
+        }
+      ]
+    }
+  },
+  {
+    "id": "9f36217c-0d1b-468d-b64b-ca0fbc70964e",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "µmol/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "mikromoolia per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "813a3bd0-fd9b-4f5c-a875-aa2eeba40bae",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "ng/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "nanogrammaa per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ed0ac44b-d576-4d68-9efb-23dffd373f49",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "U/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "yksikköä per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8dc5cac5-667e-4d28-a567-bc54b6a34daa",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "mg/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "milligrammaa per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "177349ee-8613-4180-affd-47461b9c7c8e",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "E9/l"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "miljardia yksikköä per litra"
+        }
+      ]
+    }
+  },
+  {
+    "id": "734d98c4-01be-4379-920a-d7fc63285a41",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "N"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "newton"
+        }
+      ]
+    }
+  },
+  {
+    "id": "b33b6bd3-8dd4-406b-9f3c-6dc433bd91fa",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "Ω"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "ohmi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "44c6d484-9baa-40c3-914d-e6ab4fd085c2",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "V"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "voltti"
+        }
+      ]
+    }
+  },
+  {
+    "id": "743b1e0e-7d88-4ceb-bf8c-ad80be41a9e9",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "Hz"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "hertsi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "0b417e02-0532-4c9c-bb06-2c40ca00b914",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "kHz"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kilohertsi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ec27a813-cada-42d6-9df1-713da8c0bb0b",
+    "type": {
+      "id": "Unit"
+    },
+    "properties": {
+      "symbol": [
+        {
+          "lang": "fi",
+          "value": "mm Hg"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "elohopeamillimetri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "7f9e43ff-b354-4121-966c-7b306fef4342",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Rekisteriaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "174e4440-018c-4a2f-8d35-3223f46c98be",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Kyselyaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d91545c4-23c9-440d-a2aa-ba8c52c4b4eb",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Havainnointiaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8c284cb4-7308-4ed5-ab62-98592b5035c8",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Asiakasasiakirja-aineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d6626947-c4c9-4c51-b50c-15f26ea7ce5c",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Muu asiakirja-aineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d3ddd3d0-b516-4bff-96c2-6900931fbb88",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Väestötutkimusaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "7a610cfd-5573-417e-a64e-8947956359da",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Biopankkiaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "94615445-215d-4d30-86d5-eda5847024d0",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Haastatteluaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "bad63239-d073-4408-9de8-48fd896c3f92",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tilastoaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "eaf13325-3dcf-4e65-93b9-ee0cc20d6571",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Näyteaineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ca8aa352-615b-4d87-8724-c36c315c8990",
+    "type": {
+      "id": "DatasetType"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Potilasasiakirja-aineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1821286c-d160-446b-a003-b23e0f1c4d17",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Omistaja"
+        }
+      ]
+    }
+  },
+  {
+    "id": "e6b2db06-3d56-4236-ab29-4a4d550e974e",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Vastaava tutkija"
+        }
+      ]
+    }
+  },
+  {
+    "id": "67ceb3ad-e42f-44b6-b30d-53725c5b9855",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Vastuullinen johtaja"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8a28629f-c63c-43fb-882a-d54046f5a491",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Vastuuhenkilö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "6c1354a8-47b6-43cd-8b54-3c9cd7e94c52",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Näytteet"
+        }
+      ]
+    }
+  },
+  {
+    "id": "f16c0056-3043-49e2-bf9e-c82f2e83b622",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Yhteyshenkilö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cf7f0ad4-e7ed-40a2-9c7c-4161055d7fb8",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Toteuttaja"
+        }
+      ]
+    }
+  },
+  {
+    "id": "e3d31640-53c2-4efd-bfd6-29c35c98f3ac",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tiedonhallinta"
+        }
+      ]
+    }
+  },
+  {
+    "id": "5559f071-8de6-44d8-9c01-76db31f26939",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "THL"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Terveyden ja hyvinvoinnin laitos"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cc0929aa-ec4c-47bd-b6f5-db0c63add4b2",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "VSSHP"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Varsinais-Suomen sairaanhoitopiiri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "b310a2df-67c4-4189-bb42-5f1a83d207d2",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "HUS"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Helsingin ja Uudenmaan sairaanhoitopiiri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "66f54f60-c528-4614-bf1f-fd5ea7f55338",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "PSSHP"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Pohjois-Savon sairaanhoitopiiri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "eb42e3ee-e311-4a96-9cc0-df738d58666c",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "TK"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tilastokeskus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "369e1843-d4a5-4d59-9825-62d1a62516ff",
+    "type": {
+      "id": "LifecyclePhase"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Analyysi- ja raportointivaihe"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ea284e04-9f8c-4523-bc5c-64c4d3645c74",
+    "type": {
+      "id": "LifecyclePhase"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Arkistoitu"
+        }
+      ]
+    }
+  },
+  {
+    "id": "4f6e73c7-364b-41b0-9f03-0e5e22b35e7a",
+    "type": {
+      "id": "LifecyclePhase"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Hävitetty"
+        }
+      ]
+    }
+  },
+  {
+    "id": "4dacfe10-e28b-48df-a1fc-1dbefaf56eb1",
+    "type": {
+      "id": "LifecyclePhase"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Suunnitteluvaihe"
+        }
+      ]
+    }
+  },
+  {
+    "id": "36a294fe-1446-49df-b38b-b9b0afe7bfda",
+    "type": {
+      "id": "LifecyclePhase"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tiedonkeruuvaihe"
+        }
+      ]
+    }
+  },
+  {
+    "id": "3fe0ebca-c84c-4a86-94d2-05f3313f5590",
+    "type": {
+      "id": "UsageCondition"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "1. Avoin aineisto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "60f34a01-b98a-4169-85c7-d8df72caa251",
+    "type": {
+      "id": "UsageCondition"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "2. Käyttölupa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "8b67ae82-fe56-422d-9e2e-8334e8172853",
+    "type": {
+      "id": "UsageCondition"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "5. Ei luovuteta"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a07d3b17-a44f-4d2b-856c-a2351be9c119",
+    "type": {
+      "id": "UsageCondition"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "3. Biopankkilupa"
+        }
+      ]
+    }
+  },
+  {
+    "id": "64435f2e-e321-401c-86e3-73b7557271f4",
+    "type": {
+      "id": "UsageCondition"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "4. Sopimus"
+        }
+      ]
+    }
+  }
+]

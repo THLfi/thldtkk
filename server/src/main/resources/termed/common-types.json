@@ -89,14 +89,17 @@
   },
   {
     "id": "Concept",
+    "uri": "http://www.w3.org/2004/02/skos/core#Concept",
     "textAttributes": [
       {
-        "id": "prefLabel"
+        "id": "prefLabel",
+        "uri": "http://www.w3.org/2004/02/skos/core#prefLabel"
       }
     ],
     "referenceAttributes": [
       {
         "id": "inScheme",
+        "uri": "http://www.w3.org/2004/02/skos/core#inScheme",
         "range": {
           "id": "ConceptScheme"
         }
@@ -105,9 +108,11 @@
   },
   {
     "id": "ConceptScheme",
+    "uri": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
     "textAttributes": [
       {
-        "id": "prefLabel"
+        "id": "prefLabel",
+        "uri": "http://www.w3.org/2000/01/rdf-schema#label"
       }
     ]
   },

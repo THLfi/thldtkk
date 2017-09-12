@@ -12,6 +12,8 @@
     list-style: none;
     text-indent: -0.9em;
     padding-left: 0.9em;
+    font-size: 1.1em;
+    padding-bottom: 0.5em;
 }
 
 .frontpage-datasets li::before {
@@ -30,12 +32,14 @@
     margin-top: 1em;
     font-size: 1.5em;
     color: white;
+    font-weight: 700;
 }
 
 .frontpage-variable-search p {
-    font-size: 0.75em;
+    font-size: 0.9em;
     color: white;
-    opacity: 0.8;
+    opacity: 0.9;
+    padding-bottom: 5em;
 }
 
 .frontpage-variable-search input {
@@ -51,7 +55,7 @@
 }
 
 .frontpage-variable-search .input-group {
-     margin-bottom: 3em;
+     margin-bottom: 1em;
 }
 
 .frontpage-variable-search .search-icon-background {

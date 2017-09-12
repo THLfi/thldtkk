@@ -532,6 +532,8 @@
             emptyMessage="{{ 'noMatchingConcepts' | translate }}"
             placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
             minLength="3"
+            [style]="{'width':'100%'}"
+            [inputStyle]="{'width':'100%'}"
             inputId="conceptsFromScheme">
 
             <ng-template let-concept pTemplate="item">

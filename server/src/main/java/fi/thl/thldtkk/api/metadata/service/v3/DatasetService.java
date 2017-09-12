@@ -15,4 +15,6 @@ public interface DatasetService extends Service<UUID, Dataset> {
 
   void deleteDatasetInstanceVariable(UUID datasetId, UUID instanceVariableId);
 
+  List<Dataset> getDatasetsByUnitType(UUID unitTypeId);
+
 }

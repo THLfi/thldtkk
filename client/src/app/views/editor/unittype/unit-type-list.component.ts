@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ConfirmationService, Confirmation } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
 import { GrowlMessageService } from '../../../services2/growl-message.service'
 
+import { Dataset } from '../../../model2/dataset'
+import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
-import { UnitTypeService } from "../../../services2/unit-type.service";
-import { UnitType } from "../../../model2/unit-type";
-import { Dataset } from "../../../model2/dataset";
-import { InstanceVariable } from "../../../model2/instance-variable";
+import { UnitTypeService3 } from '../../../services3/unit-type.service'
+import { UnitType } from '../../../model2/unit-type'
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
@@ -22,6 +22,7 @@ import 'rxjs/add/observable/of';
   styleUrls: ['./unit-type-list.component.css']
 })
 export class UnitTypeListComponent implements OnInit {
+
   unitTypes: UnitType[] = []
   editUnitType: UnitType
 
@@ -35,7 +36,7 @@ export class UnitTypeListComponent implements OnInit {
   readonly unitTypeSaveSuccessKey: string = 'operations.unitType.save.result.success'
 
   constructor(
-    private unitTypeService: UnitTypeService,
+    private unitTypeService: UnitTypeService3,
     private confirmationService: ConfirmationService,
     private translateService: TranslateService,
     private langPipe: LangPipe,
@@ -46,7 +47,7 @@ export class UnitTypeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingUnitTypes = true
-    this.unitTypeService.getAllUnitTypes()
+    this.unitTypeService.getAll()
       .subscribe(unitTypes => {
         this.unitTypes = unitTypes
         this.loadingUnitTypes = false
@@ -98,7 +99,6 @@ export class UnitTypeListComponent implements OnInit {
           }
         })
       })
-
     })
   }
 
@@ -112,7 +112,7 @@ export class UnitTypeListComponent implements OnInit {
 
   instantSearchUnitTypes(literalSearchTerms: string): void {
     this.loadingUnitTypes = true
-    this.unitTypeService.searchUnitTypes(literalSearchTerms).subscribe(unitTypes => {
+    this.unitTypeService.search(literalSearchTerms).subscribe(unitTypes => {
       this.unitTypes = unitTypes
       this.loadingUnitTypes = false
     })
@@ -123,7 +123,7 @@ export class UnitTypeListComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap(term => {
         this.loadingUnitTypes = true;
-        return this.unitTypeService.searchUnitTypes(term)
+        return this.unitTypeService.search(term)
       })
       .catch(error => {
         this.initSearchSubscription(searchTerms)

@@ -1,18 +1,29 @@
 package fi.thl.thldtkk.api.metadata.controller.v3;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.UnitType;
+import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
+import fi.thl.thldtkk.api.metadata.service.v3.InstanceVariableService;
 import fi.thl.thldtkk.api.metadata.service.v3.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
-import java.util.List;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
 @RequestMapping("/api/v3/unitTypes")
@@ -20,6 +31,12 @@ public class UnitTypeController3 {
 
   @Autowired
   private UnitTypeService unitTypeService;
+  @Autowired
+  @Qualifier("editorDatasetService")
+  private DatasetService datasetService;
+  @Autowired
+  @Qualifier("editorInstanceVariableService")
+  private InstanceVariableService instanceVariableService;
 
   @GetJsonMapping
   public List<UnitType> query(@RequestParam(value = "query", defaultValue = "") String query) {
@@ -29,6 +46,24 @@ public class UnitTypeController3 {
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
   public UnitType save(@RequestBody @Valid UnitType unitType) {
     return unitTypeService.save(unitType);
+  }
+
+  @DeleteMapping("/{unitTypeId}")
+  @ResponseStatus(NO_CONTENT)
+  public void delete(@PathVariable("unitTypeId") UUID unitTypeId){
+    unitTypeService.delete(unitTypeId);
+  }
+
+  @GetJsonMapping("/{unitTypeId}/datasets")
+  public List<Dataset> getAssociatedDatasets(
+    @PathVariable("unitTypeId") UUID unitTypeId) {
+    return datasetService.getDatasetsByUnitType(unitTypeId);
+  }
+
+  @GetJsonMapping("/{unitTypeId}/instanceVariables")
+  public List<InstanceVariable> getAssociatedInstanceVariables(
+    @PathVariable("unitTypeId") UUID unitTypeId) {
+    return instanceVariableService.getInstanceVariablesByUnitType(unitTypeId);
   }
 
 }

@@ -1,8 +1,7 @@
-import { Node } from './node'
 import { SelectItem } from 'primeng/primeng';
 
 export class DatasetTypeItem implements SelectItem {
-  
+
     label: string
     value: string
 
@@ -13,7 +12,7 @@ export class DatasetTypeItem implements SelectItem {
 
 
   public static compare(compare: DatasetTypeItem, to: DatasetTypeItem): number {
-        
+
         if(compare.label > to.label) {
             return 1;
         }

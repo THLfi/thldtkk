@@ -10,28 +10,28 @@ import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 
 import {CodeList} from '../../../model2/code-list';
-import {CodeListService} from '../../../services2/code-list.service';
+import {CodeListService3} from '../../../services3/code-list.service';
 import {Concept} from '../../../model2/concept';
-import {ConceptService} from '../../../services2/concept.service';
+import {ConceptService3} from '../../../services3/concept.service'
 import {Dataset} from '../../../model2/dataset';
-import {DatasetService} from '../../../services2/dataset.service';
+import {DatasetService3} from '../../../services3/dataset.service'
 import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
-import {InstanceVariableService} from '../../../services2/instance-variable.service';
+import {InstanceVariableService3} from '../../../services3/instance-variable.service'
 import {InstanceQuestion} from '../../../model2/instance-question';
-import {InstanceQuestionService} from '../../../services2/instance-question.service';
+import {InstanceQuestionService3} from '../../../services3/instance-question.service'
 import {LangPipe} from '../../../utils/lang.pipe';
 import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
-import {QuantityService} from '../../../services2/quantity.service';
+import {QuantityService3} from '../../../services3/quantity.service'
 import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {Unit} from '../../../model2/unit';
-import {UnitService} from '../../../services2/unit.service';
+import {UnitService3} from '../../../services3/unit.service'
 import {UnitType} from '../../../model2/unit-type'
-import {UnitTypeService} from '../../../services2/unit-type.service'
+import {UnitTypeService3} from '../../../services3/unit-type.service'
 import {Variable} from '../../../model2/variable'
-import {VariableService} from '../../../services2/variable.service';
+import {VariableService3} from '../../../services3/variable.service'
 
 @Component({
     templateUrl: './instance-variable-edit.component.html'
@@ -87,15 +87,15 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
 
     constructor(
-        private instanceVariableService: InstanceVariableService,
-        private instanceQuestionService: InstanceQuestionService,
-        private datasetService: DatasetService,
-        private codeListService: CodeListService,
-        private variableService: VariableService,
-        private conceptService: ConceptService,
-        private quantityService: QuantityService,
-        private unitService: UnitService,
-        private unitTypeService: UnitTypeService,
+        private instanceVariableService: InstanceVariableService3,
+        private instanceQuestionService: InstanceQuestionService3,
+        private datasetService: DatasetService3,
+        private codeListService: CodeListService3,
+        private variableService: VariableService3,
+        private conceptService: ConceptService3,
+        private quantityService: QuantityService3,
+        private unitService: UnitService3,
+        private unitTypeService: UnitTypeService3,
         private nodeUtils: NodeUtils,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
@@ -287,7 +287,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     private getAllUnitTypes() {
-      this.unitTypeService.getAllUnitTypes()
+      this.unitTypeService.getAll()
         .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
     }
 
@@ -322,7 +322,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       const searchText: string = event.query
 
       if (searchText.length >= 3) {
-        this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
+        this.conceptSearchSubscription = this.conceptService.search(searchText)
           .subscribe(concepts => this.conceptSearchResults = concepts)
       }
     }
@@ -337,7 +337,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
           const searchText: string = event.query
 
           if (searchText.length >= 3) {
-            this.sourceSearchSubscription = this.datasetService.searchDataset(searchText)
+            this.sourceSearchSubscription = this.datasetService.search(searchText)
               .subscribe(datasets => this.sourceSearchResults = datasets)
           }
         }
@@ -463,7 +463,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         // Cancel possible on-going search
         this.variableSearchSubscription.unsubscribe()
       }
-      this.variableSearchSubscription = this.variableService.searchVariable(searchText)
+      this.variableSearchSubscription = this.variableService.search(searchText)
         .subscribe(variables => this.variableSearchResults = variables)
    }
 
@@ -505,7 +505,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         }
 
         // trailing white space to separate free concepts in search queries
-        this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join('; ') 
+        this.instanceVariable.freeConcepts[this.language] = this.freeConcepts.join('; ')
 
         this.instanceVariable.referencePeriodStart = this.referencePeriodStart ?
           this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null

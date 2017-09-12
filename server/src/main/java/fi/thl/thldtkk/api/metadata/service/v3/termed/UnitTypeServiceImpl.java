@@ -11,13 +11,15 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.service.v3.UnitTypeService;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class UnitTypeServiceImpl implements UnitTypeService {
 
-  private Repository<NodeId, Node> nodes;
+  private final Repository<NodeId, Node> nodes;
 
   public UnitTypeServiceImpl(Repository<NodeId, Node> nodes) {
     this.nodes = nodes;
@@ -48,6 +50,12 @@ public class UnitTypeServiceImpl implements UnitTypeService {
   @Override
   public UnitType save(UnitType unitType) {
     return new UnitType(nodes.save(unitType.toNode()));
+  }
+
+  @Override
+  public void delete(UUID id) {
+    UnitType unitType = get(id).orElseThrow(NotFoundException::new);
+    nodes.delete(new NodeId(unitType.toNode()));
   }
 
 }

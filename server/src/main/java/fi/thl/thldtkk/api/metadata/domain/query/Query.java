@@ -33,6 +33,10 @@ public class Query {
     return new Query(selectAll(), where, sort(), max);
   }
 
+  public static Query query(Criteria where, Sort sort) {
+    return new Query(selectAll(), where, sort, -1);
+  }
+
   public static Query query(Criteria where) {
     return new Query(selectAll(), where, sort(), -1);
   }

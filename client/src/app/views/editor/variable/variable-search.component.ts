@@ -1,14 +1,11 @@
 import { ActivatedRoute, Router, UrlTree } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
-import { Observable, Subscription } from 'rxjs'
-import { TranslateService } from '@ngx-translate/core'
 import { Location } from '@angular/common'
+import { Subscription } from 'rxjs'
+import { TranslateService } from '@ngx-translate/core'
 
-import { Dataset } from '../../../model2/dataset'
-import { DatasetService } from '../../../services2/dataset.service'
 import { Variable } from '../../../model2/variable'
-import { VariableService } from '../../../services2/variable.service'
-import { LangPipe } from '../../../utils/lang.pipe';
+import { VariableService3 } from '../../../services3/variable.service'
 
 @Component({
   templateUrl: './variable-search.component.html',
@@ -21,7 +18,7 @@ export class VariableSearchComponent implements OnInit {
   variableSearchSubscription: Subscription
   searchText: string
 
-  constructor(private variableService: VariableService,
+  constructor(private variableService: VariableService3,
               private route: ActivatedRoute,
               private router: Router,
               private location: Location,
@@ -33,17 +30,17 @@ export class VariableSearchComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.searchText = params['query'];
 
-      if(this.searchText != null && this.searchText != "") {
+      if (this.searchText != null && this.searchText != "") {
         this.searchVariables(this.searchText)
-      }else{
-        this.variableService.getAllVariables()
-                    .subscribe(variables => this.variables = variables);
       }
-
+      else{
+        this.variableService.getAll()
+          .subscribe(variables => this.variables = variables)
+      }
     })
   }
 
-  refresh(){
+  refresh() {
     this.searchVariables(this.searchText)
   }
 
@@ -52,17 +49,18 @@ export class VariableSearchComponent implements OnInit {
       this.variableSearchSubscription.unsubscribe();
     }
 
-    this.variableSearchSubscription = this.variableService.searchVariable(searchText)
+    this.variableSearchSubscription = this.variableService.search(searchText)
       .subscribe(variables => this.variables = variables)
 
     this.updateQueryParam(searchText)
   }
 
-  private updateQueryParam(searchText:string):void {
+  private updateQueryParam(searchText: string): void {
     let urlTree:UrlTree = this.router.parseUrl(this.router.url)
     urlTree.queryParams['query'] = this.searchText
 
     let updatedUrl = this.router.serializeUrl(urlTree);
     this.location.replaceState(updatedUrl);
   }
+
 }

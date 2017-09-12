@@ -50,6 +50,24 @@ import { RoleService } from './services2/role.service'
 import { VariableService } from './services2/variable.service'
 import { UnitTypeService } from './services2/unit-type.service'
 import { UsageConditionService } from './services2/usage-condition.service'
+// Version 3 services
+import { CodeListService3 } from './services3/code-list.service'
+import { ConceptService3 } from './services3/concept.service'
+import { DatasetService3 } from './services3/dataset.service'
+import { DatasetTypeService3 } from './services3/dataset-type.service'
+import { InstanceQuestionService3 } from './services3/instance-question.service'
+import { InstanceVariableService3 } from './services3/instance-variable.service'
+import { LifecyclePhaseService3 } from './services3/lifecycle-phase.service'
+import { OrganizationService3 } from './services3/organization.service'
+import { OrganizationUnitService3 } from './services3/organization-unit.service'
+import { PersonService3 } from './services3/person.service'
+import { QuantityService3 } from './services3/quantity.service'
+import { RoleService3 } from './services3/role.service'
+import { UnitService3 } from './services3/unit.service'
+import { UnitTypeService3 } from './services3/unit-type.service'
+import { UniverseService3 } from './services3/universe.service'
+import { UsageConditionService3 } from './services3/usage-condition.service'
+import { VariableService3 } from './services3/variable.service'
 
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
@@ -72,9 +90,9 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
-import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
+import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
-import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component'
+import { DatasetViewComponent as EditorDatasetComponent } from './views/editor/dataset/dataset-view.component'
 import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
@@ -105,8 +123,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DatasetInstanceVariablesViewComponent,
         DatasetListComponent,
         DatasetSidebarComponent,
-        EditorDataSetListComponent,
-        EditorDataSetComponent,
+        EditorDatasetListComponent,
+        EditorDatasetComponent,
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
@@ -189,6 +207,24 @@ export function TranslateHttpLoaderFactory(http: Http) {
         RoleService,
         UserService,
         ConfirmationService,
+        // Version 3 services
+        CodeListService3,
+        ConceptService3,
+        DatasetService3,
+        DatasetTypeService3,
+        InstanceQuestionService3,
+        InstanceVariableService3,
+        LifecyclePhaseService3,
+        OrganizationService3,
+        OrganizationUnitService3,
+        PersonService3,
+        QuantityService3,
+        RoleService3,
+        UnitService3,
+        UnitTypeService3,
+        UniverseService3,
+        UsageConditionService3,
+        VariableService3,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

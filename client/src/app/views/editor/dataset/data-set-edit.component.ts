@@ -11,37 +11,37 @@ import {TranslateService} from '@ngx-translate/core';
 import {TruncateCharactersPipe} from 'ng2-truncate/dist/truncate-characters.pipe'
 
 import {Concept} from '../../../model2/concept';
-import {ConceptService} from '../../../services2/concept.service';
+import {ConceptService3} from '../../../services3/concept.service';
 import {Dataset} from '../../../model2/dataset';
-import {DatasetService} from '../../../services2/dataset.service';
+import {DatasetService3} from '../../../services3/dataset.service'
 import {DatasetType} from '../../../model2/dataset-type'
 import {DatasetTypeItem} from '../../../model2/dataset-type-item'
-import {DatasetTypeService} from '../../../services2/dataset-type.service'
+import {DatasetTypeService3} from '../../../services3/dataset-type.service'
 import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
-import {LifecyclePhaseService} from "../../../services2/lifecycle-phase.service";
+import {LifecyclePhaseService3} from '../../../services3/lifecycle-phase.service'
 import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
-import {OrganizationService} from "../../../services2/organization.service";
+import {OrganizationService3} from '../../../services3/organization.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
-import {OrganizationUnitService} from "../../../services2/organization-unit.service";
+import {OrganizationUnitService3} from '../../../services3/organization-unit.service'
 import {Person} from '../../../model2/person'
-import {PersonService} from '../../../services2/person.service'
+import {PersonService3} from '../../../services3/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
 import {PopulationService} from '../../../services2/population.service'
 import {Role} from '../../../model2/role'
-import {RoleService} from '../../../services2/role.service'
+import {RoleService3} from '../../../services3/role.service'
 import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
-import {UnitTypeService} from "../../../services2/unit-type.service";
+import {UnitTypeService3} from '../../../services3/unit-type.service'
 import {Universe} from '../../../model2/universe'
-import {UniverseService} from '../../../services2/universe.service'
+import {UniverseService3} from '../../../services3/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
-import {UsageConditionService} from "../../../services2/usage-condition.service";
+import {UsageConditionService3} from '../../../services3/usage-condition.service'
 import {UserService} from '../../../services2/user.service'
 
 @Component({
@@ -100,27 +100,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     validUrlExpression: RegExp
 
     constructor(
-        private datasetService: DatasetService,
-        private lifecyclePhaseService: LifecyclePhaseService,
+        private datasetService: DatasetService3,
+        private lifecyclePhaseService: LifecyclePhaseService3,
         private nodeUtils: NodeUtils,
-        private organizationService: OrganizationService,
-        private organizationUnitService: OrganizationUnitService,
+        private organizationService: OrganizationService3,
+        private organizationUnitService: OrganizationUnitService3,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private unitTypeService: UnitTypeService,
-        private usageConditionService: UsageConditionService,
-        private datasetTypeService: DatasetTypeService,
-        private conceptService: ConceptService,
+        private unitTypeService: UnitTypeService3,
+        private usageConditionService: UsageConditionService3,
+        private datasetTypeService: DatasetTypeService3,
+        private conceptService: ConceptService3,
         private langPipe: LangPipe,
         private truncatePipe: TruncateCharactersPipe,
         private titleService: Title,
         private populationService: PopulationService,
-        private universeService: UniverseService,
+        private universeService: UniverseService3,
         private dateUtils: DateUtils,
-        private personService: PersonService,
-        private roleService: RoleService,
+        private personService: PersonService3,
+        private roleService: RoleService3,
         private userService: UserService
     ) {
         this.language = this.translateService.currentLang
@@ -176,30 +176,23 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         this.getAvailableOrganizations()
         this.getAllPersons()
         this.getAllRoles()
-        this.lifecyclePhaseService.getAllLifecyclePhases()
+        this.lifecyclePhaseService.getAll()
             .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
-        this.usageConditionService.getAllUsageConditions()
+        this.usageConditionService.getAll()
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
         this.organizationUnitService.getAllOrganizationUnits()
             .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
         this.getAllUnitTypes()
         this.getAllUniverses()
 
-        this.datasetTypeService.getDatasetTypes()
-            .subscribe(datasetTypes => {
-
-                let unsortedDatasetTypeItems: Array<DatasetTypeItem> = []
-
-                datasetTypes.forEach(datasetType => {
-                    let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
-                    unsortedDatasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
-
-                    this.datasetTypesById[datasetType.id] = datasetType;
-                }
-                );
-
-                this.datasetTypeItems = unsortedDatasetTypeItems.sort(DatasetTypeItem.compare);
+        this.datasetTypeService.getAll()
+          .subscribe(datasetTypes => {
+            datasetTypes.forEach(datasetType => {
+              let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel)
+              this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id))
+              this.datasetTypesById[datasetType.id] = datasetType
             })
+          })
     }
 
     private initializeDatasetProperties(dataset: Dataset): Dataset {
@@ -308,7 +301,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getAllUnitTypes() {
-      this.unitTypeService.getAllUnitTypes()
+      this.unitTypeService.getAll()
         .subscribe(allUnitTypes => this.allUnitTypes = allUnitTypes)
     }
 
@@ -317,7 +310,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
       Observable.forkJoin(
         this.translateService.get('noUniverse'),
-        this.universeService.getAllUniverses()
+        this.universeService.getAll()
       ).subscribe(data => {
         this.allUniverseItems.push({
           label: data[0],
@@ -376,7 +369,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             // Cancel possible on-going search
             this.conceptSearchSubscription.unsubscribe()
         }
-        this.conceptSearchSubscription = this.conceptService.searchConcept(searchText)
+        this.conceptSearchSubscription = this.conceptService.search(searchText)
             .subscribe(concepts => this.conceptSearchResults = concepts)
     }
 
@@ -556,7 +549,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
         this.dataset.datasetTypes = this.resolveSelectedDatasetTypes();
 
-        this.datasetService.saveDataset(this.dataset)
+        this.datasetService.save(this.dataset)
             .finally(() => {
               this.savingInProgress = false
             })

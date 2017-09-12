@@ -93,7 +93,10 @@ public class ServiceConfiguration {
 
   @Bean
   public InstanceQuestionService instanceQuestionService_3() {
-    return new InstanceQuestionServiceImpl(commonNodeRepository());
+    return new InstanceQuestionServiceImpl(
+      editorDatasetService(),
+      editorNodeRepository()
+    );
   }
 
   @Bean

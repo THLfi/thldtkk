@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from "../../../model2/dataset";
-import { DatasetService } from "../../../services2/dataset.service";
+import { DatasetService3 } from '../../../services3/dataset.service'
 import { SidebarActiveSection } from './sidebar/sidebar-active-section'
 
 @Component({
@@ -19,7 +19,7 @@ export class DatasetViewComponent implements OnInit {
 
   sidebarActiveSection = SidebarActiveSection.DATASET
 
-  constructor(private datasetService: DatasetService,
+  constructor(private datasetService: DatasetService3,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,

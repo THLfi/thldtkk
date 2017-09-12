@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core'
+import { TranslateService } from '@ngx-translate/core'
 
+import { InstanceVariableService } from '../../../services2/instance-variable.service'
 import { Variable } from '../../../model2/variable'
-import { VariableService } from '../../../services2/variable.service'
-import { TranslateService } from '@ngx-translate/core';
-import { InstanceVariableService } from '../../../services2/instance-variable.service';
-import { VariableSearchComponent } from './variable-search.component';
+import { VariableSearchComponent } from './variable-search.component'
+import { VariableService3 } from '../../../services3/variable.service'
 
 @Component({
   templateUrl: './variable-search-result.component.html',
@@ -23,7 +23,7 @@ export class VariableSearchResultComponent {
   constructor(
     private instanceVariableService: InstanceVariableService,
     private translateService: TranslateService,
-    private variableService: VariableService
+    private variableService: VariableService3
   ) {
         this.language = this.translateService.currentLang
    }
@@ -33,7 +33,7 @@ export class VariableSearchResultComponent {
     }
 
   saveVariable(variable): void {
-    this.variableService.saveVariable(variable)
+    this.variableService.save(variable)
       .subscribe(savedVariable => {
         this.closeVariableModal()
     })
@@ -57,7 +57,7 @@ export class VariableSearchResultComponent {
             if (confirm(message)) {
               this.savingInProgress = true
 
-               this.variableService.deleteVariable(variableId)
+               this.variableService.delete(variableId)
                 .finally(() => {
                   this.savingInProgress = false
                 })

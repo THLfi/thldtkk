@@ -1,14 +1,11 @@
 package fi.thl.thldtkk.api.metadata.controller.v3;
 
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import fi.thl.thldtkk.api.metadata.service.v3.DatasetPublishingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class EditorDatasetFunctionsController {
 
   @Autowired
-  @Qualifier("editorDatasetService")
-  private DatasetService editorDatasetService;
-
-  @Autowired
-  @Qualifier("publicDatasetService")
-  private DatasetService publicDatasetService;
+  private DatasetPublishingService datasetPublishingService;
 
   @ApiOperation("Publish given dataset")
-  @PostMapping("/publish")
+  @GetMapping("/publish")
   public void publishDataset(@RequestParam("datasetId") UUID datasetId) {
-    Dataset dataset = editorDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
-    publicDatasetService.save(dataset);
+    datasetPublishingService.publish(datasetId);
+  }
+
+  @ApiOperation("Withdraw (un-publish) given dataset")
+  @GetMapping("/withdraw")
+  public void withdrawDataset(@RequestParam("datasetId") UUID datasetId) {
+    datasetPublishingService.withdraw(datasetId);
   }
 
 }

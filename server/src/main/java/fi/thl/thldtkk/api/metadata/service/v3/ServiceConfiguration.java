@@ -4,6 +4,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.ConceptServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetPublishingServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.InstanceQuestionServiceImpl;
@@ -64,6 +65,11 @@ public class ServiceConfiguration {
   @Bean
   public DatasetService editorDatasetService() {
     return new DatasetServiceImpl(editorNodeRepository());
+  }
+
+  @Bean
+  public DatasetPublishingService datasetPublishingService() {
+    return new DatasetPublishingServiceImpl(editorDatasetService(), publicDatasetService());
   }
 
   // common services

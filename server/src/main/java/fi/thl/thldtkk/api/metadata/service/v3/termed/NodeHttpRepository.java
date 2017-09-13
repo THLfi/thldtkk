@@ -25,9 +25,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -38,7 +41,7 @@ public class NodeHttpRepository implements Repository<NodeId, Node> {
   private static final Select DEFAULT_SELECT = select("id", "type", "properties.*", "references.*");
   private static final Sort DEFAULT_SORT = sort("properties.prefLabel.sortable");
   private static final int DEFAULT_MAX = -1;
-
+  private Logger log = LoggerFactory.getLogger(getClass());
   private RestTemplate termed;
 
   private ParameterizedTypeReference<List<Node>> nodeListType =
@@ -73,8 +76,13 @@ public class NodeHttpRepository implements Repository<NodeId, Node> {
 
   @Override
   public Optional<Node> get(Select select, NodeId node) {
-    return Optional.of(termed.getForObject("/types/{typeId}/node-trees/{id}?select=" + select,
-        Node.class, node.getTypeId(), node.getId()));
+    try {
+      return Optional.of(termed.getForObject("/types/{typeId}/node-trees/{id}?select={select}",
+          Node.class, node.getTypeId(), node.getId(), select));
+    } catch (HttpStatusCodeException e) {
+      log.warn("{} {} {}", node.getTypeId(), node.getId(), e.getStatusCode());
+      return Optional.empty();
+    }
   }
 
   @Override

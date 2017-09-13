@@ -19,6 +19,7 @@ import { GrowlModule } from 'primeng/components/growl/growl'
 import { CalendarModule } from 'primeng/components/calendar/calendar'
 import { DataTableModule } from 'primeng/primeng'
 import { SharedModule } from 'primeng/primeng'
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -82,6 +83,7 @@ import { PersonEditModalComponent } from './views/editor/dataset/person-edit-mod
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
+import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseService } from './services2/universe.service'
 import { UserService } from './services2/user.service'
@@ -115,6 +117,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         PersonEditModalComponent,
         RequiredFieldIndicator,
         UnitTypeEditModalComponent,
+        UnitTypeListComponent,
         UniverseEditModalComponent,
         VariableEditModalComponent,
         QuantityEditModalComponent,
@@ -148,6 +151,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CalendarModule,
         DataTableModule,
         SharedModule,
+        ConfirmDialogModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -184,6 +188,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         PersonService,
         RoleService,
         UserService,
+        ConfirmationService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

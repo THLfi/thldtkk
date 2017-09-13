@@ -200,8 +200,17 @@
   "dataType":"Tietotyyppi",
   "requiredField": "Tieto on pakollinen",
   "unitType": "Havaintoyksikkö",
+  "unitTypes": "Havaintoyksiköt",
   "addUnitType": "Lisää havaintoyksikkö...",
   "newUnitType": "Uusi havaintoyksikkö",
+  "editUnitType": "Muokkaa havaintoyksikköä",
+  "unitTypeSearchPlaceholder":"Hae havaintoyksiköitä...",
+  "confirmRemoveUnitTypeModal": {
+    "header": "Poiston vahvistus",
+    "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} aineistoa ja {{instanceVariableCount}} muuttujaa.",
+    "removeButtonLabel": "Poista",
+    "cancelButtonLabel": "Peruuta"
+  },
   "errors": {
     "form": {
       "required": "Tieto on pakollinen",
@@ -326,6 +335,18 @@
         }
       }
     },
+    "unitType": {
+      "delete": {
+        "result":{
+          "success": "Havaintoyksikkö poistettu"
+        }
+      },
+      "save": {
+        "result": {
+          "success": "Havaintoyksikkö tallennettu"
+        }
+      }
+    },
     "codeList": {
       "save": {
         "result": {
@@ -371,7 +392,8 @@
       "newInstanceVariable": "Uusi muuttuja",
       "editDataset": "Muokkaa aineistoa",
       "newDataset": "Uusi aineisto",
-      "variableList": "Käsitemuuttujat"
+      "variableList": "Käsitemuuttujat",
+      "unitTypeList":"Havaintoyksiköt"
 
     }
     ,

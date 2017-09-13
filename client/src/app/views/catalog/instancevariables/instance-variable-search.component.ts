@@ -44,7 +44,7 @@ export class InstanceVariableSearchComponent implements OnInit {
               private location: Location,
               private translateService: TranslateService) {
     this.language = this.translateService.currentLang
-    this.searchTerms = new Subject<string>();
+    this.searchTerms = new Subject<string>()
   }
 
   ngOnInit() {

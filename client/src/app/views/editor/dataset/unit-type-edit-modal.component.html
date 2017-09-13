@@ -1,13 +1,19 @@
 <ng-container *ngIf="unitType">
   <p-dialog [visible]="unitType"
           (onHide)="doCancel()"
-          modal="modal"
+          modal="true"
           draggable="false"
           resizable="false"
           closeOnEscape="false"
           width="500">
     <p-header>
-      {{ 'newUnitType' | translate }}
+      <ng-container *ngIf="unitType.id;else newUnitType">
+        {{'editUnitType' | translate}}
+      </ng-container>
+      <ng-template #newUnitType>
+        {{ 'newUnitType' | translate }}
+      </ng-template>
+
     </p-header>
     <form #unitTypeForm="ngForm">
       <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
@@ -42,7 +48,8 @@
             <textarea [(ngModel)]="unitType.description[language]"
                    id="description"
                    name="description"
-                   rows="2"
+                   rows="6"
+                   thlAutogrow
                    class="form-control">
             </textarea>
           </div>

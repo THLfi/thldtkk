@@ -1,0 +1,24 @@
+.unit-type-list td:last-child,.unit-type-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .unit-type-list td:last-child,.unit-type-list th:last-child {
+    text-align: left;
+  }
+
+  .unit-type-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .unit-type-add-new {
+    margin-top: 1em;
+  }
+
+}
+@media(min-width: 768px) {
+  .unit-type-add-new {
+    float: right;
+  }
+}

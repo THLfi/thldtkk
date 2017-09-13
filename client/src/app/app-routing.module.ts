@@ -12,6 +12,7 @@ import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.compo
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
+import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { VariableSearchComponent } from "./views/editor/variable/variable-search.component";
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
@@ -119,6 +120,11 @@ const routes: Routes = [
         path: 'editor/variables',
         component: VariableSearchComponent,
         data: {title:'pageTitles.editor.variableList',pageType:PageIdentifier.EDITOR}
+    },
+    {
+        path: 'editor/unitTypes',
+        component: UnitTypeListComponent,
+        data: {title:'pageTitles.editor.unitTypeList',pageType:PageIdentifier.EDITOR}
     },
     {
         path: 'editor',

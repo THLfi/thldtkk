@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.UnitType;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,8 @@ public class UnitTypeService implements Service<UUID, UnitType> {
 
     @Override
     public void delete(UUID id) {
-        throw new UnsupportedOperationException("Not implemented.");
+        UnitType unitType = get(id).orElseThrow(NotFoundException::new);       
+        nodeService.delete(new NodeId(unitType.toNode()));
     }
 
     @Override

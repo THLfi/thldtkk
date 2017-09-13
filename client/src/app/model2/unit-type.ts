@@ -1,8 +1,7 @@
 import {LangValues} from './lang-values';
+import { Node } from './node'
 
-export class UnitType {
-
+export interface UnitType extends Node {
   prefLabel: LangValues
-
   description: LangValues
 }

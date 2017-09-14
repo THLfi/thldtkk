@@ -3,7 +3,6 @@ import { Concept } from './concept';
 import { Dataset } from './dataset';
 import { InstanceQuestion } from './instance-question'
 import { LangValues } from './lang-values';
-import { Population } from './population'
 import { Quantity } from './quantity';
 import { Unit } from './unit';
 import { UnitType } from './unit-type';

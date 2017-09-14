@@ -154,8 +154,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 unitType: null,
                 instanceQuestions: [],
                 dataFormat: null,
-                dataset: null,
-                population: null
+                dataset: null
             }
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable

@@ -185,7 +185,6 @@ public class DatasetServiceImpl implements DatasetService {
       return Changeset.save(new Population(
           oldPopulation.getId(),
           newPopulation.getPrefLabel(),
-          newPopulation.getDescription(),
           newPopulation.getSampleSize(),
           newPopulation.getLoss(),
           newPopulation.getGeographicalCoverage()).toNode());

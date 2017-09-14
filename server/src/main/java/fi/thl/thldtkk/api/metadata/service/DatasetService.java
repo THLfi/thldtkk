@@ -147,7 +147,6 @@ public class DatasetService implements Service<UUID, Dataset> {
             return Changeset.save(new Population(
                     oldPopulation.getId(),
                     newPopulation.getPrefLabel(),
-                    newPopulation.getDescription(),
                     newPopulation.getSampleSize(),
                     newPopulation.getLoss(),
                     newPopulation.getGeographicalCoverage()).toNode());

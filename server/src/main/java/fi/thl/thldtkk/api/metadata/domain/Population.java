@@ -14,7 +14,6 @@ public class Population {
 
     private UUID id;
     private Map<String, String> prefLabel = new LinkedHashMap<>();
-    private Map<String, String> description = new LinkedHashMap<>();
     private Map<String, String> sampleSize = new LinkedHashMap<>();
     private Map<String, String> loss = new LinkedHashMap<>();
     private Map<String, String> geographicalCoverage = new LinkedHashMap<>();
@@ -25,13 +24,11 @@ public class Population {
 
     public Population(UUID id,
             Map<String, String> prefLabel,
-            Map<String, String> description,
             Map<String, String> sampleSize,
             Map<String, String> loss,
             Map<String, String> geographicalCoverage) {
         this.id = id;
         this.prefLabel = prefLabel;
-        this.description = description;
         this.sampleSize = sampleSize;
         this.loss = loss;
         this.geographicalCoverage = geographicalCoverage;
@@ -41,7 +38,6 @@ public class Population {
         this(node.getId());
         checkArgument(Objects.equals(node.getTypeId(), "Population"));
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
-        this.description = toLangValueMap(node.getProperties("description"));
         this.sampleSize = toLangValueMap(node.getProperties("sampleSize"));
         this.loss = toLangValueMap(node.getProperties("loss"));
         this.geographicalCoverage = toLangValueMap(node.getProperties("geographicalCoverage"));
@@ -68,10 +64,6 @@ public class Population {
         return prefLabel;
     }
 
-    public Map<String, String> getDescription() {
-        return description;
-    }
-
     public Map<String, String> getSampleSize() {
         return sampleSize;
     }
@@ -87,7 +79,6 @@ public class Population {
     public Node toNode() {
         Node node = new Node(id, "Population");
         node.addProperties("prefLabel", toPropertyValues(prefLabel));
-        node.addProperties("description", toPropertyValues(description));
         node.addProperties("sampleSize", toPropertyValues(sampleSize));
         node.addProperties("loss", toPropertyValues(loss));
         node.addProperties("geographicalCoverage", toPropertyValues(geographicalCoverage));
@@ -105,7 +96,6 @@ public class Population {
         Population that = (Population) o;
         return Objects.equals(id, that.id)
                 && Objects.equals(prefLabel, that.prefLabel)
-                && Objects.equals(description, that.description)
                 && Objects.equals(sampleSize, that.sampleSize)
                 && Objects.equals(loss, that.loss)
                 && Objects.equals(geographicalCoverage, that.geographicalCoverage);
@@ -113,6 +103,6 @@ public class Population {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, prefLabel, description, sampleSize, loss, geographicalCoverage);
+        return Objects.hash(id, prefLabel, sampleSize, loss, geographicalCoverage);
     }
 }

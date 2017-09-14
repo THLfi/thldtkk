@@ -15,7 +15,6 @@ export class PopulationService {
   initNew(): Population {
     const population = {
       prefLabel: null,
-      description: null,
       geographicalCoverage: null,
       sampleSize: null,
       loss: null
@@ -24,7 +23,6 @@ export class PopulationService {
     this.nodeUtils.initLangValuesProperties(population,
       [
         'prefLabel',
-        'description',
         'geographicalCoverage',
         'sampleSize',
         'loss'

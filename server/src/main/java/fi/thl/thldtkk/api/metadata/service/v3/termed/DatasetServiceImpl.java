@@ -1,5 +1,25 @@
 package fi.thl.thldtkk.api.metadata.service.v3.termed;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
+import fi.thl.thldtkk.api.metadata.domain.Population;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Sort;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
+import fi.thl.thldtkk.api.metadata.service.v3.Repository;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
@@ -11,24 +31,7 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
-import fi.thl.thldtkk.api.metadata.domain.Population;
-import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
-import fi.thl.thldtkk.api.metadata.service.v3.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import static org.springframework.util.StringUtils.hasText;
 
 public class DatasetServiceImpl implements DatasetService {
 
@@ -57,12 +60,17 @@ public class DatasetServiceImpl implements DatasetService {
 
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max) {
+    return find(organizationId, datasetTypeId, query, max, "");
+  }
+
+  @Override
+  public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
 
     criteria.add(keyValue("type.id", "DataSet"));
 
     if (organizationId != null) {
-      criteria.add(keyValue("references.organization.id", organizationId.toString()));
+      criteria.add(keyValue("references.owner.id", organizationId.toString()));
     }
     if (datasetTypeId != null) {
       criteria.add(keyValue("references.datasetType.id", datasetTypeId.toString()));
@@ -72,7 +80,12 @@ public class DatasetServiceImpl implements DatasetService {
       criteria.add(keyWithAnyValue("properties.prefLabel", tokens));
     }
 
-    return nodes.query(and(criteria), max).map(Dataset::new).collect(toList());
+    if (hasText(sortString)) {
+      return nodes.query(and(criteria), max, Sort.sort(sortString)).map(Dataset::new).collect(toList());
+    }
+    else {
+      return nodes.query(and(criteria), max).map(Dataset::new).collect(toList());
+    }
   }
 
   @Override

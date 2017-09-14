@@ -3,12 +3,13 @@ package fi.thl.thldtkk.api.metadata.controller.v3;
 import fi.thl.thldtkk.api.metadata.service.v3.DatasetPublishingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @Api(description = "Editor operations API for datasets")
 @RestController
@@ -19,13 +20,13 @@ public class EditorDatasetFunctionsController {
   private DatasetPublishingService datasetPublishingService;
 
   @ApiOperation("Publish given dataset")
-  @GetMapping("/publish")
+  @PostMapping("/publish")
   public void publishDataset(@RequestParam("datasetId") UUID datasetId) {
     datasetPublishingService.publish(datasetId);
   }
 
   @ApiOperation("Withdraw (un-publish) given dataset")
-  @GetMapping("/withdraw")
+  @PostMapping("/withdraw")
   public void withdrawDataset(@RequestParam("datasetId") UUID datasetId) {
     datasetPublishingService.withdraw(datasetId);
   }

@@ -1,19 +1,20 @@
 package fi.thl.thldtkk.api.metadata.service.v3.termed;
 
-import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-import static java.util.stream.Collectors.toList;
-
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.service.v3.VariableService;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.stream.Collectors.toList;
 
 public class VariableServiceImpl implements VariableService {
 

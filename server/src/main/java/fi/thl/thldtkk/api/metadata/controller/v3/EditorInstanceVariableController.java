@@ -55,7 +55,7 @@ public class EditorInstanceVariableController {
   @GetJsonMapping("/variables/{variableId}/instanceVariables")
   public List<InstanceVariable> getInstancesOfVariable(
       @PathVariable("variableId") UUID variableId) {
-    return instanceVariableService.getVariableInstancesVariables(variableId);
+    return instanceVariableService.getVariableInstancesVariables(variableId, -1);
   }
 
   @ApiOperation("List all instance variables")

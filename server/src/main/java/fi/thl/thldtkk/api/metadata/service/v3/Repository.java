@@ -35,8 +35,16 @@ public interface Repository<K, V> {
     return query(Query.query(criteria, max));
   }
 
+  default Stream<V> query(Criteria criteria, int max, Sort sort) {
+    return query(Query.query(criteria, max, sort));
+  }
+
   default Stream<V> query(Select select, Criteria criteria) {
     return query(Query.query(select, criteria));
+  }
+
+  default Stream<V> query(Select select, Criteria criteria, int max) {
+    return query(Query.query(select, criteria, max));
   }
 
   default Stream<V> query(Select select, Criteria criteria, Sort sort) {

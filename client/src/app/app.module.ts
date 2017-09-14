@@ -61,6 +61,8 @@ import { LifecyclePhaseService3 } from './services3/lifecycle-phase.service'
 import { OrganizationService3 } from './services3/organization.service'
 import { OrganizationUnitService3 } from './services3/organization-unit.service'
 import { PersonService3 } from './services3/person.service'
+import { PublicDatasetService } from './services-public/public-dataset.service'
+import { PublicInstanceVariableService as PublicInstanceVariableService3 } from './services-public/public-instance-variable.service'
 import { QuantityService3 } from './services3/quantity.service'
 import { RoleService3 } from './services3/role.service'
 import { UnitService3 } from './services3/unit.service'
@@ -218,6 +220,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         OrganizationService3,
         OrganizationUnitService3,
         PersonService3,
+        PublicDatasetService,
+        PublicInstanceVariableService3,
         QuantityService3,
         RoleService3,
         UnitService3,

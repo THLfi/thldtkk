@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, NavigationExtras} from '@angular/router';
-import 'rxjs/add/operator/toPromise';
+import { Component, OnInit } from '@angular/core'
+import { Router, NavigationExtras} from '@angular/router'
+import 'rxjs/add/operator/toPromise'
 
-import { DatasetService } from "../../../services2/dataset.service";
-import { Dataset } from "../../../model2/dataset";
+import { Dataset } from '../../../model2/dataset'
+import { PublicDatasetService } from '../../../services-public/public-dataset.service'
 
 @Component({
     templateUrl: './catalog-front-page.component.html',
     styleUrls: ['./catalog-front-page.component.css']
 })
 export class CatalogFrontPageComponent implements OnInit {
-    
+
     datasets: Dataset[] = []
     searchText: string
 
     constructor (
-        private dataSetService: DatasetService,
-        private router: Router,
+        private datasetService: PublicDatasetService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
-        this.dataSetService.getRecentDatasets()
+        this.datasetService.getRecentDatasets()
             .subscribe(datasets => this.datasets = datasets);
     }
 
@@ -30,4 +30,5 @@ export class CatalogFrontPageComponent implements OnInit {
         }
         this.router.navigate(['/catalog/instancevariables/'],navigationExtras)
     }
+
 }

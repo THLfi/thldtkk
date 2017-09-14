@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map'
 import { environment as env} from '../../environments/environment'
 
 import { GrowlMessageService } from '../services2/growl-message.service'
+import { InstanceVariable } from '../model2/instance-variable'
 import { Variable } from '../model2/variable'
 
 @Injectable()
@@ -19,6 +20,11 @@ export class VariableService3 {
   search(searchText: string): Observable<Variable[]> {
     return this.http.get(env.contextPath + '/api/v3/variables?query=' + searchText + '&max=50')
       .map(response => response.json() as Variable[])
+  }
+
+  get(variableId: string): Observable<Variable> {
+    return this.http.get(env.contextPath + '/api/v3/variables/' + variableId)
+      .map(response => response.json() as Variable)
   }
 
   getAll(): Observable<Variable[]> {
@@ -46,6 +52,14 @@ export class VariableService3 {
       .do(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.variable.delete.result.success')
       })
+  }
+
+  getInstanceVariables(variableId: string): Observable<InstanceVariable[]> {
+    const url = env.contextPath
+      + '/api/v3/public/variables/'
+      + variableId
+      +'/instanceVariables'
+    return this.http.get(url).map(response => response.json() as InstanceVariable[])
   }
 
 }

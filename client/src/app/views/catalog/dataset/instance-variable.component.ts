@@ -6,9 +6,9 @@ import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from '../../../model2/dataset'
-import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
-import { InstanceVariableService } from '../../../services2/instance-variable.service'
+import { PublicDatasetService } from '../../../services-public/public-dataset.service'
+import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 
 @Component({
   templateUrl: './instance-variable.component.html',
@@ -22,8 +22,8 @@ export class InstanceVariableComponent implements OnInit {
   datasetId: string
   language: string
 
-  constructor(private instanceVariableService: InstanceVariableService,
-              private datasetService: DatasetService,
+  constructor(private instanceVariableService: PublicInstanceVariableService,
+              private datasetService: PublicDatasetService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private langPipe: LangPipe,
@@ -39,8 +39,8 @@ export class InstanceVariableComponent implements OnInit {
 
   private getInstanceVariable() {
     Observable.forkJoin(
-      this.instanceVariableService.getInstanceVariable(this.datasetId, this.instanceVariableId),
-      this.datasetService.getDataset(this.datasetId)
+      this.instanceVariableService.get(this.datasetId, this.instanceVariableId),
+      this.datasetService.get(this.datasetId)
     ).subscribe(data => {
       this.instanceVariable = data[0]
       this.dataset = data[1]

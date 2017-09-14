@@ -46,12 +46,20 @@ export class DatasetService3 {
       .map(response => response.json() as Dataset)
   }
 
-  publishDataSet(dataset: Dataset): Observable<Dataset> {
-    return Observable.throw('Not implemented')
+  publish(dataset: Dataset): Observable<Dataset> {
+    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
+    const options = new RequestOptions({ headers: headers })
+
+    return this.http.post(env.contextPath + '/api/v3/editor/dataset-functions/publish?datasetId=' + dataset.id, {}, options)
+      .map(response => response.json() as Dataset)
   }
 
-  unpublishDataSet(dataset: Dataset): Observable<Dataset> {
-    return Observable.throw('Not implemented')
+  withdraw(dataset: Dataset): Observable<Dataset> {
+    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
+    const options = new RequestOptions({ headers: headers })
+
+    return this.http.post(env.contextPath + '/api/v3/editor/dataset-functions/withdraw?datasetId=' + dataset.id, {}, options)
+      .map(response => response.json() as Dataset)
   }
 
   importDataset(event): Observable<Dataset> {

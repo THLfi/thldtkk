@@ -36,10 +36,12 @@ public class InstanceVariableServiceImpl implements InstanceVariableService {
   }
 
   @Override
-  public List<InstanceVariable> getVariableInstancesVariables(UUID variableId) {
+  public List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max) {
     return nodes.query(
+        select("id", "type", "properties.*", "references.*", "referrers.*"),
         and(keyValue("type.id", "InstanceVariable"),
-            keyValue("references.variable.id", variableId.toString())))
+            keyValue("references.variable.id", variableId.toString())),
+        max)
         .map(InstanceVariable::new)
         .collect(toList());
   }
@@ -55,6 +57,7 @@ public class InstanceVariableServiceImpl implements InstanceVariableService {
   @Override
   public List<InstanceVariable> find(String query, int max) {
     return nodes.query(
+        select("id", "type", "properties.*", "references.*", "referrers.*"),
         and(keyValue("type.id", "InstanceVariable"),
             anyKeyWithAllValues(asList(
                 "properties.prefLabel",

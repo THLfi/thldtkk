@@ -27,11 +27,12 @@ public class PublicDatasetController {
   @ApiOperation("List all published datasets")
   @GetJsonMapping
   public List<Dataset> queryDatasets(
+      @RequestParam(name = "query", defaultValue = "") String query,
       @RequestParam(name = "organizationId", required = false) UUID organizationId,
       @RequestParam(name = "datasetTypeId", required = false) UUID datasetTypeId,
-      @RequestParam(name = "query", defaultValue = "") String query,
-      @RequestParam(name = "max", defaultValue = "-1") int max) {
-    return publicDatasetService.find(organizationId, datasetTypeId, query, max);
+      @RequestParam(name = "max", defaultValue = "-1") int max,
+      @RequestParam(name = "sort", defaultValue = "") String sort) {
+    return publicDatasetService.find(organizationId, datasetTypeId, query, max, sort);
   }
 
   @ApiOperation("Get one published dataset by ID")

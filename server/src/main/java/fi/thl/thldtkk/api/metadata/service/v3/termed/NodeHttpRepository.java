@@ -25,11 +25,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.domain.query.Sort.sort;

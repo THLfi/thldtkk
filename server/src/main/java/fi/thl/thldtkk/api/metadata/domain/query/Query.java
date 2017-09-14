@@ -21,12 +21,20 @@ public class Query {
     return new Query(select, where, sort, max);
   }
 
+  public static Query query(Select select, Criteria where, int max) {
+    return new Query(select, where, sort(), max);
+  }
+
   public static Query query(Select select, Criteria where, Sort sort) {
     return new Query(select, where, sort, -1);
   }
 
   public static Query query(Select select, Criteria where) {
     return new Query(select, where, sort(), -1);
+  }
+
+  public static Query query(Criteria where, int max, Sort sort) {
+    return new Query(selectAll(), where, sort, max);
   }
 
   public static Query query(Criteria where, int max) {

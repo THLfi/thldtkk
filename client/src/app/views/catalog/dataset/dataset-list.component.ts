@@ -1,25 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+import { Component, OnInit } from '@angular/core'
+import 'rxjs/add/operator/toPromise'
 
-import { Dataset } from "../../../model2/dataset";
-import { Organization } from "../../../model2/organization";
-import { DatasetService } from "../../../services2/dataset.service";
-import { OrganizationService } from "../../../services2/organization.service";
+import { Dataset } from '../../../model2/dataset'
+import { Organization } from '../../../model2/organization'
+import { OrganizationService3 } from '../../../services3/organization.service'
+import { PublicDatasetService } from '../../../services-public/public-dataset.service'
+import { Subscription } from 'rxjs'
 
 @Component({
   templateUrl: './dataset-list.component.html'
 })
 export class DatasetListComponent implements OnInit {
-  
+
   organizations: Organization[]
   datasets: Dataset[]
 
-  datasetQuery = ""
-  selectedOrganizationId = ""
+  searchText = ''
+  selectedOrganizationId = ''
+
+  onGoingSearchSubscription: Subscription
 
   constructor(
-    private organizationService: OrganizationService,
-    private datasetService: DatasetService
+    private organizationService: OrganizationService3,
+    private datasetService: PublicDatasetService
   ) { }
 
   ngOnInit(): void {
@@ -27,26 +30,30 @@ export class DatasetListComponent implements OnInit {
       .subscribe(organizations => {
         this.organizations = organizations
       })
-    this.datasetService.getAllDatasets()
-      .subscribe(datasets => {
-        this.datasets = datasets.filter(dataset => dataset.published == true)
-      })
+    this.doSearch()
   }
 
   selectOrganization(organizationId: string) {
     this.selectedOrganizationId = organizationId
-    this.datasetService.getDatasets(organizationId, this.datasetQuery)
-      .subscribe(datasets => {
-        this.datasets = datasets.filter(dataset => dataset.published == true)
-      })
+    this.doSearch()
   }
 
-  search(query: string) {
-    this.datasetQuery = query;
-    this.datasetService.getDatasets(this.selectedOrganizationId, query)
-      .subscribe(datasets => {
-        this.datasets = datasets.filter(dataset => dataset.published == true)
-      })
+  updateSearchText(query: string) {
+    this.searchText = query
+    this.doSearch()
+  }
+
+  private doSearch() {
+    this.datasets = null
+
+    if (this.onGoingSearchSubscription) {
+      this.onGoingSearchSubscription.unsubscribe()
+    }
+
+    this.onGoingSearchSubscription = this.datasetService.search(
+      this.searchText ? this.searchText : '',
+      this.selectedOrganizationId ? this.selectedOrganizationId : ''
+    ).subscribe(datasets => this.datasets = datasets)
   }
 
 }

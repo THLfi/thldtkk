@@ -9,6 +9,8 @@ public interface DatasetService extends Service<UUID, Dataset> {
 
   List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max);
 
+  List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sort);
+
   Dataset saveNotUpdatingInstanceVariables(Dataset dataset);
 
   InstanceVariable saveDatasetInstanceVariable(UUID datasetId, InstanceVariable instanceVariable);

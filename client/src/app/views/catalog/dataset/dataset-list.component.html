@@ -5,7 +5,6 @@
     </h1>
   </div>
 </div>
-
 <div class="row">
   <div class="col-xs-3">
     <label>{{'organizations' | translate}}</label>
@@ -24,24 +23,23 @@
       </li>
     </ul>
   </div>
-
   <div class="col-xs-9">
-    
     <div class="input-group">
-      <input type="text" class="form-control" #query (keyup)="search(query.value)">
+      <input type="text" class="form-control" #searchTextInput (keyup)="updateSearchText(searchTextInput.value)">
       <div class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
     </div>
-  
     <br>
-
-    <ul>
+    <ul *ngIf="datasets; else loadingDatasets;">
       <li *ngFor="let dataset of datasets">
         <a routerLink="/catalog/datasets/{{ dataset.id }}">
           {{ dataset.prefLabel | lang }}
         </a>
       </li>
     </ul>
+    <ng-template #loadingDatasets>
+      <thl-spinner></thl-spinner>
+    </ng-template>
   </div>
 </div>

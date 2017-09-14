@@ -9,7 +9,7 @@ public interface InstanceVariableService extends Service<UUID, InstanceVariable>
 
   List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId);
 
-  List<InstanceVariable> getVariableInstancesVariables(UUID variableId);
+  List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max);
 
   List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId);
 

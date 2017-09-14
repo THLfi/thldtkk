@@ -4,12 +4,9 @@ import { Observable, Subject } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 import { Location } from '@angular/common'
 
-import { Dataset } from '../../../model2/dataset'
-import { DatasetService } from '../../../services2/dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { Variable } from '../../../model2/variable'
-import { PublicInstanceVariableService } from '../../../services2/public-instance-variable.service'
-import { LangPipe } from '../../../utils/lang.pipe';
+import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 
 // Observable operators
 import 'rxjs/add/operator/switchMap';
@@ -74,7 +71,7 @@ export class InstanceVariableSearchComponent implements OnInit {
     this.searchingMoreResults = true
     this.searchInProgress = true;
 
-    this.instanceVariableService.searchInstanceVariable(this.searchText, this.maxResults)
+    this.instanceVariableService.search(this.searchText, this.maxResults)
       .subscribe(instanceVariables => {
         this.updateQueryParam(this.searchText)
         this.instanceVariables = instanceVariables;
@@ -85,7 +82,7 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   searchInstanceVariables(searchText: string): Observable<InstanceVariable[]> {
-    return this.instanceVariableService.searchInstanceVariable(searchText, this.maxResults);
+    return this.instanceVariableService.search(searchText, this.maxResults)
   }
 
   private updateQueryParam(searchText:string): void {
@@ -104,7 +101,7 @@ export class InstanceVariableSearchComponent implements OnInit {
     instanceVariables
       .filter(iv => iv.variable)
       .map(iv => variablesById[iv.variable.id] = iv.variable)
-    
+
     for (let variableId in variablesById) {
       variables.push(variablesById[variableId])
     }

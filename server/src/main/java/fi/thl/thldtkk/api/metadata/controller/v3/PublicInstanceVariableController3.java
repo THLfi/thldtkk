@@ -42,10 +42,10 @@ public class PublicInstanceVariableController3 {
   @GetJsonMapping("/variables/{variableId}/instanceVariables")
   public List<InstanceVariable> getInstancesOfVariable(
       @PathVariable("variableId") UUID variableId) {
-    return instanceVariableService.getVariableInstancesVariables(variableId);
+    return instanceVariableService.getVariableInstancesVariables(variableId, -1);
   }
 
-  @ApiOperation("List all instance variables")
+  @ApiOperation("Search instance variables")
   @GetJsonMapping("/instanceVariables")
   public List<InstanceVariable> getInstanceVariables(
       @RequestParam(value = "query", defaultValue = "") String query,

@@ -52,7 +52,7 @@ export class DatasetViewComponent implements OnInit {
     this.translateService.get('confirmPublishDataset')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          this.datasetService.publishDataSet(this.dataset)
+          this.datasetService.publish(this.dataset)
             .subscribe(dataSet => this.dataset = dataSet)
         }
       })
@@ -62,7 +62,7 @@ export class DatasetViewComponent implements OnInit {
     this.translateService.get('confirmUnpublishDataset')
       .subscribe((message: string) => {
         if (confirm(message)) {
-          this.datasetService.unpublishDataSet(this.dataset)
+          this.datasetService.withdraw(this.dataset)
             .subscribe(dataSet => this.dataset = dataSet)
         }
       })

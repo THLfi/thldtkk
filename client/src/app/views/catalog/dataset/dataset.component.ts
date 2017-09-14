@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from '../../../model2/dataset';
-import { DatasetService } from '../../../services2/dataset.service';
+import { PublicDatasetService } from '../../../services-public/public-dataset.service'
 
 @Component({
   templateUrl: './dataset.component.html',
@@ -16,7 +16,7 @@ export class DatasetComponent implements OnInit {
   dataset: Dataset;
   language: string
 
-  constructor(private datasetService: DatasetService,
+  constructor(private datasetService: PublicDatasetService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,
@@ -30,7 +30,7 @@ export class DatasetComponent implements OnInit {
 
   private getDataSet() {
     const datasetId = this.route.snapshot.params['id'];
-    this.datasetService.getDataset(datasetId)
+    this.datasetService.get(datasetId)
       .subscribe(dataset => {
         this.dataset = dataset
         this.updatePageTitle()

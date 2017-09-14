@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class DatasetServiceImpl implements DatasetService {
 
@@ -258,6 +259,15 @@ public class DatasetServiceImpl implements DatasetService {
     variables.removeIf(v -> v.getId().equals(instanceVariableId));
 
     save(new Dataset(dataset, variables));
+  }
+
+  @Override
+  public List<Dataset> getDatasetsByUnitType(UUID unitTypeId) {
+    return nodes.query(
+      select("id", "type", "properties.*", "references.*"),
+      and(keyValue("type.id", "DataSet"),
+        keyValue("references.unitType.id", unitTypeId.toString())))
+      .map(Dataset::new).collect(Collectors.toList());
   }
 
 }

@@ -1,12 +1,5 @@
 package fi.thl.thldtkk.api.metadata.service.v3.termed;
 
-import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
-import static fi.thl.thldtkk.api.metadata.domain.query.Sort.sort;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
@@ -20,6 +13,11 @@ import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.util.json.LocalDateTypeAdapter;
 import fi.thl.thldtkk.api.metadata.util.json.MultimapTypeAdapterFactory;
 import fi.thl.thldtkk.api.metadata.util.spring.GsonHttpMessageConverterFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +31,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+import static fi.thl.thldtkk.api.metadata.domain.query.Sort.sort;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
+
 /**
  * Termed REST API backed repository for Nodes.
  */
@@ -41,32 +46,30 @@ public class NodeHttpRepository implements Repository<NodeId, Node> {
   private static final Select DEFAULT_SELECT = select("id", "type", "properties.*", "references.*");
   private static final Sort DEFAULT_SORT = sort("properties.prefLabel.sortable");
   private static final int DEFAULT_MAX = -1;
-  private Logger log = LoggerFactory.getLogger(getClass());
-  private RestTemplate termed;
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
+
+  private final RestTemplate termed;
 
   private ParameterizedTypeReference<List<Node>> nodeListType =
       new ParameterizedTypeReference<List<Node>>() {
       };
 
   public NodeHttpRepository(String apiUrl, UUID graphId, String username, String password) {
-    this(apiUrl, graphId, username, password,
-        new GsonBuilder()
-            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
-            .registerTypeAdapterFactory(new MultimapTypeAdapterFactory())
-            .setPrettyPrinting()
-            .create());
-  }
+    Gson gson = new GsonBuilder()
+      .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
+      .registerTypeAdapterFactory(new MultimapTypeAdapterFactory())
+      .setPrettyPrinting()
+      .create();
 
-  public NodeHttpRepository(String apiUrl, UUID graphId, String username, String password,
-      Gson gson) {
     this.termed = new RestTemplateBuilder()
-        .rootUri(fromHttpUrl(apiUrl)
-            .path("/graphs")
-            .path("/" + graphId.toString())
-            .toUriString())
-        .messageConverters(GsonHttpMessageConverterFactory.build(gson))
-        .basicAuthorization(username, password)
-        .build();
+      .rootUri(fromHttpUrl(apiUrl)
+        .path("/graphs")
+        .path("/" + graphId.toString())
+        .toUriString())
+      .messageConverters(GsonHttpMessageConverterFactory.build(gson))
+      .basicAuthorization(username, password)
+      .build();
   }
 
   @Override
@@ -133,6 +136,7 @@ public class NodeHttpRepository implements Repository<NodeId, Node> {
   public void save(List<Node> nodes) {
     termed.exchange("/nodes?batch=true", POST, new HttpEntity<>(nodes), nodeListType);
   }
+
 
   @Override
   public Node save(Node node) {

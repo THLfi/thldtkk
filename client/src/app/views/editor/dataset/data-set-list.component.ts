@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+import { Component, OnInit } from '@angular/core'
 
-import { DatasetService } from "../../../services2/dataset.service";
-import { Dataset } from "../../../model2/dataset";
+import { Dataset } from '../../../model2/dataset'
+import { DatasetService3 } from '../../../services3/dataset.service'
 
 @Component({
     templateUrl: './data-set-list.component.html'
 })
-export class DataSetListComponent implements OnInit {
-    datasets: Dataset[] = []
+export class DatasetListComponent implements OnInit {
 
-    constructor (
-        private dataSetService: DatasetService
-    ) {}
+  datasets: Dataset[] = []
 
-    ngOnInit(): void {
-        this.dataSetService.getAllDatasets()
-            .subscribe(dataSets => this.datasets = dataSets);
-    }
+  constructor(
+    private dataSetService: DatasetService3
+  ) { }
+
+  ngOnInit(): void {
+    this.dataSetService.getAll()
+      .subscribe(dataSets => this.datasets = dataSets)
+  }
+
 }

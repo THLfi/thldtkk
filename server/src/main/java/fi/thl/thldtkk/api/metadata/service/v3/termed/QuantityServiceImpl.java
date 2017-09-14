@@ -7,6 +7,7 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
+import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.v3.QuantityService;
@@ -43,6 +44,11 @@ public class QuantityServiceImpl implements QuantityService {
   @Override
   public Optional<Quantity> get(UUID id) {
     return nodes.get(new NodeId(id, "Quantity")).map(Quantity::new);
+  }
+
+  @Override
+  public Quantity save(Quantity quantity) {
+    return new Quantity(nodes.save(quantity.toNode()));
   }
 
 }

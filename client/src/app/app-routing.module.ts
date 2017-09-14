@@ -6,7 +6,7 @@ import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-fro
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
-import { DataSetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component';
+import { DatasetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";

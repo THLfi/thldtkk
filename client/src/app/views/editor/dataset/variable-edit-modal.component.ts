@@ -7,7 +7,7 @@ import {TranslateService} from '@ngx-translate/core'
 
 import {GrowlMessageService} from '../../../services2/growl-message.service'
 import {Variable} from '../../../model2/variable'
-import {VariableService} from '../../../services2/variable.service';
+import {VariableService3} from '../../../services3/variable.service'
 
 @Component({
     templateUrl: './variable-edit-modal.component.html',
@@ -32,7 +32,7 @@ export class VariableEditModalComponent implements OnInit, AfterContentChecked {
     savingHasFailed: boolean = false
 
     constructor(
-        private variableService: VariableService,
+        private variableService: VariableService3,
         private growlMessageService: GrowlMessageService,
         private translateService: TranslateService
     ) {
@@ -111,7 +111,7 @@ export class VariableEditModalComponent implements OnInit, AfterContentChecked {
           return
         }
 
-        this.variableService.saveVariable(this.variable)
+        this.variableService.save(this.variable)
             .finally(() => {
               this.savingInProgress = false
             })

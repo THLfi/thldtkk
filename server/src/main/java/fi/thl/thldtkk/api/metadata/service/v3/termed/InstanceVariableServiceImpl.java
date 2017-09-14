@@ -18,6 +18,7 @@ import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class InstanceVariableServiceImpl implements InstanceVariableService {
 
@@ -75,6 +76,15 @@ public class InstanceVariableServiceImpl implements InstanceVariableService {
         "references.codeItems:2",
         "references.unitType:2"),
         new NodeId(id, "InstanceVariable")).map(InstanceVariable::new);
+  }
+
+  @Override
+  public List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId) {
+    return nodes.query(
+      select("id", "type", "properties.*", "references.*"),
+      and(keyValue("type.id", "InstanceVariable"),
+        keyValue("references.unitType.id", unitTypeId.toString())))
+      .map(InstanceVariable::new).collect(Collectors.toList());
   }
 
 }

@@ -13,19 +13,25 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.service.v3.InstanceQuestionService;
 import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class InstanceQuestionServiceImpl implements InstanceQuestionService {
 
-  private Repository<NodeId, Node> nodes;
+  private final DatasetService datasetService;
+  private final Repository<NodeId, Node> nodes;
 
-  public InstanceQuestionServiceImpl(Repository<NodeId, Node> nodes) {
+  public InstanceQuestionServiceImpl(DatasetService datasetService,
+                                     Repository<NodeId, Node> nodes) {
+    this.datasetService = datasetService;
     this.nodes = nodes;
   }
 
@@ -48,9 +54,8 @@ public class InstanceQuestionServiceImpl implements InstanceQuestionService {
 
   @Override
   public List<InstanceQuestion> findDatasetInstanceQuestions(UUID datasetId, String query) {
-    Dataset dataset = nodes.get(
-        select("id", "type", "references.variables:2", "references.instanceQuestions:2"),
-        new NodeId(datasetId, "DataSet")).map(Dataset::new).orElseThrow(NotFoundException::new);
+    Dataset dataset = datasetService.get(datasetId).orElseThrow(
+      (Supplier<RuntimeException>) () -> new NotFoundException("Dataset " + datasetId));
 
     Set<UUID> datasetQuestionIds = dataset.getInstanceVariables().stream()
         .flatMap(variable -> variable.getInstanceQuestions().stream())

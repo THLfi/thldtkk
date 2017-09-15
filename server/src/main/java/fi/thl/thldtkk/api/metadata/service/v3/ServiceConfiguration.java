@@ -2,10 +2,11 @@ package fi.thl.thldtkk.api.metadata.service.v3;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.v3.termed.PublicDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.ConceptServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetPublishingServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.v3.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.DatasetTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.InstanceQuestionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.InstanceVariableServiceImpl;
@@ -20,6 +21,7 @@ import fi.thl.thldtkk.api.metadata.service.v3.termed.UnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.UnitTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.UniverseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.UsageConditionServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.v3.termed.UserProfileServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.v3.termed.VariableServiceImpl;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,8 +53,8 @@ public class ServiceConfiguration {
   }
 
   @Bean
-  public DatasetService publicDatasetService() {
-    return new DatasetServiceImpl(publicNodeRepository());
+  public PublicDatasetService publicDatasetService() {
+    return new PublicDatasetServiceImpl(publicNodeRepository());
   }
 
   // editor services
@@ -63,15 +65,20 @@ public class ServiceConfiguration {
   }
 
   @Bean
-  public DatasetService editorDatasetService() {
-    return new DatasetServiceImpl(editorNodeRepository());
+  public EditorDatasetService editorDatasetService() {
+    return new EditorDatasetServiceImpl(editorNodeRepository());
   }
 
   @Bean
   public DatasetPublishingService datasetPublishingService() {
     return new DatasetPublishingServiceImpl(editorDatasetService(), publicDatasetService());
   }
-
+  
+  @Bean
+  public UserProfileService editorUserProfileService() {
+    return new UserProfileServiceImpl(editorNodeRepository());
+  }
+  
   // common services
 
   // Work in progress, remove '_3' suffix from bean names after refactoring is complete

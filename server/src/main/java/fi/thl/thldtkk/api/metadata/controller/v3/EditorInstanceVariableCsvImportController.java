@@ -6,7 +6,6 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvParser;
 import fi.thl.thldtkk.api.metadata.service.csv.ParsingResult;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import java.io.IOException;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 @Api(description = "Editor CSV API for instance variables")
 @RestController
@@ -32,10 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EditorInstanceVariableCsvImportController {
 
   @Autowired
-  @Qualifier("editorDatasetService")
-  private DatasetService editorDatasetService;
-  @Autowired
   private InstanceVariableCsvParser csvParser;
+  
+  @Autowired
+  @Qualifier("editorDatasetService")
+  private EditorDatasetService editorDatasetService;
 
   @PostMapping(path = "/datasets/{datasetId}/instanceVariables",
       consumes = "text/csv",

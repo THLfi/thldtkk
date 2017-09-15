@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata;
 
 import fi.thl.thldtkk.api.metadata.security.UserDirectory;
 import fi.thl.thldtkk.api.metadata.security.UserWithProfileUserDetailsManager;
-import fi.thl.thldtkk.api.metadata.service.UserProfileService;
+import fi.thl.thldtkk.api.metadata.service.v3.UserProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.io.IOException;
 import java.util.Properties;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private Resource usersPropertiesResource;
 
   @Autowired
+  @Qualifier("editorUserProfileService")
   private UserProfileService userProfileService;
 
   @Bean
@@ -68,6 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.PUT).authenticated()
         .antMatchers(HttpMethod.DELETE).authenticated()
         .antMatchers(HttpMethod.PATCH).authenticated()
+        .antMatchers("/api/v3/editor/**").authenticated()
         .antMatchers("/editor/**").authenticated()
         .anyRequest().permitAll()
 /*

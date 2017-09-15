@@ -4,7 +4,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.service.v3.InstanceVariableService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 @Api(description = "Editor API for instance variables")
 @RestController
@@ -35,7 +35,7 @@ public class EditorInstanceVariableController {
 
   @Autowired
   @Qualifier("editorDatasetService")
-  private DatasetService editorDatasetService;
+  private EditorDatasetService editorDatasetService;
 
   @ApiOperation("List all instance variables of given dataset")
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")

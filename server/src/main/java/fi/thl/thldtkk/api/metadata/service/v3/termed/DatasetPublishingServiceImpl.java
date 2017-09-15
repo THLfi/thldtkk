@@ -2,22 +2,23 @@ package fi.thl.thldtkk.api.metadata.service.v3.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.service.v3.DatasetPublishingService;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.v3.PublicDatasetService;
 
 public class DatasetPublishingServiceImpl implements DatasetPublishingService {
 
   private Logger log = LoggerFactory.getLogger(getClass());
 
-  private DatasetService editorDatasetService;
-  private DatasetService publicDatasetService;
+  private EditorDatasetService editorDatasetService;
+  private PublicDatasetService publicDatasetService;
 
   public DatasetPublishingServiceImpl(
-      DatasetService editorDatasetService,
-      DatasetService publicDatasetService) {
+      EditorDatasetService editorDatasetService,
+      PublicDatasetService publicDatasetService) {
     this.editorDatasetService = editorDatasetService;
     this.publicDatasetService = publicDatasetService;
   }

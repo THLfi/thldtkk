@@ -3,7 +3,6 @@ package fi.thl.thldtkk.api.metadata.controller.v3;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.UnitType;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.service.v3.InstanceVariableService;
 import fi.thl.thldtkk.api.metadata.service.v3.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
@@ -24,6 +23,7 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 @RestController
 @RequestMapping("/api/v3/unitTypes")
@@ -33,7 +33,7 @@ public class UnitTypeController3 {
   private UnitTypeService unitTypeService;
   @Autowired
   @Qualifier("editorDatasetService")
-  private DatasetService datasetService;
+  private EditorDatasetService datasetService;
   @Autowired
   @Qualifier("editorInstanceVariableService")
   private InstanceVariableService instanceVariableService;

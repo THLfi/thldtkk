@@ -1,7 +1,7 @@
 package fi.thl.thldtkk.api.metadata.security;
 
 import fi.thl.thldtkk.api.metadata.domain.UserProfile;
-import fi.thl.thldtkk.api.metadata.service.UserProfileService;
+import fi.thl.thldtkk.api.metadata.service.v3.UserProfileService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,7 +48,8 @@ public class UserWithProfileUserDetailsManager implements UserDetailsService {
   }
 
   private Optional<UserProfile> findExistingUserProfile(String directoryUsername) {
-    return userProfileService.query()
+    return userProfileService.findAll()
+      .stream()
       .filter(userProfile -> userProfile.getExternalIds().contains(directoryUsername))
       .findFirst();
   }

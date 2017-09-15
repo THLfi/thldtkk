@@ -9,7 +9,7 @@ import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
@@ -33,31 +34,50 @@ import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.StringUtils.hasText;
 
-public class DatasetServiceImpl implements DatasetService {
+public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   private Repository<NodeId, Node> nodes;
 
-  public DatasetServiceImpl(Repository<NodeId, Node> nodes) {
+  private UserHelper userHelper;
+  
+  public EditorDatasetServiceImpl(Repository<NodeId, Node> nodes) {
     this.nodes = nodes;
+    this.userHelper = new UserHelper();
   }
 
   @Override
   public List<Dataset> findAll() {
-    return nodes.query(keyValue("type.id", "DataSet"))
+    List<Criteria> criteria = new ArrayList<>();
+    
+    criteria.add(keyValue("type.id", "DataSet"));
+    
+    if(!userHelper.isCurrentUserAdmin()) {
+      criteria.add(getCurrentUserOrganizationCriteria());
+    }
+    
+    return nodes.query(and(criteria))
         .map(Dataset::new)
         .collect(toList());
   }
 
   @Override
   public List<Dataset> find(String query, int max) {
+    List<Criteria> criteria = new ArrayList<>();
+    
+    criteria.add(keyValue("type.id", "DataSet"));
+    criteria.add(keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+    
+    if(!userHelper.isCurrentUserAdmin()) {
+      criteria.add(getCurrentUserOrganizationCriteria());
+    }
+    
     return nodes.query(
-        and(keyValue("type.id", "DataSet"),
-            keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
+        and(criteria),
         max)
         .map(Dataset::new)
         .collect(toList());
   }
-
+  
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max) {
     return find(organizationId, datasetTypeId, query, max, "");
@@ -66,9 +86,13 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
-
+    
     criteria.add(keyValue("type.id", "DataSet"));
-
+    
+    if(!userHelper.isCurrentUserAdmin()) {
+      criteria.add(getCurrentUserOrganizationCriteria());
+    }
+    
     if (organizationId != null) {
       criteria.add(keyValue("references.owner.id", organizationId.toString()));
     }
@@ -88,6 +112,14 @@ public class DatasetServiceImpl implements DatasetService {
     }
   }
 
+  private Criteria getCurrentUserOrganizationCriteria() {
+      List<String> organizationIds = userHelper.getCurrentUserOrganizations().stream()
+        .map(organization -> organization.getId().toString())
+        .collect(Collectors.toList());
+
+      return keyWithAnyValue("references.owner.id", organizationIds);
+  }
+  
   @Override
   public Optional<Dataset> get(UUID id) {
     return nodes.get(select("id", "type", "properties.*", "references.*",

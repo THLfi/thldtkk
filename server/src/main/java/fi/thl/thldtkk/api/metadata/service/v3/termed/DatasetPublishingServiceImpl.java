@@ -23,17 +23,30 @@ public class DatasetPublishingServiceImpl implements DatasetPublishingService {
   }
 
   @Override
-  public void publish(UUID datasetId) {
+  public Dataset publish(UUID datasetId) {
     Dataset dataset = editorDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
     log.info("Publishing dataset {}", dataset.getId());
 
+    dataset.setPublished(true);
+    Dataset savedDataset = editorDatasetService.save(dataset);
+
     publicDatasetService.save(dataset);
+
+    return savedDataset;
   }
 
   @Override
-  public void withdraw(UUID datasetId) {
+  public Dataset withdraw(UUID datasetId) {
+    Dataset dataset = editorDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
+
+    log.info("Withdrawing dataset {}", datasetId);
+
+    dataset.setPublished(false);
+    Dataset savedDataset = editorDatasetService.save(dataset);
+
     publicDatasetService.delete(datasetId);
+    return savedDataset;
   }
 
 }

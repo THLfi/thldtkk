@@ -58,8 +58,8 @@ export class DatasetViewComponent implements OnInit {
       })
   }
 
-  confirmUnpublish(): void {
-    this.translateService.get('confirmUnpublishDataset')
+  confirmWithdraw(): void {
+    this.translateService.get('confirmWithdrawDataset')
       .subscribe((message: string) => {
         if (confirm(message)) {
           this.datasetService.withdraw(this.dataset)

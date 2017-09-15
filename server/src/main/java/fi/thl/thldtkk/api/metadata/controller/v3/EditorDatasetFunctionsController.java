@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller.v3;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.service.v3.DatasetPublishingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,14 +22,14 @@ public class EditorDatasetFunctionsController {
 
   @ApiOperation("Publish given dataset")
   @PostMapping("/publish")
-  public void publishDataset(@RequestParam("datasetId") UUID datasetId) {
-    datasetPublishingService.publish(datasetId);
+  public Dataset publishDataset(@RequestParam("datasetId") UUID datasetId) {
+    return datasetPublishingService.publish(datasetId);
   }
 
   @ApiOperation("Withdraw (un-publish) given dataset")
   @PostMapping("/withdraw")
-  public void withdrawDataset(@RequestParam("datasetId") UUID datasetId) {
-    datasetPublishingService.withdraw(datasetId);
+  public Dataset withdrawDataset(@RequestParam("datasetId") UUID datasetId) {
+    return datasetPublishingService.withdraw(datasetId);
   }
 
 }

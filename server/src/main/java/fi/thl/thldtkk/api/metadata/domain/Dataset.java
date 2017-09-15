@@ -215,6 +215,10 @@ public class Dataset {
         return Optional.ofNullable(published);
     }
 
+    public void setPublished(Boolean published) {
+      this.published = published;
+    }
+
     public Optional<LocalDate> getReferencePeriodStart() {
         return Optional.ofNullable(referencePeriodStart);
     }

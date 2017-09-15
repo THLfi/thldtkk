@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
-import { InstanceVariableService } from '../../../services2/instance-variable.service'
+import { InstanceVariableService3 } from '../../../services3/instance-variable.service'
 import { Variable } from '../../../model2/variable'
 import { VariableSearchComponent } from './variable-search.component'
 import { VariableService3 } from '../../../services3/variable.service'
@@ -21,7 +21,7 @@ export class VariableSearchResultComponent {
   language : string
 
   constructor(
-    private instanceVariableService: InstanceVariableService,
+    private instanceVariableService: InstanceVariableService3,
     private translateService: TranslateService,
     private variableService: VariableService3
   ) {

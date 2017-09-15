@@ -32,7 +32,7 @@ public class EditorDatasetController {
   @Qualifier("editorDatasetService")
   private DatasetService editorDatasetService;
 
-  @ApiOperation("List all datasets")
+  @ApiOperation("Search datasets")
   @GetJsonMapping
   public List<Dataset> queryDatasets(
       @RequestParam(name = "organizationId", required = false) UUID organizationId,

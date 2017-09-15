@@ -64,7 +64,7 @@
   "publish": "Julkaise",
   "unpublish": "Peru julkaisu",
   "confirmPublishDataset": "Haluatko varmasti julkaista aineiston?",
-  "confirmUnpublishDataset": "Haluatko varmasti perua aineiston julkaisun?",
+  "confirmWithdrawDataset": "Haluatko varmasti perua aineiston julkaisun?",
   "functions": "Toiminnot",
   "dataSetOwner": "Aineiston omistaja",
   "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",

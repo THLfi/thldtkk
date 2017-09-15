@@ -367,5 +367,36 @@
         }
       }
     ]
+  },
+  {
+    "id": "UserProfile",
+    "textAttributes": [
+      {
+        "id": "firstName"
+      },
+      {
+        "id": "lastName"
+      },
+      {
+        "id": "email"
+      },
+      {
+        "id": "externalIds"
+      },
+      {
+        "id": "roles"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "organizations",
+        "range": {
+          "id": "Organization",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
+    ]
   }
 ]

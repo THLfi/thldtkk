@@ -8,11 +8,11 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Unit;
-import fi.thl.thldtkk.api.metadata.service.Service;
-import fi.thl.thldtkk.api.metadata.service.UnitService;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.AmbiguousUnitSymbolException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedUnitSymbolException;
+import fi.thl.thldtkk.api.metadata.service.v3.CodeListService;
+import fi.thl.thldtkk.api.metadata.service.v3.UnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -29,7 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,23 +38,22 @@ import org.springframework.stereotype.Component;
 public class InstanceVariableCsvParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(InstanceVariableCsvParser.class);
-  
-  private Service<UUID, CodeList> codeListService;
-  
+
+  private CodeListService codeListService;
+
   private UnitService unitService;
-  
+
   @Autowired
-  public InstanceVariableCsvParser(Service<UUID, CodeList> codeListService, UnitService unitService) {
+  public InstanceVariableCsvParser(CodeListService codeListService, UnitService unitService) {
     this.codeListService = codeListService;
     this.unitService = unitService;
   }
-  
 
   public ParsingResult<List<ParsingResult<InstanceVariable>>> parse(InputStream csv, String encoding) {
-    
+
     List<ParsingResult<InstanceVariable>> results = new LinkedList<>();
     List<String> messages = new LinkedList<>();
-    
+
     if (!StringUtils.hasText(encoding)) {
       messages.add("import.csv.error.noEncoding");
       return done(results, messages);
@@ -127,28 +125,28 @@ public class InstanceVariableCsvParser {
     sanitize(row.get("description")).ifPresent(description -> instanceVariable.getDescription().put(language,description));
     sanitize(row.get("partOfGroup")).ifPresent(partOfGroup -> instanceVariable.getPartOfGroup().put(language, partOfGroup));
     sanitize(row.get("freeConcepts")).ifPresent(freeConcepts -> instanceVariable.getFreeConcepts().put(language, freeConcepts));
-    
+
     instanceVariable.setReferencePeriodStart(parseLocalDate(row, "referencePeriodStart", rowMessages));
     instanceVariable.setReferencePeriodEnd(parseLocalDate(row, "referencePeriodEnd", rowMessages));
-    
+
     sanitize(row.get("valueDomainType")).ifPresent(valueDomainType -> instanceVariable.setValueDomainType(valueDomainType));
     sanitize(row.get("missingValues")).ifPresent((missingValues -> instanceVariable.getMissingValues().put(language, missingValues)));
     sanitize(row.get("defaultMissingValue")).ifPresent(defaultMissingValue -> instanceVariable.setDefaultMissingValue(defaultMissingValue));
     sanitize(row.get("qualityStatement")).ifPresent(qualityStatement -> instanceVariable.getQualityStatement().put(language, qualityStatement));
-    
+
     sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
     sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
     sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(language, dataFormat));
-    
+
     Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
     Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
 
-    if((codeListPrefLabel.isPresent() && !StringUtils.isEmpty(codeListPrefLabel.get())) 
+    if((codeListPrefLabel.isPresent() && !StringUtils.isEmpty(codeListPrefLabel.get()))
             || (codeListReferenceId.isPresent() && !StringUtils.isEmpty(codeListReferenceId.get()))) {
 
       Optional<String> codeListDescription = sanitize(row.get("codeList.description"));
       Optional<String> codeListOwner = sanitize(row.get("codeList.owner"));
-      
+
       try {
           Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, language, rowMessages);
           if(!codeList.isPresent()) {
@@ -159,18 +157,18 @@ public class InstanceVariableCsvParser {
                   instanceVariable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
                 });
       }
-      
+
       catch(UndefinedLabelException e) {
           isRowValid = false;
           rowMessages.add("import.csv.error.missingRequiredValue.codeList.prefLabel");
-      }           
+      }
     }
-    
+
     parseUnit(row, language, rowMessages).ifPresent(unit -> instanceVariable.setUnit(unit));
 
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
-  
+
   private LocalDate parseLocalDate(Map<String, String> row, String field, List<String> rowMessages) {
     String dateString = row.get(field);
     LocalDate date = null;
@@ -184,49 +182,54 @@ public class InstanceVariableCsvParser {
     }
     return date;
   }
-  
+
   private Optional<String> sanitize(String columnEntry) {
     return Optional.ofNullable(columnEntry)
             .map(String::trim)
             .map(this::normalizeLineBreaks);
   }
-  
-  private String normalizeLineBreaks(String columnEntry) {    
+
+  private String normalizeLineBreaks(String columnEntry) {
     String windowsStyleLineBreaksReplaced = columnEntry.replaceAll("\r\n", "\n"); // CR+LF -> LF
     String linefeedsOnlyReplaced = windowsStyleLineBreaksReplaced.replaceAll("\r", "\n"); // CR -> LF
     return linefeedsOnlyReplaced;
   }
-  
+
   private List<CodeList> searchCodeListsByReferenceId(String referenceId) {
-      return codeListService.query(referenceId).filter(codeList -> {
-              Optional<String> storedReferenceId = codeList.getReferenceId();
-              return storedReferenceId.isPresent() ? storedReferenceId.get().equalsIgnoreCase(referenceId) : false;
-          }).collect(Collectors.toList());
+      return codeListService.findByExactReferenceId(referenceId, -1)
+        .stream()
+        .filter(codeList -> {
+          Optional<String> storedReferenceId = codeList.getReferenceId();
+          return storedReferenceId.isPresent() ? storedReferenceId.get().equalsIgnoreCase(referenceId) : false;
+        })
+        .collect(Collectors.toList());
   }
-  
+
   private List<CodeList> searchCodeListsByLabel(String label, String language) {
-      return codeListService.query(label).filter(codeList -> {
+      return codeListService.findByExactPrefLabel(label, -1)
+        .stream()
+        .filter(codeList -> {
           String storedLabel = codeList.getPrefLabel().get(language);
           return storedLabel != null ? storedLabel.equalsIgnoreCase(label) : false;
       }).collect(Collectors.toList());
   }
-  
+
   private Optional<CodeList> getCodeList(Optional<String> label, Optional<String> referenceId, String language, List<String> rowMessages) {
-                  
+
       List<CodeList> bestMatches = new ArrayList<>();
       List<CodeList> codeListsByLabel = new ArrayList<>();
       List<CodeList> codeListsByReferenceId = new ArrayList<>();
-            
+
       if(label.isPresent() && !StringUtils.isEmpty(label.get())) {
          codeListsByLabel = searchCodeListsByLabel(label.get(), language);
       }
-      
+
       if(referenceId.isPresent() && !StringUtils.isEmpty(referenceId.get())) {
          codeListsByReferenceId = searchCodeListsByReferenceId(referenceId.get());
       }
-      
+
       // match order (1.) label and ref. id; (2.) ref. id only; (3.) label only
-      
+
       if(!codeListsByLabel.isEmpty() && !codeListsByReferenceId.isEmpty()) {
           for(CodeList referenceIdCodeList : codeListsByReferenceId) {
               if(codeListsByLabel.contains(referenceIdCodeList)) {
@@ -234,42 +237,42 @@ public class InstanceVariableCsvParser {
               }
           }
       }
-      
+
       if(bestMatches.isEmpty()) {
           if(!codeListsByReferenceId.isEmpty()) {
               bestMatches = codeListsByReferenceId;
           }
-          
+
           else if (!codeListsByLabel.isEmpty()) {
               bestMatches = codeListsByLabel;
           }
       }
-      
+
       if(bestMatches.size() > 1) {
           rowMessages.add("import.csv.warn.ambiguousCodeList"); // should fail import?
       }
-      
+
       return bestMatches.isEmpty() ? Optional.empty() : Optional.of(bestMatches.get(0));
   }
 
   private Optional<CodeList> createCodeList(Optional<String> label, String language, Optional<String> referenceId, Optional<String> description, Optional<String> owner) throws UndefinedLabelException {
-      
+
       if(!label.isPresent() || (label.isPresent() && StringUtils.isEmpty(label.get())) ) {
           throw new UndefinedLabelException();
       }
-      
+
       CodeList codeList = new CodeList();
       codeList.getPrefLabel().put(language, label.get());
-      
+
       codeList.setCodeListType(CodeList.CODE_LIST_TYPE_EXTERNAL);
-      
+
       referenceId.ifPresent(refId -> codeList.setReferenceId(refId));
       description.ifPresent(localizedDescription -> codeList.getDescription().put(language, localizedDescription));
       owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
-      
+
       return Optional.ofNullable(codeListService.save(codeList));
   }
-  
+
     private Optional<Unit> parseUnit(Map<String, String> row, String language, List<String> rowMessages) {
     Optional<Unit> unit = Optional.empty();
 
@@ -288,42 +291,42 @@ public class InstanceVariableCsvParser {
         rowMessages.add("import.csv.warn.missingRequiredValue.unit.symbol");
       }
     }
-    
+
     return unit;
   }
-  
+
   private Optional<Unit> searchUnitBySymbol(String symbol, String language) throws AmbiguousUnitSymbolException{
-    
+
     Optional<Unit> unit = Optional.empty();
-    List<Unit> units = unitService.queryBySymbol(symbol).collect(Collectors.toList());
-       
+    List<Unit> units = unitService.findBySymbol(symbol);
+
     if(units.size() == 1) {
       Iterator<Unit> iterator = units.listIterator();
       unit = Optional.of(iterator.next());
     }
-    
+
     else if(units.size() > 1) {
       // case sensitive filtering for unit symbols (e.g. 'v' and 'V')
-      units = units.stream().filter(u -> u.getSymbol().containsKey(language) && 
+      units = units.stream().filter(u -> u.getSymbol().containsKey(language) &&
               u.getSymbol().get(language).equals(symbol))
               .collect(Collectors.toList());
-      
+
       if(units.size() > 1) {
         throw new AmbiguousUnitSymbolException(symbol);
       }
-      
+
       else {
         Iterator<Unit> iterator = units.listIterator();
         unit = Optional.of(iterator.next());
       }
-      
+
     }
-   
+
     return unit;
   }
-  
+
   private Unit createUnit(Optional<String> label, Optional<String> symbol, String language) throws UndefinedLabelException, UndefinedUnitSymbolException {
-    
+
     if(!label.isPresent() || !StringUtils.hasText(label.get())) {
       throw new UndefinedLabelException();
     }
@@ -331,11 +334,11 @@ public class InstanceVariableCsvParser {
     if(!symbol.isPresent() || !StringUtils.hasText(symbol.get())) {
       throw new UndefinedUnitSymbolException();
     }
-    
+
     Unit unit = new Unit(randomUUID());
     unit.getPrefLabel().put(language, label.get());
     unit.getSymbol().put(language, symbol.get());
     return unitService.save(unit);
   }
-  
+
 }

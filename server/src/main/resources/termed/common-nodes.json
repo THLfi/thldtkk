@@ -1564,7 +1564,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Omistaja"
+          "value": "Yhteyshenkilö"
         }
       ]
     }
@@ -1578,7 +1578,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Vastaava tutkija"
+          "value": "Rekisterivastaava"
         }
       ]
     }
@@ -1592,7 +1592,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Vastuullinen johtaja"
+          "value": "Tilastovastaava"
         }
       ]
     }
@@ -1606,7 +1606,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Vastuuhenkilö"
+          "value": "Tutkimuksen vastuullinen johtaja (HetiL)"
         }
       ]
     }
@@ -1620,7 +1620,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Näytteet"
+          "value": "Tutkimuksesta vastaava henkilö (TVH)"
         }
       ]
     }
@@ -1634,7 +1634,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Yhteyshenkilö"
+          "value": "Näytevastaava"
         }
       ]
     }
@@ -1648,7 +1648,7 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Toteuttaja"
+          "value": "Tiedonhallintavastaava"
         }
       ]
     }
@@ -1662,7 +1662,21 @@
       "prefLabel": [
         {
           "lang": "fi",
-          "value": "Tiedonhallinta"
+          "value": "Tekijä"
+        }
+      ]
+    }
+  },
+  {
+    "id": "3bd714c4-f166-4c4a-9780-be376b5f09bf",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tiedon käsittelijä"
         }
       ]
     }
@@ -1743,6 +1757,148 @@
         {
           "lang": "fi",
           "value": "Pohjois-Savon sairaanhoitopiiri"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a6699cbc-8ec2-4f51-a4d0-02f275649339",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "Kela"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Kansaneläkelaitos"
+        }
+      ]
+    }
+  },
+  {
+    "id": "0fe386b0-4675-48da-99c7-879e5f2b6519",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "Evira"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Elintarviketurvallisuusvirasto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "6ca2d3de-2f6a-4acb-b818-70ac5eff70a8",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "Trafi"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Liikenteen turvallisuusvirasto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "0a72fcca-4ad9-45a2-a6c8-736d834d2a66",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "TTL"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Työterveyslaitos"
+        }
+      ]
+    }
+  },
+  {
+    "id": "78bd793e-18f7-4aab-a0f9-96bc96a7ebd9",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "VRK"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Väestörekisterikeskus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cb14592b-6fed-43a5-99f3-3276e012c4fc",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Suomen syöpäyhdistys"
+        }
+      ]
+    }
+  },
+  {
+    "id": "68d0a9e2-5ba2-4cff-80d9-dc51dbc8d5b9",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Helsingin Biopankki"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cdef53ec-e4ae-4368-a94f-6292b457a118",
+    "type": {
+      "id": "Organization"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Auria Biopankki"
         }
       ]
     }

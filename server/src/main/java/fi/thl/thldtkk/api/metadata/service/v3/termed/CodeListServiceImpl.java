@@ -63,6 +63,29 @@ public class CodeListServiceImpl implements CodeListService {
   }
 
   @Override
+  public List<CodeList> findByExactPrefLabel(String prefLabel, int max) {
+    return findByExactProperty("prefLabel", prefLabel, max);
+  }
+
+  private List<CodeList> findByExactProperty(String property, String value, int max) {
+    return nodes.query(
+      select("id", "type", "properties.*", "references.*"),
+      and(
+        keyValue("type.id", "CodeList"),
+        keyValue("properties." + property, "\"" + value + "\"")
+      ),
+      sort("properties.prefLabel.sortable"),
+      max)
+      .map(CodeList::new)
+      .collect(toList());
+  }
+
+  @Override
+  public List<CodeList> findByExactReferenceId(String referenceId, int max) {
+    return findByExactProperty("referenceId", referenceId, max);
+  }
+
+  @Override
   public Optional<CodeList> get(UUID id) {
     return nodes.get(new NodeId(id, "CodeList")).map(CodeList::new);
   }

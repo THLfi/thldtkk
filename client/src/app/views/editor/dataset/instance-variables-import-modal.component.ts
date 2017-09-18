@@ -5,7 +5,7 @@ import {
 import { NgForm } from '@angular/forms'
 
 import { Dataset } from '../../../model2/dataset'
-import { InstanceVariableService } from '../../../services2/instance-variable.service'
+import { InstanceVariableService3 } from '../../../services3/instance-variable.service'
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -32,7 +32,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
-    private instanceVariableService: InstanceVariableService
+    private instanceVariableService: InstanceVariableService3
   ) { }
 
   ngOnInit(): void {

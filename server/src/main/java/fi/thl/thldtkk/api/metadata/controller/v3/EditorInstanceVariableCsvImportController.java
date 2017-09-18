@@ -4,6 +4,7 @@ import static java.util.UUID.randomUUID;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvParser;
 import fi.thl.thldtkk.api.metadata.service.csv.ParsingResult;
 import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -33,6 +34,8 @@ public class EditorInstanceVariableCsvImportController {
   @Autowired
   @Qualifier("editorDatasetService")
   private DatasetService editorDatasetService;
+  @Autowired
+  private InstanceVariableCsvParser csvParser;
 
   @PostMapping(path = "/datasets/{datasetId}/instanceVariables",
       consumes = "text/csv",
@@ -44,9 +47,8 @@ public class EditorInstanceVariableCsvImportController {
 
     Dataset dataset = editorDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
 
-    // FIXME: update csv parser to use new services
-    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult = null;
-    //csvParser.parse(request.getInputStream(), getCharset(contentType));
+    ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult
+      = csvParser.parse(request.getInputStream(), getCharset(contentType));
 
     if (parsingResult.getParsedObject().get().isEmpty()) {
       return new ResponseEntity<>(parsingResult, HttpStatus.BAD_REQUEST);

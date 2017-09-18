@@ -69,7 +69,21 @@ export class InstanceVariableService3 {
   }
 
   importInstanceVariablesAsCsv(datasetId: string, file: File, encoding: string): Observable<any> {
-    return Observable.throw("Not implemented")
+    const formData: FormData = new FormData()
+    formData.append('file', file, file.name)
+
+    const path: string = env.contextPath
+      + '/api/v3/editor/datasets/'
+      + datasetId
+      + '/instanceVariables'
+    const headers = new Headers({ 'Content-Type': 'text/csv;charset=' + encoding })
+    const options = new RequestOptions({ headers: headers })
+
+    return this.http.post(path, file, options)
+      .map(response => response.json() as InstanceVariable)
+      .do(() => {
+        this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.import.result.success')
+      })
   }
 
   searchInstanceVariable(searchText="", maxResults=100, broadSearch=true, requirePublished=true): Observable<InstanceVariable[]> {

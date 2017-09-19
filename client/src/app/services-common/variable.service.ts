@@ -5,12 +5,12 @@ import 'rxjs/add/operator/map'
 
 import { environment as env} from '../../environments/environment'
 
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from './growl-message.service'
 import { InstanceVariable } from '../model2/instance-variable'
 import { Variable } from '../model2/variable'
 
 @Injectable()
-export class VariableService3 {
+export class VariableService {
 
   constructor(
     private growlMessageService: GrowlMessageService,

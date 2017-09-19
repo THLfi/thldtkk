@@ -8,7 +8,7 @@ import { environment as env } from '../../environments/environment'
 import { UsageCondition } from '../model2/usage-condition'
 
 @Injectable()
-export class UsageConditionService3 {
+export class UsageConditionService {
 
   constructor(
     private http: Http

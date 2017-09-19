@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 
 import { Variable } from '../../../model2/variable'
-import { VariableService3 } from '../../../services3/variable.service'
+import { VariableService } from '../../../services-common/variable.service'
 
 @Component({
   templateUrl: './variable-search.component.html',
@@ -18,7 +18,7 @@ export class VariableSearchComponent implements OnInit {
   variableSearchSubscription: Subscription
   searchText: string
 
-  constructor(private variableService: VariableService3,
+  constructor(private variableService: VariableService,
               private route: ActivatedRoute,
               private router: Router,
               private location: Location,

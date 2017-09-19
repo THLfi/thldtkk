@@ -7,7 +7,7 @@ import { environment as env} from '../../environments/environment'
 import { Role } from '../model2/role'
 
 @Injectable()
-export class RoleService3 {
+export class RoleService {
 
   constructor(
     private http: Http

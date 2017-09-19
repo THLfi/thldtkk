@@ -4,7 +4,7 @@ import {
 import { NgForm } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 
-import { GrowlMessageService } from '../../../services2/growl-message.service'
+import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { InstanceQuestion } from '../../../model2/instance-question'
 
 @Component({

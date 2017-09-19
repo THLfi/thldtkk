@@ -6,10 +6,10 @@ import 'rxjs/add/operator/map'
 import { environment as env} from '../../environments/environment'
 
 import { Dataset } from '../model2/dataset'
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from '../services-common/growl-message.service'
 
 @Injectable()
-export class DatasetService3 {
+export class EditorDatasetService {
 
   constructor(
     private growlMessageService: GrowlMessageService,

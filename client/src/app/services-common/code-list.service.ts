@@ -5,7 +5,7 @@ import { Observable } from 'rxjs'
 import { environment as env} from '../../environments/environment'
 
 import { CodeList } from '../model2/code-list'
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from './growl-message.service'
 
 @Injectable()
 export class CodeListService3 {

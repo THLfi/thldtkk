@@ -1,5 +1,5 @@
 import { OnInit, Component } from '@angular/core'
-import { DatasetService3 } from '../../../services3/dataset.service'
+import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
@@ -20,7 +20,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
 
   sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
 
-  constructor(private datasetService: DatasetService3,
+  constructor(private datasetService: EditorDatasetService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,

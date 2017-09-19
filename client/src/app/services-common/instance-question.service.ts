@@ -4,11 +4,11 @@ import { Observable } from 'rxjs'
 
 import { environment as env} from '../../environments/environment'
 
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from './growl-message.service'
 import { InstanceQuestion } from '../model2/instance-question'
 
 @Injectable()
-export class InstanceQuestionService3 {
+export class InstanceQuestionService {
 
   constructor(
     private growlMessageService: GrowlMessageService,

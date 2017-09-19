@@ -9,7 +9,7 @@ import { environment as env } from '../../environments/environment'
 import { LifecyclePhase } from '../model2/lifecycle-phase'
 
 @Injectable()
-export class LifecyclePhaseService3 {
+export class LifecyclePhaseService {
 
   constructor(
     private http: Http

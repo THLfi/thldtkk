@@ -7,7 +7,7 @@ import { environment as env} from '../../environments/environment'
 import { Concept } from '../model2/concept'
 
 @Injectable()
-export class ConceptService3 {
+export class ConceptService {
 
   constructor(
     private http: Http

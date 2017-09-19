@@ -1,20 +1,27 @@
 package fi.thl.thldtkk.api.metadata.util.spring.security;
 
+import fi.thl.thldtkk.api.metadata.security.UserDirectory;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.util.EncryptionUtils;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider {
+
+  @Autowired
+  private UserHelper userHelper;
 
   private final String url;
   private final String application;
@@ -44,10 +51,16 @@ public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider 
           usernameAndPassword.getPrincipal().toString(),
           usernameAndPassword.getCredentials().toString())) {
 
+        ThlSsoUserDetails details = new ThlSsoUserDetails(usernameAndPassword);
+
+        UserDetails pDetails = userHelper.loadUserByUsername(
+                usernameAndPassword.getPrincipal().toString(),
+                UserDirectory.THL_SSO, details);
+
         return new UsernamePasswordAuthenticationToken(
-            usernameAndPassword.getPrincipal(),
-            usernameAndPassword.getCredentials(),
-            Collections.emptyList());
+                pDetails,
+                usernameAndPassword.getCredentials(),
+                pDetails.getAuthorities());
       }
     }
     return null;

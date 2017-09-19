@@ -2,10 +2,12 @@ package fi.thl.thldtkk.api.metadata;
 
 import fi.thl.thldtkk.api.metadata.security.UserDirectory;
 import fi.thl.thldtkk.api.metadata.security.UserWithProfileUserDetailsManager;
-import fi.thl.thldtkk.api.metadata.service.v3.UserProfileService;
+import fi.thl.thldtkk.api.metadata.service.UserProfileService;
+import fi.thl.thldtkk.api.metadata.util.spring.security.ThlSsoRestAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +25,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.io.IOException;
 import java.util.Properties;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 @Configuration
 @EnableWebSecurity
@@ -34,10 +35,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Value("${users.properties.resource}")
   private Resource usersPropertiesResource;
 
-  @Autowired
-  @Qualifier("editorUserProfileService")
-  private UserProfileService userProfileService;
+  @Value("${sso.url}")
+  private String thlAuthenticationUrl;
 
+  @Value("${sso.application}")
+  private String thlAuthenticationApplication;
+
+  @Value("${sso.secretKey}")
+  private String thlAuthenticationSecretKey;
+
+  @Autowired
+  @Qualifier("ThlSsoAuthenticationProvider")
+  private ThlSsoRestAuthenticationProvider thlSsoRestAuthenticationProvider;
+  
   @Bean
   public UserDetailsService propertiesBasedUserDetailsService() throws IOException {
     Properties properties = PropertiesLoaderUtils.loadProperties(
@@ -47,13 +57,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     return new UserWithProfileUserDetailsManager(
       UserDirectory.LOCAL,
-      new InMemoryUserDetailsManager(properties),
-      userProfileService);
+      new InMemoryUserDetailsManager(properties));
   }
 
   @Autowired
   public void configureAuthenticationManager(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
     authManagerBuilder.userDetailsService(propertiesBasedUserDetailsService());
+    authManagerBuilder.authenticationProvider(thlSsoRestAuthenticationProvider);
   }
 
   @Override
@@ -88,6 +98,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
       .logout()
         .permitAll();
+  }
+
+  @Bean
+  @Qualifier("ThlSsoAuthenticationProvider")
+  public ThlSsoRestAuthenticationProvider thlSsoRestAuthenticationProvider() {
+    return new ThlSsoRestAuthenticationProvider(thlAuthenticationUrl,
+      thlAuthenticationApplication, thlAuthenticationSecretKey);
   }
 
 }

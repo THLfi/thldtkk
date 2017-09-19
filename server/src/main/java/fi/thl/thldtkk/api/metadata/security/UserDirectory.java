@@ -4,7 +4,8 @@ public enum UserDirectory {
   /**
    * Application's internal user directory.
    */
-  LOCAL
+  LOCAL,
+  THL_SSO
 
   // Other examples:
   // Virtu

@@ -20,6 +20,9 @@ Configure server properties:
     - termed.graphId=<current-termed-dtkk-graph-id>
     - server.port=8680
     - users.properties.resource=<users-file-location-as-spring-resource>
+    - sso.url=<THL SSO api url>
+    - sso.application=aineistoeditori<-qa>
+    - sso.secretKey=<secret key, obtainable from THL SSO admin user interfce>
     Save the file and exit the editor.
 
 Add users to user properties file you configured above. See

@@ -13,7 +13,6 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.service.v3.InstanceQuestionService;
 import fi.thl.thldtkk.api.metadata.service.v3.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -23,13 +22,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 public class InstanceQuestionServiceImpl implements InstanceQuestionService {
 
-  private final DatasetService datasetService;
+  private final EditorDatasetService datasetService;
   private final Repository<NodeId, Node> nodes;
 
-  public InstanceQuestionServiceImpl(DatasetService datasetService,
+  public InstanceQuestionServiceImpl(EditorDatasetService datasetService,
                                      Repository<NodeId, Node> nodes) {
     this.datasetService = datasetService;
     this.nodes = nodes;

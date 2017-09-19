@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import fi.thl.thldtkk.api.metadata.service.v3.EditorDatasetService;
 
 @Api(description = "Editor API for datasets")
 @RestController
@@ -29,8 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EditorDatasetController {
 
   @Autowired
+  private UserHelper userHelper;
+  
+  @Autowired
   @Qualifier("editorDatasetService")
-  private DatasetService editorDatasetService;
+  private EditorDatasetService editorDatasetService;
 
   @ApiOperation("Search datasets")
   @GetJsonMapping

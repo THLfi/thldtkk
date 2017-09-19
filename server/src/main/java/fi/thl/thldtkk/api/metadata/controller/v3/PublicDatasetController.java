@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller.v3;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.service.v3.DatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import fi.thl.thldtkk.api.metadata.service.v3.PublicDatasetService;
 
 @Api(description = "Public API for datasets")
 @RestController
@@ -22,7 +22,7 @@ public class PublicDatasetController {
 
   @Autowired
   @Qualifier("publicDatasetService")
-  private DatasetService publicDatasetService;
+  private PublicDatasetService publicDatasetService;
 
   @ApiOperation("List all published datasets")
   @GetJsonMapping

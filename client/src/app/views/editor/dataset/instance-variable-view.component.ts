@@ -5,9 +5,9 @@ import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
 
 import { Dataset } from '../../../model2/dataset'
-import { DatasetService3 } from '../../../services3/dataset.service'
+import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 import { InstanceVariable } from '../../../model2/instance-variable'
-import { InstanceVariableService3 } from '../../../services3/instance-variable.service'
+import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { SidebarActiveSection } from './sidebar/sidebar-active-section'
 
@@ -24,8 +24,8 @@ export class InstanceVariableViewComponent implements OnInit {
 
   sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
 
-  constructor(private instanceVariableService: InstanceVariableService3,
-              private datasetService: DatasetService3,
+  constructor(private instanceVariableService: EditorInstanceVariableService,
+              private datasetService: EditorDatasetService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,

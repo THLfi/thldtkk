@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
-import { GrowlMessageService } from '../../../services2/growl-message.service'
+import { GrowlMessageService } from '../../../services-common/growl-message.service'
 
 import { Dataset } from '../../../model2/dataset'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
-import { UnitTypeService3 } from '../../../services3/unit-type.service'
+import { UnitTypeService } from '../../../services-common/unit-type.service'
 import { UnitType } from '../../../model2/unit-type'
 
 import 'rxjs/add/operator/switchMap';
@@ -36,7 +36,7 @@ export class UnitTypeListComponent implements OnInit {
   readonly unitTypeSaveSuccessKey: string = 'operations.unitType.save.result.success'
 
   constructor(
-    private unitTypeService: UnitTypeService3,
+    private unitTypeService: UnitTypeService,
     private confirmationService: ConfirmationService,
     private translateService: TranslateService,
     private langPipe: LangPipe,

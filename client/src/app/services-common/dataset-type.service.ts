@@ -9,7 +9,7 @@ import { environment as env } from '../../environments/environment'
 import { DatasetType } from '../model2/dataset-type'
 
 @Injectable()
-export class DatasetTypeService3 {
+export class DatasetTypeService {
 
   constructor(
     private http: Http

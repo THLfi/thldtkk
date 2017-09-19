@@ -5,14 +5,14 @@ import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env} from '../../environments/environment'
 
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from './growl-message.service'
 import { NodeUtils } from '../utils/node-utils'
 import { UnitType } from '../model2/unit-type'
 import { Dataset } from '../model2/dataset'
 import { InstanceVariable } from '../model2/instance-variable'
 
 @Injectable()
-export class UnitTypeService3 {
+export class UnitTypeService {
 
   constructor(
     private nodeUtils: NodeUtils,

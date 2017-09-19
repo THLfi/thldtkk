@@ -5,9 +5,9 @@ import {
 import {NgForm} from '@angular/forms'
 import {TranslateService} from '@ngx-translate/core'
 
-import {GrowlMessageService} from '../../../services2/growl-message.service'
+import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {Variable} from '../../../model2/variable'
-import {VariableService3} from '../../../services3/variable.service'
+import {VariableService} from '../../../services-common/variable.service'
 
 @Component({
     templateUrl: './variable-edit-modal.component.html',
@@ -32,7 +32,7 @@ export class VariableEditModalComponent implements OnInit, AfterContentChecked {
     savingHasFailed: boolean = false
 
     constructor(
-        private variableService: VariableService3,
+        private variableService: VariableService,
         private growlMessageService: GrowlMessageService,
         private translateService: TranslateService
     ) {

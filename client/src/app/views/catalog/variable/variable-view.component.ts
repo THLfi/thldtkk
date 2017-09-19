@@ -6,7 +6,7 @@ import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { Title } from '@angular/platform-browser'
 import { Variable } from '../../../model2/variable'
-import { VariableService3 } from '../../../services3/variable.service'
+import { VariableService } from '../../../services-common/variable.service'
 
 @Component({
   templateUrl: './variable-view.component.html'
@@ -20,7 +20,7 @@ export class VariableViewComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private translateService: TranslateService,
-              private variableService: VariableService3,
+              private variableService: VariableService,
               private titleService: Title,
               private langPipe: LangPipe) {
     this.language = this.translateService.currentLang

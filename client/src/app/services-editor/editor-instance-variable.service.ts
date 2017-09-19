@@ -7,11 +7,11 @@ import 'rxjs/add/operator/map'
 
 import { environment as env} from '../../environments/environment'
 
-import { GrowlMessageService } from '../services2/growl-message.service'
+import { GrowlMessageService } from '../services-common/growl-message.service'
 import { InstanceVariable } from '../model2/instance-variable'
 
 @Injectable()
-export class InstanceVariableService3 {
+export class EditorInstanceVariableService {
 
   constructor(
     private http: Http,

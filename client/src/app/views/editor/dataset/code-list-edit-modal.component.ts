@@ -4,7 +4,7 @@ import {
 import { NgForm } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 
-import { GrowlMessageService } from '../../../services2/growl-message.service'
+import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { CodeList } from '../../../model2/code-list'
 import { CodeItem } from "../../../model2/code-item";
 import { StringUtils } from "../../../utils/string-utils";

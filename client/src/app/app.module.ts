@@ -30,46 +30,28 @@ import { environment } from '../environments/environment'
 import { NodeUtils } from './utils/node-utils'
 
 // services
-import { CodeListService } from "./services2/code-list.service";
-import { CommonErrorHandlingHttpService } from './services2/common-error-handling-http.service'
-import { ConceptService } from './services2/concept.service'
-import { DatasetService } from './services2/dataset.service'
-import { DatasetTypeService } from './services2/dataset-type.service'
-import { GrowlMessageService } from './services2/growl-message.service'
-import { InstanceVariableService } from './services2/instance-variable.service'
-import { PublicInstanceVariableService } from './services2/public-instance-variable.service'
-import { InstanceQuestionService } from './services2/instance-question.service'
-import { LifecyclePhaseService } from './services2/lifecycle-phase.service'
-import { UnitService } from './services2/unit.service'
-import { OrganizationService} from './services2/organization.service'
-import { OrganizationUnitService } from './services2/organization-unit.service'
-import { PersonService } from './services2/person.service'
-import { PopulationService } from './services2/population.service'
-import { QuantityService } from "./services2/quantity.service";
-import { RoleService } from './services2/role.service'
-import { VariableService } from './services2/variable.service'
-import { UnitTypeService } from './services2/unit-type.service'
-import { UsageConditionService } from './services2/usage-condition.service'
-// Version 3 services
-import { CodeListService3 } from './services3/code-list.service'
-import { ConceptService3 } from './services3/concept.service'
-import { DatasetService3 } from './services3/dataset.service'
-import { DatasetTypeService3 } from './services3/dataset-type.service'
-import { InstanceQuestionService3 } from './services3/instance-question.service'
-import { InstanceVariableService3 } from './services3/instance-variable.service'
-import { LifecyclePhaseService3 } from './services3/lifecycle-phase.service'
-import { OrganizationService3 } from './services3/organization.service'
-import { OrganizationUnitService3 } from './services3/organization-unit.service'
-import { PersonService3 } from './services3/person.service'
+import { CodeListService3 } from './services-common/code-list.service'
+import { CommonErrorHandlingHttpService } from './services-common/common-error-handling-http.service'
+import { ConceptService } from './services-common/concept.service'
+import { EditorDatasetService } from './services-editor/editor-dataset.service'
+import { DatasetTypeService } from './services-common/dataset-type.service'
+import { GrowlMessageService } from './services-common/growl-message.service'
+import { InstanceQuestionService } from './services-common/instance-question.service'
+import { EditorInstanceVariableService } from './services-editor/editor-instance-variable.service'
+import { LifecyclePhaseService } from './services-common/lifecycle-phase.service'
+import { OrganizationService } from './services-common/organization.service'
+import { OrganizationUnitService } from './services-common/organization-unit.service'
+import { PersonService } from './services-common/person.service'
+import { PopulationService } from './services-common/population.service'
 import { PublicDatasetService } from './services-public/public-dataset.service'
-import { PublicInstanceVariableService as PublicInstanceVariableService3 } from './services-public/public-instance-variable.service'
-import { QuantityService3 } from './services3/quantity.service'
-import { RoleService3 } from './services3/role.service'
-import { UnitService3 } from './services3/unit.service'
-import { UnitTypeService3 } from './services3/unit-type.service'
-import { UniverseService3 } from './services3/universe.service'
-import { UsageConditionService3 } from './services3/usage-condition.service'
-import { VariableService3 } from './services3/variable.service'
+import { PublicInstanceVariableService } from './services-public/public-instance-variable.service'
+import { QuantityService } from './services-common/quantity.service'
+import { RoleService } from './services-common/role.service'
+import { UnitService } from './services-common/unit.service'
+import { UnitTypeService } from './services-common/unit-type.service'
+import { UniverseService } from './services-common/universe.service'
+import { UsageConditionService } from './services-common/usage-condition.service'
+import { VariableService } from './services-common/variable.service'
 
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
@@ -105,8 +87,7 @@ import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.c
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
-import { UniverseService } from './services2/universe.service'
-import { UserService } from './services2/user.service'
+import { UserService } from './services-editor/user.service'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
@@ -181,54 +162,36 @@ export function TranslateHttpLoaderFactory(http: Http) {
         })
     ],
     providers: [
-        DatasetService,
-        InstanceVariableService,
-        PublicInstanceVariableService,
-        InstanceQuestionService,
-        VariableService,
         NodeUtils,
-        OrganizationService,
-        OrganizationUnitService,
-        UnitTypeService,
-        UsageConditionService,
-        LifecyclePhaseService,
-        DatasetTypeService,
         DatePipe,
-        ConceptService,
-        UnitService,
-        QuantityService,
         LangPipe,
-        CodeListService,
         GrowlMessageService,
         Title,
-        PopulationService,
-        UniverseService,
         TruncateCharactersPipe,
         DateUtils,
-        PersonService,
-        RoleService,
         UserService,
         ConfirmationService,
         // Version 3 services
         CodeListService3,
-        ConceptService3,
-        DatasetService3,
-        DatasetTypeService3,
-        InstanceQuestionService3,
-        InstanceVariableService3,
-        LifecyclePhaseService3,
-        OrganizationService3,
-        OrganizationUnitService3,
-        PersonService3,
+        ConceptService,
+        EditorDatasetService,
+        DatasetTypeService,
+        InstanceQuestionService,
+        EditorInstanceVariableService,
+        LifecyclePhaseService,
+        OrganizationService,
+        OrganizationUnitService,
+        PersonService,
+        PopulationService,
         PublicDatasetService,
-        PublicInstanceVariableService3,
-        QuantityService3,
-        RoleService3,
-        UnitService3,
-        UnitTypeService3,
-        UniverseService3,
-        UsageConditionService3,
-        VariableService3,
+        PublicInstanceVariableService,
+        QuantityService,
+        RoleService,
+        UnitService,
+        UnitTypeService,
+        UniverseService,
+        UsageConditionService,
+        VariableService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

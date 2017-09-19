@@ -3,7 +3,7 @@ import {
 } from '@angular/core'
 import { NgForm } from '@angular/forms'
 
-import { GrowlMessageService } from '../../../services2/growl-message.service'
+import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { Person } from '../../../model2/person'
 
 @Component({

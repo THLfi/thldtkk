@@ -3,7 +3,7 @@ import 'rxjs/add/operator/toPromise'
 
 import { Dataset } from '../../../model2/dataset'
 import { Organization } from '../../../model2/organization'
-import { OrganizationService3 } from '../../../services3/organization.service'
+import { OrganizationService } from '../../../services-common/organization.service'
 import { PublicDatasetService } from '../../../services-public/public-dataset.service'
 import { Subscription } from 'rxjs'
 
@@ -21,7 +21,7 @@ export class DatasetListComponent implements OnInit {
   onGoingSearchSubscription: Subscription
 
   constructor(
-    private organizationService: OrganizationService3,
+    private organizationService: OrganizationService,
     private datasetService: PublicDatasetService
   ) { }
 

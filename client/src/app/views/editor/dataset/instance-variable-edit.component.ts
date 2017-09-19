@@ -10,28 +10,28 @@ import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 
 import {CodeList} from '../../../model2/code-list';
-import {CodeListService3} from '../../../services3/code-list.service';
+import {CodeListService3} from '../../../services-common/code-list.service';
 import {Concept} from '../../../model2/concept';
-import {ConceptService3} from '../../../services3/concept.service'
+import {ConceptService} from '../../../services-common/concept.service'
 import {Dataset} from '../../../model2/dataset';
-import {DatasetService3} from '../../../services3/dataset.service'
+import {EditorDatasetService} from '../../../services-editor/editor-dataset.service'
 import {DateUtils} from '../../../utils/date-utils'
-import {GrowlMessageService} from '../../../services2/growl-message.service'
+import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
-import {InstanceVariableService3} from '../../../services3/instance-variable.service'
+import {EditorInstanceVariableService} from '../../../services-editor/editor-instance-variable.service'
 import {InstanceQuestion} from '../../../model2/instance-question';
-import {InstanceQuestionService3} from '../../../services3/instance-question.service'
+import {InstanceQuestionService} from '../../../services-common/instance-question.service'
 import {LangPipe} from '../../../utils/lang.pipe';
 import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
-import {QuantityService3} from '../../../services3/quantity.service'
+import {QuantityService} from '../../../services-common/quantity.service'
 import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {Unit} from '../../../model2/unit';
-import {UnitService3} from '../../../services3/unit.service'
+import {UnitService} from '../../../services-common/unit.service'
 import {UnitType} from '../../../model2/unit-type'
-import {UnitTypeService3} from '../../../services3/unit-type.service'
+import {UnitTypeService} from '../../../services-common/unit-type.service'
 import {Variable} from '../../../model2/variable'
-import {VariableService3} from '../../../services3/variable.service'
+import {VariableService} from '../../../services-common/variable.service'
 
 @Component({
     templateUrl: './instance-variable-edit.component.html'
@@ -87,15 +87,15 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
 
     constructor(
-        private instanceVariableService: InstanceVariableService3,
-        private instanceQuestionService: InstanceQuestionService3,
-        private datasetService: DatasetService3,
+        private instanceVariableService: EditorInstanceVariableService,
+        private instanceQuestionService: InstanceQuestionService,
+        private datasetService: EditorDatasetService,
         private codeListService: CodeListService3,
-        private variableService: VariableService3,
-        private conceptService: ConceptService3,
-        private quantityService: QuantityService3,
-        private unitService: UnitService3,
-        private unitTypeService: UnitTypeService3,
+        private variableService: VariableService,
+        private conceptService: ConceptService,
+        private quantityService: QuantityService,
+        private unitService: UnitService,
+        private unitTypeService: UnitTypeService,
         private nodeUtils: NodeUtils,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,

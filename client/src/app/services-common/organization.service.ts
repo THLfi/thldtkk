@@ -9,7 +9,7 @@ import { environment as env } from '../../environments/environment'
 import { Organization } from '../model2/organization'
 
 @Injectable()
-export class OrganizationService3 {
+export class OrganizationService {
 
   constructor(
     private http: Http

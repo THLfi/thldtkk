@@ -9,7 +9,7 @@ import { NodeUtils } from '../utils/node-utils'
 import { Universe } from '../model2/universe'
 
 @Injectable()
-export class UniverseService3 {
+export class UniverseService {
 
   constructor(
     private nodeUtils: NodeUtils,

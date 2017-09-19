@@ -11,38 +11,38 @@ import {TranslateService} from '@ngx-translate/core';
 import {TruncateCharactersPipe} from 'ng2-truncate/dist/truncate-characters.pipe'
 
 import {Concept} from '../../../model2/concept';
-import {ConceptService3} from '../../../services3/concept.service';
+import {ConceptService} from '../../../services-common/concept.service';
 import {Dataset} from '../../../model2/dataset';
-import {DatasetService3} from '../../../services3/dataset.service'
+import {EditorDatasetService} from '../../../services-editor/editor-dataset.service'
 import {DatasetType} from '../../../model2/dataset-type'
 import {DatasetTypeItem} from '../../../model2/dataset-type-item'
-import {DatasetTypeService3} from '../../../services3/dataset-type.service'
+import {DatasetTypeService} from '../../../services-common/dataset-type.service'
 import {DateUtils} from '../../../utils/date-utils'
-import {GrowlMessageService} from '../../../services2/growl-message.service'
+import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {LifecyclePhase} from "../../../model2/lifecycle-phase";
-import {LifecyclePhaseService3} from '../../../services3/lifecycle-phase.service'
+import {LifecyclePhaseService} from '../../../services-common/lifecycle-phase.service'
 import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
-import {OrganizationService3} from '../../../services3/organization.service'
+import {OrganizationService} from '../../../services-common/organization.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
-import {OrganizationUnitService3} from '../../../services3/organization-unit.service'
+import {OrganizationUnitService} from '../../../services-common/organization-unit.service'
 import {Person} from '../../../model2/person'
-import {PersonService3} from '../../../services3/person.service'
+import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
-import {PopulationService} from '../../../services2/population.service'
+import {PopulationService} from '../../../services-common/population.service'
 import {Role} from '../../../model2/role'
-import {RoleService3} from '../../../services3/role.service'
+import {RoleService} from '../../../services-common/role.service'
 import {SidebarActiveSection} from './sidebar/sidebar-active-section'
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
-import {UnitTypeService3} from '../../../services3/unit-type.service'
+import {UnitTypeService} from '../../../services-common/unit-type.service'
 import {Universe} from '../../../model2/universe'
-import {UniverseService3} from '../../../services3/universe.service'
+import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
-import {UsageConditionService3} from '../../../services3/usage-condition.service'
-import {UserService} from '../../../services2/user.service'
+import {UsageConditionService} from '../../../services-common/usage-condition.service'
+import {UserService} from '../../../services-editor/user.service'
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -100,27 +100,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     validUrlExpression: RegExp
 
     constructor(
-        private datasetService: DatasetService3,
-        private lifecyclePhaseService: LifecyclePhaseService3,
+        private datasetService: EditorDatasetService,
+        private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
-        private organizationService: OrganizationService3,
-        private organizationUnitService: OrganizationUnitService3,
+        private organizationService: OrganizationService,
+        private organizationUnitService: OrganizationUnitService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
-        private unitTypeService: UnitTypeService3,
-        private usageConditionService: UsageConditionService3,
-        private datasetTypeService: DatasetTypeService3,
-        private conceptService: ConceptService3,
+        private unitTypeService: UnitTypeService,
+        private usageConditionService: UsageConditionService,
+        private datasetTypeService: DatasetTypeService,
+        private conceptService: ConceptService,
         private langPipe: LangPipe,
         private truncatePipe: TruncateCharactersPipe,
         private titleService: Title,
         private populationService: PopulationService,
-        private universeService: UniverseService3,
+        private universeService: UniverseService,
         private dateUtils: DateUtils,
-        private personService: PersonService3,
-        private roleService: RoleService3,
+        private personService: PersonService,
+        private roleService: RoleService,
         private userService: UserService
     ) {
         this.language = this.translateService.currentLang

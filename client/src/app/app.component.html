@@ -10,23 +10,26 @@
           {{ 'datasetCatalog' | translate }}
           <sup>{{ 'beta' | translate }}</sup>
         </a>
-          <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/catalog/datasets/">{{'datasets' | translate}}</a></li>
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" ><a routerLink="/catalog/instancevariables">{{'instanceVariables' | translate}}</a></li>
-          </ul>
+        <ul class="nav navbar-nav">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/catalog/datasets/">{{'datasets' | translate}}</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" ><a routerLink="/catalog/instancevariables">{{'instanceVariables' | translate}}</a></li>
+        </ul>
       </div>
     </ng-container>
     <ng-container *ngIf="currentPageType == PageIdentifier.EDITOR">
-      <div class="navbar-header">
+      <div class="navbar-header" style="width: 100%;">
         <a class="navbar-brand" routerLink="/editor">
           {{ 'datasetEditor' | translate }}
           <sup>{{ 'beta' | translate }}</sup>
         </a>
-          <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/datasets/">{{'datasets' | translate}}</a></li>
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/variables/">{{'variables' | translate}}</a></li>
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/unitTypes/">{{'unitTypes' | translate}}</a></li>
-          </ul>
+        <ul *ngIf="currentUser && currentUser.username" class="nav navbar-nav">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/datasets/">{{'datasets' | translate}}</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/variables/">{{'variables' | translate}}</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/unitTypes/">{{'unitTypes' | translate}}</a></li>
+        </ul>
+        <userMenu [currentUser]="currentUser"
+                  (onLogout)="handleLogout()">
+        </userMenu>
       </div>
     </ng-container>
   </div>

@@ -12,6 +12,7 @@ import {TruncateCharactersPipe} from 'ng2-truncate/dist/truncate-characters.pipe
 
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services-common/concept.service';
+import {CurrentUserService} from '../../../services-editor/user.service'
 import {Dataset} from '../../../model2/dataset';
 import {EditorDatasetService} from '../../../services-editor/editor-dataset.service'
 import {DatasetType} from '../../../model2/dataset-type'
@@ -42,7 +43,6 @@ import {Universe} from '../../../model2/universe'
 import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
-import {UserService} from '../../../services-editor/user.service'
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -121,7 +121,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private dateUtils: DateUtils,
         private personService: PersonService,
         private roleService: RoleService,
-        private userService: UserService
+        private userService: CurrentUserService
     ) {
         this.language = this.translateService.currentLang
     }

@@ -72,6 +72,7 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 
 // editor components
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
+import { CurrentUserService } from './services-editor/user.service'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
@@ -81,13 +82,15 @@ import { InstanceQuestionEditModalComponent } from './views/editor/dataset/insta
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { InstanceVariablesImportModalComponent } from './views/editor/dataset/instance-variables-import-modal.component'
+import { LoginComponent } from './views/editor/login.component'
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
+import { RequireLoginGuard } from './require-login-guard'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
-import { UserService } from './services-editor/user.service'
+import { UserMenuComponent } from './views/editor/menu/user-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
@@ -115,6 +118,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableSearchResultComponent,
         LangPipe,
         LoadingSpinner,
+        LoginComponent,
         PersonEditModalComponent,
         RequiredFieldIndicator,
         UnitTypeEditModalComponent,
@@ -123,6 +127,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         VariableEditModalComponent,
         QuantityEditModalComponent,
         UnitEditModalComponent,
+        UserMenuComponent,
         CodeListEditModalComponent,
         ViewCodeListCodeItemsModalComponent,
         InstanceVariablesImportModalComponent,
@@ -169,8 +174,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         Title,
         TruncateCharactersPipe,
         DateUtils,
-        UserService,
+        CurrentUserService,
         ConfirmationService,
+        RequireLoginGuard,
         // Version 3 services
         CodeListService3,
         ConceptService,

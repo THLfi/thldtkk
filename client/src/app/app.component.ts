@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { GrowlMessageService } from "./services-common/growl-message.service";
+import { Component, OnInit, HostListener } from '@angular/core'
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router'
 import { Title } from '@angular/platform-browser'
+import { TranslateService } from '@ngx-translate/core'
 
 import { PageIdentifier } from './utils/page-identifier'
 
-import {Observable, Subscription} from 'rxjs';
+import { Observable } from 'rxjs'
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+
+import { CurrentUserService } from './services-editor/user.service'
+import { GrowlMessageService } from './services-common/growl-message.service'
+import { User } from './model2/user'
 
 @Component({
   selector: 'app-root',
@@ -22,12 +25,15 @@ export class AppComponent implements OnInit {
   currentPageType: PageIdentifier
   mainContainerClasses: any = {}
 
+  currentUser: User
+
   constructor(
     public growlMessageService: GrowlMessageService,
     public translateService: TranslateService,
     private titleService: Title,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private currentUserService: CurrentUserService
   ) {
     translateService.setDefaultLang('fi');
     translateService.use('fi');
@@ -59,7 +65,10 @@ export class AppComponent implements OnInit {
 
         this.mainContainerClasses['editor'] = this.currentPageType == PageIdentifier.EDITOR
         this.mainContainerClasses['container-fluid'] = this.currentPageType == PageIdentifier.EDITOR && !event['hasSidebar']
-      });
+      })
+
+    this.currentUserService.getCurrentUserObservable()
+      .subscribe(user => this.currentUser = user)
   }
 
   private setPageTitle(translationKey: string, pageType: PageIdentifier):void {
@@ -97,6 +106,10 @@ export class AppComponent implements OnInit {
       suffix = this.translateService.get('pageTitles.editor.suffix');
     }
       return suffix
+  }
+
+  handleLogout(): void {
+    this.currentUserService.logout()
   }
 
 }

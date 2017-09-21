@@ -15,14 +15,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -82,6 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.PATCH).authenticated()
         .antMatchers("/api/v3/editor/**").authenticated()
         .antMatchers("/editor/**").authenticated()
+        .antMatchers("/login").permitAll()
         .anyRequest().permitAll()
 /*
         // "Forbidden by default" matchers that should be used when we have public API available for all entities.
@@ -93,11 +103,50 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 */
         // Static assets such as JS, CSS and fonts are allowed by default
         .and()
-      .httpBasic()
-        .realmName("www.aineistoeditori.fi")
+      .formLogin()
+        .loginPage("/login")
+          .permitAll()
+        .loginProcessingUrl("/api/v3/user-functions/login")
+          .permitAll()
+        .successHandler(new JsonBooleanResponseHandler(true))
+        .failureHandler(new JsonBooleanResponseHandler(false))
         .and()
       .logout()
-        .permitAll();
+        .logoutUrl("/api/v3/user-functions/logout")
+          .permitAll()
+        .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
+        .logoutSuccessUrl("/metadata/editor/login?logout=true");
+  }
+
+  private static class JsonBooleanResponseHandler implements AuthenticationFailureHandler, AuthenticationSuccessHandler, LogoutSuccessHandler {
+    private final boolean value;
+
+    public JsonBooleanResponseHandler(boolean value) {
+      this.value = value;
+    }
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+      handleResponse(response);
+    }
+
+    private void handleResponse(HttpServletResponse response) throws IOException {
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+      response.getWriter().write(Boolean.toString(this.value));
+      response.getWriter().flush();
+      response.getWriter().close();
+    }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+      handleResponse(response);
+    }
+
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+      handleResponse(response);
+    }
   }
 
   @Bean

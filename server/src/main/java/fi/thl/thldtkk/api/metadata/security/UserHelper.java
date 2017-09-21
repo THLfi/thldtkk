@@ -64,7 +64,7 @@ public class UserHelper {
       : Collections.emptyList();
   }
 
-  private Optional<UserWithProfile> getCurrentUser() {
+  public Optional<UserWithProfile> getCurrentUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth instanceof AnonymousAuthenticationToken) {
       return Optional.empty();

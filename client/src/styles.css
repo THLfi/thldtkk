@@ -42,6 +42,69 @@ h2 {
   background-color: #f2dede !important;
 }
 
+/* Main navigation */
+
+.navbar-default {
+  background-color: #fff;
+  border-color: #ccc;
+  border-width: 0 0 1px 0;
+  border-radius: 0;
+  box-shadow: 0 1px 1px #ddd
+}
+.navbar-default .navbar-brand {
+  color: #333;
+  font-weight: bold;
+}
+.navbar-default .navbar-brand sup {
+  color: #01A197;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav > li, .navbar-nav {
+    float: left;
+    margin-left: 0;
+  }
+}
+
+.navbar-editor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 123;
+  height: 55px;
+  background-color: #01837A;
+  color: white;
+  border-radius: 0;
+  border-bottom: 1px solid #006860;
+}
+.navbar-editor .navbar-nav > li > a {
+  color:white;
+  border-bottom: 3px #01837A solid;
+}
+.navbar-editor .navbar-nav > .active > a {
+  color: white;
+  background-color:transparent;
+}
+.navbar-editor .navbar-nav > li > a:hover,
+.navbar-editor .navbar-nav > li > a:focus,
+.navbar-editor .navbar-nav > .active > a:hover,
+.navbar-editor .navbar-nav > .active > a:focus,
+.navbar-editor .navbar-nav > .open > a {
+  text-decoration: none;
+  border-bottom: 3px #fff solid;
+  background-color: #01837A;
+}
+.navbar-editor .navbar-brand {
+  color:white;
+}
+.navbar-editor .navbar-toggle {
+  background-color:white;
+}
+.navbar-editor .icon-bar {
+  background-color: #01837A;
+}
+
 /* Left sidebar */
 
 .sidebar {

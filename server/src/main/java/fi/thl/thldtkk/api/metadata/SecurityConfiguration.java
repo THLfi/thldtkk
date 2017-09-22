@@ -90,8 +90,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.DELETE).authenticated()
         .antMatchers(HttpMethod.PATCH).authenticated()
         .antMatchers("/api/v3/editor/**").authenticated()
-        .antMatchers("/editor/**").authenticated()
-        .antMatchers("/login").permitAll()
         .anyRequest().permitAll()
 /*
         // "Forbidden by default" matchers that should be used when we have public API available for all entities.

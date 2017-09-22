@@ -160,11 +160,13 @@ public class Dataset {
   public Dataset(UUID id,
                  Map<String, String> prefLabel,
                  Population population,
-                 List<InstanceVariable> instanceVariables) {
+                 List<InstanceVariable> instanceVariables,
+                 Organization owner) {
     this.id = id;
     this.prefLabel = prefLabel;
     this.population = population;
     this.instanceVariables = instanceVariables;
+    this.owner = owner;
   }
 
   public UUID getId() {

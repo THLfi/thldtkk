@@ -16,6 +16,7 @@ import java.util.UUID;
 public class Organization {
 
   private UUID id;
+
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
@@ -36,6 +37,12 @@ public class Organization {
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
   }
+  
+  /** Constructor for testing */
+  public Organization(UUID id, Map<String, String> prefLabel) {
+    this.id = id;
+    this.prefLabel = prefLabel;
+  }
 
   public UUID getId() {
     return id;
@@ -48,7 +55,7 @@ public class Organization {
   public List<OrganizationUnit> getOrganizationUnit() {
     return organizationUnit;
   }
-
+  
   public Node toNode() {
     Node node = new Node(id, "Organization");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));

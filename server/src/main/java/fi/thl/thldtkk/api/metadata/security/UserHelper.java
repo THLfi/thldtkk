@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata.security;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.UserProfile;
-import fi.thl.thldtkk.api.metadata.service.v3.UserProfileService;
+import fi.thl.thldtkk.api.metadata.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,7 +35,7 @@ public class UserHelper {
       .stream()
       .filter(userProfile -> userProfile.getExternalIds().contains(directoryUsername))
       .findFirst();
-  }
+}
 
   public String getDirectoryUsername(String username, UserDirectory userDirectory) {
     if (userDirectory != null && !userDirectory.toString().contains("/")) {

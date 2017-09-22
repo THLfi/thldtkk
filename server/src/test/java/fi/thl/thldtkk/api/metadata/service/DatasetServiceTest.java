@@ -6,26 +6,40 @@ import com.google.common.collect.SetMultimap;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
 import fi.thl.thldtkk.api.metadata.domain.Unit;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.test.a;
+import fi.thl.thldtkk.api.metadata.test.an;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static com.google.common.collect.ImmutableMultimap.of;
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -35,49 +49,72 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DatasetServiceTest {
 
-  private DatasetService datasetService;
-  private TermedNodeService mockedNodeService;
-
+  private EditorDatasetService editorDatasetService;
+  
+  @Mock
+  private Repository<NodeId, Node> mockedNodes;
+  
+  @Mock
+  private UserHelper mockedUserHelper;
+  
   @Before
   public void setUp() {
     List<Node> datasets = asList(
         new Node(nameUUIDFromString("DS1"), "DataSet"),
         new Node(nameUUIDFromString("DS2"), "DataSet"));
 
-    this.mockedNodeService = Mockito.mock(TermedNodeService.class);
-    when(mockedNodeService.query(eq(new NodeRequest("type.id:DataSet",
-      "id,type,properties.*", "properties.prefLabel.sortable", -1))))
+    MockitoAnnotations.initMocks(this);
+    
+    when(mockedUserHelper.isCurrentUserAdmin()).thenReturn(true);    
+    
+    List<Criteria> basicDatasetCriteria = new ArrayList<>();    
+    basicDatasetCriteria.add(keyValue("type.id", "DataSet"));
+    when(mockedNodes.query(eq(and(basicDatasetCriteria))))
         .thenReturn(datasets.stream());
-    when(mockedNodeService.query(eq(new NodeRequest("type.id:DataSet AND (properties.prefLabel:hello*)",
-      "id,type,properties.*", "properties.prefLabel.sortable", -1))))
+    
+    List<Criteria> labelCriteria = new ArrayList<>(basicDatasetCriteria);
+    labelCriteria.add(keyWithAnyValue("properties.prefLabel", tokenizeAndMap("hello", t -> t + "*")));
+    when(mockedNodes.query(eq(and(labelCriteria)), eq(-1)))
         .thenReturn(datasets.stream());
-    when(mockedNodeService.get(any(NodeId.class), any())).thenReturn(Optional.<Node>empty());
-    when(mockedNodeService.get(eq(new NodeId(nameUUIDFromString("DS1"), "DataSet")), any()))
-        .thenReturn(Optional.of(datasets.get(0)));
-
-    this.datasetService = new DatasetService(mockedNodeService);
+    
+    when(mockedNodes.get(any(Select.class), any(NodeId.class))).thenReturn(Optional.<Node>empty());
+    when(mockedNodes.get(eq(select("id", "type", "properties.*", "references.*",
+        "references.inScheme:2",
+        "references.conceptsFromScheme:2",
+        "references.variable:2",
+        "references.quantity:2",
+        "references.unit:2",
+        "references.codeList:2",
+        "references.source:2",
+        "references.instanceQuestions:2",
+        "references.personInRoles:2",
+        "references.person:2",
+        "references.role:2")), eq(
+        new NodeId(nameUUIDFromString("DS1"), "DataSet"))))
+            .thenReturn(Optional.of(datasets.get(0)));;
+       
+    this.editorDatasetService = new EditorDatasetServiceImpl(mockedNodes, mockedUserHelper);    
   }
 
   @Test
   public void shouldQueryAllDatasets() {
-    assertEquals(2, datasetService.query().count());
+    assertEquals(2, editorDatasetService.findAll().size());
   }
 
   @Test
   public void shouldQueryDatasetsByPrefLabel() {
-    assertEquals(2, datasetService.query("properties.prefLabel:hello*").count());
+    assertEquals(2, editorDatasetService.find("hello", -1).size());
   }
 
   @Test
   public void shouldGetDatasetById() {
-    assertTrue(datasetService.get(nameUUIDFromString("DS1")).isPresent());
+    assertTrue(editorDatasetService.get(nameUUIDFromString("DS1")).isPresent());
   }
 
   @Test
@@ -87,19 +124,20 @@ public class DatasetServiceTest {
       .withPrefLabel("DS")
       .build();
 
-    datasetService.save(dataset);
+    editorDatasetService.save(dataset);
 
     Node datasetNode = a.datasetNode()
       .withIdFromString("DS")
       .withProperty("prefLabel", "fi", "DS")
       .build();
-    verify(mockedNodeService).save(singletonList(datasetNode));
+    verify(mockedNodes).save(singletonList(datasetNode));
+    
   }
 
   @Test
   public void shouldDeleteDataset() {
-    datasetService.delete(nameUUIDFromString("DS1"));
-    verify(mockedNodeService)
+    editorDatasetService.delete(nameUUIDFromString("DS1"));
+    verify(mockedNodes)
         .delete(singletonList(new NodeId(nameUUIDFromString("DS1"), "DataSet")));
   }
 
@@ -113,9 +151,9 @@ public class DatasetServiceTest {
     SetMultimap<String,StrictLangValue> props = LinkedHashMultimap.create(
         ImmutableMultimap.of("published", new StrictLangValue("", "false", "^(true|false)$")));
 
-    datasetService.save(ds);
+    editorDatasetService.save(ds);
 
-    verify(mockedNodeService).save(asList(
+    verify(mockedNodes).save(asList(
         new Node(nameUUIDFromString("DS"), "DataSet", of(),
             // dataset references
             ImmutableMultimap.of(
@@ -130,12 +168,12 @@ public class DatasetServiceTest {
 
   @Test(expected = NotFoundException.class)
   public void shouldThrowNotFoundWhenDeletingNonExistingDataset() {
-    datasetService.delete(nameUUIDFromString("Does not exist"));
+    editorDatasetService.delete(nameUUIDFromString("Does not exist"));
   }
 
   @Test
   public void datasetShouldHaveIdAfterSaving() {
-    Dataset savedDataset = datasetService.save(a.dataset().build());
+    Dataset savedDataset = editorDatasetService.save(a.dataset().build());
 
     assertNotNull(savedDataset.getId());
   }
@@ -150,7 +188,7 @@ public class DatasetServiceTest {
     variable.setValueRangeMin(new BigDecimal("11"));
     Dataset dataset = new Dataset(nameUUIDFromString("DS"), asList(variable));
 
-    Dataset savedDataset = datasetService.save(dataset);
+    Dataset savedDataset = editorDatasetService.save(dataset);
 
     InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
     assertFalse(savedVariable.getQuantity().isPresent());
@@ -166,7 +204,7 @@ public class DatasetServiceTest {
     variable.setCodeList(new CodeList(nameUUIDFromString("CL1")));
     Dataset dataset = new Dataset(nameUUIDFromString("DS"), asList(variable));
 
-    Dataset savedDataset = datasetService.save(dataset);
+    Dataset savedDataset = editorDatasetService.save(dataset);
 
     InstanceVariable savedVariable = savedDataset.getInstanceVariables().iterator().next();
     assertFalse(savedVariable.getCodeList().isPresent());
@@ -182,10 +220,10 @@ public class DatasetServiceTest {
       .withPopulation(p1)
       .build();
 
-    datasetService.save(ds1);
+    editorDatasetService.save(ds1);
 
     ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
-    verify(mockedNodeService).save(captor.capture());
+    verify(mockedNodes).save(captor.capture());
     List<Node> savedNodes = captor.getValue();
     assertThat(savedNodes).hasSize(2);
 
@@ -217,13 +255,13 @@ public class DatasetServiceTest {
     Node existingDatasetNode = a.datasetNode()
       .withId(ds1Id)
       .build();
-    when(mockedNodeService.get(eq(new NodeId(ds1.getId(), "DataSet")), anyString()))
+    when(mockedNodes.get(eq(new NodeId(ds1.getId(), "DataSet"))))
       .thenReturn(Optional.of(existingDatasetNode));
 
-    datasetService.save(ds1);
+    editorDatasetService.save(ds1);
 
     ArgumentCaptor<Changeset> captor = ArgumentCaptor.forClass(Changeset.class);
-    verify(mockedNodeService).post(captor.capture());
+    verify(mockedNodes).post(captor.capture());
     Changeset<UUID, Node> changeset = captor.getValue();
     assertThat(changeset.getSave()).hasSize(2);
 
@@ -237,5 +275,61 @@ public class DatasetServiceTest {
 
     assertThat(datasetNode.getReferences("population")).containsOnly(populationNode);
   }
+  
+  @Test
+  public void shouldFindDatasetsOnlyFromUserOrganizationWhenNotAdmin() {
+    
+    when(mockedUserHelper.isCurrentUserAdmin()).thenReturn(false);    
+    
+    Organization orgA = an.organization()
+      .withIdFromString("OrgA")
+      .build();
+    
+    Dataset ds1 = a.dataset()
+      .withIdFromString("ds1")
+      .withPrefLabel("ds1")
+      .withOwner(orgA)
+      .build();
 
+    when(mockedUserHelper.getCurrentUserOrganizations()).thenReturn(Arrays.asList(orgA));
+    
+    List<Criteria> datasetCriteria = new ArrayList<>();    
+    datasetCriteria.add(keyValue("type.id", "DataSet"));
+    datasetCriteria.add(keyWithAnyValue("references.owner.id", Arrays.asList(orgA.getId().toString())));
+    
+    when(mockedNodes.query(eq(and(datasetCriteria))))
+        .thenReturn(Stream.of(ds1.toNode()));
+    
+    List<Dataset> actualDatasets = this.editorDatasetService.findAll();
+    verify(mockedNodes).query(and(datasetCriteria));    
+    assertThat(actualDatasets).hasSize(1);
+    
+    Organization actualOwner = actualDatasets.get(0).getOwner().get();
+    assertThat(actualOwner.getId()).isEqualTo(orgA.getId());
+    
+  }
+
+  @Test
+  public void shouldNotFindAnyDatasetsWhenNotAdminAndNoOwnOrganizationDatasets() {
+    when(mockedUserHelper.isCurrentUserAdmin()).thenReturn(false);    
+    
+    Organization orgA = an.organization()
+      .withIdFromString("OrgA")
+      .build();
+    
+    when(mockedUserHelper.getCurrentUserOrganizations()).thenReturn(Arrays.asList(orgA));
+    
+    List<Criteria> datasetCriteria = new ArrayList<>();    
+    datasetCriteria.add(keyValue("type.id", "DataSet"));
+    datasetCriteria.add(keyWithAnyValue("references.owner.id", Arrays.asList(orgA.getId().toString())));
+    
+    when(mockedNodes.query(eq(and(datasetCriteria))))
+        .thenReturn(Stream.empty());
+    
+    List<Dataset> actualDatasets = this.editorDatasetService.findAll();
+    verify(mockedNodes).query(and(datasetCriteria));
+    assertThat(actualDatasets).hasSize(0);
+    
+  }
+  
 }

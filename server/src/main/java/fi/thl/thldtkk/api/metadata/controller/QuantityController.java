@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-@RequestMapping("/api/v2/quantities")
+@RequestMapping("/api/v3/quantities")
 public class QuantityController {
 
   @Autowired
@@ -26,7 +25,7 @@ public class QuantityController {
   @GetJsonMapping
   public List<Quantity> query(
     @RequestParam(value = "query", required = false, defaultValue = "") String query) {
-    return quantityService.query(query, -1).collect(toList());
+    return quantityService.find(query, -1);
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)

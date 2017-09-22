@@ -1,32 +1,31 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.DatasetType;
-import fi.thl.thldtkk.api.metadata.service.Service;
+import fi.thl.thldtkk.api.metadata.service.DatasetTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.List;
 import java.util.UUID;
-import static java.util.stream.Collectors.toList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v2/datasetTypes")
+@RequestMapping("/api/v3/datasetTypes")
 public class DatasetTypeController {
 
-    @Autowired
-    private Service<UUID, DatasetType> datasetTypeService;
+  @Autowired
+  private DatasetTypeService datasetTypeService;
 
-    @GetJsonMapping
-    public List<DatasetType> queryDatasetTypes() {
-        return datasetTypeService.query().collect(toList());
-    }
+  @GetJsonMapping
+  public List<DatasetType> query() {
+    return datasetTypeService.findAll();
+  }
 
-    @GetJsonMapping("/{datasetTypeId}")
-    public DatasetType getDatasetType(@PathVariable("datasetTypeId") UUID datasetTypeId) {
-        return datasetTypeService.get(datasetTypeId).orElseThrow(NotFoundException::new);
-    }
+  @GetJsonMapping("/{datasetTypeId}")
+  public DatasetType findById(@PathVariable("datasetTypeId") UUID datasetTypeId) {
+    return datasetTypeService.get(datasetTypeId).orElseThrow(NotFoundException::new);
+  }
 
 }

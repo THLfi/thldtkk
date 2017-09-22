@@ -26,9 +26,10 @@ public class SwaggerConfiguration implements ApplicationListener<ObjectMapperCon
         .select()
         .apis(RequestHandlerSelectors.withMethodAnnotation(GetJsonMapping.class))
         .paths(or(
-            regex("/api/v2/datasets.*"),
-            regex("/api/v2/instanceVariables.*"),
-            regex("/api/v2/variables.*")))
+            regex("/api/v[0-9]+/datasets.*"),
+            regex("/api/v[0-9]+/editor/instanceVariables.*"),
+            regex("/api/v[0-9]+/public/.*"),
+            regex("/api/v[0-9]+/variables.*")))
         .build()
         .apiInfo(new ApiInfo(
             "Metadata Service API",

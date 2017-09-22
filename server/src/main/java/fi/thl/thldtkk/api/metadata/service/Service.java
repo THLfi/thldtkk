@@ -1,13 +1,7 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
-import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.query.Query;
-import fi.thl.thldtkk.api.metadata.domain.query.Select;
-import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Generic CRUD interface for Services
@@ -22,37 +16,16 @@ public interface Service<K, V> {
    *
    * @return all values
    */
-  Stream<V> query();
+  List<V> findAll();
 
   /**
-   * Find values by query
-   *
-   * @param query to search with (actual query format is service dependent)
-   * @return matching values
-   */
-  Stream<V> query(String query);
-
-  /**
-   * Find values by query object
+   * Find values by query string
    *
    * @param query to search with
+   * @param max results list size
    * @return matching values
    */
-  default Stream<V> query(Query query) {
-    return query(query.toString());
-  }
-
-  default Stream<V> query(Select select, Criteria criteria) {
-    return query(Query.query(select, criteria));
-  }
-
-  default Stream<V> query(Select select, Criteria criteria, Sort sort) {
-    return query(Query.query(select, criteria, sort));
-  }
-
-  default Stream<V> query(Select select, Criteria criteria, Sort sort, int max) {
-    return query(Query.query(select, criteria, sort, max));
-  }
+  List<V> find(String query, int max);
 
   /**
    * Find one value by id
@@ -61,17 +34,6 @@ public interface Service<K, V> {
    * @return value or empty optional
    */
   Optional<V> get(K id);
-
-  /**
-   * Find one value by id
-   *
-   * @param id of the requested value
-   * @param select describing what fields should be returned
-   * @return value or empty optional
-   */
-  default Optional<V> get(K id, String select) {
-    return get(id);
-  }
 
   /**
    * Save multiple values
@@ -88,7 +50,9 @@ public interface Service<K, V> {
    * @param value to be saved
    * @return saved value
    */
-  V save(V value);
+  default V save(V value) {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Delete multiple values by id list
@@ -104,16 +68,8 @@ public interface Service<K, V> {
    *
    * @param id of value to be deleted
    */
-  void delete(K id);
-
-  /**
-   * Post multiple deletes and saves in one batch
-   *
-   * @param changeset containing value deletes and saves
-   */
-  default void post(Changeset<K, V> changeset) {
-    delete(changeset.getDelete());
-    save(changeset.getSave());
+  default void delete(K id) {
+    throw new UnsupportedOperationException();
   }
 
 }

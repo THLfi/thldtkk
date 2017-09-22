@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata.test;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 
 import java.util.Arrays;
@@ -17,6 +18,7 @@ public class DatasetBuilder {
   private Map<String, String> prefLabel;
   private Population population;
   private List<InstanceVariable> instanceVariables;
+  private Organization owner;
 
   public DatasetBuilder() {
     String defaultName = Dataset.class.getSimpleName();
@@ -54,13 +56,19 @@ public class DatasetBuilder {
     this.instanceVariables = Arrays.asList(instanceVariables);
     return this;
   }
+  
+  public DatasetBuilder withOwner(Organization owner) {
+    this.owner = owner;
+    return this;
+  }
 
   public Dataset build() {
     return new Dataset(
       id,
       prefLabel,
       population,
-      instanceVariables
+      instanceVariables,
+      owner
     );
   }
 }

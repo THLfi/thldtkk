@@ -27,28 +27,25 @@ public class UserFunctionsController {
 
   @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Object getCurrentUser() {
-    Optional<UserDTO> user = convertToUserDTO(userHelper.getCurrentUser());
+    Optional<UserDTO> user = getCurrentUserDTO();
     return user.isPresent() ? user.get() : Collections.emptyMap();
   }
 
-  private Optional<UserDTO> convertToUserDTO(Optional<UserWithProfile> optionalUser) {
-    if (optionalUser.isPresent()) {
-      UserWithProfile user = optionalUser.get();
+  private Optional<UserDTO> getCurrentUserDTO() {
+    Optional<UserWithProfile> currentUser = userHelper.getCurrentUser();
+    if (currentUser.isPresent()) {
+      UserWithProfile user = currentUser.get();
       return Optional.of(new UserDTO(
         user.getUsername(),
         user.getUserProfile().getFirstName().orElse(""),
         user.getUserProfile().getLastName().orElse(""),
-        user.getUserProfile().getEmail().orElse("")
-      ));
+        user.getUserProfile().getEmail().orElse(""),
+        userHelper.isCurrentUserLoggedIn(),
+        userHelper.isCurrentUserAdmin()));
     }
     else {
       return Optional.empty();
     }
-  }
-
-  @PostMapping(value = "/is-current-user-admin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public boolean isAdmin() {
-    return userHelper.isCurrentUserAdmin();
   }
 
   @PostMapping(value = "/list-current-user-organizations", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,16 +55,20 @@ public class UserFunctionsController {
 
   public static class UserDTO {
 
-    private String username;
-    private String fistName;
-    private String lastName;
-    private String email;
+    private final String username;
+    private final String fistName;
+    private final String lastName;
+    private final String email;
+    private final boolean isLoggedIn;
+    private final boolean isAdmin;
 
-    public UserDTO(String username, String fistName, String lastName, String email) {
+    public UserDTO(String username, String fistName, String lastName, String email, boolean isLoggedIn, boolean isAdmin) {
       this.username = username;
       this.fistName = fistName;
       this.lastName = lastName;
       this.email = email;
+      this.isLoggedIn = isLoggedIn;
+      this.isAdmin = isAdmin;
     }
 
     public String getUsername() {
@@ -84,6 +85,14 @@ public class UserFunctionsController {
 
     public String getEmail() {
       return email;
+    }
+
+    public boolean isLoggedIn() {
+      return isLoggedIn;
+    }
+
+    public boolean isAdmin() {
+      return isAdmin;
     }
 
   }

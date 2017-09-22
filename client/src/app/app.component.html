@@ -22,10 +22,12 @@
           {{ 'datasetEditor' | translate }}
           <sup>{{ 'beta' | translate }}</sup>
         </a>
-        <ul *ngIf="currentUser && currentUser.username" class="nav navbar-nav">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/datasets/">{{'datasets' | translate}}</a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/variables/">{{'variables' | translate}}</a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/editor/unitTypes/">{{'unitTypes' | translate}}</a></li>
+        <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/datasets/">{{ 'datasets' | translate }}</a></li>
+          <ng-container *ngIf="currentUser.isAdmin">
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/variables/">{{ 'variables' | translate }}</a></li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/unitTypes/">{{ 'unitTypes' | translate }}</a></li>
+          </ng-container>
         </ul>
         <userMenu [currentUser]="currentUser"
                   (onLogout)="handleLogout()">

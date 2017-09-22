@@ -2,7 +2,6 @@ package fi.thl.thldtkk.api.metadata;
 
 import fi.thl.thldtkk.api.metadata.security.UserDirectory;
 import fi.thl.thldtkk.api.metadata.security.UserWithProfileUserDetailsManager;
-import fi.thl.thldtkk.api.metadata.service.UserProfileService;
 import fi.thl.thldtkk.api.metadata.util.spring.security.ThlSsoRestAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   @Qualifier("ThlSsoAuthenticationProvider")
   private ThlSsoRestAuthenticationProvider thlSsoRestAuthenticationProvider;
-  
+
   @Bean
   public UserDetailsService propertiesBasedUserDetailsService() throws IOException {
     Properties properties = PropertiesLoaderUtils.loadProperties(
@@ -115,7 +115,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .logoutUrl("/api/v3/user-functions/logout")
           .permitAll()
         .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
-        .logoutSuccessUrl("/metadata/editor/login?logout=true");
+        .and()
+      .exceptionHandling()
+        .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+        .accessDeniedHandler((request, response, accessDeniedException) -> {
+          response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        });
   }
 
   private static class JsonBooleanResponseHandler implements AuthenticationFailureHandler, AuthenticationSuccessHandler, LogoutSuccessHandler {

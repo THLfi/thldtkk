@@ -9,7 +9,7 @@ import { User } from '../../../model2/user'
 @Component({
   selector: 'userMenu',
   template: `
-<ul *ngIf="currentUser && currentUser.username"
+<ul *ngIf="currentUser && currentUser.isLoggedIn"
     class="nav navbar-nav navbar-right">
   <li [ngClass]="{ 'dropdown': true, 'open' : dropdownOpen }">
     <a #dropdownToggle
@@ -23,7 +23,8 @@ import { User } from '../../../model2/user'
     </a>
     <ul class="dropdown-menu">
       <li>
-        <a (click)="logout()">
+        <a (click)="logout($event)"
+           href="#">
           {{ 'mainMenu.userMenu.logoutLink' | translate }}
         </a>
       </li>
@@ -67,7 +68,8 @@ export class UserMenuComponent {
     this.dropdownOpen = !this.dropdownOpen
   }
 
-  logout(): void {
+  logout(event): void {
+    event.preventDefault()
     this.dropdownOpen = false
     this.onLogout.emit()
   }

@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata.security;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.UserProfile;
-import fi.thl.thldtkk.api.metadata.service.UserProfileService;
+import fi.thl.thldtkk.api.metadata.service.v3.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,10 +31,10 @@ public class UserHelper {
   }
 
   public Optional<UserProfile> findExistingUserProfile(String directoryUsername) {
-    return userProfileService.query()
-        .filter((UserProfile userProfile) -> userProfile.getExternalIds()
-              .contains(directoryUsername))
-        .findFirst();
+    return userProfileService.findAll()
+      .stream()
+      .filter(userProfile -> userProfile.getExternalIds().contains(directoryUsername))
+      .findFirst();
   }
 
   public String getDirectoryUsername(String username, UserDirectory userDirectory) {
@@ -42,6 +42,10 @@ public class UserHelper {
        return userDirectory.toString() + "/" + username;
     }
     return username;
+  }
+
+  public boolean isCurrentUserLoggedIn() {
+    return SecurityContextHolder.getContext().getAuthentication() != null ? true : false;
   }
 
   public boolean isCurrentUserAdmin() {

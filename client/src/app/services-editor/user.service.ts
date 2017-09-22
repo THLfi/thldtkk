@@ -36,23 +36,21 @@ export class CurrentUserService {
   }
 
   isUserAdmin(): Observable<boolean> {
-    return this.http.post(env.contextPath + '/api/v3/user-functions/is-current-user-admin', {})
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          return Observable.of({
-            json: () => false
-          })
-        }
-        else {
-          return Observable.throw(error)
-        }
-      })
-      .map(response => response.json() as boolean)
+    return this.getCurrentUserObservable()
+      .map(user => user ? user.isAdmin : false)
   }
 
   getUserOrganizations(): Observable<Organization[]> {
-    return this.http.post(env.contextPath + '/api/v3/user-functions/list-current-user-organizations', {})
-      .map(response => response.json() as Organization[])
+    return this.getCurrentUserObservable()
+      .flatMap((user: User) => {
+        if (user && user.isLoggedIn) {
+          return this.http.post(env.contextPath + '/api/v3/user-functions/list-current-user-organizations', {})
+            .map(response => response.json() as Organization[])
+        }
+        else {
+          return Observable.of([])
+        }
+      })
   }
 
   login(username: string, password: string): Observable<boolean> {

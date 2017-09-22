@@ -23,7 +23,7 @@ export class RequireLoginGuard implements CanActivate, CanActivateChild {
     return Observable.create((observer) => {
       this.userService.getCurrentUserObservable()
         .subscribe(user => {
-          if (user && StringUtils.isNotBlank(user.username)) {
+          if (user && user.isLoggedIn) {
             observer.next(true)
           }
           else {

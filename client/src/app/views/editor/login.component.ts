@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   username: string
   password: string
 
+  returnUrl: string
   showLogoutSuccessMessage: boolean = false
   loginInProgress: boolean = false
   showLoginFailedMessage: boolean = false
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/editor'
     this.showLogoutSuccessMessage = this.activatedRoute.snapshot.queryParamMap.get('logout') ? true : false
   }
 
@@ -32,8 +34,7 @@ export class LoginComponent implements OnInit {
     this.currentUserService.login(this.username, this.password)
       .subscribe(loginSuccessful => {
         if (loginSuccessful) {
-          // TODO: Redirect to URL user was trying to access.
-          this.router.navigate(['/editor'], { replaceUrl: true })
+          this.router.navigateByUrl(this.returnUrl, { replaceUrl: true })
         }
         else {
           this.showLoginFailedMessage = true

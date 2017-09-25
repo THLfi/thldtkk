@@ -9,8 +9,11 @@ import static java.util.stream.Collectors.toList;
 import fi.thl.thldtkk.api.metadata.domain.UsageCondition;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UsageConditionService;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,8 +48,9 @@ public class UsageConditionServiceImpl implements UsageConditionService {
     return nodes.get(new NodeId(id, "UsageCondition")).map(UsageCondition::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public UsageCondition save(UsageCondition usageCondition) {
+  public UsageCondition save(@P("entity") UsageCondition usageCondition) {
     return new UsageCondition(nodes.save(usageCondition.toNode()));
   }
 

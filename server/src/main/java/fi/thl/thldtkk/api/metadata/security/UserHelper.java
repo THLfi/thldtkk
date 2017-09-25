@@ -49,10 +49,10 @@ public class UserHelper {
   }
 
   public boolean isCurrentUserAdmin() {
-    return getUserRoles().contains("AINEISTOEDITORI.FI_ADMIN");
+    return getUserRoles().contains(UserRoles.ADMIN);
   }
 
-  private List<String> getUserRoles() {
+  public List<String> getUserRoles() {
     return SecurityContextHolder.getContext()
       .getAuthentication()
       .getAuthorities()

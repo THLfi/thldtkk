@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +47,11 @@ public class UserFunctionsController {
     else {
       return Optional.empty();
     }
+  }
+
+  @GetMapping(value = "/list-current-user-roles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public List<String> listCurrentUserRoles() {
+    return userHelper.getUserRoles();
   }
 
   @PostMapping(value = "/list-current-user-organizations", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

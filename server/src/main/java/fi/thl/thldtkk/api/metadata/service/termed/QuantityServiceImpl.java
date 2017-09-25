@@ -7,11 +7,13 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.QuantityService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,8 +48,9 @@ public class QuantityServiceImpl implements QuantityService {
     return nodes.get(new NodeId(id, "Quantity")).map(Quantity::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public Quantity save(Quantity quantity) {
+  public Quantity save(@P("entity") Quantity quantity) {
     return new Quantity(nodes.save(quantity.toNode()));
   }
 

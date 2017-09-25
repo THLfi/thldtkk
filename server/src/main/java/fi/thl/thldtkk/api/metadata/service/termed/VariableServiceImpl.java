@@ -3,8 +3,11 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.VariableService;
+import org.springframework.security.access.method.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,11 +49,13 @@ public class VariableServiceImpl implements VariableService {
     return nodes.get(new NodeId(id, "Variable")).map(Variable::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public Variable save(Variable variable) {
+  public Variable save(@P("entity") Variable variable) {
     return new Variable(nodes.save(variable.toNode()));
   }
 
+  @AdminOnly
   @Override
   public void delete(UUID id) {
     nodes.delete(new NodeId(id, "Variable"));

@@ -10,8 +10,11 @@ import static java.util.stream.Collectors.toList;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.PersonService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,8 +51,9 @@ public class PersonServiceImpl implements PersonService {
     return nodes.get(new NodeId(id, "Person")).map(Person::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public Person save(Person person) {
+  public Person save(@P("entity") Person person) {
     return new Person(nodes.save(person.toNode()));
   }
 

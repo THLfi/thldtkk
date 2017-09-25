@@ -27,7 +27,9 @@ export class RequireLoginGuard implements CanActivate, CanActivateChild {
             observer.next(true)
           }
           else {
-            this.router.navigate(['/login'])
+            this.router.navigate(['/login'], {
+              queryParams: { returnUrl: state.url }
+            })
             observer.next(false)
           }
           observer.complete()

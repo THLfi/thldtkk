@@ -19,9 +19,13 @@ import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.CodeListService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.security.access.method.P;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,8 +94,9 @@ public class CodeListServiceImpl implements CodeListService {
     return nodes.get(new NodeId(id, "CodeList")).map(CodeList::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public CodeList save(CodeList codeList) {
+  public CodeList save(@P("entity") CodeList codeList) {
     Optional<CodeList> existingCodeList;
     if (codeList.getId() == null) {
       existingCodeList = empty();
@@ -155,6 +160,7 @@ public class CodeListServiceImpl implements CodeListService {
     return new Changeset<>(deleted, saved);
   }
 
+  @AdminOnly
   @Override
   public void delete(UUID id) {
     List<Node> nodesToDelete = new LinkedList<>();

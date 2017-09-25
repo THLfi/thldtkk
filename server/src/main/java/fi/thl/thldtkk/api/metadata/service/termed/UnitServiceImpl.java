@@ -9,8 +9,11 @@ import static java.util.stream.Collectors.toList;
 import fi.thl.thldtkk.api.metadata.domain.Unit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UnitService;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,8 +57,9 @@ public class UnitServiceImpl implements UnitService {
     return nodes.get(new NodeId(id, "Unit")).map(Unit::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public Unit save(Unit unit) {
+  public Unit save(@P("entity") Unit unit) {
     return new Unit(nodes.save(unit.toNode()));
   }
 

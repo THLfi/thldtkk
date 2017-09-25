@@ -9,8 +9,11 @@ import static java.util.stream.Collectors.toList;
 import fi.thl.thldtkk.api.metadata.domain.Universe;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,8 +48,9 @@ public class UniverseServiceImpl implements UniverseService {
     return nodes.get(new NodeId(id, "Universe")).map(Universe::new);
   }
 
+  @UserCanCreateAdminCanUpdate
   @Override
-  public Universe save(Universe universe) {
+  public Universe save(@P("entity") Universe universe) {
     return new Universe(nodes.save(universe.toNode()));
   }
 

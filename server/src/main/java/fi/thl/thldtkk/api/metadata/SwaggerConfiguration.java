@@ -9,6 +9,7 @@ import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.PostMapping;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.configuration.ObjectMapperConfigured;
 import springfox.documentation.service.ApiInfo;
@@ -24,12 +25,18 @@ public class SwaggerConfiguration implements ApplicationListener<ObjectMapperCon
   public Docket productApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.withMethodAnnotation(GetJsonMapping.class))
+        .apis(or(
+                RequestHandlerSelectors.withMethodAnnotation(GetJsonMapping.class),
+                RequestHandlerSelectors.withMethodAnnotation(PostMapping.class)))
         .paths(or(
-            regex("/api/v[0-9]+/datasets.*"),
+            regex("/api/v[0-9]+/editor/dataset-functions.*"),
+            regex("/api/v[0-9]+/editor/datasets.*"),
             regex("/api/v[0-9]+/editor/instanceVariables.*"),
+            regex("/api/v[0-9]+/editor/variables.*"),
             regex("/api/v[0-9]+/public/.*"),
-            regex("/api/v[0-9]+/variables.*")))
+            regex("/api/v[0-9]+/datasetTypes.*"),
+            regex("/api/v[0-9]+/variables.*"),
+            regex("/api/v[0-9]+/organizations.*")))
         .build()
         .apiInfo(new ApiInfo(
             "Metadata Service API",

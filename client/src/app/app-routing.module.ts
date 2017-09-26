@@ -10,6 +10,8 @@ import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/da
 import { DatasetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
+import { IndexComponent } from './index.component'
+import { IndexRedirectGuard } from './index-redirect-guard'
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
@@ -152,14 +154,22 @@ const routes: Routes = [
         }
     },
     {
-        path: '',
-        redirectTo: 'catalog',
-        data: {pageType:PageIdentifier.CATALOG},
-        pathMatch: 'full'
+      path: '',
+      // Just a dummy component that is not actually ever used. User will
+      // always be redirected to either catalog or editor by IndexRedirectGuard.
+      component: IndexComponent,
+      pathMatch: 'full',
+      canActivate: [IndexRedirectGuard]
     }
 ];
 
 @NgModule({
+    declarations: [
+      IndexComponent
+    ],
+    providers: [
+      IndexRedirectGuard
+    ],
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })

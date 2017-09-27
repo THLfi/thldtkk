@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core'
 
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { Variable } from '../../../model2/variable'
-import { VariableSearchComponent } from './variable-search.component'
 
 @Component({
   selector: 'variable-modal',
@@ -15,7 +14,6 @@ import { VariableSearchComponent } from './variable-search.component'
 export class VariableModalComponent implements AfterContentChecked {
 
   @Input() variable: Variable
-  @Input() searchComponent : VariableSearchComponent
 
   @ViewChild('variableForm') variableForm: NgForm
   currentForm: NgForm
@@ -77,7 +75,6 @@ export class VariableModalComponent implements AfterContentChecked {
     this.savingInProgress = false
 
     this.onSave.emit(this.variable)
-    this.searchComponent.refresh()
   }
 
   doCancel() {

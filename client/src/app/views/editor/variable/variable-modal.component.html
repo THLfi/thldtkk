@@ -7,7 +7,7 @@
             closeOnEscape="false"
             width="500">
     <p-header>
-      {{ 'editVariable' | translate }}
+      {{ (variable.id ? 'editVariable' : 'addVariable') | translate }}
     </p-header>
     <form #variableForm="ngForm">
       <div class="container-fluid">

@@ -1,0 +1,78 @@
+<div *ngIf="loadingVariables"
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{'variables' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchInput" (keyup)="searchVariables(searchInput)" placeholder="{{'variableSearchPlaceholder' | translate}}"
+            class="form-control">
+          <span class="input-group-btn">
+          <button class="btn btn-default" (click)="instantSearchVariables(searchInput)">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+          </span>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-3">
+          <button (click)="showAddNewVariableModal()"
+                  class="btn btn-default variable-add-new">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addVariable' | translate }}
+          </button>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover variable-list">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <tr *ngFor="let variable of variables">
+            <td>
+              <b>{{variable.prefLabel | lang}}</b><br>
+              <span class="preserve-line-breaks">{{variable.description | lang}}</span>
+            </td>
+            <td>
+              <button (click)="showEditVariableModal(variable)" type="button"
+                      class="btn btn-sm btn-default variable-edit-controls">
+                <span class="glyphicon glyphicon-pencil"></span>
+                {{ 'edit' | translate }}
+              </button>
+              <button (click)="confirmRemoveVariable(variable)" type="button"
+                      class="btn btn-sm btn-danger variable-edit-controls">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ 'remove' | translate }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <variable-modal *ngIf="editVariable"
+                        [variable]="editVariable"
+                        (onSave)="saveVariable($event)"
+                        (onCancel)="closeEditVariableModal()">
+  </variable-modal>
+
+  <p-confirmDialog header="{{'confirmRemoveVariableModal'+'.header' | translate}}"
+    acceptLabel="{{'confirmRemoveVariableModal'+'.removeButtonLabel' | translate}}"
+    rejectLabel="{{'confirmRemoveVariableModal'+'.cancelButtonLabel' | translate}}">
+  </p-confirmDialog>
+
+</div>
+
+<ng-template #loadingVariables>
+  <thl-spinner></thl-spinner>
+</ng-template>

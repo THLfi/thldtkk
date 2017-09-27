@@ -19,7 +19,7 @@ import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-v
 import { LoginComponent } from './views/editor/login.component'
 import { RequireLoginGuard } from './require-login-guard'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
-import { VariableSearchComponent } from "./views/editor/variable/variable-search.component";
+import { VariableListComponent } from "./views/editor/variable/variable-list.component";
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 const routes: Routes = [
@@ -126,7 +126,7 @@ const routes: Routes = [
           },
           {
             path: 'variables',
-            component: VariableSearchComponent,
+            component: VariableListComponent,
             data: {
               title:'pageTitles.editor.variableList'
             }

@@ -205,6 +205,7 @@
   "newUnitType": "Uusi havaintoyksikkö",
   "editUnitType": "Muokkaa havaintoyksikköä",
   "unitTypeSearchPlaceholder":"Hae havaintoyksiköitä...",
+  "variableSearchPlaceholder":"Hae käsitemuuttujia...",
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
     "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} aineistoa ja {{instanceVariableCount}} muuttujaa.",

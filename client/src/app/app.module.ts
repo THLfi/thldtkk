@@ -92,9 +92,8 @@ import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.co
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UserMenuComponent } from './views/editor/menu/user-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
+import { VariableListComponent } from './views/editor/variable/variable-list.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
-import { VariableSearchComponent } from './views/editor/variable/variable-search.component'
-import { VariableSearchResultComponent } from './views/editor/variable/variable-search-result.component'
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -133,9 +132,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariablesImportModalComponent,
         InstanceQuestionEditModalComponent,
         CatalogFrontPageComponent,
+        VariableListComponent,
         VariableModalComponent,
-        VariableSearchComponent,
-        VariableSearchResultComponent,
         VariableViewComponent
     ],
     imports: [

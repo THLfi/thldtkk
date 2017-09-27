@@ -1,0 +1,24 @@
+.variable-list td:last-child,.variable-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .variable-list td:last-child,.variable-list th:last-child {
+    text-align: left;
+  }
+
+  .variable-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .variable-add-new {
+    margin-top: 1em;
+  }
+
+}
+@media(min-width: 768px) {
+  .variable-add-new {
+    float: right;
+  }
+}

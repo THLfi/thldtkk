@@ -67,3 +67,41 @@ Usage:
 Implemented transformations:
 
     Tilastokeskus format: TilastokeskusToAineistokatalogi.xsl
+
+# Virtu configuration
+
+We assume you have already registered the service via
+[Virtu resource register](https://virtus.csc.fi/).
+
+To use Virtu you must first enable Spring profile named `virtu`. You can do it
+via _application.properties_ with `spring.profiles.active=virtu` or you can
+specify the profile as command line argument when starting Tomcat with
+`-Dspring.profiles.active=virtu`.
+
+Next you must define required Virtu properties in your
+_applications.properties_ file. Properties with examples are listed below:
+
+    # Entity ID that you used register service to Virtu resource register.  
+    virtu.entityId=https://qa.aineistoeditori.fi/virtu
+    # Service's base URL. 
+    virtu.entityBaseUrl=https://qa.aineistoeditori.fi
+    # Java keystore that includes SP certificate (and its private key) and Virtu metadata certificate.
+    virtu.samlKeystoreResource=file:/Users/joni/certs/thldtkk-saml/thldtkk-saml.jks
+    # Keystore's password.
+    virtu.samlKeystorePassword=somepassword
+    # Alias of SP certificate.
+    virtu.spCertificateAliasInKeystore=qa.aineistoeditori.fi
+    # Password of SP certificate's private key.
+    virtu.spCertificatePassword=someotherpassword
+    # URL where Virtu metadata can be loaded.
+    virtu.metadataUrl=https://virtu-ds.csc.fi/fed/virtu-test/CSC_Virtu_Test_Servers-metadata.xml
+    # Alias of Virtu metadata signing certificate in keystore.
+    virtu.metadataSigningCertificateAliases=virtu-test-metadata-signing-crt-2015
+    # Virtu discovery service URL (address where IdP selection is done).
+    virtu.idpDiscoveryServiceUrl=https://industria.csc.fi/DS/
+
+After this you should be able to start the application and login with Virtu.
+Note that the service URL must match the URL registered to Virtu. If you want
+to run the service locally on your developer machine you can edit your `hosts`
+file to point the service URL (e.g. `qa.aineistoeditori.fi`) to your local
+Tomcat.

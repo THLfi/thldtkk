@@ -1926,6 +1926,12 @@
           "lang": "fi",
           "value": "Tilastokeskus"
         }
+      ],
+      "virtuId": [
+        {
+          "lang": "",
+          "value": "tilastokeskus.fi"
+        }
       ]
     }
   },

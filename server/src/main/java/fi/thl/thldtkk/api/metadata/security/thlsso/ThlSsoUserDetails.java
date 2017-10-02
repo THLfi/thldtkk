@@ -1,4 +1,4 @@
-package fi.thl.thldtkk.api.metadata.util.spring.security;
+package fi.thl.thldtkk.api.metadata.security.thlsso;
 
 import java.util.Collection;
 import org.springframework.security.core.Authentication;

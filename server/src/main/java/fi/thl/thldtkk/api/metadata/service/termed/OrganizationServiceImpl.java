@@ -37,4 +37,16 @@ public class OrganizationServiceImpl implements OrganizationService {
     return nodes.get(new NodeId(id, "Organization")).map(Organization::new);
   }
 
+  @Override
+  public Optional<Organization> getByVirtuId(String virtuId) {
+    return findAll()
+      .stream()
+      .filter(organization -> virtuId.equals(organization.getVirtuId()))
+      .findFirst();
+  }
+
+  @Override
+  public Organization save(Organization organization) {
+    return new Organization(nodes.save(organization.toNode()));
+  }
 }

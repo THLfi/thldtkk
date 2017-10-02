@@ -7,14 +7,16 @@
         </div>
 
         <div class="col-xs-12 col-sm-offset-3 col-sm-6 login-option-button-container">
-          <button (click)="virtuLogin()"
-                  type="button" 
+          <button *ngIf="showVirtuLoginButton"
+                  (click)="redirectToVirtuLogin()"
+                  [disabled]="thlLoginInProgress"
+                  type="button"
                   class="btn btn-default login-option-button">
-          {{'editorLoginComponent.loginOptionVirtu' | translate}}
+            {{'editorLoginComponent.loginOptionVirtu' | translate}}
           </button>
 
           <button (click)="toggleThlLoginExpanded()"
-                  type="button" 
+                  type="button"
                   class="btn btn-default login-option-button">
             {{'editorLoginComponent.loginOptionThl' | translate}}
             <i *ngIf="!thlLoginExpanded" class="fa fa-angle-down expand-collapse-icon" aria-hidden="true"></i>
@@ -23,9 +25,9 @@
         </div>
         <div class="col-xs-12 col-sm-offset-3 col-sm-6 thl-login-fields-background">
 
-          <div *ngIf="showLoginFailedMessage && thlLoginExpanded" class="col-xs-12 login-failure-message bg-danger text-danger">
-              <i class="fa fa-exclamation login-failure-icon" aria-hidden="true"></i>
-              {{'editorLoginComponent.loginFailed' | translate}}
+          <div *ngIf="showVirtuLoginFailedMessage || showThlLoginFailedMessage" class="col-xs-12 login-failure-message bg-danger text-danger">
+            <i class="fa fa-exclamation login-failure-icon" aria-hidden="true"></i>
+            {{ (showVirtuLoginFailedMessage ? 'editorLoginComponent.virtuLoginFailed' : 'editorLoginComponent.thlLoginFailed') | translate }}
           </div>
 
           <div *ngIf="thlLoginExpanded" class="thl-login-fields">
@@ -35,11 +37,11 @@
                 <div class="col-xs-12 col-sm-offset-1 col-sm-10">
                   <div class="form-group">
                     <label for="username">{{'editorLoginComponent.userName' | translate}}</label>
-                    <input [(ngModel)]="username" 
-                          [disabled]="loginInProgress" 
-                          id="username" 
-                          name="username" 
-                          type="text" 
+                    <input [(ngModel)]="username"
+                          [disabled]="thlLoginInProgress"
+                          id="username"
+                          name="username"
+                          type="text"
                           class="form-control"
                           autofocus>
                   </div>
@@ -48,19 +50,19 @@
                 <div class="col-xs-12 col-sm-offset-1 col-sm-10">
                   <div class="form-group">
                     <label for="password">{{'editorLoginComponent.password' | translate}}</label>
-                    <input  [(ngModel)]="password" 
-                            [disabled]="loginInProgress" 
-                            id="password" 
-                            name="password" 
-                            type="password" 
+                    <input  [(ngModel)]="password"
+                            [disabled]="thlLoginInProgress"
+                            id="password"
+                            name="password"
+                            type="password"
                             class="form-control">
                   </div>
                 </div>
 
                 <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-                  <button [disabled]="loginInProgress"
-                          (click)="thlLogin()" 
-                          type="submit" 
+                  <button [disabled]="thlLoginInProgress"
+                          (click)="thlLogin()"
+                          type="submit"
                           class="btn btn-default thl-login-button">
                     {{ 'editorLoginComponent.loginButton' | translate | uppercase}}
                   </button>
@@ -71,7 +73,7 @@
                 </div>
 
               </div>
-              <div *ngIf="loginInProgress" class="login-spinner"><thl-spinner></thl-spinner></div>
+              <div *ngIf="thlLoginInProgress" class="login-spinner"><thl-spinner></thl-spinner></div>
             </form>
           </div>
         </div>
@@ -85,7 +87,7 @@
         <div class="col-xs-12 col-sm-offset-3 col-sm-6">
           <login-advice></login-advice>
         </div>
-      </div>      
+      </div>
 
     </div>
     <div class="col-sm-6 col-sm-pull-6 editor-login-info">

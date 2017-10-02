@@ -49,6 +49,9 @@ export class UserMenuComponent {
     }
 
     if (StringUtils.isNotBlank(this.currentUser.lastName)) {
+      if (StringUtils.isNotBlank(displayName)) {
+        displayName += ' '
+      }
       displayName += this.currentUser.lastName
     }
 

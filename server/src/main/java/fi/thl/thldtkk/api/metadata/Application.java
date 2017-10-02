@@ -13,7 +13,10 @@ import org.springframework.context.annotation.ComponentScan;
     JpaRepositoriesAutoConfiguration.class,
     DataSourceAutoConfiguration.class
 })
-@ComponentScan("fi.thl.thldtkk.api")
+@ComponentScan({
+  "fi.thl.thldtkk.api",
+  "org.springframework.security.saml"
+})
 public class Application extends SpringBootServletInitializer {
 
   public static void main(String[] args) {

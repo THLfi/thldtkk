@@ -5,10 +5,13 @@ public enum UserDirectory {
    * Application's internal user directory.
    */
   LOCAL,
-  THL_SSO
+  /**
+   * THL kirjautumispalvelu
+   */
+  THL_SSO,
+  VIRTU;
 
-  // Other examples:
-  // Virtu
-  // Haka
-  // Suomi.fi
+  public String getDirectoryUsername(String username) {
+    return this.toString() + "/" + username;
+  }
 }

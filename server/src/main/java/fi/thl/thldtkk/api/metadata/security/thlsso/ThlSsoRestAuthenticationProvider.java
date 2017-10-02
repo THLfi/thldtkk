@@ -1,11 +1,8 @@
-package fi.thl.thldtkk.api.metadata.util.spring.security;
+package fi.thl.thldtkk.api.metadata.security.thlsso;
 
 import fi.thl.thldtkk.api.metadata.security.UserDirectory;
-import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.UserProfileHelper;
 import fi.thl.thldtkk.api.metadata.util.EncryptionUtils;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,10 +15,13 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.GeneralSecurityException;
+import java.util.Objects;
+
 public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider {
 
   @Autowired
-  private UserHelper userHelper;
+  private UserProfileHelper userProfileHelper;
 
   private final String url;
   private final String application;
@@ -53,7 +53,7 @@ public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider 
 
         ThlSsoUserDetails details = new ThlSsoUserDetails(usernameAndPassword);
 
-        UserDetails pDetails = userHelper.loadUserByUsername(
+        UserDetails pDetails = userProfileHelper.convertToUserWithProfile(
                 usernameAndPassword.getPrincipal().toString(),
                 UserDirectory.THL_SSO, details);
 

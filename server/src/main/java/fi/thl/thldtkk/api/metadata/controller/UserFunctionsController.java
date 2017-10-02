@@ -62,15 +62,15 @@ public class UserFunctionsController {
   public static class UserDTO {
 
     private final String username;
-    private final String fistName;
+    private final String firstName;
     private final String lastName;
     private final String email;
     private final boolean isLoggedIn;
     private final boolean isAdmin;
 
-    public UserDTO(String username, String fistName, String lastName, String email, boolean isLoggedIn, boolean isAdmin) {
+    public UserDTO(String username, String firstName, String lastName, String email, boolean isLoggedIn, boolean isAdmin) {
       this.username = username;
-      this.fistName = fistName;
+      this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
       this.isLoggedIn = isLoggedIn;
@@ -81,8 +81,8 @@ public class UserFunctionsController {
       return username;
     }
 
-    public String getFistName() {
-      return fistName;
+    public String getFirstName() {
+      return firstName;
     }
 
     public String getLastName() {

@@ -421,12 +421,6 @@
   "noUniverse": "Ei perusjoukkoa",
   "addUniverse": "Lisää perusjoukko...",
   "newUniverse": "Uusi perusjoukko",
-  "loginComponent": {
-    "title": "Kirjautuminen",
-    "loginButton": "Kirjaudu",
-    "loginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
-    "logoutSuccess": "Olet nyt kirjautunut ulos aineistoeditorista."
-  },
   "mainMenu": {
     "userMenu": {
       "logoutLink": "Kirjaudu ulos"
@@ -440,12 +434,13 @@
     "loginOptionVirtu":"Virtu",
     "loginOptionThl":"THL kirjautumispalvelu",
     "loginButton": "Kirjaudu",
-    "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen...",
+    "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen.",
     "genericTroubleshootContact": {
       "message": "Ongelmatilanteissa ota yhteyttä:",
       "email": "info@aineistoeditori.fi"
     },
-    "loginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
+    "virtuLoginFailed": "Kirjautuminen epäonnistui, yritä hetken päästä uudestaan. Jos ongelma toistuu, ota yhteyttä palvelun ylläpitoon.",
+    "thlLoginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
     "logoutSuccess": "Olet nyt kirjautunut ulos onnistuneesti",
     "logoutSuccessDetails": "Kirjaudu sisään jatkaaksesi editorin käyttöä",
     "loginAdvice": "Mitä kirjautumista minun pitäisi käyttää?",

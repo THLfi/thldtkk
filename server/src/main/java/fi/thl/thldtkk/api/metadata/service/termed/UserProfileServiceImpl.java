@@ -49,6 +49,14 @@ public class UserProfileServiceImpl implements UserProfileService {
   }
 
   @Override
+  public Optional<UserProfile> getByExternalId(String externalId) {
+    return findAll()
+      .stream()
+      .filter(userProfile -> userProfile.getExternalIds().contains(externalId))
+      .findFirst();
+  }
+
+  @Override
   public UserProfile save(UserProfile userProfile) {
     return new UserProfile(nodes.save(userProfile.toNode()));
   }

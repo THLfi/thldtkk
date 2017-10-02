@@ -87,21 +87,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
       .authorizeRequests()
+        .antMatchers("/api/v3/editor/**").authenticated()
         .antMatchers(HttpMethod.POST).authenticated()
         .antMatchers(HttpMethod.PUT).authenticated()
         .antMatchers(HttpMethod.DELETE).authenticated()
         .antMatchers(HttpMethod.PATCH).authenticated()
-        .antMatchers("/api/v3/editor/**").authenticated()
-        .anyRequest().permitAll()
-/*
-        // "Forbidden by default" matchers that should be used when we have public API available for all entities.
-        .antMatchers(
-          "/",
-          "/api/v2/public/**",
-          "/catalog/**").permitAll()
-        .anyRequest().authenticated()
-*/
-        // Static assets such as JS, CSS and fonts are allowed by default
+        .antMatchers(HttpMethod.HEAD).permitAll()
+        .antMatchers(HttpMethod.GET).permitAll()
+        .anyRequest().denyAll()
         .and()
       .formLogin()
         .loginPage("/login")

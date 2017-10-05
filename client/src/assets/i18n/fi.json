@@ -394,8 +394,8 @@
       "editDataset": "Muokkaa aineistoa",
       "newDataset": "Uusi aineisto",
       "variableList": "Käsitemuuttujat",
-      "unitTypeList":"Havaintoyksiköt"
-
+      "unitTypeList":"Havaintoyksiköt",
+      "frontpageLogin":"Kirjautuminen palveluun"
     }
     ,
     "catalog": {
@@ -420,5 +420,24 @@
     "userMenu": {
       "logoutLink": "Kirjaudu ulos"
     }
+  },
+  "editorLoginComponent": {
+    "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>. Molemmat palvelut ovat beta-testausvaiheessa.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistoeditori.fi'>info@aineistoeditori.fi</a></p>",
+    "loginHeading":"Kirjaudu sisään",
+    "userName":"Käyttäjätunnus",
+    "password":"Salasana",
+    "loginOptionVirtu":"Virtu",
+    "loginOptionThl":"THL kirjautumispalvelu",
+    "loginButton": "Kirjaudu",
+    "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen...",
+    "genericTroubleshootContact": {
+      "message": "Ongelmatilanteissa ota yhteyttä:",
+      "email": "info@aineistoeditori.fi"
+    },
+    "loginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
+    "logoutSuccess": "Olet nyt kirjautunut ulos onnistuneesti",
+    "logoutSuccessDetails": "Kirjaudu sisään jatkaaksesi editorin käyttöä",
+    "loginAdvice": "Mitä kirjautumista minun pitäisi käyttää?",
+    "loginAdviceTooltip": "Jos olet Virtu-viraston työntekijä, käytä Virtua. Muille tarjoamme vaihtoehtona THL:n omaa kirjautumispalvelua"
   }
 }

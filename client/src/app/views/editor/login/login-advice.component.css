@@ -1,0 +1,19 @@
+.ui-tooltip.login-advice-tooltip  {
+  max-width: 25em;
+}
+
+.login-advice-tooltip .ui-tooltip-text  {
+  color: black;
+  background-color: #F6F5F9;
+  white-space: normal;
+  font-family: 'Open Sans';
+}
+
+.login-advice {
+  text-decoration: underline;
+  text-decoration-style: dashed; 
+}
+
+.login-advice.tooltip-padding {
+  padding-top: 6em;
+}

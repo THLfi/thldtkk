@@ -1,0 +1,102 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-sm-push-6 editor-login-actions">
+      <div class="row">
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+          <h2>{{'editorLoginComponent.loginHeading' | translate}}</h2>
+        </div>
+
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 login-option-button-container">
+          <button (click)="virtuLogin()"
+                  type="button" 
+                  class="btn btn-default login-option-button">
+          {{'editorLoginComponent.loginOptionVirtu' | translate}}
+          </button>
+
+          <button (click)="toggleThlLoginExpanded()"
+                  type="button" 
+                  class="btn btn-default login-option-button">
+            {{'editorLoginComponent.loginOptionThl' | translate}}
+            <i *ngIf="!thlLoginExpanded" class="fa fa-angle-down expand-collapse-icon" aria-hidden="true"></i>
+            <i *ngIf="thlLoginExpanded" class="fa fa-angle-up expand-collapse-icon" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 thl-login-fields-background">
+
+          <div *ngIf="showLoginFailedMessage && thlLoginExpanded" class="col-xs-12 login-failure-message bg-danger text-danger">
+              <i class="fa fa-exclamation login-failure-icon" aria-hidden="true"></i>
+              {{'editorLoginComponent.loginFailed' | translate}}
+          </div>
+
+          <div *ngIf="thlLoginExpanded" class="thl-login-fields">
+
+            <form #loginForm="ngForm" (ngSubmit)="thlLogin()">
+              <div class="row">
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+                  <div class="form-group">
+                    <label for="username">{{'editorLoginComponent.userName' | translate}}</label>
+                    <input [(ngModel)]="username" 
+                          [disabled]="loginInProgress" 
+                          id="username" 
+                          name="username" 
+                          type="text" 
+                          class="form-control"
+                          autofocus>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+                  <div class="form-group">
+                    <label for="password">{{'editorLoginComponent.password' | translate}}</label>
+                    <input  [(ngModel)]="password" 
+                            [disabled]="loginInProgress" 
+                            id="password" 
+                            name="password" 
+                            type="password" 
+                            class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+                  <button [disabled]="loginInProgress"
+                          (click)="thlLogin()" 
+                          type="submit" 
+                          class="btn btn-default thl-login-button">
+                    {{ 'editorLoginComponent.loginButton' | translate | uppercase}}
+                  </button>
+                </div>
+
+                <div class="col-xs-12 col-sm-offset-1 col-sm-10 thl-troubleshoot">
+                  {{'editorLoginComponent.thlTroubleshootContact' | translate}}
+                </div>
+
+              </div>
+              <div *ngIf="loginInProgress" class="login-spinner"><thl-spinner></thl-spinner></div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 generic-troubleshoot">
+          {{'editorLoginComponent.genericTroubleshootContact.message' | translate}}
+          <br>
+          <a href="mailto:{{'editorLoginComponent.genericTroubleshootContact.email' | translate}}">{{'editorLoginComponent.genericTroubleshootContact.email' | translate}}</a>
+        </div>
+
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6">
+          <login-advice></login-advice>
+        </div>
+      </div>      
+
+    </div>
+    <div class="col-sm-6 col-sm-pull-6 editor-login-info">
+      <div class="row">
+        <div class="col-sm-offset-1 col-sm-10">
+          <h1>{{'datasetEditor' | translate}}</h1>
+          <about-editor></about-editor>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <logout-message *ngIf="showLogoutSuccessMessage" [message]="logoutMessage" [messageDetails]="logoutMessageDetails" (onClose)="closeLogoutMessage()"></logout-message>
+</div>

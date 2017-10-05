@@ -1,0 +1,40 @@
+.message-container {
+  position: fixed;
+  width: 35em;
+  top: 1em;
+  background-color: white;
+  border: 1px solid black;
+  text-align: center;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding-bottom: 1em;
+  box-shadow: 2px 2px 2px lightgray;
+  font-style:'Open Sans';
+}
+
+@media(max-width: 768px) {
+  .message-container {
+    top: 15em;
+  }
+}
+
+.message {
+  font-weight: bold;
+  padding-top: 1em;
+}
+
+.message-details {
+
+}
+
+.close-message-button {
+  float: right;
+  font-size: 1.2em;
+  font-weight: normal;
+  color: lightgray;
+}
+
+.close-message-button:hover {
+  color: black;
+}

@@ -1,0 +1,31 @@
+.about-editor ul {
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.about-editor strong,li {
+  font-size: 1.15em;  
+}
+
+.about-editor li,p {
+  line-height: 1.8;
+}
+
+.about-editor p {
+  font-size: 1.15em;
+  margin-bottom: 2em;
+}
+
+.about-editor a {
+  text-decoration: underline;
+}
+
+.about-editor a[href^="mailto"] {
+  text-decoration: none;
+}
+
+
+
+
+
+

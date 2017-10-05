@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   public PageIdentifier = PageIdentifier
   currentPageType: PageIdentifier
   mainContainerClasses: any = {}
+  hideNavBar: boolean = false
 
   currentUser: User
 
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
         this.setPageTitle(titleTranslationKey, pageType)
 
         this.currentPageType = pageType | this.currentPageType
+        this.hideNavBar = event['hideNavBar'] ? event['hideNavBar'] : false 
 
         this.mainContainerClasses['main-container'] = true
         this.mainContainerClasses['has-sidebar'] = event['hasSidebar']
@@ -65,6 +67,8 @@ export class AppComponent implements OnInit {
 
         this.mainContainerClasses['editor'] = this.currentPageType == PageIdentifier.EDITOR
         this.mainContainerClasses['container-fluid'] = this.currentPageType == PageIdentifier.EDITOR && !event['hasSidebar']
+
+        this.mainContainerClasses['hiddenNavBar'] = this.hideNavBar
       })
 
     this.currentUserService.getCurrentUserObservable()

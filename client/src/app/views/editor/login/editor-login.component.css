@@ -1,0 +1,143 @@
+.editor-login-info {
+  background-color: #F6F5F9;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow-y: scroll;
+  padding-top: 5em;
+}
+
+
+.editor-login-info h1:first-child {
+  font-size: 3em;
+  color: black;
+  font-weight: 600;
+  font-family: 'Open Sans';
+  margin-bottom: 0.8em;
+}
+
+.editor-login-actions {
+  background-color: white;
+  text-align: center;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  overflow-y: scroll;
+  padding-top: 14em;
+}
+
+.editor-login-actions h2{
+  font-weight: 500;
+  margin-bottom: 2em;
+  font-family: 'Open Sans';
+}
+
+.editor-login-actions .login-option-button-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.editor-login-actions .login-option-button {
+  background-color: #01837A;
+  color: white;
+  padding-left: 1.5em;
+  width: 100%;
+}
+
+.editor-login-actions .login-option-button:first-child {
+  margin-bottom: 0.5em;
+}
+
+.editor-login-actions .expand-collapse-icon {
+  margin-left: 0.1em;
+}
+
+.editor-login-actions .thl-login-fields {
+  margin-top: 1em;
+  text-align: left;
+}
+
+.editor-login-actions .thl-login-fields-background {
+  background-color: #F6F5F9;
+}
+
+.editor-login-actions .thl-login-button-container {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.editor-login-actions .thl-login-button {
+  background-color: #01837A;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+
+.editor-login-actions .thl-troubleshoot {
+  font-size: 0.75em;
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.editor-login-actions .generic-troubleshoot {
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.editor-login-actions .login-spinner {
+  margin-left: -20px;
+  padding-bottom: 2em;
+  padding-top: 0;
+  padding-left: 0;
+  text-align: center;
+}
+
+.editor-login-actions .login-failure-message {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+
+.editor-login-actions .login-failure-icon {
+  position: absolute;
+  left: 0;
+  margin-top: 0.2em;
+  padding-left: 0.5em;
+}
+
+@media(max-width: 768px) {
+  
+  .editor-login-info {
+    background-color: #F6F5F9;
+    position: relative;
+    height: auto;
+    top: auto;
+    left: auto;
+    overflow-y: auto;
+    padding-top: 1em;
+    padding-left: 4em;
+    padding-right: 4em;
+  }
+
+  .editor-login-actions {
+    background-color: white;
+    text-align: center;
+    position: relative;
+    height: auto;
+    top: auto;
+    left: auto;
+    overflow-y: auto;
+    padding-top: 2em;
+    padding-left: 4em;
+    padding-right: 4em;
+  }
+
+}
+

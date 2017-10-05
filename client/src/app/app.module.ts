@@ -71,6 +71,7 @@ import { CatalogFrontPageComponent } from './views/catalog/frontpage/catalog-fro
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 // editor components
+import { AboutEditorComponent } from './views/editor/login/about-editor.component'
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CurrentUserService } from './services-editor/user.service'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
@@ -78,11 +79,13 @@ import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/da
 import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
 import { DatasetViewComponent as EditorDatasetComponent } from './views/editor/dataset/dataset-view.component'
+import { EditorLoginComponent } from './views/editor/login/editor-login.component'
 import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { InstanceVariablesImportModalComponent } from './views/editor/dataset/instance-variables-import-modal.component'
-import { LoginComponent } from './views/editor/login.component'
+import { LoginAdviceComponent } from './views/editor/login/login-advice.component'
+import { LogoutMessageComponent } from './views/editor/login/logout-message.component'
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
@@ -101,6 +104,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
 
 @NgModule({
     declarations: [
+        AboutEditorComponent,
         AppComponent,
         AutogrowTextarea,
         DatasetComponent,
@@ -110,6 +114,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DatasetSidebarComponent,
         EditorDatasetListComponent,
         EditorDatasetComponent,
+        EditorLoginComponent,
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
@@ -117,7 +122,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableSearchResultComponent,
         LangPipe,
         LoadingSpinner,
-        LoginComponent,
+        LoginAdviceComponent,
+        LogoutMessageComponent,
         PersonEditModalComponent,
         RequiredFieldIndicator,
         UnitTypeEditModalComponent,

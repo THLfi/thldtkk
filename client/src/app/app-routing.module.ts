@@ -12,11 +12,11 @@ import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/d
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
 import { IndexComponent } from './index.component'
 import { IndexRedirectGuard } from './index-redirect-guard'
+import { EditorLoginComponent } from './views/editor/login/editor-login.component'
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
-import { LoginComponent } from './views/editor/login.component'
 import { RequireLoginGuard } from './require-login-guard'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { VariableListComponent } from "./views/editor/variable/variable-list.component";
@@ -137,7 +137,7 @@ const routes: Routes = [
             data: {
               title:'pageTitles.editor.unitTypeList'
             }
-          },
+          },         
           {
             path: '',
             redirectTo: 'datasets',
@@ -147,9 +147,10 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent,
+        component: EditorLoginComponent,
         data: {
-          title: 'loginComponent.title',
+          title:'pageTitles.editor.frontpageLogin',
+          hideNavBar: true,
           pageType: PageIdentifier.EDITOR
         }
     },

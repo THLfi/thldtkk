@@ -6,12 +6,15 @@ import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
+import fi.thl.thldtkk.api.metadata.domain.UnitType;
 import fi.thl.thldtkk.api.metadata.domain.Universe;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.springframework.security.access.method.P;
 
 import java.util.List;
@@ -54,4 +57,10 @@ public class UniverseServiceImpl implements UniverseService {
     return new Universe(nodes.save(universe.toNode()));
   }
 
+  @AdminOnly
+  @Override
+  public void delete(UUID id) {
+    Universe universe = get(id).orElseThrow(NotFoundException::new);
+    nodes.delete(new NodeId(universe.toNode()));
+  }
 }

@@ -19,7 +19,8 @@ import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-v
 import { LoginComponent } from './views/editor/login.component'
 import { RequireLoginGuard } from './require-login-guard'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
-import { VariableListComponent } from "./views/editor/variable/variable-list.component";
+import { UniverseListComponent } from "./views/editor/universe/universe-list.component"
+import { VariableListComponent } from "./views/editor/variable/variable-list.component"
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 const routes: Routes = [
@@ -129,6 +130,13 @@ const routes: Routes = [
             component: VariableListComponent,
             data: {
               title:'pageTitles.editor.variableList'
+            }
+          },
+          {
+            path: 'universes',
+            component: UniverseListComponent,
+            data: {
+              title:'pageTitles.editor.universeList'
             }
           },
           {

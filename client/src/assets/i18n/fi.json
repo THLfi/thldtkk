@@ -253,13 +253,6 @@
         }
       }
     },
-    "universe": {
-      "save":{
-        "result": {
-          "success": ""
-        }
-      }
-    },
     "dataset": {
       "get": {
         "result": {

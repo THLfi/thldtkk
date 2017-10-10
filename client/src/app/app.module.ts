@@ -92,7 +92,9 @@ import { RequireLoginGuard } from './require-login-guard'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
+import { UniverseModalComponent } from './views/editor/universe/universe-modal.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
+import { UniverseListComponent } from './views/editor/universe/universe-list.component'
 import { UserMenuComponent } from './views/editor/menu/user-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableListComponent } from './views/editor/variable/variable-list.component'
@@ -138,6 +140,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariablesImportModalComponent,
         InstanceQuestionEditModalComponent,
         CatalogFrontPageComponent,
+        UniverseListComponent,
+        UniverseModalComponent,
         VariableListComponent,
         VariableModalComponent,
         VariableViewComponent

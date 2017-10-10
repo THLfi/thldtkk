@@ -1,0 +1,24 @@
+.universe-list td:last-child,.universe-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .universe-list td:last-child,.universe-list th:last-child {
+    text-align: left;
+  }
+
+  .universe-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .universe-add-new {
+    margin-top: 1em;
+  }
+
+}
+@media(min-width: 768px) {
+  .universe-add-new {
+    float: right;
+  }
+}

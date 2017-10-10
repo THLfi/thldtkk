@@ -1,0 +1,78 @@
+<div *ngIf="loadingUniverses"
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{'universes' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchInput" (keyup)="searchUniverses(searchInput)" placeholder="{{'universeSearchPlaceholder' | translate}}"
+            class="form-control">
+          <span class="input-group-btn">
+          <button class="btn btn-default" (click)="instantSearchUniverses(searchInput)">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+          </span>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-3">
+          <button (click)="showAddNewUniverseModal()"
+                  class="btn btn-default universe-add-new">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addUniverse' | translate }}
+          </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover universe-list">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <tr *ngFor="let universe of universes">
+            <td>
+              <b>{{universe.prefLabel | lang}}</b><br>
+              <span class="preserve-line-breaks">{{universe.description | lang}}</span>
+            </td>
+            <td>
+              <button (click)="showEditUniverseModal(universe)" type="button"
+                      class="btn btn-sm btn-default universe-edit-controls">
+                <span class="glyphicon glyphicon-pencil"></span>
+                {{ 'edit' | translate }}
+              </button>
+              <button (click)="confirmRemoveUniverse(universe)" type="button"
+                      class="btn btn-sm btn-danger universe-edit-controls">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ 'remove' | translate }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <universe-modal *ngIf="editUniverse"
+                        [universe]="editUniverse"
+                        (onSave)="saveUniverse($event)"
+                        (onCancel)="closeEditUniverseModal()">
+  </universe-modal>
+
+  <p-confirmDialog header="{{'confirmRemoveUniverseModal'+'.header' | translate}}"
+    acceptLabel="{{'remove' | translate}}"
+    rejectLabel="{{'cancel' | translate}}">
+  </p-confirmDialog>
+
+</div>
+
+<ng-template #loadingUniverses>
+  <thl-spinner></thl-spinner>
+</ng-template>

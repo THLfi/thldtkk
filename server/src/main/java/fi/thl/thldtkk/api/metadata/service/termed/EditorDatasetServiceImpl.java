@@ -39,7 +39,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   private Repository<NodeId, Node> nodes;
 
   private UserHelper userHelper;
-  
+
   public EditorDatasetServiceImpl(Repository<NodeId, Node> nodes, UserHelper userHelper) {
     this.nodes = nodes;
     this.userHelper = userHelper;
@@ -48,13 +48,13 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   @Override
   public List<Dataset> findAll() {
     List<Criteria> criteria = new ArrayList<>();
-    
+
     criteria.add(keyValue("type.id", "DataSet"));
-    
+
     if(!userHelper.isCurrentUserAdmin()) {
       criteria.add(getCurrentUserOrganizationCriteria());
     }
-    
+
     return nodes.query(and(criteria))
         .map(Dataset::new)
         .collect(toList());
@@ -63,21 +63,21 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   @Override
   public List<Dataset> find(String query, int max) {
     List<Criteria> criteria = new ArrayList<>();
-    
+
     criteria.add(keyValue("type.id", "DataSet"));
     criteria.add(keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
-    
+
     if(!userHelper.isCurrentUserAdmin()) {
       criteria.add(getCurrentUserOrganizationCriteria());
     }
-    
+
     return nodes.query(
         and(criteria),
         max)
         .map(Dataset::new)
         .collect(toList());
   }
-  
+
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max) {
     return find(organizationId, datasetTypeId, query, max, "");
@@ -86,13 +86,13 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
-    
+
     criteria.add(keyValue("type.id", "DataSet"));
-    
+
     if(!userHelper.isCurrentUserAdmin()) {
       criteria.add(getCurrentUserOrganizationCriteria());
     }
-    
+
     if (organizationId != null) {
       criteria.add(keyValue("references.owner.id", organizationId.toString()));
     }
@@ -119,7 +119,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
       return keyWithAnyValue("references.owner.id", organizationIds);
   }
-  
+
   @Override
   public Optional<Dataset> get(UUID id) {
     return nodes.get(select("id", "type", "properties.*", "references.*",
@@ -313,6 +313,17 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       and(keyValue("type.id", "DataSet"),
         keyValue("references.unitType.id", unitTypeId.toString())))
       .map(Dataset::new).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Dataset> getUniverseDatasets(UUID universeId){
+    List<Dataset> list =  nodes.query(
+            select("id", "type", "properties.*", "references.*", "referrers.*"),
+            and(keyValue("type.id", "DataSet"),
+                    keyValue("references.universe.id", universeId.toString())))
+            .map(Dataset::new)
+            .collect(toList());
+    return list;
   }
 
 }

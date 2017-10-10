@@ -120,6 +120,7 @@
     "described": "Jatkuva",
     "enumerated": "Luokiteltu"
   },
+  "universes": "Perusjoukot",
   "variables": "Käsitemuuttujat",
   "quantity": "Suure",
   "noQuantity": "Ei suuretta",
@@ -205,12 +206,17 @@
   "newUnitType": "Uusi havaintoyksikkö",
   "editUnitType": "Muokkaa havaintoyksikköä",
   "unitTypeSearchPlaceholder":"Hae havaintoyksiköitä...",
+  "universeSearchPlaceholder":"Hae perusjoukkoja...",
   "variableSearchPlaceholder":"Hae käsitemuuttujia...",
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
     "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} aineistoa ja {{instanceVariableCount}} muuttujaa.",
     "removeButtonLabel": "Poista",
     "cancelButtonLabel": "Peruuta"
+  },
+  "confirmRemoveUniverseModal": {
+    "header": "Poiston vahvistus",
+    "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} aineistoa."
   },
   "errors": {
     "form": {
@@ -239,6 +245,18 @@
             "summary": "Tallennus epäonnistui",
             "detail": "Tarkista syötetyt tiedot."
           }
+        }
+      },
+      "delete":{
+        "result":{
+          "success": "Poisto onnistui"
+        }
+      }
+    },
+    "universe": {
+      "save":{
+        "result": {
+          "success": ""
         }
       }
     },

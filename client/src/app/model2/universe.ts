@@ -1,6 +1,7 @@
 import { LangValues } from './lang-values'
+import { Node } from './node'
 
-export class Universe {
+export interface Universe extends Node{
   prefLabel: LangValues
   description: LangValues
 }

@@ -168,6 +168,9 @@
       },
       {
         "id": "abbreviation"
+      },
+      {
+        "id": "virtuId"
       }
     ],
     "referenceAttributes": [

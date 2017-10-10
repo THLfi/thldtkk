@@ -1698,6 +1698,12 @@
           "lang": "fi",
           "value": "Terveyden ja hyvinvoinnin laitos"
         }
+      ],
+      "virtuId": [
+        {
+          "lang": "",
+          "value": "thl.fi"
+        }
       ]
     }
   },

@@ -17,5 +17,14 @@
         {{ 'datasetSidebar.instanceVariables' | translate }}
       </a>
     </li>
+    <li *ngIf="dataset.id"
+        [ngClass]="{ active: activeSection == SidebarActiveSection.ADMINISTRATIVE_INFORMATION }">
+      <a routerLink="{{ '/editor/datasets/' + dataset.id + '/administrative-information' }}">
+        <div class="icon">
+          <i class="fa fa-university" aria-hidden="true"></i>
+        </div>
+        {{ 'datasetSidebar.administrativeInformation' | translate }}
+      </a>
+    </li>
   </ul>
 </nav>

@@ -1,0 +1,172 @@
+<ng-container *ngIf="dataset; else loadingDataset;">
+
+  <dataset-sidebar [dataset]="dataset"
+                   [activeSection]="sidebarActiveSection">
+  </dataset-sidebar>
+
+  <div class="content-container">
+
+    <div class="content-header container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>
+            <ng-container *ngIf="dataset.id; else newDatasetHeader;">
+              {{ 'dataset' | translate }}:
+              {{ dataset.prefLabel | lang }}
+            </ng-container>
+            <ng-template #newDatasetHeader>
+              {{ 'newDataset' | translate }}
+            </ng-template>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-body container-fluid">
+
+      <form #datasetForm="ngForm">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'description' | translate }}</h2>
+            <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'organization' | translate }}</h2>
+            <p *ngIf="dataset.owner">
+              {{ dataset.owner.prefLabel | lang }}
+              <span *ngIf="dataset.owner.abbreviation | lang">
+              ({{ dataset.owner.abbreviation | lang }})
+            </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'organizationUnit' | translate }}</h2>
+            <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
+              {{ ownerOrganizationUnit.prefLabel | lang }}
+              <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
+              ({{ ownerOrganizationUnit.abbreviation | lang }})
+            </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'personInRoles.label' | translate }}</h2>
+            <table *ngIf="dataset.personInRoles.length; else noDatasetPersonInRoles;"
+                   class="table table-striped table-hover">
+              <tr>
+                <th translate="personInRoles.person"></th>
+                <th translate="personInRoles.role"></th>
+                <th translate="personInRoles.public.title"></th>
+              </tr>
+              <tr *ngFor="let personInRole of dataset.personInRoles">
+                <td>
+                  {{ personInRole.person.firstName }}
+                  {{ personInRole.person.lastName }}
+                  <ng-container *ngIf="personInRole.person.email">
+                    <br>
+                    {{ personInRole.person.email }}
+                  </ng-container>
+                  <ng-container *ngIf="personInRole.person.phone">
+                    <br>
+                    {{ personInRole.person.phone }}
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngIf="personInRole.role; else noRole;">
+                    {{ personInRole.role.prefLabel | lang }}
+                  </ng-container>
+                  <ng-template #noRole>
+                    {{ 'noRole' | translate }}
+                  </ng-template>
+                </td>
+                <td>
+                  {{ 'personInRoles.public.' + personInRole.public | translate }}
+                </td>
+              </tr>
+            </table>
+            <ng-template #noDatasetPersonInRoles>
+              <p translate="noDatasetPersonInRoles"></p>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'registryPolicy' | translate }}</h2>
+            <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <ng-container *ngIf="dataset.population">
+
+              <h2>{{ 'population' | translate }}</h2>
+              <p>{{ dataset.population.prefLabel | lang }}</p>
+
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'referencePeriod' | translate }}</h2>
+            <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else noReferencePeriod;">
+              <ng-container *ngIf="dataset.referencePeriodStart">
+                {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+              </ng-container>
+              —
+              <ng-container *ngIf="dataset.referencePeriodEnd">
+                {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+              </ng-container>
+            </p>
+            <ng-template #noReferencePeriod>
+              <p>{{ 'noReferencePeriod' | translate }}</p>
+            </ng-template>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="edit-controls-padding"></div>
+
+  </div>
+
+  <div class="edit-controls-fixed">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <button (click)="save()"
+                  [disabled]="savingInProgress"
+                  class="btn btn-primary"
+                  type="button">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+          <button (click)="goBack()"
+                  [disabled]="savingInProgress"
+                  class="btn btn-default"
+                  type="button">
+            {{ 'cancel' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-template #loadingDataset>
+  <thl-spinner></thl-spinner>
+</ng-template>

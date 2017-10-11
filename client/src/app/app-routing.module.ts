@@ -6,6 +6,8 @@ import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-fro
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
+import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
+import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 import { DatasetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
@@ -81,6 +83,22 @@ const routes: Routes = [
             }
           },
           {
+            path: 'datasets/:datasetId/edit-administrative-information',
+            component: DatasetAdministrativeEditComponent,
+            data: {
+              title: 'pageTitles.editor.editAdministrativeInformation',
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'datasets/:datasetId/administrative-information',
+            component: DatasetAdministrativeViewComponent,
+            data: {
+              title: 'pageTitles.editor.administrativeInformation',
+              hasSidebar: true
+            }
+          },
+          {
             path: 'datasets/:datasetId/instanceVariables/:instanceVariableId',
             component: InstanceVariableViewComponent,
             data: {
@@ -145,7 +163,7 @@ const routes: Routes = [
             data: {
               title:'pageTitles.editor.unitTypeList'
             }
-          },         
+          },
           {
             path: '',
             redirectTo: 'datasets',

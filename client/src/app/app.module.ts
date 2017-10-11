@@ -74,6 +74,8 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 import { AboutEditorComponent } from './views/editor/login/about-editor.component'
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CurrentUserService } from './services-editor/user.service'
+import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
+import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
@@ -109,6 +111,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AboutEditorComponent,
         AppComponent,
         AutogrowTextarea,
+        DatasetAdministrativeEditComponent,
+        DatasetAdministrativeViewComponent,
         DatasetComponent,
         DataSetEditComponent,
         DatasetInstanceVariablesViewComponent,

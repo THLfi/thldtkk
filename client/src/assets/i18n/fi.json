@@ -6,7 +6,8 @@
   "newDataset": "Uusi aineisto",
   "datasetSidebar": {
     "datasetDescription": "Aineiston kuvaus",
-    "instanceVariables": "Muuttujien kuvaus"
+    "instanceVariables": "Muuttujien kuvaus",
+    "administrativeInformation": "Hallinnolliset tiedot"
   },
   "instanceVariables": "Muuttujat",
   "contactPerson": "Yhteyshenkilö",
@@ -408,7 +409,8 @@
       "newDataset": "Uusi aineisto",
       "variableList": "Käsitemuuttujat",
       "unitTypeList":"Havaintoyksiköt",
-      "frontpageLogin":"Kirjautuminen palveluun"
+      "frontpageLogin":"Kirjautuminen palveluun",
+      "administrativeInformation": "Hallinnolliset tiedot"
     }
     ,
     "catalog": {

@@ -1,9 +1,8 @@
-import {LangValues} from './lang-values';
+import { Node } from './node'
+import { LangValues } from './lang-values';
 
-export class Link {
-
+export interface Link extends Node {
     prefLabel: LangValues
-
     linkUrl: LangValues
 }
 

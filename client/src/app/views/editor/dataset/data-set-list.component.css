@@ -1,0 +1,4 @@
+.dataset-list td:last-child,.dataset-list th:last-child {
+  width: 30%;
+  text-align: right;
+}

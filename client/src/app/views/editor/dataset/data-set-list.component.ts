@@ -4,7 +4,8 @@ import { Dataset } from '../../../model2/dataset'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 
 @Component({
-    templateUrl: './data-set-list.component.html'
+    templateUrl: './data-set-list.component.html',
+    styleUrls: ['./data-set-list.component.css']
 })
 export class DatasetListComponent implements OnInit {
 

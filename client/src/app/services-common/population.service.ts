@@ -14,6 +14,7 @@ export class PopulationService {
 
   initNew(): Population {
     const population = {
+      id: null,
       prefLabel: null,
       geographicalCoverage: null,
       sampleSize: null,

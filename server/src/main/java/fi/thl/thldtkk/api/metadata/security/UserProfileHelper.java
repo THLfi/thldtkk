@@ -39,6 +39,7 @@ public class UserProfileHelper {
   private UserProfile createUserProfile(String directoryUsername) {
     UserProfile newUserProfile = new UserProfile(UUID.randomUUID());
     newUserProfile.getExternalIds().add(directoryUsername);
+    newUserProfile.getRoles().add(UserRoles.USER);
     return userProfileService.save(newUserProfile);
   }
 

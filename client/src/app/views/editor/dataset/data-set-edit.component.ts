@@ -134,6 +134,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     private getDataset() {
         const datasetId = this.route.snapshot.params['id'];
+        const copyOfDatasetId = this.route.snapshot.queryParams['copyOf'];
         if (datasetId) {
             Observable.forkJoin(
                 this.datasetService.getDataset(datasetId)
@@ -143,6 +144,25 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
                     this.updatePageTitle()
                 })
+        } else if (copyOfDatasetId) {
+          this.datasetService.getDataset(copyOfDatasetId).subscribe(data => {
+            this.dataset = this.initializeDatasetProperties(data)
+            this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
+            this.dataset.id = null
+            this.dataset.published = false
+            this.translateService.get('copy').subscribe(msg => {
+              this.dataset.prefLabel[this.language] =
+                this.dataset.prefLabel[this.language] + " (" + msg + ")"                
+            });
+            this.dataset.population.id = null
+            this.dataset.links.forEach(l => l.id = null)
+            this.dataset.personInRoles.forEach(p => p.id = null)
+            this.dataset.instanceVariables.forEach(iv => {
+              iv.id = null;
+              iv.instanceQuestions.forEach(iq => iq.id = null)
+            })
+            this.updatePageTitle()
+          })
         } else {
             this.dataset = this.initializeDatasetProperties({
                 id: null,
@@ -433,6 +453,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.dataset.links = []
       }
       const link = {
+        id: null,
         prefLabel: null,
         linkUrl: null
       }

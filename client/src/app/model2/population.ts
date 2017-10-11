@@ -1,6 +1,7 @@
-import {LangValues} from './lang-values';
+import { Node } from './node'
+import { LangValues } from './lang-values';
 
-export class Population {
+export interface Population extends Node {
     prefLabel: LangValues
     sampleSize: LangValues
     loss: LangValues

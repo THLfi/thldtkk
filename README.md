@@ -70,7 +70,7 @@ Implemented transformations:
 
 # Virtu configuration
 
-We assume you have already registered the service via
+We assume you have already registered the service provider (SP) via
 [Virtu resource register](https://virtus.csc.fi/).
 
 To use Virtu you must first enable Spring profile named `virtu`. You can do it
@@ -85,7 +85,7 @@ _applications.properties_ file. Properties with examples are listed below:
     virtu.entityId=https://qa.aineistoeditori.fi/virtu
     # Service's base URL. 
     virtu.entityBaseUrl=https://qa.aineistoeditori.fi
-    # Java keystore that includes SP certificate (and its private key) and Virtu metadata certificate.
+    # Java keystore (JKS) that includes SP certificate (and its private key) and Virtu metadata certificate.
     virtu.samlKeystoreResource=file:/Users/joni/certs/thldtkk-saml/thldtkk-saml.jks
     # Keystore's password.
     virtu.samlKeystorePassword=somepassword
@@ -105,3 +105,22 @@ Note that the service URL must match the URL registered to Virtu. If you want
 to run the service locally on your developer machine you can edit your `hosts`
 file to point the service URL (e.g. `qa.aineistoeditori.fi`) to your local
 Tomcat.
+
+## Importing certificates to Java keystore
+
+To import SP certificate and it's private key you must first convert them to
+PKCS12 format that JDK's keytool supports:
+
+    openssl pkcs12 -export -in qa.aineistoeditori.fi.pem -inkey qa.aineistoeditori.fi.key -out qa.aineistoeditori.fi.p12 -name qa.aineistoeditori.fi
+
+Conversion will ask for a password. You can enter anything here since the
+password is only used during the next step. Now you can import the certificate
+and private key into a JKS file.
+
+    keytool -importkeystore -srckeystore qa.aineistoeditori.fi.p12 -srcstoretype PKCS12 -srcstorepass <sourcekeystorepassword> -destkeystore thldtkk-saml.jks -deststorepass somepassword -destkeypass someotherpassword -alias qa.aineistoeditori.fi
+
+In above command parameter `-deststorepass` corresponds to property `virtu.samlKeystorePassword` and `-destkeypass` to `virtu.spCertificatePassword`.
+
+When importing Virtu metadata signing certificate the process is more simple:
+
+    keytool -importcert -noprompt -file virtu-test-metadata-signing-crt-2015.pem -keystore thldtkk-saml.jks -storepass somepassword -alias virtu-test-metadata-signing-crt-2015

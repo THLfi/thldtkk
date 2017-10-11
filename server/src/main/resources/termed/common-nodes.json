@@ -1705,7 +1705,21 @@
           "value": "thl.fi"
         }
       ]
-    }
+    },
+    "references": {
+        "organizationUnit": [
+          {
+            "id": "660b64bb-aeb2-4627-ab60-21f42639eaea"
+          },
+          {
+            "id": "d9d323a6-9288-4d74-9157-04e61c40cc01"
+          },
+          {
+            "id": "9a5c7a16-d42f-4a0e-a618-5895fb59773e"
+          }
+        ]
+      }
+
   },
   {
     "id": "cc0929aa-ec4c-47bd-b6f5-db0c63add4b2",
@@ -1933,6 +1947,19 @@
           "value": "tilastokeskus.fi"
         }
       ]
+    },
+    "references": {
+      "organizationUnit": [
+        {
+          "id": "7d9cbb22-600d-4ba4-af99-b07da54dd3d5"
+        },
+        {
+          "id": "1831c871-37c2-4f14-9c39-d53c6d6d14f3"
+        },
+        {
+          "id": "7e42e59e-d75b-4b9d-86b3-b700ac5762b2"
+        }
+      ]
     }
   },
   {
@@ -2074,5 +2101,109 @@
         }
       ]
     }
+  },
+  {
+    "id": "660b64bb-aeb2-4627-ab60-21f42639eaea",
+    "type": {
+      "id": "OrganizationUnit"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "TIJA"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "THL Tietojärjestelmät"
+        }
+      ]
+    }
+  },
+  {
+    "id": "d9d323a6-9288-4d74-9157-04e61c40cc01",
+    "type": {
+      "id": "OrganizationUnit"
+    },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "TITI"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "THL Tilastot ja rekisterit"
+        }
+      ]
+    }
+  },
+  {
+    "id": "9a5c7a16-d42f-4a0e-a618-5895fb59773e",
+    "type": {
+      "id": "OrganizationUnit"
+      },
+    "properties": {
+      "abbreviation": [
+        {
+          "lang": "fi",
+          "value": "TITU"
+        }
+      ],
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "THL Tuotteet"
+        }
+      ]
+    }
+  },
+    {
+    "id": "7d9cbb22-600d-4ba4-af99-b07da54dd3d5",
+    "type": {
+      "id": "OrganizationUnit"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "TK Tietohallinto"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1831c871-37c2-4f14-9c39-d53c6d6d14f3",
+    "type": {
+      "id": "OrganizationUnit"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "TK Tietopalvelu ja viestintä"
+        }
+      ]
+    }
+  },
+  {
+    "id": "7e42e59e-d75b-4b9d-86b3-b700ac5762b2",
+    "type": {
+      "id": "OrganizationUnit"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "TK Tuotannon kehittäminen"
+        }
+      ]
+    }
   }
 ]
+
+

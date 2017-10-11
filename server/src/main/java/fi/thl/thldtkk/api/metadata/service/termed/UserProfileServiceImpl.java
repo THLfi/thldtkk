@@ -26,15 +26,17 @@ public class UserProfileServiceImpl implements UserProfileService {
 
   @Override
   public List<UserProfile> findAll() {
-    return nodes.query(keyValue("type.id", "UserProfile"))
+    return nodes.query(
+            select("id", "type", "properties.*", "references.*", "references.organizationUnit:2"),
+            keyValue("type.id", "UserProfile"))
             .map(UserProfile::new)
             .collect(toList());
   }
-
+  
   @Override
   public List<UserProfile> find(String query, int max) {
     return nodes.query(
-            select("id", "type", "properties.*", "references.*"),
+            select("id", "type", "properties.*", "references.*", "references.organizationUnit:2"),
             and(keyValue("type.id", "UserProfile"),
                     keyWithAllValues("properties.*", tokenizeAndMap(query, t -> t + "*"))),
             sort("properties.firstName.sortable"),

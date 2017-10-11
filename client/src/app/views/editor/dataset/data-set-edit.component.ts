@@ -63,7 +63,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     allLifecyclePhases: LifecyclePhase[];
     availableOrganizations: Organization[];
-    allOrganizationUnits: OrganizationUnit[];
+
+    organizationUnitsOfOrganization: {[organizatioId: string]: OrganizationUnit[]} = {}
 
     allPersonItems: SelectItem[]
     allRoles: Role[]
@@ -200,8 +201,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
         this.usageConditionService.getAll()
             .subscribe(usageConditions => this.allUsageConditions = usageConditions)
-        this.organizationUnitService.getAllOrganizationUnits()
-            .subscribe(organizationUnits => this.allOrganizationUnits = organizationUnits)
         this.getAllUnitTypes()
         this.getAllUniverses()
 
@@ -271,14 +270,28 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       this.userService.isUserAdmin()
         .subscribe(isAdmin => {
           if (isAdmin) {
-            this.organizationService.getAllOrganizations()
-              .subscribe(organizations => this.availableOrganizations = organizations)
+              this.organizationService.getAllOrganizations()
+              .subscribe(organizations => {
+                this.availableOrganizations = organizations
+                this.extractOrganizationUnits(organizations)
+              })
           }
           else {
-            this.userService.getUserOrganizations()
-              .subscribe(organizations => this.availableOrganizations = organizations)
+              this.userService.getUserOrganizations()
+              .subscribe(organizations => {
+                this.availableOrganizations = organizations
+                this.extractOrganizationUnits(organizations)
+              })
           }
         })
+    }
+
+    private extractOrganizationUnits(organizations: Organization[]) {
+      organizations.map(organization => this.organizationUnitsOfOrganization[organization.id] = organization.organizationUnit)
+    }
+
+    public onOrganizationChange() {
+      this.ownerOrganizationUnit = null;
     }
 
     private getAllPersons() {
@@ -561,8 +574,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         this.dataset.referencePeriodEnd = this.referencePeriodEnd ?
           this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null
 
-        if (this.ownerOrganizationUnit) {
-            this.dataset.ownerOrganizationUnit = [];
+        this.dataset.ownerOrganizationUnit = [];
+
+        if (this.ownerOrganizationUnit && this.dataset.owner) {
             this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
         }
 

@@ -81,6 +81,7 @@
              class="form-group">
           <label for="ownerOrganization">{{ 'organization' | translate }}</label>
           <select [(ngModel)]="dataset.owner"
+                  (change)="onOrganizationChange()"
                   [compareWith]="nodeUtils.equals"
                   id="ownerOrganization"
                   name="ownerOrganization"
@@ -92,8 +93,8 @@
             </option>
           </select>
         </div>
-
-        <div *ngIf="allOrganizationUnits" class="form-group">
+        
+        <div *ngIf="availableOrganizations" class="form-group">
           <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
           <select [(ngModel)]="ownerOrganizationUnit"
                   [compareWith]="nodeUtils.equals"
@@ -101,10 +102,12 @@
                   name="ownerOrganizationUnit"
                   class="form-control">
             <option [ngValue]="null"></option>
-            <option *ngFor="let organizationUnit of allOrganizationUnits"
+            <ng-container *ngIf="dataset.owner">
+              <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[dataset.owner.id]"
                     [ngValue]="organizationUnit">
               {{organizationUnit.prefLabel | lang}}
-            </option>
+              </option>
+            </ng-container>
           </select>
         </div>
 

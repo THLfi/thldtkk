@@ -9,15 +9,7 @@
     <div class="content-header container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <h1>
-            <ng-container *ngIf="dataset.id; else newDatasetHeader;">
-              {{ 'dataset' | translate }}:
-              {{ dataset.prefLabel | lang }}
-            </ng-container>
-            <ng-template #newDatasetHeader>
-              {{ 'newDataset' | translate }}
-            </ng-template>
-          </h1>
+          <h1>{{ 'dataset' | translate }}: {{ dataset.prefLabel | lang }}</h1>
         </div>
       </div>
     </div>

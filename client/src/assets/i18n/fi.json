@@ -430,6 +430,9 @@
       "logoutLink": "Kirjaudu ulos"
     }
   },
+  "adminMenu": {
+    "title": "Ylläpito"
+  },
   "editorLoginComponent": {
     "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>. Molemmat palvelut ovat beta-testausvaiheessa.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistoeditori.fi'>info@aineistoeditori.fi</a></p>",
     "loginHeading":"Kirjaudu sisään",

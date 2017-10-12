@@ -98,6 +98,7 @@ import { UniverseModalComponent } from './views/editor/universe/universe-modal.c
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseListComponent } from './views/editor/universe/universe-list.component'
 import { UserMenuComponent } from './views/editor/menu/user-menu.component'
+import { AdminMenuComponent } from './views/editor/menu/admin-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableListComponent } from './views/editor/variable/variable-list.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
@@ -139,6 +140,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         QuantityEditModalComponent,
         UnitEditModalComponent,
         UserMenuComponent,
+        AdminMenuComponent,
         CodeListEditModalComponent,
         ViewCodeListCodeItemsModalComponent,
         InstanceVariablesImportModalComponent,

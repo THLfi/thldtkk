@@ -24,12 +24,9 @@
         </a>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/datasets/">{{ 'datasets' | translate }}</a></li>
-          <ng-container *ngIf="currentUser.isAdmin">
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/variables/">{{ 'variables' | translate }}</a></li>
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/unitTypes/">{{ 'unitTypes' | translate }}</a></li>
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/universes/">{{ 'universes' | translate }}</a></li>
-          </ng-container>
         </ul>
+        <adminMenu [currentUser]="currentUser">
+        </adminMenu>
         <userMenu [currentUser]="currentUser"
                   (onLogout)="handleLogout()">
         </userMenu>

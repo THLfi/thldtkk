@@ -68,7 +68,6 @@ export class VariableListComponent implements OnInit {
     this.variableService.save(variable).subscribe(() => {
       this.editVariable = null
       this.refreshVariables()
-      this.growlMessageService.buildAndShowMessage('success', this.variableSaveSuccessKey)
     })
   }
 

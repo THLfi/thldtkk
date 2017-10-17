@@ -315,11 +315,15 @@
         }
       },
       "delete": {
+        "confirmRemoveVariableModal": {
+          "removeButtonLabel": "Poista",
+          "cancelButtonLabel": "Peru",
+          "header": "Haluatko varmasti poistaa käsitemuuttujan?",
+          "message": "Käsitemuuttujaan '{{variable}}' viittaa {{instanceVariableAmount}} muuttujaa."
+        },
         "result": {
           "success": "Käsitemuuttuja poistettu"
-        },
-        "confirmVariableDelete": "Haluatko varmasti poistaa käsitemuuttujan?",
-        "referencingInstanceVariables": "Seuraavat muuttujat viittaavat poistettavaan käsitemuuttujaan:"
+        }
       }
     },
     "person": {

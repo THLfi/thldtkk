@@ -92,7 +92,7 @@ export class VariableService {
 
     getVariableInstanceVariables(variable: Variable): Observable<InstanceVariable[]> {
         const path: string = env.contextPath
-          + '/api/v3/variables/'
+          + '/api/v3/editor/variables/'
           + variable.id
           + '/instanceVariables'
 

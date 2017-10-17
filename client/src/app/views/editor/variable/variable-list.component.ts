@@ -32,7 +32,7 @@ export class VariableListComponent implements OnInit {
   loadingVariables: boolean
 
   readonly searchDelay = 300;
-  readonly variableRemoveConfirmationKey: string = 'confirmRemoveVariableTypeModal.message'
+  readonly variableRemoveConfirmationKey: string = 'operations.variable.delete.confirmRemoveVariableModal.message'
   readonly variableSaveSuccessKey: string = 'operations.variable.save.result.success'
 
   constructor(
@@ -77,18 +77,12 @@ export class VariableListComponent implements OnInit {
   }
 
   confirmRemoveVariable(variable: Variable): void {
-    Observable.forkJoin(
-      this.variableService.getVariableDatasets(variable),
-      this.variableService.getVariableInstanceVariables(variable)
-    ).subscribe(data => {
-      let datasets: Dataset[] = data[0]
-      let instanceVariables: InstanceVariable[] = data[1]
+    this.variableService.getVariableInstanceVariables(variable).subscribe(instanceVariables => {
 
       let translatedLabel: string = this.langPipe.transform(variable.prefLabel)
       let translationParams: {} = {
         variable: translatedLabel,
-        datasetCount: datasets.length,
-        instanceVariableCount: instanceVariables.length
+        instanceVariableAmount: instanceVariables.length
       }
 
       this.translateService.get(this.variableRemoveConfirmationKey, translationParams).subscribe(confirmationMessage => {

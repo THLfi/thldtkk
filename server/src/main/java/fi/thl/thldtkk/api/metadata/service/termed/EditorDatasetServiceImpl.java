@@ -10,16 +10,19 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
+import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.collect.Maps.difference;
@@ -47,35 +50,12 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   @Override
   public List<Dataset> findAll() {
-    List<Criteria> criteria = new ArrayList<>();
-
-    criteria.add(keyValue("type.id", "DataSet"));
-
-    if(!userHelper.isCurrentUserAdmin()) {
-      criteria.add(getCurrentUserOrganizationCriteria());
-    }
-
-    return nodes.query(and(criteria))
-        .map(Dataset::new)
-        .collect(toList());
+    return find("", -1);
   }
 
   @Override
   public List<Dataset> find(String query, int max) {
-    List<Criteria> criteria = new ArrayList<>();
-
-    criteria.add(keyValue("type.id", "DataSet"));
-    criteria.add(keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
-
-    if(!userHelper.isCurrentUserAdmin()) {
-      criteria.add(getCurrentUserOrganizationCriteria());
-    }
-
-    return nodes.query(
-        and(criteria),
-        max)
-        .map(Dataset::new)
-        .collect(toList());
+    return find(null, null, query, max);
   }
 
   @Override
@@ -96,10 +76,12 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
     if (organizationId != null) {
       criteria.add(keyValue("references.owner.id", organizationId.toString()));
     }
+
     if (datasetTypeId != null) {
       criteria.add(keyValue("references.datasetType.id", datasetTypeId.toString()));
     }
-    if (!query.isEmpty()) {
+
+    if (hasText(query)) {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
       criteria.add(keyWithAnyValue("properties.prefLabel", tokens));
     }
@@ -122,19 +104,59 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   @Override
   public Optional<Dataset> get(UUID id) {
-    return nodes.get(select("id", "type", "properties.*", "references.*",
-        "references.inScheme:2",
-        "references.conceptsFromScheme:2",
-        "references.variable:2",
-        "references.quantity:2",
-        "references.unit:2",
-        "references.codeList:2",
-        "references.source:2",
-        "references.instanceQuestions:2",
-        "references.personInRoles:2",
-        "references.person:2",
-        "references.role:2"),
-        new NodeId(id, "DataSet")).map(Dataset::new);
+    Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
+      "references.inScheme:2",
+      "references.conceptsFromScheme:2",
+      "references.variable:2",
+      "references.quantity:2",
+      "references.unit:2",
+      "references.codeList:2",
+      "references.source:2",
+      "references.instanceQuestions:2",
+      "references.personInRoles:2",
+      "references.person:2",
+      "references.role:2"),
+      new NodeId(id, "DataSet")).map(Dataset::new);
+
+    if (dataset.isPresent()) {
+      checkUserIsAllowedToAccessDataset(dataset.get());
+    }
+
+    return dataset;
+  }
+
+  private void checkUserIsAllowedToAccessDataset(Dataset dataset) {
+    if (userHelper.isCurrentUserAdmin()) {
+      // Admins can view and edit datasets of any organization
+      return;
+    }
+
+    if (!dataset.getOwner().isPresent()) {
+      throwDatasetAccessException(dataset, "which has no organization");
+    }
+
+    UUID datasetOrganizationId = dataset.getOwner().get().getId();
+    Set<UUID> userOrganizationIds = userHelper.getCurrentUserOrganizations()
+      .stream()
+      .map(org -> org.getId())
+      .collect(Collectors.toSet());
+
+    if (!userOrganizationIds.contains(datasetOrganizationId)) {
+      throwDatasetAccessException(dataset, "because user is not member of dataset's organization '" + datasetOrganizationId + "'");
+    }
+  }
+
+  private void throwDatasetAccessException(Dataset dataset, String cause) {
+    throw new AccessDeniedException(
+      new StringBuilder()
+        .append("User '")
+        .append(userHelper.getCurrentUser().get().getUsername())
+        .append("' is not allowed to view/save/delete dataset '")
+        .append(dataset.getId())
+        .append("' ")
+        .append(cause)
+        .toString()
+    );
   }
 
   @Override
@@ -156,6 +178,10 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       dataset.setId(randomUUID());
     } else {
       old = get(dataset.getId());
+    }
+
+    if (!old.isPresent()) {
+      checkUserIsAllowedToAccessDataset(dataset);
     }
 
     boolean isDatasetPublished = dataset.isPublished().orElse(false);
@@ -306,6 +332,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
     save(new Dataset(dataset, variables));
   }
 
+  @AdminOnly
   @Override
   public List<Dataset> getDatasetsByUnitType(UUID unitTypeId) {
     return nodes.query(
@@ -315,6 +342,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       .map(Dataset::new).collect(Collectors.toList());
   }
 
+  @AdminOnly
   @Override
   public List<Dataset> getUniverseDatasets(UUID universeId){
     List<Dataset> list =  nodes.query(

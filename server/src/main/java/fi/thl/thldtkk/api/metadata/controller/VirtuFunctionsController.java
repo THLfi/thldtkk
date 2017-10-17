@@ -34,7 +34,7 @@ public class VirtuFunctionsController {
         .append(entityId)
         .append("&return=")
         .append(entityBaseUrl)
-        .append("/saml/login&returnIDParam=idp")
+        .append("/saml/login&returnIDParam=idp&lang=fi")
         .toString();
     }
     else {

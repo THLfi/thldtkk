@@ -139,7 +139,7 @@ public class VirtuSamlUserDetailsServiceTest {
     assertThat(savedOrganization.getId()).isNotNull();
     assertThat(savedOrganization.getPrefLabel().get("fi")).isEqualTo("New Org");
     assertThat(savedOrganization.getAbbreviation()).isNotNull().isEmpty();
-    assertThat(savedOrganization.getVirtuId().get()).isEqualTo("neworg.fi");
+    assertThat(savedOrganization.getVirtuIds()).containsExactly("neworg.fi");
 
     UserProfile savedUserProfile = newUserProfileArgumentCaptor.getValue();
     assertThat(savedUserProfile.getOrganizations()).containsExactly(organizationAfterSave);
@@ -172,7 +172,7 @@ public class VirtuSamlUserDetailsServiceTest {
     Organization savedOrganization = newOrganizationArgumentCaptor.getValue();
     assertThat(savedOrganization.getId()).isNotNull();
     assertThat(savedOrganization.getPrefLabel().get("fi")).isEqualTo("neworg.fi");
-    assertThat(savedOrganization.getVirtuId().get()).isEqualTo("neworg.fi");
+    assertThat(savedOrganization.getVirtuIds()).containsExactly("neworg.fi");
 
     UserProfile savedUserProfile = newUserProfileArgumentCaptor.getValue();
     assertThat(savedUserProfile.getOrganizations()).containsExactly(organizationAfterSave);

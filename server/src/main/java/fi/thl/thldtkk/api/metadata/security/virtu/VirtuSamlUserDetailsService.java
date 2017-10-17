@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 public class VirtuSamlUserDetailsService implements SAMLUserDetailsService {
 
   private static final Logger LOG = LoggerFactory.getLogger(VirtuSamlUserDetailsService.class);
@@ -144,7 +146,7 @@ public class VirtuSamlUserDetailsService implements SAMLUserDetailsService {
       UUID.randomUUID(),
       prefLabel,
       new LinkedHashMap<>(),
-      virtuId
+      asList(virtuId)
     );
 
     Organization savedOrganization = organizationService.save(newOrganization);

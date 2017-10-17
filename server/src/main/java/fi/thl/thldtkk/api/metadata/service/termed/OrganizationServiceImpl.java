@@ -1,16 +1,17 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static java.util.stream.Collectors.toList;
-
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static java.util.stream.Collectors.toList;
 
 public class OrganizationServiceImpl implements OrganizationService {
 
@@ -41,7 +42,7 @@ public class OrganizationServiceImpl implements OrganizationService {
   public Optional<Organization> getByVirtuId(String virtuId) {
     return findAll()
       .stream()
-      .filter(organization -> virtuId.equals(organization.getVirtuId()))
+      .filter(org -> org.getVirtuIds().contains(virtuId))
       .findFirst();
   }
 

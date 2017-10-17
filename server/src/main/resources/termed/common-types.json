@@ -171,6 +171,9 @@
       },
       {
         "id": "virtuId"
+      },
+      {
+        "id": "virtuIds"
       }
     ],
     "referenceAttributes": [

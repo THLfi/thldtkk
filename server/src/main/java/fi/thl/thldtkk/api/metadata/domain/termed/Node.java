@@ -52,7 +52,7 @@ public class Node {
     this.properties = properties;
     this.references = references;
   }
-  
+
   public Node(UUID id, String typeId,
     Multimap<String, StrictLangValue> properties,
     Multimap<String, Node> references,
@@ -167,7 +167,7 @@ public class Node {
   public void setReferrers(Multimap<String, Node> referrers) {
     this.referrers = referrers;
   }
-  
+
   public Collection<Node> getReferrers(String referrerKey) {
     return referrers.get(referrerKey);
   }
@@ -206,7 +206,9 @@ public class Node {
       Objects.equals(createdDate, node.createdDate) &&
       Objects.equals(lastModifiedBy, node.lastModifiedBy) &&
       Objects.equals(lastModifiedDate, node.lastModifiedDate) &&
-      Objects.equals(properties, node.properties);
+      Objects.equals(properties, node.properties) &&
+      Objects.equals(references, node.references);
+      // 'referrers' is left out on purpose because it is supposed to be transient
   }
 
   @Override

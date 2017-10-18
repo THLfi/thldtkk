@@ -9,4 +9,8 @@ public class an {
   public static OrganizationBuilder organization() {
     return new OrganizationBuilder();
   }
+
+  public static NodeBuilder organizationNode() {
+    return new NodeBuilder().withType("Organization");
+  }
 }

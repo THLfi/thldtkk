@@ -39,6 +39,8 @@ public class Dataset {
     private Boolean published;
     private LocalDate referencePeriodStart;
     private LocalDate referencePeriodEnd;
+    private LocalDate collectionStartDate;
+    private LocalDate collectionEndDate;
     private Organization owner;
     private List<OrganizationUnit> ownerOrganizationUnit = new ArrayList<>();
     private UsageCondition usageCondition;
@@ -84,6 +86,8 @@ public class Dataset {
         this.published = dataset.published;
         this.referencePeriodStart = dataset.referencePeriodStart;
         this.referencePeriodEnd = dataset.referencePeriodEnd;
+        this.collectionStartDate = dataset.collectionStartDate;
+        this.collectionEndDate = dataset.collectionEndDate;
         this.owner = dataset.owner;
         this.ownerOrganizationUnit = dataset.ownerOrganizationUnit;
         this.usageCondition = dataset.usageCondition;
@@ -120,6 +124,10 @@ public class Dataset {
                 "referencePeriodStart"), null);
         this.referencePeriodEnd = toLocalDate(node.getProperties(
                 "referencePeriodEnd"), null);
+        this.collectionStartDate = toLocalDate(node.getProperties(
+                "collectionStartDate"), null);
+        this.collectionEndDate = toLocalDate(node.getProperties(
+                "collectionEndDate"), null);
         node.getReferencesFirst("owner").ifPresent(v -> this.owner
                 = new Organization(v));
         node.getReferences("ownerOrganizationUnit")
@@ -229,6 +237,14 @@ public class Dataset {
         return Optional.ofNullable(referencePeriodEnd);
     }
 
+    public Optional<LocalDate> getCollectionStartDate() {
+        return Optional.ofNullable(collectionStartDate);
+    }
+
+    public Optional<LocalDate> getCollectionEndDate() {
+        return Optional.ofNullable(collectionEndDate);
+    }
+
     public Optional<Organization> getOwner() {
         return Optional.ofNullable(owner);
     }
@@ -294,6 +310,10 @@ public class Dataset {
                 "referencePeriodStart", toPropertyValue(v)));
         getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd",
                 toPropertyValue(v)));
+        getCollectionStartDate().ifPresent(v -> props.put(
+                "collectionStartDate", toPropertyValue(v)));
+        getCollectionEndDate().ifPresent(v -> props.put("collectionEndDate",
+                toPropertyValue(v)));
         props.putAll("freeConcepts", toPropertyValues(freeConcepts));
 
         Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -343,6 +363,10 @@ public class Dataset {
                         dataset.referencePeriodStart)
                 && Objects
                 .equals(referencePeriodEnd, dataset.referencePeriodEnd)
+                && Objects.equals(collectionStartDate,
+                dataset.collectionStartDate)
+                && Objects
+                .equals(collectionEndDate, dataset.collectionEndDate)
                 && Objects.equals(owner, dataset.owner)
                 && Objects.equals(ownerOrganizationUnit,
                         dataset.ownerOrganizationUnit)
@@ -373,7 +397,7 @@ public class Dataset {
                         lifecyclePhase, population, universe, instanceVariables, comment,
                         datasetTypes, numberOfObservationUnits, links,
                         conceptsFromScheme, freeConcepts, unitType,
-                        personInRoles);
+                        personInRoles, collectionStartDate, collectionEndDate);
     }
 
 }

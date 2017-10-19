@@ -43,6 +43,10 @@
   "referencePeriodStart": "Viiteajankohdan alkupäivämäärä",
   "referencePeriodEnd": "Viiteajankohdan loppupäivämäärä",
   "noReferencePeriod": "Viiteajankohtaa ei ole määritelty.",
+  "collectionDate": "Keruuajankohta",
+  "collectionStartDate": "Keruuajankohdan alkupäivämäärä",
+  "collectionEndDate": "Keruuajankohdan loppupäivämäärä",
+  "noCollectionDate": "Keruuajankohtaa ei ole määritelty.",
   "valueInDataset": "Aineiston oletus",
   "inheritedFromDataset": "Periytyy aineistolta",
   "datasetEditor": "Aineistoeditori",
@@ -137,6 +141,7 @@
   "catalog": {
     "personInRoles": "Yhteystiedot",
     "referencePeriod": "Ajankohta",
+    "collectionDate": "Keruuajankohta",
     "searchInstanceVariable": {
       "foundInDataset": "Aineistossa",
       "searchForVariables":"Hae muuttujia...",

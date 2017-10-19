@@ -93,7 +93,7 @@
             </option>
           </select>
         </div>
-        
+
         <div *ngIf="availableOrganizations" class="form-group">
           <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
           <select [(ngModel)]="ownerOrganizationUnit"
@@ -494,6 +494,54 @@
                           name="referencePeriodEnd">
               </p-calendar>
               <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': (formErrors.collectionStartDate && formErrors.collectionStartDate.length) || (formErrors.collectionEndDate && formErrors.collectionEndDate.length) }"
+             class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="collectionStartDate">{{ 'collectionStartDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="collectionStartDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="collectionStartDate"
+                          name="collectionStartDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.collectionStartDate"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="collectionEndDate">{{ 'collectionEndDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="collectionEndDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="collectionEndDate"
+                          name="collectionEndDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.collectionEndDate"
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}

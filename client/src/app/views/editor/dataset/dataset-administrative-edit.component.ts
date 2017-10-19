@@ -94,6 +94,8 @@ export class DatasetAdministrativeEditComponent implements OnInit, AfterContentC
                 published: null,
                 referencePeriodStart: null,
                 referencePeriodEnd: null,
+                collectionStartDate: null,
+                collectionEndDate: null,
                 owner: null,
                 ownerOrganizationUnit: [],
                 usageCondition: null,

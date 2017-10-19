@@ -29,6 +29,14 @@
         "regex": "^\\d{4}-\\d{2}-\\d{2}$"
       },
       {
+        "id": "collectionStartDate",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "collectionEndDate",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
         "id": "registryPolicy"
       },
       {

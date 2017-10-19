@@ -245,6 +245,24 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <h2>{{ 'collectionDate' | translate }}</h2>
+          <p *ngIf="dataset.collectionStartDate || dataset.collectionEndDate; else noCollectionDate;">
+            <ng-container *ngIf="dataset.collectionStartDate">
+              {{ dataset.collectionStartDate | date:'dd.MM.yyyy' }}
+            </ng-container>
+            —
+            <ng-container *ngIf="dataset.collectionEndDate">
+              {{ dataset.collectionEndDate | date:'dd.MM.yyyy' }}
+            </ng-container>
+          </p>
+          <ng-template #noCollectionDate>
+            <p>{{ 'noCollectionDate' | translate }}</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <h2>{{ 'lifecyclePhase' | translate }}</h2>
           <ng-container *ngIf="dataset.lifecyclePhase">
             <p>{{ dataset.lifecyclePhase.prefLabel | lang }}</p>

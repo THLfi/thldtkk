@@ -203,6 +203,22 @@
             </div>
           </div>
 
+          <div *ngIf="dataset.collectionStartDate || dataset.collectionEndDate"
+               class="col-sm-6 col-md-4">
+            <div class="bordered-box">
+              <h2>{{ 'catalog.collectionDate' | translate }}</h2>
+              <p>
+                <ng-container *ngIf="dataset.collectionStartDate">
+                  {{ dataset.collectionStartDate | date:'dd.MM.yyyy' }}
+                </ng-container>
+                —
+                <ng-container *ngIf="dataset.collectionEndDate">
+                  {{ dataset.collectionEndDate | date:'dd.MM.yyyy' }}
+                </ng-container>
+              </p>
+            </div>
+          </div>
+
           <div class="clearfix visible-md-block"></div>
 
           <div *ngIf="dataset.lifecyclePhase" class="col-sm-6 col-md-4">

@@ -33,6 +33,10 @@ export interface Dataset extends Node {
 
   referencePeriodEnd: string
 
+  collectionStartDate: string
+
+  collectionEndDate: string
+
   owner: Organization
 
   ownerOrganizationUnit: OrganizationUnit[]

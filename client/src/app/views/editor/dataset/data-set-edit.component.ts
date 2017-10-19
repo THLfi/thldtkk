@@ -61,6 +61,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     referencePeriodStart: Date
     referencePeriodEnd: Date
 
+    collectionStartDate: Date
+    collectionEndDate: Date
+
     allLifecyclePhases: LifecyclePhase[];
     availableOrganizations: Organization[];
 
@@ -153,7 +156,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             this.dataset.published = false
             this.translateService.get('copy').subscribe(msg => {
               this.dataset.prefLabel[this.language] =
-                this.dataset.prefLabel[this.language] + " (" + msg + ")"                
+                this.dataset.prefLabel[this.language] + " (" + msg + ")"
             });
             this.dataset.population.id = null
             this.dataset.links.forEach(l => l.id = null)
@@ -176,6 +179,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
                 published: null,
                 referencePeriodStart: null,
                 referencePeriodEnd: null,
+                collectionStartDate: null,
+                collectionEndDate: null,
                 owner: null,
                 ownerOrganizationUnit: [],
                 usageCondition: null,
@@ -573,6 +578,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null
         this.dataset.referencePeriodEnd = this.referencePeriodEnd ?
           this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null
+
+        this.dataset.collectionStartDate = this.collectionStartDate ?
+          this.dateUtils.convertToIsoDate(this.collectionStartDate) : null
+        this.dataset.collectionEndDate = this.collectionEndDate ?
+          this.dateUtils.convertToIsoDate(this.collectionEndDate) : null
 
         this.dataset.ownerOrganizationUnit = [];
 

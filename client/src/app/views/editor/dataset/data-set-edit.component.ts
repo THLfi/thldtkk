@@ -238,6 +238,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.referencePeriodEnd = new Date(dataset.referencePeriodEnd)
         }
 
+        if (dataset.collectionStartDate) {
+          this.collectionStartDate = new Date(dataset.collectionStartDate)
+        }
+        if (dataset.collectionEndDate) {
+          this.collectionEndDate = new Date(dataset.collectionEndDate)
+        }
+
         if (!dataset.population) {
           dataset.population = this.populationService.initNew()
         }

@@ -1,28 +1,27 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import java.util.UUID;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @Api(description = "Editor API for instance variables")
 @RestController
@@ -30,18 +29,10 @@ import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 public class EditorInstanceVariableController {
 
   @Autowired
-  @Qualifier("editorInstanceVariableService")
-  private InstanceVariableService instanceVariableService;
+  private EditorInstanceVariableService instanceVariableService;
 
   @Autowired
-  @Qualifier("editorDatasetService")
   private EditorDatasetService editorDatasetService;
-
-  @ApiOperation("List all instance variables of given dataset")
-  @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
-  public List<InstanceVariable> getInstanceVariablesOfDataset(@PathVariable("datasetId") UUID id) {
-    return instanceVariableService.getDatasetInstanceVariables(id);
-  }
 
   @ApiOperation("Get instance variable by ID")
   @GetJsonMapping({
@@ -51,19 +42,17 @@ public class EditorInstanceVariableController {
     return instanceVariableService.get(id).orElseThrow(NotFoundException::new);
   }
 
+  @ApiOperation("List all instance variables of given dataset")
+  @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
+  public List<InstanceVariable> getInstanceVariablesOfDataset(@PathVariable("datasetId") UUID id) {
+    return instanceVariableService.getDatasetInstanceVariables(id);
+  }
+
   @ApiOperation("List all instances of given variable")
   @GetJsonMapping("/variables/{variableId}/instanceVariables")
   public List<InstanceVariable> getVariableInstanceVariables(
       @PathVariable("variableId") UUID variableId) {
     return instanceVariableService.getVariableInstancesVariables(variableId, -1);
-  }
-
-  @ApiOperation("List all instance variables")
-  @GetJsonMapping("/instanceVariables")
-  public List<InstanceVariable> getInstanceVariables(
-      @RequestParam(value = "query", defaultValue = "") String query,
-      @RequestParam(value = "max", defaultValue = "10") Integer max) {
-    return instanceVariableService.find(query, max);
   }
 
   @PostJsonMapping(path = "/datasets/{datasetId}/instanceVariables",

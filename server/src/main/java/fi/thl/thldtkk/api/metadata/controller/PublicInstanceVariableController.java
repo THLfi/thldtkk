@@ -1,7 +1,7 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
@@ -22,7 +22,7 @@ public class PublicInstanceVariableController {
 
   @Autowired
   @Qualifier("publicInstanceVariableService")
-  private InstanceVariableService instanceVariableService;
+  private PublicInstanceVariableService instanceVariableService;
 
   @ApiOperation("List all instance variables of given dataset")
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")

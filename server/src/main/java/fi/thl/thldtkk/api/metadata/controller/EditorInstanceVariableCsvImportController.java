@@ -1,20 +1,13 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import static java.util.UUID.randomUUID;
-
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvParser;
 import fi.thl.thldtkk.api.metadata.service.csv.ParsingResult;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static java.util.UUID.randomUUID;
 
 @Api(description = "Editor CSV API for instance variables")
 @RestController
@@ -33,9 +33,8 @@ public class EditorInstanceVariableCsvImportController {
 
   @Autowired
   private InstanceVariableCsvParser csvParser;
-  
+
   @Autowired
-  @Qualifier("editorDatasetService")
   private EditorDatasetService editorDatasetService;
 
   @PostMapping(path = "/datasets/{datasetId}/instanceVariables",

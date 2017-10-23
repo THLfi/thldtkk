@@ -5,12 +5,10 @@ import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import java.util.List;
 import java.util.UUID;
 
-public interface InstanceVariableService extends Service<UUID, InstanceVariable> {
+public interface PublicInstanceVariableService extends Service<UUID, InstanceVariable> {
 
   List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId);
 
   List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max);
-
-  List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId);
 
 }

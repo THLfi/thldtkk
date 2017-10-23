@@ -3,12 +3,12 @@ package fi.thl.thldtkk.api.metadata.controller;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.UnitType;
-import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
 import fi.thl.thldtkk.api.metadata.service.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 
 @RestController
 @RequestMapping("/api/v3/unitTypes")
@@ -31,12 +30,12 @@ public class UnitTypeController {
 
   @Autowired
   private UnitTypeService unitTypeService;
+
   @Autowired
-  @Qualifier("editorDatasetService")
   private EditorDatasetService datasetService;
+
   @Autowired
-  @Qualifier("editorInstanceVariableService")
-  private InstanceVariableService instanceVariableService;
+  private EditorInstanceVariableService instanceVariableService;
 
   @GetJsonMapping
   public List<UnitType> query(@RequestParam(value = "query", defaultValue = "") String query) {

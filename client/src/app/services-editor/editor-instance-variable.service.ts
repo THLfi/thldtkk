@@ -86,14 +86,4 @@ export class EditorInstanceVariableService {
       })
   }
 
-  searchInstanceVariable(searchText="", maxResults=100, broadSearch=true, requirePublished=true): Observable<InstanceVariable[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/instanceVariables?query=' + searchText + '&max=' +maxResults + '&broadSearch=' +broadSearch +'&requirePublished=' +requirePublished)
-      .map(response => response.json() as InstanceVariable[])
-  }
-
-  searchInstanceVariableByVariableId(variableId, maxResults=100): Observable<InstanceVariable[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/variables/'+variableId+'/instanceVariables?max=' +maxResults)
-      .map(response => response.json() as InstanceVariable[])
-  }
-
 }

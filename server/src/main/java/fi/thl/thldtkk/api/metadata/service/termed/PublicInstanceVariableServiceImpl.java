@@ -1,5 +1,19 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.query.OrCriteria;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
+import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.Repository;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.anyKeyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -8,30 +22,21 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.service.InstanceVariableService;
-import fi.thl.thldtkk.api.metadata.service.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+public class PublicInstanceVariableServiceImpl implements PublicInstanceVariableService {
 
-public class InstanceVariableServiceImpl implements InstanceVariableService {
+  private final Repository<NodeId, Node> nodes;
+  private final PublicDatasetService datasetService;
 
-  private Repository<NodeId, Node> nodes;
-
-  public InstanceVariableServiceImpl(Repository<NodeId, Node> nodes) {
+  public PublicInstanceVariableServiceImpl(Repository<NodeId, Node> nodes,
+                                           PublicDatasetService datasetService) {
     this.nodes = nodes;
+    this.datasetService = datasetService;
   }
 
   @Override
   public List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId) {
-    Dataset dataset = nodes.get(new NodeId(datasetId, "DataSet"))
-        .map(Dataset::new).orElseThrow(NotFoundException::new);
+    Dataset dataset = datasetService.get(datasetId)
+      .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }
 
@@ -79,15 +84,6 @@ public class InstanceVariableServiceImpl implements InstanceVariableService {
         "references.codeItems:2",
         "references.unitType:2"),
         new NodeId(id, "InstanceVariable")).map(InstanceVariable::new);
-  }
-
-  @Override
-  public List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId) {
-    return nodes.query(
-      select("id", "type", "properties.*", "references.*"),
-      and(keyValue("type.id", "InstanceVariable"),
-        keyValue("references.unitType.id", unitTypeId.toString())))
-      .map(InstanceVariable::new).collect(Collectors.toList());
   }
 
 }

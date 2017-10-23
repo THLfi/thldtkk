@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
@@ -10,7 +11,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.DatasetPublishingServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.InstanceQuestionServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.InstanceVariableServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.PublicInstanceVariableServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.LifecyclePhaseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.NodeHttpRepository;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationServiceImpl;
@@ -46,15 +47,15 @@ public class ServiceConfiguration {
   private UUID editorGraphId;
   @Value("${termed.publicGraphId}")
   private UUID publicGraphId;
-  
+
   @Autowired
   private UserHelper userHelper;
 
   // public services
 
   @Bean
-  public InstanceVariableService publicInstanceVariableService() {
-    return new InstanceVariableServiceImpl(publicNodeRepository());
+  public PublicInstanceVariableService publicInstanceVariableService() {
+    return new PublicInstanceVariableServiceImpl(publicNodeRepository(), publicDatasetService());
   }
 
   @Bean
@@ -65,8 +66,8 @@ public class ServiceConfiguration {
   // editor services
 
   @Bean
-  public InstanceVariableService editorInstanceVariableService() {
-    return new InstanceVariableServiceImpl(editorNodeRepository());
+  public EditorInstanceVariableService editorInstanceVariableService() {
+    return new EditorInstanceVariableServiceImpl(editorNodeRepository(), editorDatasetService());
   }
 
   @Bean
@@ -78,33 +79,33 @@ public class ServiceConfiguration {
   public DatasetPublishingService datasetPublishingService() {
     return new DatasetPublishingServiceImpl(editorDatasetService(), publicDatasetService());
   }
-  
+
   @Bean
   public UserProfileService editorUserProfileService() {
     return new UserProfileServiceImpl(editorNodeRepository());
   }
-  
+
   // common services
 
-  // Work in progress, remove '_3' suffix from bean names after refactoring is complete
+  // Work in progress, remove '' suffix from bean names after refactoring is complete
 
   @Bean
-  public CodeListService codeListService_3() {
+  public CodeListService codeListService() {
     return new CodeListServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public ConceptService conceptService_3() {
+  public ConceptService conceptService() {
     return new ConceptServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public DatasetTypeService datasetTypeService_3() {
+  public DatasetTypeService datasetTypeService() {
     return new DatasetTypeServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public InstanceQuestionService instanceQuestionService_3() {
+  public InstanceQuestionService instanceQuestionService() {
     return new InstanceQuestionServiceImpl(
       editorDatasetService(),
       editorNodeRepository()
@@ -112,57 +113,57 @@ public class ServiceConfiguration {
   }
 
   @Bean
-  public LifecyclePhaseService lifecyclePhaseService_3() {
+  public LifecyclePhaseService lifecyclePhaseService() {
     return new LifecyclePhaseServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public OrganizationService organizationService_3() {
+  public OrganizationService organizationService() {
     return new OrganizationServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public OrganizationUnitService organizationUnitService_3() {
+  public OrganizationUnitService organizationUnitService() {
     return new OrganizationUnitServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public PersonService personService_3() {
+  public PersonService personService() {
     return new PersonServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public QuantityService quantityService_3() {
+  public QuantityService quantityService() {
     return new QuantityServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public RoleService roleService_3() {
+  public RoleService roleService() {
     return new RoleServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public UnitService unitService_3() {
+  public UnitService unitService() {
     return new UnitServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public UnitTypeService unitTypeService_3() {
+  public UnitTypeService unitTypeService() {
     return new UnitTypeServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public UniverseService universeService_3() {
+  public UniverseService universeService() {
     return new UniverseServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public UsageConditionService usageConditionService_3() {
+  public UsageConditionService usageConditionService() {
     return new UsageConditionServiceImpl(commonNodeRepository());
   }
 
   @Bean
-  public VariableService variableService_3() {
+  public VariableService variableService() {
     return new VariableServiceImpl(commonNodeRepository());
   }
 

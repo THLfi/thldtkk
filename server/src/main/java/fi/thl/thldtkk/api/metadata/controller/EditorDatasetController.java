@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
@@ -28,9 +27,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @RestController
 @RequestMapping("/api/v3/editor/datasets")
 public class EditorDatasetController {
-
-  @Autowired
-  private UserHelper userHelper;
 
   @Autowired
   private EditorDatasetService editorDatasetService;
@@ -65,6 +61,5 @@ public class EditorDatasetController {
   public void deleteDataset(@PathVariable("datasetId") UUID datasetId) {
     editorDatasetService.delete(datasetId);
   }
-
 
 }

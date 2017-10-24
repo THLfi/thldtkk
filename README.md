@@ -3,7 +3,7 @@
 Development instructions are written mainly for macOS but are applicable to
 other environments as well.
 
-# Install and start Termed
+## Install and start Termed
 
 Clone Termed API and Termed UI to your workstation:
 

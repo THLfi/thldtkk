@@ -3,11 +3,13 @@
   margin-bottom: 2em;
 }
 
-.about-editor strong,li {
-  font-size: 1.15em;  
+.about-editor strong,
+.about-editor li {
+  font-size: 1.15em;
 }
 
-.about-editor li,p {
+.about-editor li,
+.about-editor p {
   line-height: 1.8;
 }
 
@@ -23,9 +25,3 @@
 .about-editor a[href^="mailto"] {
   text-decoration: none;
 }
-
-
-
-
-
-

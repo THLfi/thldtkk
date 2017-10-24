@@ -57,7 +57,8 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
         "references.instanceQuestions:2",
         "references.personInRoles:2",
         "references.person:2",
-        "references.role:2"),
+        "references.role:2",
+        "referrers.predecessor"),
         new NodeId(id, "DataSet")).map(Dataset::new);
   }
   
@@ -119,7 +120,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
 
     return nodes.query(and(criteria), max).map(Dataset::new).collect(toList());
   }
-  
+
   @Override
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
@@ -144,7 +145,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
       return nodes.query(and(criteria), max).map(Dataset::new).collect(toList());
     }
   }
-  
+
   @Override
   public Dataset save(Dataset dataset) {
     Optional<Dataset> old;
@@ -256,7 +257,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
 
     return new Changeset<>(deleted, saved);
   }
-  
+
   @Override
   public void delete(UUID id) {
     Dataset dataset = get(id).orElseThrow(NotFoundException::new);

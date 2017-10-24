@@ -42,7 +42,6 @@ import static com.google.common.collect.ImmutableMultimap.of;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
@@ -90,22 +89,10 @@ public class EditorDatasetServiceTest {
     when(mockedNodes.query(eq(and(labelCriteria)), eq(-1)))
         .thenReturn(datasets.stream());
 
-    when(mockedNodes.get(any(Select.class), any(NodeId.class))).thenReturn(Optional.<Node>empty());
-    when(mockedNodes.get(eq(select("id", "type", "properties.*", "references.*",
-        "references.inScheme:2",
-        "references.conceptsFromScheme:2",
-        "references.variable:2",
-        "references.quantity:2",
-        "references.unit:2",
-        "references.codeList:2",
-        "references.source:2",
-        "references.instanceQuestions:2",
-        "references.personInRoles:2",
-        "references.person:2",
-        "references.role:2",
-        "lastModifiedDate")), eq(
+    when(mockedNodes.get(any(Select.class), any(NodeId.class))).thenReturn(Optional.empty());
+    when(mockedNodes.get(any(Select.class), eq(
         new NodeId(nameUUIDFromString("DS1"), "DataSet"))))
-            .thenReturn(Optional.of(datasets.get(0)));;
+            .thenReturn(Optional.of(datasets.get(0)));
 
     this.editorDatasetService = new EditorDatasetServiceImpl(mockedNodes, mockedUserHelper);
   }

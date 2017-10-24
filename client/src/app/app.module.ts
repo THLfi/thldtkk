@@ -80,6 +80,8 @@ import { DatasetAdministrativeViewComponent } from './views/editor/dataset/datas
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
+import { DatasetRelationsEditComponent } from './views/editor/dataset/dataset-relationships/dataset-relations-edit.component'
+import { DatasetRelationTypeDropdown } from './views/editor/dataset/dataset-relationships/dataset-relation-type-dropdown.component'
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
 import { DatasetViewComponent as EditorDatasetComponent } from './views/editor/dataset/dataset-view.component'
 import { EditorLoginComponent } from './views/editor/login/editor-login.component'
@@ -119,6 +121,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DataSetEditComponent,
         DatasetInstanceVariablesViewComponent,
         DatasetListComponent,
+        DatasetRelationsEditComponent,
+        DatasetRelationTypeDropdown,
         DatasetSidebarComponent,
         EditorDatasetListComponent,
         EditorDatasetComponent,

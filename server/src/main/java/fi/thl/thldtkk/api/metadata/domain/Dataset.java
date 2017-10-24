@@ -53,6 +53,8 @@ public class Dataset {
     private Date lastModifiedDate;
     @Valid
     private List<PersonInRole> personInRoles = new ArrayList<>();
+    private List<Dataset> predecessors = new ArrayList<>();
+    private List<Dataset> successors = new ArrayList<>();
 
     public Dataset() {
 
@@ -100,6 +102,8 @@ public class Dataset {
         this.unitType = dataset.unitType;
         this.personInRoles = dataset.personInRoles;
         this.lastModifiedDate = Date.from(Instant.now());
+        this.predecessors = dataset.predecessors;
+        this.successors = dataset.successors;
     }
 
     /**
@@ -125,6 +129,7 @@ public class Dataset {
                 "collectionStartDate"), null);
         this.collectionEndDate = toLocalDate(node.getProperties(
                 "collectionEndDate"), null);
+
         node.getReferencesFirst("owner").ifPresent(v -> this.owner
                 = new Organization(v));
         node.getReferences("ownerOrganizationUnit")
@@ -151,6 +156,11 @@ public class Dataset {
                 .ifPresent(v -> this.unitType = new UnitType(v));
         node.getReferences("personInRoles")
                 .forEach(pir -> this.personInRoles.add(new PersonInRole(pir)));
+        node.getReferences("predecessors")
+                .forEach(d -> this.predecessors.add(new Dataset(d)));
+
+        node.getReferrers("predecessors")
+                .forEach(d -> this.successors.add(new Dataset(d)));
 
         this.comment = PropertyMappings.toString(node.getProperties("comment"));
         this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
@@ -283,6 +293,10 @@ public class Dataset {
         return Optional.ofNullable(comment);
     }
 
+    public void setComment(String comment) {
+      this.comment = comment;
+    }
+
     public List<Concept> getConceptsFromScheme() {
         return conceptsFromScheme;
     }
@@ -296,6 +310,18 @@ public class Dataset {
     }
 
     public Optional<Date> getLastModifiedDate() { return Optional.ofNullable(lastModifiedDate); }
+
+    public List<Dataset> getPredecessors() {
+      return predecessors;
+    }
+
+    public void setPredecessors(List<Dataset> predecessors) {
+      this.predecessors = predecessors;
+    }
+
+    public List<Dataset> getSuccessors() {
+      return successors;
+    }
 
     /**
      * Transforms dataset into node
@@ -342,6 +368,7 @@ public class Dataset {
         getUnitType().ifPresent(v -> refs
                 .put("unitType", v.toNode()));
         getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
+        getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
         return new Node(id, "DataSet", props, refs);
     }
 
@@ -387,22 +414,41 @@ public class Dataset {
                 && Objects.equals(datasetTypes, dataset.datasetTypes)
                 && Objects.equals(unitType, dataset.unitType)
                 && Objects.equals(personInRoles, dataset.personInRoles)
-                && Objects.equals(lastModifiedDate, dataset.lastModifiedDate);
-
+                && Objects.equals(lastModifiedDate, dataset.lastModifiedDate)
+                && Objects.equals(predecessors, dataset.predecessors);
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(id, prefLabel, altLabel, abbreviation, description,
-                        registryPolicy, usageConditionAdditionalInformation,
-                        published, lastModifiedDate,
-                        referencePeriodStart, referencePeriodEnd, owner,
-                        ownerOrganizationUnit, usageCondition,
-                        lifecyclePhase, population, universe, instanceVariables, comment,
-                        datasetTypes, numberOfObservationUnits, links,
-                        conceptsFromScheme, freeConcepts, unitType,
-                        personInRoles, collectionStartDate, collectionEndDate);
+        return Objects.hash(
+          id,
+          prefLabel,
+          altLabel,
+          abbreviation,
+          description,
+          registryPolicy,
+          usageConditionAdditionalInformation,
+          published,
+          lastModifiedDate,
+          referencePeriodStart,
+          referencePeriodEnd, owner,
+          ownerOrganizationUnit,
+          usageCondition,
+          lifecyclePhase,
+          population,
+          universe,
+          instanceVariables,
+          comment,
+          datasetTypes,
+          numberOfObservationUnits,
+          links,
+          conceptsFromScheme,
+          freeConcepts,
+          unitType,
+          personInRoles,
+          collectionStartDate,
+          collectionEndDate,
+          predecessors);
     }
 
 }

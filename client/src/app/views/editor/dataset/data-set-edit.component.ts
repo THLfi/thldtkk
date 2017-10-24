@@ -28,7 +28,6 @@ import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
 import {OrganizationService} from '../../../services-common/organization.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
-import {OrganizationUnitService} from '../../../services-common/organization-unit.service'
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
@@ -108,7 +107,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
         private organizationService: OrganizationService,
-        private organizationUnitService: OrganizationUnitService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -168,35 +166,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             this.updatePageTitle()
           })
         } else {
-            this.dataset = this.initializeDatasetProperties({
-                id: null,
-                prefLabel: null,
-                altLabel: null,
-                abbreviation: null,
-                description: null,
-                registryPolicy: null,
-                usageConditionAdditionalInformation: null,
-                published: null,
-                referencePeriodStart: null,
-                referencePeriodEnd: null,
-                collectionStartDate: null,
-                collectionEndDate: null,
-                owner: null,
-                ownerOrganizationUnit: [],
-                usageCondition: null,
-                lifecyclePhase: null,
-                population: null,
-                instanceVariables: [],
-                numberOfObservationUnits: null,
-                comment: null,
-                conceptsFromScheme: [],
-                links: [],
-                freeConcepts: null,
-                datasetTypes: [],
-                unitType: null,
-                universe: null,
-                personInRoles: []
-            });
+            this.dataset = this.datasetService.initNew()
         }
 
         this.getAvailableOrganizations()
@@ -220,16 +190,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     private initializeDatasetProperties(dataset: Dataset): Dataset {
-        this.initProperties(dataset, [
-          'prefLabel',
-          'abbreviation',
-          'altLabel',
-          'description',
-          'researchProjectURL',
-          'registryPolicy',
-          'usageConditionAdditionalInformation',
-          'freeConcepts'
-        ])
+        this.datasetService.initializeProperties(dataset)
 
         if (dataset.referencePeriodStart) {
           this.referencePeriodStart = new Date(dataset.referencePeriodStart)
@@ -243,10 +204,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         }
         if (dataset.collectionEndDate) {
           this.collectionEndDate = new Date(dataset.collectionEndDate)
-        }
-
-        if (!dataset.population) {
-          dataset.population = this.populationService.initNew()
         }
 
         if (dataset.ownerOrganizationUnit.length > 0) {
@@ -319,7 +276,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         })
         data[1].forEach(person => this.allPersonItems.push(this.convertToPersonItem(person)))
       })
-
     }
 
     private convertToPersonItem(person: Person): SelectItem {
@@ -600,6 +556,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         this.dataset.freeConcepts[this.language] = this.freeConcepts.join(';')
 
         this.dataset.datasetTypes = this.resolveSelectedDatasetTypes();
+
+        // Remove empty/null predecessors
+        this.dataset.predecessors = this.dataset.predecessors.filter(predecessor => predecessor && predecessor.id)
 
         this.datasetService.save(this.dataset)
             .finally(() => {

@@ -314,6 +314,41 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <h2>{{ 'datasetRelations.label' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="row">
+        <ng-container *ngIf="dataset.predecessors.length || dataset.successors.length; else noDatasetRelations;">
+          <div class="col-sm-6">
+            <h3>{{ 'datasetRelations.predecessors' | translate }}</h3>
+            <ul>
+              <li *ngFor="let predecessor of dataset.predecessors">
+                <a routerLink="/editor/datasets/{{ predecessor.id }}">{{ predecessor.prefLabel | lang }}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <h3>
+              {{ 'datasetRelations.successors' | translate }}
+              <span style="opacity: .7">({{ 'datasetRelations.definedByOtherDataset' | translate }})</span>
+            </h3>
+            <ul>
+              <li *ngFor="let successor of dataset.successors">
+                <a routerLink="/editor/datasets/{{ successor.id }}">{{ successor.prefLabel | lang }}</a>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+        <ng-template #noDatasetRelations>
+          <div class="col-xs-12">
+            <p>{{ 'noDatasetRelations' | translate }}</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <ng-container *ngIf="dataset.comment">
             <h2>{{ 'comment' | translate }}</h2>
             <p>{{ dataset.comment}}</p>

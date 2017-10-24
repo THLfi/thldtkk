@@ -104,19 +104,25 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   @Override
   public Optional<Dataset> get(UUID id) {
-    Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
-      "references.inScheme:2",
-      "references.conceptsFromScheme:2",
-      "references.variable:2",
-      "references.quantity:2",
-      "references.unit:2",
-      "references.codeList:2",
-      "references.source:2",
-      "references.instanceQuestions:2",
-      "references.personInRoles:2",
-      "references.person:2",
-      "references.role:2",
-      "lastModifiedDate"),
+    Optional<Dataset> dataset = nodes.get(
+      select(
+        "id",
+        "type",
+        "lastModifiedDate",
+        "properties.*",
+        "references.*",
+        "references.inScheme:2",
+        "references.conceptsFromScheme:2",
+        "references.variable:2",
+        "references.quantity:2",
+        "references.unit:2",
+        "references.codeList:2",
+        "references.source:2",
+        "references.instanceQuestions:2",
+        "references.personInRoles:2",
+        "references.person:2",
+        "references.role:2",
+        "referrers.predecessors"),
       new NodeId(id, "DataSet")).map(Dataset::new);
 
     if (dataset.isPresent()) {
@@ -128,7 +134,12 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   @Override
   public Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId) {
-    Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
+    Optional<Dataset> dataset = nodes.get(select(
+      "id",
+      "type",
+      "lastModifiedDate",
+      "properties.*",
+      "references.*",
       "references.conceptsFromScheme:2",
       "references.variable:2",
       "references.quantity:2",
@@ -150,7 +161,6 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
     return dataset;
   }
-    
 
   private void checkUserIsAllowedToAccessDataset(Dataset dataset) {
     if (userHelper.isCurrentUserAdmin()) {
@@ -211,6 +221,15 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       checkUserIsAllowedToAccessDataset(dataset);
     }
 
+    if (containsSelf(dataset, dataset.getPredecessors())) {
+      throw new IllegalArgumentException(
+        new StringBuilder()
+          .append("Cannot save dataset '")
+          .append(dataset.getId())
+          .append("' because it has a self reference  in 'predecessors'")
+          .toString());
+    }
+
     boolean isDatasetPublished = dataset.isPublished().orElse(false);
 
     dataset.getPopulation()
@@ -242,6 +261,14 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
     }
 
     return dataset;
+  }
+
+  private boolean containsSelf(Dataset dataset, List<Dataset> datasetReferences) {
+    return datasetReferences
+      .stream()
+      .filter(d -> dataset.getId().equals(d.getId()))
+      .findFirst()
+      .isPresent();
   }
 
   private void insert(Dataset dataset) {

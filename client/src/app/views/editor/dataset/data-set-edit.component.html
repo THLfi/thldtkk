@@ -635,6 +635,12 @@
         </div>
 
         <div class="form-group">
+          <dataset-relations-edit
+            [dataset]="dataset">
+          </dataset-relations-edit>
+        </div>
+
+        <div class="form-group">
           <label for="comment" translate="comment"></label>
           <textarea [(ngModel)]="dataset.comment"
                     thlAutogrow
@@ -642,7 +648,7 @@
                     name="comment"
                     class="form-control"
                     rows="2">
-        </textarea>
+          </textarea>
         </div>
 
       </form>

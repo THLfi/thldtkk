@@ -66,6 +66,10 @@ export interface Dataset extends Node {
   universe: Universe
 
   personInRoles: PersonInRole[]
+  
+  predecessors: Dataset[]
+  
+  successors: Dataset[]
 
   lastModifiedDate?: Date
 

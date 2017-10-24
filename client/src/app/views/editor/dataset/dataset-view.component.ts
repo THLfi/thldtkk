@@ -28,11 +28,13 @@ export class DatasetViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDataSet();
+    this.route.params.subscribe(params => {
+      this.dataset = null
+      this.getDataset(params['id'])
+    })
   }
 
-  getDataSet() {
-    const datasetId = this.route.snapshot.params['id'];
+  private getDataset(datasetId: string) {
     this.datasetService.getDataset(datasetId)
       .subscribe(dataset => {
         this.dataset = dataset

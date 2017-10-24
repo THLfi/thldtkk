@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
         this.setPageTitle(titleTranslationKey, pageType)
 
         this.currentPageType = pageType | this.currentPageType
-        this.hideNavBar = event['hideNavBar'] ? event['hideNavBar'] : false 
+        this.hideNavBar = event['hideNavBar'] ? event['hideNavBar'] : false
 
         this.mainContainerClasses['main-container'] = true
         this.mainContainerClasses['has-sidebar'] = event['hasSidebar']
@@ -70,6 +70,14 @@ export class AppComponent implements OnInit {
 
         this.mainContainerClasses['hiddenNavBar'] = this.hideNavBar
       })
+
+    // Scroll to top of the page after route changes
+    this.router.events.subscribe(event => {
+      if (!(event instanceof NavigationEnd)) {
+        return
+      }
+      window.scrollTo(0, 0)
+    })
 
     this.currentUserService.getCurrentUserObservable()
       .subscribe(user => this.currentUser = user)

@@ -161,6 +161,12 @@
         "range": {
           "id": "PersonInRole"
         }
+      },
+      {
+        "id": "predecessors",
+        "range": {
+          "id": "DataSet"
+        }
       }
     ]
   },

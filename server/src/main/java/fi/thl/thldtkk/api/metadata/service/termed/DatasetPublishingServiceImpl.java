@@ -2,12 +2,14 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.service.DatasetPublishingService;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.UUID;
 
 public class DatasetPublishingServiceImpl implements DatasetPublishingService {
 
@@ -30,11 +32,28 @@ public class DatasetPublishingServiceImpl implements DatasetPublishingService {
     log.info("Publishing dataset {}", dataset.getId());
 
     dataset.setPublished(true);
-    Dataset savedDataset = editorDatasetService.save(dataset);
+    Dataset savedEditorDataset = editorDatasetService.save(dataset);
 
-    publicDatasetService.save(dataset);
+    try {
+      removeNonPublicPropertiesAndReferences(savedEditorDataset);
+      publicDatasetService.save(dataset);
+    }
+    catch (Exception e) {
+      log.warn("Failed to save dataset '{}' into public graph", datasetId, e);
 
-    return savedDataset;
+      dataset.setPublished(false);
+      savedEditorDataset = editorDatasetService.save(dataset);
+    }
+
+    // Return dataset saved in the editor graph (instead of public one)
+    // because returned value is used in editor.
+
+    return savedEditorDataset;
+  }
+
+  private void removeNonPublicPropertiesAndReferences(Dataset savedEditorDataset) {
+    savedEditorDataset.setComment(null);
+    savedEditorDataset.setPredecessors(Collections.emptyList());
   }
 
   @Override
@@ -44,10 +63,19 @@ public class DatasetPublishingServiceImpl implements DatasetPublishingService {
     log.info("Withdrawing dataset {}", datasetId);
 
     dataset.setPublished(false);
-    Dataset savedDataset = editorDatasetService.save(dataset);
+    Dataset savedEditorDataset = editorDatasetService.save(dataset);
 
-    publicDatasetService.delete(datasetId);
-    return savedDataset;
+    try {
+      publicDatasetService.delete(datasetId);
+    }
+    catch (Exception e) {
+      log.warn("Failed to delete dataset '{}' from public graph", datasetId, e);
+
+      dataset.setPublished(true);
+      savedEditorDataset = editorDatasetService.save(dataset);
+    }
+
+    return savedEditorDataset;
   }
 
 }

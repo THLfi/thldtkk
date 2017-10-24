@@ -7,7 +7,7 @@
           closeOnEscape="false"
           width="500">
     <p-header>
-      {{ 'newUniverse' | translate }}
+      {{ (universe.id ? 'editUniverse' : 'addUniverse') | translate }}
     </p-header>
     <form #universeForm="ngForm">
       <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"

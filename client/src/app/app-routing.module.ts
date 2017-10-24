@@ -6,6 +6,7 @@ import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-fro
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
+import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
 import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
@@ -66,6 +67,14 @@ const routes: Routes = [
           RequireLoginGuard
         ],
         children: [
+        {
+            path: 'codelists',
+            component: CodeListListComponent,
+            data: {
+                title: 'pageTitles.editor.codeLists',
+                hasSidebar: false
+              }
+            },
           {
             path: 'datasets/:datasetId/instanceVariables/new',
             component: InstanceVariableEditComponent,

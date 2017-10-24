@@ -55,6 +55,13 @@ public class EditorInstanceVariableController {
     return instanceVariableService.getVariableInstancesVariables(variableId, -1);
   }
 
+  @ApiOperation("List all instance variables of given code list")
+  @GetJsonMapping("/codeLists/{codeListId}/instanceVariables")
+  public List<InstanceVariable> getCodeListInstanceVariables(
+          @PathVariable("codeListId") UUID codeListId) {
+    return instanceVariableService.getInstanceVariablesByCodeList(codeListId);
+  }
+
   @PostJsonMapping(path = "/datasets/{datasetId}/instanceVariables",
       produces = APPLICATION_JSON_UTF8_VALUE)
   public InstanceVariable saveDatasetInstanceVariable(@PathVariable("datasetId") UUID datasetId,

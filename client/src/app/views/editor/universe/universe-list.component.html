@@ -60,11 +60,11 @@
     </div>
   </div>
 
-  <universe-modal *ngIf="editUniverse"
+  <universe-edit-modal *ngIf="editUniverse"
                         [universe]="editUniverse"
                         (onSave)="saveUniverse($event)"
                         (onCancel)="closeEditUniverseModal()">
-  </universe-modal>
+  </universe-edit-modal>
 
   <p-confirmDialog header="{{'confirmRemoveUniverseModal'+'.header' | translate}}"
     acceptLabel="{{'remove' | translate}}"

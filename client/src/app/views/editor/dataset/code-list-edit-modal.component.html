@@ -4,10 +4,10 @@
           resizable="false"
           closeOnEscape="false"
           width="600"
-          positionTop="70"
+          positionTop="50"
           [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
   <p-header>
-    {{ 'newCodeList' | translate }}
+    {{ (codeList.id ? 'editCodeList' : 'addCodeList') | translate }}
   </p-header>
   <form #codeListForm="ngForm">
     <div class="container-fluid">

@@ -73,6 +73,7 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 // editor components
 import { AboutEditorComponent } from './views/editor/login/about-editor.component'
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
+import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { CurrentUserService } from './services-editor/user.service'
 import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
 import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
@@ -94,7 +95,6 @@ import { RequireLoginGuard } from './require-login-guard'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
-import { UniverseModalComponent } from './views/editor/universe/universe-modal.component'
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseListComponent } from './views/editor/universe/universe-list.component'
 import { UserMenuComponent } from './views/editor/menu/user-menu.component'
@@ -112,6 +112,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AboutEditorComponent,
         AppComponent,
         AutogrowTextarea,
+        CodeListListComponent,
         DatasetAdministrativeEditComponent,
         DatasetAdministrativeViewComponent,
         DatasetComponent,
@@ -147,7 +148,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceQuestionEditModalComponent,
         CatalogFrontPageComponent,
         UniverseListComponent,
-        UniverseModalComponent,
         VariableListComponent,
         VariableModalComponent,
         VariableViewComponent

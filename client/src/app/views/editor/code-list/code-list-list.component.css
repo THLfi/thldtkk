@@ -1,0 +1,24 @@
+.code-list-list td:last-child,.code-list-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .code-list-list td:last-child,.code-list-list th:last-child {
+    text-align: left;
+  }
+
+  .code-list-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .code-list-add-new {
+    margin-top: 1em;
+  }
+
+}
+@media(min-width: 768px) {
+  .code-list-add-new {
+    float: right;
+  }
+}

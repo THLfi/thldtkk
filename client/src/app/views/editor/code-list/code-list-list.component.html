@@ -1,0 +1,78 @@
+<div *ngIf="loadingCodeLists"
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{'codeLists' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchInput" (keyup)="searchCodeLists(searchInput)" placeholder="{{'codeListSearchPlaceholder' | translate}}"
+            class="form-control">
+          <span class="input-group-btn">
+          <button class="btn btn-default" (click)="instantSearchCodeLists(searchInput)">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+          </span>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-3">
+          <button (click)="showAddNewCodeListModal()"
+                  class="btn btn-default code-list-add-new">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addCodeList' | translate }}
+          </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover code-list-list">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <tr *ngFor="let codeList of codeLists">
+            <td>
+              <strong>{{codeList.prefLabel | lang}}</strong><br>
+              <span class="preserve-line-breaks">{{codeList.description | lang}}</span>
+            </td>
+            <td>
+              <button (click)="showEditCodeListModal(codeList)" type="button"
+                      class="btn btn-sm btn-default code-list-edit-controls">
+                <span class="glyphicon glyphicon-pencil"></span>
+                {{ 'edit' | translate }}
+              </button>
+              <button (click)="confirmRemoveCodeList(codeList)" type="button"
+                      class="btn btn-sm btn-danger code-list-edit-controls">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                {{ 'remove' | translate }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <code-list-edit-modal *ngIf="editCodeList"
+                        [codeList]="editCodeList"
+                        (onSave)="saveCodeList($event)"
+                        (onCancel)="closeEditCodeListModal()">
+  </code-list-edit-modal>
+
+  <p-confirmDialog header="{{'confirmRemoveCodeListModal'+'.header' | translate}}"
+    acceptLabel="{{'remove' | translate}}"
+    rejectLabel="{{'cancel' | translate}}">
+  </p-confirmDialog>
+
+</div>
+
+<ng-template #loadingCodeLists>
+  <thl-spinner></thl-spinner>
+</ng-template>

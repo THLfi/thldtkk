@@ -26,6 +26,7 @@ import { User } from '../../../model2/user'
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/variables/">{{ 'variables' | translate }}</a></li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/unitTypes/">{{ 'unitTypes' | translate }}</a></li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/universes/">{{ 'universes' | translate }}</a></li>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/codelists/">{{ 'codeLists' | translate }}</a></li>
     </ul>
   </li>
 </ul>`

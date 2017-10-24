@@ -91,6 +91,18 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
       .collect(Collectors.toList());
   }
 
+  @AdminOnly
+  @Override
+  public List<InstanceVariable> getInstanceVariablesByCodeList(UUID codeListId) {
+    return nodes.query(
+            select("id", "type", "properties.*", "references.*"),
+            and(
+                    keyValue("type.id", "InstanceVariable"),
+                    keyValue("references.codeList.id", codeListId.toString())))
+            .map(InstanceVariable::new)
+            .collect(Collectors.toList());
+  }
+
   // Following methods throw exception on purpose. Instance variables search
   // is not currently needed in editor API.
   // If you need to implement these remember to implement dataset organization

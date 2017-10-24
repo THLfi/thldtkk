@@ -3,6 +3,15 @@
 Development instructions are written mainly for macOS but are applicable to
 other environments as well.
 
+# Install and start Termed
+
+Clone Termed API and Termed UI to your workstation:
+
+https://github.com/THLfi/termed-api
+https://github.com/THLfi/termed-ui
+
+Follow the instructions in above-mentioned repos to start Termed.
+
 ## Starting API module
 
 Install Oracle JDK 8 (if not already installed). You can download it on Oracle's
@@ -14,7 +23,7 @@ Configure server properties:
 
     <nano/vim/emacs> server/application.properties
     Enter the correct values for the following properties:
-    - termed.apiUrl=http://qa-wwwapp6a.thl.fi:8580/termed/api
+    - termed.apiUrl=http://localhost:8080/api
     - termed.username=<termed-username-for-api-calls>
     - termed.password=<termed-password-for-api-calls>
     - termed.graphId=<current-termed-dtkk-graph-id>

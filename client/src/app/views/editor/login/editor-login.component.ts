@@ -15,6 +15,8 @@ import { StringUtils } from '../../../utils/string-utils'
 })
 export class EditorLoginComponent implements OnInit {
 
+  readonly THL_LOGIN_EXPANDED_LOCAL_STORAGE_KEY: string = 'EditorLoginComponent.thlLoginExpanded'
+
   returnUrl: string
 
   username: string
@@ -50,6 +52,10 @@ export class EditorLoginComponent implements OnInit {
         }
       })
 
+    if (window.localStorage) {
+      this.thlLoginExpanded = StringUtils.isNotBlank(window.localStorage.getItem(this.THL_LOGIN_EXPANDED_LOCAL_STORAGE_KEY))
+    }
+
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/editor'
 
     this.showVirtuLoginFailedMessage = this.activatedRoute.snapshot.queryParamMap.get('virtuLoginError') ? true : false
@@ -71,6 +77,15 @@ export class EditorLoginComponent implements OnInit {
 
   toggleThlLoginExpanded(): void {
     this.thlLoginExpanded = !this.thlLoginExpanded
+
+    if (window.localStorage) {
+      if (this.thlLoginExpanded) {
+        window.localStorage.setItem(this.THL_LOGIN_EXPANDED_LOCAL_STORAGE_KEY, 'true')
+      }
+      else {
+        window.localStorage.removeItem(this.THL_LOGIN_EXPANDED_LOCAL_STORAGE_KEY)
+      }
+    }
   }
 
   thlLogin(): void {

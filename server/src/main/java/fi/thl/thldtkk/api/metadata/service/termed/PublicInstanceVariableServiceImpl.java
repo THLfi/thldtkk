@@ -35,7 +35,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
 
   @Override
   public List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId) {
-    Dataset dataset = datasetService.get(datasetId)
+    Dataset dataset = datasetService.getDatasetForInstanceVariables(datasetId)
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }

@@ -27,6 +27,15 @@ public class Concept {
     node.getReferencesFirst("inScheme")
       .ifPresent(cs -> this.conceptScheme = new ConceptScheme(cs));
   }
+  
+  /** 
+   * Constructor for testing purposes
+   */
+  public Concept(UUID id, Map<String, String> prefLabel, ConceptScheme conceptScheme) {
+    this.id = id;
+    this.prefLabel = prefLabel;
+    this.conceptScheme = conceptScheme;
+  }
 
   public UUID getId() {
     return id;

@@ -86,4 +86,14 @@ export class EditorInstanceVariableService {
       })
   }
 
+  getInstanceVariableAsCsvExportPath(datasetId: string, encoding="ISO-8859-15"): string {
+      const path: string = env.contextPath
+      + '/api/v3/editor/datasets/'
+      + datasetId
+      + '/instanceVariables.csv?'
+      + 'encoding=' + encoding
+
+      return path;
+  }
+
 }

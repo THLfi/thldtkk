@@ -271,6 +271,13 @@
         </tr>
       </table>
 
+      <a  class="btn btn-default" 
+          href="{{composeInstanceVariableExportUrl()}}"
+          pTooltip="{{'exportInstanceVariablesAsCsvTooltip' | translate}}" tooltipPosition="bottom">
+        <i class="fa fa-download" aria-hidden="true"></i>
+        {{ 'exportInstanceVariablesAsCsvButton' | translate }}
+      </a>
+
       <ng-template #noInstanceVariables>
         <p>{{ 'noInstanceVariables' | translate }}</p>
       </ng-template>

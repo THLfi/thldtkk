@@ -33,6 +33,15 @@ public class UnitType {
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
     }
+    
+    /** 
+     * Constructor for testing purposes 
+     */
+    public UnitType(UUID id, Map<String, String> prefLabel, Map<String, String> description) {
+      this.id = id;
+      this.prefLabel = prefLabel;
+      this.description = description;
+    }
 
     public UUID getId() {
         return id;

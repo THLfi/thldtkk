@@ -33,6 +33,16 @@ public class CodeItem {
     this.code = PropertyMappings.toString(node.getProperties("code"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
   }
+  
+  /** 
+   * Constructor for testing purposes
+   */
+  
+  public CodeItem(UUID id, String code, Map<String, String> prefLabel) {
+    this.id = id;
+    this.code = code;
+    this.prefLabel = prefLabel;
+  }
 
   public UUID getId() {
     return id;

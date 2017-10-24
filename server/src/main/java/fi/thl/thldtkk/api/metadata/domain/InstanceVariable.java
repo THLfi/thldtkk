@@ -66,7 +66,7 @@ public class InstanceVariable implements NodeEntity {
     public InstanceVariable(UUID id) {
         this.id = requireNonNull(id);
     }
-
+    
     public InstanceVariable(Node node) {
         this(node.getId());
         checkArgument(Objects.equals(node.getTypeId(), "InstanceVariable"));
@@ -109,6 +109,65 @@ public class InstanceVariable implements NodeEntity {
                 .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
     }
 
+    /** 
+    * Constructor for testing purposes
+    */
+    public InstanceVariable(UUID id, 
+              Map<String, String> prefLabel,
+              Map<String, String> description,
+              Boolean published,
+              LocalDate referencePeriodStart,
+              LocalDate referencePeriodEnd,
+              String technicalName,
+              String valueDomainType,
+              Map<String, String> qualityStatement,
+              Map<String, String> missingValues,
+              String defaultMissingValue,
+              Dataset source,
+              Map<String, String> sourceDescription,
+              Map<String, String> partOfGroup,
+              String dataType,
+              Map<String, String> dataFormat,
+              Dataset dataset,
+              Unit unit,
+              Quantity quantity,
+              CodeList codeList,
+              BigDecimal valueRangeMin,
+              BigDecimal valueRangeMax,
+              UnitType unitType,
+              Variable variable,
+              Map<String, String> freeConcepts,
+              List<Concept> conceptsFromScheme,
+              List<InstanceQuestion> instanceQuestions) {
+      this.id = id;
+      this.prefLabel = prefLabel;
+      this.description = description;
+      this.published = published;
+      this.referencePeriodStart = referencePeriodStart;
+      this.referencePeriodEnd = referencePeriodEnd;
+      this.technicalName = technicalName;
+      this.valueDomainType = valueDomainType;
+      this.qualityStatement = qualityStatement;
+      this.defaultMissingValue = defaultMissingValue;
+      this.missingValues = missingValues;
+      this.source = source;
+      this.sourceDescription = sourceDescription;
+      this.dataType = dataType;
+      this.dataFormat = dataFormat;
+      this.dataset = dataset;
+      this.partOfGroup = partOfGroup;
+      this.unit = unit;
+      this.quantity = quantity;
+      this.codeList = codeList;
+      this.valueRangeMin = valueRangeMin;
+      this.valueRangeMax = valueRangeMax;
+      this.unitType = unitType;
+      this.variable = variable;
+      this.freeConcepts = freeConcepts;
+      this.conceptsFromScheme = conceptsFromScheme;
+      this.instanceQuestions = instanceQuestions;
+    }
+    
     public Optional<String> getDefaultMissingValue() {
         return Optional.ofNullable(defaultMissingValue);
     }

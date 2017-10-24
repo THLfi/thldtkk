@@ -60,6 +60,29 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
         "references.role:2"),
         new NodeId(id, "DataSet")).map(Dataset::new);
   }
+  
+  @Override
+  public Optional<Dataset> getDatasetForInstanceVariables(UUID id) {
+    Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
+      "references.conceptsFromScheme:2",
+      "references.variable:2",
+      "references.quantity:2",
+      "references.unit:2",
+      "references.codeList:2",
+      "references.source:2",
+      "references.instanceQuestions:2",
+      "references.personInRoles:2",
+      "references.person:2",
+      "references.role:2",
+      "references.inScheme:3",
+      "references.codeItems:3",
+      "references.unitType:2",
+      "referrers.instanceVariable:2"),
+      new NodeId(id, "DataSet")).map(Dataset::new);
+
+    return dataset;
+  }
+  
 
   @Override
   public List<Dataset> findAll() {

@@ -8,14 +8,11 @@ import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
@@ -55,6 +52,7 @@ public class Dataset {
     private Map<String, String> freeConcepts = new LinkedHashMap<>();
     private List<DatasetType> datasetTypes = new ArrayList<>();
     private UnitType unitType;
+    private Date lastModifiedDate;
     @Valid
     private List<PersonInRole> personInRoles = new ArrayList<>();
 
@@ -103,6 +101,7 @@ public class Dataset {
         this.datasetTypes = dataset.datasetTypes;
         this.unitType = dataset.unitType;
         this.personInRoles = dataset.personInRoles;
+        this.lastModifiedDate = Date.from(Instant.now());
     }
 
     /**
@@ -160,6 +159,7 @@ public class Dataset {
         node.getReferences("conceptsFromScheme")
                 .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
         this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
+          this.lastModifiedDate = node.getLastModifiedDate();
     }
 
   /**
@@ -293,6 +293,8 @@ public class Dataset {
       return personInRoles;
     }
 
+    public Optional<Date> getLastModifiedDate() { return Optional.ofNullable(lastModifiedDate); }
+
     /**
      * Transforms dataset into node
      */
@@ -382,7 +384,8 @@ public class Dataset {
                 && Objects.equals(freeConcepts, dataset.freeConcepts)
                 && Objects.equals(datasetTypes, dataset.datasetTypes)
                 && Objects.equals(unitType, dataset.unitType)
-                && Objects.equals(personInRoles, dataset.personInRoles);
+                && Objects.equals(personInRoles, dataset.personInRoles)
+                && Objects.equals(lastModifiedDate, dataset.lastModifiedDate);
 
     }
 
@@ -391,7 +394,7 @@ public class Dataset {
         return Objects
                 .hash(id, prefLabel, altLabel, abbreviation, description,
                         registryPolicy, usageConditionAdditionalInformation,
-                        published,
+                        published, lastModifiedDate,
                         referencePeriodStart, referencePeriodEnd, owner,
                         ownerOrganizationUnit, usageCondition,
                         lifecyclePhase, population, universe, instanceVariables, comment,

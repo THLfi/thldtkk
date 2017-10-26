@@ -13,23 +13,28 @@
         </div>
         <div class="col-sm-4">
           <h2 class="pull-right">
-            <ng-container *ngIf="dataset.published; else unpublished;">
+            <div>
+              <small>{{'lastModified' | translate}}: {{dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
+            </div>
+            <div class="pull-right">
+              <ng-container *ngIf="dataset.published; else unpublished;">
                 <span class="label label-success">
-                {{ 'published' | translate }}
-                <span class="glyphicon glyphicon-ok"></span>
-              </span>
-              <button (click)="confirmWithdraw()" class="btn btn-sm btn-warning btn-unpublish">
-                {{ 'unpublish' | translate }}
-              </button>
-            </ng-container>
-            <ng-template #unpublished>
-              <span class="label label-default">
-                {{ 'unpublished' | translate }}
-              </span>
-              <button (click)="confirmPublish()" class="btn btn-sm btn-warning btn-publish">
-                {{ 'publish' | translate }}
-              </button>
-            </ng-template>
+                  {{ 'published' | translate }}
+                  <span class="glyphicon glyphicon-ok"></span>
+                </span>
+                <button (click)="confirmWithdraw()" class="btn btn-sm btn-warning btn-unpublish">
+                  {{ 'unpublish' | translate }}
+                </button>
+              </ng-container>
+              <ng-template #unpublished>
+                <span class="label label-default">
+                  {{ 'unpublished' | translate }}
+                </span>
+                <button (click)="confirmPublish()" class="btn btn-sm btn-warning btn-publish">
+                  {{ 'publish' | translate }}
+                </button>
+              </ng-template>
+            </div>
           </h2>
         </div>
       </div>
@@ -325,7 +330,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 

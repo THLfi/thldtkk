@@ -42,7 +42,8 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
         "references.inScheme:2",
         "references.codeItems:2",
         "references.unitType:2",
-        "referrers.instanceVariable"),
+        "referrers.instanceVariable",
+        "lastModifiedDate"),
       new NodeId(id, "InstanceVariable"))
       .map(InstanceVariable::new);
 

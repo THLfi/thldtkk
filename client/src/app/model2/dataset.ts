@@ -67,4 +67,6 @@ export interface Dataset extends Node {
 
   personInRoles: PersonInRole[]
 
+  lastModifiedDate?: Date
+
 }

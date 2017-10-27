@@ -4,6 +4,7 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Population;
+import java.time.LocalDate;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -19,6 +20,8 @@ public class DatasetBuilder {
   private Population population;
   private List<InstanceVariable> instanceVariables;
   private Organization owner;
+  private LocalDate referencePeriodStart;
+  private LocalDate referencePeriodEnd;
 
   public DatasetBuilder() {
     String defaultName = Dataset.class.getSimpleName();
@@ -61,6 +64,16 @@ public class DatasetBuilder {
     this.owner = owner;
     return this;
   }
+  
+  public DatasetBuilder withReferencePeriodStart(LocalDate referencePeriodStart) {
+    this.referencePeriodStart = referencePeriodStart;
+    return this;
+  }
+  
+  public DatasetBuilder withReferencePeriodEnd(LocalDate referencePeriodEnd) {
+    this.referencePeriodEnd = referencePeriodEnd;
+    return this;
+  }
 
   public Dataset build() {
     return new Dataset(
@@ -68,7 +81,9 @@ public class DatasetBuilder {
       prefLabel,
       population,
       instanceVariables,
-      owner
+      owner,
+      referencePeriodStart,
+      referencePeriodEnd
     );
   }
 }

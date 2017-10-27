@@ -6,6 +6,8 @@ import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from '../../../model2/dataset';
 import { PublicDatasetService } from '../../../services-public/public-dataset.service'
+import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
+
 
 @Component({
   templateUrl: './dataset.component.html',
@@ -17,6 +19,7 @@ export class DatasetComponent implements OnInit {
   language: string
 
   constructor(private datasetService: PublicDatasetService,
+              private instanceVariableService: PublicInstanceVariableService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,
@@ -44,5 +47,9 @@ export class DatasetComponent implements OnInit {
       this.titleService.setTitle(translatedLabel + " - " + bareTitle)
     }
   }
+
+  composeInstanceVariableExportUrl(): string {
+    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.dataset.id)
+  } 
 
 }

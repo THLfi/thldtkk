@@ -55,6 +55,29 @@ public class CodeList {
       
   }
   
+  /** 
+   * Constructor for testing purposes
+   */
+  
+  public CodeList(
+          UUID id,
+          String codeListType,
+          String referenceId,
+          Map<String, String> prefLabel,
+          Map<String, String> description,
+          Map<String, String> owner,
+          List<CodeItem> codeItems) {
+    
+    this.id = id;
+    this.codeListType = codeListType;
+    this.referenceId = referenceId;
+    this.prefLabel = prefLabel;
+    this.description = description;
+    this.owner = owner;
+    this.codeItems = codeItems;
+  }
+  
+  
   public UUID getId() {
     return id;
   }

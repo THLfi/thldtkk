@@ -25,5 +25,34 @@ public class a {
   public static UnitBuilder unit() {
     return new UnitBuilder();
   }
+  
+  public static QuantityBuilder quantity() {
+    return new QuantityBuilder();
+  }
+  
+  public static CodeListBuilder codeList() {
+    return new CodeListBuilder();
+  }
+  
+  public static CodeItemBuilder codeItem() {
+    return new CodeItemBuilder();
+  }
+  
+  public static UnitTypeBuilder unitType() {
+    return new UnitTypeBuilder();
+  }
+  
+  public static VariableBuilder variable() {
+    return new VariableBuilder();
+  }
+  
+  public static ConceptBuilder concept() {
+    return new ConceptBuilder();
+  }
+  
+  public static ConceptSchemeBuilder conceptScheme() {
+    return new ConceptSchemeBuilder();
+  }
+  
 
 }

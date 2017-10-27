@@ -13,4 +13,12 @@ public class an {
   public static NodeBuilder organizationNode() {
     return new NodeBuilder().withType("Organization");
   }
+  
+  public static InstanceVariableBuilder instanceVariable() {
+    return new InstanceVariableBuilder();
+  }
+  
+  public static InstanceQuestionBuilder instanceQuestion() {
+    return new InstanceQuestionBuilder();
+  }
 }

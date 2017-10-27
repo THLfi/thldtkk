@@ -1,5 +1,6 @@
 import { OnInit, Component } from '@angular/core'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
+import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
@@ -24,7 +25,8 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,
-              private langPipe: LangPipe) {
+              private langPipe: LangPipe,
+              private instanceVariableService: EditorInstanceVariableService) {
     this.language = this.translateService.currentLang
   }
 
@@ -55,6 +57,10 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
 
   closeImportInstanceVariablesModal(): void {
     this.datasetForImportInstanceVariablesModal = null
+  }
+
+  composeInstanceVariableExportUrl(): string {
+    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.dataset.id)
   }
 
 }

@@ -61,7 +61,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
 
   @Override
   public List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId) {
-    Dataset dataset = datasetService.get(datasetId)
+    Dataset dataset = datasetService.getDatasetForInstanceVariables(datasetId)
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }

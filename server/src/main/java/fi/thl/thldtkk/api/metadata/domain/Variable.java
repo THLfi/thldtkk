@@ -32,7 +32,17 @@ public class Variable {
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
     }
-
+    
+    /** 
+     * Constructor for testing purposes
+     */
+    
+    public Variable(UUID id, Map<String, String> prefLabel, Map<String, String> description) {
+      this.id = id;
+      this.prefLabel = prefLabel;
+      this.description = description;
+    }
+    
     public UUID getId() {
         return id;
     }

@@ -23,6 +23,15 @@ public class ConceptScheme {
     checkArgument(Objects.equals(node.getTypeId(), "ConceptScheme"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
   }
+  
+  /** 
+   * Constructor for testing purposes
+   */
+  
+  public ConceptScheme(UUID id, Map<String, String> prefLabel) {
+    this.id = id;
+    this.prefLabel = prefLabel;
+  }
 
   public UUID getId() {
     return id;

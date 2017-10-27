@@ -34,4 +34,16 @@ export class PublicInstanceVariableService {
     return this.http.get(url).map(response => response.json() as InstanceVariable[])
   }
 
+  getInstanceVariableAsCsvExportPath(datasetId: string, encoding="ISO-8859-15"): string {
+      const path: string = env.contextPath
+      + '/api/v3/public/datasets/'
+      + datasetId
+      + '/instanceVariables.csv?'
+      + 'encoding=' + encoding
+
+      return path;
+  }
+
+
+
 }

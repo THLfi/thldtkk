@@ -397,7 +397,8 @@
       }
     }
   },
-  "importInstanceVariablesAsCsvButton": "Tuo muuttujat CSV-tiedostosta...",
+  "importInstanceVariablesAsCsvButton": "Tuo muuttujia (CSV)",
+  "importInstanceVariablesAsCsvTooltip": "Tuo muuttujia CSV-tiedostosta",
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
     "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa aineiston nykyiset muuttujat.",
@@ -412,6 +413,8 @@
       "import": "Tuo muuttujat"
     }
   },
+  "exportInstanceVariablesAsCsvButton":"Vie muuttujat (CSV)",
+  "exportInstanceVariablesAsCsvTooltip":"Vie muuttujat CSV-tiedostoon",
   "instanceQuestions":"Muuttujaan liittyvät kyselykysymykset",
   "noMatchingInstanceQuestions":"Haulla ei löytynyt kysymyksiä",
   "instanceQuestionsPlaceholder":"Hae kyselykysymyksiä...",

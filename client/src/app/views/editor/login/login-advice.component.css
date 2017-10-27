@@ -11,7 +11,7 @@
 
 .login-advice {
   text-decoration: underline;
-  text-decoration-style: dashed; 
+  text-decoration-style: dotted; 
 }
 
 .login-advice.tooltip-padding {

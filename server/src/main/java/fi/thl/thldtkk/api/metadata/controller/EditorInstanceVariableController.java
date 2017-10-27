@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,17 +93,26 @@ public class EditorInstanceVariableController {
           method = RequestMethod.GET)
   @ResponseBody
   public byte[] getInstanceVariablesOfDatasetAsCsv(
-          @PathVariable("datasetId") UUID id, 
+          @PathVariable("datasetId") UUID datasetId, 
           @RequestParam(value = "lang", defaultValue = "fi") String language,
           @RequestParam(value = "encoding", defaultValue = "ISO-8859-15") String encoding,
           HttpServletResponse response) {
     
-    List<InstanceVariable> instanceVariables = instanceVariableService.getDatasetInstanceVariables(id);
+    List<InstanceVariable> instanceVariables = instanceVariableService.getDatasetInstanceVariablesWithAllProperties(datasetId);
+    Optional<Dataset> dataset = editorDatasetService.get(datasetId);
+    
+    if(dataset.isPresent()) {
+     instanceVariables = instanceVariables.stream()
+             .map(iv -> {
+               iv.setDataset(dataset.get());
+               return iv;
+        }).collect(Collectors.toList());
+    }
+    
     InstanceVariableCsvGenerator generator = new InstanceVariableCsvGenerator(instanceVariables, language, encoding);
     GeneratorResult result = generator.generate();
     
     if(result.getData().isPresent()) {  
-      Optional<Dataset> dataset = editorDatasetService.get(id);
       String fileName = CsvFileNameBuilder.getInstanceVariableExportFileName(dataset, language);
       
       response.setHeader("Content-Disposition", "attachment; filename="+fileName+".csv");

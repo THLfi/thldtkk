@@ -2,7 +2,6 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.query.OrCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
@@ -35,7 +34,14 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
 
   @Override
   public List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId) {
-    Dataset dataset = datasetService.getDatasetForInstanceVariables(datasetId)
+    Dataset dataset = datasetService.get(datasetId)
+      .orElseThrow(NotFoundException::new);
+    return dataset.getInstanceVariables();
+  }
+  
+  @Override
+  public List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId) {
+    Dataset dataset = datasetService.getDatasetWithAllInstanceVariableProperties(datasetId)
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }

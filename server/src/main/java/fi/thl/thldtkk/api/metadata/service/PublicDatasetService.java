@@ -11,6 +11,6 @@ public interface PublicDatasetService extends Service<UUID, Dataset> {
   
   List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sort);
 
-  Optional<Dataset> getDatasetForInstanceVariables(UUID id);
+  Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId);
   
 }

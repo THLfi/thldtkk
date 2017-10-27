@@ -22,6 +22,6 @@ public interface EditorDatasetService extends Service<UUID, Dataset> {
 
   List<Dataset> getUniverseDatasets(UUID universeId);
   
-  Optional<Dataset> getDatasetForInstanceVariables(UUID id);
+  Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId);
 
 }

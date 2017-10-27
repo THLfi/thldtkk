@@ -89,7 +89,7 @@ export class CodeListService3 {
       return this.http.delete(path)
           .map(response => response.json())
           .do(() => {
-            this.growlMessageService.buildAndShowMessage('info', 'operations.codeList.delete.result.success')
+            this.growlMessageService.buildAndShowMessage('info', 'operations.common.delete.result.success')
       })
   }
 }

@@ -129,6 +129,7 @@
   },
   "universes": "Perusjoukot",
   "variables": "Käsitemuuttujat",
+  "codeLists":"Koodistot",
   "quantity": "Suure",
   "noQuantity": "Ei suuretta",
   "addQuantity": "Lisää suure...",
@@ -181,6 +182,7 @@
   "noCodeList": "Ei koodistoa",
   "addCodeList": "Lisää koodisto...",
   "newCodeList": "Uusi koodisto",
+  "editCodeList": "Muokkaa koodistoa",
   "codeItems": "Koodit",
   "codeItem": {
     "code": "Koodi",
@@ -213,9 +215,17 @@
   "addUnitType": "Lisää havaintoyksikkö...",
   "newUnitType": "Uusi havaintoyksikkö",
   "editUnitType": "Muokkaa havaintoyksikköä",
+  "editUniverse": "Muokkaa perusjoukkoa",
   "unitTypeSearchPlaceholder":"Hae havaintoyksiköitä...",
   "universeSearchPlaceholder":"Hae perusjoukkoja...",
   "variableSearchPlaceholder":"Hae käsitemuuttujia...",
+  "codeListSearchPlaceholder":"Hae koodistoja...",
+  "confirmRemoveCodeListModal": {
+    "message": "Haluatko varmasti poistaa koodiston {{codeList}}? Koodistoa käyttää {{instanceVariableCount}} muuttujaa.",
+    "header": "Poiston vahvistus",
+    "removeButtonLabel": "Poista",
+    "cancelButtonLabel": "Peruuta"
+  },
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
     "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} aineistoa ja {{instanceVariableCount}} muuttujaa.",

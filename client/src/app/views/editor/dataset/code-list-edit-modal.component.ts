@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { CodeList } from '../../../model2/code-list'
 import { CodeItem } from "../../../model2/code-item";
+import { CodeListService3 } from '../../../services-common/code-list.service'
 import { StringUtils } from "../../../utils/string-utils";
 
 @Component({
@@ -33,7 +34,8 @@ export class CodeListEditModalComponent implements AfterContentChecked {
 
   constructor(
     private growlMessageService: GrowlMessageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private codeListService: CodeListService3
   ) {
     this.language = translateService.currentLang
   }
@@ -60,24 +62,8 @@ export class CodeListEditModalComponent implements AfterContentChecked {
   }
 
   addCodeItem(): void {
-    const newCodeItem = {
-      id: null,
-      code: null,
-      prefLabel: null
-    }
-    this.initProperties(newCodeItem, ['prefLabel'])
+    const newCodeItem = this.codeListService.initNewCodeItem()
     this.codeList.codeItems = [ ...this.codeList.codeItems, newCodeItem ]
-  }
-
-  private initProperties(node: any, properties: string[]): void {
-    properties.forEach(property => {
-      if (!node[property]) {
-        node[property] = {}
-      }
-      if (!node[property][this.language]) {
-        node[property][this.language] = ''
-      }
-    })
   }
 
   removeCodeItem(codeItem: CodeItem): void {

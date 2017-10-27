@@ -115,7 +115,8 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       "references.instanceQuestions:2",
       "references.personInRoles:2",
       "references.person:2",
-      "references.role:2"),
+      "references.role:2",
+      "lastModifiedDate"),
       new NodeId(id, "DataSet")).map(Dataset::new);
 
     if (dataset.isPresent()) {

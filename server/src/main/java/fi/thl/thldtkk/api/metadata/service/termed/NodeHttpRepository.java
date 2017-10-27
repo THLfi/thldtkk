@@ -39,7 +39,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
  */
 public class NodeHttpRepository implements Repository<NodeId, Node> {
 
-  private static final Select DEFAULT_SELECT = select("id", "type", "properties.*", "references.*");
+  private static final Select DEFAULT_SELECT = select("id", "type", "properties.*", "references.*", "lastModifiedDate");
   private static final Sort DEFAULT_SORT = sort("properties.prefLabel.sortable");
   private static final int DEFAULT_MAX = -1;
 

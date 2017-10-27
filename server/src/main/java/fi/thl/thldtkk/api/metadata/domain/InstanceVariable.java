@@ -17,13 +17,15 @@ import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
 
 public class InstanceVariable implements NodeEntity {
 
@@ -58,6 +60,7 @@ public class InstanceVariable implements NodeEntity {
     private Map<String, String> dataFormat = new LinkedHashMap<>();
     private List<InstanceQuestion> instanceQuestions = new ArrayList<>();
     private Dataset dataset;
+    private Date lastModifiedDate;
 
     public InstanceVariable() {
 
@@ -87,6 +90,7 @@ public class InstanceVariable implements NodeEntity {
         this.sourceDescription = toLangValueMap(node.getProperties("sourceDescription"));
         this.dataType = PropertyMappings.toString(node.getProperties("dataType"));
         this.dataFormat = toLangValueMap(node.getProperties("dataFormat"));
+        this.lastModifiedDate = node.getLastModifiedDate();
 
         node.getReferences("quantity")
                 .stream().findFirst().ifPresent(quantity -> this.quantity = new Quantity(quantity));
@@ -269,6 +273,8 @@ public class InstanceVariable implements NodeEntity {
         return Optional.ofNullable(dataset);
     }
 
+    public Optional<Date> getLastModifiedDate() { return Optional.ofNullable(lastModifiedDate); }
+
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
         props.putAll("prefLabel", toPropertyValues(prefLabel));
@@ -346,7 +352,7 @@ public class InstanceVariable implements NodeEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, prefLabel, description, referencePeriodStart,
+        return Objects.hash(id, prefLabel, description, referencePeriodStart, lastModifiedDate,
                 referencePeriodEnd, technicalName, valueDomainType, quantity, unit, codeList,
                 conceptsFromScheme, freeConcepts, qualityStatement, missingValues,
                 defaultMissingValue, valueRangeMax, valueRangeMin, partOfGroup, variable,

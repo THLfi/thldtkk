@@ -102,7 +102,8 @@ public class EditorDatasetServiceTest {
         "references.instanceQuestions:2",
         "references.personInRoles:2",
         "references.person:2",
-        "references.role:2")), eq(
+        "references.role:2",
+        "lastModifiedDate")), eq(
         new NodeId(nameUUIDFromString("DS1"), "DataSet"))))
             .thenReturn(Optional.of(datasets.get(0)));;
 

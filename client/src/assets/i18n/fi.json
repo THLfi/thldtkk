@@ -208,6 +208,7 @@
   "searchForVariables":"Hae käsitemuuttujia...",
   "or": "tai",
   "partOfGroup": "Muuttujaryhmä",
+  "lastModified": "Viimeksi muokattu",
   "dataType":"Tietotyyppi",
   "requiredField": "Tieto on pakollinen",
   "unitType": "Havaintoyksikkö",

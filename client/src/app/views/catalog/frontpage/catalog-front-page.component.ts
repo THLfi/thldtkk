@@ -13,6 +13,7 @@ export class CatalogFrontPageComponent implements OnInit {
 
     datasets: Dataset[] = []
     searchText: string
+    isLoadingDatasets: boolean = false
 
     constructor (
         private datasetService: PublicDatasetService,
@@ -20,8 +21,12 @@ export class CatalogFrontPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.isLoadingDatasets = true;
         this.datasetService.getRecentDatasets()
-            .subscribe(datasets => this.datasets = datasets);
+            .subscribe(datasets => {
+                this.datasets = datasets
+                this.isLoadingDatasets = false
+            });
     }
 
     searchVariables(searchText:string): void {

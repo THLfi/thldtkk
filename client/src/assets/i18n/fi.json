@@ -466,6 +466,7 @@
     "loginOptionVirtu":"Virtu",
     "loginOptionThl":"THL kirjautumispalvelu",
     "loginButton": "Kirjaudu",
+    "noDatasets": "Aineistoja ei löytynyt",
     "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen.",
     "genericTroubleshootContact": {
       "message": "Ongelmatilanteissa ota yhteyttä:",

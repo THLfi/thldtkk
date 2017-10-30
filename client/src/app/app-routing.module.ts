@@ -156,14 +156,14 @@ const routes: Routes = [
             path: 'variables',
             component: VariableListComponent,
             data: {
-              title:'pageTitles.editor.variableList'
+              title:'pageTitles.editor.variables'
             }
           },
           {
             path: 'universes',
             component: UniverseListComponent,
             data: {
-              title:'pageTitles.editor.universeList'
+              title:'pageTitles.editor.universes'
             }
           },
           {

@@ -32,7 +32,7 @@
 
           <div *ngIf="thlLoginExpanded" class="thl-login-fields">
 
-            <form #loginForm="ngForm" (ngSubmit)="thlLogin()">
+            <form #loginForm="ngForm" (ngSubmit)="thlLogin()" autocomplete="off">
               <div class="row">
                 <div class="col-xs-12 col-sm-offset-1 col-sm-10">
                   <div class="form-group">
@@ -43,7 +43,8 @@
                           name="username"
                           type="text"
                           class="form-control"
-                          autofocus>
+                          autofocus
+                          autocomplete="off">
                   </div>
                 </div>
 
@@ -55,7 +56,8 @@
                             id="password"
                             name="password"
                             type="password"
-                            class="form-control">
+                            class="form-control"
+                            autocomplete="off">
                   </div>
                 </div>
 

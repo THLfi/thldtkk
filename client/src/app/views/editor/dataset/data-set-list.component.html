@@ -1,4 +1,4 @@
-<div *ngIf="datasets.length; else loadingDatasets;"
+<div *ngIf="!isLoadingDatasets; else loadingDatasets;"
      class="content-container">
 
   <div class="content-header container-fluid">
@@ -19,7 +19,8 @@
         </h2>
       </div>
     </div>
-    <div class="row">
+    <div *ngIf="!datasets.length">{{'editorLoginComponent.noDatasets' | translate}}</div>
+    <div *ngIf="datasets.length" class="row">
       <div class="col-xs-12">
         <table class="table table-striped table-hover dataset-list">
           <tr>

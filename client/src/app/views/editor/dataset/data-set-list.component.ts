@@ -10,14 +10,19 @@ import { EditorDatasetService } from '../../../services-editor/editor-dataset.se
 export class DatasetListComponent implements OnInit {
 
   datasets: Dataset[] = []
+  isLoadingDatasets: boolean = false
 
   constructor(
     private dataSetService: EditorDatasetService
   ) { }
 
   ngOnInit(): void {
+    this.isLoadingDatasets = true;
     this.dataSetService.getAll()
-      .subscribe(dataSets => this.datasets = dataSets)
+      .subscribe(dataSets => {
+        this.datasets = dataSets
+        this.isLoadingDatasets = false
+      })
   }
 
 }

@@ -154,7 +154,8 @@
     "frontpage": {
       "datasets": "Aineistot",
       "searchVariables": "Hae muuttujia!",
-      "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli"
+      "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
+      "noDatasets": "Aineistoja ei löytynyt"
     },
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",

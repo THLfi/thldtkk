@@ -1,6 +1,7 @@
 <p-dialog [visible]="codeList"
           modal="true"
           draggable="false"
+          (onHide)="doCancel()"
           resizable="false"
           closeOnEscape="false"
           width="600"

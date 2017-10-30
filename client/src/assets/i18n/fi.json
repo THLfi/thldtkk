@@ -427,10 +427,12 @@
       "newInstanceVariable": "Uusi muuttuja",
       "editDataset": "Muokkaa aineistoa",
       "newDataset": "Uusi aineisto",
-      "variableList": "Käsitemuuttujat",
+      "variables": "Käsitemuuttujat",
       "unitTypeList":"Havaintoyksiköt",
       "frontpageLogin":"Kirjautuminen palveluun",
-      "administrativeInformation": "Hallinnolliset tiedot"
+      "administrativeInformation": "Hallinnolliset tiedot",
+      "codeLists": "Koodistot",
+      "universes":"Perusjoukot"
     }
     ,
     "catalog": {

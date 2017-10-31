@@ -465,6 +465,7 @@
     "loginOptionThl":"THL kirjautumispalvelu",
     "loginButton": "Kirjaudu",
     "noDatasets": "Aineistoja ei löytynyt",
+    "noOrganizationDatasets": "Organisaatiollesi ei löytynyt aineistoja",
     "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen.",
     "genericTroubleshootContact": {
       "message": "Ongelmatilanteissa ota yhteyttä:",

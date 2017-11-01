@@ -1,11 +1,11 @@
 {
   "datasetCatalog": "Aineistokatalogi",
   "beta": "BETA",
-  "dataset": "Aineisto",
-  "datasets": "Aineistot",
-  "newDataset": "Uusi aineisto",
+  "dataset": "Dataset",
+  "datasets": "Datasetit",
+  "newDataset": "Uusi dataset",
   "datasetSidebar": {
-    "datasetDescription": "Aineiston kuvaus",
+    "datasetDescription": "Datasetin kuvaus",
     "instanceVariables": "Muuttujien kuvaus",
     "administrativeInformation": "Hallinnolliset tiedot"
   },
@@ -33,12 +33,11 @@
   },
   "abbreviation": "Lyhenne",
   "altLabel": "Vaihtoehtoinen nimi",
-  "researchProjectURL": "Linkki projektiin jossa aineisto kerätty",
   "noInstanceVariables": "Muuttujia ei ole määritelty.",
   "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten",
   "usageCondition": "Käyttöehdot",
   "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
-  "lifecyclePhase": "Aineiston elinkaaren vaihe",
+  "datasetLifecyclePhase": "Datasetin elinkaaren vaihe",
   "referencePeriod": "Viiteajankohta",
   "referencePeriodStart": "Viiteajankohdan alkupäivämäärä",
   "referencePeriodEnd": "Viiteajankohdan loppupäivämäärä",
@@ -47,8 +46,8 @@
   "collectionStartDate": "Keruuajankohdan alkupäivämäärä",
   "collectionEndDate": "Keruuajankohdan loppupäivämäärä",
   "noCollectionDate": "Keruuajankohtaa ei ole määritelty.",
-  "valueInDataset": "Aineiston oletus",
-  "inheritedFromDataset": "Periytyy aineistolta",
+  "valueInDataset": "Datasetin oletus",
+  "inheritedFromDataset": "Periytyy datasetiltä",
   "datasetEditor": "Aineistoeditori",
   "prefLabel": "Nimi",
   "edit": "Muokkaa",
@@ -61,7 +60,7 @@
   "unpublished": "Julkaisematon",
   "false": "Ei",
   "true": "Kyllä",
-  "addDataset": "Lisää aineisto",
+  "addDataset": "Lisää dataset",
   "inputDateFormat": "vvvv-kk-pp",
   "addInstanceVariable": "Lisää muuttuja",
   "newInstanceVariable": "Uusi muuttuja",
@@ -70,10 +69,9 @@
   "organizationUnit": "Organisaatioyksikkö",
   "publish": "Julkaise",
   "unpublish": "Peru julkaisu",
-  "confirmPublishDataset": "Haluatko varmasti julkaista aineiston?",
-  "confirmWithdrawDataset": "Haluatko varmasti perua aineiston julkaisun?",
+  "confirmPublishDataset": "Haluatko varmasti julkaista datasetin?",
+  "confirmWithdrawDataset": "Haluatko varmasti perua datasetin julkaisun?",
   "functions": "Toiminnot",
-  "dataSetOwner": "Aineiston omistaja",
   "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",
   "technicalName": "Tekninen nimi",
   "datasetType":"Aineistotyyppi",
@@ -88,7 +86,7 @@
   "noFreeConcepts": "Vapaita asiasanoja ei ole määritelty.",
   "source": "Lähde",
   "personInRoles": {
-    "label": "Aineistoon liittyvät henkilöt",
+    "label": "Datasettiin liittyvät henkilöt",
     "person": "Henkilö",
     "role": "Rooli",
     "public": {
@@ -98,7 +96,7 @@
       "false": "Ei näytetä katalogissa"
     }
   },
-  "noDatasetPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
+  "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",
@@ -114,26 +112,26 @@
   "linkName": "Linkin teksti",
   "linkUrl": "Linkin URL",
   "addNewLink": "Lisää uusi linkki",
-  "noDatasetLinks": "Aineistolle ei ole määritelty linkkejä.",
+  "noDatasetLinks": "Datasetille ei ole määritelty linkkejä.",
   "datasetRelations": {
-    "label": "Suhteet muihin aineistoihin",
+    "label": "Suhteet muihin datasetteihin",
     "predecessor": "Edeltäjä",
     "predecessors": "Edeltäjät",
     "successor": "Seuraaja",
     "successors": "Seuraajat",
-    "definedByOtherDataset": "suhde on määritelty kohdeaineistossa",
-    "targetDataset": "Kohdeaineisto",
+    "definedByOtherDataset": "suhde on määritelty kohdedatasetissä",
+    "targetDataset": "Kohdedataset",
     "relationType": "Suhteen tyyppi",
-    "noDataset": "Ei aineistoa"
+    "noDataset": "Ei datasettiä"
   },
-  "noDatasetRelations": "Aineistojen välisiä suhteita ei ole määritelty.",
-  "addNewDatasetRelation": "Lisää uusi aineistosuhde",
+  "noDatasetRelations": "Datasettien välisiä suhteita ei ole määritelty.",
+  "addNewDatasetRelation": "Lisää uusi dataset-suhde",
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
   "loadMoreResults": "Näytä lisää hakutuloksia",
-  "uploadFromFile": "Aineiston tuonti tiedostosta (HUOM: aineiston tuonti tyhjentää kaikki kentät)",
-  "uploadDataset": "Aineiston tuonti",
+  "uploadFromFile": "Datasetin tuonti tiedostosta (HUOM: datasetin tuonti tyhjentää kaikki kentät)",
+  "uploadDataset": "Datasetin tuonti",
   "valueDomain": "Arvoalue",
   "valueDomainType": {
     "label": "Arvoaluetyyppi",
@@ -157,18 +155,18 @@
     "referencePeriod": "Ajankohta",
     "collectionDate": "Keruuajankohta",
     "searchInstanceVariable": {
-      "foundInDataset": "Aineistossa",
+      "foundInDataset": "Datasetissä",
       "searchForVariables":"Hae muuttujia...",
       "noVariable": "Ei käsitemuuttujaa",
       "noReferencePeriod": "Ei määritetty",
-      "noAssociatedDataset":"Ei liittyvää aineistoa",
+      "noAssociatedDataset":"Ei liittyvää datasettiä",
       "searchSummary": "Löytyi {{resultCount}} muuttujaa haulla "
     },
     "frontpage": {
-      "datasets": "Aineistot",
+      "datasets": "Datasetit",
       "searchVariables": "Hae muuttujia!",
       "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
-      "noDatasets": "Aineistoja ei löytynyt"
+      "noDatasets": "Datasettejä ei löytynyt"
     },
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",
@@ -176,7 +174,7 @@
     },
     "variableData": {
       "instanceVariableColumnHeading": "Muuttuja",
-      "datasetColumnHeading": "Aineisto"
+      "datasetColumnHeading": "Dataset"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -211,10 +209,10 @@
   "valueRangeMax": "Muuttujan suurin sallittu arvo",
   "instanceVariableSource": "Muuttujan tietolähde",
   "sourceDescription": "Tietolähde, vapaatekstikenttä",
-  "sourcePlaceholder": "Hae aineistoja...",
-  "noMatchingSources": "Haulla ei löytynyt aineistoja.",
+  "sourcePlaceholder": "Hae datasettejä...",
+  "noMatchingSources": "Haulla ei löytynyt datasettejä.",
   "variable": "Käsitemuuttuja",
-  "variableHelpText": "Käsitemuuttuja on muuttuja, joka yhdistää kaikki eri aineistoissa samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.\n\nKäsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.",
+  "variableHelpText": "Käsitemuuttuja on muuttuja, joka yhdistää kaikki eri dataseteissä samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.\n\nKäsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.",
   "addVariable": "Lisää käsitemuuttuja...",
   "editVariable": "Muokkaa käsitemuuttujaa",
   "newVariable": "Uusi käsitemuuttuja",
@@ -243,13 +241,13 @@
   },
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} aineistoa ja {{instanceVariableCount}} muuttujaa.",
+    "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} datasettiä ja {{instanceVariableCount}} muuttujaa.",
     "removeButtonLabel": "Poista",
     "cancelButtonLabel": "Peruuta"
   },
   "confirmRemoveUniverseModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} aineistoa."
+    "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} datasettiä."
   },
   "errors": {
     "form": {
@@ -289,24 +287,24 @@
     "dataset": {
       "get": {
         "result": {
-          "fail": "Aineiston hakeminen epäonnistui"
+          "fail": "Datasetin hakeminen epäonnistui"
         }
       },
       "save": {
         "result": {
-          "success": "Aineisto tallennettu"
+          "success": "Dataset tallennettu"
         }
       },
       "publish": {
         "result": {
-          "success": "Aineisto julkaistu",
-          "fail": "Aineiston julkaisu epäonnistui"
+          "success": "Dataset julkaistu",
+          "fail": "Datasetin julkaisu epäonnistui"
         }
       },
       "unpublish": {
         "result": {
-          "success": "Aineiston julkaisu peruttu",
-          "fail": "Aineiston julkaisun peruminen epäonnistui"
+          "success": "Datasetin julkaisu peruttu",
+          "fail": "Datasetin julkaisun peruminen epäonnistui"
         }
       }
     },
@@ -415,7 +413,7 @@
   "importInstanceVariablesAsCsvTooltip": "Tuo muuttujia CSV-tiedostosta",
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
-    "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa aineiston nykyiset muuttujat.",
+    "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa datasetin nykyiset muuttujat.",
     "file": {
       "label": "Tuotava CSV-tiedosto"
     },
@@ -439,11 +437,11 @@
   "pageTitles": {
     "editor": {
       "suffix": "Aineistoeditori",
-      "datasetList": "Aineistot",
+      "datasetList": "Datasetit",
       "editInstanceVariable": "Muokkaa muuttujaa",
       "newInstanceVariable": "Uusi muuttuja",
-      "editDataset": "Muokkaa aineistoa",
-      "newDataset": "Uusi aineisto",
+      "editDataset": "Muokkaa datasettiä",
+      "newDataset": "Uusi dataset",
       "variables": "Käsitemuuttujat",
       "unitTypeList":"Havaintoyksiköt",
       "frontpageLogin":"Kirjautuminen palveluun",
@@ -455,7 +453,7 @@
     "catalog": {
       "suffix": "Aineistokatalogi",
       "frontpage": "Etusivu",
-      "datasetList": "Aineistot",
+      "datasetList": "Datasetit",
       "instanceVariableSearch": "Muuttujahaku"
     }
   },
@@ -480,8 +478,8 @@
     "loginOptionVirtu":"Virtu",
     "loginOptionThl":"THL kirjautumispalvelu",
     "loginButton": "Kirjaudu",
-    "noDatasets": "Aineistoja ei löytynyt",
-    "noOrganizationDatasets": "Organisaatiollesi ei löytynyt aineistoja",
+    "noDatasets": "Datasettejä ei löytynyt",
+    "noOrganizationDatasets": "Organisaatiollesi ei löytynyt datasettejä",
     "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen.",
     "genericTroubleshootContact": {
       "message": "Ongelmatilanteissa ota yhteyttä:",

@@ -112,7 +112,6 @@ export class EditorDatasetService {
       'abbreviation',
       'altLabel',
       'description',
-      'researchProjectURL',
       'registryPolicy',
       'usageConditionAdditionalInformation',
       'freeConcepts'

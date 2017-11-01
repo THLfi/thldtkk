@@ -121,9 +121,6 @@ public interface Repository<K, V> {
    *
    * @param changeset containing value deletes and saves
    */
-  default void post(Changeset<K, V> changeset) {
-    delete(changeset.getDelete());
-    save(changeset.getSave());
-  }
+  void post(Changeset<K, V> changeset);
 
 }

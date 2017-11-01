@@ -20,7 +20,9 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static java.util.Objects.requireNonNull;
 
-public class Dataset {
+public class Dataset implements NodeEntity {
+
+    public static final String TERMED_NODE_CLASS = "DataSet";
 
     private UUID id;
     @ContainsAtLeastOneNonBlankValue
@@ -111,7 +113,7 @@ public class Dataset {
      */
     public Dataset(Node node) {
         this(node.getId());
-        checkArgument(Objects.equals(node.getTypeId(), "DataSet"));
+        checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.altLabel = toLangValueMap(node.getProperties("altLabel"));
         this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
@@ -369,7 +371,7 @@ public class Dataset {
                 .put("unitType", v.toNode()));
         getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
         getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
-        return new Node(id, "DataSet", props, refs);
+        return new Node(id, TERMED_NODE_CLASS, props, refs);
     }
 
     @Override

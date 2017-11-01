@@ -44,7 +44,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
         "references.unitType:2",
         "referrers.instanceVariable",
         "lastModifiedDate"),
-      new NodeId(id, "InstanceVariable"))
+      new NodeId(id, InstanceVariable.TERMED_NODE_CLASS))
       .map(InstanceVariable::new);
 
     checkUserHasAccessToDataset(instanceVariable);
@@ -65,14 +65,14 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }
-  
+
   @Override
   public List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId) {
     Dataset dataset = datasetService.getDatasetWithAllInstanceVariableProperties(datasetId)
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }
-  
+
 
   @AdminOnly
   @Override
@@ -80,7 +80,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
     return nodes.query(
       select("id", "type", "properties.*", "references.*", "referrers.*"),
       and(
-        keyValue("type.id", "InstanceVariable"),
+        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
         keyValue("references.variable.id", variableId.toString())
       ),
       max)
@@ -94,7 +94,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
     return nodes.query(
       select("id", "type", "properties.*", "references.*"),
       and(
-        keyValue("type.id", "InstanceVariable"),
+        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
         keyValue("references.unitType.id", unitTypeId.toString())))
       .map(InstanceVariable::new)
       .collect(Collectors.toList());
@@ -106,7 +106,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
     return nodes.query(
             select("id", "type", "properties.*", "references.*"),
             and(
-                    keyValue("type.id", "InstanceVariable"),
+                    keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
                     keyValue("references.codeList.id", codeListId.toString())))
             .map(InstanceVariable::new)
             .collect(Collectors.toList());

@@ -29,6 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 public class InstanceVariable implements NodeEntity {
 
+    public static final String TERMED_NODE_CLASS = "InstanceVariable";
     public static final String VALUE_DOMAIN_TYPE_DESCRIBED = "described";
     public static final String VALUE_DOMAIN_TYPE_ENUMERATED = "enumerated";
 
@@ -69,10 +70,10 @@ public class InstanceVariable implements NodeEntity {
     public InstanceVariable(UUID id) {
         this.id = requireNonNull(id);
     }
-    
+
     public InstanceVariable(Node node) {
         this(node.getId());
-        checkArgument(Objects.equals(node.getTypeId(), "InstanceVariable"));
+        checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
         this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
@@ -113,10 +114,10 @@ public class InstanceVariable implements NodeEntity {
                 .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
     }
 
-    /** 
-    * Constructor for testing purposes
-    */
-    public InstanceVariable(UUID id, 
+    /**
+     * Constructor for testing purposes
+     */
+    public InstanceVariable(UUID id,
               Map<String, String> prefLabel,
               Map<String, String> description,
               Boolean published,
@@ -171,7 +172,7 @@ public class InstanceVariable implements NodeEntity {
       this.conceptsFromScheme = conceptsFromScheme;
       this.instanceQuestions = instanceQuestions;
     }
-    
+
     public Optional<String> getDefaultMissingValue() {
         return Optional.ofNullable(defaultMissingValue);
     }
@@ -335,7 +336,7 @@ public class InstanceVariable implements NodeEntity {
     public void setDataset(Dataset dataset) {
       this.dataset = dataset;
     }
-    
+
     public Optional<Date> getLastModifiedDate() { return Optional.ofNullable(lastModifiedDate); }
 
     public Node toNode() {
@@ -372,7 +373,7 @@ public class InstanceVariable implements NodeEntity {
         Multimap<String, Node> referrers = LinkedHashMultimap.create();
         getDataset().ifPresent((v -> referrers.put("dataset", v.toNode())));
 
-        return new Node(id, "InstanceVariable", props, refs, referrers);
+        return new Node(id, TERMED_NODE_CLASS, props, refs, referrers);
     }
 
     @Override

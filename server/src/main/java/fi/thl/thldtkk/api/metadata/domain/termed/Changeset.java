@@ -1,12 +1,19 @@
 package fi.thl.thldtkk.api.metadata.domain.termed;
 
+import static com.google.common.collect.Maps.difference;
+import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
+import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Changeset<K, V> {
 
@@ -25,10 +32,22 @@ public class Changeset<K, V> {
     return new Changeset<>(emptyList(), singletonList(node));
   }
 
-  public Changeset<K, V> merge(Changeset<K, V> another) {
-    return new Changeset<>(
-      ImmutableList.<K>builder().addAll(delete).addAll(another.delete).build(),
-      ImmutableList.<V>builder().addAll(save).addAll(another.save).build());
+  public static  <T extends NodeEntity> Changeset<NodeId, Node> buildChangeset(
+    List<T> newNodeEntities,
+    List<T> oldNodeEntities) {
+
+    Map<UUID, T> newNodeEntitiesById = index(newNodeEntities, T::getId);
+    Map<UUID, T> oldNodeEntitiesById = index(oldNodeEntities, T::getId);
+
+    List<NodeId> deleted = difference(newNodeEntitiesById, oldNodeEntitiesById)
+      .entriesOnlyOnRight()
+      .values().stream().map(T::toNode).map(NodeId::new)
+      .collect(toList());
+
+    List<Node> saved = newNodeEntities.stream()
+      .map(NodeEntity::toNode).collect(toList());
+
+    return new Changeset<>(deleted, saved);
   }
 
   public Changeset() {
@@ -49,6 +68,12 @@ public class Changeset<K, V> {
 
   public List<V> getSave() {
     return save;
+  }
+
+  public Changeset<K, V> merge(Changeset<K, V> another) {
+    return new Changeset<>(
+      ImmutableList.<K>builder().addAll(delete).addAll(another.delete).build(),
+      ImmutableList.<V>builder().addAll(save).addAll(another.save).build());
   }
 
   @Override

@@ -1,6 +1,6 @@
 [
   {
-    "id": "DataSet",
+    "id": "Study",
     "textAttributes": [
       {
         "id": "prefLabel"
@@ -13,9 +13,6 @@
       },
       {
         "id": "abbreviation"
-      },
-      {
-        "id": "abstract"
       },
       {
         "id": "freeConcepts"
@@ -40,9 +37,6 @@
         "id": "registryPolicy"
       },
       {
-        "id": "researchProjectURL"
-      },
-      {
         "id": "usageConditionAdditionalInformation"
       },
       {
@@ -52,7 +46,160 @@
         "id": "numberOfObservationUnits"
       },
       {
-        "id": "ValueDomainType"
+        "id": "published",
+        "regex": "^(true|false)$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "owner",
+        "range": {
+          "id": "Organization",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "ownerOrganizationUnit",
+        "range": {
+          "id": "OrganizationUnit",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "population",
+        "range": {
+          "id": "Population"
+        }
+      },
+      {
+        "id": "universe",
+        "range": {
+          "id": "Universe",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "usageCondition",
+        "range": {
+          "id": "UsageCondition",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "lifecyclePhase",
+        "range": {
+          "id": "LifecyclePhase",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "datasetTypes",
+        "range": {
+          "id": "DatasetType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "links",
+        "range": {
+          "id": "Link"
+        }
+      },
+      {
+        "id": "conceptsFromScheme",
+        "range": {
+          "id": "Concept",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "unitType",
+        "range": {
+          "id": "UnitType",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "personInRoles",
+        "range": {
+          "id": "PersonInRole"
+        }
+      },
+      {
+        "id": "predecessors",
+        "range": {
+          "id": "Study"
+        }
+      },
+      {
+        "id": "dataSets",
+        "range": {
+          "id": "DataSet"
+        }
+      }
+    ]
+  },
+  {
+    "id": "DataSet",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      },
+      {
+        "id": "altLabel"
+      },
+      {
+        "id": "abbreviation"
+      },
+      {
+        "id": "freeConcepts"
+      },
+      {
+        "id": "referencePeriodStart",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "referencePeriodEnd",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "collectionStartDate",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "collectionEndDate",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "registryPolicy"
+      },
+      {
+        "id": "usageConditionAdditionalInformation"
+      },
+      {
+        "id": "comment"
+      },
+      {
+        "id": "numberOfObservationUnits"
       },
       {
         "id": "published",
@@ -100,12 +247,6 @@
           "graph": {
             "code": "common-graph"
           }
-        }
-      },
-      {
-        "id": "dataSetRelation",
-        "range": {
-          "id": "DataSetRelation"
         }
       },
       {

@@ -25,6 +25,7 @@ import fi.thl.thldtkk.api.metadata.domain.UnitType;
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,7 +37,7 @@ import java.util.UUID;
   "unitType", "valueDomainType", "dataFormat", "dataType", "missingValues",
   "defaultMissingValue", "qualityStatement", "quantity", "unit", 
   "valueRangeMin", "valueRangeMax", "codeList", "instanceQuestions",
-  "source", "sourceDescription", "variable"})
+  "source", "sourceDescription", "variable", "lastModifiedDate"})
 public interface InstanceVariableCsvExportFormat {
       
   public Optional<String> getTechnicalName();
@@ -121,5 +122,8 @@ public interface InstanceVariableCsvExportFormat {
    
   @JsonSerialize(using = LangValueSerializer.class)
   public Map<String,String> getDataFormat();
+  
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  public Optional<Date> getLastModifiedDate();
 
 }

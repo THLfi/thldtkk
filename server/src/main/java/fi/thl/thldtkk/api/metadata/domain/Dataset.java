@@ -10,8 +10,6 @@ import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;

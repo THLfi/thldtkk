@@ -11,4 +11,6 @@ public interface PublicInstanceVariableService extends Service<UUID, InstanceVar
 
   List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max);
 
+  List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId);
+  
 }

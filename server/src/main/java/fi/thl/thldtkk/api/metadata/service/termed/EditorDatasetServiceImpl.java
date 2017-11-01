@@ -125,9 +125,9 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
     return dataset;
   }
-  
+
   @Override
-  public Optional<Dataset> getDatasetForInstanceVariables(UUID id) {
+  public Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId) {
     Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
       "references.conceptsFromScheme:2",
       "references.variable:2",
@@ -139,11 +139,10 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       "references.personInRoles:2",
       "references.person:2",
       "references.role:2",
-      "references.inScheme:3",
-      "references.codeItems:3",
       "references.unitType:2",
-      "referrers.instanceVariable:2"),
-      new NodeId(id, "DataSet")).map(Dataset::new);
+      "references.inScheme:3",
+      "references.codeItems:3"),
+      new NodeId(datasetId, "DataSet")).map(Dataset::new);
 
     if (dataset.isPresent()) {
       checkUserIsAllowedToAccessDataset(dataset.get());
@@ -151,7 +150,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
     return dataset;
   }
-  
+    
 
   private void checkUserIsAllowedToAccessDataset(Dataset dataset) {
     if (userHelper.isCurrentUserAdmin()) {

@@ -113,7 +113,6 @@
 }
 
 @media(max-width: 768px) {
-  
   .editor-login-info {
     background-color: #F6F5F9;
     position: relative;
@@ -137,6 +136,13 @@
     padding-top: 2em;
     padding-left: 4em;
     padding-right: 4em;
+  }
+
+  .editor-login-actions-content-container {
+    max-width: 400px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
   }
 
 }

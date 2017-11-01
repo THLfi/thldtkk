@@ -271,7 +271,8 @@
         </tr>
       </table>
 
-      <a  class="btn btn-default" 
+      <a  *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length)"
+          class="btn btn-default" 
           href="{{composeInstanceVariableExportUrl()}}"
           pTooltip="{{'exportInstanceVariablesAsCsvTooltip' | translate}}" tooltipPosition="bottom">
         <i class="fa fa-download" aria-hidden="true"></i>

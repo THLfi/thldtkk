@@ -332,6 +332,10 @@ public class InstanceVariable implements NodeEntity {
         return Optional.ofNullable(dataset);
     }
 
+    public void setDataset(Dataset dataset) {
+      this.dataset = dataset;
+    }
+    
     public Optional<Date> getLastModifiedDate() { return Optional.ofNullable(lastModifiedDate); }
 
     public Node toNode() {

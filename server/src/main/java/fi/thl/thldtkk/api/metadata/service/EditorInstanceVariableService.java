@@ -14,4 +14,6 @@ public interface EditorInstanceVariableService extends Service<UUID, InstanceVar
   List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId);
 
   List<InstanceVariable> getInstanceVariablesByCodeList(UUID codeListId);
+  
+  List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId);
 }

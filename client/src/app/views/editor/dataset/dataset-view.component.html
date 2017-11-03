@@ -13,9 +13,6 @@
         </div>
         <div class="col-sm-4">
           <h2 class="pull-right">
-            <div>
-              <small>{{'lastModified' | translate}}: {{dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
-            </div>
             <div class="pull-right">
               <ng-container *ngIf="dataset.published; else unpublished;">
                 <span class="label label-success">
@@ -36,6 +33,11 @@
               </ng-template>
             </div>
           </h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <small>{{'lastModified' | translate}}: {{dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
         </div>
       </div>
     </div>

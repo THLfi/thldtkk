@@ -1,0 +1,4 @@
+.study-list td:last-child,.study-list th:last-child {
+  width: 30%;
+  text-align: right;
+}

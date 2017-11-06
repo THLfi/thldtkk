@@ -1,0 +1,6 @@
+export enum StudySidebarActiveSection {
+  STUDY = 1,
+  DATASETS,
+  INSTANCE_VARIABLES,
+  ADMINISTRATIVE_INFORMATION
+}

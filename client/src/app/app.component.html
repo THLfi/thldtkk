@@ -24,6 +24,7 @@
         </a>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/datasets/">{{ 'datasets' | translate }}</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>
         </ul>
         <adminMenu [currentUser]="currentUser">
         </adminMenu>

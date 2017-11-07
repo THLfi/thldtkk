@@ -1,0 +1,31 @@
+<nav class="sidebar" role="navigation">
+  <ul *ngIf="study">
+    <li [ngClass]="{ active: activeSection == StudySidebarActiveSection.STUDY }">
+      <a routerLink="{{ '/editor/studies/' + study.id }}">
+        <div class="icon">
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        </div>
+        {{ 'study.sidebar.study' | translate }}
+      </a>
+    </li>
+
+    <li *ngIf="study.id" 
+        [ngClass]="{ active: activeSection == StudySidebarActiveSection.DATASETS }">
+      <a routerLink="{{ '/editor/studies/' + study.id + '/datasets' }}">
+        <div class="icon">
+          <i class="fa fa-cubes" aria-hidden="true"></i>
+        </div>
+        {{ 'study.sidebar.datasets' | translate }}
+      </a>
+    </li>
+    <li *ngIf="study.id"
+        [ngClass]="{ active: activeSection == StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION }">
+      <a routerLink="{{ '/editor/studies/' + study.id + '/administrative-information' }}">
+        <div class="icon">
+          <i class="fa fa-university" aria-hidden="true"></i>
+        </div>
+        {{ 'study.sidebar.administrativeInformation' | translate }}
+      </a>
+    </li>
+  </ul>
+</nav>

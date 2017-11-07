@@ -1,0 +1,72 @@
+<div *ngIf="!isLoadingStudies; else loadingStudies;"
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{'study.studies' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div *ngIf="(organizations && organizations.length) || user.isAdmin" class="row">
+      <div class="col-xs-12">
+        <h2 class="pull-right">
+          <button routerLink="/editor/studies/new"
+                  class="btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'study.add' | translate }}
+          </button>
+        </h2>
+      </div>
+    </div>
+    <div *ngIf="!studies.length">
+      <div *ngIf="(organizations && !organizations.length) || user.isAdmin">{{'study.noStudies' | translate}}</div>
+      <div *ngIf="(organizations && organizations.length) && !user.isAdmin">{{'study.noOrganizationStudies' | translate}}</div>
+    </div>
+    <div *ngIf="studies.length" class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover study-list">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <tr *ngFor="let study of studies"
+              routerLink="/editor/studies/{{ study.id }}"
+              style="cursor: pointer;">
+            <td>
+              <a routerLink="/editor/studies/{{ study.id }}">{{study.prefLabel | lang}}</a>
+              <span *ngIf="study.published"
+                    class="label label-success">
+                {{ 'published' | translate }}
+                <span class="glyphicon glyphicon-ok"></span>
+              </span>
+            </td>
+            <td>
+              <button routerLink="/editor/studies/{{ study.id }}/edit"
+                      class="btn btn-sm btn-default">
+                <span class="glyphicon glyphicon-pencil"></span>
+                {{ 'edit' | translate }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="(organizations && organizations.length) || user.isAdmin" class="row">
+      <div class="col-xs-12">
+        <h2 class="pull-right">
+          <button routerLink="/editor/studies/new"
+                  class="btn btn-default pull-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'study.add' | translate }}
+          </button>
+        </h2>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #loadingStudies>
+  <thl-spinner></thl-spinner>
+</ng-template>

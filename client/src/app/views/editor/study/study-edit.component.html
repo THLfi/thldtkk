@@ -1,0 +1,681 @@
+<ng-container *ngIf="study;else loadingStudy">
+
+  <study-sidebar [study]="study"
+                 [activeSection]="sidebarActiveSection">
+  </study-sidebar>
+
+  <div class="content-container">
+    <div class="content-header container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>
+            <ng-container *ngIf="study.id; else newStudyHeader;">
+              {{ 'study.study' | translate }}:
+              {{ study.prefLabel | lang }}
+            </ng-container>
+            <ng-template #newStudyHeader>
+              {{ 'study.new' | translate }}
+            </ng-template>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-body container-fluid">
+
+      <form #studyForm="ngForm">
+
+        <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+                 class="form-group">
+              <label for="prefLabel">
+                {{ 'prefLabel' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input [(ngModel)]="study.prefLabel[language]"
+                     id="prefLabel"
+                     name="prefLabel"
+                     type="text"
+                     class="form-control"
+                     required>
+              <p *ngFor="let errorKey of formErrors.prefLabel"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="altLabel" translate="altLabel"></label>
+          <input [(ngModel)]="study.altLabel[language]"
+                 id="altLabel"
+                 name="altLabel"
+                 class="form-control"
+                 type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="abbreviation" translate="abbreviation"></label>
+          <input [(ngModel)]="study.abbreviation[language]"
+                 id="abbreviation"
+                 name="abbreviation"
+                 class="form-control"
+                 type="text">
+        </div>
+
+        <div *ngIf="availableOrganizations"
+             class="form-group">
+          <label for="ownerOrganization">{{ 'organization' | translate }}</label>
+          <select [(ngModel)]="study.ownerOrganizationf"
+                  (change)="onOrganizationChange()"
+                  [compareWith]="nodeUtils.equals"
+                  id="ownerOrganization"
+                  name="ownerOrganization"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let organization of availableOrganizations"
+                    [ngValue]="organization">
+              {{organization.prefLabel | lang}}
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="availableOrganizations" class="form-group">
+          <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
+          <select [(ngModel)]="ownerOrganizationUnit"
+                  [compareWith]="nodeUtils.equals"
+                  id="ownerOrganizationUnit"
+                  name="ownerOrganizationUnit"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <ng-container *ngIf="study.ownerOrganization">
+              <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[study.ownerOrganization.id]"
+                    [ngValue]="organizationUnit">
+              {{organizationUnit.prefLabel | lang}}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="personInRoles">{{ 'study.personInRolesLabel' | translate }}</label>
+          <table *ngIf="study.personInRoles.length; else noStudyPersonInRoles;"
+                 id="personsInRole"
+                 class="table table-striped">
+            <tr>
+              <th>
+                {{ 'personInRoles.person' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </th>
+              <th translate="personInRoles.role"></th>
+              <th translate="personInRoles.public.title"></th>
+              <th translate="functions"></th>
+            </tr>
+            <tr *ngFor="let personInRole of study.personInRoles; let index = index;"
+                [ngClass]="{ 'bg-danger': formErrors['personInRole-person-' + index] && formErrors['personInRole-person-' + index].length }">
+              <td>
+                <p-dropdown *ngIf="allPersonItems && allPersonItems.length"
+                            [(ngModel)]="personInRole.person"
+                            [options]="allPersonItems"
+                            filter="true"
+                            autoWidth="false"
+                            [style]="{ 'max-width': '400px' }"
+                            name="{{ 'personInRole-person-' + index }}"
+                            required>
+                  <ng-template let-personItem pTemplate="item">
+                    <ng-container *ngIf="personItem.value; else nullPersonItem;">
+                      {{ personItem.value.firstName }}
+                      <ng-container *ngIf="personItem.value.lastName">
+                        {{ personItem.value.lastName }}
+                      </ng-container>
+                      <small *ngIf="personItem.value.email || personItem.value.phone" style="opacity:.7">
+                        <br>
+                        {{ personItem.value.email }}
+                        {{ personItem.value.phone }}
+                      </small>
+                    </ng-container>
+                    <ng-template #nullPersonItem>
+                      <div style="opacity:.7; min-height: 2em;">
+                          {{ personItem.label }}
+                      </div>
+                    </ng-template>
+                  </ng-template>
+                </p-dropdown>
+                <button (click)="showAddPersonModal(personInRole)"
+                        type="button"
+                        class="btn btn-default btn-sm">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addNewPerson' | translate }}
+                </button>
+                <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
+                   class="text-danger">
+                  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  {{ errorKey | translate }}
+                </p>
+                <person-edit-modal *ngIf="newPerson"
+                                   [person]="newPerson"
+                                   (onSave)="savePerson($event)"
+                                   (onCancel)="closeAddPersonModal()">
+                </person-edit-modal>
+              </td>
+              <td>
+                <select *ngIf="allRoles && allRoles.length"
+                        [(ngModel)]="personInRole.role"
+                        [compareWith]="nodeUtils.equals"
+                        dataKey="id"
+                        name="{{ 'personInRole-role-' + index }}"
+                        class="form-control">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let role of allRoles"
+                          [ngValue]="role">
+                    {{ role.prefLabel | lang }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <div class="checkbox">
+                  <label>
+                    <input [checked]="personInRole.public"
+                           (change)="personInRole.public = !personInRole.public"
+                           name="{{ 'personInRole.public.' + index }}"
+                           type="checkbox">
+                    {{ 'personInRoles.public.checkbox' | translate }}
+                  </label>
+                </div>
+              </td>
+              <td>
+                <button type="button" class="btn btn-default" (click)="removePersonInRole(personInRole)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  {{ 'remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </table>
+          <ng-template #noStudyPersonInRoles>
+            <p translate="study.noPersonInRoles"></p>
+          </ng-template>
+          <button type="button" class="btn btn-default" (click)="addPersonInRole()">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addNewPersonInRole' | translate }}
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label translate="links"></label>
+          <table *ngIf="study.links && study.links.length; else noStudyLinks;"
+                 class="table table-striped">
+            <tr>
+              <th translate="linkName"></th>
+              <th translate="linkUrl"></th>
+              <th translate="functions"></th>
+            </tr>
+            <tr *ngFor="let link of study.links; let linkNumber = index;"
+                [ngClass]="{ 'bg-danger': formErrors['link-linkUrl-' + linkNumber] && formErrors['link-linkUrl-' + linkNumber].length }">
+              <td>
+                <input [(ngModel)]="link.prefLabel[language]"
+                       id="link-prefLabel-{{ linkNumber }}"
+                       name="link-prefLabel-{{ linkNumber }}"
+                       type="text"
+                       class="form-control">
+              </td>
+              <td>
+                <input [(ngModel)]="link.linkUrl[language]"
+                       (blur)="correctLinkUrlFormat(link)"
+                       id="link-linkUrl-{{ linkNumber }}"
+                       name="link-linkUrl-{{ linkNumber }}"
+                       type="text"
+                       class="form-control"
+                       pattern="{{urlFieldValidatorPattern}}">
+                <p *ngFor="let errorKey of formErrors['link-linkUrl-' + linkNumber]"
+                   class="text-danger">
+                  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  <ng-container *ngIf="errorKey == 'errors.form.pattern'; else nonLinkPatternError">
+                    {{ 'errors.form.invalidLinkUrlFormat' | translate }}
+                  </ng-container>
+                  <ng-template #nonLinkPatternError>
+                    {{ errorKey | translate }}
+                  </ng-template>
+                </p>
+              </td>
+              <td>
+                <button type="button" class="btn btn-default" (click)="removeLink(link)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  {{ 'remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </table>
+
+          <ng-template #noStudyLinks>
+            <p translate="study.noLinks"></p>
+          </ng-template>
+
+          <button type="button" class="btn btn-default" (click)="addLink()">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{ 'addNewLink' | translate }}
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="description">{{ 'description' | translate }}</label>
+          <textarea [(ngModel)]="study.description[language]"
+                    thlAutogrow
+                    id="description"
+                    name="description"
+                    class="form-control"
+                    rows="6">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="registryPolicy" translate="registryPolicy"></label>
+          <textarea [(ngModel)]="study.registryPolicy[language]"
+                    thlAutogrow
+                    id="registryPolicy"
+                    name="registryPolicy"
+                    class="form-control"
+                    rows="6">
+          </textarea>
+        </div>
+
+        <div *ngIf="allUsageConditions"
+             class="form-group">
+          <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
+          <select [(ngModel)]="study.usageCondition"
+                  [compareWith]="nodeUtils.equals"
+                  id="usageCondition"
+                  name="usageCondition"
+                  class="form-control">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let usageCondition of allUsageConditions"
+                    [ngValue]="usageCondition">
+              {{usageCondition.prefLabel|lang}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
+          <textarea [(ngModel)]="study.usageConditionAdditionalInformation[language]"
+                    thlAutogrow
+                    id="usageConditionAdditionalInformation"
+                    name="usageConditionAdditionalInformation"
+                    class="form-control"
+                    rows="2">
+          </textarea>
+        </div>
+
+        <ng-container *ngIf="allUnitTypes.length">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="unitType">{{ 'unitType' | translate }}</label>
+                <br>
+                <div style="display:inline-block">
+                  <select [(ngModel)]="study.unitType"
+                          [compareWith]="nodeUtils.equals"
+                          id="unitType"
+                          name="unitType"
+                          class="form-control">
+                    <option [ngValue]="null"></option>
+                    <option *ngFor="let unitType of allUnitTypes"
+                            [ngValue]="unitType">
+                      {{ unitType.prefLabel | lang }}
+                    </option>
+                  </select>
+                </div>
+                <span style="padding-left:1em;padding-right:1em">|</span>
+                <button
+                  (click)="showAddUnitTypeModal()"
+                  class="btn btn-default"
+                  type="button">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addUnitType' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <unit-type-edit-modal *ngIf="newUnitType"
+                                [unitType]="newUnitType"
+                                (onSave)="saveUnitType($event)"
+                                (onCancel)="closeAddUnitTypeModal()">
+          </unit-type-edit-modal>
+        </ng-container>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
+              <input [(ngModel)]="study.numberOfObservationUnits"
+                     id="numberOfObservationUnits"
+                     name="numberOfObservationUnits"
+                     class="form-control"
+                     type="text">
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="allUniverseItems.length">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label>{{ 'universe' | translate }}</label>
+                <br>
+                <p-dropdown [(ngModel)]="study.universe"
+                            [ngModelOptions]="{ standalone: true }"
+                            [options]="allUniverseItems"
+                            filter="true">
+                  <ng-template let-universeItem pTemplate="item">
+                    <ng-container *ngIf="universeItem.value; else nullValueUniverseItem;">
+                      <div>
+                        {{ universeItem.value.prefLabel | lang }}
+                        <ng-container *ngIf="universeItem.value.description | lang">
+                          <br>
+                          <small style="opacity:.7">
+                            {{ universeItem.value.description | lang }}
+                          </small>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                    <ng-template #nullValueUniverseItem>
+                      {{ universeItem.label }}
+                    </ng-template>
+                  </ng-template>
+                </p-dropdown>
+                <span style="padding-left:1em;padding-right:1em">|</span>
+                <button
+                  (click)="showAddUniverseModal()"
+                  class="btn btn-default btn-sm"
+                  type="button">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addUniverse' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <universe-edit-modal *ngIf="newUniverse"
+                               [universe]="newUniverse"
+                               (onSave)="saveUniverse($event)"
+                               (onCancel)="closeAddUniverseModal()">
+          </universe-edit-modal>
+        </ng-container>
+
+        <div class="form-group">
+          <label for="population-prefLabel">{{ 'population' | translate }}</label>
+          <textarea [(ngModel)]="study.population.prefLabel[language]"
+                    thlAutogrow
+                    id="population-prefLabel"
+                    name="population-prefLabel"
+                    class="form-control"
+                    rows="3">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
+          <textarea [(ngModel)]="study.population.geographicalCoverage[language]"
+                    thlAutogrow
+                    id="population-geographicalCoverage"
+                    name="population-geographicalCoverage"
+                    class="form-control"
+                    rows="2">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
+          <input [(ngModel)]="study.population.sampleSize[language]"
+                 id="population-sampleSize"
+                 name="population-sampleSize"
+                 type="text"
+                 class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="population-loss">{{ 'loss' | translate }}</label>
+          <input [(ngModel)]="study.population.loss[language]"
+                 id="population-loss"
+                 name="population-loss"
+                 type="text"
+                 class="form-control">
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
+             class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="referencePeriodStart"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="referencePeriodStart"
+                          name="referencePeriodStart">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.referencePeriodStart"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="referencePeriodEnd"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="referencePeriodEnd"
+                          name="referencePeriodEnd">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': (formErrors.collectionStartDate && formErrors.collectionStartDate.length) || (formErrors.collectionEndDate && formErrors.collectionEndDate.length) }"
+             class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="collectionStartDate">{{ 'collectionStartDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="collectionStartDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="collectionStartDate"
+                          name="collectionStartDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.collectionStartDate"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="collectionEndDate">{{ 'collectionEndDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="collectionEndDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForReferencePeriodFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="collectionEndDate"
+                          name="collectionEndDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.collectionEndDate"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div *ngIf="allLifecyclePhases"
+                 class="form-group">
+              <label for="lifecyclePhase" translate="study.lifecyclePhase"></label>
+              <select [(ngModel)]="study.lifecyclePhase"
+                      [compareWith]="nodeUtils.equals"
+                      id="lifecyclePhase"
+                      name="lifecyclePhase"
+                      class="form-control">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let lifecyclePhase of allLifecyclePhases"
+                        [ngValue]="lifecyclePhase">
+                  {{lifecyclePhase.prefLabel|lang}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+          <br>
+          <p-autoComplete
+            [(ngModel)]="study.conceptsFromScheme"
+            [ngModelOptions]="{ standalone: true }"
+            [suggestions]="conceptSearchResults"
+            (completeMethod)="searchConcept($event)"
+            [multiple]="true"
+            dataKey="id"
+            emptyMessage="{{ 'noMatchingConcepts' | translate }}"
+            placeholder="{{ 'conceptsFromSchemePlaceholder' | translate }}"
+            minLength="3"
+            [style]="{'width':'100%'}"
+            [inputStyle]="{'width':'100%'}"
+            inputId="conceptsFromScheme">
+
+            <ng-template let-concept pTemplate="item">
+        <span>
+          {{ concept.prefLabel | lang }}
+        </span>
+              <small style="opacity:.7">
+          <span *ngFor="let lang of getConceptLanguages(concept)">
+            {{ lang }}:
+            {{ concept.prefLabel[lang] }}
+          </span>
+                ({{ concept.conceptScheme.prefLabel | lang }})
+              </small>
+            </ng-template>
+
+            <ng-template let-concept pTemplate="selectedItem">
+        <span style="margin-right:1.2em;">
+          <span>
+            {{ concept.prefLabel | lang }}
+          </span>
+          <span style="opacity:.4">
+            ({{ concept.conceptScheme.prefLabel | lang }})
+          </span>
+        </span>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+
+        <div class="form-group">
+          <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+          <p-chips [(ngModel)]="freeConcepts"
+                   [ngModelOptions]="{ standalone: true }"
+                   inputId="freeConcepts">
+          </p-chips>
+          <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="datasetType">{{ 'datasetType' | translate }}</label>
+          <br>
+          <p-multiSelect [(ngModel)]="selectedDatasetTypeItems"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="datasetTypeItems"
+                         defaultLabel="{{ 'selectDatasetType' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
+                         inputId="datasetType">
+          </p-multiSelect>
+        </div>
+
+        <div class="form-group">
+          <study-relations-edit
+            [study]="study">
+          </study-relations-edit>
+        </div>
+
+        <div class="form-group">
+          <label for="comment" translate="comment"></label>
+          <textarea [(ngModel)]="study.comment"
+                    thlAutogrow
+                    id="comment"
+                    name="comment"
+                    class="form-control"
+                    rows="2">
+          </textarea>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="edit-controls-padding"></div>
+
+  </div>
+
+  <div class="edit-controls-fixed">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <button (click)="save()"
+                  [disabled]="savingInProgress"
+                  class="btn btn-primary"
+                  type="button">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </button>
+          <button (click)="goBack()"
+                  [disabled]="savingInProgress"
+                  class="btn btn-default"
+                  type="button">
+            {{ 'cancel' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-template #loadingStudy>
+  <thl-spinner></thl-spinner>
+</ng-template>
+
+
+

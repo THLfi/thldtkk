@@ -47,6 +47,7 @@ import { PublicDatasetService } from './services-public/public-dataset.service'
 import { PublicInstanceVariableService } from './services-public/public-instance-variable.service'
 import { QuantityService } from './services-common/quantity.service'
 import { RoleService } from './services-common/role.service'
+import { EditorStudyService } from './services-editor/editor-study.service'
 import { UnitService } from './services-common/unit.service'
 import { UnitTypeService } from './services-common/unit-type.service'
 import { UniverseService } from './services-common/universe.service'
@@ -83,6 +84,10 @@ import { DatasetListComponent as EditorDatasetListComponent } from './views/edit
 import { DatasetRelationsEditComponent } from './views/editor/dataset/dataset-relationships/dataset-relations-edit.component'
 import { DatasetRelationTypeDropdown } from './views/editor/dataset/dataset-relationships/dataset-relation-type-dropdown.component'
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
+import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
+import { StudyEditComponent } from './views/editor/study/study-edit.component'
+import { EditorStudyDatasetsComponent} from './views/editor/study/editor-study-datasets.component'
+import { EditorStudyViewComponent} from './views/editor/study/editor-study-view.component'
 import { DatasetViewComponent as EditorDatasetComponent } from './views/editor/dataset/dataset-view.component'
 import { EditorLoginComponent } from './views/editor/login/editor-login.component'
 import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
@@ -94,6 +99,9 @@ import { LogoutMessageComponent } from './views/editor/login/logout-message.comp
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
+import { StudyRelationsEditComponent } from './views/editor/study/study-relationships/study-relations-edit.component'
+import { StudyRelationTypeDropdown } from './views/editor/study/study-relationships/study-relation-type-dropdown.component'
+import { StudySidebarComponent } from './views/editor/study/sidebar/study-sidebar.component'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
@@ -127,6 +135,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         EditorDatasetListComponent,
         EditorDatasetComponent,
         EditorLoginComponent,
+        EditorStudyListComponent,
+        EditorStudyDatasetsComponent,
+        EditorStudyViewComponent,
         InstanceVariableComponent,
         InstanceVariableEditComponent,
         InstanceVariableViewComponent,
@@ -138,6 +149,10 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LogoutMessageComponent,
         PersonEditModalComponent,
         RequiredFieldIndicator,
+        StudyEditComponent,
+        StudySidebarComponent,
+        StudyRelationsEditComponent,
+        StudyRelationTypeDropdown,
         UnitTypeEditModalComponent,
         UnitTypeListComponent,
         UniverseEditModalComponent,
@@ -211,6 +226,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         PublicInstanceVariableService,
         QuantityService,
         RoleService,
+        EditorStudyService,
         UnitService,
         UnitTypeService,
         UniverseService,

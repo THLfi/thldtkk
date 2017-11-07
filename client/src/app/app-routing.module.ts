@@ -13,6 +13,9 @@ import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/da
 import { DatasetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
+import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
+import { EditorStudyDatasetsComponent } from './views/editor/study/editor-study-datasets.component'
+import { EditorStudyViewComponent } from './views/editor/study/editor-study-view.component'
 import { IndexComponent } from './index.component'
 import { IndexRedirectGuard } from './index-redirect-guard'
 import { EditorLoginComponent } from './views/editor/login/editor-login.component'
@@ -21,6 +24,7 @@ import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-v
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 import { RequireLoginGuard } from './require-login-guard'
+import { StudyEditComponent } from './views/editor/study/study-edit.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseListComponent } from "./views/editor/universe/universe-list.component"
 import { VariableListComponent } from "./views/editor/variable/variable-list.component"
@@ -171,6 +175,43 @@ const routes: Routes = [
             component: UnitTypeListComponent,
             data: {
               title:'pageTitles.editor.unitTypeList'
+            }
+          },
+          {
+            path: 'studies',
+            component: EditorStudyListComponent,
+            data: {
+              title:'pageTitles.editor.studies'
+            }
+          },
+          {
+            path: 'studies/new',
+            component: StudyEditComponent,
+            data: {
+              title: 'pageTitles.editor.newStudy',
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:id/edit',
+            component: StudyEditComponent,
+            data: {
+              title: 'pageTitles.editor.editStudy',
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:id',
+            component: EditorStudyViewComponent,
+            data: {
+              hasSidebar: true
+            }
+          },         
+          {
+            path: 'studies/:id/datasets',
+            component: EditorStudyDatasetsComponent,
+            data: {
+              hasSidebar: true
             }
           },
           {

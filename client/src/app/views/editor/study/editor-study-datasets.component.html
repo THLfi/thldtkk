@@ -1,0 +1,42 @@
+
+<study-sidebar [study]="study"
+               [activeSection]="sidebarActiveSection">
+</study-sidebar>
+
+<div class="content-container">
+  <div class="content-header container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>{{study.prefLabel | lang}}</h1> <!-- name of study -->
+      </div>
+    </div>
+  </div>
+  
+  <div class="content-body container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>{{'study.manageDatasets' | translate}}</h2>
+      </div>
+      <div class="col-xs-12">
+        <table class="table table-striped">
+          <tr>
+            <th>{{'prefLabel' | translate}}</th>
+            <th>{{'description' | translate}}</th>
+          </tr>
+          <tr *ngFor="let dataset of study.datasets"
+              routerLink="/studies/{{ study.id }}/datasets/{{ dataset.id }}"
+              style="cursor: pointer;">
+              <td>
+                {{ dataset.prefLabel | lang}}
+              </td>
+              <td>
+                {{ dataset.description | lang }}
+              </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+

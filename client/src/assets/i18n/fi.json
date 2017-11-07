@@ -442,12 +442,15 @@
       "newInstanceVariable": "Uusi muuttuja",
       "editDataset": "Muokkaa datasettiä",
       "newDataset": "Uusi dataset",
+      "editStudy": "Muokkaa aineistoa",
+      "newStudy": "Uusi aineisto",
       "variables": "Käsitemuuttujat",
       "unitTypeList":"Havaintoyksiköt",
       "frontpageLogin":"Kirjautuminen palveluun",
       "administrativeInformation": "Hallinnolliset tiedot",
       "codeLists": "Koodistot",
-      "universes":"Perusjoukot"
+      "universes": "Perusjoukot",
+      "studies": "Aineistot"
     }
     ,
     "catalog": {
@@ -491,5 +494,39 @@
     "logoutSuccessDetails": "Kirjaudu sisään jatkaaksesi editorin käyttöä",
     "loginAdvice": "Mitä kirjautumista minun pitäisi käyttää?",
     "loginAdviceTooltip": "Jos olet Virtu-viraston työntekijä, käytä Virtua. Muille tarjoamme vaihtoehtona THL:n omaa kirjautumispalvelua"
+  },
+  "study": {
+    "manageDatasets": "Hallinnoi datasettejä",
+    "add": "Lisää aineisto",
+    "new":"Uusi aineisto",
+    "study":"Aineisto",
+    "studies": "Aineistot",
+    "noStudies": "Aineistoja ei löytynyt",
+    "noOrganizationStudies": "Organisaatiollesi ei löytynyt aineistoja",
+    "noLinks": "Aineistolle ei ole määritelty linkkejä.",
+    "personInRolesLabel": "Aineistoon liittyvät henkilöt",
+    "noPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
+    "lifecyclePhase":"Aineiston elinkaaren vaihe",
+    "sidebar": {
+      "study": "Aineisto",
+      "datasets": "Datasetit",
+      "instanceVariables": "Muuttujat",
+      "administrativeInformation": "Hallinnolliset tiedot"
+    },
+    "relations": {
+      "predecessors":"Edeltäjät",
+      "successor":"Seuraaja",
+      "successors": "Seuraajat",
+      "predecessor": "Edeltäjä",
+      "label":"Suhteet muihin aineistoihin",
+      "definedByOtherStudy":"suhde on määritelty kohdeaineistossa",
+      "targetStudy":"kohdeaineisto",
+      "relationType":"Suhteen tyyppi",
+      "addNew": "Lisää uusi aineistosuhde",
+      "noStudy":"Ei aineistoa",
+      "noRelations":"Aineistojen välisiä suhteita ei ole määritelty."
+    },
+    "confirmPublish": "Haluatko varmasti julkaista aineiston?",
+    "confirmWithdraw": "Haluatko varmasti perua aineiston julkaisun?"
   }
 }

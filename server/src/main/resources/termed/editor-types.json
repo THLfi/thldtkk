@@ -52,7 +52,7 @@
     ],
     "referenceAttributes": [
       {
-        "id": "owner",
+        "id": "ownerOrganization",
         "range": {
           "id": "Organization",
           "graph": {

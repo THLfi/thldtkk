@@ -2,15 +2,8 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-
-import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
-
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -19,17 +12,17 @@ import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
-import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.collect.Maps.difference;
-import static fi.thl.thldtkk.api.metadata.util.MapUtils.index;
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -59,9 +52,9 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
         "references.person:2",
         "references.role:2",
         "referrers.predecessor"),
-        new NodeId(id, "DataSet")).map(Dataset::new);
+        new NodeId(id, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
   }
-  
+
   @Override
   public Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId) {
     Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
@@ -78,15 +71,15 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
       "references.unitType:2",
       "references.inScheme:3",
       "references.codeItems:3"),
-      new NodeId(datasetId, "DataSet")).map(Dataset::new);
+      new NodeId(datasetId, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
 
     return dataset;
   }
-  
+
 
   @Override
   public List<Dataset> findAll() {
-    return nodes.query(keyValue("type.id", "DataSet"))
+    return nodes.query(keyValue("type.id", Dataset.TERMED_NODE_CLASS))
         .map(Dataset::new)
         .collect(toList());
   }
@@ -94,7 +87,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
   @Override
   public List<Dataset> find(String query, int max) {
     return nodes.query(
-        and(keyValue("type.id", "DataSet"),
+        and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
             keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
         max)
         .map(Dataset::new)
@@ -105,7 +98,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max) {
     List<Criteria> criteria = new ArrayList<>();
 
-    criteria.add(keyValue("type.id", "DataSet"));
+    criteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
 
     if (organizationId != null) {
       criteria.add(keyValue("references.organization.id", organizationId.toString()));
@@ -125,7 +118,7 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
 
-    criteria.add(keyValue("type.id", "DataSet"));
+    criteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
 
     if (organizationId != null) {
       criteria.add(keyValue("references.owner.id", organizationId.toString()));
@@ -207,13 +200,13 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
         .merge(buildChangeset(
             newDataset.getPopulation().orElse(null),
             oldDataset.getPopulation().orElse(null)))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getInstanceVariables(),
             oldDataset.getInstanceVariables()))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getLinks(),
             oldDataset.getLinks()))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getPersonInRoles(),
             oldDataset.getPersonInRoles()));
 
@@ -238,24 +231,6 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
       return Changeset.delete(new NodeId(oldPopulation.toNode()));
     }
     return Changeset.empty();
-  }
-
-  private <T extends NodeEntity> Changeset<NodeId, Node> buildChangeset(
-      List<T> newNodeEntities,
-      List<T> oldNodeEntities) {
-
-    Map<UUID, T> newNodeEntitiesById = index(newNodeEntities, T::getId);
-    Map<UUID, T> oldNodeEntitiesById = index(oldNodeEntities, T::getId);
-
-    List<NodeId> deleted = difference(newNodeEntitiesById, oldNodeEntitiesById)
-        .entriesOnlyOnRight()
-        .values().stream().map(T::toNode).map(NodeId::new)
-        .collect(toList());
-
-    List<Node> saved = newNodeEntities.stream()
-        .map(NodeEntity::toNode).collect(toList());
-
-    return new Changeset<>(deleted, saved);
   }
 
   @Override

@@ -70,8 +70,8 @@ public class EditorDatasetServiceTest {
   @Before
   public void setUp() {
     List<Node> datasets = asList(
-        new Node(nameUUIDFromString("DS1"), "DataSet"),
-        new Node(nameUUIDFromString("DS2"), "DataSet"));
+        new Node(nameUUIDFromString("DS1"), Dataset.TERMED_NODE_CLASS),
+        new Node(nameUUIDFromString("DS2"), Dataset.TERMED_NODE_CLASS));
 
     MockitoAnnotations.initMocks(this);
 
@@ -80,7 +80,7 @@ public class EditorDatasetServiceTest {
     when(mockedUserHelper.isCurrentUserAdmin()).thenReturn(true);
 
     List<Criteria> basicDatasetCriteria = new ArrayList<>();
-    basicDatasetCriteria.add(keyValue("type.id", "DataSet"));
+    basicDatasetCriteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
     when(mockedNodes.query(eq(and(basicDatasetCriteria)), eq(-1)))
         .thenReturn(datasets.stream());
 
@@ -91,7 +91,7 @@ public class EditorDatasetServiceTest {
 
     when(mockedNodes.get(any(Select.class), any(NodeId.class))).thenReturn(Optional.empty());
     when(mockedNodes.get(any(Select.class), eq(
-        new NodeId(nameUUIDFromString("DS1"), "DataSet"))))
+        new NodeId(nameUUIDFromString("DS1"), Dataset.TERMED_NODE_CLASS))))
             .thenReturn(Optional.of(datasets.get(0)));
 
     this.editorDatasetService = new EditorDatasetServiceImpl(mockedNodes, mockedUserHelper);
@@ -188,7 +188,7 @@ public class EditorDatasetServiceTest {
   public void shouldDeleteDataset() {
     editorDatasetService.delete(nameUUIDFromString("DS1"));
     verify(mockedNodes)
-        .delete(singletonList(new NodeId(nameUUIDFromString("DS1"), "DataSet")));
+        .delete(singletonList(new NodeId(nameUUIDFromString("DS1"), Dataset.TERMED_NODE_CLASS)));
   }
 
   @Test
@@ -204,14 +204,14 @@ public class EditorDatasetServiceTest {
     editorDatasetService.save(ds);
 
     Multimap<String, Node> references = LinkedHashMultimap.create();
-    references.put("instanceVariable", new Node(nameUUIDFromString("IV1"), "InstanceVariable", props));
-    references.put("instanceVariable", new Node(nameUUIDFromString("IV2"), "InstanceVariable", props));
-    references.put("instanceVariable", new Node(nameUUIDFromString("IV3"), "InstanceVariable", props));
+    references.put("instanceVariable", new Node(nameUUIDFromString("IV1"), InstanceVariable.TERMED_NODE_CLASS, props));
+    references.put("instanceVariable", new Node(nameUUIDFromString("IV2"), InstanceVariable.TERMED_NODE_CLASS, props));
+    references.put("instanceVariable", new Node(nameUUIDFromString("IV3"), InstanceVariable.TERMED_NODE_CLASS, props));
 
-    Node datasetNode = new Node(nameUUIDFromString("DS"), "DataSet", of(), references);
-    Node iv1Node = new Node(nameUUIDFromString("IV1"), "InstanceVariable", props);
-    Node iv2Node = new Node(nameUUIDFromString("IV2"), "InstanceVariable", props);
-    Node iv3Node = new Node(nameUUIDFromString("IV3"), "InstanceVariable", props);
+    Node datasetNode = new Node(nameUUIDFromString("DS"), Dataset.TERMED_NODE_CLASS, of(), references);
+    Node iv1Node = new Node(nameUUIDFromString("IV1"), InstanceVariable.TERMED_NODE_CLASS, props);
+    Node iv2Node = new Node(nameUUIDFromString("IV2"), InstanceVariable.TERMED_NODE_CLASS, props);
+    Node iv3Node = new Node(nameUUIDFromString("IV3"), InstanceVariable.TERMED_NODE_CLASS, props);
 
     verify(mockedNodes).save(eq(asList(datasetNode, iv1Node, iv2Node, iv3Node)));
   }
@@ -305,7 +305,7 @@ public class EditorDatasetServiceTest {
     Node existingDatasetNode = a.datasetNode()
       .withId(ds1Id)
       .build();
-    when(mockedNodes.get(eq(new NodeId(ds1.getId(), "DataSet"))))
+    when(mockedNodes.get(eq(new NodeId(ds1.getId(), Dataset.TERMED_NODE_CLASS))))
       .thenReturn(Optional.of(existingDatasetNode));
 
     editorDatasetService.save(ds1);
@@ -343,7 +343,7 @@ public class EditorDatasetServiceTest {
     when(mockedUserHelper.getCurrentUserOrganizations()).thenReturn(Arrays.asList(orgA));
 
     List<Criteria> datasetCriteria = new ArrayList<>();
-    datasetCriteria.add(keyValue("type.id", "DataSet"));
+    datasetCriteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
     datasetCriteria.add(keyWithAnyValue("references.owner.id", Arrays.asList(orgA.getId().toString())));
 
     when(mockedNodes.query(eq(and(datasetCriteria)), eq(-1)))
@@ -369,7 +369,7 @@ public class EditorDatasetServiceTest {
     when(mockedUserHelper.getCurrentUserOrganizations()).thenReturn(Arrays.asList(orgA));
 
     List<Criteria> datasetCriteria = new ArrayList<>();
-    datasetCriteria.add(keyValue("type.id", "DataSet"));
+    datasetCriteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
     datasetCriteria.add(keyWithAnyValue("references.owner.id", Arrays.asList(orgA.getId().toString())));
 
     when(mockedNodes.query(eq(and(datasetCriteria)), eq(-1)))

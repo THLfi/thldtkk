@@ -38,7 +38,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
       .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }
-  
+
   @Override
   public List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId) {
     Dataset dataset = datasetService.getDatasetWithAllInstanceVariableProperties(datasetId)
@@ -50,7 +50,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   public List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max) {
     return nodes.query(
         select("id", "type", "properties.*", "references.*", "referrers.*"),
-        and(keyValue("type.id", "InstanceVariable"),
+        and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             keyValue("references.variable.id", variableId.toString())),
         max)
         .map(InstanceVariable::new)
@@ -60,7 +60,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   @Override
   public List<InstanceVariable> findAll() {
     return nodes.query(
-        keyValue("type.id", "InstanceVariable"))
+        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS))
         .map(InstanceVariable::new)
         .collect(toList());
   }
@@ -69,7 +69,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   public List<InstanceVariable> find(String query, int max) {
     return nodes.query(
         select("id", "type", "properties.*", "references.*", "referrers.*"),
-        and(keyValue("type.id", "InstanceVariable"),
+        and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             anyKeyWithAllValues(asList(
                 "properties.prefLabel",
                 "properties.description",
@@ -89,7 +89,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
         "references.inScheme:2",
         "references.codeItems:2",
         "references.unitType:2"),
-        new NodeId(id, "InstanceVariable")).map(InstanceVariable::new);
+        new NodeId(id, InstanceVariable.TERMED_NODE_CLASS)).map(InstanceVariable::new);
   }
 
 }

@@ -2,7 +2,6 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
@@ -25,7 +24,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.collect.Maps.difference;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -67,7 +65,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
     List<Criteria> criteria = new ArrayList<>();
 
-    criteria.add(keyValue("type.id", "DataSet"));
+    criteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
 
     if(!userHelper.isCurrentUserAdmin()) {
       criteria.add(getCurrentUserOrganizationCriteria());
@@ -123,7 +121,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
         "references.person:2",
         "references.role:2",
         "referrers.predecessors"),
-      new NodeId(id, "DataSet")).map(Dataset::new);
+      new NodeId(id, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
 
     if (dataset.isPresent()) {
       checkUserIsAllowedToAccessDataset(dataset.get());
@@ -153,7 +151,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       "references.unitType:2",
       "references.inScheme:3",
       "references.codeItems:3"),
-      new NodeId(datasetId, "DataSet")).map(Dataset::new);
+      new NodeId(datasetId, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
 
     if (dataset.isPresent()) {
       checkUserIsAllowedToAccessDataset(dataset.get());
@@ -288,13 +286,13 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
         .merge(buildChangeset(
             newDataset.getPopulation().orElse(null),
             oldDataset.getPopulation().orElse(null)))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getInstanceVariables(),
             oldDataset.getInstanceVariables()))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getLinks(),
             oldDataset.getLinks()))
-        .merge(buildChangeset(
+        .merge(Changeset.buildChangeset(
             newDataset.getPersonInRoles(),
             oldDataset.getPersonInRoles()));
 
@@ -319,24 +317,6 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
       return Changeset.delete(new NodeId(oldPopulation.toNode()));
     }
     return Changeset.empty();
-  }
-
-  private <T extends NodeEntity> Changeset<NodeId, Node> buildChangeset(
-      List<T> newNodeEntities,
-      List<T> oldNodeEntities) {
-
-    Map<UUID, T> newNodeEntitiesById = index(newNodeEntities, T::getId);
-    Map<UUID, T> oldNodeEntitiesById = index(oldNodeEntities, T::getId);
-
-    List<NodeId> deleted = difference(newNodeEntitiesById, oldNodeEntitiesById)
-        .entriesOnlyOnRight()
-        .values().stream().map(T::toNode).map(NodeId::new)
-        .collect(toList());
-
-    List<Node> saved = newNodeEntities.stream()
-        .map(NodeEntity::toNode).collect(toList());
-
-    return new Changeset<>(deleted, saved);
   }
 
   @Override
@@ -391,7 +371,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   public List<Dataset> getDatasetsByUnitType(UUID unitTypeId) {
     return nodes.query(
       select("id", "type", "properties.*", "references.*"),
-      and(keyValue("type.id", "DataSet"),
+      and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
         keyValue("references.unitType.id", unitTypeId.toString())))
       .map(Dataset::new).collect(Collectors.toList());
   }
@@ -401,7 +381,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   public List<Dataset> getUniverseDatasets(UUID universeId){
     List<Dataset> list =  nodes.query(
             select("id", "type", "properties.*", "references.*", "referrers.*"),
-            and(keyValue("type.id", "DataSet"),
+            and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
                     keyValue("references.universe.id", universeId.toString())))
             .map(Dataset::new)
             .collect(toList());

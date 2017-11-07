@@ -4,6 +4,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
@@ -64,6 +65,11 @@ public class ServiceConfiguration {
   }
 
   // editor services
+
+  @Bean
+  public EditorStudyService editorStudyService() {
+    return new EditorStudyServiceImpl(editorNodeRepository(), userHelper, editorDatasetService());
+  }
 
   @Bean
   public EditorInstanceVariableService editorInstanceVariableService() {

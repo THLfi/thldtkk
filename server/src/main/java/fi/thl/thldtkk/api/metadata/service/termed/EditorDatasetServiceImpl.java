@@ -224,7 +224,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
         new StringBuilder()
           .append("Cannot save dataset '")
           .append(dataset.getId())
-          .append("' because it has a self reference  in 'predecessors'")
+          .append("' because it has a self reference in 'predecessors'")
           .toString());
     }
 

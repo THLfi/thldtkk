@@ -274,6 +274,12 @@
         }
       },
       {
+        "id": "lastModifiedByUser",
+        "range": {
+          "id": "UserProfile"
+        }
+      },
+      {
         "id": "links",
         "range": {
           "id": "Link"

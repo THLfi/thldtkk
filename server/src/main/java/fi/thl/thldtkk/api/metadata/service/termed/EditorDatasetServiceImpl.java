@@ -252,6 +252,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
     dataset.getPersonInRoles()
         .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
 
+    dataset.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
     if (!old.isPresent()) {
       insert(dataset);
     } else {

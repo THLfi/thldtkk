@@ -54,6 +54,7 @@ public class DatasetPublishingServiceImpl implements DatasetPublishingService {
   private void removeNonPublicPropertiesAndReferences(Dataset savedEditorDataset) {
     savedEditorDataset.setComment(null);
     savedEditorDataset.setPredecessors(Collections.emptyList());
+    savedEditorDataset.setLastModifiedByUser(null);
   }
 
   @Override

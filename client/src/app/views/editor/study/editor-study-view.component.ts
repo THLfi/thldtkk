@@ -17,6 +17,7 @@ export class EditorStudyViewComponent {
   study: Study
   loadingStudy: boolean
   sidebarActiveSection: StudySidebarActiveSection
+  language: string
 
   constructor(
     private editorStudyService: EditorStudyService,
@@ -25,6 +26,7 @@ export class EditorStudyViewComponent {
     private titleService: Title,
     private langPipe: LangPipe) {
       this.sidebarActiveSection = StudySidebarActiveSection.STUDY
+      this.language = this.translateService.currentLang
     }
 
   ngOnInit() {

@@ -407,8 +407,16 @@
           "success": "Kyselykysymys tallennettu"
         }
       }
+    },
+    "study": {
+      "save": {
+        "result": {
+          "success": "Aineisto tallennettu"
+        }
+      }
     }
   },
+
   "importInstanceVariablesAsCsvButton": "Tuo muuttujia (CSV)",
   "importInstanceVariablesAsCsvTooltip": "Tuo muuttujia CSV-tiedostosta",
   "importInstanceVariablesModal": {
@@ -503,6 +511,7 @@
     "studies": "Aineistot",
     "noStudies": "Aineistoja ei löytynyt",
     "noOrganizationStudies": "Organisaatiollesi ei löytynyt aineistoja",
+    "noDatasets":"Aineistolla ei ole datasettejä",
     "noLinks": "Aineistolle ei ole määritelty linkkejä.",
     "personInRolesLabel": "Aineistoon liittyvät henkilöt",
     "noPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",

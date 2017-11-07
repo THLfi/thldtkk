@@ -70,7 +70,7 @@
         <div *ngIf="availableOrganizations"
              class="form-group">
           <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-          <select [(ngModel)]="study.ownerOrganizationf"
+          <select [(ngModel)]="study.ownerOrganization"
                   (change)="onOrganizationChange()"
                   [compareWith]="nodeUtils.equals"
                   id="ownerOrganization"

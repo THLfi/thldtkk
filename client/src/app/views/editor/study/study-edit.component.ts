@@ -201,12 +201,13 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
           this.collectionEndDate = new Date(study.collectionEndDate)
         }
 
-        if (study.ownerOrganizationUnit.length > 0) {
-            this.ownerOrganizationUnit = study.ownerOrganizationUnit[0];
+        if (study.ownerOrganizationUnit) {
+            this.ownerOrganizationUnit = study.ownerOrganizationUnit;
         }
 
         if (study.freeConcepts && study.freeConcepts[this.language]) {
             this.freeConcepts = study.freeConcepts[this.language].split(';')
+            this.freeConcepts = this.freeConcepts.map(freeConcept => freeConcept.trim())
         }
 
         return study;
@@ -533,13 +534,10 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         this.study.collectionEndDate = this.collectionEndDate ?
           this.dateUtils.convertToIsoDate(this.collectionEndDate) : null
 
-        this.study.ownerOrganizationUnit = [];
+        this.study.ownerOrganizationUnit = this.study.ownerOrganization && this.ownerOrganizationUnit ? this.ownerOrganizationUnit : null
 
-        if (this.ownerOrganizationUnit && this.study.ownerOrganization) {
-            this.study.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
-        }
-
-        this.study.freeConcepts[this.language] = this.freeConcepts.join(';')
+        // trailing white space to separate free concepts in search queries
+        this.study.freeConcepts[this.language] = this.freeConcepts.join('; ')
 
         this.study.datasetTypes = this.resolveSelectedDatasetTypes();
 

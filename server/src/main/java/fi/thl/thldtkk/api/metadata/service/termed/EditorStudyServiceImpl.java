@@ -110,6 +110,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "lastModifiedDate",
         "properties.*",
         "references.*",
+        "references.inScheme:2",
         "references.personInRoles:2",
         "references.person:2",
         "references.role:2",

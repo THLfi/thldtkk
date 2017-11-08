@@ -110,7 +110,7 @@ public class Study {
       .ifPresent(lp -> this.lifecyclePhase = new LifecyclePhase(lp));
     node.getReferences("links")
       .forEach(l -> this.links.add(new Link(l)));
-    node.getReferences("datasetType")
+    node.getReferences("datasetTypes")
       .forEach(dt -> this.datasetTypes.add(new DatasetType(dt)));
     node.getReferencesFirst("unitType")
       .ifPresent(ut -> this.unitType = new UnitType(ut));
@@ -267,6 +267,10 @@ public class Study {
     return datasets;
   }
 
+  public void setDatasets(List<Dataset> datasets) {
+    this.datasets = datasets;
+  }
+
   public List<Study> getPredecessors() {
     return predecessors;
   }
@@ -306,7 +310,7 @@ public class Study {
     getUniverse().ifPresent(u -> refs.put("universe", u.toNode()));
     getUsageCondition().ifPresent(uc -> refs.put("usageCondition", uc.toNode()));
     getLifecyclePhase().ifPresent(lp -> refs.put("lifecyclePhase", lp.toNode()));
-    getDatasetTypes().forEach(dt -> refs.put("datasetType", dt.toNode()));
+    getDatasetTypes().forEach(dt -> refs.put("datasetTypes", dt.toNode()));
     getLinks().forEach(l -> refs.put("links", l.toNode()));
     getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
     getUnitType().ifPresent(ut -> refs.put("unitType", ut.toNode()));

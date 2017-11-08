@@ -17,6 +17,13 @@ public class OrganizationUnit {
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
 
+  /**
+   * Required by GSON deserialization.
+   */
+  private OrganizationUnit() {
+
+  }
+
   public OrganizationUnit(UUID id) {
     this.id = requireNonNull(id);
   }

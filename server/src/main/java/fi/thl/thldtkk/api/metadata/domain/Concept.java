@@ -20,6 +20,13 @@ public class Concept {
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private ConceptScheme conceptScheme;
 
+  /**
+   * Required by GSON deserialization.
+   */
+  private Concept() {
+
+  }
+
   public Concept(Node node) {
     this.id = node.getId();
     checkArgument(Objects.equals(node.getTypeId(), "Concept"));
@@ -27,8 +34,8 @@ public class Concept {
     node.getReferencesFirst("inScheme")
       .ifPresent(cs -> this.conceptScheme = new ConceptScheme(cs));
   }
-  
-  /** 
+
+  /**
    * Constructor for testing purposes
    */
   public Concept(UUID id, Map<String, String> prefLabel, ConceptScheme conceptScheme) {

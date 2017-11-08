@@ -16,6 +16,13 @@ public class LifecyclePhase {
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
 
+  /**
+   * Required by GSON deserialization.
+   */
+  private LifecyclePhase() {
+
+  }
+
   public LifecyclePhase(UUID id) {
     this.id = requireNonNull(id);
   }

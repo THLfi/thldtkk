@@ -288,6 +288,10 @@ public class Dataset implements NodeEntity {
     return instanceVariables;
   }
 
+  public void setInstanceVariables(List<InstanceVariable> instanceVariables) {
+    this.instanceVariables = instanceVariables;
+  }
+
   public List<DatasetType> getDatasetTypes() {
     return datasetTypes;
   }

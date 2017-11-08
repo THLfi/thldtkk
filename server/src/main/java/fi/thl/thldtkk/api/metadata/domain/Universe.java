@@ -20,6 +20,13 @@ public class Universe {
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
 
+    /**
+     * Required by GSON deserialization.
+     */
+    private Universe() {
+
+    }
+
     public Universe(UUID id) {
         this.id = requireNonNull(id);
     }

@@ -16,6 +16,13 @@ public class UsageCondition {
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
 
+  /**
+   * Required by GSON deserialization.
+   */
+  private UsageCondition() {
+
+  }
+
   public UsageCondition(UUID id) {
     this.id = requireNonNull(id);
   }

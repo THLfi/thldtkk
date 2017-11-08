@@ -68,7 +68,7 @@ public class ServiceConfiguration {
 
   @Bean
   public EditorStudyService editorStudyService() {
-    return new EditorStudyServiceImpl(editorNodeRepository(), userHelper, editorDatasetService());
+    return new EditorStudyServiceImpl(editorNodeRepository(), userHelper);
   }
 
   @Bean

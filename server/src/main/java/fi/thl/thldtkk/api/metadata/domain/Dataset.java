@@ -53,6 +53,7 @@ public class Dataset implements NodeEntity {
   private List<DatasetType> datasetTypes = new ArrayList<>();
   private UnitType unitType;
   private Date lastModifiedDate;
+  private UserProfile lastModifiedByUser;
   @Valid
   private List<PersonInRole> personInRoles = new ArrayList<>();
   private List<Dataset> predecessors = new ArrayList<>();
@@ -325,6 +326,10 @@ public class Dataset implements NodeEntity {
     return successors;
   }
 
+  public Optional<UserProfile> getLastModifiedByUser() { return Optional.ofNullable(lastModifiedByUser); }
+
+  public void setLastModifiedByUser(UserProfile userProfile) { this.lastModifiedByUser = userProfile; }
+
   /**
    * Transforms dataset into node
    */
@@ -371,6 +376,7 @@ public class Dataset implements NodeEntity {
             .put("unitType", v.toNode()));
     getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
+    getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }
 

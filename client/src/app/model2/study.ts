@@ -39,7 +39,7 @@ export interface Study extends Node {
 
   ownerOrganization: Organization
 
-  ownerOrganizationUnit: OrganizationUnit[]
+  ownerOrganizationUnit: OrganizationUnit
 
   usageCondition: UsageCondition
 

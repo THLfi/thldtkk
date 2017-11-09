@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
@@ -245,10 +246,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     Changeset<NodeId, Node> changeset;
     if (!old.isPresent()) {
-      changeset = changesetForInsert(study, includeDatasets);
+      changeset = changesetForInsert(study, includeDatasets, includeInstanceVariables);
     }
     else {
-      changeset = changesetForUpdate(study, old.get(), includeDatasets);
+      changeset = changesetForUpdate(study, old.get(), includeDatasets, includeInstanceVariables);
     }
 
     nodes.post(changeset);
@@ -257,20 +258,22 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .orElseThrow(studyNotFoundAfterSave(study.getId()));
   }
 
-  private boolean containsSelf(Study study, List<Study> studyRelations) {
-    return studyRelations != null ? studyRelations.stream()
-        .filter(s -> study.getId().equals(s.getId()))
+  private <T extends NodeEntity> boolean containsSelf(T node, List<T> nodeRelations) {
+    return nodeRelations != null ? nodeRelations.stream()
+        .filter(s -> node.getId().equals(s.getId()))
         .findFirst()
         .isPresent()
       : false;
   }
 
-  private Changeset<NodeId, Node> changesetForInsert(Study study, boolean includeDatasets) {
+  private Changeset<NodeId, Node> changesetForInsert(Study study,
+                                                     boolean includeDatasets,
+                                                     boolean includeInstanceVariables) {
     Changeset changeset = Changeset.empty();
 
     if (includeDatasets) {
       for (Dataset dataset : study.getDatasets()) {
-        changeset = changeset.merge(changesetForInsert(dataset));
+        changeset = changeset.merge(changesetForInsert(dataset, includeInstanceVariables));
       }
     }
     else {
@@ -287,7 +290,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return changeset;
   }
 
-  private Changeset<NodeId, Node> changesetForInsert(Dataset dataset) {
+  private Changeset<NodeId, Node> changesetForInsert(Dataset dataset, boolean includeInstanceVariables) {
     List<Node> save = new ArrayList<>();
 
     save.add(dataset.toNode());
@@ -295,14 +298,17 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     dataset.getPopulation().ifPresent(v -> save.add(v.toNode()));
     dataset.getLinks().forEach(v -> save.add(v.toNode()));
     dataset.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
-    dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
+
+    if (includeInstanceVariables) {
+      dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
+    }
 
     return new Changeset(Collections.emptyList(), save);
   }
 
   private Changeset<NodeId, Node> changesetForUpdate(Study newStudy,
                                                      Study oldStudy,
-                                                     boolean includeDatasets) {
+                                                     boolean includeDatasets, boolean includeInstanceVariables) {
     Changeset<NodeId, Node> studyChangeset = Changeset.<NodeId, Node>empty()
       .merge(buildChangeset(
         newStudy.getPopulation().orElse(null),
@@ -323,10 +329,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         Optional<Dataset> oldDataset = getDataset(oldStudy, newDataset.getId());
         Changeset<NodeId, Node> datasetChangeset;
         if (oldDataset.isPresent()) {
-          datasetChangeset = changesetForUpdate(newDataset, oldDataset.get(), false);
+          datasetChangeset = changesetForUpdate(newDataset, oldDataset.get(), includeInstanceVariables);
         }
         else {
-          datasetChangeset = changesetForInsert(newDataset);
+          datasetChangeset = changesetForInsert(newDataset, includeInstanceVariables);
         }
         studyChangeset = studyChangeset.merge(datasetChangeset);
       }
@@ -363,7 +369,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return nodes;
   }
 
-  private Changeset<NodeId, Node> changesetForUpdate(Dataset newDataset, Dataset oldDataset, boolean includeInstanceVariables) {
+  private Changeset<NodeId, Node> changesetForUpdate(Dataset newDataset,
+                                                     Dataset oldDataset,
+                                                     boolean includeInstanceVariables) {
     Changeset<NodeId, Node> changeset = Changeset.<NodeId, Node>save(newDataset.toNode())
       .merge(buildChangeset(
         newDataset.getPopulation().orElse(null),
@@ -432,6 +440,15 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     Study study = get(studyId).orElseThrow(entityNotFound(Study.class, studyId));
 
+    if (containsSelf(dataset, dataset.getPredecessors())) {
+      throw new IllegalArgumentException(
+        new StringBuilder()
+          .append("Cannot save dataset '")
+          .append(dataset.getId())
+          .append("' because it has a self reference in 'predecessors'")
+          .toString());
+    }
+
     Optional<Dataset> existingDataset = getDataset(study, dataset.getId());
 
     if (existingDataset.isPresent()) {
@@ -478,13 +495,78 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   }
 
   @Override
-  public InstanceVariable saveInstanceVariable(UUID studyId, UUID datasetId, InstanceVariable instanceVariable) {
-    throw new UnsupportedOperationException("Not implemented");
+  public InstanceVariable getInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
+    Dataset dataset = getDataset(studyId, datasetId)
+      .orElseThrow(entityNotFound(Dataset.class, datasetId));
+    return getInstanceVariable(dataset, instanceVariableId)
+      .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
+  }
+
+  private Optional<InstanceVariable> getInstanceVariable(Dataset dataset, UUID instanceVariableId) {
+    return dataset.getInstanceVariables()
+      .stream()
+      .filter(iv -> iv.getId().equals(instanceVariableId))
+      .findFirst();
   }
 
   @Override
+  public InstanceVariable saveInstanceVariable(UUID studyId, UUID datasetId, InstanceVariable instanceVariable) {
+    instanceVariable.setId(firstNonNull(instanceVariable.getId(), randomUUID()));
+
+    Study study = get(studyId).orElseThrow(entityNotFound(Study.class, studyId));
+    Dataset dataset = getDataset(study, datasetId).orElseThrow(entityNotFound(Dataset.class, datasetId));
+
+    Optional<InstanceVariable> existingInstanceVariable = getInstanceVariable(dataset, instanceVariable.getId());
+
+    if (existingInstanceVariable.isPresent()) {
+      int index = dataset.getInstanceVariables().indexOf(existingInstanceVariable.get());
+      dataset.getInstanceVariables().remove(index);
+      dataset.getInstanceVariables().add(index, instanceVariable);
+    }
+    else {
+      dataset.getInstanceVariables().add(instanceVariable);
+    }
+
+    Study savedStudy = saveStudyInternal(study, true, true);
+
+    LOG.info("Saved instance variable '{}' (of dataset '{}' of study '{}')",
+      instanceVariable.getId(), datasetId, studyId);
+
+    Dataset savedDataset = getDataset(savedStudy, datasetId)
+      .orElseThrow(datasetNotFoundAfterSave(datasetId, studyId));
+
+    return getInstanceVariable(savedDataset, instanceVariable.getId())
+      .orElseThrow(instanceVariableNotFoundAfterSave(instanceVariable.getId(), datasetId, studyId));
+  }
+
+  private Supplier<IllegalStateException> instanceVariableNotFoundAfterSave(UUID instanceVariableId,
+                                                                            UUID datasetId,
+                                                                            UUID studyId) {
+    return () -> new IllegalStateException("InstanceVariable '"
+      + instanceVariableId
+      + "' was not found after saving, dataset '"
+      + datasetId
+      + "' or study '"
+      + studyId
+      + "' might have been updated simultaneously by another user");
+  }
+
+
+  @Override
   public void deleteInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
-    throw new UnsupportedOperationException("Not implemented");
+    Study study = get(studyId)
+      .orElseThrow(entityNotFound(Study.class, studyId));
+    Dataset dataset = getDataset(study, datasetId)
+      .orElseThrow(entityNotFound(Dataset.class, datasetId));
+    InstanceVariable instanceVariable = getInstanceVariable(dataset, instanceVariableId)
+      .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
+
+    dataset.getInstanceVariables().remove(instanceVariable);
+
+    saveStudyInternal(study, true, true);
+
+    LOG.info("Deleted instance variable '{}' (of dataset '{}' of study '{}')",
+      instanceVariable.getId(), datasetId, studyId);
   }
 
 }

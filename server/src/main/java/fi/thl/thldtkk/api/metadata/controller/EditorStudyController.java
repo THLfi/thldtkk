@@ -94,9 +94,18 @@ public class EditorStudyController {
     editorStudyService.deleteDataset(studyId, datasetId);
   }
 
+  @ApiOperation("Get one instance variable by study ID, dataset ID and instance variable ID")
+  @GetJsonMapping(path = "/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}")
+  public InstanceVariable getInstanceVariable(
+    @PathVariable UUID studyId,
+    @PathVariable UUID datasetId,
+    @PathVariable UUID instanceVariableId) {
+    return editorStudyService.getInstanceVariable(studyId, datasetId, instanceVariableId);
+  }
+
   @ApiOperation("Create a new instance variable or update an existing instance variable")
   @PostJsonMapping(
-    path = "/{studyId}/instanceVariables",
+    path = "/{studyId}/datasets/{datasetId}/instanceVariables",
     produces = APPLICATION_JSON_UTF8_VALUE)
   public InstanceVariable postInstanceVariable(
     @PathVariable UUID studyId,

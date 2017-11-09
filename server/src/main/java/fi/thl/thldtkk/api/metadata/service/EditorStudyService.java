@@ -18,6 +18,8 @@ public interface EditorStudyService extends Service<UUID, Study> {
 
   void deleteDataset(UUID studyId, UUID datasetId);
 
+  InstanceVariable getInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
+
   InstanceVariable saveInstanceVariable(UUID studyId, UUID datasetId, InstanceVariable instanceVariable);
 
   void deleteInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);

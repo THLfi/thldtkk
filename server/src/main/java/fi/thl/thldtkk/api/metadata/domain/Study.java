@@ -26,7 +26,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static java.util.Objects.requireNonNull;
 
-public class Study {
+public class Study implements NodeEntity {
 
   public static final String TERMED_NODE_CLASS = "Study";
 

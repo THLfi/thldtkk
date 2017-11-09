@@ -6,6 +6,7 @@ import { Observable } from 'rxjs'
 import { PopulationService } from '../services-common/population.service'
 import { GrowlMessageService } from '../services-common/growl-message.service'
 import { Study } from '../model2/study'
+import { Dataset } from '../model2/dataset'
 import { TranslateService } from '@ngx-translate/core'
 
 import 'rxjs/add/operator/map'
@@ -101,6 +102,23 @@ export class EditorStudyService {
       .map(response => response.json() as Study)
   }
 
+  saveDataset(studyId: string, dataset: Dataset): Observable<Dataset> {
+    return this.saveDatasetInternal(studyId, dataset)
+      .do(dataset => {
+        this.growlMessageService.buildAndShowMessage('success', 'operations.dataset.save.result.success')
+      })
+  }
+
+  private saveDatasetInternal(studyId: string, dataset: Dataset): Observable<Dataset> {
+    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
+    const options = new RequestOptions({ headers: headers })
+
+    return this.http.post(env.contextPath 
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets', dataset, options)
+      .map(response => response.json() as Dataset)
+  }
 
   publish(study: Study): Observable<Study> {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })

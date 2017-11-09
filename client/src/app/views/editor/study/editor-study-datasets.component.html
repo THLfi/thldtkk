@@ -18,6 +18,17 @@
           <h2>{{'study.manageDatasets' | translate}}</h2>
         </div>
         <div class="col-xs-12">
+          <div *ngIf="(organizations && organizations.length) || user.isAdmin" class="row">
+            <div class="col-xs-12">
+              <h2 class="pull-right">
+                <button routerLink="/editor/studies/{{study.id}}/datasets/new"
+                        class="btn btn-default pull-right">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  {{ 'addDataset' | translate }}
+                </button>
+              </h2>
+            </div>
+          </div>
           <ng-container *ngIf="study.datasets && study.datasets.length; else noStudyDatasets">
             <table class="table table-striped">
               <tr>
@@ -25,7 +36,7 @@
                 <th>{{'description' | translate}}</th>
               </tr>
               <tr *ngFor="let dataset of study.datasets"
-                  routerLink="/studies/{{ study.id }}/datasets/{{ dataset.id }}"
+                  routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}"
                   style="cursor: pointer;">
                   <td>
                     {{ dataset.prefLabel | lang}}

@@ -86,7 +86,6 @@ export class EditorDatasetService {
       referencePeriodEnd: null,
       collectionStartDate: null,
       collectionEndDate: null,
-      owner: null,
       ownerOrganizationUnit: [],
       usageCondition: null,
       lifecyclePhase: null,

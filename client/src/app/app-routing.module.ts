@@ -127,36 +127,6 @@ const routes: Routes = [
             }
           },
           {
-            path: 'datasets/new',
-            component: DataSetEditComponent,
-            data: {
-              title: 'pageTitles.editor.newDataset',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:id/edit',
-            component: DataSetEditComponent,
-            data: {
-              title: 'pageTitles.editor.editDataset',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:id',
-            component: EditorDataSetComponent,
-            data: {
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets',
-            component: EditorDataSetListComponent,
-            data: {
-              title:'pageTitles.editor.datasetList'
-            }
-          },
-          {
             path: 'variables',
             component: VariableListComponent,
             data: {
@@ -215,8 +185,32 @@ const routes: Routes = [
             }
           },
           {
+            path: 'studies/:studyId/datasets/new',
+            component: DataSetEditComponent,
+            data: {
+              title: 'pageTitles.editor.newDataset',
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/datasets/:datasetId',
+            component: EditorDataSetComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/datasets/:datasetId/edit',
+            component: DataSetEditComponent,
+            data: {
+              title: 'pageTitles.editor.editDataset',
+              hasSidebar: true
+            }
+          },
+
+          {
             path: '',
-            redirectTo: 'datasets',
+            redirectTo: 'studies',
             pathMatch: 'full'
           }
         ]

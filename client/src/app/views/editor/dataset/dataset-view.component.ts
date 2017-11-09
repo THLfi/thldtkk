@@ -5,8 +5,10 @@ import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from "../../../model2/dataset";
+import { Study } from "../../../model2/study";
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
-import { SidebarActiveSection } from './sidebar/sidebar-active-section'
+import { EditorStudyService } from '../../../services-editor/editor-study.service'
+import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
 
 @Component({
   templateUrl: './dataset-view.component.html',
@@ -14,12 +16,14 @@ import { SidebarActiveSection } from './sidebar/sidebar-active-section'
 })
 export class DatasetViewComponent implements OnInit {
 
+  study: Study
   dataset: Dataset
   language: string
 
-  sidebarActiveSection = SidebarActiveSection.DATASET
+  sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
   constructor(private datasetService: EditorDatasetService,
+              private editorStudyService: EditorStudyService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,
@@ -30,7 +34,8 @@ export class DatasetViewComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.dataset = null
-      this.getDataset(params['id'])
+      this.getStudy(params['studyId'])
+      this.getDataset(params['datasetId'])
     })
   }
 
@@ -40,6 +45,10 @@ export class DatasetViewComponent implements OnInit {
         this.dataset = dataset
         this.updatePageTitle()
       })
+  }
+
+  private getStudy(studyId: string) {
+    this.editorStudyService.getStudy(studyId).subscribe(study => this.study = study)
   }
 
   updatePageTitle():void {

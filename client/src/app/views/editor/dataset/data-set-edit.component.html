@@ -1,8 +1,8 @@
-<ng-container *ngIf="dataset; else loadingDataset;">
+<ng-container *ngIf="dataset && study; else loadingDatasetAndStudy;">
 
-  <dataset-sidebar [dataset]="dataset"
-                   [activeSection]="sidebarActiveSection">
-  </dataset-sidebar>
+  <study-sidebar [study]="study"
+                 [activeSection]="sidebarActiveSection">
+  </study-sidebar>
 
   <div class="content-container">
 
@@ -26,7 +26,8 @@
 
       <form #datasetForm="ngForm">
 
-        <div class="row">
+        <!-- Temporarily disabled XML import since import not yet supporting latest model for studies and dataset
+          <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
               <label for="file" translate="uploadFromFile"></label>
@@ -34,6 +35,7 @@
             </div>
           </div>
         </div>
+        -->
 
         <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
              class="row">
@@ -77,24 +79,7 @@
                  type="text">
         </div>
 
-        <div *ngIf="availableOrganizations"
-             class="form-group">
-          <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-          <select [(ngModel)]="dataset.owner"
-                  (change)="onOrganizationChange()"
-                  [compareWith]="nodeUtils.equals"
-                  id="ownerOrganization"
-                  name="ownerOrganization"
-                  class="form-control">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let organization of availableOrganizations"
-                    [ngValue]="organization">
-              {{organization.prefLabel | lang}}
-            </option>
-          </select>
-        </div>
-
-        <div *ngIf="availableOrganizations" class="form-group">
+        <div *ngIf="availableOrganizations && ownerOrganization" class="form-group">
           <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
           <select [(ngModel)]="ownerOrganizationUnit"
                   [compareWith]="nodeUtils.equals"
@@ -102,8 +87,8 @@
                   name="ownerOrganizationUnit"
                   class="form-control">
             <option [ngValue]="null"></option>
-            <ng-container *ngIf="dataset.owner">
-              <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[dataset.owner.id]"
+            <ng-container *ngIf="ownerOrganization">
+              <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[ownerOrganization.id]"
                     [ngValue]="organizationUnit">
               {{organizationUnit.prefLabel | lang}}
               </option>
@@ -683,6 +668,6 @@
 
 </ng-container>
 
-<ng-template #loadingDataset>
+<ng-template #loadingDatasetAndStudy>
   <thl-spinner></thl-spinner>
 </ng-template>

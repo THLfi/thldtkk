@@ -27,6 +27,7 @@ import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
 import {OrganizationService} from '../../../services-common/organization.service'
+import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
@@ -34,7 +35,9 @@ import {PersonInRole} from '../../../model2/person-in-role'
 import {PopulationService} from '../../../services-common/population.service'
 import {Role} from '../../../model2/role'
 import {RoleService} from '../../../services-common/role.service'
-import {SidebarActiveSection} from './sidebar/sidebar-active-section'
+import {Study} from '../../../model2/study'
+import {StudySidebarActiveSection} from '../study/sidebar/study-sidebar-active-section'
+
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from '../../../services-common/unit-type.service'
@@ -49,8 +52,10 @@ import {UsageConditionService} from '../../../services-common/usage-condition.se
 })
 export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
-    dataset: Dataset;
-    ownerOrganizationUnit: OrganizationUnit;
+    study: Study
+    dataset: Dataset
+    ownerOrganization: Organization
+    ownerOrganizationUnit: OrganizationUnit
 
     @ViewChild('datasetForm') datasetForm: NgForm
     currentForm: NgForm
@@ -95,7 +100,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
 
-    sidebarActiveSection = SidebarActiveSection.DATASET
+    sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
     urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*'
     urlSchemeHttpPrefix: string = "http://"
@@ -103,6 +108,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     validUrlExpression: RegExp
 
     constructor(
+        private editorStudyService: EditorStudyService,
         private datasetService: EditorDatasetService,
         private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
@@ -130,12 +136,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
 
     ngOnInit() {
-        this.getDataset();
+        this.getDataset()
+        this.getStudy()
         this.validUrlExpression = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
     }
 
     private getDataset() {
-        const datasetId = this.route.snapshot.params['id'];
+        const datasetId = this.route.snapshot.params['datasetId'];
         const copyOfDatasetId = this.route.snapshot.queryParams['copyOf'];
         if (datasetId) {
             Observable.forkJoin(
@@ -212,9 +219,19 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
         if (dataset.freeConcepts && dataset.freeConcepts[this.language]) {
             this.freeConcepts = dataset.freeConcepts[this.language].split(';')
+            this.freeConcepts = this.freeConcepts.map(freeConcept => freeConcept.trim())
+
         }
 
         return dataset;
+    }
+
+    private getStudy() {
+      const studyId = this.route.snapshot.params['studyId']
+      this.editorStudyService.getStudy(studyId).subscribe(study => {
+        this.study = study
+        this.ownerOrganization = study.ownerOrganization
+      })
     }
 
     private initializeSelectedDatasetTypes(dataset: Dataset): string[] {
@@ -257,10 +274,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     private extractOrganizationUnits(organizations: Organization[]) {
       organizations.map(organization => this.organizationUnitsOfOrganization[organization.id] = organization.organizationUnit)
-    }
-
-    public onOrganizationChange() {
-      this.ownerOrganizationUnit = null;
     }
 
     private getAllPersons() {
@@ -549,19 +562,19 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
         this.dataset.ownerOrganizationUnit = [];
 
-        if (this.ownerOrganizationUnit && this.dataset.owner) {
+        if (this.ownerOrganization && this.ownerOrganizationUnit) {
             this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
         }
 
-        this.dataset.freeConcepts[this.language] = this.freeConcepts.join(';')
+        // trailing white space to separate free concepts in search queries
+        this.dataset.freeConcepts[this.language] = this.freeConcepts.join('; ')
 
         this.dataset.datasetTypes = this.resolveSelectedDatasetTypes();
 
         // Remove empty/null predecessors
         this.dataset.predecessors = this.dataset.predecessors.filter(predecessor => predecessor && predecessor.id)
 
-        this.datasetService.save(this.dataset)
-            .finally(() => {
+        this.editorStudyService.saveDataset(this.study.id, this.dataset)            .finally(() => {
               this.savingInProgress = false
             })
             .subscribe(savedDataset => {
@@ -571,10 +584,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     goBack() {
-        if (this.dataset.id) {
-            this.router.navigate(['/editor/datasets', this.dataset.id]);
-        } else {
-            this.router.navigate(['/editor/datasets']);
-        }
+          this.router.navigate(['/editor/studies', this.study.id, 'datasets', this.dataset.id])
     }
 }

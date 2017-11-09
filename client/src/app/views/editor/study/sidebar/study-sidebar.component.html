@@ -10,12 +10,12 @@
     </li>
 
     <li *ngIf="study.id" 
-        [ngClass]="{ active: activeSection == StudySidebarActiveSection.DATASETS }">
+        [ngClass]="{ active: activeSection == StudySidebarActiveSection.DATASETS_AND_VARIABLES }">
       <a routerLink="{{ '/editor/studies/' + study.id + '/datasets' }}">
         <div class="icon">
           <i class="fa fa-cubes" aria-hidden="true"></i>
         </div>
-        {{ 'study.sidebar.datasets' | translate }}
+        {{ 'study.sidebar.datasetsAndVariables' | translate }}
       </a>
     </li>
     <li *ngIf="study.id"

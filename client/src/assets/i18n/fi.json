@@ -518,7 +518,7 @@
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
     "sidebar": {
       "study": "Aineisto",
-      "datasets": "Datasetit",
+      "datasetsAndVariables": "Datasetit & muuttujat",
       "instanceVariables": "Muuttujat",
       "administrativeInformation": "Hallinnolliset tiedot"
     },

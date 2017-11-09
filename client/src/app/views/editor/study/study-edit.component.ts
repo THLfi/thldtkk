@@ -31,7 +31,6 @@ import {OrganizationUnit} from "../../../model2/organization-unit";
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
-import {PopulationService} from '../../../services-common/population.service'
 import {Role} from '../../../model2/role'
 import {RoleService} from '../../../services-common/role.service'
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
@@ -42,6 +41,7 @@ import {Universe} from '../../../model2/universe'
 import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 
 @Component({
     templateUrl: './study-edit.component.html',
@@ -117,12 +117,12 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         private langPipe: LangPipe,
         private truncatePipe: TruncateCharactersPipe,
         private titleService: Title,
-        private populationService: PopulationService,
         private universeService: UniverseService,
         private dateUtils: DateUtils,
         private personService: PersonService,
         private roleService: RoleService,
-        private userService: CurrentUserService
+        private userService: CurrentUserService,
+        private breadcrumbService: BreadcrumbService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -136,6 +136,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     private getStudy() {
         const studyId = this.route.snapshot.params['id'];
         const copyOfStudyId = this.route.snapshot.queryParams['copyOf'];
+
         if (studyId) {
             Observable.forkJoin(
                 this.editorStudyService.getStudy(studyId)
@@ -144,6 +145,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                     this.study = this.initializeStudyProperties(data[0])
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.study);
                     this.updatePageTitle()
+                    this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
                 })
         } else if (copyOfStudyId) {
           this.editorStudyService.getStudy(copyOfStudyId).subscribe(data => {

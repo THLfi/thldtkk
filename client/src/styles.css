@@ -172,7 +172,7 @@ h3 {
 
 .main-container.editor {
   max-width: 1200px;
-  margin-top: 55px;
+  margin-top: 85px;
 }
 
 .main-container.editor.container-fluid.hiddenNavBar {
@@ -181,7 +181,7 @@ h3 {
 }
 
 .main-container.has-sidebar .content-container {
-  margin-top: 55px;
+  margin-top: 85px;
   margin-bottom: 0;
   margin-left: 80px;
   margin-right: 0;

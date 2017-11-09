@@ -1,4 +1,4 @@
-<ng-container *ngIf="study;else loadingStudy">
+<ng-container *ngIf="study; else loadingStudy">
 
   <study-sidebar [study]="study"
                  [activeSection]="sidebarActiveSection">
@@ -11,11 +11,9 @@
         <div class="col-sm-8">
           <h1>{{ study.prefLabel | lang }}</h1>
         </div>
+<!-- TODO: Fix publishing
         <div class="col-sm-4">
           <h2 class="pull-right">
-            <div>
-              <small>{{'lastModified' | translate}}: {{study.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
-            </div>
             <div class="pull-right">
               <ng-container *ngIf="study.published; else unpublished;">
                 <span class="label label-success">
@@ -36,6 +34,12 @@
               </ng-template>
             </div>
           </h2>
+        </div>
+-->
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <small>{{ 'lastModified' | translate }}: {{ study.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
         </div>
       </div>
     </div>
@@ -219,14 +223,11 @@
         </div>
       </div>
 
-      <div class="row">
+      <div *ngIf="(study.datasetTypes && study.datasetTypes.length)"
+           class="row">
         <div class="col-xs-12">
-          <ng-container *ngIf="(study.datasetTypes && study.datasetTypes.length)">
-
-            <h2>{{ 'datasetType' | translate }}</h2>
-            <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
-
-          </ng-container>
+          <h2>{{ 'datasetType' | translate }}</h2>
+          <p *ngFor="let datasetType of study.datasetTypes">{{ datasetType.prefLabel | lang }}</p>
         </div>
       </div>
 

@@ -10,6 +10,7 @@ import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 import {TruncateCharactersPipe} from 'ng2-truncate/dist/truncate-characters.pipe'
 
+import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services-common/concept.service';
 import {CurrentUserService} from '../../../services-editor/user.service'
@@ -32,12 +33,10 @@ import {OrganizationUnit} from "../../../model2/organization-unit";
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
-import {PopulationService} from '../../../services-common/population.service'
 import {Role} from '../../../model2/role'
 import {RoleService} from '../../../services-common/role.service'
 import {Study} from '../../../model2/study'
 import {StudySidebarActiveSection} from '../study/sidebar/study-sidebar-active-section'
-
 import {StringUtils} from '../../../utils/string-utils'
 import {UnitType} from "../../../model2/unit-type";
 import {UnitTypeService} from '../../../services-common/unit-type.service'
@@ -105,7 +104,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*'
     urlSchemeHttpPrefix: string = "http://"
     partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/ // e.g. 'http:/thl.fi'
-    validUrlExpression: RegExp
+    validUrlExpression: RegExp = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -124,76 +123,68 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private langPipe: LangPipe,
         private truncatePipe: TruncateCharactersPipe,
         private titleService: Title,
-        private populationService: PopulationService,
         private universeService: UniverseService,
         private dateUtils: DateUtils,
         private personService: PersonService,
         private roleService: RoleService,
-        private userService: CurrentUserService
+        private userService: CurrentUserService,
+        private breadcrumbService: BreadcrumbService
     ) {
         this.language = this.translateService.currentLang
     }
 
-
     ngOnInit() {
-        this.getDataset()
-        this.getStudy()
-        this.validUrlExpression = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
+      this.getDatasetAndStudy()
+      this.getOtherStuff()
     }
 
-    private getDataset() {
-        const datasetId = this.route.snapshot.params['datasetId'];
-        const copyOfDatasetId = this.route.snapshot.queryParams['copyOf'];
-        if (datasetId) {
-            Observable.forkJoin(
-                this.datasetService.getDataset(datasetId)
-            ).subscribe(
-                data => {
-                    this.dataset = this.initializeDatasetProperties(data[0])
-                    this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
-                    this.updatePageTitle()
-                })
-        } else if (copyOfDatasetId) {
-          this.datasetService.getDataset(copyOfDatasetId).subscribe(data => {
-            this.dataset = this.initializeDatasetProperties(data)
-            this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset);
-            this.dataset.id = null
-            this.dataset.published = false
-            this.translateService.get('copy').subscribe(msg => {
-              this.dataset.prefLabel[this.language] =
-                this.dataset.prefLabel[this.language] + " (" + msg + ")"
-            });
-            this.dataset.population.id = null
-            this.dataset.links.forEach(l => l.id = null)
-            this.dataset.personInRoles.forEach(p => p.id = null)
-            this.dataset.instanceVariables.forEach(iv => {
-              iv.id = null;
-              iv.instanceQuestions.forEach(iq => iq.id = null)
-            })
-            this.updatePageTitle()
-          })
-        } else {
-            this.dataset = this.datasetService.initNew()
-        }
+    private getDatasetAndStudy() {
+      const datasetId = this.route.snapshot.params['datasetId']
+      const copyOfDatasetId = this.route.snapshot.queryParams['copyOf']
 
-        this.getAvailableOrganizations()
-        this.getAllPersons()
-        this.getAllRoles()
-        this.lifecyclePhaseService.getAll()
-            .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
-        this.usageConditionService.getAll()
-            .subscribe(usageConditions => this.allUsageConditions = usageConditions)
-        this.getAllUnitTypes()
-        this.getAllUniverses()
+      let datasetObservable: Observable<Dataset>
 
-        this.datasetTypeService.getAll()
-          .subscribe(datasetTypes => {
-            datasetTypes.forEach(datasetType => {
-              let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel)
-              this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id))
-              this.datasetTypesById[datasetType.id] = datasetType
-            })
+      if (datasetId) {
+        datasetObservable = this.datasetService.getDataset(datasetId)
+        datasetObservable.subscribe(dataset => {
+          this.dataset = this.initializeDatasetProperties(dataset)
+          this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset)
+          this.updatePageTitle()
+        })
+      }
+      else if (copyOfDatasetId) {
+        datasetObservable = this.datasetService.getDataset(copyOfDatasetId)
+        datasetObservable.subscribe(dataset => {
+          this.dataset = this.initializeDatasetProperties(dataset)
+          this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset)
+          this.dataset.id = null
+          this.dataset.published = dataset.published
+          this.translateService.get('copy').subscribe(msg => {
+            this.dataset.prefLabel[this.language]
+              = this.dataset.prefLabel[this.language] + ' (' + msg + ')'
           })
+          this.dataset.population.id = null
+          this.dataset.links.forEach(l => l.id = null)
+          this.dataset.personInRoles.forEach(p => p.id = null)
+          // Instance variables are not copied because saving dataset doesn't
+          // save instance variables anymore anyways
+          this.updatePageTitle()
+        })
+      }
+      else {
+        datasetObservable = Observable.of(this.datasetService.initNew())
+        datasetObservable.subscribe(dataset => this.dataset = dataset)
+      }
+
+      Observable.forkJoin(
+        datasetObservable,
+        this.editorStudyService.getStudy(this.route.snapshot.params['studyId'])
+      ).subscribe(data => {
+        const dataset = data[0]
+        this.study = data[1]
+        this.ownerOrganization = this.study.ownerOrganization
+        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, dataset)
+      })
     }
 
     private initializeDatasetProperties(dataset: Dataset): Dataset {
@@ -226,14 +217,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         return dataset;
     }
 
-    private getStudy() {
-      const studyId = this.route.snapshot.params['studyId']
-      this.editorStudyService.getStudy(studyId).subscribe(study => {
-        this.study = study
-        this.ownerOrganization = study.ownerOrganization
-      })
-    }
-
     private initializeSelectedDatasetTypes(dataset: Dataset): string[] {
         let storedDatasetTypeItems = []
         dataset.datasetTypes.forEach(datasetType => {storedDatasetTypeItems.push(datasetType.id)});
@@ -244,12 +227,33 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       this.nodeUtils.initLangValuesProperties(node, properties, [ this.language ])
     }
 
-    private updatePageTitle():void {
+    private updatePageTitle() {
         if(this.dataset.prefLabel) {
             let translatedLabel:string = this.langPipe.transform(this.dataset.prefLabel)
             let bareTitle:string = this.titleService.getTitle();
             this.titleService.setTitle(translatedLabel + " - " + bareTitle)
         }
+    }
+
+    private getOtherStuff() {
+      this.getAvailableOrganizations()
+      this.getAllPersons()
+      this.getAllRoles()
+      this.lifecyclePhaseService.getAll()
+        .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
+      this.usageConditionService.getAll()
+        .subscribe(usageConditions => this.allUsageConditions = usageConditions)
+      this.getAllUnitTypes()
+      this.getAllUniverses()
+
+      this.datasetTypeService.getAll()
+        .subscribe(datasetTypes => {
+          datasetTypes.forEach(datasetType => {
+            let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel)
+            this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id))
+            this.datasetTypesById[datasetType.id] = datasetType
+          })
+        })
     }
 
     private getAvailableOrganizations() {
@@ -574,16 +578,22 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         // Remove empty/null predecessors
         this.dataset.predecessors = this.dataset.predecessors.filter(predecessor => predecessor && predecessor.id)
 
-        this.editorStudyService.saveDataset(this.study.id, this.dataset)            .finally(() => {
-              this.savingInProgress = false
-            })
-            .subscribe(savedDataset => {
-                this.dataset = savedDataset;
-                this.goBack();
-            });
+        this.editorStudyService.saveDataset(this.study.id, this.dataset)
+          .finally(() => {
+            this.savingInProgress = false
+          })
+          .subscribe(savedDataset => {
+            this.dataset = savedDataset
+            this.goBack();
+          })
     }
 
     goBack() {
-          this.router.navigate(['/editor/studies', this.study.id, 'datasets', this.dataset.id])
+      this.router.navigate([
+        '/editor/studies',
+        this.study.id,
+        'datasets',
+        this.dataset.id
+      ])
     }
 }

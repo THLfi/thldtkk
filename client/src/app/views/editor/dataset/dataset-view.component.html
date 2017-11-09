@@ -11,6 +11,7 @@
         <div class="col-sm-8">
           <h1>{{ dataset.prefLabel | lang }}</h1>
         </div>
+<!-- TODO: Fix publishing
         <div class="col-sm-4">
           <h2 class="pull-right">
             <div class="pull-right">
@@ -34,10 +35,11 @@
             </div>
           </h2>
         </div>
+-->
       </div>
       <div class="row">
-        <div class="col-sm-12">
-          <small>{{'lastModified' | translate}}: {{dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
+        <div class="col-xs-12">
+          <small>{{ 'lastModified' | translate }}: {{ dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
         </div>
       </div>
     </div>

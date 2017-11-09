@@ -35,6 +35,8 @@
   </div>
 </nav>
 
+<breadcrumb *ngIf="currentPageType == PageIdentifier.EDITOR"></breadcrumb>
+
 <p-growl [(value)]="growlMessageService.messages"
          life="6000">
 </p-growl>

@@ -10,6 +10,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
+import { BreadcrumbService } from './services-common/breadcrumb.service'
 import { CurrentUserService } from './services-editor/user.service'
 import { GrowlMessageService } from './services-common/growl-message.service'
 import { User } from './model2/user'
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private breadcrumbService: BreadcrumbService
   ) {
     translateService.setDefaultLang('fi');
     translateService.use('fi');
@@ -71,12 +73,14 @@ export class AppComponent implements OnInit {
         this.mainContainerClasses['hiddenNavBar'] = this.hideNavBar
       })
 
-    // Scroll to top of the page after route changes
     this.router.events.subscribe(event => {
       if (!(event instanceof NavigationEnd)) {
         return
       }
+      // Scroll to top of the page after route changes
       window.scrollTo(0, 0)
+      // Reset breadcrumb, views can/should update breadcrumb on init
+      this.breadcrumbService.clearBreadcrumbs()
     })
 
     this.currentUserService.getCurrentUserObservable()

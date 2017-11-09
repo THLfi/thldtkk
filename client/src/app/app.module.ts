@@ -30,6 +30,7 @@ import { environment } from '../environments/environment'
 import { NodeUtils } from './utils/node-utils'
 
 // services
+import { BreadcrumbService } from './services-common/breadcrumb.service'
 import { CodeListService3 } from './services-common/code-list.service'
 import { CommonErrorHandlingHttpService } from './services-common/common-error-handling-http.service'
 import { ConceptService } from './services-common/concept.service'
@@ -73,6 +74,7 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 
 // editor components
 import { AboutEditorComponent } from './views/editor/login/about-editor.component'
+import { BreadcrumbComponent } from './views/editor/breadcrumb/breadcrumb.component'
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { CurrentUserService } from './services-editor/user.service'
@@ -122,6 +124,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AboutEditorComponent,
         AppComponent,
         AutogrowTextarea,
+        BreadcrumbComponent,
         CodeListListComponent,
         DatasetAdministrativeEditComponent,
         DatasetAdministrativeViewComponent,
@@ -232,6 +235,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UniverseService,
         UsageConditionService,
         VariableService,
+        BreadcrumbService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

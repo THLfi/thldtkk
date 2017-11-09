@@ -1,13 +1,15 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from "@ngx-translate/core";
-import { Title } from '@angular/platform-browser'
+import { ActivatedRoute } from '@angular/router'
+import { Component, OnInit } from '@angular/core'
 import { LangPipe } from '../../../utils/lang.pipe'
+import { TranslateService } from "@ngx-translate/core"
+import { Title } from '@angular/platform-browser'
 
-import { Dataset } from "../../../model2/dataset";
-import { Study } from "../../../model2/study";
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
+import { Dataset } from '../../../model2/dataset'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
+import { Observable } from 'rxjs'
+import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
 
 @Component({
@@ -22,33 +24,31 @@ export class DatasetViewComponent implements OnInit {
 
   sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
-  constructor(private datasetService: EditorDatasetService,
-              private editorStudyService: EditorStudyService,
-              private route: ActivatedRoute,
-              private translateService: TranslateService,
-              private titleService: Title,
-              private langPipe: LangPipe) {
+  constructor(
+    private datasetService: EditorDatasetService,
+    private editorStudyService: EditorStudyService,
+    private route: ActivatedRoute,
+    private translateService: TranslateService,
+    private titleService: Title,
+    private langPipe: LangPipe,
+    private breadcrumbService: BreadcrumbService
+  ) {
     this.language = this.translateService.currentLang
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.dataset = null
-      this.getStudy(params['studyId'])
-      this.getDataset(params['datasetId'])
-    })
-  }
-
-  private getDataset(datasetId: string) {
-    this.datasetService.getDataset(datasetId)
-      .subscribe(dataset => {
-        this.dataset = dataset
+      Observable.forkJoin(
+        this.editorStudyService.getStudy(params['studyId']),
+        this.datasetService.getDataset(params['datasetId'])
+      ).subscribe(data => {
+        this.study = data[0]
+        this.dataset = data[1]
         this.updatePageTitle()
+        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
       })
-  }
-
-  private getStudy(studyId: string) {
-    this.editorStudyService.getStudy(studyId).subscribe(study => this.study = study)
+    })
   }
 
   updatePageTitle():void {

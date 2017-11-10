@@ -18,9 +18,11 @@ export class EditorInstanceVariableService {
     private growlMessageService: GrowlMessageService
   ) { }
 
-  getInstanceVariable(datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
+  getInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
     const path: string = env.contextPath
-      + '/api/v3/editor/datasets/'
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
       + datasetId
       + '/instanceVariables/'
       + instanceVariableId
@@ -29,9 +31,11 @@ export class EditorInstanceVariableService {
       .map(response => response.json() as InstanceVariable)
   }
 
-  saveInstanceVariable(datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
+  saveInstanceVariable(studyId: string, datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
     const path: string = env.contextPath
-      + '/api/v3/editor/datasets/'
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
       + datasetId
       + '/instanceVariables'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
@@ -54,9 +58,11 @@ export class EditorInstanceVariableService {
       })
   }
 
-  deleteInstanceVariable(datasetId: string, instanceVariableId: string): Observable<any> {
+  deleteInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string): Observable<any> {
     const path: string = env.contextPath
-      + '/api/v3/editor/datasets/'
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
       + datasetId
       + '/instanceVariables/'
       + instanceVariableId

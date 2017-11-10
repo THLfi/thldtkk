@@ -7,10 +7,7 @@ import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
-import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
-import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
-import { DatasetListComponent as EditorDataSetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
 import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
@@ -71,59 +68,12 @@ const routes: Routes = [
           RequireLoginGuard
         ],
         children: [
-        {
+          {
             path: 'codelists',
             component: CodeListListComponent,
             data: {
-                title: 'pageTitles.editor.codeLists',
-                hasSidebar: false
-              }
-            },
-          {
-            path: 'datasets/:datasetId/instanceVariables/new',
-            component: InstanceVariableEditComponent,
-            data: {
-              title: 'pageTitles.editor.newInstanceVariable',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:datasetId/instanceVariables/:instanceVariableId/edit',
-            component: InstanceVariableEditComponent,
-            data: {
-              title: 'pageTitles.editor.editInstanceVariable',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:datasetId/edit-administrative-information',
-            component: DatasetAdministrativeEditComponent,
-            data: {
-              title: 'pageTitles.editor.editAdministrativeInformation',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:datasetId/administrative-information',
-            component: DatasetAdministrativeViewComponent,
-            data: {
-              title: 'pageTitles.editor.administrativeInformation',
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:datasetId/instanceVariables/:instanceVariableId',
-            component: InstanceVariableViewComponent,
-            data: {
-              pageType: PageIdentifier.EDITOR,
-              hasSidebar: true
-            }
-          },
-          {
-            path: 'datasets/:datasetId/instanceVariables',
-            component: DatasetInstanceVariablesViewComponent,
-            data: {
-              hasSidebar: true
+              title: 'pageTitles.editor.codeLists',
+              hasSidebar: false
             }
           },
           {
@@ -176,7 +126,7 @@ const routes: Routes = [
             data: {
               hasSidebar: true
             }
-          },         
+          },
           {
             path: 'studies/:id/datasets',
             component: EditorStudyDatasetsComponent,
@@ -207,7 +157,34 @@ const routes: Routes = [
               hasSidebar: true
             }
           },
-
+          {
+            path: 'studies/:studyId/datasets/:datasetId/instanceVariables/new',
+            component: InstanceVariableEditComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/datasets/:datasetId/instanceVariables/:instanceVariableId',
+            component: InstanceVariableViewComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/datasets/:datasetId/instanceVariables/:instanceVariableId/edit',
+            component: InstanceVariableEditComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/datasets/:datasetId/instanceVariables',
+            component: DatasetInstanceVariablesViewComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
           {
             path: '',
             redirectTo: 'studies',

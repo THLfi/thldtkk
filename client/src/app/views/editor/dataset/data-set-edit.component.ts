@@ -139,21 +139,23 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getDatasetAndStudy() {
+      const studyId = this.route.snapshot.params['studyId']
       const datasetId = this.route.snapshot.params['datasetId']
-      const copyOfDatasetId = this.route.snapshot.queryParams['copyOf']
+      const copyOfStudyId = this.route.snapshot.queryParams['copyOfStudyId']
+      const copyOfDatasetId = this.route.snapshot.queryParams['copyOfDatasetId']
 
       let datasetObservable: Observable<Dataset>
 
       if (datasetId) {
-        datasetObservable = this.datasetService.getDataset(datasetId)
+        datasetObservable = this.datasetService.getDataset(studyId, datasetId)
         datasetObservable.subscribe(dataset => {
           this.dataset = this.initializeDatasetProperties(dataset)
           this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset)
           this.updatePageTitle()
         })
       }
-      else if (copyOfDatasetId) {
-        datasetObservable = this.datasetService.getDataset(copyOfDatasetId)
+      else if (copyOfStudyId && copyOfDatasetId) {
+        datasetObservable = this.datasetService.getDataset(copyOfStudyId, copyOfDatasetId)
         datasetObservable.subscribe(dataset => {
           this.dataset = this.initializeDatasetProperties(dataset)
           this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset)
@@ -178,7 +180,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
       Observable.forkJoin(
         datasetObservable,
-        this.editorStudyService.getStudy(this.route.snapshot.params['studyId'])
+        this.editorStudyService.getStudy(studyId)
       ).subscribe(data => {
         const dataset = data[0]
         this.study = data[1]

@@ -1,0 +1,33 @@
+.tab-row {
+  margin: -20px -20px 10px;
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+}
+.tab-row div {
+  padding: 0;
+}
+.tab-row ul.nav-tabs {
+  border: 0;
+}
+.tab-row .nav-tabs li {
+  border: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.tab-row .nav-tabs li a {
+  margin: 0;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 5px;
+  border: 0;
+  border-radius: 0;
+}
+.tab-row .nav-tabs li:not(.active) a:hover,
+.tab-row .nav-tabs li.active {
+  border-bottom: 3px solid #01837A;
+}
+.tab-row .nav-tabs li.active a {
+  color: #01837A;
+  font-weight: 600;
+}

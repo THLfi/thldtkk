@@ -5,10 +5,10 @@ import {LangValues} from './lang-values';
 import {LifecyclePhase} from './lifecycle-phase';
 import {Link} from './link';
 import {Node} from './node'
-import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
 import {Population} from './population';
+import {Study} from './study'
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
@@ -73,5 +73,7 @@ export interface Dataset extends Node {
   lastModifiedDate?: Date
 
   lastModifiedByUser?: UserInformation
+
+  study?: Study
 
 }

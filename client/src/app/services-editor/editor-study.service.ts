@@ -1,15 +1,17 @@
-import { environment as env } from '../../environments/environment'
 import { Http, Headers, RequestOptions } from '@angular/http'
 import { Injectable } from '@angular/core'
-import { NodeUtils } from '../utils/node-utils'
-import { Observable } from 'rxjs'
-import { PopulationService } from '../services-common/population.service'
-import { GrowlMessageService } from '../services-common/growl-message.service'
-import { Study } from '../model2/study'
-import { Dataset } from '../model2/dataset'
 import { TranslateService } from '@ngx-translate/core'
 
+import { environment as env } from '../../environments/environment'
+import { Observable } from 'rxjs'
 import 'rxjs/add/operator/map'
+
+import { Dataset } from '../model2/dataset'
+import { GrowlMessageService } from '../services-common/growl-message.service'
+import { InstanceVariable } from '../model2/instance-variable'
+import { NodeUtils } from '../utils/node-utils'
+import { PopulationService } from '../services-common/population.service'
+import { Study } from '../model2/study'
 
 @Injectable()
 export class EditorStudyService {
@@ -103,21 +105,35 @@ export class EditorStudyService {
   }
 
   saveDataset(studyId: string, dataset: Dataset): Observable<Dataset> {
-    return this.saveDatasetInternal(studyId, dataset)
+    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
+    const options = new RequestOptions({ headers: headers })
+
+    return this.http.post(env.contextPath
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets', dataset, options)
+      .map(response => response.json() as Dataset)
       .do(dataset => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.dataset.save.result.success')
       })
   }
 
-  private saveDatasetInternal(studyId: string, dataset: Dataset): Observable<Dataset> {
+  saveInstanceVariable(studyId: string, datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath 
+    const url = env.contextPath
       + '/api/v3/editor/studies/'
       + studyId
-      + '/datasets', dataset, options)
-      .map(response => response.json() as Dataset)
+      + '/datasets/'
+      + datasetId
+      + '/intanceVariables'
+
+    return this.http.post(url, instanceVariable, options)
+      .map(response => response.json() as InstanceVariable)
+      .do(instanceVariables => {
+        this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
+      })
   }
 
   publish(study: Study): Observable<Study> {

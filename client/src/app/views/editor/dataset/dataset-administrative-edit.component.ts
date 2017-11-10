@@ -51,18 +51,17 @@ export class DatasetAdministrativeEditComponent implements OnInit, AfterContentC
     }
 
     private getDataset() {
-        const datasetId = this.route.snapshot.params['datasetId'];
-        if (datasetId) {
-            Observable.forkJoin(
-                this.datasetService.getDataset(datasetId)
-            ).subscribe(
-                data => {
-                    this.dataset = this.datasetService.initializeProperties(data[0])
-                    this.updatePageTitle()
-                })
-        } else {
-            this.dataset = this.datasetService.initNew()
-        }
+      const studyId = this.route.snapshot.params['studyId']
+      const datasetId = this.route.snapshot.params['datasetId']
+      if (datasetId) {
+        this.datasetService.getDataset(studyId, datasetId)
+          .subscribe(dataset => {
+            this.dataset = this.datasetService.initializeProperties(dataset)
+            this.updatePageTitle()
+          })
+      } else {
+        this.dataset = this.datasetService.initNew()
+      }
     }
 
     private updatePageTitle():void {

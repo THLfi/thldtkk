@@ -9,6 +9,10 @@
     "instanceVariables": "Muuttujien kuvaus",
     "administrativeInformation": "Hallinnolliset tiedot"
   },
+  "datasetTabs": {
+    "basicInformation": "Datasetin perustiedot",
+    "instanceVariables": "Datasetin muuttujat"
+  },
   "instanceVariables": "Muuttujat",
   "contactPerson": "Yhteyshenkilö",
   "description": "Kuvaus",
@@ -48,6 +52,8 @@
   "noCollectionDate": "Keruuajankohtaa ei ole määritelty.",
   "valueInDataset": "Datasetin oletus",
   "inheritedFromDataset": "Periytyy datasetiltä",
+  "valueInStudy": "Aineiston oletus",
+  "inheritedFromStudy": "Periytyy aineistolta",
   "datasetEditor": "Aineistoeditori",
   "prefLabel": "Nimi",
   "edit": "Muokkaa",

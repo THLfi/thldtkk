@@ -1,15 +1,20 @@
 <ng-container *ngIf="dataset && instanceVariable; else loading;">
 
-  <dataset-sidebar [dataset]="dataset"
-                   [activeSection]="sidebarActiveSection">
-  </dataset-sidebar>
+  <study-sidebar [study]="study"
+                 [activeSection]="sidebarActiveSection">
+  </study-sidebar>
 
   <div class="content-container">
 
     <div class="content-header container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <h1>{{ dataset.prefLabel | lang }}</h1>
+          <h1 *ngIf="instanceVariable.id; else newInstanceVariable;">
+            {{ instanceVariable.prefLabel | lang }}
+          </h1>
+          <ng-template #newInstanceVariable>
+            <h1>{{ 'newInstanceVariable' | translate }}</h1>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -17,17 +22,6 @@
     <div class="content-body container-fluid">
 
       <form #instanceVariableForm="ngForm">
-
-        <div class="row">
-          <div class="col-xs-12">
-            <h1 *ngIf="instanceVariable.id; else newInstanceVariable;">
-              {{ instanceVariable.prefLabel | lang }}
-            </h1>
-            <ng-template #newInstanceVariable>
-              <h1>{{ 'newInstanceVariable' | translate }}</h1>
-            </ng-template>
-          </div>
-        </div>
 
         <div class="row bg-highlight">
           <div class="col-md-6">

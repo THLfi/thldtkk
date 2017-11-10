@@ -6,47 +6,14 @@
 
   <div class="content-container">
 
-    <div class="content-header container-fluid">
-      <div class="row">
-        <div class="col-sm-8">
-          <h1>{{ dataset.prefLabel | lang }}</h1>
-        </div>
-<!-- TODO: Fix publishing
-        <div class="col-sm-4">
-          <h2 class="pull-right">
-            <div class="pull-right">
-              <ng-container *ngIf="dataset.published; else unpublished;">
-                <span class="label label-success">
-                  {{ 'published' | translate }}
-                  <span class="glyphicon glyphicon-ok"></span>
-                </span>
-                <button (click)="confirmWithdraw()" class="btn btn-sm btn-warning btn-unpublish">
-                  {{ 'unpublish' | translate }}
-                </button>
-              </ng-container>
-              <ng-template #unpublished>
-                <span class="label label-default">
-                  {{ 'unpublished' | translate }}
-                </span>
-                <button (click)="confirmPublish()" class="btn btn-sm btn-warning btn-publish">
-                  {{ 'publish' | translate }}
-                </button>
-              </ng-template>
-            </div>
-          </h2>
-        </div>
--->
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <last-modified [modifier]="dataset.lastModifiedByUser"
-                         [lastModifiedDate]="dataset.lastModifiedDate">
-          </last-modified>
-        </div>
-      </div>
-    </div>
+    <dataset-header [dataset]="dataset">
+    </dataset-header>
 
     <div class="content-body container-fluid">
+
+      <dataset-tabs [study]="study"
+                    [dataset]="dataset">
+      </dataset-tabs>
 
       <div class="row">
         <div class="col-xs-10">
@@ -170,7 +137,18 @@
       <div class="row">
         <div class="col-xs-12">
           <h2 translate="unitType"></h2>
-          <p *ngIf="dataset.unitType">{{dataset.unitType.prefLabel | lang}}</p>
+          <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
+            <p>{{ dataset.unitType.prefLabel | lang }}</p>
+          </ng-container>
+          <ng-template #unitTypeFromStudy>
+            <ng-container *ngIf="study.unitType">
+              {{ study.unitType.prefLabel | lang }}
+              <span style="margin-left:2em;opacity:.6;">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                {{ 'inheritedFromStudy' | translate }}
+              </span>
+            </ng-container>
+          </ng-template>
         </div>
       </div>
 
@@ -228,7 +206,7 @@
       <div class="row">
         <div class="col-xs-12">
           <h2>{{ 'referencePeriod' | translate }}</h2>
-          <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else noReferencePeriod;">
+          <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else studyReferencePeriod;">
             <ng-container *ngIf="dataset.referencePeriodStart">
               {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
             </ng-container>
@@ -236,9 +214,26 @@
             <ng-container *ngIf="dataset.referencePeriodEnd">
               {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
             </ng-container>
+            <span style="margin-left:2em;opacity:.6;">
+              <ng-container *ngIf="(study.referencePeriodStart || study.referencePeriodEnd)">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                {{ 'valueInStudy' | translate }}:
+                {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+                —
+                {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+              </ng-container>
+            </span>
           </p>
-          <ng-template #noReferencePeriod>
-            <p>{{ 'noReferencePeriod' | translate }}</p>
+          <ng-template #studyReferencePeriod>
+            <p *ngIf="(study.referencePeriodStart || study.referencePeriodEnd)">
+              {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+              —
+              {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+              <span style="margin-left:2em;opacity:.6;">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                {{ 'inheritedFromStudy' | translate }}
+              </span>
+            </p>
           </ng-template>
         </div>
       </div>
@@ -319,7 +314,8 @@
             <h3>{{ 'datasetRelations.predecessors' | translate }}</h3>
             <ul>
               <li *ngFor="let predecessor of dataset.predecessors">
-                <a routerLink="/editor/datasets/{{ predecessor.id }}">{{ predecessor.prefLabel | lang }}</a>
+                <!-- TODO: Make this a link -->
+                {{ predecessor.prefLabel | lang }}
               </li>
             </ul>
           </div>
@@ -330,7 +326,8 @@
             </h3>
             <ul>
               <li *ngFor="let successor of dataset.successors">
-                <a routerLink="/editor/datasets/{{ successor.id }}">{{ successor.prefLabel | lang }}</a>
+                <!-- TODO: Make this a link -->
+                {{ successor.prefLabel | lang }}
               </li>
             </ul>
           </div>

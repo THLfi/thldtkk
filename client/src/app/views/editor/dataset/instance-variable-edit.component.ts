@@ -9,12 +9,14 @@ import {SelectItem} from 'primeng/components/common/api';
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 
+import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {CodeList} from '../../../model2/code-list';
 import {CodeListService3} from '../../../services-common/code-list.service';
 import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services-common/concept.service'
 import {Dataset} from '../../../model2/dataset';
 import {EditorDatasetService} from '../../../services-editor/editor-dataset.service'
+import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {InstanceVariable} from '../../../model2/instance-variable';
@@ -25,7 +27,8 @@ import {LangPipe} from '../../../utils/lang.pipe';
 import {NodeUtils} from '../../../utils/node-utils'
 import {Quantity} from '../../../model2/quantity';
 import {QuantityService} from '../../../services-common/quantity.service'
-import {SidebarActiveSection} from './sidebar/sidebar-active-section'
+import {Study} from '../../../model2/study'
+import {StudySidebarActiveSection} from '../study/sidebar/study-sidebar-active-section'
 import {Unit} from '../../../model2/unit';
 import {UnitService} from '../../../services-common/unit.service'
 import {UnitType} from '../../../model2/unit-type'
@@ -38,6 +41,7 @@ import {VariableService} from '../../../services-common/variable.service'
 })
 export class InstanceVariableEditComponent implements OnInit, AfterContentChecked {
 
+    study: Study
     dataset: Dataset
     instanceVariable: InstanceVariable
     language: string
@@ -84,88 +88,96 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
 
-    sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
+    readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
     constructor(
+        private studyService: EditorStudyService,
+        private datasetService: EditorDatasetService,
         private instanceVariableService: EditorInstanceVariableService,
         private instanceQuestionService: InstanceQuestionService,
-        private datasetService: EditorDatasetService,
         private codeListService: CodeListService3,
         private variableService: VariableService,
         private conceptService: ConceptService,
         private quantityService: QuantityService,
         private unitService: UnitService,
         private unitTypeService: UnitTypeService,
-        private nodeUtils: NodeUtils,
         private growlMessageService: GrowlMessageService,
+        private breadcrumbService: BreadcrumbService,
+        private titleService: Title,
+        private nodeUtils: NodeUtils,
         private route: ActivatedRoute,
         private router: Router,
         private translateService: TranslateService,
         private langPipe: LangPipe,
-        private titleService: Title,
         private dateUtils: DateUtils
     ) {
         this.language = translateService.currentLang
     }
 
     ngOnInit(): void {
-        const datasetId = this.route.snapshot.params['datasetId']
-        const instanceVariableId = this.route.snapshot.params['instanceVariableId']
+      const studyId = this.route.snapshot.params['studyId']
+      const datasetId = this.route.snapshot.params['datasetId']
+      const instanceVariableId = this.route.snapshot.params['instanceVariableId']
 
-        if (instanceVariableId) {
-            Observable.forkJoin(
-              this.datasetService.getDataset(datasetId),
-              this.instanceVariableService.getInstanceVariable(datasetId, instanceVariableId)
-            ).subscribe(data => {
-              this.dataset = data[0]
+      if (instanceVariableId) {
+        Observable.forkJoin(
+          this.studyService.getStudy(studyId),
+          this.datasetService.getDataset(studyId, datasetId),
+          this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
+        ).subscribe(data => {
+          this.study = data[0]
+          this.dataset = data[1]
+          this.instanceVariable = this.initInstanceVariable(data[2])
+          this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
+          this.updatePageTitle()
+        })
+       }
+      else {
+        Observable.forkJoin(
+          this.studyService.getStudy(studyId),
+          this.datasetService.getDataset(studyId, datasetId)
+        ).subscribe(data => {
+          this.study = data[0]
+          this.dataset = data[1]
+          this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
+        })
 
-              const instanceVariable = data[1]
-              this.initInstanceVariable(instanceVariable)
-              this.instanceVariable = instanceVariable
-              this.updatePageTitle();
-            })
-         }
-        else {
-            this.datasetService.getDataset(datasetId).subscribe(dataset => this.dataset = dataset)
+        this.instanceVariable = this.initInstanceVariable({
+          id: null,
+          prefLabel: null,
+          description: null,
+          referencePeriodStart: null,
+          referencePeriodEnd: null,
+          technicalName: null,
+          conceptsFromScheme: [],
+          freeConcepts: null,
+          valueDomainType: null,
+          quantity: null,
+          unit: null,
+          qualityStatement: null,
+          codeList: null,
+          missingValues: null,
+          defaultMissingValue: null,
+          valueRangeMin: null,
+          valueRangeMax: null,
+          variable: null,
+          partOfGroup: null,
+          source: null,
+          sourceDescription: null,
+          dataType: null,
+          unitType: null,
+          instanceQuestions: [],
+          dataFormat: null,
+          dataset: null
+        })
+      }
 
-            const instanceVariable = {
-                id: null,
-                prefLabel: null,
-                description: null,
-                referencePeriodStart: null,
-                referencePeriodEnd: null,
-                technicalName: null,
-                conceptsFromScheme: [],
-                freeConcepts: null,
-                valueDomainType: null,
-                quantity: null,
-                unit: null,
-                qualityStatement: null,
-                codeList: null,
-                missingValues: null,
-                defaultMissingValue: null,
-                valueRangeMin: null,
-                valueRangeMax: null,
-                variable: null,
-                partOfGroup: null,
-                source: null,
-                sourceDescription: null,
-                dataType: null,
-                unitType: null,
-                instanceQuestions: [],
-                dataFormat: null,
-                dataset: null
-            }
-            this.initInstanceVariable(instanceVariable)
-            this.instanceVariable = instanceVariable
-        }
-
-        this.getAllQuantitiesAndUnits()
-        this.getAllCodeLists()
-        this.getAllUnitTypes()
+      this.getAllQuantitiesAndUnits()
+      this.getAllCodeLists()
+      this.getAllUnitTypes()
     }
 
-    private initInstanceVariable(instanceVariable: InstanceVariable): void {
+    private initInstanceVariable(instanceVariable: InstanceVariable): InstanceVariable {
       this.initProperties(instanceVariable, [
         'prefLabel',
         'description',
@@ -186,6 +198,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       if (instanceVariable.referencePeriodEnd) {
         this.referencePeriodEnd = new Date(instanceVariable.referencePeriodEnd)
       }
+      return instanceVariable
     }
 
     private initProperties(node: any, properties: string[]): void {
@@ -516,8 +529,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
         this.nullifyEmptySource();
 
-        const datasetId = this.route.snapshot.params['datasetId']
-        this.instanceVariableService.saveInstanceVariable(datasetId, this.instanceVariable)
+        this.instanceVariableService.saveInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable)
           .finally(() => {
             this.savingInProgress = false
           })
@@ -577,17 +589,14 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
                 if (confirm(message)) {
                     this.savingInProgress = true
 
-                    const datasetId = this.route.snapshot.params['datasetId'];
-                    const instanceVariableId = this.route.snapshot.params['instanceVariableId'];
-
-                    this.instanceVariableService.deleteInstanceVariable(datasetId, instanceVariableId)
+                    this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id)
                       .finally(() => {
                         this.savingInProgress = false
                       })
                       .subscribe(() => {
                         this.goBackToViewDataset()
                       }
-                    );
+                    )
                 }
             })
     }
@@ -603,13 +612,21 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     private goBackToViewInstanceVariable(): void {
       this.router.navigate([
-        '/editor/datasets',
-        this.route.snapshot.params['datasetId'],
+        '/editor/studies',
+        this.study.id,
+        'datasets',
+        this.dataset.id,
         'instanceVariables',
         this.instanceVariable.id])
     }
 
     private goBackToViewDataset(): void {
-      this.router.navigate(['/editor/datasets', this.route.snapshot.params['datasetId'], 'instanceVariables'])
+      this.router.navigate([
+        '/editor/studies/',
+        this.study.id,
+        'datasets',
+        this.dataset.id,
+        'instanceVariables'
+      ])
     }
 }

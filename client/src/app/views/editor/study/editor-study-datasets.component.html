@@ -34,12 +34,21 @@
               <tr>
                 <th>{{'prefLabel' | translate}}</th>
                 <th>{{'description' | translate}}</th>
+                <th>{{'functions' | translate}}</th>
               </tr>
               <tr *ngFor="let dataset of study.datasets"
                   routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}"
                   style="cursor: pointer;">
                   <td>{{ dataset.prefLabel | lang}}</td>
                   <td class="preserve-line-breaks">{{ dataset.description | lang }}</td>
+                  <td>
+                    <button routerLink="/editor/studies/{{study.id}}/datasets/new"
+                            [queryParams]="{ copyOfStudyId: study.id, copyOfDatasetId: dataset.id }"
+                            class="btn btn-sm btn-default">
+                      <span class="glyphicon glyphicon-duplicate"></span>
+                      {{ 'duplicate' | translate }}
+                    </button>
+                  </td>
               </tr>
             </table>
           </ng-container>

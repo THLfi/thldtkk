@@ -32,8 +32,8 @@ export class EditorDatasetService {
       .map(response => response.json() as Dataset[])
   }
 
-  getDataset(id: string): Observable<Dataset> {
-    return this.http.get(env.contextPath + '/api/v3/editor/datasets/' + id)
+  getDataset(studyId: string, datasetId: string): Observable<Dataset> {
+    return this.http.get(env.contextPath + '/api/v3/editor/studies/' + studyId + '/datasets/' + datasetId)
       .map(response => response.json() as Dataset)
   }
 

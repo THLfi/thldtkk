@@ -1,40 +1,36 @@
 <ng-container *ngIf="dataset; else loadingInstanceVariables;">
 
-  <dataset-sidebar [dataset]="dataset"
-                   [activeSection]="sidebarActiveSection">
-  </dataset-sidebar>
+  <study-sidebar [study]="study"
+                 [activeSection]="sidebarActiveSection">
+  </study-sidebar>
 
   <div class="content-container">
 
-    <div class="content-header container-fluid">
-      <div class="row">
-        <div class="col-md-8">
-          <h1>{{ dataset.prefLabel | lang }}</h1>
-        </div>
-      </div>
-    </div>
+    <dataset-header [dataset]="dataset">
+    </dataset-header>
 
     <div class="content-body container-fluid">
 
+      <dataset-tabs [study]="study"
+                    [dataset]="dataset">
+      </dataset-tabs>
+
       <div class="row" style="margin-bottom: 1em;">
-        <div class="col-xs-4">
-          <h2>{{ 'instanceVariables' | translate }}</h2>
-        </div>
-        <div class="col-xs-8">
+        <div class="col-xs-12">
           <div class="pull-right">
-            <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new"
+            <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/new"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-plus"></span>
               {{ 'addInstanceVariable' | translate }}
             </button>
             <button (click)="showImportInstanceVariablesModal()"
-                    class="btn btn-default"
+                    class="btn btn-default btn-sm"
                     pTooltip="{{'importInstanceVariablesAsCsvTooltip' | translate}}" tooltipPosition="bottom">
               <i class="fa fa-upload" aria-hidden="true"></i>
               {{ 'importInstanceVariablesAsCsvButton' | translate }}
             </button>
             <a  *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length)"
-                class="btn btn-default" 
+                class="btn btn-default btn-sm"
                 href="{{composeInstanceVariableExportUrl()}}"
                 pTooltip="{{'exportInstanceVariablesAsCsvTooltip' | translate}}"
                 tooltipPosition="bottom">
@@ -57,32 +53,39 @@
               <th>{{ 'functions' | translate }}</th>
             </tr>
             <tr *ngFor="let variable of dataset.instanceVariables"
-                routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}"
+                routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}"
                 style="cursor: pointer;">
               <td>
-                <a routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
+                <a routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
               </td>
               <td>
                 <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
               </td>
               <td>
-                <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else inheritedReferencePeriod;">
+                <ng-container *ngIf="(variable.referencePeriodStart || variable.referencePeriodEnd); else datasetReferencePeriod;">
                   <em>
                     {{ variable.referencePeriodStart | date:'dd.MM.yyyy' }}
                     —
                     {{ variable.referencePeriodEnd | date:'dd.MM.yyyy' }}
                   </em>
                 </ng-container>
-                <ng-template #inheritedReferencePeriod>
-                  <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd)">
+                <ng-template #datasetReferencePeriod>
+                  <ng-container *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd); else studyReferencePeriod">
                     {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
                     —
                     {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
                   </ng-container>
+                  <ng-template #studyReferencePeriod>
+                    <ng-container *ngIf="(study.referencePeriodStart || study.referencePeriodEnd)">
+                      {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+                      —
+                      {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+                    </ng-container>
+                  </ng-template>
                 </ng-template>
               </td>
               <td>
-                <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
+                <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}/edit"
                         class="btn btn-default btn-sm">
                   <span class="glyphicon glyphicon-pencil"></span>
                   {{ 'edit' | translate }}
@@ -98,20 +101,20 @@
           <div class="row" style="margin-bottom: 1em;">
             <div class="col-xs-12">
               <div class="pull-right">
-                <button routerLink="/editor/datasets/{{ dataset.id }}/instanceVariables/new"
+                <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/new"
                         class="btn btn-default">
                   <span class="glyphicon glyphicon-plus"></span>
                   {{ 'addInstanceVariable' | translate }}
                 </button>
                 <button (click)="showImportInstanceVariablesModal()"
-                        class="btn btn-default"
+                        class="btn btn-default btn-sm"
                         pTooltip="{{'importInstanceVariablesAsCsvTooltip' | translate}}"
                         tooltipPosition="bottom">
                   <i class="fa fa-upload" aria-hidden="true"></i>
                   {{ 'importInstanceVariablesAsCsvButton' | translate }}
                 </button>
                 <a  *ngIf="(dataset.instanceVariables && dataset.instanceVariables.length)"
-                    class="btn btn-default" 
+                    class="btn btn-default btn-sm"
                     href="{{composeInstanceVariableExportUrl()}}"
                     pTooltip="{{'exportInstanceVariablesAsCsvTooltip' | translate}}"
                     tooltipPosition="bottom">
@@ -130,7 +133,7 @@
 
   <instance-variables-import-modal
     [dataset]="datasetForImportInstanceVariablesModal"
-    (onImport)="getDataset(); closeImportInstanceVariablesModal()"
+    (onImport)="getStudyAndDataset(); closeImportInstanceVariablesModal()"
     (onCancel)="closeImportInstanceVariablesModal()">
   </instance-variables-import-modal>
 

@@ -172,6 +172,10 @@ public class Node {
     return referrers.get(referrerKey);
   }
 
+  public Optional<Node> getReferrersFirst(String referrerKey) {
+    return referrers.get(referrerKey).stream().findFirst();
+  }
+
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)

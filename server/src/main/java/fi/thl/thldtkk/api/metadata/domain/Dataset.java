@@ -58,6 +58,7 @@ public class Dataset implements NodeEntity {
   private List<PersonInRole> personInRoles = new ArrayList<>();
   private List<Dataset> predecessors = new ArrayList<>();
   private List<Dataset> successors = new ArrayList<>();
+  private Study study;
 
   public Dataset() {
 
@@ -164,6 +165,8 @@ public class Dataset implements NodeEntity {
 
     node.getReferrers("predecessors")
             .forEach(d -> this.successors.add(new Dataset(d)));
+    node.getReferrersFirst("dataSets")
+      .ifPresent(s -> this.study = new Study(s));
 
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
@@ -335,6 +338,10 @@ public class Dataset implements NodeEntity {
   public Optional<UserProfile> getLastModifiedByUser() { return Optional.ofNullable(lastModifiedByUser); }
 
   public void setLastModifiedByUser(UserProfile userProfile) { this.lastModifiedByUser = userProfile; }
+
+  public Optional<Study> getStudy() {
+    return Optional.ofNullable(study);
+  }
 
   /**
    * Transforms dataset into node

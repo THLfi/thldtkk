@@ -25,8 +25,8 @@ export class DatasetViewComponent implements OnInit {
   sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
   constructor(
+    private studyService: EditorStudyService,
     private datasetService: EditorDatasetService,
-    private editorStudyService: EditorStudyService,
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private titleService: Title,
@@ -40,8 +40,8 @@ export class DatasetViewComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.dataset = null
       Observable.forkJoin(
-        this.editorStudyService.getStudy(params['studyId']),
-        this.datasetService.getDataset(params['datasetId'])
+        this.studyService.getStudy(params['studyId']),
+        this.datasetService.getDataset(params['studyId'], params['datasetId'])
       ).subscribe(data => {
         this.study = data[0]
         this.dataset = data[1]
@@ -51,11 +51,11 @@ export class DatasetViewComponent implements OnInit {
     })
   }
 
-  updatePageTitle():void {
-    if(this.dataset.prefLabel) {
+  private updatePageTitle():void {
+    if (this.dataset.prefLabel) {
       let translatedLabel:string = this.langPipe.transform(this.dataset.prefLabel)
-      let bareTitle:string = this.titleService.getTitle();
-      this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+      let bareTitle:string = this.titleService.getTitle()
+      this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
   }
 

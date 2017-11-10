@@ -4,7 +4,7 @@ nav.breadcrumb {
   left: 0;
   right: 0;
   height: 30px;
-  z-index: 123;
+  z-index: 122; /* has to be less than main navigation's z-index */
   background-color: #eee;
   border-bottom: 1px solid #ccc;
   border-radius: 0;

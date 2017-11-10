@@ -4,34 +4,38 @@ import { Observable } from 'rxjs'
 import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
 
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { Dataset } from '../../../model2/dataset'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
-import { InstanceVariable } from '../../../model2/instance-variable'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
+import { EditorStudyService } from '../../../services-editor/editor-study.service'
+import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
-import { SidebarActiveSection } from './sidebar/sidebar-active-section'
+import { Study } from '../../../model2/study'
+import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
 
 @Component({
   templateUrl: './instance-variable-view.component.html'
 })
 export class InstanceVariableViewComponent implements OnInit {
 
-  instanceVariable: InstanceVariable
+  study: Study
   dataset: Dataset
-  instanceVariableId: string
-  datasetId: string
+  instanceVariable: InstanceVariable
   language: string
 
-  sidebarActiveSection = SidebarActiveSection.INSTANCE_VARIABLES
+  readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
-  constructor(private instanceVariableService: EditorInstanceVariableService,
-              private datasetService: EditorDatasetService,
-              private route: ActivatedRoute,
-              private translateService: TranslateService,
-              private titleService: Title,
-              private langPipe: LangPipe) {
-    this.datasetId = this.route.snapshot.params['datasetId']
-    this.instanceVariableId = this.route.snapshot.params['instanceVariableId']
+  constructor(
+    private studyService: EditorStudyService,
+    private datasetService: EditorDatasetService,
+    private instanceVariableService: EditorInstanceVariableService,
+    private breadcrumbService: BreadcrumbService,
+    private titleService: Title,
+    private langPipe: LangPipe,
+    private route: ActivatedRoute,
+    private translateService: TranslateService
+  ) {
     this.language = this.translateService.currentLang
   }
 
@@ -40,21 +44,29 @@ export class InstanceVariableViewComponent implements OnInit {
   }
 
   private getInstanceVariable() {
+    const studyId = this.route.snapshot.params['studyId']
+    const datasetId = this.route.snapshot.params['datasetId']
+    const instanceVariableId = this.route.snapshot.params['instanceVariableId']
+
     Observable.forkJoin(
-      this.instanceVariableService.getInstanceVariable(this.datasetId, this.instanceVariableId),
-      this.datasetService.getDataset(this.datasetId)
+      this.studyService.getStudy(studyId),
+      this.datasetService.getDataset(studyId, datasetId),
+      this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
     ).subscribe(data => {
-      this.instanceVariable = data[0]
+      this.study = data[0]
       this.dataset = data[1]
-      this.updatePageTitle();
+      this.instanceVariable = data[2]
+      this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
+      this.updatePageTitle()
+
     })
   }
 
   updatePageTitle():void {
-    if(this.instanceVariable.prefLabel) {
+    if (this.instanceVariable.prefLabel) {
       let translatedLabel:string = this.langPipe.transform(this.instanceVariable.prefLabel)
-      let bareTitle:string = this.titleService.getTitle();
-      this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+      let bareTitle:string = this.titleService.getTitle()
+      this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
   }
 

@@ -32,8 +32,9 @@ export class DatasetAdministrativeViewComponent implements OnInit {
   }
 
   getDataSet() {
-    const datasetId = this.route.snapshot.params['datasetId'];
-    this.datasetService.getDataset(datasetId)
+    const studyId = this.route.snapshot.params['studyId']
+    const datasetId = this.route.snapshot.params['datasetId']
+    this.datasetService.getDataset(studyId, datasetId)
       .subscribe(dataset => {
         this.dataset = dataset
         this.updatePageTitle()

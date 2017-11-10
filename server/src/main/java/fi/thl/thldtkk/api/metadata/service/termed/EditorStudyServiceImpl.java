@@ -202,7 +202,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         new StringBuilder()
           .append("Cannot save study '")
           .append(study.getId())
-          .append("' because it has a self reference  in 'predecessors'")
+          .append("' because it has a self reference in 'predecessors'")
           .toString());
     }
 
@@ -218,6 +218,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {
+          dataset.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
           dataset.setId(firstNonNull(dataset.getId(), randomUUID()));
           dataset.setPublished(isStudyPublished);
           dataset.getPopulation()

@@ -96,6 +96,7 @@ import { InstanceQuestionEditModalComponent } from './views/editor/dataset/insta
 import { InstanceVariableEditComponent } from './views/editor/dataset/instance-variable-edit.component'
 import { InstanceVariableViewComponent } from './views/editor/dataset/instance-variable-view.component';
 import { InstanceVariablesImportModalComponent } from './views/editor/dataset/instance-variables-import-modal.component'
+import { LastModifiedComponent } from './views/editor/dataset/last-modified.component'
 import { LoginAdviceComponent } from './views/editor/login/login-advice.component'
 import { LogoutMessageComponent } from './views/editor/login/logout-message.component'
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
@@ -147,6 +148,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         InstanceVariableSearchComponent,
         InstanceVariableSearchResultComponent,
         LangPipe,
+        LastModifiedComponent,
         LoadingSpinner,
         LoginAdviceComponent,
         LogoutMessageComponent,

@@ -12,6 +12,7 @@ import {Population} from './population';
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
+import {UserInformation} from './user-information';
 
 export interface Dataset extends Node {
 
@@ -64,11 +65,13 @@ export interface Dataset extends Node {
   universe: Universe
 
   personInRoles: PersonInRole[]
-  
+
   predecessors: Dataset[]
-  
+
   successors: Dataset[]
 
   lastModifiedDate?: Date
+
+  lastModifiedByUser?: UserInformation
 
 }

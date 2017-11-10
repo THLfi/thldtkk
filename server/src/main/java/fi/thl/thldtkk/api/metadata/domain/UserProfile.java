@@ -33,6 +33,10 @@ public class UserProfile {
   private Set<String> roles = new LinkedHashSet<>();
   private Set<Organization> organizations = new LinkedHashSet<>();
 
+  public UserProfile(){
+
+  }
+
   public UserProfile(UUID id) {
     this.id = requireNonNull(id);
   }
@@ -93,6 +97,14 @@ public class UserProfile {
 
   public Set<Organization> getOrganizations() {
     return organizations;
+  }
+
+  public void setFirstName(String firstName){
+    this.firstName = firstName;
+  }
+
+  public void setLastName(String lastName){
+    this.lastName = lastName;
   }
 
   public Node toNode() {

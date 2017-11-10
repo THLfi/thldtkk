@@ -171,6 +171,8 @@ public class Dataset implements NodeEntity {
             .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
     this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
     this.lastModifiedDate = node.getLastModifiedDate();
+    node.getReferencesFirst("lastModifiedByUser")
+        .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
   }
 
   /**

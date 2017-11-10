@@ -39,7 +39,9 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <small>{{ 'lastModified' | translate }}: {{ dataset.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
+          <last-modified [modifier]="dataset.lastModifiedByUser"
+                         [lastModifiedDate]="dataset.lastModifiedDate">
+          </last-modified>
         </div>
       </div>
     </div>

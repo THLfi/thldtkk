@@ -246,6 +246,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         });
     }
 
+    study.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
     Changeset<NodeId, Node> changeset;
     if (!old.isPresent()) {
       changeset = changesetForInsert(study, includeDatasets, includeInstanceVariables);

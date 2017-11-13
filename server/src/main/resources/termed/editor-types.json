@@ -94,6 +94,12 @@
         }
       },
       {
+        "id": "lastModifiedByUser",
+        "range": {
+          "id": "UserProfile"
+        }
+      },
+      {
         "id": "lifecyclePhase",
         "range": {
           "id": "LifecyclePhase",

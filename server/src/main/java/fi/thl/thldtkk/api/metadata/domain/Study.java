@@ -57,6 +57,7 @@ public class Study implements NodeEntity {
   private List<Concept> conceptsFromScheme = new ArrayList<>();
   private List<DatasetType> datasetTypes = new ArrayList<>();
   private UnitType unitType;
+  private UserProfile lastModifiedByUser;
   @Valid
   private List<PersonInRole> personInRoles = new ArrayList<>();
   private List<Dataset> datasets = new ArrayList<>();
@@ -125,6 +126,8 @@ public class Study implements NodeEntity {
 
     node.getReferrers("predecessors")
       .forEach(s -> this.successors.add(new Study(s)));
+    node.getReferencesFirst("lastModifiedByUser")
+        .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
   }
 
   /**
@@ -283,6 +286,14 @@ public class Study implements NodeEntity {
     return successors;
   }
 
+  public Optional<UserProfile> getLastModifiedByUser() {
+    return Optional.ofNullable(lastModifiedByUser);
+  }
+
+  public void setLastModifiedByUser(UserProfile userProfile) {
+    this.lastModifiedByUser = userProfile;
+  }
+
   /**
    * Transforms dataset into node
    */
@@ -317,6 +328,7 @@ public class Study implements NodeEntity {
     getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
     getDatasets().forEach(d -> refs.put("dataSets", d.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
+    getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }

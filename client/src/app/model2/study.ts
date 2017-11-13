@@ -12,6 +12,7 @@ import {Population} from './population';
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
+import {UserInformation} from './user-information';
 
 export interface Study extends Node {
 
@@ -68,9 +69,11 @@ export interface Study extends Node {
   datasets: Dataset[]
 
   predecessors: Study[]
-  
+
   successors: Study[]
 
   lastModifiedDate?: Date
+
+  lastModifiedByUser?: UserInformation
 
 }

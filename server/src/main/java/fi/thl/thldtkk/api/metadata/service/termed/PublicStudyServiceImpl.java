@@ -11,7 +11,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
-import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
+import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.slf4j.Logger;
@@ -42,14 +42,14 @@ import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.StringUtils.hasText;
 
-public class EditorStudyServiceImpl implements EditorStudyService {
+public class PublicStudyServiceImpl implements PublicStudyService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(EditorStudyServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PublicStudyServiceImpl.class);
 
   private final Repository<NodeId, Node> nodes;
   private final UserHelper userHelper;
 
-  public EditorStudyServiceImpl(Repository<NodeId, Node> nodes,
+  public PublicStudyServiceImpl(Repository<NodeId, Node> nodes,
                                 UserHelper userHelper) {
     this.nodes = nodes;
     this.userHelper = userHelper;
@@ -70,11 +70,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     List<Criteria> criteria = new ArrayList<>();
 
     criteria.add(keyValue("type.id", Study.TERMED_NODE_CLASS));
-
-    if (!userHelper.isCurrentUserAdmin()) {
-      criteria.add(getCurrentUserOrganizationCriteria());
-    }
-
+    
     if (organizationId != null) {
       criteria.add(keyValue("references.ownerOrganization.id", organizationId.toString()));
     }
@@ -95,14 +91,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return studyNodes.map(Study::new).collect(toList());
   }
 
-  private Criteria getCurrentUserOrganizationCriteria() {
-    List<String> organizationIds = userHelper.getCurrentUserOrganizations().stream()
-      .map(organization -> organization.getId().toString())
-      .collect(Collectors.toList());
-
-    return keyWithAnyValue("references.ownerOrganization.id", organizationIds);
-  }
-
   @Override
   public Optional<Study> get(UUID id) {
     Optional<Study> study = nodes.get(
@@ -112,17 +100,22 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "lastModifiedDate",
         "properties.*",
         "references.*",
-        "references.inScheme:2",
         "references.personInRoles:2",
         "references.person:2",
         "references.role:2",
         "references.instanceVariable:3",
+        "references.variable:3",
+        "references.conceptsFromScheme:3",
+        "references.inScheme:4",
+        "references.quantity:3",
+        "references.unit:3",
+        "references.codeList:3",
+        "references.codeItems:4",
+        "references.source:3",
+        "references.unitType:3",
+        "references.instanceQuestions:3",
         "referrers.predecessors"),
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
-
-    if (study.isPresent()) {
-      checkUserIsAllowedToAccessStudy(study.get());
-    }
 
     return study;
   }
@@ -176,7 +169,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   @Override
   public Study save(Study study) {
-    Study savedStudy = saveStudyInternal(study, false, false);
+    Study savedStudy = saveStudyInternal(study, true, true);
 
     LOG.info("Saved study '{}'", savedStudy.getId());
 
@@ -202,7 +195,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         new StringBuilder()
           .append("Cannot save study '")
           .append(study.getId())
-          .append("' because it has a self reference in 'predecessors'")
+          .append("' because it has a self reference  in 'predecessors'")
           .toString());
     }
 
@@ -218,7 +211,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {
-          dataset.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
           dataset.setId(firstNonNull(dataset.getId(), randomUUID()));
           dataset.setPublished(isStudyPublished);
           dataset.getPopulation()
@@ -420,7 +412,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   @Override
   public void delete(UUID id) {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));
-
+    checkUserIsAllowedToAccessStudy(study);
+    
     List<Node> delete = new ArrayList<>();
 
     delete.add(study.toNode());
@@ -435,67 +428,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   private Supplier<NotFoundException> entityNotFound(Class<?> entityClass, UUID entityId) {
     return () -> new NotFoundException(entityClass, entityId);
   }
-
-  @Override
-  public Dataset saveDataset(UUID studyId, Dataset dataset) {
-    dataset.setId(firstNonNull(dataset.getId(), randomUUID()));
-
-    Study study = get(studyId).orElseThrow(entityNotFound(Study.class, studyId));
-
-    if (containsSelf(dataset, dataset.getPredecessors())) {
-      throw new IllegalArgumentException(
-        new StringBuilder()
-          .append("Cannot save dataset '")
-          .append(dataset.getId())
-          .append("' because it has a self reference in 'predecessors'")
-          .toString());
-    }
-
-    Optional<Dataset> existingDataset = getDataset(study, dataset.getId());
-
-    if (existingDataset.isPresent()) {
-      // Preserve dataset's current instance variables, only update other fields.
-      dataset.setInstanceVariables(existingDataset.get().getInstanceVariables());
-      int index = study.getDatasets().indexOf(existingDataset.get());
-      study.getDatasets().remove(index);
-      study.getDatasets().add(index, dataset);
-    }
-    else {
-      // Clear instance variables because they should be added separately,
-      // not as part of dataset saving.
-      dataset.setInstanceVariables(Collections.emptyList());
-      study.getDatasets().add(dataset);
-    }
-
-    // Always save dataset through study so that study's last modified
-    // timestamp gets updated.
-    Study savedStudy = saveStudyInternal(study, true, false);
-
-    LOG.info("Saved dataset '{}'", dataset.getId());
-
-    return getDataset(savedStudy, dataset.getId())
-      .orElseThrow(datasetNotFoundAfterSave(dataset.getId(), studyId));
-  }
-
-  private Supplier<IllegalStateException> datasetNotFoundAfterSave(UUID datasetId, UUID studyId) {
-    return () -> new IllegalStateException("Dataset '" + datasetId + "' was not found after saving, study '"
-      + studyId + "' might have been updated simultaneously by another user");
-  }
-
-  @Override
-  public void deleteDataset(UUID studyId, UUID datasetId) {
-    Study study = get(studyId)
-      .orElseThrow(entityNotFound(Study.class, studyId));
-    Dataset dataset = getDataset(study, datasetId)
-      .orElseThrow(entityNotFound(Dataset.class, datasetId));
-
-    study.getDatasets().remove(dataset);
-
-    saveStudyInternal(study, true, false);
-
-    LOG.info("Deleted dataset '{}' (of study '{}')", datasetId, studyId);
-  }
-
+  
   @Override
   public Optional<InstanceVariable> getInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
     Dataset dataset = getDataset(studyId, datasetId)
@@ -508,66 +441,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .stream()
       .filter(iv -> iv.getId().equals(instanceVariableId))
       .findFirst();
-  }
-
-  @Override
-  public InstanceVariable saveInstanceVariable(UUID studyId, UUID datasetId, InstanceVariable instanceVariable) {
-    instanceVariable.setId(firstNonNull(instanceVariable.getId(), randomUUID()));
-
-    Study study = get(studyId).orElseThrow(entityNotFound(Study.class, studyId));
-    Dataset dataset = getDataset(study, datasetId).orElseThrow(entityNotFound(Dataset.class, datasetId));
-
-    Optional<InstanceVariable> existingInstanceVariable = getInstanceVariable(dataset, instanceVariable.getId());
-
-    if (existingInstanceVariable.isPresent()) {
-      int index = dataset.getInstanceVariables().indexOf(existingInstanceVariable.get());
-      dataset.getInstanceVariables().remove(index);
-      dataset.getInstanceVariables().add(index, instanceVariable);
-    }
-    else {
-      dataset.getInstanceVariables().add(instanceVariable);
-    }
-
-    Study savedStudy = saveStudyInternal(study, true, true);
-
-    LOG.info("Saved instance variable '{}' (of dataset '{}' of study '{}')",
-      instanceVariable.getId(), datasetId, studyId);
-
-    Dataset savedDataset = getDataset(savedStudy, datasetId)
-      .orElseThrow(datasetNotFoundAfterSave(datasetId, studyId));
-
-    return getInstanceVariable(savedDataset, instanceVariable.getId())
-      .orElseThrow(instanceVariableNotFoundAfterSave(instanceVariable.getId(), datasetId, studyId));
-  }
-
-  private Supplier<IllegalStateException> instanceVariableNotFoundAfterSave(UUID instanceVariableId,
-                                                                            UUID datasetId,
-                                                                            UUID studyId) {
-    return () -> new IllegalStateException("InstanceVariable '"
-      + instanceVariableId
-      + "' was not found after saving, dataset '"
-      + datasetId
-      + "' or study '"
-      + studyId
-      + "' might have been updated simultaneously by another user");
-  }
-
-
-  @Override
-  public void deleteInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
-    Study study = get(studyId)
-      .orElseThrow(entityNotFound(Study.class, studyId));
-    Dataset dataset = getDataset(study, datasetId)
-      .orElseThrow(entityNotFound(Dataset.class, datasetId));
-    InstanceVariable instanceVariable = getInstanceVariable(dataset, instanceVariableId)
-      .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
-
-    dataset.getInstanceVariables().remove(instanceVariable);
-
-    saveStudyInternal(study, true, true);
-
-    LOG.info("Deleted instance variable '{}' (of dataset '{}' of study '{}')",
-      instanceVariable.getId(), datasetId, studyId);
   }
 
 }

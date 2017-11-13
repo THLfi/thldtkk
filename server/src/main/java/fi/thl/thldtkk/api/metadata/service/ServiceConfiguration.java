@@ -18,6 +18,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.NodeHttpRepository;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationUnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PersonServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.PublicStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.QuantityServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.RoleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitServiceImpl;
@@ -62,6 +63,11 @@ public class ServiceConfiguration {
   @Bean
   public PublicDatasetService publicDatasetService() {
     return new PublicDatasetServiceImpl(publicNodeRepository());
+  }
+  
+  @Bean
+  public PublicStudyService publicStudyService() {
+    return new PublicStudyServiceImpl(publicNodeRepository(), userHelper);
   }
 
   // editor services

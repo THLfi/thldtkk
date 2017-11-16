@@ -100,7 +100,8 @@ public class EditorStudyController {
     @PathVariable UUID studyId,
     @PathVariable UUID datasetId,
     @PathVariable UUID instanceVariableId) {
-    return editorStudyService.getInstanceVariable(studyId, datasetId, instanceVariableId);
+    return editorStudyService.getInstanceVariable(studyId, datasetId, instanceVariableId)
+            .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
   }
 
   @ApiOperation("Create a new instance variable or update an existing instance variable")

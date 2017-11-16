@@ -591,11 +591,21 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     goBack() {
-      this.router.navigate([
-        '/editor/studies',
-        this.study.id,
-        'datasets',
-        this.dataset.id
-      ])
+      if(this.dataset && this.dataset.id) {
+        this.router.navigate([
+          '/editor/studies',
+          this.study.id,
+          'datasets',
+          this.dataset.id
+        ])
+      }
+
+      else {
+          this.router.navigate([
+          '/editor/studies',
+          this.study.id,
+          'datasets'
+        ])
+      }
     }
 }

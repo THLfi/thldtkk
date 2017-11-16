@@ -12,13 +12,13 @@
           <h1>{{ instanceVariable.prefLabel | lang }}</h1>
         </div>
       </div>
-<!-- TODO: Uncomment when lastModifiedDate has been added to instance variable.
       <div class="row">
         <div class="col-xs-12">
-          <small>{{'lastModified' | translate}}: {{ instanceVariable.lastModifiedDate | date:'dd.MM.yyyy HH:mm' }}</small>
+          <last-modified [modifier]="instanceVariable.lastModifiedByUser"
+                         [lastModifiedDate]="instanceVariable.lastModifiedDate">
+          </last-modified>
         </div>
       </div>
--->
     </div>
 
     <div class="content-body container-fluid">

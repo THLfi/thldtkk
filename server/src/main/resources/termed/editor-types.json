@@ -434,6 +434,12 @@
         }
       },
       {
+        "id": "lastModifiedByUser",
+        "range": {
+          "id": "UserProfile"
+        }
+      },
+      {
         "id": "unitType",
         "range": {
           "id": "UnitType",

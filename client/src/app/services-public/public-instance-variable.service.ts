@@ -25,6 +25,17 @@ export class PublicInstanceVariableService {
     return this.http.get(url).map(response => response.json() as InstanceVariable)
   }
 
+  getInstanceVariable(studyId:string, datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
+    const url = env.contextPath
+      + '/api/v3/public/studies/'
+      + studyId 
+      +'/datasets/'
+      + datasetId
+      + '/instanceVariables/'
+      + instanceVariableId
+    return this.http.get(url).map(response => response.json() as InstanceVariable)
+  }
+
   search(searchText = '', max = 100): Observable<InstanceVariable[]> {
     const url = env.contextPath
       + '/api/v3/public/instanceVariables?query='

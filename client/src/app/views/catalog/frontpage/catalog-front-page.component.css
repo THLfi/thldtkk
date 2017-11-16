@@ -1,14 +1,14 @@
-.frontpage-datasets h1 {
+.frontpage-studies h1 {
     font-size: 1.5em;
     font-weight: bold;
     color:  #01A197;
 }
 
-.frontpage-datasets ul {
+.frontpage-studies ul {
     padding-left: 0;
 }
 
-.frontpage-datasets li {
+.frontpage-studies li {
     list-style: none;
     text-indent: -0.9em;
     padding-left: 0.9em;
@@ -16,11 +16,11 @@
     padding-bottom: 0.5em;
 }
 
-.frontpage-datasets li::before {
+.frontpage-studies li::before {
     content: ">";
 }
 
-.frontpage-datasets li a {
+.frontpage-studies li a {
     text-decoration: underline;
 }
 

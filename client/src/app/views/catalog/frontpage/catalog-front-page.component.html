@@ -1,16 +1,16 @@
 <div class="container">
   <div class="row">
-    <div class="frontpage-datasets col-xs-12 col-sm-offset-2 col-sm-4">
-      <h1>{{'catalog.frontpage.datasets' | translate | uppercase}}</h1>
-      <ng-container *ngIf="!isLoadingDatasets else loadingDatasets;">
+    <div class="frontpage-studies col-xs-12 col-sm-offset-2 col-sm-4">
+      <h1>{{'catalog.frontpage.studies' | translate | uppercase}}</h1>
+      <ng-container *ngIf="!isLoadingStudies else loadingStudies;">
         <ul>
-          <li *ngFor="let dataset of datasets">
-            <a routerLink="/catalog/datasets/{{ dataset.id }}">{{dataset.prefLabel | lang}}</a>
+          <li *ngFor="let study of studies">
+            <a routerLink="/catalog/studies/{{ study.id }}">{{study.prefLabel | lang}}</a>
           </li>
         </ul>
-        <div *ngIf="!datasets.length">{{'catalog.frontpage.noDatasets' | translate}}</div>
+        <div *ngIf="!studies.length">{{'catalog.frontpage.noStudies' | translate}}</div>
       </ng-container>
-      <ng-template #loadingDatasets>
+      <ng-template #loadingStudies>
         <thl-spinner></thl-spinner>
       </ng-template>
     </div>

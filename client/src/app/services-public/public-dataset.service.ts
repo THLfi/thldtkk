@@ -13,6 +13,15 @@ export class PublicDatasetService {
     private http: Http
   ) { }
 
+  getDataset(studyId: string, datasetId: string): Observable<Dataset> {
+    return this.http.get(env.contextPath
+      + '/api/v3/public/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId)
+      .map(response => response.json() as Dataset)
+  }
+
   get(datasetId: string): Observable<Dataset> {
     const url = env.contextPath
       + '/api/v3/public/datasets/'

@@ -4,8 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
-import { Dataset } from '../../../model2/dataset';
+import { Dataset } from '../../../model2/dataset'
+import { Study } from '../../../model2/study'
 import { PublicDatasetService } from '../../../services-public/public-dataset.service'
+import { PublicStudyService } from '../../../services-public/public-study.service'
 import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 
 
@@ -15,10 +17,12 @@ import { PublicInstanceVariableService } from '../../../services-public/public-i
 })
 export class DatasetComponent implements OnInit {
 
-  dataset: Dataset;
+  study: Study
+  dataset: Dataset
   language: string
 
   constructor(private datasetService: PublicDatasetService,
+              private studyService: PublicStudyService,
               private instanceVariableService: PublicInstanceVariableService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
@@ -32,12 +36,18 @@ export class DatasetComponent implements OnInit {
   }
 
   private getDataSet() {
-    const datasetId = this.route.snapshot.params['id'];
-    this.datasetService.get(datasetId)
+    const datasetId = this.route.snapshot.params['datasetId']
+    const studyId = this.route.snapshot.params['studyId']
+
+    this.datasetService.getDataset(studyId, datasetId)
       .subscribe(dataset => {
         this.dataset = dataset
         this.updatePageTitle()
       })
+
+    this.studyService.getStudy(studyId).subscribe(study => {
+      this.study = study
+    })
   }
 
   private updatePageTitle():void {

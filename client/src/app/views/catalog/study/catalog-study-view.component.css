@@ -1,0 +1,30 @@
+.alt-label {
+  color: #767676;
+  margin-top: 0;
+  font-size: 1.3em;
+  font-weight: 200;
+}
+
+.bordered-box {
+  margin-top: .5em;
+  margin-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border: 1px solid #ccc;
+}
+
+.right-main-column .owner-organization {
+  font-size: 24px;
+  font-weight: 200;
+}
+.right-main-column h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+.right-main-column .person-name {
+  font-size: 16px;
+}
+.right-main-column .person-email {
+  color: #01A197;
+  font-style: italic;
+}

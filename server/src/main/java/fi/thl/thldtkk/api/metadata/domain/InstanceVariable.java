@@ -62,6 +62,7 @@ public class InstanceVariable implements NodeEntity {
   private List<InstanceQuestion> instanceQuestions = new ArrayList<>();
   private Dataset dataset;
   private Date lastModifiedDate;
+  private UserProfile lastModifiedByUser;
 
   public InstanceVariable() {
 
@@ -112,6 +113,8 @@ public class InstanceVariable implements NodeEntity {
 
     node.getReferrers("instanceVariable")
         .stream().findFirst().ifPresent(dataset -> this.dataset = new Dataset(dataset));
+    node.getReferencesFirst("lastModifiedByUser")
+        .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
   }
 
   /**
@@ -341,6 +344,14 @@ public class InstanceVariable implements NodeEntity {
     return Optional.ofNullable(lastModifiedDate);
   }
 
+  public Optional<UserProfile> getLastModifiedByUser() {
+    return Optional.ofNullable(lastModifiedByUser);
+  }
+
+  public void setLastModifiedByUser(UserProfile userProfile) {
+    this.lastModifiedByUser = userProfile;
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
     props.putAll("prefLabel", toPropertyValues(prefLabel));
@@ -374,6 +385,7 @@ public class InstanceVariable implements NodeEntity {
 
     Multimap<String, Node> referrers = LinkedHashMultimap.create();
     getDataset().ifPresent((v -> referrers.put("dataset", v.toNode())));
+    getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs, referrers);
   }

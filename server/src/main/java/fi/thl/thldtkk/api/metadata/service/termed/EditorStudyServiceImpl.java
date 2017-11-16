@@ -126,6 +126,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.codeItems:4",
         "references.source:3",
         "references.unitType:3",
+        "references.lastModifiedByUser:3",
         "references.instanceQuestions:3",
         "references.predecessors:3",
         "referrers.predecessors:3",
@@ -243,6 +244,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
           if (includeInstanceVariables) {
             dataset.getInstanceVariables()
               .forEach(iv -> {
+                iv.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
                 iv.setId(firstNonNull(iv.getId(), randomUUID()));
                 iv.setPublished(isStudyPublished);
                 if (InstanceVariable.VALUE_DOMAIN_TYPE_DESCRIBED.equals(iv.getValueDomainType().orElse(null))) {

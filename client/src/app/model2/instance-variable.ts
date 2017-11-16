@@ -6,6 +6,7 @@ import { LangValues } from './lang-values';
 import { Quantity } from './quantity';
 import { Unit } from './unit';
 import { UnitType } from './unit-type';
+import { UserInformation } from './user-information';
 import { Variable } from './variable'
 
 export interface InstanceVariable {
@@ -35,4 +36,5 @@ export interface InstanceVariable {
   dataset: Dataset
   instanceQuestions: InstanceQuestion[],
   dataFormat: LangValues
+  lastModifiedByUser?: UserInformation
 }

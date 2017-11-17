@@ -169,10 +169,10 @@
       "searchSummary": "Löytyi {{resultCount}} muuttujaa haulla "
     },
     "frontpage": {
-      "datasets": "Datasetit",
+      "studies": "Aineistot",
       "searchVariables": "Hae muuttujia!",
       "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
-      "noDatasets": "Datasettejä ei löytynyt"
+      "noStudies": "Aineistoja ei löytynyt"
     },
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",
@@ -471,6 +471,7 @@
       "suffix": "Aineistokatalogi",
       "frontpage": "Etusivu",
       "datasetList": "Datasetit",
+      "studies":"Aineistot",
       "instanceVariableSearch": "Muuttujahaku"
     }
   },

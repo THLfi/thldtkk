@@ -45,6 +45,7 @@ import { OrganizationUnitService } from './services-common/organization-unit.ser
 import { PersonService } from './services-common/person.service'
 import { PopulationService } from './services-common/population.service'
 import { PublicDatasetService } from './services-public/public-dataset.service'
+import { PublicStudyService } from './services-public/public-study.service'
 import { PublicInstanceVariableService } from './services-public/public-instance-variable.service'
 import { QuantityService } from './services-common/quantity.service'
 import { RoleService } from './services-common/role.service'
@@ -64,6 +65,8 @@ import { RequiredFieldIndicator } from './views/common/required-field-indicator.
 import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view-code-list-code-items-modal.component'
 
 // catalog components (few renamed to avoid name clash with editor)
+import { CatalogStudyListComponent } from './views/catalog/study/catalog-study-list.component'
+import { CatalogStudyViewComponent } from './views/catalog/study/catalog-study-view.component'
 import { DatasetComponent } from './views/catalog/dataset/dataset.component'
 import { DatasetListComponent } from './views/catalog/dataset/dataset-list.component'
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
@@ -128,6 +131,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         AppComponent,
         AutogrowTextarea,
         BreadcrumbComponent,
+        CatalogStudyListComponent,
+        CatalogStudyViewComponent,
         CodeListListComponent,
         DatasetAdministrativeEditComponent,
         DatasetAdministrativeViewComponent,
@@ -233,6 +238,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         PopulationService,
         PublicDatasetService,
         PublicInstanceVariableService,
+        PublicStudyService,
         QuantityService,
         RoleService,
         EditorStudyService,

@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataset; else loadingDataset;">
+<ng-container *ngIf="study && dataset; else loadingDataset;">
   <div class="row">
     <div class="col-xs-12">
       <h1>
@@ -245,9 +245,9 @@
           <th>{{ 'catalog.referencePeriod' | translate }}</th>
         </tr>
         <tr *ngFor="let variable of dataset.instanceVariables"
-          routerLink="/catalog/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">
+          routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">
           <td>
-            <a routerLink="/catalog/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
+            <a routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ variable.id }}">{{ variable.prefLabel | lang }}</a>
           </td>
           <td>
             <span class="preserve-line-breaks">{{ variable.description | lang }}</span>
@@ -285,19 +285,21 @@
     </div>
   </div>
 
+  <hr>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-default" routerLink="/catalog/studies/{{study.id}}">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        {{ 'back' | translate }}
+      </button>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingDataset>
   <thl-spinner></thl-spinner>
 </ng-template>
 
-<hr>
 
-<div class="row">
-  <div class="col-xs-12">
-    <button class="btn btn-default" routerLink="/catalog/datasets">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      {{ 'back' | translate }}
-    </button>
-  </div>
-</div>

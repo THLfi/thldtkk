@@ -3,7 +3,8 @@ import { Router, NavigationExtras} from '@angular/router'
 import 'rxjs/add/operator/toPromise'
 
 import { Dataset } from '../../../model2/dataset'
-import { PublicDatasetService } from '../../../services-public/public-dataset.service'
+import { Study } from '../../../model2/study'
+import { PublicStudyService } from '../../../services-public/public-study.service'
 
 @Component({
     templateUrl: './catalog-front-page.component.html',
@@ -11,21 +12,22 @@ import { PublicDatasetService } from '../../../services-public/public-dataset.se
 })
 export class CatalogFrontPageComponent implements OnInit {
 
+    studies: Study[] = []
     datasets: Dataset[] = []
     searchText: string
-    isLoadingDatasets: boolean = false
+    isLoadingStudies: boolean
 
     constructor (
-        private datasetService: PublicDatasetService,
+        private studyService: PublicStudyService,
         private router: Router
     ) {}
 
     ngOnInit(): void {
-        this.isLoadingDatasets = true;
-        this.datasetService.getRecentDatasets()
-            .subscribe(datasets => {
-                this.datasets = datasets
-                this.isLoadingDatasets = false
+        this.isLoadingStudies = true
+        this.studyService.getRecentStudies()
+            .subscribe(studies => {
+                this.studies = studies.reverse() 
+                this.isLoadingStudies = false
             });
     }
 

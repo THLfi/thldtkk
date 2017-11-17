@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageIdentifier } from './utils/page-identifier'
 
 import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-front-page.component"
+import { CatalogStudyListComponent } from './views/catalog/study/catalog-study-list.component'
+import { CatalogStudyViewComponent } from './views/catalog/study/catalog-study-view.component'
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
 import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
@@ -47,6 +49,26 @@ const routes: Routes = [
         path: 'catalog/datasets',
         component: DatasetListComponent,
         data: {title:'pageTitles.catalog.datasetList',pageType:PageIdentifier.CATALOG}
+    },
+    {
+        path: 'catalog/studies/:id',
+        component: CatalogStudyViewComponent,
+        data: {pageType:PageIdentifier.CATALOG}
+    },
+    {
+        path: 'catalog/studies/:studyId/datasets/:datasetId',
+        component: DatasetComponent,
+        data: {pageType:PageIdentifier.CATALOG}
+    },
+    {
+        path: 'catalog/studies/:studyId/datasets/:datasetId/instanceVariables/:instanceVariableId',
+        component: InstanceVariableComponent,
+        data: {pageType:PageIdentifier.CATALOG}
+    },
+    {
+        path: 'catalog/studies',
+        component: CatalogStudyListComponent,
+        data: {title:'pageTitles.catalog.studies',pageType:PageIdentifier.CATALOG}
     },
     {
         path: 'catalog/variables/:id',

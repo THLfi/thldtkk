@@ -20,6 +20,7 @@ export class InstanceVariableComponent implements OnInit {
   dataset: Dataset
   instanceVariableId: string
   datasetId: string
+  studyId: string
   language: string
 
   constructor(private instanceVariableService: PublicInstanceVariableService,
@@ -28,6 +29,7 @@ export class InstanceVariableComponent implements OnInit {
               private translateService: TranslateService,
               private langPipe: LangPipe,
               private titleService: Title) {
+    this.studyId = this.route.snapshot.params['studyId']
     this.datasetId = this.route.snapshot.params['datasetId']
     this.instanceVariableId = this.route.snapshot.params['instanceVariableId']
     this.language = this.translateService.currentLang
@@ -39,8 +41,8 @@ export class InstanceVariableComponent implements OnInit {
 
   private getInstanceVariable() {
     Observable.forkJoin(
-      this.instanceVariableService.get(this.datasetId, this.instanceVariableId),
-      this.datasetService.get(this.datasetId)
+      this.instanceVariableService.getInstanceVariable(this.studyId,this.datasetId, this.instanceVariableId),
+      this.datasetService.getDataset(this.studyId,this.datasetId)
     ).subscribe(data => {
       this.instanceVariable = data[0]
       this.dataset = data[1]

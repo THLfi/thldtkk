@@ -11,6 +11,13 @@
           <h1>{{study.prefLabel | lang}}</h1>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <last-modified [modifier]="study.lastModifiedByUser"
+                         [lastModifiedDate]="study.lastModifiedDate">
+          </last-modified>
+        </div>
+      </div>
     </div>
 
     <div class="content-body container-fluid">

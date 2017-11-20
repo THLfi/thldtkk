@@ -13,8 +13,7 @@ import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
 
 @Component({
-  templateUrl: './dataset-view.component.html',
-  styleUrls: [ './dataset-view.component.css' ]
+  templateUrl: './dataset-view.component.html'
 })
 export class DatasetViewComponent implements OnInit {
 
@@ -57,26 +56,6 @@ export class DatasetViewComponent implements OnInit {
       let bareTitle:string = this.titleService.getTitle()
       this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
-  }
-
-  confirmPublish(): void {
-    this.translateService.get('confirmPublishDataset')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.datasetService.publish(this.dataset)
-            .subscribe(dataSet => this.dataset = dataSet)
-        }
-      })
-  }
-
-  confirmWithdraw(): void {
-    this.translateService.get('confirmWithdrawDataset')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.datasetService.withdraw(this.dataset)
-            .subscribe(dataSet => this.dataset = dataSet)
-        }
-      })
   }
 
 }

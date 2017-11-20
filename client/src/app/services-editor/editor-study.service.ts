@@ -140,14 +140,16 @@ export class EditorStudyService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return Observable.throw("Not implemented")
+    return this.http.post(env.contextPath + '/api/v3/editor/study-functions/publish?studyId=' + study.id, {}, options)
+      .map(response => response.json() as Study)
   }
 
   withdraw(study: Study): Observable<Study> {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return Observable.throw("Not implemented")
+    return this.http.post(env.contextPath + '/api/v3/editor/study-functions/withdraw?studyId=' + study.id, {}, options)
+      .map(response => response.json() as Study)
   }
 
 }

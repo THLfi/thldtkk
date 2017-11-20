@@ -45,11 +45,11 @@ export class EditorStudyViewComponent {
     })
   }
 
-  private updatePageTitle():void {
-    if(this.study.prefLabel) {
+  private updatePageTitle() {
+    if (this.study.prefLabel) {
       let translatedLabel:string = this.langPipe.transform(this.study.prefLabel)
-      let bareTitle:string = this.titleService.getTitle();
-      this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+      let bareTitle:string = this.titleService.getTitle()
+      this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
   }
 

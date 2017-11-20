@@ -10,8 +10,10 @@
       <div class="row">
         <div class="col-sm-8">
           <h1>{{ study.prefLabel | lang }}</h1>
+          <last-modified [modifier]="study.lastModifiedByUser"
+                         [lastModifiedDate]="study.lastModifiedDate">
+          </last-modified>
         </div>
-<!-- TODO: Fix publishing
         <div class="col-sm-4">
           <h2 class="pull-right">
             <div class="pull-right">
@@ -20,7 +22,7 @@
                   {{ 'published' | translate }}
                   <span class="glyphicon glyphicon-ok"></span>
                 </span>
-                <button (click)="confirmWithdraw()" class="btn btn-sm btn-warning btn-unpublish">
+                <button (click)="confirmWithdraw()" class="btn btn-default btn-withdraw">
                   {{ 'unpublish' | translate }}
                 </button>
               </ng-container>
@@ -28,20 +30,12 @@
                 <span class="label label-default">
                   {{ 'unpublished' | translate }}
                 </span>
-                <button (click)="confirmPublish()" class="btn btn-sm btn-warning btn-publish">
+                <button (click)="confirmPublish()" class="btn btn-default btn-publish">
                   {{ 'publish' | translate }}
                 </button>
               </ng-template>
             </div>
           </h2>
-        </div>
--->
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <last-modified [modifier]="study.lastModifiedByUser"
-                         [lastModifiedDate]="study.lastModifiedDate">
-          </last-modified>
         </div>
       </div>
     </div>

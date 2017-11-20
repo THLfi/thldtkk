@@ -232,6 +232,10 @@ public class InstanceVariable implements NodeEntity {
     return Optional.ofNullable(source);
   }
 
+  public void setSource(Dataset source) {
+    this.source = source;
+  }
+
   public Map<String, String> getSourceDescription() {
     return sourceDescription;
   }

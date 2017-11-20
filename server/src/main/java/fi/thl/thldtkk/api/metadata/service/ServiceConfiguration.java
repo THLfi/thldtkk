@@ -3,35 +3,36 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
-import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.EditorStudyServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.PublicDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.DatasetPublishingServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.InstanceQuestionServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.termed.PublicInstanceVariableServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.LifecyclePhaseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.NodeHttpRepository;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationUnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PersonServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.PublicDatasetServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.PublicInstanceVariableServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.QuantityServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.RoleServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.StudyPublishingServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UniverseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UsageConditionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UserProfileServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.VariableServiceImpl;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.UUID;
 
 @Configuration
 public class ServiceConfiguration {
@@ -64,7 +65,7 @@ public class ServiceConfiguration {
   public PublicDatasetService publicDatasetService() {
     return new PublicDatasetServiceImpl(publicNodeRepository());
   }
-  
+
   @Bean
   public PublicStudyService publicStudyService() {
     return new PublicStudyServiceImpl(publicNodeRepository(), userHelper);
@@ -78,6 +79,11 @@ public class ServiceConfiguration {
   }
 
   @Bean
+  public StudyPublishingService studyPublishingService() {
+    return new StudyPublishingServiceImpl(editorStudyService(), publicStudyService());
+  }
+
+  @Bean
   public EditorInstanceVariableService editorInstanceVariableService() {
     return new EditorInstanceVariableServiceImpl(editorNodeRepository(), editorDatasetService());
   }
@@ -85,11 +91,6 @@ public class ServiceConfiguration {
   @Bean
   public EditorDatasetService editorDatasetService() {
     return new EditorDatasetServiceImpl(editorNodeRepository(), userHelper);
-  }
-
-  @Bean
-  public DatasetPublishingService datasetPublishingService() {
-    return new DatasetPublishingServiceImpl(editorDatasetService(), publicDatasetService());
   }
 
   @Bean

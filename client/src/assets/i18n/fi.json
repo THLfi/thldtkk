@@ -41,6 +41,7 @@
   "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten",
   "usageCondition": "Käyttöehdot",
   "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
+  "studyLifecyclePhase": "Aineiston elinkaaren vaihe",
   "datasetLifecyclePhase": "Datasetin elinkaaren vaihe",
   "referencePeriod": "Viiteajankohta",
   "referencePeriodStart": "Viiteajankohdan alkupäivämäärä",
@@ -173,6 +174,9 @@
       "searchVariables": "Hae muuttujia!",
       "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
       "noStudies": "Aineistoja ei löytynyt"
+    },
+    "CatalogStudyViewComponent": {
+      "numberOfObservationUnits": "Havainto- yksiköiden lkm"
     },
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",

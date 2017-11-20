@@ -2,7 +2,7 @@ package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvParser;
 import fi.thl.thldtkk.api.metadata.service.csv.ParsingResult;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -33,19 +33,20 @@ public class EditorInstanceVariableCsvImportController {
 
   @Autowired
   private InstanceVariableCsvParser csvParser;
-
   @Autowired
-  private EditorDatasetService editorDatasetService;
+  private EditorStudyService editorStudyService;
 
-  @PostMapping(path = "/datasets/{datasetId}/instanceVariables",
+  @PostMapping(path = "/studies/{studyId}/datasets/{datasetId}/instanceVariables",
       consumes = "text/csv",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public ResponseEntity<ParsingResult<List<ParsingResult<InstanceVariable>>>> importInstanceVariablesAsCsv(
+      @PathVariable("studyId") UUID studyId,
       @PathVariable("datasetId") UUID datasetId,
       @RequestHeader("content-type") String contentType,
       HttpServletRequest request) throws IOException {
 
-    Dataset dataset = editorDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
+    Dataset dataset = editorStudyService.getDataset(studyId, datasetId)
+      .orElseThrow(NotFoundException::new);
 
     ParsingResult<List<ParsingResult<InstanceVariable>>> parsingResult
       = csvParser.parse(request.getInputStream(), getCharset(contentType));
@@ -54,9 +55,9 @@ public class EditorInstanceVariableCsvImportController {
       return new ResponseEntity<>(parsingResult, HttpStatus.BAD_REQUEST);
     }
 
-    List<InstanceVariable> instanceVariables = getInstanceVariables(parsingResult);
+    dataset.setInstanceVariables(getInstanceVariables(parsingResult));
 
-    editorDatasetService.save(new Dataset(dataset, instanceVariables));
+    editorStudyService.saveDatasetAndInstanceVariables(studyId, dataset);
 
     return new ResponseEntity<>(parsingResult, HttpStatus.OK);
   }

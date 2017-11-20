@@ -62,7 +62,7 @@ export class DatasetComponent implements OnInit {
   }
 
   composeInstanceVariableExportUrl(): string {
-    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.dataset.id)
+    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.study.id, this.dataset.id)
   }
 
 }

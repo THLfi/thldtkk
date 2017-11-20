@@ -13,7 +13,6 @@ import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,6 +36,7 @@ import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyV
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -70,7 +70,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     List<Criteria> criteria = new ArrayList<>();
 
     criteria.add(keyValue("type.id", Study.TERMED_NODE_CLASS));
-    
+
     if (organizationId != null) {
       criteria.add(keyValue("references.ownerOrganization.id", organizationId.toString()));
     }
@@ -413,7 +413,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
   public void delete(UUID id) {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));
     checkUserIsAllowedToAccessStudy(study);
-    
+
     List<Node> delete = new ArrayList<>();
 
     delete.add(study.toNode());
@@ -425,10 +425,6 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));
   }
 
-  private Supplier<NotFoundException> entityNotFound(Class<?> entityClass, UUID entityId) {
-    return () -> new NotFoundException(entityClass, entityId);
-  }
-  
   @Override
   public Optional<InstanceVariable> getInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
     Dataset dataset = getDataset(studyId, datasetId)

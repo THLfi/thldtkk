@@ -5,7 +5,6 @@ import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
+
+import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
 
 @Api(description = "Public API for studies, their datasets and datasets' instance variables")
 @RestController
@@ -59,10 +59,6 @@ public class PublicStudyController {
     @PathVariable UUID instanceVariableId) {
     return publicStudyService.getInstanceVariable(studyId, datasetId, instanceVariableId)
             .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
-  }
-  
-  private Supplier<NotFoundException> entityNotFound(Class<?> entityClass, UUID entityId) {
-    return () -> new NotFoundException(entityClass, entityId);
   }
 
 }

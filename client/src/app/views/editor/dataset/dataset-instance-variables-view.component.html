@@ -132,6 +132,7 @@
   </div>
 
   <instance-variables-import-modal
+    [study]="studyForImportInstanceVariablesModal"
     [dataset]="datasetForImportInstanceVariablesModal"
     (onImport)="getStudyAndDataset(); closeImportInstanceVariablesModal()"
     (onCancel)="closeImportInstanceVariablesModal()">

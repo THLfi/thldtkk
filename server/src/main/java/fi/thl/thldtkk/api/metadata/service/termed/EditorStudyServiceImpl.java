@@ -13,7 +13,6 @@ import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,6 +36,7 @@ import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyV
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -448,12 +448,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));
   }
 
-  private Supplier<NotFoundException> entityNotFound(Class<?> entityClass, UUID entityId) {
-    return () -> new NotFoundException(entityClass, entityId);
-  }
-
   @Override
   public Dataset saveDataset(UUID studyId, Dataset dataset) {
+    return saveDatasetInternal(studyId, dataset, false);
+  }
+
+  private Dataset saveDatasetInternal(UUID studyId, Dataset dataset, boolean saveInstanceVariables) {
     dataset.setId(firstNonNull(dataset.getId(), randomUUID()));
 
     Study study = get(studyId).orElseThrow(entityNotFound(Study.class, studyId));
@@ -470,27 +470,39 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Optional<Dataset> existingDataset = getDataset(study, dataset.getId());
 
     if (existingDataset.isPresent()) {
-      // Preserve dataset's current instance variables, only update other fields.
-      dataset.setInstanceVariables(existingDataset.get().getInstanceVariables());
+      if (!saveInstanceVariables) {
+        // Preserve dataset's current instance variables, only update other fields.
+        dataset.setInstanceVariables(existingDataset.get().getInstanceVariables());
+      }
       int index = study.getDatasets().indexOf(existingDataset.get());
       study.getDatasets().remove(index);
       study.getDatasets().add(index, dataset);
     }
     else {
-      // Clear instance variables because they should be added separately,
-      // not as part of dataset saving.
-      dataset.setInstanceVariables(Collections.emptyList());
+      if (!saveInstanceVariables) {
+        dataset.setInstanceVariables(Collections.emptyList());
+      }
       study.getDatasets().add(dataset);
     }
 
     // Always save dataset through study so that study's last modified
     // timestamp gets updated.
-    Study savedStudy = saveStudyInternal(study, true, false);
+    Study savedStudy = saveStudyInternal(study, true, saveInstanceVariables);
 
-    LOG.info("Saved dataset '{}'", dataset.getId());
+    if (saveInstanceVariables) {
+      LOG.info("Saved dataset '{}' with {} instance variables", dataset.getId(), dataset.getInstanceVariables().size());
+    }
+    else {
+      LOG.info("Saved dataset '{}'", dataset.getId());
+    }
 
     return getDataset(savedStudy, dataset.getId())
       .orElseThrow(datasetNotFoundAfterSave(dataset.getId(), studyId));
+  }
+
+  @Override
+  public Dataset saveDatasetAndInstanceVariables(UUID studyId, Dataset dataset) {
+    return saveDatasetInternal(studyId, dataset, true);
   }
 
   private Supplier<IllegalStateException> datasetNotFoundAfterSave(UUID datasetId, UUID studyId) {

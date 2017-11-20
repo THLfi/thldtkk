@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms'
 
 import { Dataset } from '../../../model2/dataset'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
+import { Study } from '../../../model2/study'
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -13,6 +14,7 @@ import { EditorInstanceVariableService } from '../../../services-editor/editor-i
 })
 export class InstanceVariablesImportModalComponent implements OnInit, AfterContentChecked {
 
+  @Input() study: Study
   @Input() dataset: Dataset
 
   @ViewChild('importForm') importForm: NgForm
@@ -95,7 +97,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       return
     }
 
-    this.instanceVariableService.importInstanceVariablesAsCsv(this.dataset.id, this.file, this.encoding)
+    this.instanceVariableService.importInstanceVariablesAsCsv(this.study.id, this.dataset.id, this.file, this.encoding)
       .finally(() => {
         this.importInProgress = false
       })

@@ -22,6 +22,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
   dataset: Dataset
   language: string
 
+  studyForImportInstanceVariablesModal: Study
   datasetForImportInstanceVariablesModal: Dataset
 
   readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
@@ -66,6 +67,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
   }
 
   showImportInstanceVariablesModal() {
+    this.studyForImportInstanceVariablesModal = this.study
     this.datasetForImportInstanceVariablesModal = this.dataset
   }
 
@@ -74,7 +76,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
   }
 
   composeInstanceVariableExportUrl(): string {
-    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.dataset.id)
+    return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.study.id, this.dataset.id)
   }
 
 }

@@ -74,12 +74,14 @@ export class EditorInstanceVariableService {
       })
   }
 
-  importInstanceVariablesAsCsv(datasetId: string, file: File, encoding: string): Observable<any> {
+  importInstanceVariablesAsCsv(studyId: string, datasetId: string, file: File, encoding: string): Observable<any> {
     const formData: FormData = new FormData()
     formData.append('file', file, file.name)
 
     const path: string = env.contextPath
-      + '/api/v3/editor/datasets/'
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
       + datasetId
       + '/instanceVariables'
     const headers = new Headers({ 'Content-Type': 'text/csv;charset=' + encoding })
@@ -92,14 +94,14 @@ export class EditorInstanceVariableService {
       })
   }
 
-  getInstanceVariableAsCsvExportPath(datasetId: string, encoding="ISO-8859-15"): string {
-      const path: string = env.contextPath
-      + '/api/v3/editor/datasets/'
+  getInstanceVariableAsCsvExportPath(studyId: string, datasetId: string, encoding = 'ISO-8859-15'): string {
+    return env.contextPath
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
       + datasetId
       + '/instanceVariables.csv?'
       + 'encoding=' + encoding
-
-      return path;
   }
 
 }

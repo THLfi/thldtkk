@@ -9,10 +9,10 @@ import { Variable } from '../../../model2/variable'
 import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 
 // Observable operators
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/catch'
+import 'rxjs/add/operator/debounceTime'
+import 'rxjs/add/operator/distinctUntilChanged'
 
 import 'rxjs/add/observable/of';
 

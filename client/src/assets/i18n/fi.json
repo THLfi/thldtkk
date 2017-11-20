@@ -180,7 +180,10 @@
     },
     "variableData": {
       "instanceVariableColumnHeading": "Muuttuja",
-      "datasetColumnHeading": "Dataset"
+      "datasetColumnHeading": "Dataset",
+      "studyColumnHeading": "Aineisto",
+      "noStudy": "Ei liittyvää aineistoa",
+      "noDataset": "Ei liittyvää datasettiä"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",

@@ -1,32 +1,47 @@
 <div class="container-fluid">
-  <div class="row" *ngIf="variable">
-    <div class="col-xs-12">
+  <ng-container *ngIf="!loadingInstanceVariables">
+    <div class="row" *ngIf="variable">
+      <div class="col-xs-12">
         <h1>{{variable.prefLabel | lang}}</h1>
-        <p>{{variable.description | lang}}</p>    
+        <p>{{variable.description | lang}}</p>
+      </div>
     </div>
-  </div>
-  <div class="col-xs-12 col-sm-10" style="padding-left: 0">
-    <p-dataTable tableStyleClass="data-table-plain" [value]="instanceVariables">
+    <div class="col-xs-12 col-sm-10" style="padding-left: 0">
+      <p-dataTable tableStyleClass="data-table-plain" [value]="instanceVariables">
         <p-column field="prefLabel" [style]="{'border':'none','background-color':'white'}" header="{{'catalog.variableData.instanceVariableColumnHeading' | translate}}">
-            <ng-template let-instanceVariable="rowData" pTemplate="body">
-                <ng-container *ngIf="instanceVariable.dataset">
-                    <span><a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang }}</a></span>
-                </ng-container>
-                <ng-container *ngIf="!instanceVariable.dataset">
-                    <span>{{instanceVariable.prefLabel | lang }}</span>
-                </ng-container>
+          <ng-template let-instanceVariable="rowData" pTemplate="body">
+            <ng-container *ngIf="instanceVariable.dataset &&instanceVariable.dataset.study; else noStudyAndDataset">
+              <span><a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang }}</a></span>
+            </ng-container>
+            <ng-template #noStudyAndDataset>
+              <span>{{ instanceVariable.prefLabel | lang }}</span>
             </ng-template>
+          </ng-template>
+        </p-column>
+        <p-column field="dataset.study.prefLabel" [style]="{'border':'none','background-color':'white'}" header="{{'catalog.variableData.studyColumnHeading' | translate}}">
+          <ng-template let-instanceVariable="rowData" pTemplate="body">
+            <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
+              <span><a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id  }}">{{instanceVariable.dataset.study.prefLabel | lang }}</a></span>
+            </ng-container>
+            <ng-container *ngIf="!instanceVariable.dataset || !instanceVariable.dataset.study">
+              <span>{{'catalog.variableData.noStudy' | translate }}</span>
+            </ng-container>
+          </ng-template>
         </p-column>
         <p-column field="dataset.prefLabel" [style]="{'border':'none','background-color':'white'}" header="{{'catalog.variableData.datasetColumnHeading' | translate}}">
-            <ng-template let-instanceVariable="rowData" pTemplate="body">
-                <ng-container *ngIf="instanceVariable.dataset">
-                    <span><a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a></span>
-                </ng-container>
-                <ng-container *ngIf="!instanceVariable.dataset">
-                    <span>{{instanceVariable.dataset.prefLabel | lang }}</span>
-                </ng-container>
+          <ng-template let-instanceVariable="rowData" pTemplate="body">
+            <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study; else noStudyAndDataset">
+              <span><a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a></span>
+            </ng-container>
+            <ng-template #noStudyAndDataset>
+              <span>{{'catalog.variableData.noDataset' | translate }}</span>
             </ng-template>
+          </ng-template>
         </p-column>
-    </p-dataTable>
-  </div>
+      </p-dataTable>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="loadingInstanceVariables">
+    <thl-spinner></thl-spinner>
+  </ng-container>
 </div>

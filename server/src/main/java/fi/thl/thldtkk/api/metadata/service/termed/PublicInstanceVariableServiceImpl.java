@@ -49,7 +49,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   @Override
   public List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max) {
     return nodes.query(
-        select("id", "type", "properties.*", "references.*", "referrers.*"),
+        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
         and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             keyValue("references.variable.id", variableId.toString())),
         max)
@@ -68,7 +68,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   @Override
   public List<InstanceVariable> find(String query, int max) {
     return nodes.query(
-        select("id", "type", "properties.*", "references.*", "referrers.*"),
+        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
         and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             anyKeyWithAllValues(asList(
                 "properties.prefLabel",

@@ -22,13 +22,6 @@ export class PublicDatasetService {
       .map(response => response.json() as Dataset)
   }
 
-  get(datasetId: string): Observable<Dataset> {
-    const url = env.contextPath
-      + '/api/v3/public/datasets/'
-      + datasetId
-    return this.http.get(url).map(response => response.json() as Dataset)
-  }
-
   search(searchText: string, organizationId?: string, sort?: string, max?: number): Observable<Dataset[]> {
     return this.searchInternal(
       searchText,

@@ -1,8 +1,8 @@
 <div class="search-result">
     <div class="row">
         <div *ngIf="instanceVariable.prefLabel" class="col-xs-9 instance-variable-header">
-            <ng-container *ngIf="instanceVariable.dataset">
-                <a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang}}</a>
+            <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
+                <a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang}}</a>
             </ng-container>
             <ng-container *ngIf="!instanceVariable.dataset">
                 {{instanceVariable.prefLabel | lang}}
@@ -24,8 +24,8 @@
     </div>
     <div class="row">
         <div class="col-xs-9 dataset-label">{{'catalog.searchInstanceVariable.foundInDataset' | translate}}: 
-            <ng-container *ngIf="instanceVariable.dataset">
-                <a routerLink="/catalog/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a>
+            <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
+                <a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a>
             </ng-container>
             <ng-container *ngIf="!instanceVariable.dataset">
                 {{'catalog.searchInstanceVariable.noAssociatedDataset' | translate }}
@@ -34,19 +34,28 @@
         <div class="col-xs-3 reference-period-range">
                 {{'catalog.referencePeriod' | translate}}:<br/>
                 
-                <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedReferencePeriod">
+                <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedDatasetReferencePeriod">
                     {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
                     —
                     {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
                 </ng-container>
 
-                <ng-template #inheritedReferencePeriod>
-                    <ng-container *ngIf="(instanceVariable.dataset && (instanceVariable.dataset.referencePeriodStart || instanceVariable.dataset.referencePeriodEnd)); else noReferencePeriod">
+                <ng-template #inheritedDatasetReferencePeriod>
+                    <ng-container *ngIf="(instanceVariable.dataset && (instanceVariable.dataset.referencePeriodStart || instanceVariable.dataset.referencePeriodEnd)); else inheritedStudyReferencePeriod">
                         {{ instanceVariable.dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
                         —
                         {{ instanceVariable.dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
                     </ng-container>
                 </ng-template>
+
+                <ng-template #inheritedStudyReferencePeriod>
+                    <ng-container *ngIf="(instanceVariable.dataset.study && (instanceVariable.dataset.study.referencePeriodStart || instanceVariable.dataset.study.referencePeriodEnd)); else noReferencePeriod">
+                        {{ instanceVariable.dataset.study.referencePeriodStart | date:'dd.MM.yyyy' }}
+                        —
+                        {{ instanceVariable.dataset.study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+                    </ng-container>
+                </ng-template>
+
 
                 <ng-template #noReferencePeriod>
                     {{'catalog.searchInstanceVariable.noReferencePeriod' | translate}}

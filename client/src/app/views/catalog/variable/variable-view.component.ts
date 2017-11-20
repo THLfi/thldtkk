@@ -17,6 +17,7 @@ export class VariableViewComponent implements OnInit {
 
   variable: Variable
   instanceVariables: InstanceVariable[]
+  loadingInstanceVariables: boolean
 
   constructor(private route: ActivatedRoute,
               private translateService: TranslateService,
@@ -28,12 +29,16 @@ export class VariableViewComponent implements OnInit {
 
   ngOnInit() {
     let variableId:string = this.route.snapshot.params['id']
+    this.loadingInstanceVariables = true
     this.variableService.get(variableId).subscribe(variable => {
       this.variable = variable
       this.updatePageTitle()
       });
     this.variableService.getInstanceVariables(variableId)
-      .subscribe(instanceVariables => this.instanceVariables = instanceVariables)
+      .subscribe(instanceVariables => {
+        this.instanceVariables = instanceVariables
+        this.loadingInstanceVariables = false  
+      })
   }
 
   updatePageTitle() {

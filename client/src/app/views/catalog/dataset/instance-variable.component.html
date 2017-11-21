@@ -9,7 +9,7 @@
   <div class="row dataset-reference">
     <div class="col-xs-12">
       <p>
-        <a routerLink="/catalog/datasets/{{ datasetId }}">
+        <a routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}">
           {{ 'dataset' | translate }}:
           {{ dataset.prefLabel | lang }}
         </a>
@@ -54,34 +54,30 @@
     </div>
   </div>
 
-  <div class="row">
+  <div *ngIf="referencePeriod.hasValue()" class="row">
     <div class="col-xs-12">
       <h2>{{ 'catalog.referencePeriod' | translate }}</h2>
-      <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedReferencePeriod;">
-        <p>
-          {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
-          —
-          {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
-          <span *ngIf="((dataset.referencePeriodStart && dataset.referencePeriodStart != instanceVariable.referencePeriodStart) || (dataset.referencePeriodEnd && dataset.referencePeriodEnd != instanceVariable.referencePeriodEnd))"
-                style="margin-left:2em;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-            {{ 'valueInDataset' | translate }}:
-            {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
-            —
-            {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+      <p>
+        {{ referencePeriod.start | date:'dd.MM.yyyy' }}
+        —
+        {{ referencePeriod.end | date:'dd.MM.yyyy' }}
+        <ng-container *ngIf="referencePeriod.source == 'instanceVariable' && (referencePeriod.datasetHasValue() || referencePeriod.studyHasValue())">
+          <span style="margin-left:2em;opacity:.6;">
+            <ng-container *ngIf="referencePeriod.datasetHasValue(); else valueInStudy;">
+              {{ 'valueInDataset' | translate }}:
+              {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+              —
+              {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+            </ng-container>
+            <ng-template #valueInStudy>
+              {{ 'valueInStudy' | translate }}:
+              {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+              —
+              {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+            </ng-template>
           </span>
-        </p>
-      </ng-container>
-      <ng-template #inheritedReferencePeriod>
-        <p *ngIf="(dataset.referencePeriodStart || dataset.referencePeriodEnd); else noReferencePeriod;">
-          {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
-          —
-          {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
-        </p>
-      </ng-template>
-      <ng-template #noReferencePeriod>
-        <p>{{ 'noReferencePeriod' | translate }}</p>
-      </ng-template>
+        </ng-container>
+      </p>
     </div>
   </div>
 
@@ -228,22 +224,33 @@
       </div>
   </div>
 
-  <div *ngIf="instanceVariable.unitType || dataset.unitType"
+  <div *ngIf="instanceVariable.unitType || dataset.unitType || study.unitType"
        class="row">
     <div class="col-xs-12">
       <h2>{{ 'unitType' | translate }}</h2>
       <p>
-        <ng-container *ngIf="instanceVariable.unitType">
+        <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
           {{ instanceVariable.unitType.prefLabel | lang }}
-          <span *ngIf="dataset.unitType && dataset.unitType.id != instanceVariable.unitType.id"
-                style="margin-left:2em;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <span *ngIf="dataset.unitType && dataset.unitType.id != instanceVariable.unitType.id; else unitTypeValueInStudy;"
+                style="margin-left:2em;opacity:.6;">
             {{ 'valueInDataset' | translate }}:
             {{ dataset.unitType.prefLabel | lang }}
           </span>
+          <ng-template #unitTypeValueInStudy>
+            <span *ngIf="study.unitType && study.unitType.id != instanceVariable.unitType.id"
+                  style="margin-left:2em;opacity:.6;">
+              {{ 'valueInStudy' | translate }}:
+              {{ study.unitType.prefLabel | lang }}
+            </span>
+          </ng-template>
         </ng-container>
         <ng-template #unitTypeFromDataset>
-          {{ dataset.unitType.prefLabel | lang }}
+          <ng-container *ngIf="dataset.unitType.prefLabel | lang; else unitTypeFromStudy;">
+            {{ dataset.unitType.prefLabel | lang }}
+          </ng-container>
+        </ng-template>
+        <ng-template #unitTypeFromStudy>
+          {{ study.unitType.prefLabel | lang }}
         </ng-template>
       </p>
     </div>
@@ -258,23 +265,25 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-xs-12">
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}"
+              class="btn btn-default">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        {{ 'back' | translate }}
+      </button>
+    </div>
+  </div>
+
 </ng-container>
 
 <ng-template #loadingInstanceVariable>
   <thl-spinner></thl-spinner>
 </ng-template>
 
-<div class="row">
-  <div class="col-xs-12">
-    <hr>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <button routerLink="/catalog/studies/{{ studyId }}/datasets/{{ datasetId }}" class="btn btn-default">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      {{ 'back' | translate }}
-    </button>
-  </div>
-</div>

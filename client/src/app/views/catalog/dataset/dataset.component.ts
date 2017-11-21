@@ -5,11 +5,22 @@ import { Title } from '@angular/platform-browser'
 import { Observable } from 'rxjs'
 
 import { Dataset } from '../../../model2/dataset'
+import { InstanceVariable } from '../../../model2/instance-variable'
+import { InstanceVariableReferencePeriod } from './instance-variable-reference-period'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { PublicDatasetService } from '../../../services-public/public-dataset.service'
 import { PublicStudyService } from '../../../services-public/public-study.service'
 import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 import { Study } from '../../../model2/study'
+
+class InstanceVariableWrapper {
+
+  constructor(
+    public instanceVariable: InstanceVariable,
+    public referencePeriod: InstanceVariableReferencePeriod
+  ) { }
+
+}
 
 @Component({
   templateUrl: './dataset.component.html',
@@ -20,6 +31,12 @@ export class DatasetComponent implements OnInit {
   study: Study
   dataset: Dataset
   language: string
+
+  referencePeriodStart: string
+  referencePeriodEnd: string
+  referencePeriodInheritedFromStudy: boolean
+
+  wrappedInstanceVariables: InstanceVariableWrapper[] = []
 
   constructor(
     private studyService: PublicStudyService,
@@ -42,6 +59,7 @@ export class DatasetComponent implements OnInit {
   private updateDataset(studyId: string, datasetId: string): void {
     this.study = null
     this.dataset = null
+    this.wrappedInstanceVariables = []
 
     Observable.forkJoin(
       this.studyService.getStudy(studyId),
@@ -50,6 +68,8 @@ export class DatasetComponent implements OnInit {
       this.study = data[0]
       this.dataset = data[1]
       this.updatePageTitle()
+      this.updateReferencePeriod()
+      this.updateWrappedInstanceVariables()
     })
   }
 
@@ -59,6 +79,34 @@ export class DatasetComponent implements OnInit {
       let bareTitle:string = this.titleService.getTitle()
       this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
+  }
+
+  private updateReferencePeriod() {
+    this.referencePeriodInheritedFromStudy = false
+
+    if (this.dataset.referencePeriodStart || this.dataset.referencePeriodEnd) {
+      this.referencePeriodStart = this.dataset.referencePeriodStart
+      this.referencePeriodEnd = this.dataset.referencePeriodEnd
+    }
+    else if (this.study.referencePeriodStart || this.study.referencePeriodEnd) {
+      this.referencePeriodStart = this.study.referencePeriodStart
+      this.referencePeriodEnd = this.study.referencePeriodEnd
+      this.referencePeriodInheritedFromStudy = true
+    }
+    else {
+      this.referencePeriodStart = null
+      this.referencePeriodEnd = null
+    }
+  }
+
+  updateWrappedInstanceVariables() {
+    let wrappers: InstanceVariableWrapper[] = []
+    this.dataset.instanceVariables
+      .forEach(iv => {
+        const referencePeriod = new InstanceVariableReferencePeriod(this.study, this.dataset, iv)
+        wrappers = [ ...wrappers, new InstanceVariableWrapper(iv, referencePeriod) ]
+      })
+    this.wrappedInstanceVariables = wrappers
   }
 
   composeInstanceVariableExportUrl(): string {

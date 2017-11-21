@@ -298,7 +298,7 @@
             <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
               {{ instanceVariable.unitType.prefLabel | lang }}
               <span *ngIf="dataset.unitType && dataset.unitType.id != instanceVariable.unitType.id"
-                    style="margin-left:2em;">
+                    style="margin-left:2em;opacity:.6;">
                 <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                 {{ 'valueInDataset' | translate }}:
                 {{ dataset.unitType.prefLabel | lang }}

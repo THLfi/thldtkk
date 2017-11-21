@@ -3,12 +3,15 @@ import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
-import { LangPipe } from '../../../utils/lang.pipe'
 
 import { Dataset } from '../../../model2/dataset'
 import { InstanceVariable } from '../../../model2/instance-variable'
+import { InstanceVariableReferencePeriod } from './instance-variable-reference-period'
+import { LangPipe } from '../../../utils/lang.pipe'
 import { PublicDatasetService } from '../../../services-public/public-dataset.service'
 import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
+import { PublicStudyService } from '../../../services-public/public-study.service'
+import { Study } from '../../../model2/study'
 
 @Component({
   templateUrl: './instance-variable.component.html',
@@ -16,46 +19,58 @@ import { PublicInstanceVariableService } from '../../../services-public/public-i
 })
 export class InstanceVariableComponent implements OnInit {
 
-  instanceVariable: InstanceVariable
+  study: Study
   dataset: Dataset
-  instanceVariableId: string
-  datasetId: string
-  studyId: string
+  instanceVariable: InstanceVariable
   language: string
 
-  constructor(private instanceVariableService: PublicInstanceVariableService,
-              private datasetService: PublicDatasetService,
-              private route: ActivatedRoute,
-              private translateService: TranslateService,
-              private langPipe: LangPipe,
-              private titleService: Title) {
-    this.studyId = this.route.snapshot.params['studyId']
-    this.datasetId = this.route.snapshot.params['datasetId']
-    this.instanceVariableId = this.route.snapshot.params['instanceVariableId']
+  referencePeriod: InstanceVariableReferencePeriod
+
+  constructor(
+    private studyService: PublicStudyService,
+    private datasetService: PublicDatasetService,
+    private instanceVariableService: PublicInstanceVariableService,
+    private route: ActivatedRoute,
+    private translateService: TranslateService,
+    private langPipe: LangPipe,
+    private titleService: Title
+  ) {
     this.language = this.translateService.currentLang
   }
 
   ngOnInit() {
-    this.getInstanceVariable()
+    this.route.params.subscribe(params =>
+      this.updateInstanceVariable(
+        params['studyId'],
+        params['datasetId'],
+        params['instanceVariableId']
+      ))
   }
 
-  private getInstanceVariable() {
+  private updateInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string) {
     Observable.forkJoin(
-      this.instanceVariableService.getInstanceVariable(this.studyId,this.datasetId, this.instanceVariableId),
-      this.datasetService.getDataset(this.studyId,this.datasetId)
+      this.studyService.getStudy(studyId),
+      this.datasetService.getDataset(studyId, datasetId),
+      this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
     ).subscribe(data => {
-      this.instanceVariable = data[0]
+      this.study = data[0]
       this.dataset = data[1]
+      this.instanceVariable = data[2]
       this.updatePageTitle()
+      this.updateReferencePeriod()
     })
   }
 
   private updatePageTitle():void {
-    if(this.instanceVariable.prefLabel) {
+    if (this.instanceVariable.prefLabel) {
       let translatedLabel:string = this.langPipe.transform(this.instanceVariable.prefLabel)
-      let bareTitle:string = this.titleService.getTitle();
-      this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+      let bareTitle:string = this.titleService.getTitle()
+      this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
+  }
+
+  private updateReferencePeriod() {
+    this.referencePeriod = new InstanceVariableReferencePeriod(this.study, this.dataset, this.instanceVariable)
   }
 
 }

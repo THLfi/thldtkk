@@ -1,3 +1,7 @@
+.study-reference a {
+  color: #767676;
+}
+
 .alt-label {
   color: #767676;
   margin-top: 0;
@@ -26,5 +30,9 @@
 }
 .right-main-column .person-email {
   color: #01A197;
+  font-style: italic;
+}
+
+.overridden-reference-period {
   font-style: italic;
 }

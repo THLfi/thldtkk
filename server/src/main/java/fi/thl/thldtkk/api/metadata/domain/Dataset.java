@@ -30,7 +30,6 @@ public class Dataset implements NodeEntity {
   private Map<String, String> altLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
-  private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> usageConditionAdditionalInformation
           = new LinkedHashMap<>();
   private Boolean published;
@@ -82,7 +81,6 @@ public class Dataset implements NodeEntity {
     this.altLabel = dataset.altLabel;
     this.abbreviation = dataset.abbreviation;
     this.description = dataset.description;
-    this.registryPolicy = dataset.registryPolicy;
     this.usageConditionAdditionalInformation
             = dataset.usageConditionAdditionalInformation;
     this.published = dataset.published;
@@ -120,8 +118,6 @@ public class Dataset implements NodeEntity {
     this.altLabel = toLangValueMap(node.getProperties("altLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
     this.description = toLangValueMap(node.getProperties("description"));
-    this.registryPolicy = toLangValueMap(node
-            .getProperties("registryPolicy"));
     this.usageConditionAdditionalInformation = toLangValueMap(
             node.getProperties("usageConditionAdditionalInformation"));
     this.published = toBoolean(node.getProperties("published"), false);
@@ -227,10 +223,6 @@ public class Dataset implements NodeEntity {
 
   public Map<String, String> getDescription() {
     return description;
-  }
-
-  public Map<String, String> getRegistryPolicy() {
-    return registryPolicy;
   }
 
   public Optional<UnitType> getUnitType() {
@@ -352,7 +344,6 @@ public class Dataset implements NodeEntity {
     props.putAll("altLabel", toPropertyValues(altLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
     props.putAll("description", toPropertyValues(description));
-    props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("usageConditionAdditionalInformation",
             toPropertyValues(usageConditionAdditionalInformation));
     isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
@@ -407,7 +398,6 @@ public class Dataset implements NodeEntity {
         && Objects.equals(altLabel, dataset.altLabel)
         && Objects.equals(abbreviation, dataset.abbreviation)
         && Objects.equals(description, dataset.description)
-        && Objects.equals(registryPolicy, dataset.registryPolicy)
         && Objects.equals(usageConditionAdditionalInformation,
                 dataset.usageConditionAdditionalInformation)
         && Objects.equals(published, dataset.published)
@@ -447,7 +437,6 @@ public class Dataset implements NodeEntity {
       altLabel,
       abbreviation,
       description,
-      registryPolicy,
       usageConditionAdditionalInformation,
       published,
       lastModifiedDate,

@@ -271,17 +271,6 @@
           </textarea>
         </div>
 
-        <div class="form-group">
-          <label for="registryPolicy" translate="registryPolicy"></label>
-          <textarea [(ngModel)]="study.registryPolicy[language]"
-                    thlAutogrow
-                    id="registryPolicy"
-                    name="registryPolicy"
-                    class="form-control"
-                    rows="6">
-          </textarea>
-        </div>
-
         <div *ngIf="allUsageConditions"
              class="form-group">
           <label for="usageCondition">{{ 'usageCondition' | translate }}</label>

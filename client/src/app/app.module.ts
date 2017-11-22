@@ -81,8 +81,8 @@ import { BreadcrumbComponent } from './views/editor/breadcrumb/breadcrumb.compon
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { CurrentUserService } from './services-editor/user.service'
-import { DatasetAdministrativeEditComponent } from './views/editor/dataset/dataset-administrative-edit.component'
-import { DatasetAdministrativeViewComponent } from './views/editor/dataset/dataset-administrative-view.component'
+import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
+import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetHeaderComponent } from './views/editor/dataset/dataset-header.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
@@ -134,8 +134,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CatalogStudyListComponent,
         CatalogStudyViewComponent,
         CodeListListComponent,
-        DatasetAdministrativeEditComponent,
-        DatasetAdministrativeViewComponent,
+        StudyAdministrativeEditComponent,
+        StudyAdministrativeViewComponent,
         DatasetComponent,
         DatasetHeaderComponent,
         DataSetEditComponent,

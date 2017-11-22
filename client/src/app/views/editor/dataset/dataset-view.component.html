@@ -113,13 +113,6 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'registryPolicy' | translate }}</h2>
-          <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
           <h2>{{ 'usageCondition' | translate }}</h2>
           <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)">
             {{ dataset.usageCondition.prefLabel | lang }}

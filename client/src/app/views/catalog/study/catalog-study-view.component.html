@@ -95,13 +95,6 @@
         </div>
       </div>
 
-      <div *ngIf="study.registryPolicy | lang" class="row">
-        <div class="col-xs-12">
-          <h2>{{ 'registryPolicy' | translate }}</h2>
-          <p class="preserve-line-breaks">{{ study.registryPolicy | lang }}</p>
-        </div>
-      </div>
-
       <div *ngIf="study.conceptsFromScheme.length || (study.freeConcepts | lang)"
            class="row">
         <div class="col-xs-12">

@@ -8,21 +8,21 @@ import {Observable} from 'rxjs'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
 
-import {Dataset} from '../../../model2/dataset';
-import {EditorDatasetService} from '../../../services-editor/editor-dataset.service'
+import {Study} from '../../../model2/study';
+import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
-import {SidebarActiveSection} from './sidebar/sidebar-active-section'
+import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 
 @Component({
-    templateUrl: './dataset-administrative-edit.component.html',
+    templateUrl: './study-administrative-edit.component.html',
     providers: [LangPipe]
 })
-export class DatasetAdministrativeEditComponent implements OnInit, AfterContentChecked {
+export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
 
-    dataset: Dataset;
+    study: Study;
 
-    @ViewChild('datasetForm') datasetForm: NgForm
+    @ViewChild('studyForm') studyForm: NgForm
     currentForm: NgForm
     formErrors: any = {}
 
@@ -31,10 +31,10 @@ export class DatasetAdministrativeEditComponent implements OnInit, AfterContentC
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
 
-    sidebarActiveSection = SidebarActiveSection.ADMINISTRATIVE_INFORMATION
+    sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
     constructor(
-        private datasetService: EditorDatasetService,
+        private studyService: EditorStudyService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -47,35 +47,34 @@ export class DatasetAdministrativeEditComponent implements OnInit, AfterContentC
 
 
     ngOnInit() {
-        this.getDataset();
+        this.getStudy();
     }
 
-    private getDataset() {
+    private getStudy() {
       const studyId = this.route.snapshot.params['studyId']
-      const datasetId = this.route.snapshot.params['datasetId']
-      if (datasetId) {
-        this.datasetService.getDataset(studyId, datasetId)
-          .subscribe(dataset => {
-            this.dataset = this.datasetService.initializeProperties(dataset)
+      if (studyId) {
+        this.studyService.getStudy(studyId)
+          .subscribe(study => {
+            this.study = this.studyService.initializeProperties(study)
             this.updatePageTitle()
           })
       } else {
-        this.dataset = this.datasetService.initNew()
+        this.study = this.studyService.initNew()
       }
     }
 
     private updatePageTitle():void {
-        if(this.dataset.prefLabel) {
-            let translatedLabel:string = this.langPipe.transform(this.dataset.prefLabel)
+        if(this.study.prefLabel) {
+            let translatedLabel:string = this.langPipe.transform(this.study.prefLabel)
             let bareTitle:string = this.titleService.getTitle();
             this.titleService.setTitle(translatedLabel + " - " + bareTitle)
         }
     }
 
     ngAfterContentChecked(): void {
-      if (this.datasetForm) {
-        if (this.datasetForm !== this.currentForm) {
-          this.currentForm = this.datasetForm
+      if (this.studyForm) {
+        if (this.studyForm !== this.currentForm) {
+          this.currentForm = this.studyForm
           this.currentForm.valueChanges.subscribe(data => this.validate(data))
         }
       }
@@ -114,21 +113,21 @@ export class DatasetAdministrativeEditComponent implements OnInit, AfterContentC
           return
         }
 
-        this.datasetService.save(this.dataset)
+        this.studyService.save(this.study)
             .finally(() => {
               this.savingInProgress = false
             })
-            .subscribe(savedDataset => {
-                this.dataset = savedDataset;
+            .subscribe(savedStudy => {
+                this.study = savedStudy;
                 this.goBack();
             });
     }
 
     goBack() {
-        if (this.dataset.id) {
-            this.router.navigate(['/editor/datasets', this.dataset.id, 'administrative-information']);
+        if (this.study.id) {
+            this.router.navigate(['/editor/studies', this.study.id, 'administrative-information']);
         } else {
-            this.router.navigate(['/editor/datasets']);
+            this.router.navigate(['/editor/studies']);
         }
     }
 }

@@ -24,6 +24,9 @@ import { InstanceVariableSearchComponent } from "./views/catalog/instancevariabl
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 import { RequireLoginGuard } from './require-login-guard'
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
+
+import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
+import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseListComponent } from "./views/editor/universe/universe-list.component"
 import { VariableListComponent } from "./views/editor/variable/variable-list.component"
@@ -145,6 +148,20 @@ const routes: Routes = [
           {
             path: 'studies/:id',
             component: EditorStudyViewComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/administrative-information',
+            component: StudyAdministrativeViewComponent,
+            data: {
+              hasSidebar: true
+            }
+          },
+          {
+            path: 'studies/:studyId/edit-administrative-information',
+            component: StudyAdministrativeEditComponent,
             data: {
               hasSidebar: true
             }

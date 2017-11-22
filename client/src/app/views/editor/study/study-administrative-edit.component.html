@@ -1,37 +1,37 @@
-<ng-container *ngIf="dataset; else loadingDataset;">
+<ng-container *ngIf="study; else loadingStudy;">
 
-  <dataset-sidebar [dataset]="dataset"
+  <study-sidebar [study]="study"
                    [activeSection]="sidebarActiveSection">
-  </dataset-sidebar>
+  </study-sidebar>
 
   <div class="content-container">
 
     <div class="content-header container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <h1>{{ 'dataset' | translate }}: {{ dataset.prefLabel | lang }}</h1>
+          <h1>{{ 'study' | translate }}: {{ study.prefLabel | lang }}</h1>
         </div>
       </div>
     </div>
 
     <div class="content-body container-fluid">
 
-      <form #datasetForm="ngForm">
+      <form #studyForm="ngForm">
 
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'description' | translate }}</h2>
-            <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>
+            <p class="preserve-line-breaks">{{ study.description | lang }}</p>
           </div>
         </div>
 
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'organization' | translate }}</h2>
-            <p *ngIf="dataset.owner">
-              {{ dataset.owner.prefLabel | lang }}
-              <span *ngIf="dataset.owner.abbreviation | lang">
-              ({{ dataset.owner.abbreviation | lang }})
+            <p *ngIf="study.ownerOrganization">
+              {{ study.ownerOrganization.prefLabel | lang }}
+              <span *ngIf="study.ownerOrganization.abbreviation | lang">
+              ({{ study.ownerOrganization.abbreviation | lang }})
             </span>
             </p>
           </div>
@@ -40,7 +40,7 @@
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'organizationUnit' | translate }}</h2>
-            <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
+            <p *ngFor="let ownerOrganizationUnit of study.ownerOrganizationUnit">
               {{ ownerOrganizationUnit.prefLabel | lang }}
               <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
               ({{ ownerOrganizationUnit.abbreviation | lang }})
@@ -52,14 +52,14 @@
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'personInRoles.label' | translate }}</h2>
-            <table *ngIf="dataset.personInRoles.length; else noDatasetPersonInRoles;"
+            <table *ngIf="study.personInRoles.length; else noStudyPersonInRoles;"
                    class="table table-striped table-hover">
               <tr>
                 <th translate="personInRoles.person"></th>
                 <th translate="personInRoles.role"></th>
                 <th translate="personInRoles.public.title"></th>
               </tr>
-              <tr *ngFor="let personInRole of dataset.personInRoles">
+              <tr *ngFor="let personInRole of study.personInRoles">
                 <td>
                   {{ personInRole.person.firstName }}
                   {{ personInRole.person.lastName }}
@@ -85,25 +85,29 @@
                 </td>
               </tr>
             </table>
-            <ng-template #noDatasetPersonInRoles>
-              <p translate="noDatasetPersonInRoles"></p>
+            <ng-template #noStudyPersonInRoles>
+              <p translate="noStudyPersonInRoles"></p>
             </ng-template>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12">
-            <h2>{{ 'registryPolicy' | translate }}</h2>
-            <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
-          </div>
+        <div class="form-group">
+          <label for="registryPolicy" translate="registryPolicy"></label>
+          <textarea [(ngModel)]="study.registryPolicy[language]"
+                    thlAutogrow
+                    id="registryPolicy"
+                    name="registryPolicy"
+                    class="form-control"
+                    rows="6">
+          </textarea>
         </div>
 
         <div class="row">
           <div class="col-xs-12">
-            <ng-container *ngIf="dataset.population">
+            <ng-container *ngIf="study.population">
 
               <h2>{{ 'population' | translate }}</h2>
-              <p>{{ dataset.population.prefLabel | lang }}</p>
+              <p>{{ study.population.prefLabel | lang }}</p>
 
             </ng-container>
           </div>
@@ -112,13 +116,13 @@
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'referencePeriod' | translate }}</h2>
-            <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else noReferencePeriod;">
-              <ng-container *ngIf="dataset.referencePeriodStart">
-                {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+            <p *ngIf="study.referencePeriodStart || study.referencePeriodEnd; else noReferencePeriod;">
+              <ng-container *ngIf="study.referencePeriodStart">
+                {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
               </ng-container>
               —
-              <ng-container *ngIf="dataset.referencePeriodEnd">
-                {{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+              <ng-container *ngIf="study.referencePeriodEnd">
+                {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
               </ng-container>
             </p>
             <ng-template #noReferencePeriod>
@@ -159,6 +163,6 @@
 
 </ng-container>
 
-<ng-template #loadingDataset>
+<ng-template #loadingStudy>
   <thl-spinner></thl-spinner>
 </ng-template>

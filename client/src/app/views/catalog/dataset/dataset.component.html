@@ -95,13 +95,6 @@
         </div>
       </div>
 
-      <div *ngIf="dataset.registryPolicy | lang" class="row">
-        <div class="col-xs-12">
-          <h2>{{ 'registryPolicy' | translate }}</h2>
-          <p class="preserve-line-breaks">{{ dataset.registryPolicy | lang }}</p>
-        </div>
-      </div>
-
       <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts | lang)"
            class="row">
         <div class="col-xs-12">

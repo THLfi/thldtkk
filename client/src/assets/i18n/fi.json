@@ -104,6 +104,7 @@
     }
   },
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
+  "noStudyPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

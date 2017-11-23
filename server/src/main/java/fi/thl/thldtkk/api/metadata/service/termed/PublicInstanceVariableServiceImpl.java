@@ -40,13 +40,6 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   }
 
   @Override
-  public List<InstanceVariable> getDatasetInstanceVariablesWithAllProperties(UUID datasetId) {
-    Dataset dataset = datasetService.getDatasetWithAllInstanceVariableProperties(datasetId)
-      .orElseThrow(NotFoundException::new);
-    return dataset.getInstanceVariables();
-  }
-
-  @Override
   public List<InstanceVariable> getVariableInstancesVariables(UUID variableId, int max) {
     return nodes.query(
         select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),

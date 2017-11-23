@@ -13,6 +13,7 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.InstanceQuestionService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -22,16 +23,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 
 public class InstanceQuestionServiceImpl implements InstanceQuestionService {
 
-  private final EditorDatasetService datasetService;
+  private final EditorStudyService studyService;
   private final Repository<NodeId, Node> nodes;
 
-  public InstanceQuestionServiceImpl(EditorDatasetService datasetService,
+  public InstanceQuestionServiceImpl(EditorStudyService studyService,
                                      Repository<NodeId, Node> nodes) {
-    this.datasetService = datasetService;
+    this.studyService = studyService;
     this.nodes = nodes;
   }
 
@@ -53,8 +54,8 @@ public class InstanceQuestionServiceImpl implements InstanceQuestionService {
   }
 
   @Override
-  public List<InstanceQuestion> findDatasetInstanceQuestions(UUID datasetId, String query) {
-    Dataset dataset = datasetService.get(datasetId).orElseThrow(
+  public List<InstanceQuestion> findDatasetInstanceQuestions(UUID studyId, UUID datasetId, String query) {
+    Dataset dataset = studyService.getDataset(studyId, datasetId).orElseThrow(
       (Supplier<RuntimeException>) () -> new NotFoundException("Dataset " + datasetId));
 
     Set<UUID> datasetQuestionIds = dataset.getInstanceVariables().stream()
@@ -75,7 +76,7 @@ public class InstanceQuestionServiceImpl implements InstanceQuestionService {
   public Optional<InstanceQuestion> get(UUID id) {
     return nodes.get(new NodeId(id, "InstanceQuestion")).map(InstanceQuestion::new);
   }
-
+  
   @Override
   public InstanceQuestion save(InstanceQuestion instanceQuestion) {
     return new InstanceQuestion(nodes.save(instanceQuestion.toNode()));

@@ -29,11 +29,12 @@ public class InstanceQuestionController {
     return instanceQuestionService.get(instanceQuestionId).orElseThrow(NotFoundException::new);
   }
 
-  @GetJsonMapping("/dataset/{datasetId}/")
+  @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}")
   public List<InstanceQuestion> getDatasetInstanceQuestions(
+      @PathVariable("studyId") UUID studyId,
       @PathVariable("datasetId") UUID datasetId,
       @RequestParam(value = "query", defaultValue = "") String query) {
-    return instanceQuestionService.findDatasetInstanceQuestions(datasetId, query);
+    return instanceQuestionService.findDatasetInstanceQuestions(studyId, datasetId, query);
   }
 
   @GetJsonMapping

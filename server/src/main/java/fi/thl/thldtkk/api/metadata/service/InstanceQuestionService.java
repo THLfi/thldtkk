@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface InstanceQuestionService extends Service<UUID, InstanceQuestion> {
 
-  List<InstanceQuestion> findDatasetInstanceQuestions(UUID datasetId, String query);
+  List<InstanceQuestion> findDatasetInstanceQuestions(UUID studyId, UUID datasetId, String query);
 
 }

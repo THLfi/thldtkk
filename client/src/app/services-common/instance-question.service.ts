@@ -15,11 +15,13 @@ export class InstanceQuestionService {
     private http: Http
   ) { }
 
-  searchQuestion(searchText: string, datasetId:string): Observable<InstanceQuestion[]> {
+  searchQuestion(searchText: string, studyId: string, datasetId: string): Observable<InstanceQuestion[]> {
     return this.http.get(env.contextPath +
-      '/api/v3/instanceQuestions/dataset/'
-      + datasetId +
-      '/?query=' + searchText + '&max=50')
+      '/api/v3/instanceQuestions/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId
+      + '/?query=' + searchText + '&max=50')
       .map(response => response.json() as InstanceQuestion[])
   }
 

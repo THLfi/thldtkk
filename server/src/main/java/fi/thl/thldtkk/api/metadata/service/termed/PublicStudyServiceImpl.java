@@ -100,9 +100,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "lastModifiedDate",
         "properties.*",
         "references.*",
-        "references.personInRoles:2",
-        "references.person:2",
-        "references.role:2",
+        "references.personInRoles:3",
+        "references.person:4",
+        "references.role:4",
+        "references.links:3",
         "references.instanceVariable:3",
         "references.variable:3",
         "references.conceptsFromScheme:3",
@@ -113,8 +114,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "references.codeItems:4",
         "references.source:3",
         "references.unitType:3",
-        "references.instanceQuestions:3",
-        "referrers.predecessors"),
+        "references.instanceQuestions:3"),
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 
     return study;

@@ -6,7 +6,6 @@ import { CatalogFrontPageComponent } from "./views/catalog/frontpage/catalog-fro
 import { CatalogStudyListComponent } from './views/catalog/study/catalog-study-list.component'
 import { CatalogStudyViewComponent } from './views/catalog/study/catalog-study-view.component'
 import { DatasetComponent } from "./views/catalog/dataset/dataset.component";
-import { DatasetListComponent } from "./views/catalog/dataset/dataset-list.component";
 
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
@@ -37,21 +36,6 @@ const routes: Routes = [
         path:'catalog',
         component: CatalogFrontPageComponent,
         data: {title:'pageTitles.catalog.frontpage', pageType:PageIdentifier.CATALOG}
-    },
-    {
-        path: 'catalog/datasets/:datasetId/instanceVariables/:instanceVariableId',
-        component: InstanceVariableComponent,
-        data: {pageType:PageIdentifier.CATALOG}
-    },
-    {
-        path: 'catalog/datasets/:id',
-        component: DatasetComponent,
-        data: {pageType:PageIdentifier.CATALOG}
-    },
-    {
-        path: 'catalog/datasets',
-        component: DatasetListComponent,
-        data: {title:'pageTitles.catalog.datasetList',pageType:PageIdentifier.CATALOG}
     },
     {
         path: 'catalog/studies/:id',

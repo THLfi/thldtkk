@@ -86,7 +86,6 @@ import { StudyAdministrativeViewComponent } from './views/editor/study/study-adm
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetHeaderComponent } from './views/editor/dataset/dataset-header.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
-import { DatasetListComponent as EditorDatasetListComponent } from './views/editor/dataset/data-set-list.component'
 import { DatasetRelationsEditComponent } from './views/editor/dataset/dataset-relationships/dataset-relations-edit.component'
 import { DatasetRelationTypeDropdown } from './views/editor/dataset/dataset-relationships/dataset-relation-type-dropdown.component'
 import { DatasetTabsComponent } from './views/editor/dataset/dataset-tabs.component'
@@ -145,7 +144,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DatasetRelationTypeDropdown,
         DatasetSidebarComponent,
         DatasetTabsComponent,
-        EditorDatasetListComponent,
         EditorDatasetComponent,
         EditorLoginComponent,
         EditorStudyListComponent,

@@ -548,9 +548,10 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       }
 
       const searchText: string = event.query
-      const datasetId = this.route.snapshot.params['datasetId'];
+      const datasetId = this.route.snapshot.params['datasetId']
+      const studyId = this.route.snapshot.params['studyId'];
 
-      this.instanceQuestionSearchSubscription = this.instanceQuestionService.searchQuestion(searchText, datasetId)
+      this.instanceQuestionSearchSubscription = this.instanceQuestionService.searchQuestion(searchText, studyId, datasetId)
         .subscribe(instanceQuestions => {
           this.instanceQuestionSearchResults = instanceQuestions
         })

@@ -132,4 +132,4 @@ In above command parameter `-deststorepass` corresponds to property `virtu.samlK
 
 When importing Virtu metadata signing certificate the process is more simple:
 
-    keytool -importcert -noprompt -file virtu-test-metadata-signing-crt-2015.pem -keystore thldtkk-saml.jks -storepass somepassword -alias virtu-test-metadata-signing-crt-2015
+    keytool -importcert -noprompt -file virtu-metadata-signing-crt-2017.pem -keystore thldtkk-saml.jks -storepass somepassword -alias virtu-metadata-signing-crt-2017

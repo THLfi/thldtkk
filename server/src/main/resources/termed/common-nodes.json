@@ -1699,10 +1699,22 @@
           "value": "Terveyden ja hyvinvoinnin laitos"
         }
       ],
-      "virtuId": [
+      "virtuIds": [
         {
           "lang": "",
           "value": "thl.fi"
+        },
+        {
+          "lang": "",
+          "value": "ktl.fi"
+        },
+        {
+          "lang": "",
+          "value": "vth.fi"
+        },
+        {
+          "lang": "",
+          "value": "stakes.fi"
         }
       ]
     },
@@ -1818,6 +1830,12 @@
           "lang": "fi",
           "value": "Elintarviketurvallisuusvirasto"
         }
+      ],
+      "virtuIds": [
+        {
+          "lang": "",
+          "value": "evira.fi"
+        }
       ]
     }
   },
@@ -1837,6 +1855,12 @@
         {
           "lang": "fi",
           "value": "Liikenteen turvallisuusvirasto"
+        }
+      ],
+      "virtuIds": [
+        {
+          "lang": "",
+          "value": "trafi.fi"
         }
       ]
     }
@@ -1877,6 +1901,12 @@
         {
           "lang": "fi",
           "value": "Väestörekisterikeskus"
+        }
+      ],
+      "virtuIds": [
+        {
+          "lang": "",
+          "value": "vrk.fi"
         }
       ]
     }
@@ -1941,10 +1971,10 @@
           "value": "Tilastokeskus"
         }
       ],
-      "virtuId": [
+      "virtuIds": [
         {
           "lang": "",
-          "value": "tilastokeskus.fi"
+          "value": "stat.fi"
         }
       ]
     },

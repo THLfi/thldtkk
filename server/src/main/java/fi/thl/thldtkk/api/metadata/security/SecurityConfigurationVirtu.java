@@ -6,9 +6,13 @@ import fi.thl.thldtkk.api.metadata.service.UserProfileService;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.velocity.app.VelocityEngine;
-import org.opensaml.saml2.metadata.provider.HTTPMetadataProvider;
+import org.opensaml.saml2.metadata.provider.EntityRoleFilter;
+import org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider;
+import org.opensaml.saml2.metadata.provider.MetadataFilter;
+import org.opensaml.saml2.metadata.provider.MetadataFilterChain;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
+import org.opensaml.saml2.metadata.provider.SignatureValidationFilter;
 import org.opensaml.xml.parse.StaticBasicParserPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,13 +60,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.PreDestroy;
+import javax.xml.namespace.QName;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 @Profile("virtu")
@@ -148,27 +156,71 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
 
   @Bean
   public CachingMetadataManager metadataManager() throws MetadataProviderException {
-    return new CachingMetadataManager(Arrays.asList(
-      virtuMetadataProvider()));
+    return new CachingMetadataManager(asList(
+      virtuMetadataProvider()
+    )) {
+      @Override
+      protected void initializeProviderFilters(ExtendedMetadataDelegate provider) throws MetadataProviderException {
+        super.initializeProviderFilters(provider);
+        MetadataFilter filter = provider.getMetadataFilter();
+        if (filter instanceof MetadataFilterChain) {
+          MetadataFilterChain filterChain = (MetadataFilterChain) filter;
+          // Workaround to problem described in
+          // https://github.com/spring-projects/spring-security-saml/issues/160#issuecomment-206391707
+          moveSignatureValidationFilterFirst(filterChain.getFilters());
+        }
+      }
+
+      private void moveSignatureValidationFilterFirst(List<MetadataFilter> filters) {
+        Collections.sort(filters, (one, two) -> {
+          if (one instanceof SignatureValidationFilter) {
+            return -1;
+          }
+          else if (two instanceof SignatureValidationFilter) {
+            return 1;
+          }
+          return one.getClass().getSimpleName().compareTo(two.getClass().getSimpleName());
+        });
+      }
+    };
   }
 
   @Bean
   public MetadataProvider virtuMetadataProvider() throws MetadataProviderException {
-    HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(
-      backgroundTaskTimer(), httpClient(), virtuMetadataUrl);
+    String metadataBackupFilePath = new StringBuilder()
+      .append(System.getProperty("java.io.tmpdir"))
+      .append(File.separator)
+      .append("virtu-metadata-backup.xml")
+      .toString();
+
+    FileBackedHTTPMetadataProvider httpMetadataProvider = new FileBackedHTTPMetadataProvider(
+      backgroundTaskTimer(),
+      httpClient(),
+      virtuMetadataUrl,
+      metadataBackupFilePath);
     httpMetadataProvider.setParserPool(parserPool());
 
-    ExtendedMetadataDelegate extendedMetadataDelegate =
-      new ExtendedMetadataDelegate(httpMetadataProvider, spExtendedMetadata());
+    httpMetadataProvider.setMetadataFilter(virtuMetadataFilters());
 
-    extendedMetadataDelegate.setMetadataTrustCheck(true);
+    ExtendedMetadataDelegate extendedMetadataDelegate = new ExtendedMetadataDelegate(httpMetadataProvider);
     extendedMetadataDelegate.setMetadataRequireSignature(true);
+    extendedMetadataDelegate.setMetadataTrustCheck(true);
     extendedMetadataDelegate.setMetadataTrustedKeys(
-      new HashSet<>(Arrays.asList(virtuMetadataSigningCertificateAliases)));
+      new HashSet<>(asList(virtuMetadataSigningCertificateAliases)));
 
     backgroundTaskTimer().purge();
 
     return extendedMetadataDelegate;
+  }
+
+  private MetadataFilterChain virtuMetadataFilters() {
+    // Keep only IdP descriptors in metadata because SP descriptor coming from
+    // Virtu metadata interferes with setting from local SP metadata
+    QName idpSsoDescriptorElement = new QName("urn:oasis:names:tc:SAML:2.0:metadata", "IDPSSODescriptor");
+    EntityRoleFilter idpDescriptorFilter = new EntityRoleFilter(asList(idpSsoDescriptorElement));
+    MetadataFilterChain filterChain = new MetadataFilterChain();
+    filterChain.setFilters(asList(idpDescriptorFilter));
+    return filterChain;
   }
 
   @Bean
@@ -192,7 +244,6 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
     chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"), samlEntryPoint()));
     chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/metadata/**"), metadataDisplayFilter()));
     chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"), samlWebSSOProcessingFilter()));
-    chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/Virtu/SAML2/POST/**"), samlWebSSOProcessingFilter()));
     return new FilterChainProxy(chains);
   }
 
@@ -201,7 +252,7 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
     return new SAMLBootstrap();
   }
 
-  @Bean(name = "parserPoolHolder")
+  @Bean
   public ParserPoolHolder parserPoolHolder() {
     ParserPoolHolder holder = new ParserPoolHolder();
     holder.setParserPool(parserPool());
@@ -217,8 +268,10 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
   public ExtendedMetadata spExtendedMetadata() {
     ExtendedMetadata extendedMetadata = new ExtendedMetadata();
 
+    extendedMetadata.setRequireArtifactResolveSigned(true);
     extendedMetadata.setSignMetadata(true);
     extendedMetadata.setSigningKey(spCertificateAliasInKeystore);
+    extendedMetadata.setSigningAlgorithm("http://www.w3.org/2000/09/xmldsig#rsa-sha1");
 
     extendedMetadata.setIdpDiscoveryEnabled(true);
     extendedMetadata.setIdpDiscoveryURL(idpDiscoveryServiceUrl);
@@ -300,8 +353,6 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
   @Bean
   public SAMLProcessingFilter samlWebSSOProcessingFilter() throws Exception {
     SAMLProcessingFilter samlWebSSOProcessingFilter = new SAMLProcessingFilter();
-    // TODO: Replace this with default value ("/saml/SSO") when registering QA and prod to actual Virtu.
-    samlWebSSOProcessingFilter.setFilterProcessesUrl("/Virtu/SAML2/POST");
     samlWebSSOProcessingFilter.setSAMLProcessor(samlProcessor());
     samlWebSSOProcessingFilter.setAuthenticationManager(authenticationManager());
     samlWebSSOProcessingFilter.setAuthenticationSuccessHandler(
@@ -313,10 +364,15 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
 
   @Bean
   public SAMLProcessor samlProcessor() {
-    return new SAMLProcessorImpl(Arrays.asList(
-      httpRedirectDeflateBinding(),
-      httpPostBinding()
+    return new SAMLProcessorImpl(asList(
+      httpPostBinding(),
+      httpRedirectDeflateBinding()
     ));
+  }
+
+  @Bean
+  public VelocityEngine velocityEngine() {
+    return VelocityFactory.getEngine();
   }
 
   @Bean
@@ -327,11 +383,6 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
   @Bean
   public HTTPPostBinding httpPostBinding() {
     return new HTTPPostBinding(parserPool(), velocityEngine());
-  }
-
-  @Bean
-  public VelocityEngine velocityEngine() {
-    return VelocityFactory.getEngine();
   }
 
   @PreDestroy

@@ -107,7 +107,7 @@ export class EditorLoginComponent implements OnInit {
   }
 
   redirectToVirtuLogin(): void {
-    window.location.href = 'https://industria.csc.fi/DS/?entityID=https%3A%2F%2Fqa.aineistoeditori.fi%2Fvirtu&return=https%3A%2F%2Fqa.aineistoeditori.fi%2Fsaml%2Flogin&returnIDParam=idp'
+    window.location.href = this.virtuIdpDirectoryServiceUrl
   }
 
   closeLogoutMessage(): void {

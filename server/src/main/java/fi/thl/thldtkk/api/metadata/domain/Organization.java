@@ -1,11 +1,5 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -17,8 +11,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static java.util.Objects.requireNonNull;
 
 public class Organization {
 
@@ -26,7 +25,7 @@ public class Organization {
 
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
-  private String virtuId;
+  private List<String> virtuIds = new ArrayList<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
 
   public Organization() { }
@@ -40,7 +39,7 @@ public class Organization {
     checkArgument(Objects.equals(node.getTypeId(), "Organization"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
-    this.virtuId = PropertyMappings.toString(node.getProperties("virtuId"));
+    this.virtuIds = PropertyMappings.valuesToCollection(node.getProperties("virtuIds"), ArrayList::new);
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
   }
@@ -48,11 +47,11 @@ public class Organization {
   public Organization(UUID id,
                       Map<String, String> prefLabel,
                       Map<String, String> abbreviation,
-                      String virtuId) {
+                      List<String> virtuIds) {
     this.id = id;
     this.prefLabel = prefLabel;
     this.abbreviation = abbreviation;
-    this.virtuId = virtuId;
+    this.virtuIds = virtuIds;
   }
 
   public UUID getId() {
@@ -67,8 +66,8 @@ public class Organization {
     return abbreviation;
   }
 
-  public Optional<String> getVirtuId() {
-    return Optional.ofNullable(virtuId);
+  public List<String> getVirtuIds() {
+    return virtuIds;
   }
 
   public List<OrganizationUnit> getOrganizationUnit() {
@@ -80,7 +79,7 @@ public class Organization {
 
     props.putAll("prefLabel", toPropertyValues(prefLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
-    getVirtuId().ifPresent(vi -> props.put("virtuId", toPropertyValue(vi)));
+    getVirtuIds().forEach(vi -> props.put("virtuIds", toPropertyValue(vi)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getOrganizationUnit().forEach(ou -> refs.put("organizationUnit", ou.toNode()));
@@ -100,13 +99,13 @@ public class Organization {
     return Objects.equals(id, that.id) &&
       Objects.equals(prefLabel, that.prefLabel) &&
       Objects.equals(abbreviation, that.abbreviation) &&
-      Objects.equals(virtuId, that.virtuId) &&
+      Objects.equals(virtuIds, that.virtuIds) &&
       Objects.equals(organizationUnit, that.organizationUnit);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, prefLabel, abbreviation, virtuId, organizationUnit);
+    return Objects.hash(id, prefLabel, abbreviation, virtuIds, organizationUnit);
   }
 
 }

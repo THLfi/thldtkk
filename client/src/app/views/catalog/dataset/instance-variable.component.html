@@ -245,7 +245,7 @@
           </ng-template>
         </ng-container>
         <ng-template #unitTypeFromDataset>
-          <ng-container *ngIf="dataset.unitType.prefLabel | lang; else unitTypeFromStudy;">
+          <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
             {{ dataset.unitType.prefLabel | lang }}
           </ng-container>
         </ng-template>

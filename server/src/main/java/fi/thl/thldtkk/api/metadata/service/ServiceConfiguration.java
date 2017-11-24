@@ -27,12 +27,11 @@ import fi.thl.thldtkk.api.metadata.service.termed.UniverseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UsageConditionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UserProfileServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.VariableServiceImpl;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.UUID;
 
 @Configuration
 public class ServiceConfiguration {
@@ -72,7 +71,7 @@ public class ServiceConfiguration {
   }
 
   // editor services
-
+  
   @Bean
   public EditorStudyService editorStudyService() {
     return new EditorStudyServiceImpl(editorNodeRepository(), userHelper);
@@ -85,17 +84,17 @@ public class ServiceConfiguration {
 
   @Bean
   public EditorInstanceVariableService editorInstanceVariableService() {
-    return new EditorInstanceVariableServiceImpl(editorNodeRepository(), editorDatasetService());
+    return new EditorInstanceVariableServiceImpl(editorNodeRepository());
   }
-
-  @Bean
-  public EditorDatasetService editorDatasetService() {
-    return new EditorDatasetServiceImpl(editorNodeRepository(), userHelper);
-  }
-
+  
   @Bean
   public UserProfileService editorUserProfileService() {
     return new UserProfileServiceImpl(editorNodeRepository());
+  }
+  
+  @Bean
+  public EditorDatasetService editorDatasetService() {
+    return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService());
   }
 
   // common services
@@ -120,7 +119,7 @@ public class ServiceConfiguration {
   @Bean
   public InstanceQuestionService instanceQuestionService() {
     return new InstanceQuestionServiceImpl(
-      editorDatasetService(),
+      editorStudyService(),
       editorNodeRepository()
     );
   }

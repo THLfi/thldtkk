@@ -25,7 +25,8 @@ public class Organization {
 
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
-  private List<String> virtuIds = new ArrayList<>();
+  // Marking field 'transient' excludes it from GSON (de)serialization
+  private transient List<String> virtuIds = new ArrayList<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
 
   public Organization() { }

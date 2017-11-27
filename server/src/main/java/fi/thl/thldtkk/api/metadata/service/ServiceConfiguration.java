@@ -20,6 +20,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.PublicInstanceVariableServiceI
 import fi.thl.thldtkk.api.metadata.service.termed.PublicStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.QuantityServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.RoleServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.StudyGroupServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.StudyPublishingServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitTypeServiceImpl;
@@ -177,6 +178,11 @@ public class ServiceConfiguration {
   @Bean
   public VariableService variableService() {
     return new VariableServiceImpl(commonNodeRepository());
+  }
+
+  @Bean
+  public StudyGroupService studyGroupService() {
+    return new StudyGroupServiceImpl(commonNodeRepository());
   }
 
   // lower level termed HTTP APIs

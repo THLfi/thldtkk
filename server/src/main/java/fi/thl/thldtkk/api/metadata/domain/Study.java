@@ -32,6 +32,7 @@ public class Study implements NodeEntity {
 
   private UUID id;
   private Date lastModifiedDate;
+  private UserProfile lastModifiedByUser;
   @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> altLabel = new LinkedHashMap<>();
@@ -57,7 +58,7 @@ public class Study implements NodeEntity {
   private List<Concept> conceptsFromScheme = new ArrayList<>();
   private List<DatasetType> datasetTypes = new ArrayList<>();
   private UnitType unitType;
-  private UserProfile lastModifiedByUser;
+  private StudyGroup studyGroup;
   @Valid
   private List<PersonInRole> personInRoles = new ArrayList<>();
   private List<Dataset> datasets = new ArrayList<>();
@@ -97,6 +98,8 @@ public class Study implements NodeEntity {
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.published = toBoolean(node.getProperties("published"), false);
 
+    node.getReferencesFirst("lastModifiedByUser")
+      .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
     node.getReferencesFirst("ownerOrganization")
       .ifPresent(oo -> this.ownerOrganization = new Organization(oo));
     node.getReferencesFirst("ownerOrganizationUnit")
@@ -115,6 +118,8 @@ public class Study implements NodeEntity {
       .forEach(dt -> this.datasetTypes.add(new DatasetType(dt)));
     node.getReferencesFirst("unitType")
       .ifPresent(ut -> this.unitType = new UnitType(ut));
+    node.getReferencesFirst("studyGroup")
+      .ifPresent(sg -> this.studyGroup = new StudyGroup(sg));
     node.getReferences("personInRoles")
       .forEach(pir -> this.personInRoles.add(new PersonInRole(pir)));
     node.getReferences("conceptsFromScheme")
@@ -126,8 +131,6 @@ public class Study implements NodeEntity {
 
     node.getReferrers("predecessors")
       .forEach(s -> this.successors.add(new Study(s)));
-    node.getReferencesFirst("lastModifiedByUser")
-        .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
   }
 
   /**
@@ -156,6 +159,14 @@ public class Study implements NodeEntity {
   // And http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
   public Optional<Date> getLastModifiedDate() {
     return Optional.ofNullable(lastModifiedDate);
+  }
+
+  public Optional<UserProfile> getLastModifiedByUser() {
+    return Optional.ofNullable(lastModifiedByUser);
+  }
+
+  public void setLastModifiedByUser(UserProfile userProfile) {
+    this.lastModifiedByUser = userProfile;
   }
 
   public Map<String, String> getPrefLabel() {
@@ -258,6 +269,10 @@ public class Study implements NodeEntity {
     return Optional.ofNullable(unitType);
   }
 
+  public Optional<StudyGroup> getStudyGroup() {
+    return Optional.ofNullable(studyGroup);
+  }
+
   public List<PersonInRole> getPersonInRoles() {
     return personInRoles;
   }
@@ -286,14 +301,6 @@ public class Study implements NodeEntity {
     return successors;
   }
 
-  public Optional<UserProfile> getLastModifiedByUser() {
-    return Optional.ofNullable(lastModifiedByUser);
-  }
-
-  public void setLastModifiedByUser(UserProfile userProfile) {
-    this.lastModifiedByUser = userProfile;
-  }
-
   /**
    * Transforms dataset into node
    */
@@ -315,6 +322,7 @@ public class Study implements NodeEntity {
     isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
+    getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
     getOwnerOrganization().ifPresent(oo -> refs.put("ownerOrganization", oo.toNode()));
     getOwnerOrganizationUnit().ifPresent(oou -> refs.put("ownerOrganizationUnit", oou.toNode()));
     getPopulation().ifPresent(p -> refs.put("population", p.toNode()));
@@ -325,10 +333,10 @@ public class Study implements NodeEntity {
     getLinks().forEach(l -> refs.put("links", l.toNode()));
     getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
     getUnitType().ifPresent(ut -> refs.put("unitType", ut.toNode()));
+    getStudyGroup().ifPresent(sg -> refs.put("studyGroup", sg.toNode()));
     getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
     getDatasets().forEach(d -> refs.put("dataSets", d.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
-    getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }
@@ -343,6 +351,8 @@ public class Study implements NodeEntity {
     }
     Study study = (Study) o;
     return Objects.equals(id, study.id)
+            && Objects.equals(lastModifiedDate, study.lastModifiedDate)
+            && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(prefLabel, study.prefLabel)
             && Objects.equals(altLabel, study.altLabel)
             && Objects.equals(abbreviation, study.abbreviation)
@@ -367,8 +377,8 @@ public class Study implements NodeEntity {
             && Objects.equals(freeConcepts, study.freeConcepts)
             && Objects.equals(datasetTypes, study.datasetTypes)
             && Objects.equals(unitType, study.unitType)
+            && Objects.equals(studyGroup, study.studyGroup)
             && Objects.equals(personInRoles, study.personInRoles)
-            && Objects.equals(lastModifiedDate, study.lastModifiedDate)
             && Objects.equals(datasets, study.datasets)
             && Objects.equals(predecessors, study.predecessors);
   }
@@ -377,6 +387,8 @@ public class Study implements NodeEntity {
   public int hashCode() {
       return Objects.hash(
         id,
+        lastModifiedDate,
+        lastModifiedByUser,
         prefLabel,
         altLabel,
         abbreviation,
@@ -384,7 +396,6 @@ public class Study implements NodeEntity {
         registryPolicy,
         usageConditionAdditionalInformation,
         published,
-        lastModifiedDate,
         referencePeriodStart,
         referencePeriodEnd, ownerOrganization,
         ownerOrganizationUnit,
@@ -399,6 +410,7 @@ public class Study implements NodeEntity {
         conceptsFromScheme,
         freeConcepts,
         unitType,
+        studyGroup,
         personInRoles,
         collectionStartDate,
         collectionEndDate,

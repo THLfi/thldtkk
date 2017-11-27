@@ -211,5 +211,32 @@
         "id": "prefLabel"
       }
     ]
+  },
+  {
+    "id": "StudyGroup",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      },
+      {
+        "id": "description"
+      },
+      {
+        "id": "referencePeriodStart",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+        "id": "referencePeriodEnd",
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "ownerOrganization",
+        "range": {
+          "id": "Organization"
+        }
+      }
+    ]
   }
 ]

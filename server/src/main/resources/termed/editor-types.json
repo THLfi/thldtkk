@@ -154,6 +154,15 @@
         }
       },
       {
+        "id": "studyGroup",
+        "range": {
+          "id": "StudyGroup",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
         "id": "dataSets",
         "range": {
           "id": "DataSet"

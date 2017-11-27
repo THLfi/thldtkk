@@ -2,17 +2,17 @@
   <ul *ngIf="study">
     <li [ngClass]="{ active: activeSection == StudySidebarActiveSection.STUDY }">
       <a routerLink="{{ '/editor/studies/' + study.id }}">
-        <div class="icon">
-          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        <div class="icon" style="padding-bottom:0.5em;" aria-hidden="true">
+          <sidebar-icon-study></sidebar-icon-study>
         </div>
-        {{ 'study.sidebar.study' | translate }}
+          {{ 'study.sidebar.study' | translate }}
       </a>
     </li>
     <li *ngIf="study.id"
         [ngClass]="{ active: activeSection == StudySidebarActiveSection.DATASETS_AND_VARIABLES }">
       <a routerLink="{{ '/editor/studies/' + study.id + '/datasets' }}">
-        <div class="icon">
-          <i class="fa fa-cubes" aria-hidden="true"></i>
+        <div class="icon" aria-hidden="true">
+          <sidebar-icon-datasets></sidebar-icon-datasets>
         </div>
         {{ 'study.sidebar.datasetsAndVariables' | translate }}
       </a>
@@ -20,8 +20,8 @@
     <li *ngIf="study.id"
         [ngClass]="{ active: activeSection == StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION }">
       <a routerLink="{{ '/editor/studies/' + study.id + '/administrative-information' }}">
-        <div class="icon">
-          <i class="fa fa-university" aria-hidden="true"></i>
+        <div class="icon" style="padding-bottom:0.5em;" aria-hidden="true">
+          <sidebar-icon-administrative-info></sidebar-icon-administrative-info>
         </div>
         {{ 'study.sidebar.administrativeInformation' | translate }}
       </a>

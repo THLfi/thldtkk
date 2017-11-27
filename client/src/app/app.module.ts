@@ -110,6 +110,9 @@ import { OrganizationDropdownComponent } from './views/common/organization-dropd
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
+import { SidebarIconAdministrativeInfo } from './views/editor/study/sidebar/sidebar-icon-administrative-info.component'
+import { SidebarIconDatasets } from './views/editor/study/sidebar/sidebar-icon-datasets.component'
+import { SidebarIconStudy } from './views/editor/study/sidebar/sidebar-icon-study.component'
 import { StudyRelationsEditComponent } from './views/editor/study/study-relationships/study-relations-edit.component'
 import { StudyRelationTypeDropdown } from './views/editor/study/study-relationships/study-relation-type-dropdown.component'
 import { StudySidebarComponent } from './views/editor/study/sidebar/study-sidebar.component'
@@ -136,6 +139,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CatalogStudyListComponent,
         CatalogStudyViewComponent,
         CodeListListComponent,
+        SidebarIconAdministrativeInfo,
+        SidebarIconDatasets,
+        SidebarIconStudy,
         StudyAdministrativeEditComponent,
         StudyAdministrativeViewComponent,
         DatasetComponent,

@@ -562,27 +562,29 @@
             inputId="conceptsFromScheme">
 
             <ng-template let-concept pTemplate="item">
-        <span>
-          {{ concept.prefLabel | lang }}
-        </span>
+              <span>
+                {{ concept.prefLabel | lang }}
+              </span>
               <small style="opacity:.7">
-          <span *ngFor="let lang of getConceptLanguages(concept)">
-            {{ lang }}:
-            {{ concept.prefLabel[lang] }}
-          </span>
-                ({{ concept.conceptScheme.prefLabel | lang }})
+                <span *ngFor="let lang of getConceptLanguages(concept)">
+                  {{ lang }}:
+                  {{ concept.prefLabel[lang] }}
+                </span>
+                <ng-container *ngIf="concept.conceptScheme">
+                  ({{ concept.conceptScheme.prefLabel | lang }})
+                </ng-container>
               </small>
             </ng-template>
 
             <ng-template let-concept pTemplate="selectedItem">
-        <span style="margin-right:1.2em;">
-          <span>
-            {{ concept.prefLabel | lang }}
-          </span>
-          <span style="opacity:.4">
-            ({{ concept.conceptScheme.prefLabel | lang }})
-          </span>
-        </span>
+              <span style="margin-right:1.2em;">
+                <span>
+                  {{ concept.prefLabel | lang }}
+                </span>
+                <span *ngIf="concept.conceptScheme" style="opacity:.4">
+                  ({{ concept.conceptScheme.prefLabel | lang }})
+                </span>
+              </span>
             </ng-template>
           </p-autoComplete>
         </div>

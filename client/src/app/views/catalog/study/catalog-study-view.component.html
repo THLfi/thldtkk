@@ -101,7 +101,7 @@
           <h2>{{ 'concepts' | translate }}</h2>
           <p style="line-height:2.2em;">
             <span *ngFor="let concept of study.conceptsFromScheme">
-              <span pTooltip="{{ 'source' | translate }}: {{ concept.conceptScheme.prefLabel | lang }}"
+              <span pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
                 tooltipPosition="bottom"
                 style="margin-right:1em;white-space:nowrap;">
                 {{ concept.prefLabel | lang }}

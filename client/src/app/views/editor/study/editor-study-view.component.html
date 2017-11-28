@@ -273,7 +273,7 @@
             <span *ngFor="let concept of study.conceptsFromScheme"
                   style="margin-right:.6em;">
               {{ concept.prefLabel | lang }}
-              <span style="opacity:.6">
+              <span *ngIf="concept.conceptScheme" style="opacity:.6">
                 ({{ concept.conceptScheme.prefLabel | lang }})
               </span>
             </span>

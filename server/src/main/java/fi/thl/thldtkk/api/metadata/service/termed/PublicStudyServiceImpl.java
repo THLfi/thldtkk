@@ -107,7 +107,8 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "references.instanceVariable:3",
         "references.variable:3",
         "references.conceptsFromScheme:3",
-        "references.inScheme:4",
+        // Disabled because increases load times too much
+        //"references.inScheme:4",
         "references.quantity:3",
         "references.unit:3",
         "references.codeList:3",

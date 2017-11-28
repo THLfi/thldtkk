@@ -166,7 +166,9 @@
                       {{ lang }}:
                       {{ concept.prefLabel[lang] }}
                     </span>
-                    ({{ concept.conceptScheme.prefLabel | lang }})
+                    <ng-container *ngIf="concept.conceptScheme">
+                      ({{ concept.conceptScheme.prefLabel | lang }})
+                    </ng-container>
                   </small>
                 </ng-template>
 
@@ -175,7 +177,7 @@
                     <span>
                       {{ concept.prefLabel | lang }}
                     </span>
-                    <span style="opacity:.4">
+                    <span *ngIf="concept.conceptScheme" style="opacity:.4">
                       ({{ concept.conceptScheme.prefLabel | lang }})
                     </span>
                   </span>

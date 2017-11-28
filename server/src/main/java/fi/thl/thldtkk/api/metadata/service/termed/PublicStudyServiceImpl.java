@@ -114,7 +114,13 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "references.codeItems:4",
         "references.source:3",
         "references.unitType:3",
-        "references.instanceQuestions:3"),
+        "references.instanceQuestions:3",
+        "references.usageCondition:2",
+        "references.lifecyclePhase:2",
+        "references.population:2",
+        "references.universe:2",
+        "references.datasetType:2",
+        "references.ownerOrganizationUnit:2"),
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 
     return study;

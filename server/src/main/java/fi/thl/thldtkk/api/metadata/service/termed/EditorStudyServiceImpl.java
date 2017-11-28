@@ -128,6 +128,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.unitType:3",
         "references.lastModifiedByUser:3",
         "references.instanceQuestions:3",
+        "references.usageCondition:2",
+        "references.lifecyclePhase:2",
+        "references.population:2",
+        "references.universe:2",
+        "references.datasetType:2",
+        "references.ownerOrganizationUnit:2",
         "references.predecessors:3",
         "referrers.predecessors:3",
         "referrers.dataSets:2"

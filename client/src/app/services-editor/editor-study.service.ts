@@ -44,6 +44,7 @@ export class EditorStudyService {
       population: null,
       numberOfObservationUnits: null,
       comment: null,
+      personRegistry: null,
       conceptsFromScheme: [],
       links: [],
       freeConcepts: null,

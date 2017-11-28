@@ -76,4 +76,6 @@ export interface Study extends Node {
 
   lastModifiedByUser?: UserInformation
 
+  personRegistry: string
+
 }

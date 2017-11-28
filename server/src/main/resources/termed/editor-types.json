@@ -48,6 +48,10 @@
       {
         "id": "published",
         "regex": "^(true|false)$"
+      },
+      {
+        "id": "personRegistry",
+        "regex": "^(true|false|^$)$"
       }
     ],
     "referenceAttributes": [

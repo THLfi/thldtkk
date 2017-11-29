@@ -9,7 +9,14 @@
     <div class="content-header container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <h1>{{ 'study' | translate }}: {{ study.prefLabel | lang }}</h1>
+          <h1>{{ study.prefLabel | lang }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <last-modified [modifier]="study.lastModifiedByUser"
+                         [lastModifiedDate]="study.lastModifiedDate">
+          </last-modified>
         </div>
       </div>
     </div>
@@ -100,6 +107,28 @@
                     class="form-control"
                     rows="6">
           </textarea>
+        </div>
+
+        <h2>{{"isStudyPersonRegistry"|translate}}</h2>
+        <div class="form-group">
+          <div id="person-registry" class="radio">
+            <label>
+              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="true">
+              {{"true"|translate}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="false">
+              {{"false"|translate}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="">
+              {{"noPersonRegistry"|translate}}
+            </label>
+          </div>
         </div>
 
         <div class="row">

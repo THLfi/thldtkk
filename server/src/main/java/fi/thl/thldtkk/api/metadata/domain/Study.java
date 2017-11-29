@@ -64,6 +64,7 @@ public class Study implements NodeEntity {
   private List<Dataset> datasets = new ArrayList<>();
   private List<Study> predecessors = new ArrayList<>();
   private List<Study> successors = new ArrayList<>();
+  private String personRegistry;
 
   /**
    * Required by GSON deserialization.
@@ -97,6 +98,7 @@ public class Study implements NodeEntity {
     this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.published = toBoolean(node.getProperties("published"), false);
+    this.personRegistry = PropertyMappings.toString(node.getProperties("personRegistry"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -301,6 +303,10 @@ public class Study implements NodeEntity {
     return successors;
   }
 
+  public Optional<String> getPersonRegistry() {
+    return Optional.ofNullable(personRegistry);
+  }
+
   /**
    * Transforms dataset into node
    */
@@ -320,6 +326,7 @@ public class Study implements NodeEntity {
     props.putAll("freeConcepts", toPropertyValues(freeConcepts));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
     isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
+    getPersonRegistry().ifPresent(v -> props.put("personRegistry", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
@@ -380,7 +387,8 @@ public class Study implements NodeEntity {
             && Objects.equals(studyGroup, study.studyGroup)
             && Objects.equals(personInRoles, study.personInRoles)
             && Objects.equals(datasets, study.datasets)
-            && Objects.equals(predecessors, study.predecessors);
+            && Objects.equals(predecessors, study.predecessors)
+            && Objects.equals(personRegistry, study.personRegistry);
   }
 
   @Override
@@ -415,7 +423,8 @@ public class Study implements NodeEntity {
         collectionStartDate,
         collectionEndDate,
         datasets,
-        predecessors);
+        predecessors,
+        personRegistry);
   }
 
 }

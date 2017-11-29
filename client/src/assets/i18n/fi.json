@@ -103,6 +103,7 @@
       "false": "Ei näytetä katalogissa"
     }
   },
+  "isStudyPersonRegistry": "Onko aineisto henkilörekisteri vai ei",
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
   "noStudyPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
   "addNewPersonInRole": "Lisää henkilö",
@@ -158,6 +159,7 @@
   "noUnit": "Ei mittayksikköä",
   "addUnit": "Lisää mittayksikkö...",
   "newUnit": "Uusi mittayksikkö",
+  "noPersonRegistry": "Ei määritetty",
   "catalog": {
     "personInRoles": "Yhteystiedot",
     "referencePeriod": "Ajankohta",

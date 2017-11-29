@@ -67,26 +67,34 @@
                  type="text">
         </div>
 
-        <div *ngIf="availableOrganizations"
-             class="form-group">
-          <label for="ownerOrganization">{{ 'organization' | translate }}</label>
-          <select [(ngModel)]="study.ownerOrganization"
-                  (change)="onOrganizationChange()"
-                  [compareWith]="nodeUtils.equals"
-                  id="ownerOrganization"
-                  name="ownerOrganization"
-                  class="form-control">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let organization of availableOrganizations"
-                    [ngValue]="organization">
-              {{organization.prefLabel | lang}}
-            </option>
-          </select>
+        <div [ngClass]="{ 'bg-danger': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
+                 class="form-group">
+              <label for="ownerOrganization">
+                {{ 'organization' | translate }}
+                <thl-requiredFieldIndicator *ngIf="!isUserAdmin"></thl-requiredFieldIndicator>
+              </label>
+              <organization-dropdown [(ngModel)]="study.ownerOrganization"
+                                     (onChange)="onOrganizationChange()"
+                                     [required]="!isUserAdmin"
+                                     selectId="ownerOrganization"
+                                     name="ownerOrganization">
+              </organization-dropdown>
+              <p *ngFor="let errorKey of formErrors.ownerOrganization"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div *ngIf="availableOrganizations" class="form-group">
+        <div *ngIf="availableOrganizations"
+             class="form-group">
           <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
-          <select [(ngModel)]="ownerOrganizationUnit"
+          <select [(ngModel)]="study.ownerOrganizationUnit"
                   [compareWith]="nodeUtils.equals"
                   id="ownerOrganizationUnit"
                   name="ownerOrganizationUnit"
@@ -94,8 +102,11 @@
             <option [ngValue]="null"></option>
             <ng-container *ngIf="study.ownerOrganization">
               <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[study.ownerOrganization.id]"
-                    [ngValue]="organizationUnit">
-              {{organizationUnit.prefLabel | lang}}
+                      [ngValue]="organizationUnit">
+                {{ organizationUnit.prefLabel | lang }}
+                <span *ngIf="organizationUnit.abbreviation | lang">
+                  ({{ organizationUnit.abbreviation | lang }})
+                </span>
               </option>
             </ng-container>
           </select>
@@ -614,6 +625,62 @@
                          inputId="datasetType">
           </p-multiSelect>
         </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label>{{ 'studyGroup.studyGroup' | translate }}</label>
+                <ng-container *ngIf="availableStudyGroupItems.length > 1; else noAvailableStudyGroupItems;">
+                  <br>
+                  <p-dropdown [(ngModel)]="study.studyGroup"
+                              [ngModelOptions]="{ standalone: true }"
+                              [options]="availableStudyGroupItems"
+                              filter="true"
+                              dataKey="id">
+                    <ng-template let-studyGroupItem pTemplate="item">
+                      <ng-container *ngIf="studyGroupItem.value; else nullValueStudyGroupItem;">
+                        <div>
+                          {{ studyGroupItem.value.prefLabel | lang }}
+                          <ng-container *ngIf="studyGroupItem.value.description | lang">
+                            <br>
+                            <small style="opacity:.7">
+                              {{ studyGroupItem.value.description | lang }}
+                            </small>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                      <ng-template #nullValueStudyGroupItem>
+                        {{ studyGroupItem.label }}
+                      </ng-template>
+                    </ng-template>
+                  </p-dropdown>
+                  <span style="padding-left:1em;padding-right:1em">|</span>
+                </ng-container>
+                <ng-template #noAvailableStudyGroupItems>
+                  <ng-container *ngIf="study.ownerOrganization; else noStudyOwnerOrganizationSelected;">
+                    <p>{{ 'StudyEditComponent.selectedOwnerOrganizationHasNoStudyGroups' | translate }}</p>
+                  </ng-container>
+                  <ng-template #noStudyOwnerOrganizationSelected>
+                    <p>{{ 'StudyEditComponent.selectOwnerOrganizationFirst' | translate }}</p>
+                  </ng-template>
+                </ng-template>
+                <ng-container *ngIf="study.ownerOrganization">
+                  <button
+                    (click)="showAddStudyGroupModal()"
+                    class="btn btn-default btn-sm"
+                    type="button">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    {{ 'addStudyGroup' | translate }}
+                  </button>
+                  <study-group-edit-modal *ngIf="newStudyGroup"
+                                          [studyGroup]="newStudyGroup"
+                                          (onSave)="saveStudyGroup($event)"
+                                          (onCancel)="closeAddStudyGroupModal()">
+                  </study-group-edit-modal>
+                </ng-container>
+              </div>
+            </div>
+          </div>
 
         <div class="form-group">
           <study-relations-edit

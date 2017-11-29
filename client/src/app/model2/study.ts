@@ -9,6 +9,7 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
 import {Population} from './population';
+import {StudyGroup} from './study-group'
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
@@ -71,6 +72,8 @@ export interface Study extends Node {
   predecessors: Study[]
 
   successors: Study[]
+
+  studyGroup?: StudyGroup
 
   lastModifiedDate?: Date
 

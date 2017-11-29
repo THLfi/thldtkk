@@ -218,6 +218,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       checkUserIsAllowedToAccessStudy(study);
     }
 
+    if (studyHasDifferentOwnerOrganizationAsItsStudyGroup(study)) {
+        throw new IllegalArgumentException(new StringBuilder()
+          .append("Cannot save study '")
+          .append(study.getId())
+          .append("' because its owner organization doesn't match study group's owner organization")
+          .toString());
+    }
+
     if (containsSelf(study, study.getPredecessors())) {
       throw new IllegalArgumentException(
         new StringBuilder()
@@ -281,6 +289,20 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     return get(study.getId())
       .orElseThrow(studyNotFoundAfterSave(study.getId()));
+  }
+
+  private boolean studyHasDifferentOwnerOrganizationAsItsStudyGroup(Study study) {
+    if (study.getStudyGroup().isPresent()) {
+      Optional<UUID> studyOwnerOrganizationId = study.getOwnerOrganization()
+        .map(o -> o.getId());
+      Optional<UUID> studyGroupOwnerOrganizationId = study.getStudyGroup()
+        .flatMap(sg -> sg.getOwnerOrganization())
+        .map(o -> o.getId());
+      return !studyOwnerOrganizationId.equals(studyGroupOwnerOrganizationId);
+    }
+    else {
+      return false;
+    }
   }
 
   private <T extends NodeEntity> boolean containsSelf(T node, List<T> nodeRelations) {

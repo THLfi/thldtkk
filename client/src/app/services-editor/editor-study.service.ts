@@ -53,7 +53,8 @@ export class EditorStudyService {
       personInRoles: [],
       datasets: [],
       predecessors: [],
-      successors: []
+      successors: [],
+      studyGroup: null
     })
   }
 

@@ -29,12 +29,12 @@ public class StudyGroupController {
   private StudyGroupService studyGroupService;
 
   @GetJsonMapping
-  public List<StudyGroup> query(@RequestParam(value = "query", defaultValue = "") String query) {
-    return studyGroupService.find(query, -1);
+  public List<StudyGroup> findByOwnerOrganizationId(@RequestParam UUID ownerOrganizationId) {
+    return studyGroupService.findByOwnerOrganizationId(ownerOrganizationId, -1);
   }
 
   @GetJsonMapping("/{id}")
-  public StudyGroup getOne(@RequestParam("id") UUID id) {
+  public StudyGroup getById(@RequestParam("id") UUID id) {
     return studyGroupService.get(id)
       .orElseThrow(entityNotFound(StudyGroup.class, id));
   }

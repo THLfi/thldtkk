@@ -50,6 +50,7 @@ import { PublicInstanceVariableService } from './services-public/public-instance
 import { QuantityService } from './services-common/quantity.service'
 import { RoleService } from './services-common/role.service'
 import { EditorStudyService } from './services-editor/editor-study.service'
+import { StudyGroupService } from './services-common/study-group.service'
 import { UnitService } from './services-common/unit.service'
 import { UnitTypeService } from './services-common/unit-type.service'
 import { UniverseService } from './services-common/universe.service'
@@ -77,6 +78,7 @@ import { VariableViewComponent} from './views/catalog/variable/variable-view.com
 
 // editor components
 import { AboutEditorComponent } from './views/editor/login/about-editor.component'
+import { AdminMenuComponent } from './views/editor/menu/admin-menu.component'
 import { BreadcrumbComponent } from './views/editor/breadcrumb/breadcrumb.component'
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
@@ -94,6 +96,7 @@ import { EditorStudyListComponent } from './views/editor/study/editor-study-list
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
 import { EditorStudyDatasetsComponent} from './views/editor/study/editor-study-datasets.component'
 import { EditorStudyViewComponent} from './views/editor/study/editor-study-view.component'
+import { StudyGroupEditModalComponent } from './views/editor/study-group/study-group-edit-modal.component'
 import { DatasetViewComponent as EditorDatasetComponent } from './views/editor/dataset/dataset-view.component'
 import { EditorLoginComponent } from './views/editor/login/editor-login.component'
 import { InstanceQuestionEditModalComponent } from './views/editor/dataset/instance-question-modal.component'
@@ -103,6 +106,7 @@ import { InstanceVariablesImportModalComponent } from './views/editor/dataset/in
 import { LastModifiedComponent } from './views/editor/dataset/last-modified.component'
 import { LoginAdviceComponent } from './views/editor/login/login-advice.component'
 import { LogoutMessageComponent } from './views/editor/login/logout-message.component'
+import { OrganizationDropdownComponent } from './views/common/organization-dropdown.component'
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
@@ -115,7 +119,6 @@ import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.co
 import { UniverseEditModalComponent } from './views/editor/dataset/universe-edit-modal.component'
 import { UniverseListComponent } from './views/editor/universe/universe-list.component'
 import { UserMenuComponent } from './views/editor/menu/user-menu.component'
-import { AdminMenuComponent } from './views/editor/menu/admin-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableListComponent } from './views/editor/variable/variable-list.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
@@ -165,6 +168,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         StudySidebarComponent,
         StudyRelationsEditComponent,
         StudyRelationTypeDropdown,
+        StudyGroupEditModalComponent,
+        OrganizationDropdownComponent,
         UnitTypeEditModalComponent,
         UnitTypeListComponent,
         UniverseEditModalComponent,
@@ -222,7 +227,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CurrentUserService,
         ConfirmationService,
         RequireLoginGuard,
-        // Version 3 services
         CodeListService3,
         ConceptService,
         EditorDatasetService,
@@ -246,6 +250,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UsageConditionService,
         VariableService,
         BreadcrumbService,
+        StudyGroupService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

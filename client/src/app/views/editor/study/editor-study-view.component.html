@@ -304,10 +304,21 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'study.relations.label' | translate }}</h2>
+          <h2>{{ 'studyGroup.studyGroup' | translate }}</h2>
+          <ng-container *ngIf="study.studyGroup">
+            <p>{{ study.studyGroup.prefLabel | lang }}</p>
+            <p *ngIf="study.studyGroup.description | lang">
+              {{ study.studyGroup.description | lang }}
+            </p>
+          </ng-container>
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>{{ 'study.relations.label' | translate }}</h2>
+        </div>
+      </div>
       <div class="row">
         <ng-container *ngIf="study.predecessors.length || study.successors.length; else noStudyRelations;">
           <div class="col-sm-6">

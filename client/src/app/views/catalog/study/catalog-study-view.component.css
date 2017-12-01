@@ -28,3 +28,108 @@
   color: #01A197;
   font-style: italic;
 }
+
+.right-main-column .link {
+  text-decoration: underline;
+}
+
+.detail-highlight {
+  text-align: center;
+}
+
+.detail-highlights {
+  margin-bottom: 3em;
+}
+
+.detail-highlight .caption, .detail-highlight .icon  {
+  color: #CCCCCC;
+}
+
+.detail-highlight .icon {
+  font-size: 3em;
+}
+
+.detail-highlight .caption {
+  margin-top: -0.6em;
+}
+
+.detail-highlight .value {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: black;
+}
+
+.concepts {
+  background-color: #F3F3F3;
+  padding: 0.5em 1.5em 1.5em;
+}
+
+.concepts h2 {
+  font-size: 1.5em;
+}
+
+.concepts .items {
+  columns: 3;
+}
+
+.concepts .items p {
+  margin-bottom: 0;
+  line-height: 1em;
+}
+
+.datasets {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.dataset {
+  border: 1px solid #DDDDDD;
+  box-shadow: 0 2px 1px 0 rgba(0,0,0,0.28);
+  margin-bottom: 3em;
+  padding: 1.2em;
+}
+
+.dataset .prefLabel {
+  font-size: 1.7em;
+  height: 6em;
+}
+
+.dataset .variables .count {
+  font-size: 2.3em;
+}
+
+.dataset .variables .count-label {
+  font-size: 1.15em;
+}
+
+.dataset .navigation {
+  text-align: right;
+  font-size: 1.15em;
+}
+
+.dataset .navigation a {
+  color: #01837A;
+}
+
+@media(max-width: 991px) {
+  .dataset .prefLabel {
+    height: 9em;
+  }
+}
+
+@media(max-width: 767px) {
+  .dataset {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+
+  .dataset .prefLabel {
+    height: auto;
+  }
+
+  .concepts .items {
+    columns: 2;
+  }
+
+}
+

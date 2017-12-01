@@ -191,6 +191,11 @@
       "studyColumnHeading": "Aineisto",
       "noStudy": "Ei liittyvää aineistoa",
       "noDataset": "Ei liittyvää datasettiä"
+    },
+    "study": {
+      "goToDataset": "Siirry datasettiin",
+      "datasetVariableCountLabel": "muuttujaa",
+      "datasetVariablesBreakdown": "Aineiston muuttujat on jaettu {{datasetCount}} datasettiin"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",

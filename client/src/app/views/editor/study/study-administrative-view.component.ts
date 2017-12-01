@@ -4,6 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { Title } from '@angular/platform-browser'
 import { LangPipe } from '../../../utils/lang.pipe'
 
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { Study } from "../../../model2/study";
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
@@ -18,7 +19,8 @@ export class StudyAdministrativeViewComponent implements OnInit {
 
   sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
-  constructor(private studyService: EditorStudyService,
+  constructor(private breadcrumbService: BreadcrumbService,
+              private studyService: EditorStudyService,
               private route: ActivatedRoute,
               private translateService: TranslateService,
               private titleService: Title,
@@ -35,6 +37,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
     this.studyService.getStudy(studyId)
       .subscribe(study => {
         this.study = study
+        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
         this.updatePageTitle()
       })
   }

@@ -1,0 +1,134 @@
+<ng-container *ngIf="studyGroup">
+  <p-dialog [visible]="studyGroup"
+          (onHide)="doCancel()"
+          modal="modal"
+          draggable="false"
+          resizable="false"
+          closeOnEscape="false"
+          width="500">
+    <p-header>
+      {{ (studyGroup.id ? 'editStudyGroup' : 'addStudyGroup') | translate }}
+    </p-header>
+    <form #studyGroupForm="ngForm">
+      <div [ngClass]="{ 'bg-danger': formErrors.studyGroupPrefLabel && formErrors.studyGroupPrefLabel.length }"
+           class="row">
+        <div class="col-xs-12">
+          <div [ngClass]="{ 'has-error': formErrors.studyGroupPrefLabel && formErrors.studyGroupPrefLabel.length }"
+               class="form-group">
+            <label for="studyGroupPrefLabel">
+              {{ 'prefLabel' | translate }}
+              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+            </label>
+            <input [(ngModel)]="studyGroup.prefLabel[language]"
+                   id="studyGroupPrefLabel"
+                   name="studyGroupPrefLabel"
+                   type="text"
+                   class="form-control"
+                   required>
+            <p *ngFor="let errorKey of formErrors.studyGroupPrefLabel"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="studyGroupDescription">
+              {{ 'description' | translate }}
+            </label>
+            <textarea [(ngModel)]="studyGroup.description[language]"
+                   id="studyGroupDescription"
+                   name="studyGroupDescription"
+                   rows="2"
+                   class="form-control">
+            </textarea>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="{ 'bg-danger': formErrors.studyGroupOwnerOrganization && formErrors.studyGroupOwnerOrganization.length }"
+           class="row">
+        <div class="col-xs-12">
+          <div [ngClass]="{ 'has-error': formErrors.studyGroupOwnerOrganization && formErrors.studyGroupOwnerOrganization.length }"
+               class="form-group">
+            <label for="studyGroupOwnerOrganization">
+              {{ 'organization' | translate }}
+              <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+            </label>
+            <organization-dropdown [(ngModel)]="studyGroup.ownerOrganization"
+                                   selectId="studyGroupOwnerOrganization"
+                                   name="studyGroupOwnerOrganization"
+                                   required>
+            </organization-dropdown>
+            <p *ngFor="let errorKey of formErrors.studyGroupOwnerOrganization"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
+           class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="studyGroupReferencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+            <br>
+            <p-calendar [(ngModel)]="referencePeriodStart"
+                        dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                        monthNavigator="true"
+                        yearNavigator="true"
+                        [yearRange]="yearRangeForReferencePeriodFields"
+                        showIcon="true"
+                        [locale]="dateUtils.getLocaleSettings() | async"
+                        placeholder="{{ 'date.placeholder' | translate }}"
+                        inputId="referencePeriodStart"
+                        name="studyGroupReferencePeriodStart">
+            </p-calendar>
+            <p *ngFor="let errorKey of formErrors.referencePeriodStart"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="studyGroupReferencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+            <br>
+            <p-calendar [(ngModel)]="referencePeriodEnd"
+                        dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                        monthNavigator="true"
+                        yearNavigator="true"
+                        [yearRange]="yearRangeForReferencePeriodFields"
+                        showIcon="true"
+                        [locale]="dateUtils.getLocaleSettings() | async"
+                        placeholder="{{ 'date.placeholder' | translate }}"
+                        inputId="referencePeriodEnd"
+                        name="studyGroupReferencePeriodEnd">
+            </p-calendar>
+            <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
+               class="text-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ errorKey | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doSave()"
+                class="btn btn-primary">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{ 'save' | translate }}
+        </button>
+        <button (click)="doCancel()" class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

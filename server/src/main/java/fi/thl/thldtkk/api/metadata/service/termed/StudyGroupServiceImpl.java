@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.StudyGroup;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
@@ -8,7 +9,9 @@ import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpda
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.StudyGroupService;
 import org.springframework.security.access.method.P;
+import org.springframework.util.StringUtils;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,20 +33,37 @@ public class StudyGroupServiceImpl implements StudyGroupService {
 
   @Override
   public List<StudyGroup> findAll() {
-    return nodes.query(keyValue("type.id", StudyGroup.TERMED_NODE_CLASS))
+    return internalFind(null, null, -1);
+  }
+
+  private List<StudyGroup> internalFind(String query, UUID organizationId, int max) {
+    List<Criteria> criterias = new LinkedList<>();
+
+    criterias.add(keyValue("type.id", StudyGroup.TERMED_NODE_CLASS));
+
+    if (StringUtils.hasText(query)) {
+      criterias.add(
+        keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+    }
+
+    if (organizationId != null) {
+      criterias.add(
+        keyValue("references.ownerOrganization.id", organizationId.toString()));
+    }
+
+    return nodes.query(and(criterias), max)
       .map(StudyGroup::new)
       .collect(toList());
   }
 
   @Override
   public List<StudyGroup> find(String query, int max) {
-    return nodes.query(
-      and(
-        keyValue("type.id", StudyGroup.TERMED_NODE_CLASS),
-        keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))
-      ), max)
-      .map(StudyGroup::new)
-      .collect(toList());
+    return internalFind(query, null, max);
+  }
+
+  @Override
+  public List<StudyGroup> findByOwnerOrganizationId(UUID organizationId, int max) {
+    return internalFind(null, organizationId, max);
   }
 
   @Override

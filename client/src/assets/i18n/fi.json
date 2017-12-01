@@ -520,6 +520,16 @@
     "loginAdvice": "Mitä kirjautumista minun pitäisi käyttää?",
     "loginAdviceTooltip": "Jos olet Virtu-viraston työntekijä, käytä Virtua. Muille tarjoamme vaihtoehtona THL:n omaa kirjautumispalvelua"
   },
+  "StudyEditComponent": {
+    "selectedOwnerOrganizationHasNoStudyGroups": "Valitulle organisaatiolle ei ole lisätty yhtään sarjaa.",
+    "selectOwnerOrganizationFirst": "Valitse ensin aineiston organisaatio."
+  },
+  "studyGroup": {
+    "studyGroup": "Sarja"
+  },
+  "noStudyGroup": "Ei sarjaa",
+  "addStudyGroup": "Lisää sarja...",
+  "newStudyGroup": "Uusi sarja",
   "study": {
     "manageDatasets": "Hallinnoi datasettejä",
     "add": "Lisää aineisto",

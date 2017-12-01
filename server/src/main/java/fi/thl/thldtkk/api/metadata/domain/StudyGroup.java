@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
+import fi.thl.thldtkk.api.metadata.validator.NotNullAndHasId;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class StudyGroup implements NodeEntity {
   private Map<String, String> description = new LinkedHashMap<>();
   private LocalDate referencePeriodStart;
   private LocalDate referencePeriodEnd;
+  @NotNullAndHasId
   private Organization ownerOrganization;
 
   /**

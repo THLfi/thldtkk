@@ -7,6 +7,7 @@ import {NgForm, AbstractControl} from '@angular/forms'
 import {Observable} from 'rxjs'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 
 import {Study} from '../../../model2/study';
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
@@ -38,6 +39,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
+        private breadcrumbService: BreadcrumbService,
         private translateService: TranslateService,
         private langPipe: LangPipe,
         private titleService: Title
@@ -57,6 +59,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           .subscribe(study => {
             this.study = this.studyService.initializeProperties(study)
             this.updatePageTitle()
+            this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
           })
       } else {
         this.study = this.studyService.initNew()

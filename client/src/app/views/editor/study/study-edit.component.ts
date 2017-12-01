@@ -391,8 +391,13 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     onOrganizationChange(): void {
       this.study.ownerOrganizationUnit = null
-      // TODO: Show notification to user?
-      this.study.studyGroup = null
+      if (this.study.studyGroup) {
+        this.study.studyGroup = null
+        this.growlMessageService.buildAndShowMessage(
+          'info',
+          'StudyEditComponent.studyGroupReset.summary',
+          'StudyEditComponent.studyGroupReset.detail')
+      }
       this.updateAvailableStudyGroups()
     }
 

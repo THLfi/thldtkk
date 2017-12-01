@@ -19,7 +19,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static java.util.Objects.requireNonNull;
 
-public class Organization {
+public class Organization implements NodeEntity {
 
   private UUID id;
 

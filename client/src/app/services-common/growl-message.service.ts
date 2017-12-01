@@ -17,7 +17,7 @@ export class GrowlMessageService {
    * @param summaryKey Message key for growl message summary.
    * @param detailKey Message key for growl message details. Optional.
    */
-  buildAndShowMessage(severity: string, summaryKey: string, detailKey?: string) {
+  buildAndShowMessage(severity: 'success' | 'info' | 'warn' | 'error', summaryKey: string, detailKey?: string) {
     Observable.forkJoin(
       this.translateService.get(summaryKey),
       detailKey ? this.translateService.get(detailKey) : Observable.of('')

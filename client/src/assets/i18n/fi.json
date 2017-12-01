@@ -522,7 +522,11 @@
   },
   "StudyEditComponent": {
     "selectedOwnerOrganizationHasNoStudyGroups": "Valitulle organisaatiolle ei ole lisätty yhtään sarjaa.",
-    "selectOwnerOrganizationFirst": "Valitse ensin aineiston organisaatio."
+    "selectOwnerOrganizationFirst": "Valitse ensin aineiston organisaatio.",
+    "studyGroupReset": {
+      "summary": "Sarja-kenttä päivitetty",
+      "detail": "Sarja-kentän valinta tyhjennettiin, koska valittu sarja kuuluu eri organisaatioon."
+    }
   },
   "studyGroup": {
     "studyGroup": "Sarja"

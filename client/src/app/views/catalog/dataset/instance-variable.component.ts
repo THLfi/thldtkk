@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
 
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { Dataset } from '../../../model2/dataset'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { InstanceVariableReferencePeriod } from './instance-variable-reference-period'
@@ -30,6 +31,7 @@ export class InstanceVariableComponent implements OnInit {
     private studyService: PublicStudyService,
     private datasetService: PublicDatasetService,
     private instanceVariableService: PublicInstanceVariableService,
+    private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private langPipe: LangPipe,
@@ -57,6 +59,7 @@ export class InstanceVariableComponent implements OnInit {
       this.dataset = data[1]
       this.instanceVariable = data[2]
       this.updatePageTitle()
+      this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
       this.updateReferencePeriod()
     })
   }

@@ -37,7 +37,7 @@ export class EditorStudyDatasetsComponent implements OnInit {
 
       this.editorStudyService.getStudy(params['id']).subscribe(study => {
         this.study = study
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(study)
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(study)
         this.updatePageTitle()
 
         this.userService.getUserOrganizations()

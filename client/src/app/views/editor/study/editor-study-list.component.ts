@@ -34,7 +34,7 @@ export class EditorStudyListComponent implements OnInit {
         this.userService.getCurrentUserObservable()
           .subscribe(user => this.user = user)
 
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable()
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable()
 
         this.isLoadingStudies = false
     })

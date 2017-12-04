@@ -2,8 +2,9 @@ import { ActivatedRoute } from '@angular/router'
 import { Component } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
-import { PublicStudyService } from '../../../services-public/public-study.service'
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { LangPipe  } from '../../../utils/lang.pipe'
+import { PublicStudyService } from '../../../services-public/public-study.service'
 import { Study } from '../../../model2/study'
 import { Title } from '@angular/platform-browser'
 
@@ -19,6 +20,7 @@ export class CatalogStudyViewComponent {
 
   constructor(
     private studyService: PublicStudyService,
+    private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private titleService: Title,
@@ -34,6 +36,7 @@ export class CatalogStudyViewComponent {
       this.studyService.getStudy(params['id']).subscribe(study => {
         this.study = study
         this.updatePageTitle()
+        this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(study)
         this.loadingStudy = false
       })
     })

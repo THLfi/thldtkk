@@ -34,16 +34,22 @@ export class BreadcrumbService {
     this.breadcrumbsSubject.next(breadcrumbs === null ? [] : breadcrumbs)
   }
 
-  updateBreadcrumbsForStudyDatasetAndInstanceVariable(
+  updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(
     study ?: Study, dataset ?: Dataset, instanceVariable ?: InstanceVariable): void {
+    this.updateBreadcrumbsForStudyDatasetAndInstanceVariable(true, study, dataset, instanceVariable)
+  }
+
+  private updateBreadcrumbsForStudyDatasetAndInstanceVariable(
+    isCatalog: boolean, study ?: Study, dataset ?: Dataset, instanceVariable ?: InstanceVariable): void {
     const currentLang = this.translateService.currentLang
+    const urlPrefix = isCatalog ? '/catalog' : '/editor'
 
     this.translateService.get('study.studies')
       .subscribe(studiesLabel => {
         let crumbs: Breadcrumb[] = [
           {
             label: studiesLabel,
-            url: study ? '/editor/studies' : null
+            url: study ? urlPrefix + '/studies' : null
           }
         ]
 
@@ -52,7 +58,7 @@ export class BreadcrumbService {
             ...crumbs,
             {
               label: study.prefLabel[currentLang],
-              url: dataset ? '/editor/studies/' + study.id : null
+              url: dataset ? urlPrefix + '/studies/' + study.id : null
             }
           ]
         }
@@ -61,7 +67,7 @@ export class BreadcrumbService {
             ...crumbs,
             {
               label: dataset.prefLabel[currentLang],
-              url: instanceVariable ? '/editor/studies/' + study.id + '/datasets/' + dataset.id : null
+              url: instanceVariable ? urlPrefix + '/studies/' + study.id + '/datasets/' + dataset.id : null
             }
           ]
         }
@@ -76,6 +82,11 @@ export class BreadcrumbService {
 
         this.breadcrumbsSubject.next(crumbs)
       })
+  }
+
+  updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(
+    study ?: Study, dataset ?: Dataset, instanceVariable ?: InstanceVariable): void {
+    this.updateBreadcrumbsForStudyDatasetAndInstanceVariable(false, study, dataset, instanceVariable)
   }
 
 }

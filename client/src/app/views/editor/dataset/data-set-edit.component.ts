@@ -185,7 +185,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         const dataset = data[0]
         this.study = data[1]
         this.ownerOrganization = this.study.ownerOrganization
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, dataset)
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, dataset)
       })
     }
 

@@ -59,7 +59,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           .subscribe(study => {
             this.study = this.studyService.initializeProperties(study)
             this.updatePageTitle()
-            this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+            this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
           })
       } else {
         this.study = this.studyService.initNew()

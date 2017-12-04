@@ -35,7 +35,7 @@
   </div>
 </nav>
 
-<breadcrumb *ngIf="currentPageType == PageIdentifier.EDITOR && currentUser && currentUser.isLoggedIn"></breadcrumb>
+<breadcrumb [breadcrumbStyle]="currentPageType === PageIdentifier.CATALOG ? 'catalog' : 'editor'"></breadcrumb>
 
 <p-growl [(value)]="growlMessageService.messages"
          life="7000">

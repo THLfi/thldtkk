@@ -6,17 +6,6 @@
     </div>
   </div>
 
-  <div class="row dataset-reference">
-    <div class="col-xs-12">
-      <p>
-        <a routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}">
-          {{ 'dataset' | translate }}:
-          {{ dataset.prefLabel | lang }}
-        </a>
-      </p>
-    </div>
-  </div>
-
   <div *ngIf="instanceVariable.description | lang"
        class="row description">
     <div class="col-xs-12">

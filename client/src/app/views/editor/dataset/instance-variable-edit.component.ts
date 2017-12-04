@@ -128,7 +128,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
           this.study = data[0]
           this.dataset = data[1]
           this.instanceVariable = this.initInstanceVariable(data[2])
-          this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
+          this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
           this.updatePageTitle()
         })
        }
@@ -139,7 +139,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         ).subscribe(data => {
           this.study = data[0]
           this.dataset = data[1]
-          this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
+          this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
         })
 
         this.instanceVariable = this.initInstanceVariable({

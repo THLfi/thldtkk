@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router'
 import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'

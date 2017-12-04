@@ -35,7 +35,8 @@
   </div>
 </nav>
 
-<breadcrumb [breadcrumbStyle]="currentPageType === PageIdentifier.CATALOG ? 'catalog' : 'editor'"></breadcrumb>
+<breadcrumb [breadcrumbStyle]="currentPageType === PageIdentifier.CATALOG ? 'catalog' : 'editor'"
+            [currentUser]="currentUser"></breadcrumb>
 
 <p-growl [(value)]="growlMessageService.messages"
          life="7000">

@@ -4,11 +4,16 @@ import {
   BreadcrumbService,
   Breadcrumb
 } from '../../../services-common/breadcrumb.service'
+import { User } from '../../../model2/user'
 
 @Component({
   selector: 'breadcrumb',
   template: `
-<nav [ngClass]="{ catalog: breadcrumbStyle === 'catalog', editor: breadcrumbStyle === 'editor', container: breadcrumbStyle === 'catalog', hidden: breadcrumbStyle === 'catalog' && !(currentBreadcrumbs && currentBreadcrumbs.length > 0) }"
+<nav [ngClass]="{
+  catalog: breadcrumbStyle === 'catalog',
+  editor: breadcrumbStyle === 'editor',
+  container: breadcrumbStyle === 'catalog',
+  hidden: (breadcrumbStyle === 'catalog' && !(currentBreadcrumbs && currentBreadcrumbs.length > 0)) || !currentUser.isLoggedIn }"
      class="breadcrumb">
   <ng-container *ngFor="let breadcrumb of currentBreadcrumbs">
     <ng-container *ngIf="breadcrumb.url; else currentView;">
@@ -28,6 +33,7 @@ export class BreadcrumbComponent implements OnInit {
   currentBreadcrumbs: Breadcrumb[]
 
   @Input() breadcrumbStyle: 'catalog' | 'editor' = 'catalog'
+  @Input() currentUser: User
 
   constructor(
     private breadcrumbService: BreadcrumbService

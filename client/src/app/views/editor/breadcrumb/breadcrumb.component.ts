@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 
 import {
   BreadcrumbService,
@@ -8,14 +8,15 @@ import {
 @Component({
   selector: 'breadcrumb',
   template: `
-<nav class="breadcrumb">
+<nav [ngClass]="{ catalog: breadcrumbStyle === 'catalog', editor: breadcrumbStyle === 'editor', container: breadcrumbStyle === 'catalog', hidden: breadcrumbStyle === 'catalog' && !(currentBreadcrumbs && currentBreadcrumbs.length > 0) }"
+     class="breadcrumb">
   <ng-container *ngFor="let breadcrumb of currentBreadcrumbs">
     <ng-container *ngIf="breadcrumb.url; else currentView;">
       <a routerLink="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
       <span class="divider"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
     </ng-container>
     <ng-template #currentView>
-      <span>{{ breadcrumb.label }}</span>
+      <span *ngIf="breadcrumbStyle === 'editor'">{{ breadcrumb.label }}</span>
     </ng-template>
   </ng-container>
 </nav>
@@ -25,6 +26,8 @@ import {
 export class BreadcrumbComponent implements OnInit {
 
   currentBreadcrumbs: Breadcrumb[]
+
+  @Input() breadcrumbStyle: 'catalog' | 'editor' = 'catalog'
 
   constructor(
     private breadcrumbService: BreadcrumbService

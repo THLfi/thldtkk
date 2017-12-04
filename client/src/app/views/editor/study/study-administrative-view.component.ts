@@ -37,7 +37,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
     this.studyService.getStudy(studyId)
       .subscribe(study => {
         this.study = study
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
         this.updatePageTitle()
       })
   }

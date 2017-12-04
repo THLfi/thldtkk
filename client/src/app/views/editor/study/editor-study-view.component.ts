@@ -39,7 +39,7 @@ export class EditorStudyViewComponent {
       this.editorStudyService.getStudy(params['id']).subscribe(study => {
         this.study = study
         this.updatePageTitle()
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(study)
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(study)
         this.loadingStudy = false
       })
     })

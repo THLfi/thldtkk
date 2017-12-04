@@ -56,7 +56,7 @@ export class InstanceVariableViewComponent implements OnInit {
       this.study = data[0]
       this.dataset = data[1]
       this.instanceVariable = data[2]
-      this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
+      this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
       this.updatePageTitle()
 
     })

@@ -53,7 +53,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
     ).subscribe(data => {
       this.study = data[0]
       this.dataset = data[1]
-      this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
+      this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
       this.updatePageTitle()
     })
   }

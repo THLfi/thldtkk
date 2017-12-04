@@ -1,4 +1,21 @@
-nav.breadcrumb {
+nav.breadcrumb.catalog {
+  margin-bottom: -14px;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+  color: #767676;
+}
+
+nav.breadcrumb.catalog a {
+  color: #767676;
+}
+
+nav.breadcrumb.catalog span.divider {
+  padding-left: .3em;
+  padding-right: .3em;
+}
+
+nav.breadcrumb.editor {
   position: fixed;
   top: 55px;
   left: 0;
@@ -11,7 +28,7 @@ nav.breadcrumb {
   font-size: .8em;
 }
 
-nav.breadcrumb span.divider {
+nav.breadcrumb.editor span.divider {
   padding-left: .7em;
   padding-right: .7em;
   color: #01837A;

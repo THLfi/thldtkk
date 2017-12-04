@@ -45,7 +45,7 @@ export class DatasetViewComponent implements OnInit {
         this.study = data[0]
         this.dataset = data[1]
         this.updatePageTitle()
-        this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
+        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset)
       })
     })
   }

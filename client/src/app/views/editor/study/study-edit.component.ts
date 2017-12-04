@@ -154,7 +154,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.study);
                     this.updateAvailableStudyGroups()
                     this.updatePageTitle()
-                    this.breadcrumbService.updateBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+                    this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
                 })
         } else if (copyOfStudyId) {
           this.editorStudyService.getStudy(copyOfStudyId).subscribe(existingStudy => {

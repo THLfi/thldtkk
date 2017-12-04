@@ -117,6 +117,13 @@
         </div>
       </div>
 
+      <div class="row" *ngIf="study.personRegistry && study.personRegistry === 'true'">
+        <div class="col-xs-12">
+          <h2>{{ 'purposeOfPersonRegistry' | translate }}</h2>
+          <p class="preserve-line-breaks">{{ study.purposeOfPersonRegistry | lang }}</p>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-xs-12">
           <ng-container *ngIf="study.population">

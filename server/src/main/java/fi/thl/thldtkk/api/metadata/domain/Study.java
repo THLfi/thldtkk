@@ -65,6 +65,7 @@ public class Study implements NodeEntity {
   private List<Study> predecessors = new ArrayList<>();
   private List<Study> successors = new ArrayList<>();
   private String personRegistry;
+  private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
 
   /**
    * Required by GSON deserialization.
@@ -99,6 +100,7 @@ public class Study implements NodeEntity {
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.published = toBoolean(node.getProperties("published"), false);
     this.personRegistry = PropertyMappings.toString(node.getProperties("personRegistry"));
+    this.purposeOfPersonRegistry = toLangValueMap(node.getProperties("purposeOfPersonRegistry"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -318,6 +320,7 @@ public class Study implements NodeEntity {
     props.putAll("description", toPropertyValues(description));
     props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("usageConditionAdditionalInformation", toPropertyValues(usageConditionAdditionalInformation));
+    props.putAll("purposeOfPersonRegistry", toPropertyValues(purposeOfPersonRegistry));
     getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
     getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
     getCollectionStartDate().ifPresent(v -> props.put("collectionStartDate", toPropertyValue(v)));
@@ -388,7 +391,8 @@ public class Study implements NodeEntity {
             && Objects.equals(personInRoles, study.personInRoles)
             && Objects.equals(datasets, study.datasets)
             && Objects.equals(predecessors, study.predecessors)
-            && Objects.equals(personRegistry, study.personRegistry);
+            && Objects.equals(personRegistry, study.personRegistry)
+            && Objects.equals(purposeOfPersonRegistry, study.purposeOfPersonRegistry);
   }
 
   @Override
@@ -424,7 +428,8 @@ public class Study implements NodeEntity {
         collectionEndDate,
         datasets,
         predecessors,
-        personRegistry);
+        personRegistry,
+        purposeOfPersonRegistry);
   }
 
 }

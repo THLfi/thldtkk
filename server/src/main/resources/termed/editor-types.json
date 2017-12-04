@@ -52,6 +52,9 @@
       {
         "id": "personRegistry",
         "regex": "^(true|false|^$)$"
+      },
+      {
+        "id": "purposeOfPersonRegistry"
       }
     ],
     "referenceAttributes": [

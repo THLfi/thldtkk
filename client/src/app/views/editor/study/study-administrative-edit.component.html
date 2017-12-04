@@ -109,7 +109,7 @@
           </textarea>
         </div>
 
-        <h2>{{"isStudyPersonRegistry"|translate}}</h2>
+        <label for="person-registry">{{"isStudyPersonRegistry"|translate}}</label>
         <div class="form-group">
           <div id="person-registry" class="radio">
             <label>
@@ -129,6 +129,17 @@
               {{"noPersonRegistry"|translate}}
             </label>
           </div>
+        </div>
+
+        <div class="form-group" *ngIf="study.personRegistry && study.personRegistry === 'true'">
+          <label for="purposeOfPersonRegistry" translate="purposeOfPersonRegistry"></label>
+          <textarea [(ngModel)]="study.purposeOfPersonRegistry[language]"
+                    thlAutogrow
+                    id="purposeOfPersonRegistry"
+                    name="purposeOfPersonRegistry"
+                    class="form-control"
+                    rows="6">
+          </textarea>
         </div>
 
         <div class="row">

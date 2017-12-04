@@ -107,6 +107,10 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
         this.validate()
 
+        if (!this.study.personRegistry || this.study.personRegistry !== 'true'){
+          this.study.purposeOfPersonRegistry = null
+          this.studyService.initializeProperties(this.study)
+        }
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
             'operations.common.save.result.fail.summary',

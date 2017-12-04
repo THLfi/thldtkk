@@ -55,7 +55,8 @@ export class EditorStudyService {
       datasets: [],
       predecessors: [],
       successors: [],
-      studyGroup: null
+      studyGroup: null,
+      purposeOfPersonRegistry: null
     })
   }
 
@@ -67,7 +68,8 @@ export class EditorStudyService {
       'description',
       'registryPolicy',
       'usageConditionAdditionalInformation',
-      'freeConcepts'
+      'freeConcepts',
+      'purposeOfPersonRegistry'
     ])
 
     if (!study.population) {

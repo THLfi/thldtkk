@@ -81,4 +81,6 @@ export interface Study extends Node {
 
   personRegistry: string
 
+  purposeOfPersonRegistry: LangValues
+
 }

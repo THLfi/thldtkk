@@ -106,6 +106,7 @@
   "isStudyPersonRegistry": "Onko aineisto henkilörekisteri vai ei",
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
   "noStudyPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
+  "purposeOfPersonRegistry":"Henkilötietojen käsittelyn tarkoitus/peruste",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

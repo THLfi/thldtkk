@@ -18,6 +18,10 @@ export class CatalogStudyViewComponent {
   loadingStudy: boolean
   language: string
 
+  Math: Math
+  readonly datasetLabelTruncateLength: number = 50
+  readonly datasetLabelTruncateFromEndLength: number = -20
+
   constructor(
     private studyService: PublicStudyService,
     private breadcrumbService: BreadcrumbService,
@@ -26,6 +30,7 @@ export class CatalogStudyViewComponent {
     private titleService: Title,
     private langPipe: LangPipe) {
       this.language = this.translateService.currentLang
+      this.Math = Math
     }
 
   ngOnInit() {
@@ -49,5 +54,6 @@ export class CatalogStudyViewComponent {
       this.titleService.setTitle(translatedLabel + " - " + bareTitle)
     }
   }
+
 
 }

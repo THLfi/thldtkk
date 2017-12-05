@@ -6,4 +6,6 @@ export interface Organization extends Node {
   prefLabel: LangValues
   abbreviation: LangValues
   organizationUnit: OrganizationUnit[]
+  phoneNumberForRegistryPolicy: string
+  addressForRegistryPolicy: LangValues
 }

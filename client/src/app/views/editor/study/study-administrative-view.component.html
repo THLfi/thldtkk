@@ -39,7 +39,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'organization' | translate }}</h2>
+          <h2>{{ 'registryOrganization' | translate }}</h2>
           <p *ngIf="study.ownerOrganization">
             {{ study.ownerOrganization.prefLabel | lang }}
             <span *ngIf="study.ownerOrganization.abbreviation | lang">
@@ -51,12 +51,30 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'organizationUnit' | translate }}</h2>
+          <h2>{{ 'registryOrganizationUnit' | translate }}</h2>
           <p *ngFor="let ownerOrganizationUnit of study.ownerOrganizationUnit">
             {{ ownerOrganizationUnit.prefLabel | lang }}
             <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
               ({{ ownerOrganizationUnit.abbreviation | lang }})
             </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="study.ownerOrganization && study.ownerOrganization.addressForRegistryPolicy">
+        <div class="col-xs-12">
+          <h2>{{ 'addressForRegistryPolicy' | translate }}</h2>
+          <p class="preserve-line-breaks">
+            {{ study.ownerOrganization.addressForRegistryPolicy | lang }}
+          </p>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="study.ownerOrganization && study.ownerOrganization.phoneNumberForRegistryPolicy">
+        <div class="col-xs-12">
+          <h2>{{ 'phoneNumberForRegistryPolicy' | translate }}</h2>
+          <p>
+            {{ study.ownerOrganization.phoneNumberForRegistryPolicy }}
           </p>
         </div>
       </div>

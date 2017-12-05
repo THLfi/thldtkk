@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -25,9 +26,11 @@ public class Organization implements NodeEntity {
 
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
+  private Map<String, String> addressForRegistryPolicy = new LinkedHashMap<>();
   // Marking field 'transient' excludes it from GSON (de)serialization
   private transient List<String> virtuIds = new ArrayList<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
+  private String phoneNumberForRegistryPolicy;
 
   public Organization() { }
 
@@ -40,7 +43,9 @@ public class Organization implements NodeEntity {
     checkArgument(Objects.equals(node.getTypeId(), "Organization"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
+    this.addressForRegistryPolicy = toLangValueMap(node.getProperties("addressForRegistryPolicy"));
     this.virtuIds = PropertyMappings.valuesToCollection(node.getProperties("virtuIds"), ArrayList::new);
+    this.phoneNumberForRegistryPolicy = PropertyMappings.toString(node.getProperties("phoneNumberForRegistryPolicy"));
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
   }
@@ -75,12 +80,23 @@ public class Organization implements NodeEntity {
     return organizationUnit;
   }
 
+  public Optional<String> getPhoneNumberForRegistryPolicy() {
+    return Optional.ofNullable(phoneNumberForRegistryPolicy);
+  }
+
+  public Map<String, String> getAddressForRegistryPolicy(){
+    return addressForRegistryPolicy;
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
 
     props.putAll("prefLabel", toPropertyValues(prefLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
+    props.putAll("addressForRegistryPolicy", toPropertyValues(addressForRegistryPolicy));
+
     getVirtuIds().forEach(vi -> props.put("virtuIds", toPropertyValue(vi)));
+    getPhoneNumberForRegistryPolicy().ifPresent(v -> props.put("phoneNumberForRegistryPolicy", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getOrganizationUnit().forEach(ou -> refs.put("organizationUnit", ou.toNode()));
@@ -101,12 +117,15 @@ public class Organization implements NodeEntity {
       Objects.equals(prefLabel, that.prefLabel) &&
       Objects.equals(abbreviation, that.abbreviation) &&
       Objects.equals(virtuIds, that.virtuIds) &&
-      Objects.equals(organizationUnit, that.organizationUnit);
+      Objects.equals(organizationUnit, that.organizationUnit) &&
+      Objects.equals(phoneNumberForRegistryPolicy, that.phoneNumberForRegistryPolicy) &&
+      Objects.equals(addressForRegistryPolicy, that.addressForRegistryPolicy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, prefLabel, abbreviation, virtuIds, organizationUnit);
+    return Objects.hash(id, prefLabel, abbreviation, virtuIds, organizationUnit, phoneNumberForRegistryPolicy,
+        addressForRegistryPolicy);
   }
 
 }

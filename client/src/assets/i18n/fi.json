@@ -103,7 +103,11 @@
       "false": "Ei näytetä katalogissa"
     }
   },
+  "registryOrganization":"Rekisterinpitäjä",
+  "registryOrganizationUnit":"Rekisterinpitäjän organisaatioyksikkö",
   "isStudyPersonRegistry": "Onko aineisto henkilörekisteri vai ei",
+  "phoneNumberForRegistryPolicy":"Rekisterinpitäjän puhelinnumero",
+  "addressForRegistryPolicy":"Rekisterinpitäjän osoite",
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
   "noStudyPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
   "purposeOfPersonRegistry":"Henkilötietojen käsittelyn tarkoitus/peruste",

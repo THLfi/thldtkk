@@ -650,13 +650,6 @@
                   class="btn btn-default">
             {{ 'cancel' | translate }}
           </button>
-          <button *ngIf="instanceVariable.id"
-                  (click)="confirmRemove()"
-                  [disabled]="savingInProgress"
-                  class="btn btn-danger pull-right">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
-            {{ 'remove' | translate }}
-          </button>
         </div>
       </div>
     </div>

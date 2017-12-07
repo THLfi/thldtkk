@@ -78,7 +78,7 @@
         <h2>{{'links'|translate}}</h2>
         <p *ngFor="let link of study.links" class="link">
           <a href="{{ link.linkUrl | lang }}" target="_blank">
-            {{ link.prefLabel | lang }}            
+            {{ link.prefLabel | lang }}
             <i class="fa fa-external-link" aria-hidden="true"></i>
           </a>
         </p>
@@ -113,7 +113,7 @@
               <i class="fa fa-calendar-o" aria-hidden="true"></i>
             </div>
             <div class="caption">
-              {{ 'catalog.referencePeriod' | translate }}
+              {{ 'referencePeriod' | translate }}
             </div>
             <div class="value" *ngIf="study.referencePeriodStart || study.referencePeriodEnd">
               <ng-container *ngIf="study.referencePeriodStart">
@@ -177,8 +177,8 @@
             <div *ngIf="dataset.prefLabel | lang as datasetLabel" class="prefLabel">
               {{ datasetLabel | truncate: datasetLabelTruncateLength : "" }}
               <span *ngIf="datasetLabel.length > datasetLabelTruncateLength" >
-                {{  datasetLabel | truncate: 
-                    Math.max(datasetLabelTruncateFromEndLength,-(datasetLabel.length-datasetLabelTruncateLength) ) 
+                {{  datasetLabel | truncate:
+                    Math.max(datasetLabelTruncateFromEndLength,-(datasetLabel.length-datasetLabelTruncateLength) )
                 }}
               </span>
             </div>

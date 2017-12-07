@@ -45,7 +45,7 @@
 
   <div *ngIf="referencePeriod.hasValue()" class="row">
     <div class="col-xs-12">
-      <h2>{{ 'catalog.referencePeriod' | translate }}</h2>
+      <h2>{{ 'referencePeriod' | translate }}</h2>
       <p>
         {{ referencePeriod.start | date:'dd.MM.yyyy' }}
         —
@@ -264,7 +264,7 @@
     <div class="col-xs-12">
       <button routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}"
               class="btn btn-default">
-        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         {{ 'back' | translate }}
       </button>
     </div>

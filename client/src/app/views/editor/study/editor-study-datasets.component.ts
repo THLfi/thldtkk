@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import { Title } from '@angular/platform-browser'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
-import { CurrentUserService } from '../../../services-editor/user.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 import { LangPipe  } from '../../../utils/lang.pipe'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
-import { Title } from '@angular/platform-browser'
 
 @Component({
   templateUrl: './editor-study-datasets.component.html'
@@ -18,11 +17,8 @@ export class EditorStudyDatasetsComponent implements OnInit {
   loadingStudy: boolean
   sidebarActiveSection: StudySidebarActiveSection
 
-  currentUserCanAddDatasets: boolean = false
-
   constructor(
     private editorStudyService: EditorStudyService,
-    private userService: CurrentUserService,
     private route: ActivatedRoute,
     private titleService: Title,
     private breadcrumbService: BreadcrumbService,
@@ -39,16 +35,6 @@ export class EditorStudyDatasetsComponent implements OnInit {
         this.study = study
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(study)
         this.updatePageTitle()
-
-        this.userService.getUserOrganizations()
-          .subscribe(organizations => {
-            const currentUserHasOrganizations: boolean = (organizations && organizations.length > 0)
-            this.currentUserCanAddDatasets = this.currentUserCanAddDatasets || currentUserHasOrganizations
-          })
-        this.userService.isUserAdmin()
-          .subscribe(isAdmin => {
-            this.currentUserCanAddDatasets = this.currentUserCanAddDatasets || isAdmin
-          })
 
         this.loadingStudy = false
       })

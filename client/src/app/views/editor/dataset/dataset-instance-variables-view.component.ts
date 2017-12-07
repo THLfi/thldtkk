@@ -27,6 +27,8 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
 
   readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
+  deleteInProgress: boolean = false
+
   constructor(
     private studyService: EditorStudyService,
     private datasetService: EditorDatasetService,
@@ -77,6 +79,23 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
 
   composeInstanceVariableExportUrl(): string {
     return this.instanceVariableService.getInstanceVariableAsCsvExportPath(this.study.id, this.dataset.id)
+  }
+
+  confirmRemove(event: any, instanceVariableId: string): void {
+    event.stopPropagation()
+
+    this.translateService.get('confirmInstanceVariableDelete')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.deleteInProgress = true
+
+          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, instanceVariableId)
+            .finally(() => {
+              this.deleteInProgress = false
+            })
+            .subscribe(() => this.getStudyAndDataset())
+        }
+      })
   }
 
 }

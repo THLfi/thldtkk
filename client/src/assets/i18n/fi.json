@@ -25,6 +25,7 @@
   "published": "Julkaistu",
   "false ()": "Ei",
   "true ()": "Kyllä",
+  "search": "Hae",
   "date.placeholder": "esim. 23.06.2017",
   "pcalendar": {
     "dateFormat": "dd.mm.yy",
@@ -46,6 +47,8 @@
   "referencePeriod": "Viiteajankohta",
   "referencePeriodStart": "Viiteajankohdan alkupäivämäärä",
   "referencePeriodEnd": "Viiteajankohdan loppupäivämäärä",
+  "referencePeriodStart.short": "Viiteajankohdan alku",
+  "referencePeriodEnd.short": "Viiteajankohdan loppu",
   "noReferencePeriod": "Viiteajankohtaa ei ole määritelty.",
   "collectionDate": "Keruuajankohta",
   "collectionStartDate": "Keruuajankohdan alkupäivämäärä",
@@ -82,7 +85,7 @@
   "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä",
   "technicalName": "Tekninen nimi",
   "datasetType":"Aineistotyyppi",
-  "comment": "Kommentti",
+  "comment": "Kommentti (ei näy katalogissa)",
   "concepts": "Asiasanat",
   "conceptsFromScheme": "Asiasanat",
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
@@ -167,7 +170,6 @@
   "noPersonRegistry": "Ei määritetty",
   "catalog": {
     "personInRoles": "Yhteystiedot",
-    "referencePeriod": "Ajankohta",
     "collectionDate": "Keruuajankohta",
     "searchInstanceVariable": {
       "foundInDataset": "Datasetissä",
@@ -182,9 +184,6 @@
       "searchVariables": "Hae muuttujia!",
       "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
       "noStudies": "Aineistoja ei löytynyt"
-    },
-    "CatalogStudyViewComponent": {
-      "numberOfObservationUnits": "Havainto- yksiköiden lkm"
     },
     "searchVariable":{
       "searchForVariables":"Hae käsitemuuttujia...",
@@ -249,13 +248,13 @@
   "lastModified": "Viimeksi muokattu",
   "dataType":"Tietotyyppi",
   "requiredField": "Tieto on pakollinen",
-  "unitType": "Havaintoyksikkö",
-  "unitTypes": "Havaintoyksiköt",
-  "addUnitType": "Lisää havaintoyksikkö...",
-  "newUnitType": "Uusi havaintoyksikkö",
-  "editUnitType": "Muokkaa havaintoyksikköä",
+  "unitType": "Havaintoyksikön tyyppi",
+  "unitTypes": "Havaintoyksikkötyypit",
+  "addUnitType": "Lisää havaintoyksikkötyyppi...",
+  "newUnitType": "Uusi havaintoyksikkötyyppi",
+  "editUnitType": "Muokkaa havaintoyksikkötyyppiä",
   "editUniverse": "Muokkaa perusjoukkoa",
-  "unitTypeSearchPlaceholder":"Hae havaintoyksiköitä...",
+  "unitTypeSearchPlaceholder":"Hae havaintoyksikkötyyppejä...",
   "universeSearchPlaceholder":"Hae perusjoukkoja...",
   "variableSearchPlaceholder":"Hae käsitemuuttujia...",
   "codeListSearchPlaceholder":"Hae koodistoja...",
@@ -267,7 +266,7 @@
   },
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa havaintoyksikön '{{unitType}}'? Havaintoyksikköä käyttää {{datasetCount}} datasettiä ja {{instanceVariableCount}} muuttujaa.",
+    "message": "Haluatko varmasti poistaa havaintoyksikkötyypin '{{unitType}}'? Havaintoyksikkötyyppiä käyttää {{datasetCount}} datasettiä ja {{instanceVariableCount}} muuttujaa.",
     "removeButtonLabel": "Poista",
     "cancelButtonLabel": "Peruuta"
   },
@@ -411,7 +410,7 @@
     "unitType": {
       "delete": {
         "result":{
-          "success": "Havaintoyksikkö poistettu"
+          "success": "Havaintoyksikkötyyppi poistettu"
         }
       },
       "save": {
@@ -443,8 +442,7 @@
     }
   },
 
-  "importInstanceVariablesAsCsvButton": "Tuo muuttujia (CSV)",
-  "importInstanceVariablesAsCsvTooltip": "Tuo muuttujia CSV-tiedostosta",
+  "importInstanceVariablesAsCsvButton": "Lisää muuttujia CSV-tiedostosta...",
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
     "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa datasetin nykyiset muuttujat.",
@@ -459,8 +457,7 @@
       "import": "Tuo muuttujat"
     }
   },
-  "exportInstanceVariablesAsCsvButton":"Vie muuttujat (CSV)",
-  "exportInstanceVariablesAsCsvTooltip":"Vie muuttujat CSV-tiedostoon",
+  "exportInstanceVariablesAsCsvButton":"Lataa muuttujat CSV-tiedostona",
   "instanceQuestions":"Muuttujaan liittyvät kyselykysymykset",
   "noMatchingInstanceQuestions":"Haulla ei löytynyt kysymyksiä",
   "instanceQuestionsPlaceholder":"Hae kyselykysymyksiä...",
@@ -479,7 +476,7 @@
       "editStudy": "Muokkaa aineistoa",
       "newStudy": "Uusi aineisto",
       "variables": "Käsitemuuttujat",
-      "unitTypeList":"Havaintoyksiköt",
+      "unitTypeList":"Havaintoyksikkötyypit",
       "frontpageLogin":"Kirjautuminen palveluun",
       "administrativeInformation": "Hallinnolliset tiedot",
       "codeLists": "Koodistot",
@@ -545,7 +542,7 @@
   "addStudyGroup": "Lisää sarja...",
   "newStudyGroup": "Uusi sarja",
   "study": {
-    "manageDatasets": "Hallinnoi datasettejä",
+    "manageDatasets": "Aineiston datasetit",
     "add": "Lisää aineisto",
     "new":"Uusi aineisto",
     "study":"Aineisto",

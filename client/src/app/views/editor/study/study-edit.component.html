@@ -67,6 +67,17 @@
                  type="text">
         </div>
 
+        <div class="form-group">
+          <label for="description">{{ 'description' | translate }}</label>
+          <textarea [(ngModel)]="study.description[language]"
+                    thlAutogrow
+                    id="description"
+                    name="description"
+                    class="form-control"
+                    rows="5">
+          </textarea>
+        </div>
+
         <div [ngClass]="{ 'bg-danger': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
              class="row">
           <div class="col-xs-12">
@@ -269,17 +280,6 @@
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'addNewLink' | translate }}
           </button>
-        </div>
-
-        <div class="form-group">
-          <label for="description">{{ 'description' | translate }}</label>
-          <textarea [(ngModel)]="study.description[language]"
-                    thlAutogrow
-                    id="description"
-                    name="description"
-                    class="form-control"
-                    rows="6">
-          </textarea>
         </div>
 
         <div *ngIf="allUsageConditions"

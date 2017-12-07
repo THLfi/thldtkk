@@ -7,8 +7,7 @@ import { CurrentUserService } from '../../../services-editor/user.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 
 @Component({
-  templateUrl: './editor-study-list.component.html',
-  styleUrls: ['./editor-study-list.component.css']
+  templateUrl: './editor-study-list.component.html'
 })
 export class EditorStudyListComponent implements OnInit {
 

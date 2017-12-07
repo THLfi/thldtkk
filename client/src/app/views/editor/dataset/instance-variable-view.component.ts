@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Title } from '@angular/platform-browser'
@@ -26,6 +26,8 @@ export class InstanceVariableViewComponent implements OnInit {
 
   readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
+  deleteInProgress: boolean = false
+
   constructor(
     private studyService: EditorStudyService,
     private datasetService: EditorDatasetService,
@@ -34,6 +36,7 @@ export class InstanceVariableViewComponent implements OnInit {
     private titleService: Title,
     private langPipe: LangPipe,
     private route: ActivatedRoute,
+    private router: Router,
     private translateService: TranslateService
   ) {
     this.language = this.translateService.currentLang
@@ -62,12 +65,28 @@ export class InstanceVariableViewComponent implements OnInit {
     })
   }
 
-  updatePageTitle():void {
+  private updatePageTitle(): void {
     if (this.instanceVariable.prefLabel) {
       let translatedLabel:string = this.langPipe.transform(this.instanceVariable.prefLabel)
       let bareTitle:string = this.titleService.getTitle()
       this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
+  }
+
+  confirmRemove(): void {
+    this.translateService.get('confirmInstanceVariableDelete')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.deleteInProgress = true
+
+          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id)
+            .finally(() => {
+              this.deleteInProgress = false
+            })
+            .subscribe(() => this.router.navigate(
+              ['/editor/studies', this.study.id, 'datasets', this.dataset.id, 'instanceVariables']))
+        }
+      })
   }
 
 }

@@ -198,7 +198,7 @@
         <ng-container *ngIf="referencePeriodStart || referencePeriodEnd">
           <div class="col-sm-6 col-md-4">
             <div class="bordered-box">
-              <h2>{{ 'catalog.referencePeriod' | translate }}</h2>
+              <h2>{{ 'referencePeriod' | translate }}</h2>
               <p>
                 <ng-container *ngIf="referencePeriodStart">
                   {{ referencePeriodStart | date:'dd.MM.yyyy' }}
@@ -264,7 +264,7 @@
           <tr>
             <th>{{ 'prefLabel' | translate }}</th>
             <th>{{ 'description' | translate }}</th>
-            <th>{{ 'catalog.referencePeriod' | translate }}</th>
+            <th>{{ 'referencePeriod' | translate }}</th>
           </tr>
           <tr *ngFor="let wrapper of wrappedInstanceVariables"
               routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ wrapper.instanceVariable.id }}"
@@ -286,8 +286,7 @@
           </tr>
         </table>
         <a class="btn btn-default"
-           href="{{composeInstanceVariableExportUrl()}}"
-           pTooltip="{{'exportInstanceVariablesAsCsvTooltip' | translate}}" tooltipPosition="bottom">
+           href="{{composeInstanceVariableExportUrl()}}">
           <i class="fa fa-download" aria-hidden="true"></i>
           {{ 'exportInstanceVariablesAsCsvButton' | translate }}
         </a>
@@ -305,7 +304,7 @@
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-default" routerLink="/catalog/studies/{{study.id}}">
-        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         {{ 'back' | translate }}
       </button>
     </div>

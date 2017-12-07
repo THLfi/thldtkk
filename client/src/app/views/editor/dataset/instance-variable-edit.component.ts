@@ -584,24 +584,6 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       this.newInstanceQuestion = null
     }
 
-    confirmRemove(): void {
-        this.translateService.get('confirmInstanceVariableDelete')
-            .subscribe((message: string) => {
-                if (confirm(message)) {
-                    this.savingInProgress = true
-
-                    this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id)
-                      .finally(() => {
-                        this.savingInProgress = false
-                      })
-                      .subscribe(() => {
-                        this.goBackToViewDataset()
-                      }
-                    )
-                }
-            })
-    }
-
     goBack(): void {
       if (this.route.snapshot.params['instanceVariableId'] || (this.instanceVariable && this.instanceVariable.id)) {
         this.goBackToViewInstanceVariable()

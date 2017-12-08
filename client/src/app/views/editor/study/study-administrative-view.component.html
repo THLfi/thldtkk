@@ -64,9 +64,7 @@
       <div class="row" *ngIf="study.ownerOrganization && study.ownerOrganization.addressForRegistryPolicy">
         <div class="col-xs-12">
           <h2>{{ 'addressForRegistryPolicy' | translate }}</h2>
-          <p class="preserve-line-breaks">
-            {{ study.ownerOrganization.addressForRegistryPolicy | lang }}
-          </p>
+          <p class="preserve-line-breaks">{{ study.ownerOrganization.addressForRegistryPolicy | lang }}</p>
         </div>
       </div>
 

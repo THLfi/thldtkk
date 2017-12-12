@@ -13,7 +13,8 @@ import { User } from '../../../model2/user'
   catalog: breadcrumbStyle === 'catalog',
   editor: breadcrumbStyle === 'editor',
   container: breadcrumbStyle === 'catalog',
-  hidden: (breadcrumbStyle === 'catalog' && !(currentBreadcrumbs && currentBreadcrumbs.length > 0)) || !(currentUser && currentUser.isLoggedIn) }"
+  hidden: (breadcrumbStyle === 'catalog' && !(currentBreadcrumbs && currentBreadcrumbs.length > 0))
+    || (breadcrumbStyle === 'editor' && !(currentUser && currentUser.isLoggedIn)) }"
      class="breadcrumb">
   <ng-container *ngFor="let breadcrumb of currentBreadcrumbs">
     <ng-container *ngIf="breadcrumb.url; else currentView;">

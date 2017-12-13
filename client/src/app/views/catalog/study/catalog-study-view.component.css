@@ -41,7 +41,9 @@
   margin-bottom: 3em;
 }
 
-.detail-highlight .caption, .detail-highlight .icon  {
+.detail-highlight .caption,
+.detail-highlight .icon,
+.detail-highlight .icon-svg   {
   color: #CCCCCC;
 }
 

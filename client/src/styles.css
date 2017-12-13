@@ -285,3 +285,31 @@ h3 {
 .data-table-plain>tbody>tr {
   border: none;
 }
+
+/* Catalog's check box style for filtering instance variables of datasets */
+
+.instance-variable-filter-checkbox .ui-chkbox-icon {
+  color: black;
+}
+
+.instance-variable-filter-checkbox .ui-chkbox-box	{
+  background-color: white;
+}
+
+.instance-variable-filter-checkbox .ui-chkbox-box.ui-state-focus	{
+  background-color: white;
+  box-shadow: 0px 0px 5px black;
+}
+
+.instance-variable-filter-checkbox .ui-chkbox-box.ui-state-focus.ui-state-active	{
+  background-color: white;
+}
+
+.instance-variable-filter-checkbox .ui-chkbox-box.ui-state-active	{
+  border-color: black;
+}
+
+.ui-chkbox-label {
+  font-weight: normal;
+  padding-top: 0.3em;
+}

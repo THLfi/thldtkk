@@ -30,46 +30,33 @@ export class EditorStudyService {
       altLabel: null,
       abbreviation: null,
       description: null,
-      registryPolicy: null,
       usageConditionAdditionalInformation: null,
-      published: null,
-      referencePeriodStart: null,
-      referencePeriodEnd: null,
-      collectionStartDate: null,
-      collectionEndDate: null,
-      ownerOrganization: null,
-      ownerOrganizationUnit: null,
-      usageCondition: null,
-      lifecyclePhase: null,
-      population: null,
-      numberOfObservationUnits: null,
-      comment: null,
-      personRegistry: null,
-      conceptsFromScheme: [],
-      links: [],
       freeConcepts: null,
-      datasetTypes: [],
-      unitType: null,
-      universe: null,
+      registryPolicy: null,
+      purposeOfPersonRegistry: null,
+      personRegistrySources: null,
+
       personInRoles: [],
+      links: [],
+      conceptsFromScheme: [],
+      datasetTypes: [],
       datasets: [],
       predecessors: [],
-      successors: [],
-      studyGroup: null,
-      purposeOfPersonRegistry: null
+      successors: []
     })
   }
 
   initializeProperties(study: Study): Study {
     this.initProperties(study, [
       'prefLabel',
-      'abbreviation',
       'altLabel',
+      'abbreviation',
       'description',
-      'registryPolicy',
       'usageConditionAdditionalInformation',
       'freeConcepts',
-      'purposeOfPersonRegistry'
+      'registryPolicy',
+      'purposeOfPersonRegistry',
+      'personRegistrySources'
     ])
 
     if (!study.population) {

@@ -1,45 +1,38 @@
 .search-result {
-    margin: 1em 1em;
-    padding-right: 1em;
+  margin: 1em 1em;
+  padding-right: 1em;
 }
 
-.instance-variable-header {
-    font-weight: bold;
-    margin-bottom: 0.5em;
-    font-size: 1.4em;
+.instance-variable-label {
+  margin-bottom: 0.5em;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
-.variable-label {
-    border-style: solid;
-    border-width: 2px;
-    border-color: #01A197;
-    text-align: center;
-    color: #01A197;
+.has-variable,
+.no-variable {
+  border: 2px solid;
+  text-align: center;
+}
+.has-variable {
+  border-color: #01A197;
+}
+.has-variable a {
+  display: block;
+  color: #01A197;
+}
+.no-variable {
+  border-color: lightgray;
+  color: #767676;
 }
 
-.variable-label a {
-    color: #01A197;
-}
-
-.variable-label-inactive {
-    border-style: solid;
-    border-width: 2px;
-    border-color:lightgray;
-    text-align: center;
-    color: #767676;
-}
-
+.variable-label,
+.instance-variable-description,
 .dataset-label {
-    color: #01A197;
-    margin: 1em 0;
+  margin-bottom: 1em;
 }
 
-.dataset-label a{
-    color: #01A197;
+.dataset-label a {
+  color: #01A197;
 }
-
-.reference-period-range {
-    margin: 1em 0;
-}
-
 

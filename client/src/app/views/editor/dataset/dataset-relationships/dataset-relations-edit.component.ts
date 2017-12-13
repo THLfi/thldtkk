@@ -19,7 +19,7 @@ class DatasetSelectItem implements SelectItem {
 @Component({
   selector: 'dataset-relations-edit',
   template: `
-<label for="datasetRelations">{{ 'datasetRelations.label' | translate }}</label>
+<label for="datasetRelations" class="field-label">{{ 'datasetRelations.label' | translate }}</label>
 <ng-container *ngIf="dataset.predecessors.length; else noDatasetRelations;">
   <p>{{ 'datasetRelations.predecessors' | translate }}</p>
   <ul>

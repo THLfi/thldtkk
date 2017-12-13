@@ -95,46 +95,56 @@
         </div>
         <div *ngIf="codeList.codeListType == 'internal'" class="row">
           <div class="col-xs-12">
-            <label>{{ 'codeItems' | translate }}</label>
-            <table *ngIf="codeList.codeItems.length; else noCodeItems;"
-                   class="table table-striped">
-              <tr>
-                <th>{{ 'codeItem.code' | translate }}</th>
-                <th>{{ 'codeItem.prefLabel' | translate }}</th>
-                <th>{{ 'functions' | translate }}</th>
-              </tr>
-              <tr *ngFor="let codeItem of codeList.codeItems; let codeItemNumber = index;">
-                <td>
-                  <input [(ngModel)]="codeItem.code"
-                         name="codeItem-code-{{ codeItemNumber }}"
-                         type="text"
-                         class="form-control">
-                </td>
-                <td>
-                  <textarea [(ngModel)]="codeItem.prefLabel[language]"
-                            thlAutogrow
-                            rows="1"
-                            name="codeItem-prefLabel-{{ codeItemNumber }}"
-                            class="form-control">
-                  </textarea>
-                </td>
-                <td>
-                  <button (click)="removeCodeItem(codeItem)"
-                          class="btn btn-default">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                    {{ 'remove' | translate }}
-                  </button>
-                </td>
-              </tr>
-            </table>
-            <ng-template #noCodeItems>
-              <p>{{ 'noCodeItems' | translate }}</p>
-            </ng-template>
-            <button (click)="addCodeItem()"
-                    class="btn btn-default btn-xs">
-              <span class="glyphicon glyphicon-plus"></span>
-              {{ 'addCodeItem' | translate }}
-            </button>
+            <div class="form-group">
+              <label>{{ 'codeItems' | translate }}</label>
+              <table *ngIf="codeList.codeItems.length; else noCodeItems;"
+                     class="table table-striped">
+                <tr>
+                  <th>{{ 'codeItem.code' | translate }}</th>
+                  <th>{{ 'codeItem.prefLabel' | translate }}</th>
+                  <th class="col-xs-1">
+                    <div class="pull-right">
+                      {{ 'functions' | translate }}
+                    </div>
+                  </th>
+                </tr>
+                <tr *ngFor="let codeItem of codeList.codeItems; let codeItemNumber = index;">
+                  <td>
+                    <input [(ngModel)]="codeItem.code"
+                           name="codeItem-code-{{ codeItemNumber }}"
+                           type="text"
+                           class="form-control">
+                  </td>
+                  <td>
+                    <textarea [(ngModel)]="codeItem.prefLabel[language]"
+                              thlAutogrow
+                              rows="1"
+                              name="codeItem-prefLabel-{{ codeItemNumber }}"
+                              class="form-control">
+                    </textarea>
+                  </td>
+                  <td>
+                    <div class="pull-right">
+                      <button (click)="removeCodeItem(codeItem)"
+                              pTooltip="{{ 'remove' | translate }}"
+                              tooltipPosition="bottom"
+                              class="btn btn-default">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <span class="sr-only">{{ 'remove' | translate }}</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <ng-template #noCodeItems>
+                <p>{{ 'noCodeItems' | translate }}</p>
+              </ng-template>
+              <button (click)="addCodeItem()"
+                      class="btn btn-default btn-xs">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                {{ 'addCodeItem' | translate }}
+              </button>
+            </div>
           </div>
         </div>
       </ng-container>

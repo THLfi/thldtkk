@@ -12,15 +12,20 @@ h1 {
     color: #01A197;
     font-weight: 200;
 }
-
 h2 {
     font-size: 24px;
     font-weight: 200;
 }
-
 h3 {
-    margin-top: 0;
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: 200;
+}
+
+.field-label,
+.form-group > label {
+  font-family: "Open Sans", sans-serif; /* needed to override default font in modals */
+  font-size: 18px;
+  font-weight: 200;
 }
 
 .preserve-line-breaks {
@@ -222,11 +227,13 @@ h3 {
   background-color: white;
 }
 .content-body h1,
-.content-body h2 {
+.content-body h2,
+.content-body h3 {
   margin-top: .3em;
 }
 .content-body .row:first-of-type h1,
-.content-body .row:first-of-type h2 {
+.content-body .row:first-of-type h2,
+.content-body .row:first-of-type h3 {
   margin-top: 0;
 }
 

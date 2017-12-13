@@ -1,6 +1,7 @@
 <div class="search-result">
     <div class="row">
-        <div *ngIf="instanceVariable.prefLabel" class="col-xs-9 instance-variable-header">
+        <div *ngIf="instanceVariable.prefLabel"
+             class="col-xs-12 col-sm-8 col-md-9 instance-variable-label">
             <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
                 <a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang}}</a>
             </ng-container>
@@ -8,30 +9,33 @@
                 {{instanceVariable.prefLabel | lang}}
             </ng-container>
         </div>
-
-        <div class="col-xs-3" [ngClass]="{'variable-label':instanceVariable.variable, 'variable-label-inactive':!instanceVariable.variable }">
-            <ng-container *ngIf="instanceVariable.variable">
-                <a routerLink="/catalog/variables/{{instanceVariable.variable.id}}">{{instanceVariable.variable.prefLabel | lang }}</a>
+        <div class="col-xs-10 col-sm-4 col-md-3 variable-label">
+          <div [ngClass]="{ 'has-variable': instanceVariable.variable, 'no-variable': !instanceVariable.variable }">
+            <ng-container *ngIf="instanceVariable.variable; else noVariable;">
+              <a routerLink="/catalog/variables/{{instanceVariable.variable.id}}">{{instanceVariable.variable.prefLabel | lang }}</a>
             </ng-container>
-            <ng-container *ngIf="!instanceVariable.variable">
-                {{'catalog.searchInstanceVariable.noVariable' | translate }}
-            </ng-container>
+            <ng-template #noVariable>
+              {{'catalog.searchInstanceVariable.noVariable' | translate }}
+            </ng-template>
+          </div>
         </div>
-
     </div>
     <div class="row">
-        <div class="col-xs-9">{{instanceVariable.description | lang }}</div>
+      <div class="col-xs-12 col-sm-8 col-md-9 instance-variable-description">
+        {{ instanceVariable.description | lang }}
+      </div>
     </div>
     <div class="row">
-        <div class="col-xs-9 dataset-label">{{'catalog.searchInstanceVariable.foundInDataset' | translate}}:
-            <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
-                <a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a>
-            </ng-container>
-            <ng-container *ngIf="!instanceVariable.dataset">
-                {{'catalog.searchInstanceVariable.noAssociatedDataset' | translate }}
-            </ng-container>
+        <div class="col-xs-12 col-sm-8 col-md-9">
+          <div *ngIf="instanceVariable.dataset && instanceVariable.dataset.study"
+               class="dataset-label">
+            <a routerLink="/catalog/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">
+              {{ 'catalog.searchInstanceVariable.foundInDataset' | translate }}:
+              {{ instanceVariable.dataset.prefLabel | lang }}
+            </a>
+          </div>
         </div>
-        <div class="col-xs-3 reference-period-range">
+        <div class="col-xs-12 col-sm-4 col-md-3 instance-variable-reference-period">
                 {{'referencePeriod' | translate}}:<br/>
 
                 <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedDatasetReferencePeriod">

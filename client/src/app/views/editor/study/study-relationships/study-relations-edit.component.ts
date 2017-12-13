@@ -19,7 +19,7 @@ class StudySelectItem implements SelectItem {
 @Component({
   selector: 'study-relations-edit',
   template: `
-<label for="studyRelations">{{ 'study.relations.label' | translate }}</label>
+<label for="studyRelations" class="field-label">{{ 'study.relations.label' | translate }}</label>
 <ng-container *ngIf="study.predecessors.length; else noStudyRelations;">
   <p>{{ 'study.relations.predecessors' | translate }}</p>
   <ul>

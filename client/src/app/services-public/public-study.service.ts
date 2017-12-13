@@ -1,9 +1,8 @@
 import { environment as env } from '../../environments/environment'
-import { Http, Headers, RequestOptions } from '@angular/http'
+import { Http } from '@angular/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Study } from '../model2/study'
-import { Dataset } from '../model2/dataset'
 
 import 'rxjs/add/operator/map'
 
@@ -43,7 +42,5 @@ export class PublicStudyService {
   search(searchText: string, organizationId: string): Observable<Study[]> {
     return this.searchInternal(searchText, organizationId, '', -1)
   }
-
-  
 
 }

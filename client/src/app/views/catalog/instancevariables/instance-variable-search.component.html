@@ -1,66 +1,86 @@
 <div class="container">
 
-<div class="row">
-  <div class="col-xs-9">
-        <div class="input-group">
-        <input  [(ngModel)]="searchText"
-                (keyup)="delayedSearchInstanceVariables(searchText)"
-                placeholder="{{ 'catalog.searchInstanceVariable.searchForVariables' | translate }}"
-                type="text"
-                class="form-control">
-        <span class="input-group-btn">
-        <button class="btn btn-default" 
-                (click)="delayedSearchInstanceVariables(searchText)">
-            <span class="glyphicon glyphicon-search"></span>
-        </button>
-        </span>
-      </div>
-  </div>  
-</div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>{{ 'instanceVariables' | translate }}</h1>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-xs-12 col-sm-9">
-      <ng-container *ngIf="searchInProgress">
-        <thl-spinner></thl-spinner>
-      </ng-container>
-
-      <ng-container *ngIf="instanceVariables && (!searchInProgress || searchingMoreResults)">
-        <div class="search-results-summary">
-          <span>{{'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase}} "{{latestLookupTerm}}"</span>
+      <label for="search-field"
+             class="sr-only">
+        {{ 'catalog.searchInstanceVariable.searchFieldLabel' | translate }}
+      </label>
+      <div class="input-group">
+        <input [(ngModel)]="searchText"
+               (keyup)="delayedSearchInstanceVariables(searchText)"
+               placeholder="{{ 'catalog.searchInstanceVariable.searchFieldPlaceholder' | translate }}"
+               type="text"
+               id="search-field"
+               class="form-control">
+          <span class="input-group-btn">
+            <button (click)="delayedSearchInstanceVariables(searchText)"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-search"></span>
+              <span class="sr-only">{{ 'search' | translate }}</span>
+            </button>
+          </span>
         </div>
-        <div *ngIf="instanceVariables.length" class="search-results-container">
-          <ng-container *ngFor="let variable of instanceVariables;let isLastResult=last">
-            <instance-variable-search-result [instanceVariable]="variable"></instance-variable-search-result>
+    </div>
+  </div>
+
+  <ng-container *ngIf="instanceVariables && (!searchInProgress || searchingMoreResults)">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="search-results-summary">
+          {{ 'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase }}
+          "{{ latestLookupTerm }}"
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="instanceVariables.length"
+         class="row">
+      <div class="col-xs-12 col-sm-9">
+        <div class="search-results-container">
+          <ng-container *ngFor="let instanceVariable of instanceVariables;let isLastResult=last">
+            <instance-variable-search-result [instanceVariable]="instanceVariable"></instance-variable-search-result>
             <ng-container *ngIf="!isLastResult">
               <hr>
             </ng-container>
           </ng-container>
         </div>
-      </ng-container>
+      </div>
+      <div *ngIf="variables && variables.length"
+           class="col-xs-12 col-sm-3">
+        <h2>{{ 'variables' | translate | uppercase }}</h2>
+        <a *ngFor="let variable of variables"
+           routerLink="/catalog/variables/{{ variable.id }}"
+           class="variable-link">
+          {{ variable.prefLabel | lang }}
+        </a>
+      </div>
     </div>
 
-    <div class="col-xs-12 col-sm-3 variable-side">
-      <ng-container *ngIf="variables && variables.length && (!searchInProgress || searchingMoreResults)">
-          <h3>{{'variables' | translate}}</h3>
-          <a *ngFor="let variable of variables" routerLink="/catalog/variables/{{variable.id}}">
-            <div class="variable-label-side">
-              {{variable.prefLabel | lang}}
-            </div>
-          </a>
-      </ng-container>
+  </ng-container>
+
+  <div *ngIf="instanceVariables && instanceVariables.length >= maxResults && !searchInProgress && !searchingMoreResults"
+       class="row">
+    <div class="col-xs-12 show-more-results">
+      <button (click)="loadMoreResults()"
+              class="btn btn-sm btn-default">
+        {{ 'loadMoreResults' | translate }}
+      </button>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-12 show-more-results" *ngIf="instanceVariables 
-     && instanceVariables.length && instanceVariables.length >= maxResults">
-        <ng-container *ngIf="!searchInProgress && !searchingMoreResults">
-          <button class="btn btn-sm btn-default" (click)="loadMoreResults()">
-            {{ 'loadMoreResults' | translate }}
-          </button>
-      </ng-container>
-      <ng-container *ngIf="searchingMoreResults">
-        <thl-spinner></thl-spinner>
-      </ng-container>
+
+  <div *ngIf="searchInProgress || searchingMoreResults"
+       class="row">
+    <div class="col-xs-12">
+      <thl-spinner></thl-spinner>
     </div>
   </div>
+
 </div>

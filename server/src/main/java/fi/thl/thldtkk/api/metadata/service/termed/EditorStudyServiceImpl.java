@@ -37,6 +37,7 @@ import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
+import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -244,6 +245,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
     study.getPersonInRoles()
       .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
+
+    if (!"true".equals(study.getPersonRegistry().orElse("false"))) {
+      study.setRegistryPolicy(emptyMap());
+      study.setPurposeOfPersonRegistry(emptyMap());
+      study.setPersonRegistrySources(emptyMap());
+    }
 
     if (includeDatasets) {
       study.getDatasets()

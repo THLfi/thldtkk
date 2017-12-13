@@ -84,6 +84,7 @@ import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edi
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { CurrentUserService } from './services-editor/user.service'
 import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
+import { StudyAdministrativeReadOnlyFieldsComponent } from './views/editor/study/study-administrative-read-only-fields.component'
 import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetHeaderComponent } from './views/editor/dataset/dataset-header.component'
@@ -143,6 +144,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         SidebarIconDatasets,
         SidebarIconStudy,
         StudyAdministrativeEditComponent,
+        StudyAdministrativeReadOnlyFieldsComponent,
         StudyAdministrativeViewComponent,
         DatasetComponent,
         DatasetHeaderComponent,

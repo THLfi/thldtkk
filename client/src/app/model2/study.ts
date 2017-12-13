@@ -17,70 +17,40 @@ import {UserInformation} from './user-information';
 
 export interface Study extends Node {
 
-  prefLabel: LangValues
-
-  altLabel: LangValues
-
-  abbreviation: LangValues
-
-  description: LangValues
-
-  registryPolicy: LangValues
-
-  usageConditionAdditionalInformation: LangValues
-
-  published: boolean
-
-  referencePeriodStart: string
-
-  referencePeriodEnd: string
-
-  collectionStartDate: string
-
-  collectionEndDate: string
-
-  ownerOrganization: Organization
-
-  ownerOrganizationUnit: OrganizationUnit
-
-  usageCondition: UsageCondition
-
-  lifecyclePhase: LifecyclePhase
-
-  population: Population
-
-  comment: string
-
-  numberOfObservationUnits: string
-
-  conceptsFromScheme: Concept[]
-
-  links: Link[]
-
-  freeConcepts: LangValues
-
-  datasetTypes: DatasetType[]
-
-  unitType: UnitType
-
-  universe: Universe
-
-  personInRoles: PersonInRole[]
-
-  datasets: Dataset[]
-
-  predecessors: Study[]
-
-  successors: Study[]
-
-  studyGroup?: StudyGroup
-
   lastModifiedDate?: Date
+  published?: boolean
+  prefLabel: LangValues
+  altLabel: LangValues
+  abbreviation: LangValues
+  description: LangValues
+  usageConditionAdditionalInformation: LangValues
+  referencePeriodStart?: string
+  referencePeriodEnd?: string
+  collectionStartDate?: string
+  collectionEndDate?: string
+  numberOfObservationUnits?: string
+  freeConcepts: LangValues
+  personRegistry?: string
+  registryPolicy: LangValues
+  purposeOfPersonRegistry: LangValues
+  personRegistrySources: LangValues
+  comment?: string
 
   lastModifiedByUser?: UserInformation
-
-  personRegistry: string
-
-  purposeOfPersonRegistry: LangValues
+  ownerOrganization?: Organization
+  ownerOrganizationUnit?: OrganizationUnit
+  personInRoles: PersonInRole[]
+  links: Link[]
+  usageCondition?: UsageCondition
+  universe?: Universe
+  population?: Population
+  unitType?: UnitType
+  lifecyclePhase?: LifecyclePhase
+  conceptsFromScheme: Concept[]
+  datasetTypes: DatasetType[]
+  studyGroup?: StudyGroup
+  datasets: Dataset[]
+  predecessors: Study[]
+  successors: Study[]
 
 }

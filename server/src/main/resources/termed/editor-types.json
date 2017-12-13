@@ -3,10 +3,11 @@
     "id": "Study",
     "textAttributes": [
       {
-        "id": "prefLabel"
+        "id": "published",
+        "regex": "^(true|false)$"
       },
       {
-        "id": "description"
+        "id": "prefLabel"
       },
       {
         "id": "altLabel"
@@ -15,7 +16,10 @@
         "id": "abbreviation"
       },
       {
-        "id": "freeConcepts"
+        "id": "description"
+      },
+      {
+        "id": "usageConditionAdditionalInformation"
       },
       {
         "id": "referencePeriodStart",
@@ -34,30 +38,35 @@
         "regex": "^\\d{4}-\\d{2}-\\d{2}$"
       },
       {
-        "id": "registryPolicy"
-      },
-      {
-        "id": "usageConditionAdditionalInformation"
-      },
-      {
-        "id": "comment"
-      },
-      {
         "id": "numberOfObservationUnits"
       },
       {
-        "id": "published",
-        "regex": "^(true|false)$"
+        "id": "freeConcepts"
       },
       {
         "id": "personRegistry",
         "regex": "^(true|false|^$)$"
       },
       {
+        "id": "registryPolicy"
+      },
+      {
         "id": "purposeOfPersonRegistry"
+      },
+      {
+        "id": "personRegistrySources"
+      },
+      {
+        "id": "comment"
       }
     ],
     "referenceAttributes": [
+      {
+        "id": "lastModifiedByUser",
+        "range": {
+          "id": "UserProfile"
+        }
+      },
       {
         "id": "ownerOrganization",
         "range": {
@@ -77,18 +86,15 @@
         }
       },
       {
-        "id": "population",
+        "id": "personInRoles",
         "range": {
-          "id": "Population"
+          "id": "PersonInRole"
         }
       },
       {
-        "id": "universe",
+        "id": "links",
         "range": {
-          "id": "Universe",
-          "graph": {
-            "code": "common-graph"
-          }
+          "id": "Link"
         }
       },
       {
@@ -101,15 +107,42 @@
         }
       },
       {
-        "id": "lastModifiedByUser",
+        "id": "universe",
         "range": {
-          "id": "UserProfile"
+          "id": "Universe",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "population",
+        "range": {
+          "id": "Population"
+        }
+      },
+      {
+        "id": "unitType",
+        "range": {
+          "id": "UnitType",
+          "graph": {
+            "code": "common-graph"
+          }
         }
       },
       {
         "id": "lifecyclePhase",
         "range": {
           "id": "LifecyclePhase",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "conceptsFromScheme",
+        "range": {
+          "id": "Concept",
           "graph": {
             "code": "common-graph"
           }
@@ -125,42 +158,6 @@
         }
       },
       {
-        "id": "links",
-        "range": {
-          "id": "Link"
-        }
-      },
-      {
-        "id": "conceptsFromScheme",
-        "range": {
-          "id": "Concept",
-          "graph": {
-            "code": "common-graph"
-          }
-        }
-      },
-      {
-        "id": "unitType",
-        "range": {
-          "id": "UnitType",
-          "graph": {
-            "code": "common-graph"
-          }
-        }
-      },
-      {
-        "id": "personInRoles",
-        "range": {
-          "id": "PersonInRole"
-        }
-      },
-      {
-        "id": "predecessors",
-        "range": {
-          "id": "Study"
-        }
-      },
-      {
         "id": "studyGroup",
         "range": {
           "id": "StudyGroup",
@@ -173,6 +170,12 @@
         "id": "dataSets",
         "range": {
           "id": "DataSet"
+        }
+      },
+      {
+        "id": "predecessors",
+        "range": {
+          "id": "Study"
         }
       }
     ]

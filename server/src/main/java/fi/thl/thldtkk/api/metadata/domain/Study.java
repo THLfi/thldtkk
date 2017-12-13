@@ -32,13 +32,12 @@ public class Study implements NodeEntity {
 
   private UUID id;
   private Date lastModifiedDate;
-  private UserProfile lastModifiedByUser;
+  private Boolean published;
   @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> altLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
-  private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> usageConditionAdditionalInformation = new LinkedHashMap<>();
   private LocalDate referencePeriodStart;
   private LocalDate referencePeriodEnd;
@@ -46,26 +45,29 @@ public class Study implements NodeEntity {
   private LocalDate collectionEndDate;
   private String numberOfObservationUnits;
   private Map<String, String> freeConcepts = new LinkedHashMap<>();
+  private String personRegistry;
+  private Map<String, String> registryPolicy = new LinkedHashMap<>();
+  private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
+  private Map<String, String> personRegistrySources = new LinkedHashMap<>();
   private String comment;
-  private Boolean published;
+
+  private UserProfile lastModifiedByUser;
   private Organization ownerOrganization;
   private OrganizationUnit ownerOrganizationUnit;
-  private UsageCondition usageCondition;
-  private LifecyclePhase lifecyclePhase;
-  private Population population;
-  private Universe universe;
-  private List<Link> links = new ArrayList<>();
-  private List<Concept> conceptsFromScheme = new ArrayList<>();
-  private List<DatasetType> datasetTypes = new ArrayList<>();
-  private UnitType unitType;
-  private StudyGroup studyGroup;
   @Valid
   private List<PersonInRole> personInRoles = new ArrayList<>();
+  private List<Link> links = new ArrayList<>();
+  private UsageCondition usageCondition;
+  private Universe universe;
+  private Population population;
+  private UnitType unitType;
+  private LifecyclePhase lifecyclePhase;
+  private List<DatasetType> datasetTypes = new ArrayList<>();
+  private List<Concept> conceptsFromScheme = new ArrayList<>();
+  private StudyGroup studyGroup;
   private List<Dataset> datasets = new ArrayList<>();
   private List<Study> predecessors = new ArrayList<>();
   private List<Study> successors = new ArrayList<>();
-  private String personRegistry;
-  private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
 
   /**
    * Required by GSON deserialization.
@@ -84,12 +86,11 @@ public class Study implements NodeEntity {
     checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
 
     this.lastModifiedDate = node.getLastModifiedDate();
-
+    this.published = toBoolean(node.getProperties("published"), false);
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.altLabel = toLangValueMap(node.getProperties("altLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
     this.description = toLangValueMap(node.getProperties("description"));
-    this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.usageConditionAdditionalInformation = toLangValueMap(node.getProperties("usageConditionAdditionalInformation"));
     this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
     this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
@@ -97,10 +98,11 @@ public class Study implements NodeEntity {
     this.collectionEndDate = toLocalDate(node.getProperties("collectionEndDate"), null);
     this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
     this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
-    this.comment = PropertyMappings.toString(node.getProperties("comment"));
-    this.published = toBoolean(node.getProperties("published"), false);
     this.personRegistry = PropertyMappings.toString(node.getProperties("personRegistry"));
+    this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.purposeOfPersonRegistry = toLangValueMap(node.getProperties("purposeOfPersonRegistry"));
+    this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
+    this.comment = PropertyMappings.toString(node.getProperties("comment"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -108,26 +110,26 @@ public class Study implements NodeEntity {
       .ifPresent(oo -> this.ownerOrganization = new Organization(oo));
     node.getReferencesFirst("ownerOrganizationUnit")
       .ifPresent(oou -> this.ownerOrganizationUnit = new OrganizationUnit(oou));
-    node.getReferencesFirst("population")
-      .ifPresent(p -> this.population = new Population(p));
-    node.getReferencesFirst("universe")
-      .ifPresent(u -> this.universe = new Universe(u));
-    node.getReferencesFirst("usageCondition")
-      .ifPresent(uc -> this.usageCondition = new UsageCondition(uc));
-    node.getReferencesFirst("lifecyclePhase")
-      .ifPresent(lp -> this.lifecyclePhase = new LifecyclePhase(lp));
-    node.getReferences("links")
-      .forEach(l -> this.links.add(new Link(l)));
-    node.getReferences("datasetTypes")
-      .forEach(dt -> this.datasetTypes.add(new DatasetType(dt)));
-    node.getReferencesFirst("unitType")
-      .ifPresent(ut -> this.unitType = new UnitType(ut));
-    node.getReferencesFirst("studyGroup")
-      .ifPresent(sg -> this.studyGroup = new StudyGroup(sg));
     node.getReferences("personInRoles")
       .forEach(pir -> this.personInRoles.add(new PersonInRole(pir)));
+    node.getReferences("links")
+      .forEach(l -> this.links.add(new Link(l)));
+    node.getReferencesFirst("usageCondition")
+      .ifPresent(uc -> this.usageCondition = new UsageCondition(uc));
+    node.getReferencesFirst("universe")
+      .ifPresent(u -> this.universe = new Universe(u));
+    node.getReferencesFirst("population")
+      .ifPresent(p -> this.population = new Population(p));
+    node.getReferencesFirst("unitType")
+      .ifPresent(ut -> this.unitType = new UnitType(ut));
+    node.getReferencesFirst("lifecyclePhase")
+      .ifPresent(lp -> this.lifecyclePhase = new LifecyclePhase(lp));
     node.getReferences("conceptsFromScheme")
       .forEach(c -> this.conceptsFromScheme.add(new Concept(c)));
+    node.getReferences("datasetTypes")
+      .forEach(dt -> this.datasetTypes.add(new DatasetType(dt)));
+    node.getReferencesFirst("studyGroup")
+      .ifPresent(sg -> this.studyGroup = new StudyGroup(sg));
     node.getReferences("dataSets")
       .forEach(d -> this.datasets.add(new Dataset(d)));
     node.getReferences("predecessors")
@@ -165,12 +167,12 @@ public class Study implements NodeEntity {
     return Optional.ofNullable(lastModifiedDate);
   }
 
-  public Optional<UserProfile> getLastModifiedByUser() {
-    return Optional.ofNullable(lastModifiedByUser);
+  public Optional<Boolean> isPublished() {
+    return Optional.ofNullable(published);
   }
 
-  public void setLastModifiedByUser(UserProfile userProfile) {
-    this.lastModifiedByUser = userProfile;
+  public void setPublished(Boolean published) {
+    this.published = published;
   }
 
   public Map<String, String> getPrefLabel() {
@@ -187,10 +189,6 @@ public class Study implements NodeEntity {
 
   public Map<String, String> getDescription() {
     return description;
-  }
-
-  public Map<String, String> getRegistryPolicy() {
-    return registryPolicy;
   }
 
   public Map<String, String> getUsageConditionAdditionalInformation() {
@@ -221,6 +219,34 @@ public class Study implements NodeEntity {
     return freeConcepts;
   }
 
+  public Optional<String> getPersonRegistry() {
+    return Optional.ofNullable(personRegistry);
+  }
+
+  public Map<String, String> getRegistryPolicy() {
+    return registryPolicy;
+  }
+
+  public void setRegistryPolicy(Map<String, String> registryPolicy) {
+    this.registryPolicy = registryPolicy;
+  }
+
+  public Map<String, String> getPurposeOfPersonRegistry() {
+    return purposeOfPersonRegistry;
+  }
+
+  public void setPurposeOfPersonRegistry(Map<String, String> purposeOfPersonRegistry) {
+    this.purposeOfPersonRegistry = purposeOfPersonRegistry;
+  }
+
+  public Map<String, String> getPersonRegistrySources() {
+    return personRegistrySources;
+  }
+
+  public void setPersonRegistrySources(Map<String, String> personRegistrySources) {
+    this.personRegistrySources = personRegistrySources;
+  }
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -229,12 +255,12 @@ public class Study implements NodeEntity {
     this.comment = comment;
   }
 
-  public Optional<Boolean> isPublished() {
-    return Optional.ofNullable(published);
+  public Optional<UserProfile> getLastModifiedByUser() {
+    return Optional.ofNullable(lastModifiedByUser);
   }
 
-  public void setPublished(Boolean published) {
-    this.published = published;
+  public void setLastModifiedByUser(UserProfile userProfile) {
+    this.lastModifiedByUser = userProfile;
   }
 
   public Optional<Organization> getOwnerOrganization() {
@@ -245,44 +271,44 @@ public class Study implements NodeEntity {
     return Optional.ofNullable(ownerOrganizationUnit);
   }
 
-  public Optional<Population> getPopulation() {
-    return Optional.ofNullable(population);
-  }
-
-  public Optional<Universe> getUniverse() {
-    return Optional.ofNullable(universe);
-  }
-
-  public Optional<UsageCondition> getUsageCondition() {
-    return Optional.ofNullable(usageCondition);
-  }
-
-  public Optional<LifecyclePhase> getLifecyclePhase() {
-    return Optional.ofNullable(lifecyclePhase);
+  public List<PersonInRole> getPersonInRoles() {
+    return personInRoles;
   }
 
   public List<Link> getLinks() {
     return links;
   }
 
-  public List<DatasetType> getDatasetTypes() {
-    return datasetTypes;
+  public Optional<UsageCondition> getUsageCondition() {
+    return Optional.ofNullable(usageCondition);
+  }
+
+  public Optional<Universe> getUniverse() {
+    return Optional.ofNullable(universe);
+  }
+
+  public Optional<Population> getPopulation() {
+    return Optional.ofNullable(population);
   }
 
   public Optional<UnitType> getUnitType() {
     return Optional.ofNullable(unitType);
   }
 
-  public Optional<StudyGroup> getStudyGroup() {
-    return Optional.ofNullable(studyGroup);
-  }
-
-  public List<PersonInRole> getPersonInRoles() {
-    return personInRoles;
+  public Optional<LifecyclePhase> getLifecyclePhase() {
+    return Optional.ofNullable(lifecyclePhase);
   }
 
   public List<Concept> getConceptsFromScheme() {
     return conceptsFromScheme;
+  }
+
+  public List<DatasetType> getDatasetTypes() {
+    return datasetTypes;
+  }
+
+  public Optional<StudyGroup> getStudyGroup() {
+    return Optional.ofNullable(studyGroup);
   }
 
   public List<Dataset> getDatasets() {
@@ -305,46 +331,43 @@ public class Study implements NodeEntity {
     return successors;
   }
 
-  public Optional<String> getPersonRegistry() {
-    return Optional.ofNullable(personRegistry);
-  }
-
   /**
    * Transforms dataset into node
    */
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
+    isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
     props.putAll("prefLabel", toPropertyValues(prefLabel));
     props.putAll("altLabel", toPropertyValues(altLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
     props.putAll("description", toPropertyValues(description));
-    props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("usageConditionAdditionalInformation", toPropertyValues(usageConditionAdditionalInformation));
-    props.putAll("purposeOfPersonRegistry", toPropertyValues(purposeOfPersonRegistry));
     getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
     getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
     getCollectionStartDate().ifPresent(v -> props.put("collectionStartDate", toPropertyValue(v)));
     getCollectionEndDate().ifPresent(v -> props.put("collectionEndDate", toPropertyValue(v)));
     getNumberOfObservationUnits().ifPresent(v -> props.put("numberOfObservationUnits", toPropertyValue(v)));
     props.putAll("freeConcepts", toPropertyValues(freeConcepts));
-    getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
-    isPublished().ifPresent(v -> props.put("published", toPropertyValue(v)));
     getPersonRegistry().ifPresent(v -> props.put("personRegistry", toPropertyValue(v)));
+    props.putAll("registryPolicy", toPropertyValues(registryPolicy));
+    props.putAll("purposeOfPersonRegistry", toPropertyValues(purposeOfPersonRegistry));
+    props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
+    getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
     getOwnerOrganization().ifPresent(oo -> refs.put("ownerOrganization", oo.toNode()));
     getOwnerOrganizationUnit().ifPresent(oou -> refs.put("ownerOrganizationUnit", oou.toNode()));
-    getPopulation().ifPresent(p -> refs.put("population", p.toNode()));
-    getUniverse().ifPresent(u -> refs.put("universe", u.toNode()));
-    getUsageCondition().ifPresent(uc -> refs.put("usageCondition", uc.toNode()));
-    getLifecyclePhase().ifPresent(lp -> refs.put("lifecyclePhase", lp.toNode()));
-    getDatasetTypes().forEach(dt -> refs.put("datasetTypes", dt.toNode()));
-    getLinks().forEach(l -> refs.put("links", l.toNode()));
-    getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
-    getUnitType().ifPresent(ut -> refs.put("unitType", ut.toNode()));
-    getStudyGroup().ifPresent(sg -> refs.put("studyGroup", sg.toNode()));
     getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
+    getLinks().forEach(l -> refs.put("links", l.toNode()));
+    getUsageCondition().ifPresent(uc -> refs.put("usageCondition", uc.toNode()));
+    getUniverse().ifPresent(u -> refs.put("universe", u.toNode()));
+    getPopulation().ifPresent(p -> refs.put("population", p.toNode()));
+    getUnitType().ifPresent(ut -> refs.put("unitType", ut.toNode()));
+    getLifecyclePhase().ifPresent(lp -> refs.put("lifecyclePhase", lp.toNode()));
+    getConceptsFromScheme().forEach(c -> refs.put("conceptsFromScheme", c.toNode()));
+    getDatasetTypes().forEach(dt -> refs.put("datasetTypes", dt.toNode()));
+    getStudyGroup().ifPresent(sg -> refs.put("studyGroup", sg.toNode()));
     getDatasets().forEach(d -> refs.put("dataSets", d.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
 
@@ -362,37 +385,38 @@ public class Study implements NodeEntity {
     Study study = (Study) o;
     return Objects.equals(id, study.id)
             && Objects.equals(lastModifiedDate, study.lastModifiedDate)
-            && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
+            && Objects.equals(published, study.published)
             && Objects.equals(prefLabel, study.prefLabel)
             && Objects.equals(altLabel, study.altLabel)
             && Objects.equals(abbreviation, study.abbreviation)
             && Objects.equals(description, study.description)
-            && Objects.equals(registryPolicy, study.registryPolicy)
             && Objects.equals(usageConditionAdditionalInformation, study.usageConditionAdditionalInformation)
-            && Objects.equals(published, study.published)
             && Objects.equals(referencePeriodStart, study.referencePeriodStart)
             && Objects.equals(referencePeriodEnd, study.referencePeriodEnd)
             && Objects.equals(collectionStartDate, study.collectionStartDate)
             && Objects.equals(collectionEndDate, study.collectionEndDate)
+            && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
+            && Objects.equals(freeConcepts, study.freeConcepts)
+            && Objects.equals(personRegistry, study.personRegistry)
+            && Objects.equals(registryPolicy, study.registryPolicy)
+            && Objects.equals(purposeOfPersonRegistry, study.purposeOfPersonRegistry)
+            && Objects.equals(personRegistrySources, study.personRegistrySources)
+            && Objects.equals(comment, study.comment)
+            && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
             && Objects.equals(ownerOrganizationUnit, study.ownerOrganizationUnit)
-            && Objects.equals(usageCondition, study.usageCondition)
-            && Objects.equals(lifecyclePhase, study.lifecyclePhase)
-            && Objects.equals(population, study.population)
-            && Objects.equals(universe, study.universe)
-            && Objects.equals(numberOfObservationUnits, numberOfObservationUnits)
-            && Objects.equals(comment, study.comment)
-            && Objects.equals(links, study.links)
-            && Objects.equals(conceptsFromScheme, study.conceptsFromScheme)
-            && Objects.equals(freeConcepts, study.freeConcepts)
-            && Objects.equals(datasetTypes, study.datasetTypes)
-            && Objects.equals(unitType, study.unitType)
-            && Objects.equals(studyGroup, study.studyGroup)
             && Objects.equals(personInRoles, study.personInRoles)
+            && Objects.equals(links, study.links)
+            && Objects.equals(usageCondition, study.usageCondition)
+            && Objects.equals(universe, study.universe)
+            && Objects.equals(population, study.population)
+            && Objects.equals(unitType, study.unitType)
+            && Objects.equals(lifecyclePhase, study.lifecyclePhase)
+            && Objects.equals(conceptsFromScheme, study.conceptsFromScheme)
+            && Objects.equals(datasetTypes, study.datasetTypes)
+            && Objects.equals(studyGroup, study.studyGroup)
             && Objects.equals(datasets, study.datasets)
-            && Objects.equals(predecessors, study.predecessors)
-            && Objects.equals(personRegistry, study.personRegistry)
-            && Objects.equals(purposeOfPersonRegistry, study.purposeOfPersonRegistry);
+            && Objects.equals(predecessors, study.predecessors);
   }
 
   @Override
@@ -400,36 +424,39 @@ public class Study implements NodeEntity {
       return Objects.hash(
         id,
         lastModifiedDate,
-        lastModifiedByUser,
+        published,
         prefLabel,
         altLabel,
         abbreviation,
         description,
-        registryPolicy,
         usageConditionAdditionalInformation,
-        published,
         referencePeriodStart,
-        referencePeriodEnd, ownerOrganization,
-        ownerOrganizationUnit,
-        usageCondition,
-        lifecyclePhase,
-        population,
-        universe,
-        comment,
-        datasetTypes,
-        numberOfObservationUnits,
-        links,
-        conceptsFromScheme,
-        freeConcepts,
-        unitType,
-        studyGroup,
-        personInRoles,
+        referencePeriodEnd,
         collectionStartDate,
         collectionEndDate,
-        datasets,
-        predecessors,
+        numberOfObservationUnits,
+        freeConcepts,
         personRegistry,
-        purposeOfPersonRegistry);
+        registryPolicy,
+        purposeOfPersonRegistry,
+        personRegistrySources,
+        comment,
+        lastModifiedByUser,
+        ownerOrganization,
+        ownerOrganizationUnit,
+        personInRoles,
+        links,
+        usageCondition,
+        universe,
+        population,
+        unitType,
+        lifecyclePhase,
+        conceptsFromScheme,
+        datasetTypes,
+        studyGroup,
+        datasets,
+        predecessors
+      );
   }
 
 }

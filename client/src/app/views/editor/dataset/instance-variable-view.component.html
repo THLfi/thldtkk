@@ -43,38 +43,44 @@
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.variable"
-           class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'variable' | translate }}</h2>
-          <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
+          <p><strong class="field-label">{{ 'variable' | translate }}</strong></p>
+          <ng-container *ngIf="instanceVariable.variable; else noVariable;">
+            <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
+            <p *ngIf="instanceVariable.variable.description | lang"
+               class="preserve-line-breaks">{{ instanceVariable.variable.description | lang }}</p>
+          </ng-container>
+          <ng-template #noVariable>
+            <p>{{ 'noVariable' | translate }}</p>
+          </ng-template>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'technicalName' | translate }}</h2>
+          <p><strong class="field-label">{{ 'technicalName' | translate }}</strong></p>
           <p>{{ instanceVariable.technicalName }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'description' | translate }}</h2>
+          <p><strong class="field-label">{{ 'description' | translate }}</strong></p>
           <p class="preserve-line-breaks">{{ instanceVariable.description | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'partOfGroup' | translate }}</h2>
+          <p><strong class="field-label">{{ 'partOfGroup' | translate }}</strong></p>
           <p>{{ instanceVariable.partOfGroup | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'conceptsFromScheme' | translate }}</h2>
+          <p><strong class="field-label">{{ 'conceptsFromScheme' | translate }}</strong></p>
           <p *ngIf="instanceVariable.conceptsFromScheme.length; else noConceptsFromScheme;">
             <span *ngFor="let concept of instanceVariable.conceptsFromScheme"
                   style="margin-right:.6em;">
@@ -92,7 +98,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'freeConcepts' | translate }}</h2>
+          <p><strong class="field-label">{{ 'freeConcepts' | translate }}</strong></p>
           <p *ngIf="instanceVariable.freeConcepts && instanceVariable.freeConcepts[language]; else noFreeConcepts;">
             <span *ngFor="let concept of instanceVariable.freeConcepts[language].split(';')"
                   style="margin-right:1em;">
@@ -107,7 +113,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'referencePeriod' | translate }}</h2>
+          <p><strong class="field-label">{{ 'referencePeriod' | translate }}</strong></p>
           <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else datasetReferencePeriod;">
             <p>
               {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
@@ -162,7 +168,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'valueDomainType.label' | translate }}</h2>
+          <p><strong class="field-label">{{ 'valueDomainType.label' | translate }}</strong></p>
           <p *ngIf="instanceVariable.valueDomainType">
             {{ 'valueDomainType.' + instanceVariable.valueDomainType | translate }}
           </p>
@@ -172,7 +178,7 @@
       <ng-container *ngIf="instanceVariable.valueDomainType == 'described'">
         <div class="row">
           <div class="col-xs-12">
-            <h2>{{ 'quantity' | translate }}</h2>
+            <p><strong class="field-label">{{ 'quantity' | translate }}</strong></p>
             <p *ngIf="instanceVariable.quantity; else noUnit;">
               {{ instanceVariable.quantity.prefLabel | lang }}
             </p>
@@ -183,7 +189,7 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <h2>{{ 'unit' | translate }}</h2>
+            <p><strong class="field-label">{{ 'unit' | translate }}</strong></p>
             <p *ngIf="instanceVariable.unit; else noUnit;">
               {{ instanceVariable.unit.prefLabel | lang }}
               <span *ngIf="instanceVariable.unit.symbol | lang">
@@ -195,12 +201,24 @@
             </ng-template>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'valueRangeMin' | translate }}</strong></p>
+            <p>{{ instanceVariable.valueRangeMin }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'valueRangeMax' | translate }}</strong></p>
+            <p>{{ instanceVariable.valueRangeMax }}</p>
+          </div>
+        </div>
       </ng-container>
 
       <div *ngIf="instanceVariable.valueDomainType == 'enumerated'"
            class="row">
         <div class="col-xs-12">
-          <h2>{{ 'codeList.label' | translate }}</h2>
+          <p><strong class="field-label">{{ 'codeList.label' | translate }}</strong></p>
           <ng-container *ngIf="instanceVariable.codeList; else noCodeList;">
             <p>
               <strong>{{ instanceVariable.codeList.prefLabel | lang }}</strong>
@@ -235,48 +253,30 @@
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.valueRangeMin !== undefined"
-           class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{'valueRangeMin'|translate}}</h2>
-          <p>{{ instanceVariable.valueRangeMin }}</p>
-        </div>
-      </div>
-
-      <div *ngIf="instanceVariable.valueRangeMax !== undefined"
-           class="row">
-        <div class="col-xs-12">
-          <h2>{{'valueRangeMax'|translate}}</h2>
-          <p>{{ instanceVariable.valueRangeMax }}</p>
-        </div>
-      </div>
-
-      <div *ngIf="instanceVariable.missingValues && instanceVariable.missingValues[language]"
-           class="row">
-        <div class="col-xs-12">
-          <h2>{{'missingValues'|translate}}</h2>
+          <p><strong class="field-label">{{'missingValues'|translate}}</strong></p>
           <p class="preserve-line-breaks">{{ instanceVariable.missingValues | lang }}</p>
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.defaultMissingValue" class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{'defaultMissingValue'|translate}}</h2>
+          <p><strong class="field-label">{{'defaultMissingValue'|translate}}</strong></p>
           <p>{{ instanceVariable.defaultMissingValue }}</p>
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.qualityStatement | lang" class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{'qualityStatement'|translate}}</h2>
+          <p><strong class="field-label">{{'qualityStatement'|translate}}</strong></p>
           <p class="preserve-line-breaks">{{ instanceVariable.qualityStatement | lang }}</p>
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.source || (instanceVariable.sourceDescription | lang)"
-           class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'instanceVariableSource' | translate }}</h2>
+          <p><strong class="field-label">{{ 'instanceVariableSource' | translate }}</strong></p>
           <p *ngIf="instanceVariable.source">
             {{ instanceVariable.source.prefLabel | lang }}
           </p>
@@ -286,23 +286,23 @@
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.dataType" class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'dataType' | translate }}</h2>
+          <p><strong class="field-label">{{ 'dataType' | translate }}</strong></p>
           <p>{{ instanceVariable.dataType }}</p>
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.dataFormat | lang" class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{'dataFormat' | translate}}</h2>
+          <p><strong class="field-label">{{'dataFormat' | translate}}</strong></p>
           <p>{{ instanceVariable.dataFormat | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'unitType' | translate }}</h2>
+          <p><strong class="field-label">{{ 'unitType' | translate }}</strong></p>
           <p>
             <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
               {{ instanceVariable.unitType.prefLabel | lang }}
@@ -335,20 +335,21 @@
         </div>
       </div>
 
-      <div *ngIf="instanceVariable.instanceQuestions.length"
-           class="row">
+      <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'instanceQuestions' | translate }}</h2>
-          <ul>
+          <p><strong class="field-label">{{ 'instanceQuestions' | translate }}</strong></p>
+          <ul *ngIf="instanceVariable.instanceQuestions.length; else noInstanceQuestions;">
             <li class="preserve-line-breaks" *ngFor="let question of instanceVariable.instanceQuestions">{{ question.prefLabel | lang }}</li>
           </ul>
+          <ng-template #noInstanceQuestions>
+            <p>{{ 'noInstanceQuestions' | translate }}</p>
+          </ng-template>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <div *ngIf="instanceVariable"
-               class="pull-right">
+          <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ instanceVariable.id }}/edit"
                     [disabled]="deleteInProgress"
                     class="btn btn-default">

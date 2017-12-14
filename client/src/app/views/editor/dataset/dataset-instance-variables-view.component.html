@@ -70,10 +70,13 @@
                   <td>{{ dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}</td>
                 </ng-container>
                 <ng-template #studyReferencePeriod>
-                  <ng-container *ngIf="(study.referencePeriodStart || study.referencePeriodEnd)">
+                  <ng-container *ngIf="(study.referencePeriodStart || study.referencePeriodEnd); else noReferencePeriod;">
                     <td>{{ study.referencePeriodStart | date:'dd.MM.yyyy' }}</td>
                     <td>{{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}</td>
                   </ng-container>
+                  <ng-template #noReferencePeriod>
+                    <td colspan="2"></td>
+                  </ng-template>
                 </ng-template>
               </ng-template>
               <td>

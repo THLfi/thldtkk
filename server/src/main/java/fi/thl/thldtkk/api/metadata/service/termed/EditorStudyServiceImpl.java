@@ -246,7 +246,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPersonInRoles()
       .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
 
-    if (!"true".equals(study.getPersonRegistry().orElse("false"))) {
+    if (isPersonRegistry(study)) {
       study.setRegistryPolicy(emptyMap());
       study.setPurposeOfPersonRegistry(emptyMap());
       study.setPersonRegistrySources(emptyMap());
@@ -319,6 +319,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         .findFirst()
         .isPresent()
       : false;
+  }
+
+  private boolean isPersonRegistry(Study study) {
+    return !"true".equals(study.getPersonRegistry().orElse("false"));
   }
 
   private Changeset<NodeId, Node> changesetForInsert(Study study,

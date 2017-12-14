@@ -17,7 +17,7 @@
 
       <div class="row">
         <div class="col-xs-9">
-          <h2>{{ 'altLabel' | translate }}</h2>
+          <p><strong class="field-label">{{ 'altLabel' | translate }}</strong></p>
           <p>{{ dataset.altLabel | lang }}</p>
         </div>
         <div class="col-xs-3">
@@ -39,21 +39,21 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'abbreviation' | translate }}</h2>
+          <p><strong class="field-label">{{ 'abbreviation' | translate }}</strong></p>
           <p>{{ dataset.abbreviation | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'description' | translate }}</h2>
+          <p><strong class="field-label">{{ 'description' | translate }}</strong></p>
           <p class="preserve-line-breaks">{{ dataset.description | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'organizationUnit' | translate }}</h2>
+          <p><strong class="field-label">{{ 'organizationUnit' | translate }}</strong></p>
           <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
             {{ ownerOrganizationUnit.prefLabel | lang }}
             <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
@@ -65,7 +65,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'personInRoles.label' | translate }}</h2>
+          <p><strong class="field-label">{{ 'personInRoles.label' | translate }}</strong></p>
           <table *ngIf="dataset.personInRoles.length; else noDatasetPersonInRoles;"
                  class="table table-striped table-hover">
             <tr>
@@ -107,7 +107,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'links' | translate }}</h2>
+          <p><strong class="field-label">{{ 'links' | translate }}</strong></p>
           <ul>
             <li *ngFor="let link of dataset.links">
               <a href="{{ link.linkUrl | lang }}" target="_blank">
@@ -120,7 +120,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'usageCondition' | translate }}</h2>
+          <p><strong class="field-label">{{ 'usageCondition' | translate }}</strong></p>
           <p *ngIf="dataset.usageCondition && (dataset.usageCondition.prefLabel | lang)">
             {{ dataset.usageCondition.prefLabel | lang }}
           </p>
@@ -129,14 +129,14 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'usageConditionAdditionalInformation' | translate }}</h2>
+          <p><strong class="field-label">{{ 'usageConditionAdditionalInformation' | translate }}</strong></p>
           <p class="preserve-line-breaks">{{ dataset.usageConditionAdditionalInformation | lang }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2 translate="unitType"></h2>
+          <p><strong class="field-label" translate="unitType"></strong></p>
           <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
             <p>{{ dataset.unitType.prefLabel | lang }}</p>
           </ng-container>
@@ -154,14 +154,14 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2 translate="numberOfObservationUnits"></h2>
+          <p><strong class="field-label" translate="numberOfObservationUnits"></strong></p>
           <p>{{dataset.numberOfObservationUnits}}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-12">
-          <h2 translate="universe"></h2>
+          <p><strong class="field-label" translate="universe"></strong></p>
           <ng-container *ngIf="dataset.universe">
             <p>{{dataset.universe.prefLabel | lang}}</p>
             <p *ngIf="dataset.universe.description | lang">
@@ -175,17 +175,17 @@
         <div class="col-xs-12">
           <ng-container *ngIf="dataset.population">
 
-            <h2>{{ 'population' | translate }}</h2>
+            <p><strong class="field-label">{{ 'population' | translate }}</strong></p>
             <p>{{ dataset.population.prefLabel | lang }}</p>
 
-            <h2>{{ 'geographicalCoverage' | translate }}</h2>
+            <p><strong class="field-label">{{ 'geographicalCoverage' | translate }}</strong></p>
             <p>{{ dataset.population.geographicalCoverage | lang }}</p>
 
 
-            <h2>{{ 'sampleSize' | translate }}</h2>
+            <p><strong class="field-label">{{ 'sampleSize' | translate }}</strong></p>
             <p>{{ dataset.population.sampleSize | lang }}</p>
 
-            <h2>{{ 'loss' | translate }}</h2>
+            <p><strong class="field-label">{{ 'loss' | translate }}</strong></p>
             <p>{{ dataset.population.loss | lang }}</p>
 
           </ng-container>
@@ -196,7 +196,7 @@
         <div class="col-xs-12">
           <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
 
-            <h2>{{ 'datasetType' | translate }}</h2>
+            <p><strong class="field-label">{{ 'datasetType' | translate }}</strong></p>
             <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
 
           </ng-container>
@@ -205,7 +205,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'referencePeriod' | translate }}</h2>
+          <p><strong class="field-label">{{ 'referencePeriod' | translate }}</strong></p>
           <p *ngIf="dataset.referencePeriodStart || dataset.referencePeriodEnd; else studyReferencePeriod;">
             <ng-container *ngIf="dataset.referencePeriodStart">
               {{ dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
@@ -240,7 +240,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'collectionDate' | translate }}</h2>
+          <p><strong class="field-label">{{ 'collectionDate' | translate }}</strong></p>
           <p *ngIf="dataset.collectionStartDate || dataset.collectionEndDate; else noCollectionDate;">
             <ng-container *ngIf="dataset.collectionStartDate">
               {{ dataset.collectionStartDate | date:'dd.MM.yyyy' }}
@@ -258,7 +258,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'datasetLifecyclePhase' | translate }}</h2>
+          <p><strong class="field-label">{{ 'datasetLifecyclePhase' | translate }}</strong></p>
           <ng-container *ngIf="dataset.lifecyclePhase">
             <p>{{ dataset.lifecyclePhase.prefLabel | lang }}</p>
           </ng-container>
@@ -267,7 +267,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'conceptsFromScheme' | translate }}</h2>
+          <p><strong class="field-label">{{ 'conceptsFromScheme' | translate }}</strong></p>
 
           <p *ngIf="dataset.conceptsFromScheme.length; else noConceptsFromScheme;">
             <span *ngFor="let concept of dataset.conceptsFromScheme"
@@ -287,7 +287,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h2>{{ 'freeConcepts' | translate }}</h2>
+          <p><strong class="field-label">{{ 'freeConcepts' | translate }}</strong></p>
 
           <p *ngIf="dataset.freeConcepts && dataset.freeConcepts[language]; else noFreeConcepts;">
             <span *ngFor="let concept of dataset.freeConcepts[language].split(';')"
@@ -342,7 +342,7 @@
       <div class="row">
         <div class="col-xs-12">
           <ng-container *ngIf="dataset.comment">
-            <h2>{{ 'comment' | translate }}</h2>
+            <p><strong class="field-label">{{ 'comment' | translate }}</strong></p>
             <p>{{ dataset.comment}}</p>
           </ng-container>
         </div>

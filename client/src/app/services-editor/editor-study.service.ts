@@ -35,6 +35,8 @@ export class EditorStudyService {
       registryPolicy: null,
       purposeOfPersonRegistry: null,
       personRegistrySources: null,
+      personRegisterDataTransfers: null,
+      personRegisterDataTransfersOutsideEuOrEea: null,
 
       personInRoles: [],
       links: [],
@@ -56,7 +58,9 @@ export class EditorStudyService {
       'freeConcepts',
       'registryPolicy',
       'purposeOfPersonRegistry',
-      'personRegistrySources'
+      'personRegistrySources',
+      'personRegisterDataTransfers',
+      'personRegisterDataTransfersOutsideEuOrEea'
     ])
 
     if (!study.population) {

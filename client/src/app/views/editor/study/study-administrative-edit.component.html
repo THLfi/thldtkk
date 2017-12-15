@@ -90,6 +90,28 @@
             </textarea>
           </div>
 
+          <div class="form-group">
+            <label for="personRegisterDataTransfers" translate="personRegisterDataTransfers"></label>
+            <textarea [(ngModel)]="study.personRegisterDataTransfers[language]"
+                      thlAutogrow
+                      id="personRegisterDataTransfers"
+                      name="personRegisterDataTransfers"
+                      class="form-control"
+                      rows="4">
+            </textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="personRegisterDataTransfersOutsideEuOrEea" translate="personRegisterDataTransfersOutsideEuOrEea"></label>
+            <textarea [(ngModel)]="study.personRegisterDataTransfersOutsideEuOrEea[language]"
+                      thlAutogrow
+                      id="personRegisterDataTransfersOutsideEuOrEea"
+                      name="personRegisterDataTransfersOutsideEuOrEea"
+                      class="form-control"
+                      rows="4">
+            </textarea>
+          </div>
+
         </ng-container>
 
       </form>

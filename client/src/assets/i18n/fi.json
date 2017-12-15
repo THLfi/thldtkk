@@ -118,6 +118,8 @@
   "noStudyPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
   "purposeOfPersonRegistry": "Henkilötietojen käsittelyn tarkoitus/peruste",
   "personRegistrySources": "Rekisterin tietolähteet",
+  "personRegisterDataTransfers": "Rekisterin tietojen luovutukset",
+  "personRegisterDataTransfersOutsideEuOrEea": "Tietojen siirto EU:n tai ETA:n ulkopuolelle",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

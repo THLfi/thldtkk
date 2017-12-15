@@ -57,6 +57,12 @@
         "id": "personRegistrySources"
       },
       {
+        "id": "personRegisterDataTransfers"
+      },
+      {
+        "id": "personRegisterDataTransfersOutsideEuOrEea"
+      },
+      {
         "id": "comment"
       }
     ],

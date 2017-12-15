@@ -34,6 +34,8 @@ export interface Study extends Node {
   registryPolicy: LangValues
   purposeOfPersonRegistry: LangValues
   personRegistrySources: LangValues
+  personRegisterDataTransfers: LangValues
+  personRegisterDataTransfersOutsideEuOrEea: LangValues
   comment?: string
 
   lastModifiedByUser?: UserInformation

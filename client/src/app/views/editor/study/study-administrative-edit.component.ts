@@ -111,6 +111,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.registryPolicy = null
           this.study.purposeOfPersonRegistry = null
           this.study.personRegistrySources = null
+          this.study.personRegisterDataTransfers = null
+          this.study.personRegisterDataTransfersOutsideEuOrEea = null
           this.studyService.initializeProperties(this.study)
         }
 

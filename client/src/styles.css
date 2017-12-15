@@ -54,18 +54,18 @@ h3 {
 
 /* Main navigation */
 
-.navbar-default {
+.navbar-catalog {
   background-color: #fff;
   border-color: #ccc;
   border-width: 0 0 1px 0;
   border-radius: 0;
   box-shadow: 0 1px 1px #ddd
 }
-.navbar-default .navbar-brand {
+.navbar-catalog .navbar-brand {
   color: #333;
   font-weight: bold;
 }
-.navbar-default .navbar-brand sup {
+.navbar-catalog .navbar-brand sup {
   color: #01A197;
 }
 
@@ -96,8 +96,10 @@ h3 {
   color: white;
   background-color:transparent;
 }
+
 .navbar-editor .navbar-nav > li > a:hover,
 .navbar-editor .navbar-nav > li > a:focus,
+.navbar-editor .navbar-nav > li.active > a,
 .navbar-editor .navbar-nav > .active > a:hover,
 .navbar-editor .navbar-nav > .active > a:focus,
 .navbar-editor .navbar-nav > .open > a {
@@ -105,6 +107,23 @@ h3 {
   border-bottom: 3px #fff solid;
   background-color: #01837A;
 }
+
+.navbar-catalog .navbar-nav > li {
+  background-color:white;
+}
+
+.navbar-catalog .navbar-nav > li > a {
+  border-bottom: 3px #fff solid;
+}
+
+.navbar-catalog .navbar-nav > li > a:hover,
+.navbar-catalog .navbar-nav > li.active > a,
+.navbar-catalog .navbar-nav > li.active > a:focus {
+  text-decoration: none;
+  border-bottom: 3px #01837A solid;
+  background-color: #fff;
+}
+
 .navbar-editor .navbar-brand {
   color:white;
 }

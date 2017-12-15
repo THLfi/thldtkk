@@ -11,7 +11,7 @@ import { User } from '../../../model2/user'
   template: `
 <ul *ngIf="currentUser && currentUser.isAdmin"
     class="nav navbar-nav">
-  <li [ngClass]="{ 'dropdown': true, 'open' : dropdownOpen }">
+  <li [routerLinkActive]="['active']" [ngClass]="{ 'dropdown': true, 'open' : dropdownOpen }">
     <a #dropdownToggle
        (click)="toggleDropdownVisibility($event)"
        class="dropdown-toggle"

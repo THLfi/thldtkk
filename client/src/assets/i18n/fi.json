@@ -19,6 +19,7 @@
   "population": "Kohdejoukko",
   "geographicalCoverage": "Alueellinen kattavuus",
   "sampleSize": "Otoskoko",
+  "sample": "Otos",
   "loss": "Kato",
   "organization": "Organisaatio",
   "back": "Takaisin",
@@ -205,6 +206,11 @@
       "goToDataset": "Siirry datasettiin",
       "datasetVariableCountLabel": "muuttujaa",
       "datasetVariablesBreakdown": "Aineiston muuttujat on jaettu {{datasetCount}} datasettiin"
+    },
+    "dataset": {
+      "defaultInstanceVariableGroupName": "Muuttujat ilman muuttujaryhmää",
+      "instanceVariableFilterRemoveAllSelections":"Poista valinnat",
+      "instanceVariableFilterSelectAll":"Valitse kaikki"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -513,7 +519,7 @@
     "title": "Ylläpito"
   },
   "editorLoginComponent": {
-    "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>. Molemmat palvelut ovat beta-testausvaiheessa.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistoeditori.fi'>info@aineistoeditori.fi</a></p>",
+    "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>. Molemmat palvelut ovat beta-testausvaiheessa.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistokatalogi.fi'>info@aineistokatalogi.fi</a></p>",
     "loginHeading":"Kirjaudu sisään",
     "userName":"Käyttäjätunnus",
     "password":"Salasana",
@@ -525,7 +531,7 @@
     "thlTroubleshootContact": "Ongelmatilanteissa ota yhteyttä tekniseen tukeen.",
     "genericTroubleshootContact": {
       "message": "Ongelmatilanteissa ota yhteyttä:",
-      "email": "info@aineistoeditori.fi"
+      "email": "info@aineistokatalogi.fi"
     },
     "virtuLoginFailed": "Kirjautuminen epäonnistui, yritä hetken päästä uudestaan. Jos ongelma toistuu, ota yhteyttä palvelun ylläpitoon.",
     "thlLoginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
@@ -582,5 +588,6 @@
     },
     "confirmPublish": "Haluatko varmasti julkaista aineiston?",
     "confirmWithdraw": "Haluatko varmasti perua aineiston julkaisun?"
-  }
+  },
+  "piecesAbbreviation": "kpl"
 }

@@ -94,53 +94,56 @@
       </div>
 
       <div class="row detail-highlights">
-        <div class="col-sm-4">
-          <div class="detail-highlight">
-            <div class="icon">
-              <i class="fa fa-star" aria-hidden="true"></i>
-            </div>
-            <div class="caption">
-              {{ 'universe' | translate }}
-            </div>
-            <div *ngIf="study.universe" class="value">
-              {{ study.universe.prefLabel | lang }}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="detail-highlight">
-            <div class="icon">
-              <i class="fa fa-calendar-o" aria-hidden="true"></i>
-            </div>
-            <div class="caption">
-              {{ 'referencePeriod' | translate }}
-            </div>
-            <div class="value" *ngIf="study.referencePeriodStart || study.referencePeriodEnd">
-              <ng-container *ngIf="study.referencePeriodStart">
-                {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+        <ng-container *ngFor="let highlight of highlights; first as isFirstHighlightInRow">
+          <div class="col-sm-4" [ngClass]="{'col-sm-offset-4':highlights.length == 1, 'col-sm-offset-2': isFirstHighlightInRow && highlights.length == 2 }">
+            <div class="detail-highlight" [ngSwitch]="highlight">
+              <ng-container *ngSwitchCase="StudyDetailHighlight.UNIVERSE">
+                <div class="icon-svg">
+                  <icon-universe></icon-universe>
+                </div>
+                <div class="caption">
+                  {{ 'universe' | translate }}
+                </div>
+                <div class="value">
+                  {{ study.universe.prefLabel | lang }}
+                </div>
               </ng-container>
-              —<br>
-              <ng-container *ngIf="study.referencePeriodEnd">
-                {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
-              </ng-container>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="detail-highlight">
-            <div class="icon">
-              <i class="fa fa-globe" aria-hidden="true"></i>
-            </div>
-            <div class="caption">
-              {{ 'geographicalCoverage' | translate }}
-            </div>
-            <div *ngIf="study.population" class="value">
-              {{ study.population.geographicalCoverage | lang }}
-            </div>
-          </div>
-        </div>
-      </div>
 
+              <ng-container *ngSwitchCase="StudyDetailHighlight.REFERENCE_PERIOD">
+                <div class="icon">
+                  <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                </div>
+                <div class="caption">
+                  {{ 'referencePeriod' | translate }}
+                </div>
+                <div class="value" *ngIf="study.referencePeriodStart || study.referencePeriodEnd">
+                  <ng-container *ngIf="study.referencePeriodStart">
+                    {{ study.referencePeriodStart | date:'dd.MM.yyyy' }}
+                  </ng-container>
+                  —<br>
+                  <ng-container *ngIf="study.referencePeriodEnd">
+                    {{ study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+                  </ng-container>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="StudyDetailHighlight.GEOGRAPHICAL_COVERAGE">
+                <div class="icon">
+                  <i class="fa fa-globe" aria-hidden="true"></i>
+                </div>
+                <div class="caption">
+                  {{ 'geographicalCoverage' | translate }}
+                </div>
+                <div class="value">
+                  {{ study.population.geographicalCoverage | lang }}
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+
+        </ng-container>
+      </div>
 
       <div *ngIf="study.conceptsFromScheme.length || (study.freeConcepts | lang)" class="row">
         <div class="col-xs-12">

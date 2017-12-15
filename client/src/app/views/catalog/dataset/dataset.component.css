@@ -9,14 +9,6 @@
   font-weight: 200;
 }
 
-.bordered-box {
-  margin-top: .5em;
-  margin-bottom: 1em;
-  padding-left: 1em;
-  padding-right: 1em;
-  border: 1px solid #ccc;
-}
-
 .right-main-column .owner-organization {
   font-size: 24px;
   font-weight: 200;
@@ -33,6 +25,166 @@
   font-style: italic;
 }
 
+.right-main-column .link {
+  text-decoration: underline;
+}
+
 .overridden-reference-period {
   font-style: italic;
+}
+
+.primary-highlight {
+  text-align: center;
+}
+
+.primary-highlights,
+.secondary-highlights {
+  margin-bottom: 3em;
+}
+
+.primary-highlight .caption, 
+.primary-highlight .icon,
+.primary-highlight .icon-svg  {
+  color: #CCCCCC;
+}
+
+.primary-highlight .icon {
+  font-size: 3em;
+}
+
+.primary-highlight .icon-svg {
+  font-size: 1em;
+  padding-top: 1em;
+}
+
+
+.primary-highlight .caption {
+  margin-top: -0.6em;
+}
+
+.primary-highlight .value {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: black;
+}
+
+.secondary-highlight {
+  color: white;
+  background-color: #006860;
+  text-align: center;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.secondary-highlight .secondary-highlight-label {
+  opacity: 0.8;
+}
+
+.secondary-highlight .secondary-highlight-value {
+  font-size: 2em;
+  min-height: 50px;
+}
+
+.minor-highlights {
+  padding-bottom: 2em;
+}
+
+.minor-highlight-heading {
+  font-size: 1em;
+  color: #CCCCCC;
+}
+
+.small-highlight-value {
+  font-size: 1.3em;
+  min-height: 50px;
+}
+
+.concepts {
+  background-color: #F3F3F3;
+  padding: 0.5em 1.5em 1.5em;
+}
+
+.concepts h2 {
+  font-size: 1.5em;
+}
+
+.concepts .items {
+  columns: 3;
+}
+
+.instance-variable-filter-action-bar {
+  background-color: #F3F3F3;
+  margin-top: 1em;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-bottom: none;
+}
+
+.instance-variable-filter-action-bar-no-results {
+  margin-bottom: 1em;
+  border-bottom: 1px solid #ddd;
+}
+
+.instance-variable-group-filters {
+  padding: 0.5em;
+}
+
+.instance-variable-filter-toggle {
+  background-color: #F3F3F3;
+  border: none;
+}
+
+.instance-variable-filter-toggle:active:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #F3F3F3;
+}
+
+.instance-variable-filter-toggle-icon {
+  font-size: 1.25em;
+}
+
+.instance-variable-filter-toggle:focus {
+  outline: none;
+}
+
+.export-as-csv {
+  text-align: right;
+}
+
+.export-as-csv-filters-expanded {
+  padding-bottom: 0.5em;
+}
+
+.instance-variable-group-filter-select-button {
+  padding: 0;
+  text-decoration: underline;
+  color: currentColor;
+}
+
+.instance-variable-group-filter-select-button:focus {
+  outline: none;
+}
+
+.instance-variable-group-filters-expanded {
+  border-bottom: 1px solid #ddd;
+}
+
+@media(max-width: 767px) {
+  .export-as-csv {
+    text-align: left;
+  }
+
+  .secondary-highlight {
+    margin-bottom: 1em;
+  }
+
+  .secondary-highlights {
+    margin-bottom: 2em;
+  }
+
+  .concepts .items {
+    columns: 2;
+  }
+
 }

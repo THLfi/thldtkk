@@ -2,7 +2,7 @@
   class="background-container">
 
 <nav *ngIf="!hideNavBar" class="navbar" [ngClass]="{'navbar-editor':currentPageType == PageIdentifier.EDITOR,
- 'navbar-default':currentPageType == PageIdentifier.CATALOG}">
+ 'navbar-catalog':currentPageType == PageIdentifier.CATALOG}">
   <div class="container-fluid">
     <ng-container *ngIf="currentPageType == PageIdentifier.CATALOG">
       <div class="navbar-header">
@@ -11,8 +11,8 @@
           <sup>{{ 'beta' | translate }}</sup>
         </a>
         <ul class="nav navbar-nav">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/catalog/studies/">{{'study.studies' | translate}}</a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" ><a routerLink="/catalog/instancevariables">{{'instanceVariables' | translate}}</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink="/catalog/studies/">{{'study.studies' | translate}}</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink="/catalog/instancevariables">{{'instanceVariables' | translate}}</a></li>
         </ul>
       </div>
     </ng-container>
@@ -23,7 +23,7 @@
           <sup>{{ 'beta' | translate }}</sup>
         </a>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>
         </ul>
         <adminMenu [currentUser]="currentUser">
         </adminMenu>

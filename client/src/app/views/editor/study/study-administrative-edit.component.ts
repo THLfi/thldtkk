@@ -4,15 +4,15 @@ import {
   AfterContentChecked
 } from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
-import {Observable} from 'rxjs'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
-import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 
-import {Study} from '../../../model2/study';
+import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
+import {ConfidentialityClass} from '../../../model2/confidentiality-class'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
+import {Study} from '../../../model2/study';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 
 @Component({
@@ -33,6 +33,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     savingHasFailed: boolean = false
 
     sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
+
+    get confidentialityClass(): string {
+      return this.study.confidentialityClass as string
+    }
+
+    set confidentialityClass(cc: string) {
+      this.study.confidentialityClass = cc as ConfidentialityClass
+    }
 
     constructor(
         private studyService: EditorStudyService,
@@ -107,7 +115,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
         this.validate()
 
-        if (!this.study.personRegistry || this.study.personRegistry !== 'true'){
+        if (!this.study.personRegistry) {
           this.study.registryPolicy = null
           this.study.purposeOfPersonRegistry = null
           this.study.personRegistrySources = null

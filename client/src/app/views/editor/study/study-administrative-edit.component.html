@@ -33,29 +33,42 @@
 
         <study-administrative-read-only-fields [study]="study"></study-administrative-read-only-fields>
 
-        <label for="person-registry">{{"isStudyPersonRegistry"|translate}}</label>
         <div class="form-group">
-          <div id="person-registry" class="radio">
-            <label>
-              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="true">
-              {{"true"|translate}}
+          <p><strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong></p>
+          <div class="radio">
+            <label for="person-registry-true">
+              <input [(ngModel)]="study.personRegistry"
+                     [value]="true"
+                     type="radio"
+                     id="person-registry-true"
+                     name="person-registry">
+              {{ 'true' | translate }}
             </label>
           </div>
           <div class="radio">
-            <label>
-              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="false">
-              {{"false"|translate}}
+            <label for="person-registry-false">
+              <input [(ngModel)]="study.personRegistry"
+                     [value]="false"
+                     type="radio"
+                     id="person-registry-false"
+                     name="person-registry">
+              {{ 'false' | translate }}
             </label>
           </div>
           <div class="radio">
-            <label>
-              <input type="radio" name="person-registry" [(ngModel)]="study.personRegistry" value="">
-              {{"noPersonRegistry"|translate}}
+            <label for="person-registry-empty"
+                   class="radio-empty">
+              <input [(ngModel)]="study.personRegistry"
+                     [value]="undefined"
+                     type="radio"
+                     id="person-registry-empty"
+                     name="person-registry">
+              {{ 'noPersonRegistry' | translate }}
             </label>
           </div>
         </div>
 
-        <ng-container *ngIf="study.personRegistry && study.personRegistry === 'true'">
+        <ng-container *ngIf="study.personRegistry">
 
           <div class="form-group">
             <label for="registryPolicy" translate="registryPolicy"></label>
@@ -113,6 +126,57 @@
           </div>
 
         </ng-container>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'dataSecurity' | translate }}</h2>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <p><strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong></p>
+          <div class="radio">
+            <label for="confidentiality-class-public">
+              <input [(ngModel)]="study.confidentialityClass"
+                     value="PUBLIC"
+                     type="radio"
+                     id="confidentiality-class-public"
+                     name="confidentiality-class">
+              {{ 'confidentialityClass.PUBLIC' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="confidentiality-class-partly-confidential">
+              <input [(ngModel)]="study.confidentialityClass"
+                     value="PARTLY_CONFIDENTIAL"
+                     type="radio"
+                     id="confidentiality-class-partly-confidential"
+                     name="confidentiality-class">
+              {{ 'confidentialityClass.PARTLY_CONFIDENTIAL' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="confidentiality-class-confidential">
+              <input [(ngModel)]="study.confidentialityClass"
+                     value="CONFIDENTIAL"
+                     type="radio"
+                     id="confidentiality-class-confidential"
+                     name="confidentiality-class">
+              {{ 'confidentialityClass.CONFIDENTIAL' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="confidentiality-class-empty"
+                   class="radio-empty">
+              <input [(ngModel)]="study.confidentialityClass"
+                     [value]="undefined"
+                     type="radio"
+                     id="confidentiality-class-empty"
+                     name="confidentiality-class">
+              {{ 'confidentialityClass.empty' | translate }}
+            </label>
+          </div>
+        </div>
 
       </form>
 

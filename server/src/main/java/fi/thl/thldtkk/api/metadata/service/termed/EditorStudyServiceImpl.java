@@ -250,6 +250,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       study.setRegistryPolicy(emptyMap());
       study.setPurposeOfPersonRegistry(emptyMap());
       study.setPersonRegistrySources(emptyMap());
+      study.setPersonRegisterDataTransfers(emptyMap());
+      study.setPersonRegisterDataTransfersOutsideEuOrEta(emptyMap());
     }
 
     if (includeDatasets) {

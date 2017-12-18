@@ -49,6 +49,8 @@ public class Study implements NodeEntity {
   private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
   private Map<String, String> personRegistrySources = new LinkedHashMap<>();
+  private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
+  private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -102,6 +104,8 @@ public class Study implements NodeEntity {
     this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.purposeOfPersonRegistry = toLangValueMap(node.getProperties("purposeOfPersonRegistry"));
     this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
+    this.personRegisterDataTransfers = toLangValueMap(node.getProperties("personRegisterDataTransfers"));
+    this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
 
     node.getReferencesFirst("lastModifiedByUser")
@@ -247,6 +251,22 @@ public class Study implements NodeEntity {
     this.personRegistrySources = personRegistrySources;
   }
 
+  public Map<String, String> getPersonRegisterDataTransfers() {
+    return personRegisterDataTransfers;
+  }
+
+  public void setPersonRegisterDataTransfers(Map<String, String> personRegisterDataTransfers) {
+    this.personRegisterDataTransfers = personRegisterDataTransfers;
+  }
+
+  public Map<String, String> getPersonRegisterDataTransfersOutsideEuOrEta() {
+    return personRegisterDataTransfersOutsideEuOrEea;
+  }
+
+  public void setPersonRegisterDataTransfersOutsideEuOrEta(Map<String, String> personRegisterDataTransfersOutsideEuOrEea) {
+    this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
+  }
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -352,6 +372,8 @@ public class Study implements NodeEntity {
     props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("purposeOfPersonRegistry", toPropertyValues(purposeOfPersonRegistry));
     props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
+    props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
+    props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -401,6 +423,8 @@ public class Study implements NodeEntity {
             && Objects.equals(registryPolicy, study.registryPolicy)
             && Objects.equals(purposeOfPersonRegistry, study.purposeOfPersonRegistry)
             && Objects.equals(personRegistrySources, study.personRegistrySources)
+            && Objects.equals(personRegisterDataTransfers, study.personRegisterDataTransfers)
+            && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -440,6 +464,8 @@ public class Study implements NodeEntity {
         registryPolicy,
         purposeOfPersonRegistry,
         personRegistrySources,
+        personRegisterDataTransfers,
+        personRegisterDataTransfersOutsideEuOrEea,
         comment,
         lastModifiedByUser,
         ownerOrganization,

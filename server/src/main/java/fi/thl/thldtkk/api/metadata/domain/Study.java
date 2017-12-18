@@ -54,6 +54,8 @@ public class Study implements NodeEntity {
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
   private ConfidentialityClass confidentialityClass;
   private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
+  private LocalDate dataProcessingStartDate;
+  private LocalDate dataProcessingEndDate;
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -113,6 +115,8 @@ public class Study implements NodeEntity {
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
     this.groundsForConfidentiality = toLangValueMap(node.getProperties("groundsForConfidentiality"));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
+    this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
+    this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -280,7 +284,6 @@ public class Study implements NodeEntity {
   public void setConfidentialityClass(ConfidentialityClass confidentialityClass) {
     this.confidentialityClass = confidentialityClass;
   }
-
   public Map<String, String> getGroundsForConfidentiality() {
     return groundsForConfidentiality;
   }
@@ -289,6 +292,14 @@ public class Study implements NodeEntity {
     this.groundsForConfidentiality = groundsForConfidentiality;
   }
 
+  public Optional<LocalDate> getDataProcessingStartDate() {
+    return Optional.ofNullable(dataProcessingStartDate);
+  }
+
+  public Optional<LocalDate> getDataProcessingEndDate() {
+    return Optional.ofNullable(dataProcessingEndDate);
+  }
+  
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -398,6 +409,8 @@ public class Study implements NodeEntity {
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
     props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
+    getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
+    getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -451,6 +464,8 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
             && Objects.equals(confidentialityClass, study.confidentialityClass)
             && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
+            && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
+            && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -471,8 +486,7 @@ public class Study implements NodeEntity {
 
   @Override
   public int hashCode() {
-      return Objects.hash(
-        id,
+      return Objects.hash(id,
         lastModifiedDate,
         published,
         prefLabel,
@@ -494,6 +508,8 @@ public class Study implements NodeEntity {
         personRegisterDataTransfersOutsideEuOrEea,
         confidentialityClass,
         groundsForConfidentiality,
+        dataProcessingStartDate,
+        dataProcessingEndDate,
         comment,
         lastModifiedByUser,
         ownerOrganization,

@@ -21,12 +21,12 @@ import { Study } from '../../../model2/study'
   <div class="col-xs-12">
     <p><strong class="field-label">{{ 'registryOrganizationUnit' | translate }}</strong></p>
     <ng-container *ngIf="study.ownerOrganization">
-      <p *ngFor="let ownerOrganizationUnit of study.ownerOrganizationUnit">
-        {{ ownerOrganizationUnit.prefLabel | lang }}
-        <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
-          ({{ ownerOrganizationUnit.abbreviation | lang }})
+      <p *ngIf="study.ownerOrganizationUnit">
+        {{ study.ownerOrganizationUnit.prefLabel | lang }}
+        <span *ngIf="study.ownerOrganizationUnit.abbreviation | lang">
+          ({{ study.ownerOrganizationUnit.abbreviation | lang }})
         </span>
-      </p>      
+      </p>
     </ng-container>
   </div>
 </div>

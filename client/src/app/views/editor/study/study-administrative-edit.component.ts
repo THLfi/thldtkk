@@ -6,8 +6,8 @@ import {
 import {NgForm, AbstractControl} from '@angular/forms'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
-
-import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
+import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
+import { DateUtils } from '../../../utils/date-utils'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
@@ -23,10 +23,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     study: Study;
 
+    yearRangeForDataProcessingFields: string =  ('1900:' + (new Date().getFullYear() + 20))
+    dataProcessingStartDate: Date
+    dataProcessingEndDate: Date
+
     @ViewChild('studyForm') studyForm: NgForm
     currentForm: NgForm
     formErrors: any = {}
-
+    
     language: string;
 
     savingInProgress: boolean = false
@@ -44,7 +48,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private breadcrumbService: BreadcrumbService,
         private translateService: TranslateService,
         private langPipe: LangPipe,
-        private titleService: Title
+        private titleService: Title,
+        private dateUtils: DateUtils
     ) {
         this.language = this.translateService.currentLang
     }
@@ -60,6 +65,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         this.studyService.getStudy(studyId)
           .subscribe(study => {
             this.study = this.studyService.initializeProperties(study)
+            this.study = this.initializeStudyAdministrativeProperties(study)
             this.updatePageTitle()
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
           })
@@ -74,6 +80,16 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             let bareTitle:string = this.titleService.getTitle();
             this.titleService.setTitle(translatedLabel + " - " + bareTitle)
         }
+    }
+
+    private initializeStudyAdministrativeProperties(study: Study): Study {
+        if (study.dataProcessingStartDate) {
+          this.dataProcessingStartDate = new Date(study.dataProcessingStartDate)
+        }
+        if (study.dataProcessingEndDate) {
+          this.dataProcessingEndDate = new Date(study.dataProcessingEndDate)
+        }
+        return study;
     }
 
     ngAfterContentChecked(): void {
@@ -131,6 +147,11 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.savingHasFailed = true
           return
         }
+
+        this.study.dataProcessingStartDate = this.dataProcessingStartDate ?
+          this.dateUtils.convertToIsoDate(this.dataProcessingStartDate) : null
+        this.study.dataProcessingEndDate = this.dataProcessingEndDate ?
+          this.dateUtils.convertToIsoDate(this.dataProcessingEndDate) : null
 
         this.studyService.save(this.study)
             .finally(() => {

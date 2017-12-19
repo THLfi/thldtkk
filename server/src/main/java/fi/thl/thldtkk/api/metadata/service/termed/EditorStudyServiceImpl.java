@@ -257,6 +257,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     if (isNotClassified(study)) {
       study.setGroundsForConfidentiality(emptyMap());
+      study.setSecurityClassification(null);
     }
 
     if (includeDatasets) {

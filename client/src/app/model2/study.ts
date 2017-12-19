@@ -10,6 +10,7 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
 import {Population} from './population';
+import {SecurityClassification} from './security-classification'
 import {StudyGroup} from './study-group'
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
@@ -39,6 +40,7 @@ export interface Study extends Node {
   personRegisterDataTransfersOutsideEuOrEea: LangValues
   confidentialityClass?: ConfidentialityClass
   groundsForConfidentiality: LangValues
+  securityClassification?: SecurityClassification,
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
   comment?: string

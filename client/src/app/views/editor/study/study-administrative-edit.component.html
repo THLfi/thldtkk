@@ -178,17 +178,75 @@
           </div>
         </div>
 
-        <div *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL"
-             class="form-group">
-          <label for="groundsForConfidentiality" translate="groundsForConfidentiality"></label>
-          <textarea [(ngModel)]="study.groundsForConfidentiality[language]"
-                    thlAutogrow
-                    id="groundsForConfidentiality"
-                    name="groundsForConfidentiality"
-                    class="form-control"
-                    rows="4">
-          </textarea>
-        </div>
+        <ng-container *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL">
+
+          <div class="form-group">
+            <label for="groundsForConfidentiality" translate="groundsForConfidentiality"></label>
+            <textarea [(ngModel)]="study.groundsForConfidentiality[language]"
+                      thlAutogrow
+                      id="groundsForConfidentiality"
+                      name="groundsForConfidentiality"
+                      class="form-control"
+                      rows="4">
+            </textarea>
+          </div>
+
+          <div class="form-group">
+            <p><strong class="field-label">{{ 'securityClassification.label' | translate }}</strong></p>
+            <div class="radio">
+              <label for="security-classification-I">
+                <input [(ngModel)]="study.securityClassification"
+                       value="I"
+                       type="radio"
+                       id="security-classification-I"
+                       name="security-classification">
+                {{ 'securityClassification.I' | translate }}
+              </label>
+            </div>
+            <div class="radio">
+              <label for="security-classification-II">
+                <input [(ngModel)]="study.securityClassification"
+                       value="II"
+                       type="radio"
+                       id="security-classification-II"
+                       name="security-classification">
+                {{ 'securityClassification.II' | translate }}
+              </label>
+            </div>
+            <div class="radio">
+              <label for="security-classification-III">
+                <input [(ngModel)]="study.securityClassification"
+                       value="III"
+                       type="radio"
+                       id="security-classification-III"
+                       name="security-classification">
+                {{ 'securityClassification.III' | translate }}
+              </label>
+            </div>
+            <div class="radio">
+              <label for="security-classification-IV">
+                <input [(ngModel)]="study.securityClassification"
+                       value="IV"
+                       type="radio"
+                       id="security-classification-IV"
+                       name="security-classification">
+                {{ 'securityClassification.IV' | translate }}
+              </label>
+            </div>
+            <div class="radio">
+              <label for="security-classification-empty"
+                     class="radio-empty">
+                <input [(ngModel)]="study.securityClassification"
+                       [value]="undefined"
+                       type="radio"
+                       id="security-classification-empty"
+                       name="security-classification">
+                {{ 'securityClassification.empty' | translate }}
+              </label>
+            </div>
+          </div>
+
+        </ng-container>
 
         <div class="row">
           <div class="col-xs-12">

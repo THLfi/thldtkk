@@ -136,6 +136,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
         if (!(this.study.confidentialityClass === ConfidentialityClass.PARTLY_CONFIDENTIAL || ConfidentialityClass.CONFIDENTIAL)) {
           this.study.groundsForConfidentiality = null
+          this.study.securityClassification = null
           this.studyService.initializeProperties(this.study)
         }
 

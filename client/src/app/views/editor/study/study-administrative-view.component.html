@@ -106,13 +106,30 @@
         </div>
       </div>
 
-      <div *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL"
-           class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'groundsForConfidentiality' | translate }}</strong></p>
-          <p class="preserve-line-breaks">{{ study.groundsForConfidentiality | lang }}</p>
+      <ng-container *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'groundsForConfidentiality' | translate }}</strong></p>
+            <p class="preserve-line-breaks">{{ study.groundsForConfidentiality | lang }}</p>
+          </div>
         </div>
-      </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'securityClassification.label' | translate }}</strong></p>
+            <p>
+              <ng-container *ngIf="study.securityClassification; else noSecurityClassification;">
+                {{ 'securityClassification.' + study.securityClassification | translate }}
+              </ng-container>
+              <ng-template #noSecurityClassification>
+                {{ 'securityClassification.empty' | translate }}
+              </ng-template>
+            </p>
+          </div>
+        </div>
+
+      </ng-container>
 
       <div class="row">
         <div class="col-xs-12">

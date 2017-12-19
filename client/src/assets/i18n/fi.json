@@ -129,6 +129,14 @@
     "empty": "Ei määritetty"
   },
   "groundsForConfidentiality": "Salassapidon peruste",
+  "securityClassification": {
+    "label": "Suojaustaso",
+    "I": "st I",
+    "II": "st II",
+    "III": "st III",
+    "IV": "st IV",
+    "empty": "Ei määritetty"
+  },
   "dataProcessingDuration": "Tietojenkäsittelyn kesto",
   "dataProcessingStartDate": "Tietojenkäsittelyn aloitusajankohta",
   "dataProcessingEndDate": "Tietojenkäsittelyn lopetusajankohta",

@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata.domain;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import fi.thl.thldtkk.api.metadata.SecurityClassification;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
@@ -54,6 +55,7 @@ public class Study implements NodeEntity {
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
   private ConfidentialityClass confidentialityClass;
   private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
+  private SecurityClassification securityClassification;
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
   private String comment;
@@ -114,6 +116,8 @@ public class Study implements NodeEntity {
     toOptionalString(node.getProperties("confidentialityClass"))
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
     this.groundsForConfidentiality = toLangValueMap(node.getProperties("groundsForConfidentiality"));
+    toOptionalString(node.getProperties("securityClassification"))
+      .ifPresent(sc -> this.securityClassification = SecurityClassification.valueOf(sc));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
@@ -292,6 +296,14 @@ public class Study implements NodeEntity {
     this.groundsForConfidentiality = groundsForConfidentiality;
   }
 
+  public Optional<SecurityClassification> getSecurityClassification() {
+    return Optional.ofNullable(securityClassification);
+  }
+
+  public void setSecurityClassification(SecurityClassification securityClassification) {
+    this.securityClassification = securityClassification;
+  }
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -299,7 +311,7 @@ public class Study implements NodeEntity {
   public Optional<LocalDate> getDataProcessingEndDate() {
     return Optional.ofNullable(dataProcessingEndDate);
   }
-  
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -409,6 +421,7 @@ public class Study implements NodeEntity {
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
     props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
+    getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
@@ -464,6 +477,7 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
             && Objects.equals(confidentialityClass, study.confidentialityClass)
             && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
+            && Objects.equals(securityClassification, study.securityClassification)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(comment, study.comment)
@@ -508,6 +522,7 @@ public class Study implements NodeEntity {
         personRegisterDataTransfersOutsideEuOrEea,
         confidentialityClass,
         groundsForConfidentiality,
+        securityClassification,
         dataProcessingStartDate,
         dataProcessingEndDate,
         comment,

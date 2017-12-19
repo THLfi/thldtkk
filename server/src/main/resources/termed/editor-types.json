@@ -63,6 +63,9 @@
         "id": "personRegisterDataTransfersOutsideEuOrEea"
       },
       {
+        "id": "confidentialityClass"
+      },
+      {
         "id": "comment"
       }
     ],

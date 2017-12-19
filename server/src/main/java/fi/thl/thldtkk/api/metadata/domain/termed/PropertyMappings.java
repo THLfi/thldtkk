@@ -1,5 +1,7 @@
 package fi.thl.thldtkk.api.metadata.domain.termed;
 
+import org.springframework.util.StringUtils;
+
 import static fi.thl.thldtkk.api.metadata.util.RegularExpressions.ALL;
 
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -66,6 +69,11 @@ public final class PropertyMappings {
       .collect(toMap(StrictLangValue::getLang, StrictLangValue::getValue));
   }
 
+  public static Optional<String> toOptionalString(Collection<StrictLangValue> values) {
+    String string = toString(values);
+    return StringUtils.hasText(string) ? Optional.of(string) : Optional.empty();
+  }
+
   public static String toString(Collection<StrictLangValue> values) {
     return values.stream()
       .map(StrictLangValue::getValue)
@@ -78,6 +86,10 @@ public final class PropertyMappings {
       .findFirst()
       .map(Integer::parseInt)
       .orElse(defaultValue);
+  }
+
+  public static Boolean toBoolean(Collection<StrictLangValue> values) {
+    return toBoolean(values, null);
   }
 
   public static Boolean toBoolean(Collection<StrictLangValue> values, Boolean defaultValue) {

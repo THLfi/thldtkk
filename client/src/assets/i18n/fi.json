@@ -121,6 +121,13 @@
   "personRegistrySources": "Rekisterin tietolähteet",
   "personRegisterDataTransfers": "Rekisterin tietojen luovutukset",
   "personRegisterDataTransfersOutsideEuOrEea": "Tietojen siirto EU:n tai ETA:n ulkopuolelle",
+  "confidentialityClass": {
+    "label": "Tietosisällön julkisuusluokka",
+    "PUBLIC": "Julkinen",
+    "PARTLY_CONFIDENTIAL": "Osittain salassa pidettävä",
+    "CONFIDENTIAL": "Salassa pidettävä",
+    "empty": "Ei määritetty"
+  },
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

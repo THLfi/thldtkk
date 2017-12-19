@@ -22,6 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toOptionalString;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static java.util.Objects.requireNonNull;
@@ -45,12 +46,13 @@ public class Study implements NodeEntity {
   private LocalDate collectionEndDate;
   private String numberOfObservationUnits;
   private Map<String, String> freeConcepts = new LinkedHashMap<>();
-  private String personRegistry;
+  private Boolean personRegistry;
   private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
   private Map<String, String> personRegistrySources = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
+  private ConfidentialityClass confidentialityClass;
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -100,12 +102,14 @@ public class Study implements NodeEntity {
     this.collectionEndDate = toLocalDate(node.getProperties("collectionEndDate"), null);
     this.numberOfObservationUnits = PropertyMappings.toString(node.getProperties("numberOfObservationUnits"));
     this.freeConcepts = toLangValueMap(node.getProperties("freeConcepts"));
-    this.personRegistry = PropertyMappings.toString(node.getProperties("personRegistry"));
+    this.personRegistry = PropertyMappings.toBoolean(node.getProperties("personRegistry"), null);
     this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.purposeOfPersonRegistry = toLangValueMap(node.getProperties("purposeOfPersonRegistry"));
     this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
     this.personRegisterDataTransfers = toLangValueMap(node.getProperties("personRegisterDataTransfers"));
     this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
+    toOptionalString(node.getProperties("confidentialityClass"))
+      .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
 
     node.getReferencesFirst("lastModifiedByUser")
@@ -223,7 +227,7 @@ public class Study implements NodeEntity {
     return freeConcepts;
   }
 
-  public Optional<String> getPersonRegistry() {
+  public Optional<Boolean> getPersonRegistry() {
     return Optional.ofNullable(personRegistry);
   }
 
@@ -265,6 +269,14 @@ public class Study implements NodeEntity {
 
   public void setPersonRegisterDataTransfersOutsideEuOrEta(Map<String, String> personRegisterDataTransfersOutsideEuOrEea) {
     this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
+  }
+
+  public Optional<ConfidentialityClass> getConfidentialityClass() {
+    return Optional.ofNullable(confidentialityClass);
+  }
+
+  public void setConfidentialityClass(ConfidentialityClass confidentialityClass) {
+    this.confidentialityClass = confidentialityClass;
   }
 
   public Optional<String> getComment() {
@@ -374,6 +386,7 @@ public class Study implements NodeEntity {
     props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
     props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
+    getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -425,6 +438,7 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegistrySources, study.personRegistrySources)
             && Objects.equals(personRegisterDataTransfers, study.personRegisterDataTransfers)
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
+            && Objects.equals(confidentialityClass, study.confidentialityClass)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -466,6 +480,7 @@ public class Study implements NodeEntity {
         personRegistrySources,
         personRegisterDataTransfers,
         personRegisterDataTransfersOutsideEuOrEea,
+        confidentialityClass,
         comment,
         lastModifiedByUser,
         ownerOrganization,

@@ -28,6 +28,10 @@ h3 {
   font-weight: 200;
 }
 
+.radio-empty {
+  font-style: italic;
+}
+
 .preserve-line-breaks {
   white-space: pre-line;
   line-height: 1.1em;

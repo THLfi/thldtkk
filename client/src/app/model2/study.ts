@@ -1,4 +1,5 @@
 import {Concept} from './concept';
+import {ConfidentialityClass} from './confidentiality-class'
 import {Dataset} from './dataset'
 import {DatasetType} from './dataset-type'
 import {LangValues} from './lang-values';
@@ -30,12 +31,13 @@ export interface Study extends Node {
   collectionEndDate?: string
   numberOfObservationUnits?: string
   freeConcepts: LangValues
-  personRegistry?: string
+  personRegistry?: boolean
   registryPolicy: LangValues
   purposeOfPersonRegistry: LangValues
   personRegistrySources: LangValues
   personRegisterDataTransfers: LangValues
   personRegisterDataTransfersOutsideEuOrEea: LangValues
+  confidentialityClass?: ConfidentialityClass
   comment?: string
 
   lastModifiedByUser?: UserInformation

@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
+import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
@@ -254,6 +255,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       study.setPersonRegisterDataTransfersOutsideEuOrEta(emptyMap());
     }
 
+    if (isNotClassified(study)) {
+      study.setGroundsForConfidentiality(emptyMap());
+    }
+
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {
@@ -325,6 +330,16 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   private boolean isNotPersonRegistry(Study study) {
     return !study.getPersonRegistry().orElse(false);
+  }
+
+  private boolean isNotClassified(Study study) {
+    switch (study.getConfidentialityClass().orElse(ConfidentialityClass.PUBLIC)) {
+      case PARTLY_CONFIDENTIAL:
+      case CONFIDENTIAL:
+        return false;
+      default:
+        return true;
+    }
   }
 
   private Changeset<NodeId, Node> changesetForInsert(Study study,

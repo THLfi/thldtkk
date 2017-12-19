@@ -128,6 +128,7 @@
     "CONFIDENTIAL": "Salassa pidettävä",
     "empty": "Ei määritetty"
   },
+  "groundsForConfidentiality": "Salassapidon peruste",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

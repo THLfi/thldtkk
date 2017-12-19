@@ -106,6 +106,14 @@
         </div>
       </div>
 
+      <div *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL"
+           class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'groundsForConfidentiality' | translate }}</strong></p>
+          <p class="preserve-line-breaks">{{ study.groundsForConfidentiality | lang }}</p>
+        </div>
+      </div>
+
       <div class="row" style="display: none;">
         <div class="col-xs-12">
           <h2>{{ 'archiving' | translate }}</h2>

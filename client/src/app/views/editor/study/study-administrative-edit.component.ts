@@ -34,13 +34,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
-    get confidentialityClass(): string {
-      return this.study.confidentialityClass as string
-    }
-
-    set confidentialityClass(cc: string) {
-      this.study.confidentialityClass = cc as ConfidentialityClass
-    }
+    confidentialityClassType = ConfidentialityClass
 
     constructor(
         private studyService: EditorStudyService,
@@ -121,6 +115,11 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.personRegistrySources = null
           this.study.personRegisterDataTransfers = null
           this.study.personRegisterDataTransfersOutsideEuOrEea = null
+          this.studyService.initializeProperties(this.study)
+        }
+
+        if (!(this.study.confidentialityClass === ConfidentialityClass.PARTLY_CONFIDENTIAL || ConfidentialityClass.CONFIDENTIAL)) {
+          this.study.groundsForConfidentiality = null
           this.studyService.initializeProperties(this.study)
         }
 

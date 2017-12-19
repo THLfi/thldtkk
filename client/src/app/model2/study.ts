@@ -38,6 +38,7 @@ export interface Study extends Node {
   personRegisterDataTransfers: LangValues
   personRegisterDataTransfersOutsideEuOrEea: LangValues
   confidentialityClass?: ConfidentialityClass
+  groundsForConfidentiality: LangValues
   comment?: string
 
   lastModifiedByUser?: UserInformation

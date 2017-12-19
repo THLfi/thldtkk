@@ -8,6 +8,7 @@ import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { Study } from "../../../model2/study";
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
+import { ConfidentialityClass } from '../../../model2/confidentiality-class'
 
 @Component({
   templateUrl: './study-administrative-view.component.html'
@@ -18,6 +19,8 @@ export class StudyAdministrativeViewComponent implements OnInit {
   language: string
 
   sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
+
+  confidentialityClassType = ConfidentialityClass
 
   constructor(private breadcrumbService: BreadcrumbService,
               private studyService: EditorStudyService,

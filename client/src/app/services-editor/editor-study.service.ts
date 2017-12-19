@@ -37,6 +37,7 @@ export class EditorStudyService {
       personRegistrySources: null,
       personRegisterDataTransfers: null,
       personRegisterDataTransfersOutsideEuOrEea: null,
+      groundsForConfidentiality: null,
 
       personInRoles: [],
       links: [],
@@ -60,7 +61,8 @@ export class EditorStudyService {
       'purposeOfPersonRegistry',
       'personRegistrySources',
       'personRegisterDataTransfers',
-      'personRegisterDataTransfersOutsideEuOrEea'
+      'personRegisterDataTransfersOutsideEuOrEea',
+      'groundsForConfidentiality'
     ])
 
     if (!study.population) {

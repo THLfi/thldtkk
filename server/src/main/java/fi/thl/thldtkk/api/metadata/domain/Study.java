@@ -53,6 +53,7 @@ public class Study implements NodeEntity {
   private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
   private ConfidentialityClass confidentialityClass;
+  private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -110,6 +111,7 @@ public class Study implements NodeEntity {
     this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
     toOptionalString(node.getProperties("confidentialityClass"))
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
+    this.groundsForConfidentiality = toLangValueMap(node.getProperties("groundsForConfidentiality"));
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
 
     node.getReferencesFirst("lastModifiedByUser")
@@ -279,6 +281,14 @@ public class Study implements NodeEntity {
     this.confidentialityClass = confidentialityClass;
   }
 
+  public Map<String, String> getGroundsForConfidentiality() {
+    return groundsForConfidentiality;
+  }
+
+  public void setGroundsForConfidentiality(Map<String, String> groundsForConfidentiality) {
+    this.groundsForConfidentiality = groundsForConfidentiality;
+  }
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -387,6 +397,7 @@ public class Study implements NodeEntity {
     props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
+    props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -439,6 +450,7 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegisterDataTransfers, study.personRegisterDataTransfers)
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
             && Objects.equals(confidentialityClass, study.confidentialityClass)
+            && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -481,6 +493,7 @@ public class Study implements NodeEntity {
         personRegisterDataTransfers,
         personRegisterDataTransfersOutsideEuOrEea,
         confidentialityClass,
+        groundsForConfidentiality,
         comment,
         lastModifiedByUser,
         ownerOrganization,

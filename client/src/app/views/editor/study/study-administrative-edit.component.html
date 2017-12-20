@@ -190,6 +190,60 @@
           </textarea>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>{{ 'archiving' | translate }}</h2>
+          </div>
+        </div>
+
+        <div [ngClass]="{ 'bg-danger': (formErrors.dataProcessingStartDate && formErrors.dataProcessingStartDate.length) || (formErrors.dataProcessingEndDate && formErrors.dataProcessingEndDate.length) }"
+             class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="dataProcessingStartDate">{{ 'dataProcessingStartDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="dataProcessingStartDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForDataProcessingFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="dataProcessingStartDate"
+                          name="dataProcessingStartDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.dataProcessingStartDate"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group">
+              <label for="dataProcessingEndDate">{{ 'dataProcessingEndDate' | translate }}</label>
+              <br>
+              <p-calendar [(ngModel)]="dataProcessingEndDate"
+                          dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                          monthNavigator="true"
+                          yearNavigator="true"
+                          [yearRange]="yearRangeForDataProcessingFields"
+                          showIcon="true"
+                          [locale]="dateUtils.getLocaleSettings() | async"
+                          placeholder="{{ 'date.placeholder' | translate }}"
+                          inputId="dataProcessingEndDate"
+                          name="dataProcessingEndDate">
+              </p-calendar>
+              <p *ngFor="let errorKey of formErrors.dataProcessingEndDate"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+
       </form>
 
     </div>

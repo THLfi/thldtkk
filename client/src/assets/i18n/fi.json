@@ -129,6 +129,9 @@
     "empty": "Ei määritetty"
   },
   "groundsForConfidentiality": "Salassapidon peruste",
+  "dataProcessingDuration": "Tietojenkäsittelyn kesto",
+  "dataProcessingStartDate": "Tietojenkäsittelyn aloitusajankohta",
+  "dataProcessingEndDate": "Tietojenkäsittelyn lopetusajankohta",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

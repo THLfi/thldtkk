@@ -128,14 +128,6 @@
     ]
   },
   {
-    "id": "RelationType",
-    "textAttributes": [
-      {
-        "id": "prefLabel"
-      }
-    ]
-  },
-  {
     "id": "Person",
     "textAttributes": [
       {

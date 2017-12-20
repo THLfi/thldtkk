@@ -521,26 +521,6 @@
     ]
   },
   {
-    "id": "DataSetRelation",
-    "referenceAttributes": [
-      {
-        "id": "dataSet",
-        "range": {
-          "id": "DataSet"
-        }
-      },
-      {
-        "id": "relationType",
-        "range": {
-          "id": "RelationType",
-          "graph": {
-            "code": "common-graph"
-          }
-        }
-      }
-    ]
-  },
-  {
     "id": "PersonInRole",
     "textAttributes": [
       {

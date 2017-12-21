@@ -189,6 +189,7 @@ h3 {
 }
 
 .main-container.catalog {
+  min-height: 300px;
   background-color: white;
 }
 .main-container.catalog.container {

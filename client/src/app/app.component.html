@@ -46,4 +46,10 @@
   <router-outlet></router-outlet>
 </div>
 
+<footer *ngIf="currentPageType === PageIdentifier.CATALOG">
+{{ 'catalog.footer.infoText' | translate }}
+<span aria-hidden="true">|</span>
+{{ 'catalog.footer.contactEmail' | translate }}
+</footer>
+
 </div>

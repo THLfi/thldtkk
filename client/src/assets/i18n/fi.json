@@ -236,6 +236,10 @@
       "defaultInstanceVariableGroupName": "Muuttujat ilman muuttujaryhmää",
       "instanceVariableFilterRemoveAllSelections":"Poista valinnat",
       "instanceVariableFilterSelectAll":"Valitse kaikki"
+    },
+    "footer": {
+      "infoText": "Katalogi on kehitetty THL:n, Tilastokeskuksen, Tietoarkiston ja Sitran yhteistyönä.",
+      "contactEmail": "info@aineistokatalogi.fi"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",

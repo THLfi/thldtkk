@@ -1,5 +1,5 @@
 .hero {
-  height: 225px;
+  min-height: 225px;
   margin-top: -40px;
   margin-bottom: 58px;
   padding-top: 72px;
@@ -26,6 +26,7 @@ h1 {
 }
 
 .lead-text {
+  margin: 0;
   color: #fff;
   font-size: 1.35em;
   font-weight: 200;
@@ -99,7 +100,7 @@ h2 {
 
 @media (max-width: 767px) {
   .hero {
-    height: 153px;
+    min-height: 153px;
     margin-bottom: 36px;
     padding-top: 36px;
     padding-bottom: 36px;

@@ -157,6 +157,13 @@
   "dataProcessingDuration": "Tietojenkäsittelyn kesto",
   "dataProcessingStartDate": "Tietojenkäsittelyn aloitusajankohta",
   "dataProcessingEndDate": "Tietojenkäsittelyn lopetusajankohta",
+  "retentionPolicy" : {
+    "label": "Säilyttäminen",
+    "UNDEFINED": "Ei määritetty",
+    "PERMANENT": "Pysyvä",
+    "DEFINITE_DURATION": "Määräaikaisesti",
+    "PARTIALLY_PERMANENT_OR_DEFINITE_DURATION": "Osittain pysyvästi tai määräaikaisesti"
+  },
   "retentionPeriod": "Säilytysaika",
   "noRetentionPeriod": "Säilytysaikaa ei määritetty",
   "groundsForRetention": "Säilytysajan peruste",

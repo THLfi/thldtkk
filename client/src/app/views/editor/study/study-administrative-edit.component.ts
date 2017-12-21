@@ -3,7 +3,6 @@ import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
-
 import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
 import {DateUtils} from '../../../utils/date-utils'
@@ -13,6 +12,7 @@ import {LangPipe} from '../../../utils/lang.pipe'
 import {PrincipleForDigitalSecurity} from '../../../model2/principle-for-digital-security'
 import {PrincipleForPhysicalSecurity} from '../../../model2/principle-for-physical-security'
 import {SelectItem} from 'primeng/components/common/api'
+import {RetentionPolicy} from '../../../model2/retention-policy';
 import {Study} from '../../../model2/study';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 
@@ -27,6 +27,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     yearRangeForDataProcessingFields: string =  ('1900:' + (new Date().getFullYear() + 20))
     dataProcessingStartDate: Date
     dataProcessingEndDate: Date
+
+    retentionPolicies: SelectItem[] = []
 
     @ViewChild('studyForm') studyForm: NgForm
     currentForm: NgForm
@@ -77,6 +79,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
               return { label: translations[key], value: key }
             })
         })
+
+      this.populateRetentionPolicies();
     }
 
     private getStudy() {
@@ -110,6 +114,25 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.dataProcessingEndDate = new Date(study.dataProcessingEndDate)
         }
         return study;
+    }
+
+    private populateRetentionPolicies() {
+      for(let policy in RetentionPolicy) {
+        this.translateService.get('retentionPolicy.'+policy).subscribe(policyLabel => {
+          if(policy == RetentionPolicy.UNDEFINED.toString()) {
+            this.retentionPolicies.push({
+                label: policyLabel,
+                value: null
+              })
+          }
+          else {
+            this.retentionPolicies.push({
+              label: policyLabel,
+              value: policy
+            })
+          }
+        })
+      }
     }
 
     ngAfterContentChecked(): void {

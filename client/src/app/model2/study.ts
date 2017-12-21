@@ -13,6 +13,7 @@ import {Population} from './population';
 import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
 import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
 import {SecurityClassification} from './security-classification'
+import {RetentionPolicy} from './retention-policy'
 import {StudyGroup} from './study-group'
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
@@ -47,6 +48,7 @@ export interface Study extends Node {
   principlesForDigitalSecurity: PrincipleForDigitalSecurity[]
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
+  retentionPolicy?: RetentionPolicy
   retentionPeriod?: LangValues
   groundsForRetention?: LangValues
   comment?: string

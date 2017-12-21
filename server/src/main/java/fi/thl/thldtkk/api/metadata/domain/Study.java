@@ -61,6 +61,7 @@ public class Study implements NodeEntity {
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
+  private RetentionPolicy retentionPolicy;
   private Map<String, String> retentionPeriod = new LinkedHashMap<>();
   private Map<String, String> groundsForRetention = new LinkedHashMap<>();
   private String comment;
@@ -130,6 +131,8 @@ public class Study implements NodeEntity {
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
+    toOptionalString(node.getProperties("retentionPolicy"))
+      .ifPresent(rp -> this.retentionPolicy = RetentionPolicy.valueOf(rp));
     this.retentionPeriod = toLangValueMap(node.getProperties("retentionPeriod"));
     this.groundsForRetention = toLangValueMap(node.getProperties("groundsForRetention"));
 
@@ -343,6 +346,14 @@ public class Study implements NodeEntity {
     return retentionPeriod;
   }
 
+  public Optional<RetentionPolicy> getRetentionPolicy() {
+    return Optional.ofNullable(retentionPolicy);
+  }
+
+  public void setRetentionPolicy(RetentionPolicy retentionPolicy) {
+    this.retentionPolicy = retentionPolicy;
+  }
+
   public void setRetentionPeriod(Map<String, String> retentionPeriod) {
     this.retentionPeriod = retentionPeriod;
   }
@@ -469,6 +480,7 @@ public class Study implements NodeEntity {
     props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
+    getRetentionPolicy().ifPresent(rp -> props.put("retentionPolicy", toPropertyValue(rp.toString())));
     props.putAll("retentionPeriod", toPropertyValues(retentionPeriod));
     props.putAll("groundsForRetention", toPropertyValues(groundsForRetention));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
@@ -529,6 +541,7 @@ public class Study implements NodeEntity {
             && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
+            && Objects.equals(retentionPolicy, study.retentionPolicy)
             && Objects.equals(retentionPeriod, study.retentionPeriod)
             && Objects.equals(groundsForRetention, study.groundsForRetention)
             && Objects.equals(comment, study.comment)
@@ -578,6 +591,7 @@ public class Study implements NodeEntity {
         principlesForDigitalSecurity,
         dataProcessingStartDate,
         dataProcessingEndDate,
+        retentionPolicy,
         retentionPeriod,
         groundsForRetention,
         comment,

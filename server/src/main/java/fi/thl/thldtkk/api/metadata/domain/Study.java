@@ -58,6 +58,8 @@ public class Study implements NodeEntity {
   private SecurityClassification securityClassification;
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
+  private Map<String, String> retentionPeriod = new LinkedHashMap<>();
+  private Map<String, String> groundsForRetention = new LinkedHashMap<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -121,6 +123,8 @@ public class Study implements NodeEntity {
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
+    this.retentionPeriod = toLangValueMap(node.getProperties("retentionPeriod"));
+    this.groundsForRetention = toLangValueMap(node.getProperties("groundsForRetention"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -312,6 +316,22 @@ public class Study implements NodeEntity {
     return Optional.ofNullable(dataProcessingEndDate);
   }
 
+  public Map<String, String> getRetentionPeriod() {
+    return retentionPeriod;
+  }
+
+  public void setRetentionPeriod(Map<String, String> retentionPeriod) {
+    this.retentionPeriod = retentionPeriod;
+  }
+
+  public Map<String, String> getGroundsForRetention() {
+    return groundsForRetention;
+  }
+
+  public void setGroundsForRetention(Map<String, String> groundsForRetention) {
+    this.groundsForRetention = groundsForRetention;
+  }
+  
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -424,6 +444,8 @@ public class Study implements NodeEntity {
     getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
+    props.putAll("retentionPeriod", toPropertyValues(retentionPeriod));
+    props.putAll("groundsForRetention", toPropertyValues(groundsForRetention));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -480,6 +502,8 @@ public class Study implements NodeEntity {
             && Objects.equals(securityClassification, study.securityClassification)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
+            && Objects.equals(retentionPeriod, study.retentionPeriod)
+            && Objects.equals(groundsForRetention, study.groundsForRetention)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -525,6 +549,8 @@ public class Study implements NodeEntity {
         securityClassification,
         dataProcessingStartDate,
         dataProcessingEndDate,
+        retentionPeriod,
+        groundsForRetention,
         comment,
         lastModifiedByUser,
         ownerOrganization,

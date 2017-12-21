@@ -302,6 +302,34 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="retentionPeriod" translate="retentionPeriod"></label>
+              <textarea [(ngModel)]="study.retentionPeriod[language]"
+                        thlAutogrow
+                        id="retentionPeriod"
+                        name="retentionPeriod"
+                        class="form-control"
+                        rows="4">
+              </textarea>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="groundsForRetention" translate="groundsForRetention"></label>
+              <textarea [(ngModel)]="study.groundsForRetention[language]"
+                        thlAutogrow
+                        id="groundsForRetention"
+                        name="groundsForRetention"
+                        class="form-control"
+                        rows="4">
+              </textarea>
+            </div>
+          </div>
+        </div>
+
       </form>
 
     </div>

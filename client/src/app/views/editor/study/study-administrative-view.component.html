@@ -154,6 +154,34 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'retentionPeriod' | translate }}</strong></p>
+          <p>
+            <ng-container *ngIf="(study.retentionPeriod | lang).length; else noRetentionPeriod;">
+              {{ study.retentionPeriod | lang }}
+            </ng-container>
+            <ng-template #noRetentionPeriod>
+              {{ 'noRetentionPeriod' | translate }}
+            </ng-template>
+          </p>
+       </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'groundsForRetention' | translate }}</strong></p>
+          <p>
+            <ng-container *ngIf="(study.groundsForRetention | lang).length; else noGroundsForRetention;">
+              {{ study.groundsForRetention | lang }}
+            </ng-container>
+            <ng-template #noGroundsForRetention>
+              {{ 'noGroundsForRetention' | translate }}
+            </ng-template>
+          </p>
+       </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/edit-administrative-information" 
                     class="btn btn-default pull-right">

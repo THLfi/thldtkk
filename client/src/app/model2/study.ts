@@ -43,6 +43,8 @@ export interface Study extends Node {
   securityClassification?: SecurityClassification,
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
+  retentionPeriod?: LangValues
+  groundsForRetention?: LangValues
   comment?: string
 
   lastModifiedByUser?: UserInformation

@@ -1,5 +1,4 @@
 {
-  "datasetCatalog": "Aineistokatalogi",
   "beta": "BETA",
   "dataset": "Dataset",
   "datasets": "Datasetit",
@@ -187,6 +186,7 @@
   "newUnit": "Uusi mittayksikkö",
   "noPersonRegistry": "Ei määritetty",
   "catalog": {
+    "logoText": "Aineistokatalogi",
     "personInRoles": "Yhteystiedot",
     "collectionDate": "Keruuajankohta",
     "searchInstanceVariable": {
@@ -199,9 +199,13 @@
       "searchSummary": "Löytyi {{resultCount}} muuttujaa haulla "
     },
     "frontpage": {
-      "studies": "Aineistot",
-      "searchVariables": "Hae muuttujia!",
-      "searchVariableInfo": "Muuttujia voit hakea nimen tai kuvauksen perusteella - kokeile esim. sukupuoli",
+      "mainHeader": "Aineistokatalogi",
+      "leadText": "Aineistokuvaukset yhdestä paikasta.",
+      "latestStudies": "Uusimmat aineistot",
+      "allStudiesButton": "Kaikki aineistokuvaukset",
+      "searchVariables": "Hae muuttujia",
+      "searchVariableInfo": "Hae muuttujia nimen, kuvauksen tai asiasanan perusteella. Kokeile esim. sukupuoli.",
+      "searchVariablePlaceholder": "Kirjoita hakusana",
       "noStudies": "Aineistoja ei löytynyt"
     },
     "searchVariable":{

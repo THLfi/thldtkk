@@ -1,87 +1,124 @@
-.frontpage-studies h1 {
-    font-size: 1.5em;
-    font-weight: bold;
-    color:  #01A197;
+.hero {
+  height: 225px;
+  margin-top: -40px;
+  margin-bottom: 58px;
+  padding-top: 72px;
+  padding-bottom: 72px;
+  background: #01837A url('/assets/frontpage-hero-image.png') no-repeat;
+  background-position-y: bottom;
 }
 
-.frontpage-studies ul {
-    padding-left: 0;
+.special-width-container {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
-.frontpage-studies li {
-    list-style: none;
-    text-indent: -0.9em;
-    padding-left: 0.9em;
-    font-size: 1.1em;
-    padding-bottom: 0.5em;
+h1 {
+  color: #fff;
+  font-size: 2.3em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.13);
 }
 
-.frontpage-studies li::before {
-    content: ">";
+.lead-text {
+  color: #fff;
+  font-size: 1.35em;
+  font-weight: 200;
+  line-height: 29px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.14);
 }
 
-.frontpage-studies li a {
-    text-decoration: underline;
+h2 {
+  margin-top: 0;
+  margin-bottom: 36px;
+  font-size: 1.45em;
+  color: #202020;
 }
 
-.frontpage-variable-search {
-    background-color: #01A197;
+.latest-studies ul {
+  padding-left: 0;
 }
 
-.frontpage-variable-search h1 {
-    margin-top: 1em;
-    font-size: 1.5em;
-    color: white;
-    font-weight: 700;
+.latest-studies li {
+  padding-bottom: 24px;
+  padding-left: 0;
+  font-size: 1.15em;
+  list-style: none;
 }
 
-.frontpage-variable-search p {
-    font-size: 0.9em;
-    color: white;
-    opacity: 0.9;
-    padding-bottom: 5em;
+.latest-studies li::before {
+  content: ">";
 }
 
-.frontpage-variable-search input {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-    border-bottom-color: white;
-
-    background-color: #01A197;
-    box-shadow: none;
-    color: white;
+.latest-studies li,
+.latest-studies li a {
+  color: #01837A;
 }
 
-.frontpage-variable-search .input-group {
-     margin-bottom: 1em;
+.all-studies-button {
+  padding: 28px;
+  border: 1px solid #007169;
+  border-radius: 2px;
+  background-color: #01837A;
+  color: #fff;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 24px;
 }
 
-.frontpage-variable-search .search-icon-background {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-    border-bottom-color: white;
-
-    background-color: #01A197;
-
-    padding-bottom: 0.3em;
+.instance-variable-search p {
+  margin-bottom: 72px;
+  font-size: 1.15em;
 }
 
-.frontpage-variable-search .search-icon {
-        color: white;
-        font-size: 1.5em;
+.instance-variable-search input,
+.search-button {
+  padding-bottom: 10px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-color: #202020;
+  border-radius: 0;
+  box-shadow: none;
+  color: #202020;
 }
 
-.search-box-arrow {
-  width: 0;
-  height: 0;
-  border-left: 2em solid transparent;
-  border-bottom: 2em solid transparent;
-  border-right: 2em solid #01A197;
-  margin-right: -1.08em;
-  margin-bottom: -1.9em;
-  float: right;
+.instance-variable-search input {
+  padding-left: 1px;
+  font-size: 1.15em;
+}
+
+.search-button {
+  height: 34px;
+}
+
+@media (max-width: 767px) {
+  .hero {
+    height: 153px;
+    margin-bottom: 36px;
+    padding-top: 36px;
+    padding-bottom: 36px;
+  }
+
+  .special-width-container {
+    padding-left: 2em;
+    padding-right: 5em;
+  }
+
+  h2 {
+    margin-bottom: 24px;
+  }
+
+  .latest-studies {
+    margin-bottom: 36px;
+  }
+
+  .instance-variable-search p {
+    margin-bottom: 36px;
+  }
 }

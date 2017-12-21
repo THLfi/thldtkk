@@ -1,34 +1,53 @@
-<div class="container">
+<section class="hero special-width-container">
   <div class="row">
-    <div class="frontpage-studies col-xs-12 col-sm-offset-2 col-sm-4">
-      <h1>{{'catalog.frontpage.studies' | translate | uppercase}}</h1>
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+      <h1>{{ 'catalog.frontpage.mainHeader' | translate }}</h1>
+      <p class="lead-text">{{ 'catalog.frontpage.leadText' | translate }}</p>
+    </div>
+  </div>
+</section>
+<section class="after-hero special-width-container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-2 latest-studies">
+      <h2>{{ 'catalog.frontpage.latestStudies' | translate }}</h2>
       <ng-container *ngIf="!isLoadingStudies else loadingStudies;">
-        <ul>
-          <li *ngFor="let study of studies">
-            <a routerLink="/catalog/studies/{{ study.id }}">{{study.prefLabel | lang}}</a>
-          </li>
-        </ul>
-        <div *ngIf="!studies.length">{{'catalog.frontpage.noStudies' | translate}}</div>
+        <ng-container *ngIf="studies.length; else noStudies;">
+          <ul>
+            <li *ngFor="let study of studies">
+              <a routerLink="/catalog/studies/{{ study.id }}">{{study.prefLabel | lang}}</a>
+            </li>
+          </ul>
+          <button routerLink="/catalog/studies"
+                  class="btn btn-default all-studies-button">
+            {{ 'catalog.frontpage.allStudiesButton' | translate | uppercase }}
+          </button>
+        </ng-container>
+        <ng-template #noStudies>
+          <p>{{ 'catalog.frontpage.noStudies' | translate }}</p>
+        </ng-template>
       </ng-container>
       <ng-template #loadingStudies>
         <thl-spinner></thl-spinner>
       </ng-template>
     </div>
-    <div class="frontpage-variable-search col-xs-12 col-sm-4">
-      <h1>{{'catalog.frontpage.searchVariables' | translate | uppercase}}</h1>
+    <div class="col-xs-12 col-sm-4 instance-variable-search">
+      <h2>{{ 'catalog.frontpage.searchVariables' | translate }}</h2>
+      <p>{{ 'catalog.frontpage.searchVariableInfo' | translate }}</p>
       <div class="input-group">
-        <input type="text" class="form-control" [(ngModel)]="searchText"
-               (keyup.enter)="searchVariables(searchText)">
+        <input [(ngModel)]="searchText"
+               (keyup.enter)="searchVariables(searchText)"
+               placeholder="{{ 'catalog.frontpage.searchVariablePlaceholder' | translate }}"
+               type="text"
+               class="form-control">
         <span class="input-group-btn">
-          <button class="btn btn-default search-icon-background"
-                  (click)="searchVariables(searchText)"
-                  type="button">
+          <button (click)="searchVariables(searchText)"
+                  type="button"
+                  class="btn btn-default search-button">
             <i class="fa fa-search search-icon" aria-hidden="true"></i>
+            <span class="sr-only">{{ 'search' | translate }}</span>
           </button>
         </span>
       </div>
-      <p>{{'catalog.frontpage.searchVariableInfo' | translate}}</p>
-      <div class="search-box-arrow"></div>
     </div>
   </div>
-</div>
+</section>

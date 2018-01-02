@@ -112,6 +112,10 @@
   columns: 3;
 }
 
+.concepts .items p {
+  margin-bottom: -0.3em;
+}
+
 .instance-variable-filter-action-bar {
   background-color: #F3F3F3;
   margin-top: 1em;

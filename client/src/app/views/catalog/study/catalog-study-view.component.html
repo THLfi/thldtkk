@@ -93,7 +93,7 @@
         </div>
       </div>
 
-      <div class="row detail-highlights">
+      <div *ngIf="highlights.length" class="row detail-highlights">
         <ng-container *ngFor="let highlight of highlights; first as isFirstHighlightInRow">
           <div class="col-sm-4" [ngClass]="{'col-sm-offset-4':highlights.length == 1, 'col-sm-offset-2': isFirstHighlightInRow && highlights.length == 2 }">
             <div class="detail-highlight" [ngSwitch]="highlight">
@@ -150,13 +150,18 @@
           <div class="concepts">
             <h2>{{ 'concepts' | translate }}</h2>
             <div class="items">
-              <p *ngFor="let concept of study.conceptsFromScheme" pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
-                tooltipPosition="bottom">
-                {{concept.prefLabel | lang}}
-              </p>
-              <p *ngFor="let concept of study.freeConcepts[language].split(';')">
-                {{ concept.trim() }}
-              </p>
+              <ng-container *ngIf="study.conceptsFromScheme.length">
+                <p *ngFor="let concept of study.conceptsFromScheme" 
+                   pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
+                   tooltipPosition="bottom">
+                  {{concept.prefLabel | lang}}
+                </p>
+              </ng-container>
+              <ng-container *ngIf="study.freeConcepts | lang">
+                <p *ngFor="let concept of study.freeConcepts[language].split(';')">
+                  {{ concept.trim() }}
+                </p>
+              </ng-container>
             </div>
           </div>
         </div>

@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToStringCollection;
 import static java.util.Objects.requireNonNull;
 
 public class Organization implements NodeEntity {
@@ -44,7 +45,7 @@ public class Organization implements NodeEntity {
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
     this.addressForRegistryPolicy = toLangValueMap(node.getProperties("addressForRegistryPolicy"));
-    this.virtuIds = PropertyMappings.valuesToCollection(node.getProperties("virtuIds"), ArrayList::new);
+    this.virtuIds = valuesToStringCollection(node.getProperties("virtuIds"), ArrayList::new);
     this.phoneNumberForRegistryPolicy = PropertyMappings.toString(node.getProperties("phoneNumberForRegistryPolicy"));
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));

@@ -248,6 +248,32 @@
 
         </ng-container>
 
+        <div class="form-group">
+          <label for="principlesForPhysicalSecurity" translate="principlesForPhysicalSecurity.label"></label>
+          <br>
+          <p-multiSelect [(ngModel)]="study.principlesForPhysicalSecurity"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="principlesForPhysicalSecurityItems"
+                         [filter]="false"
+                         defaultLabel="{{ 'selectPrinciples' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
+                         inputId="principlesForPhysicalSecurity">
+          </p-multiSelect>
+        </div>
+
+        <div class="form-group">
+          <label for="principlesForDigitalSecurity" translate="principlesForDigitalSecurity.label"></label>
+          <br>
+          <p-multiSelect [(ngModel)]="study.principlesForDigitalSecurity"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="principlesForDigitalSecurityItems"
+                         [filter]="false"
+                         defaultLabel="{{ 'selectPrinciples' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
+                         inputId="principlesForDigitalSecurity">
+          </p-multiSelect>
+        </div>
+
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'archiving' | translate }}</h2>

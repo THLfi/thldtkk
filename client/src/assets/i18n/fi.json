@@ -136,6 +136,24 @@
     "IV": "st IV",
     "empty": "Ei määritetty"
   },
+  "principlesForPhysicalSecurity": {
+    "label": "Fyysisen suojauksen periaatteet",
+    "LOCKED_SPACE": "Lukittu tila"
+  },
+  "principlesForDigitalSecurity": {
+    "label": "Digitaalisen suojauksen periaatteet",
+    "USERNAME": "Käyttäjätunnus",
+    "PASSWORD": "Salasana",
+    "LOGGING": "Käytön rekisteröinti",
+    "PHYSICAL_ACCESS_CONTROL": "Kulunvalvonta",
+    "PSEUDONYMIZATION": "Pseudonymisointi",
+    "ANONYMIZATION": "Anonymisointi",
+    "REMOVAL_OF_IDENTIFIABLE_INFORMATION": "Tunnisteiden poisto",
+    "MULTI_FACTOR_AUTHENTICATION": "Monivaihetunnistus",
+    "ENCRYPTION_OF_INFORMATION": "Aineiston erillinen salaus"
+  },
+  "selectPrinciples": "Valitse periaatteet",
+  "amountPrinciplesSelected": "valittua periaatetta",
   "dataProcessingDuration": "Tietojenkäsittelyn kesto",
   "dataProcessingStartDate": "Tietojenkäsittelyn aloitusajankohta",
   "dataProcessingEndDate": "Tietojenkäsittelyn lopetusajankohta",

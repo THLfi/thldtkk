@@ -194,12 +194,10 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <ng-container *ngIf="(dataset.datasetTypes && dataset.datasetTypes.length)">
-
-            <p><strong class="field-label">{{ 'datasetType' | translate }}</strong></p>
-            <p *ngFor="let datasetType of dataset.datasetTypes">{{datasetType.prefLabel | lang }}</p>
-
-          </ng-container>
+          <p><strong class="field-label">{{ 'datasetType' | translate }}</strong></p>
+          <ul *ngIf="dataset.datasetTypes && dataset.datasetTypes.length">
+            <li *ngFor="let datasetType of dataset.datasetTypes">{{ datasetType.prefLabel | lang }}</li>
+          </ul>
         </div>
       </div>
 

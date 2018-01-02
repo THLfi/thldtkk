@@ -26,6 +26,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocal
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toOptionalString;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToEnumCollection;
 import static java.util.Objects.requireNonNull;
 
 public class Study implements NodeEntity {
@@ -56,6 +57,8 @@ public class Study implements NodeEntity {
   private ConfidentialityClass confidentialityClass;
   private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
   private SecurityClassification securityClassification;
+  private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
+  private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
   private Map<String, String> retentionPeriod = new LinkedHashMap<>();
@@ -120,6 +123,10 @@ public class Study implements NodeEntity {
     this.groundsForConfidentiality = toLangValueMap(node.getProperties("groundsForConfidentiality"));
     toOptionalString(node.getProperties("securityClassification"))
       .ifPresent(sc -> this.securityClassification = SecurityClassification.valueOf(sc));
+    this.principlesForPhysicalSecurity = valuesToEnumCollection(node.getProperties("principlesForPhysicalSecurity"),
+      PrincipleForPhysicalSecurity.class, ArrayList::new);
+    this.principlesForDigitalSecurity = valuesToEnumCollection(node.getProperties("principlesForDigitalSecurity"),
+      PrincipleForDigitalSecurity.class, ArrayList::new);
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
@@ -308,6 +315,22 @@ public class Study implements NodeEntity {
     this.securityClassification = securityClassification;
   }
 
+  public List<PrincipleForPhysicalSecurity> getPrinciplesForPhysicalSecurity() {
+    return principlesForPhysicalSecurity;
+  }
+
+  public void setPrinciplesForPhysicalSecurity(List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity) {
+    this.principlesForPhysicalSecurity = principlesForPhysicalSecurity;
+  }
+
+  public List<PrincipleForDigitalSecurity> getPrinciplesForDigitalSecurity() {
+    return principlesForDigitalSecurity;
+  }
+
+  public void setPrinciplesForDigitalSecurity(List<PrincipleForDigitalSecurity> principlesForDigitalSecurity) {
+    this.principlesForDigitalSecurity = principlesForDigitalSecurity;
+  }
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -331,7 +354,7 @@ public class Study implements NodeEntity {
   public void setGroundsForRetention(Map<String, String> groundsForRetention) {
     this.groundsForRetention = groundsForRetention;
   }
-  
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -442,6 +465,8 @@ public class Study implements NodeEntity {
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
     props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
     getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
+    props.putAll("principlesForPhysicalSecurity", PropertyMappings.enumsToPropertyValues(principlesForPhysicalSecurity));
+    props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     props.putAll("retentionPeriod", toPropertyValues(retentionPeriod));
@@ -500,6 +525,8 @@ public class Study implements NodeEntity {
             && Objects.equals(confidentialityClass, study.confidentialityClass)
             && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
             && Objects.equals(securityClassification, study.securityClassification)
+            && Objects.equals(principlesForPhysicalSecurity, study.principlesForPhysicalSecurity)
+            && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(retentionPeriod, study.retentionPeriod)
@@ -547,6 +574,8 @@ public class Study implements NodeEntity {
         confidentialityClass,
         groundsForConfidentiality,
         securityClassification,
+        principlesForPhysicalSecurity,
+        principlesForDigitalSecurity,
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPeriod,

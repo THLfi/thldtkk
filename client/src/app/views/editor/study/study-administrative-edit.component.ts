@@ -1,17 +1,18 @@
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  Component, OnInit, ViewChild,
-  AfterContentChecked
-} from '@angular/core'
+import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
-import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
-import { DateUtils } from '../../../utils/date-utils'
+
+import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
+import {DateUtils} from '../../../utils/date-utils'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
+import {PrincipleForDigitalSecurity} from '../../../model2/principle-for-digital-security'
+import {PrincipleForPhysicalSecurity} from '../../../model2/principle-for-physical-security'
+import {SelectItem} from 'primeng/components/common/api'
 import {Study} from '../../../model2/study';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 
@@ -30,7 +31,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     @ViewChild('studyForm') studyForm: NgForm
     currentForm: NgForm
     formErrors: any = {}
-    
+
     language: string;
 
     savingInProgress: boolean = false
@@ -39,6 +40,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
     confidentialityClassType = ConfidentialityClass
+
+    principlesForPhysicalSecurityItems: SelectItem[] = []
+    principlesForDigitalSecurityItems: SelectItem[] = []
 
     constructor(
         private studyService: EditorStudyService,
@@ -56,7 +60,23 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
 
     ngOnInit() {
-        this.getStudy();
+      this.getStudy()
+
+      this.translateService.get('principlesForPhysicalSecurity')
+        .subscribe(translations => {
+          this.principlesForPhysicalSecurityItems = Object.keys(PrincipleForPhysicalSecurity)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
+
+      this.translateService.get('principlesForDigitalSecurity')
+        .subscribe(translations => {
+          this.principlesForDigitalSecurityItems = Object.keys(PrincipleForDigitalSecurity)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
     }
 
     private getStudy() {

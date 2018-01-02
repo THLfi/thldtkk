@@ -38,6 +38,8 @@ export class EditorStudyService {
       personRegisterDataTransfers: null,
       personRegisterDataTransfersOutsideEuOrEea: null,
       groundsForConfidentiality: null,
+      principlesForPhysicalSecurity: [],
+      principlesForDigitalSecurity: [],
 
       personInRoles: [],
       links: [],

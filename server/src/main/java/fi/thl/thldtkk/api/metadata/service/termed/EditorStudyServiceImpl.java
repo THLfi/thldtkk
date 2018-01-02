@@ -260,6 +260,13 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       study.setSecurityClassification(null);
     }
 
+    if (study.getPrinciplesForPhysicalSecurity().size() > 1) {
+      Collections.sort(study.getPrinciplesForPhysicalSecurity());
+    }
+    if (study.getPrinciplesForDigitalSecurity().size() > 1) {
+      Collections.sort(study.getPrinciplesForDigitalSecurity());
+    }
+
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {

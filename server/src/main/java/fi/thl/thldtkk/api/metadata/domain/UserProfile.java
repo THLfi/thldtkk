@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToCollection;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToStringCollection;
 import static java.util.Objects.requireNonNull;
 
 public class UserProfile {
@@ -63,8 +63,8 @@ public class UserProfile {
     this.firstName = PropertyMappings.toString(node.getProperties("firstName"));
     this.lastName = PropertyMappings.toString(node.getProperties("lastName"));
     this.email = PropertyMappings.toString(node.getProperties("email"));
-    this.externalIds = valuesToCollection(node.getProperties("externalIds"), LinkedHashSet::new);
-    this.roles = valuesToCollection(node.getProperties("roles"), LinkedHashSet::new);
+    this.externalIds = valuesToStringCollection(node.getProperties("externalIds"), LinkedHashSet::new);
+    this.roles = valuesToStringCollection(node.getProperties("roles"), LinkedHashSet::new);
     this.organizations = node.getReferences("organizations")
       .stream()
       .map(organizationNode -> new Organization(organizationNode))

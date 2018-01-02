@@ -1,14 +1,14 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from "@ngx-translate/core";
-import { Title } from '@angular/platform-browser'
+import { ActivatedRoute } from '@angular/router'
+import { Component, OnInit } from '@angular/core'
 import { LangPipe } from '../../../utils/lang.pipe'
+import { TranslateService } from '@ngx-translate/core'
+import { Title } from '@angular/platform-browser'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
-import { Study } from "../../../model2/study";
-import { EditorStudyService } from '../../../services-editor/editor-study.service'
-import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 import { ConfidentialityClass } from '../../../model2/confidentiality-class'
+import { EditorStudyService } from '../../../services-editor/editor-study.service'
+import { Study } from '../../../model2/study'
+import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 
 @Component({
   templateUrl: './study-administrative-view.component.html'
@@ -32,7 +32,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getStudy();
+    this.getStudy()
   }
 
   getStudy() {
@@ -52,6 +52,5 @@ export class StudyAdministrativeViewComponent implements OnInit {
       this.titleService.setTitle(translatedLabel + " - " + bareTitle)
     }
   }
-
 
 }

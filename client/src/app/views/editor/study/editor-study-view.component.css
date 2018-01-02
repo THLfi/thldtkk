@@ -1,3 +1,7 @@
+.label {
+  font-size: 1.1em;
+}
+
 .btn-publish,
 .btn-withdraw {
   margin-left: 1em;

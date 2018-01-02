@@ -10,6 +10,8 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
 import {Population} from './population';
+import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
+import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
 import {SecurityClassification} from './security-classification'
 import {StudyGroup} from './study-group'
 import {UnitType} from './unit-type';
@@ -41,6 +43,8 @@ export interface Study extends Node {
   confidentialityClass?: ConfidentialityClass
   groundsForConfidentiality: LangValues
   securityClassification?: SecurityClassification,
+  principlesForPhysicalSecurity: PrincipleForPhysicalSecurity[]
+  principlesForDigitalSecurity: PrincipleForDigitalSecurity[]
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
   retentionPeriod?: LangValues

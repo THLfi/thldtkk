@@ -72,6 +72,12 @@
         "id": "securityClassification"
       },
       {
+        "id": "principlesForPhysicalSecurity"
+      },
+      {
+        "id": "principlesForDigitalSecurity"
+      },
+      {
         "id": "dataProcessingStartDate",
         "regex": "^\\d{4}-\\d{2}-\\d{2}$"
       },

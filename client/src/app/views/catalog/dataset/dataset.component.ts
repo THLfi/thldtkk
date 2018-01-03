@@ -234,7 +234,7 @@ export class DatasetComponent implements OnInit {
   resolveUnitTypeLabelLength() {
     let unitTypeLabel: string = this.dataset.unitType ? 
       this.langPipe.transform(this.dataset.unitType.prefLabel) :
-      this.langPipe.transform(this.study.unitType.prefLabel)
+      this.study.unitType ? this.langPipe.transform(this.study.unitType.prefLabel) : ""
 
     this.unitTypeLabelFontResizeThresholdExceeded = unitTypeLabel && unitTypeLabel.length > this.secondaryHiglightFontResizeThreshold ? true : false
   }

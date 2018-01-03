@@ -51,6 +51,10 @@
   font-size: 3em;
 }
 
+.detail-highlight .icon-svg {
+  padding-top: 1em;
+}
+
 .detail-highlight .caption {
   margin-top: -0.6em;
 }
@@ -75,8 +79,7 @@
 }
 
 .concepts .items p {
-  margin-bottom: 0;
-  line-height: 1em;
+  margin-bottom: -0.3em;
 }
 
 .datasets {

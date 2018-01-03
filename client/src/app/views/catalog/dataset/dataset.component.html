@@ -93,7 +93,7 @@
         </div>
       </div>
 
-      <div class="row primary-highlights">
+      <div class="row primary-highlights" *ngIf="primaryHighlights.length" >
         <ng-container *ngFor="let highlight of primaryHighlights; first as isFirstHighlightInRow">
           <div  class="col-sm-4" [ngClass]="{ 'col-sm-offset-4': primaryHighlights.length == 1,  'col-sm-offset-2': isFirstHighlightInRow && primaryHighlights.length == 2 }">
 
@@ -146,7 +146,7 @@
         </ng-container>
       </div>
 
-      <div class="row secondary-highlights">
+      <div class="row secondary-highlights" *ngIf="secondaryHighlights.length">
         <ng-container *ngFor="let highlight of secondaryHighlights; first as isFirstHighlightInRow">
           <div class="col-sm-4" [ngClass]="{ 'col-sm-offset-4':secondaryHighlights.length == 1, 'col-sm-offset-2': isFirstHighlightInRow && secondaryHighlights.length == 2 }">
             <div class="secondary-highlight" [ngSwitch]="highlight">
@@ -189,29 +189,31 @@
         </ng-container>
       </div>
 
-      <div class="row minor-highlights">
-        <ng-container *ngIf="dataset.population">
-          <div *ngIf="dataset.population.prefLabel | lang" class="col-xs-12">
-            <div>
-              <h2 class="minor-highlight-heading">{{ 'population' | translate }}:</h2>
-              {{ dataset.population.prefLabel | lang }}
-            </div>
+      <div class="row minor-highlights"
+           *ngIf="dataset.population && ((dataset.population.prefLabel | lang)
+                  || (dataset.population.sampleSize | lang) 
+                  || (dataset.population.loss | lang))">
+                  
+        <div *ngIf="dataset.population.prefLabel | lang" class="col-xs-12">
+          <div>
+            <h2 class="minor-highlight-heading">{{ 'population' | translate }}:</h2>
+            {{ dataset.population.prefLabel | lang }}
           </div>
+        </div>
 
-          <div *ngIf="dataset.population.sampleSize | lang" class="col-xs-12">
-            <div>
-              <h2 class="minor-highlight-heading">{{ 'sample' | translate }}:</h2>
-              {{ dataset.population.sampleSize | lang }}
-            </div>
+        <div *ngIf="dataset.population.sampleSize | lang" class="col-xs-12">
+          <div>
+            <h2 class="minor-highlight-heading">{{ 'sample' | translate }}:</h2>
+            {{ dataset.population.sampleSize | lang }}
           </div>
+        </div>
 
-          <div *ngIf="dataset.population.loss | lang" class="col-xs-12">
-            <div>
-              <h2 class="minor-highlight-heading">{{ 'loss' | translate }}:</h2>
-              {{ dataset.population.loss | lang }}
-            </div>
+        <div *ngIf="dataset.population.loss | lang" class="col-xs-12">
+          <div>
+            <h2 class="minor-highlight-heading">{{ 'loss' | translate }}:</h2>
+            {{ dataset.population.loss | lang }}
           </div>
-        </ng-container>
+        </div>
       </div>
 
       <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts | lang)" class="row">
@@ -219,13 +221,17 @@
           <div class="concepts">
             <h2>{{ 'concepts' | translate }}</h2>
             <div class="items">
-              <p *ngFor="let concept of dataset.conceptsFromScheme" pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
-                tooltipPosition="bottom">
-                {{concept.prefLabel | lang}}
-              </p>
-              <p *ngFor="let concept of dataset.freeConcepts[language].split(';')">
-                {{ concept.trim() }}
-              </p>
+              <ng-container *ngIf="dataset.conceptsFromScheme.length">
+                <p *ngFor="let concept of dataset.conceptsFromScheme" pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
+                  tooltipPosition="bottom">
+                  {{concept.prefLabel | lang}}
+                </p>
+              </ng-container>
+              <ng-container *ngIf="dataset.freeConcepts | lang">
+                <p *ngFor="let concept of dataset.freeConcepts[language].split(';')">
+                  {{ concept.trim() }}
+                </p>
+              </ng-container>
             </div>
           </div>
         </div>

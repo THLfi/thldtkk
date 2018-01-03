@@ -168,6 +168,8 @@
   "noRetentionPeriod": "Säilytysaikaa ei määritetty",
   "groundsForRetention": "Säilytysajan peruste",
   "noGroundsForRetention": "Säilytysajan perustetta ei määritetty",
+  "nationalArchivesFinlandArchivalDecision": "Kansallisarkiston pysyvän säilyttämisen päätös",
+  "noNationalArchivesFinlandArchivalDecision": "Ei määritetty",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

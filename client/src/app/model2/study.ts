@@ -51,6 +51,7 @@ export interface Study extends Node {
   retentionPolicy?: RetentionPolicy
   retentionPeriod?: LangValues
   groundsForRetention?: LangValues
+  nationalArchivesFinlandArchivalDecision?: LangValues
   comment?: string
 
   lastModifiedByUser?: UserInformation

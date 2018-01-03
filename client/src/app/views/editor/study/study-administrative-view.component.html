@@ -210,6 +210,17 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'nationalArchivesFinlandArchivalDecision' | translate }}</strong></p>
+            <ng-container *ngIf="(study.nationalArchivesFinlandArchivalDecision | lang).length; else noNationalArchivesFinlandArchivalDecision;">
+              <p class="preserve-line-breaks">{{ study.nationalArchivesFinlandArchivalDecision | lang }}</p>
+            </ng-container>
+            <ng-template #noNationalArchivesFinlandArchivalDecision>
+              <p class="preserve-line-breaks">{{ 'noNationalArchivesFinlandArchivalDecision' | translate }}</p>
+            </ng-template>
+        </div>
+      </div>
 
       <div class="row">
         <div class="col-xs-12">

@@ -64,6 +64,7 @@ public class Study implements NodeEntity {
   private RetentionPolicy retentionPolicy;
   private Map<String, String> retentionPeriod = new LinkedHashMap<>();
   private Map<String, String> groundsForRetention = new LinkedHashMap<>();
+  private Map<String, String> nationalArchivesFinlandArchivalDecision = new LinkedHashMap<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -135,6 +136,7 @@ public class Study implements NodeEntity {
       .ifPresent(rp -> this.retentionPolicy = RetentionPolicy.valueOf(rp));
     this.retentionPeriod = toLangValueMap(node.getProperties("retentionPeriod"));
     this.groundsForRetention = toLangValueMap(node.getProperties("groundsForRetention"));
+    this.nationalArchivesFinlandArchivalDecision = toLangValueMap(node.getProperties("nationalArchivesFinlandArchivalDecision"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -374,6 +376,10 @@ public class Study implements NodeEntity {
     this.comment = comment;
   }
 
+  public Map<String, String> getNationalArchivesFinlandArchivalDecision() {
+    return nationalArchivesFinlandArchivalDecision;
+  }
+  
   public Optional<UserProfile> getLastModifiedByUser() {
     return Optional.ofNullable(lastModifiedByUser);
   }
@@ -483,6 +489,7 @@ public class Study implements NodeEntity {
     getRetentionPolicy().ifPresent(rp -> props.put("retentionPolicy", toPropertyValue(rp.toString())));
     props.putAll("retentionPeriod", toPropertyValues(retentionPeriod));
     props.putAll("groundsForRetention", toPropertyValues(groundsForRetention));
+    props.putAll("nationalArchivesFinlandArchivalDecision", toPropertyValues(nationalArchivesFinlandArchivalDecision));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -544,6 +551,7 @@ public class Study implements NodeEntity {
             && Objects.equals(retentionPolicy, study.retentionPolicy)
             && Objects.equals(retentionPeriod, study.retentionPeriod)
             && Objects.equals(groundsForRetention, study.groundsForRetention)
+            && Objects.equals(nationalArchivesFinlandArchivalDecision, study.nationalArchivesFinlandArchivalDecision)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -594,6 +602,7 @@ public class Study implements NodeEntity {
         retentionPolicy,
         retentionPeriod,
         groundsForRetention,
+        nationalArchivesFinlandArchivalDecision,
         comment,
         lastModifiedByUser,
         ownerOrganization,

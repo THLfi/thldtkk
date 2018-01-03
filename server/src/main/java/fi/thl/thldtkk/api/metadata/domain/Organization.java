@@ -6,6 +6,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToStringCollection;
 import static java.util.Objects.requireNonNull;
 
-public class Organization implements NodeEntity {
+public class Organization implements NodeEntity, Serializable {
 
   private UUID id;
 

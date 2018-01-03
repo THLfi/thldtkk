@@ -7,6 +7,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,7 +21,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToStringCollection;
 import static java.util.Objects.requireNonNull;
 
-public class UserProfile {
+public class UserProfile implements Serializable {
 
   public static final String TERMED_NODE_CLASS = "UserProfile";
 

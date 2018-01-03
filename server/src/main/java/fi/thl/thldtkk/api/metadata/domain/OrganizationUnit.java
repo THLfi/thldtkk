@@ -6,12 +6,14 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static java.util.Objects.requireNonNull;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class OrganizationUnit {
+public class OrganizationUnit implements Serializable {
 
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();

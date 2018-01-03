@@ -65,6 +65,7 @@ public class Study implements NodeEntity {
   private Map<String, String> retentionPeriod = new LinkedHashMap<>();
   private Map<String, String> groundsForRetention = new LinkedHashMap<>();
   private Map<String, String> nationalArchivesFinlandArchivalDecision = new LinkedHashMap<>();
+  private List<ExistenceForm> existenceForms = new ArrayList<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -137,7 +138,9 @@ public class Study implements NodeEntity {
     this.retentionPeriod = toLangValueMap(node.getProperties("retentionPeriod"));
     this.groundsForRetention = toLangValueMap(node.getProperties("groundsForRetention"));
     this.nationalArchivesFinlandArchivalDecision = toLangValueMap(node.getProperties("nationalArchivesFinlandArchivalDecision"));
-
+    this.existenceForms = valuesToEnumCollection(node.getProperties("existenceForms"),
+      ExistenceForm.class, ArrayList::new);
+    
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
     node.getReferencesFirst("ownerOrganization")
@@ -368,6 +371,14 @@ public class Study implements NodeEntity {
     this.groundsForRetention = groundsForRetention;
   }
 
+  public List<ExistenceForm> getExistenceForms() {
+    return existenceForms;
+  }
+
+  public void setExistenceForms(List<ExistenceForm> existenceForms) {
+    this.existenceForms = existenceForms;
+  }
+  
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -490,6 +501,7 @@ public class Study implements NodeEntity {
     props.putAll("retentionPeriod", toPropertyValues(retentionPeriod));
     props.putAll("groundsForRetention", toPropertyValues(groundsForRetention));
     props.putAll("nationalArchivesFinlandArchivalDecision", toPropertyValues(nationalArchivesFinlandArchivalDecision));
+    props.putAll("existenceForms", PropertyMappings.enumsToPropertyValues(existenceForms));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -552,6 +564,7 @@ public class Study implements NodeEntity {
             && Objects.equals(retentionPeriod, study.retentionPeriod)
             && Objects.equals(groundsForRetention, study.groundsForRetention)
             && Objects.equals(nationalArchivesFinlandArchivalDecision, study.nationalArchivesFinlandArchivalDecision)
+            && Objects.equals(existenceForms, study.existenceForms)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -600,6 +613,7 @@ public class Study implements NodeEntity {
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPolicy,
+        existenceForms,
         retentionPeriod,
         groundsForRetention,
         nationalArchivesFinlandArchivalDecision,

@@ -14,6 +14,7 @@ import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
 import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
 import {SecurityClassification} from './security-classification'
 import {RetentionPolicy} from './retention-policy'
+import {ExistenceForm} from './existence-form'
 import {StudyGroup} from './study-group'
 import {UnitType} from './unit-type';
 import {Universe} from './universe'
@@ -52,6 +53,7 @@ export interface Study extends Node {
   retentionPeriod?: LangValues
   groundsForRetention?: LangValues
   nationalArchivesFinlandArchivalDecision?: LangValues
+  existenceForms: ExistenceForm[]
   comment?: string
 
   lastModifiedByUser?: UserInformation

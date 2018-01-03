@@ -384,6 +384,22 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <p><strong class="field-label">{{ 'existenceForm.label' | translate }}</strong></p>
+              <p-multiSelect [(ngModel)]="study.existenceForms"
+                        [ngModelOptions]="{ standalone: true }"
+                        [options]="existenceForms"
+                        [filter]="false"
+                        defaultLabel="{{ 'selectExistenceForms' | translate }}"
+                        selectedItemsLabel="{0} {{ 'amountExistenceFormsSelected' | translate }}"
+                        inputId="existenceForms">
+              </p-multiSelect>
+            </div>
+          </div>
+        </div>
+
       </form>
 
     </div>

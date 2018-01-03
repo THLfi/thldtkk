@@ -170,6 +170,15 @@
   "noGroundsForRetention": "Säilytysajan perustetta ei määritetty",
   "nationalArchivesFinlandArchivalDecision": "Kansallisarkiston pysyvän säilyttämisen päätös",
   "noNationalArchivesFinlandArchivalDecision": "Ei määritetty",
+  "selectExistenceForms": "Valitse olomuodot",
+  "amountExistenceFormsSelected": "valittua olomuotoa",
+  "noExistenceForm": "Ei määritetty",
+  "existenceForm" : {
+    "label": "Aineiston olomuoto",
+    "DIGITAL": "Digitaalinen",
+    "PAPER": "Paperi",
+    "SAMPLE": "Näyte"
+  },
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

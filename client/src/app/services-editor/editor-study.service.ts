@@ -40,6 +40,7 @@ export class EditorStudyService {
       groundsForConfidentiality: null,
       principlesForPhysicalSecurity: [],
       principlesForDigitalSecurity: [],
+      existenceForms: [],
       personInRoles: [],
       links: [],
       conceptsFromScheme: [],

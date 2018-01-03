@@ -13,6 +13,7 @@ import {PrincipleForDigitalSecurity} from '../../../model2/principle-for-digital
 import {PrincipleForPhysicalSecurity} from '../../../model2/principle-for-physical-security'
 import {SelectItem} from 'primeng/components/common/api'
 import {RetentionPolicy} from '../../../model2/retention-policy';
+import {ExistenceForm} from '../../../model2/existence-form';
 import {Study} from '../../../model2/study';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 
@@ -29,6 +30,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     dataProcessingEndDate: Date
 
     retentionPolicies: SelectItem[] = []
+    existenceForms: SelectItem[] = []
 
     @ViewChild('studyForm') studyForm: NgForm
     currentForm: NgForm
@@ -81,6 +83,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         })
 
       this.populateRetentionPolicies();
+      this.populateExistenceForms();
     }
 
     private getStudy() {
@@ -131,6 +134,17 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
               value: policy
             })
           }
+        })
+      }
+    }
+
+    private populateExistenceForms() {
+      for(let form in ExistenceForm) {
+        this.translateService.get('existenceForm.'+form).subscribe(formLabel => {
+            this.existenceForms.push({
+              label: formLabel,
+              value: form
+            })
         })
       }
     }

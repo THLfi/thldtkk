@@ -240,6 +240,18 @@
 
       <div class="row">
         <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'physicalLocation' | translate }}</strong></p>
+            <ng-container *ngIf="(study.physicalLocation | lang).length; else noPhysicalLocation;">
+              <p class="preserve-line-breaks">{{ study.physicalLocation | lang }}</p>
+            </ng-container>
+            <ng-template #noPhysicalLocation>
+              <p class="preserve-line-breaks">{{ 'noPhysicalLocation' | translate }}</p>
+            </ng-template>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/edit-administrative-information"
                     class="btn btn-default pull-right">

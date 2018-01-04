@@ -54,6 +54,7 @@ export interface Study extends Node {
   groundsForRetention?: LangValues
   nationalArchivesFinlandArchivalDecision?: LangValues
   existenceForms: ExistenceForm[]
+  physicalLocation?: LangValues
   comment?: string
 
   lastModifiedByUser?: UserInformation

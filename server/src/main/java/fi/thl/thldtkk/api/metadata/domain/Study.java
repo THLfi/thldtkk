@@ -66,6 +66,7 @@ public class Study implements NodeEntity {
   private Map<String, String> groundsForRetention = new LinkedHashMap<>();
   private Map<String, String> nationalArchivesFinlandArchivalDecision = new LinkedHashMap<>();
   private List<ExistenceForm> existenceForms = new ArrayList<>();
+  private Map<String, String> physicalLocation = new LinkedHashMap<>();
   private String comment;
 
   private UserProfile lastModifiedByUser;
@@ -140,6 +141,7 @@ public class Study implements NodeEntity {
     this.nationalArchivesFinlandArchivalDecision = toLangValueMap(node.getProperties("nationalArchivesFinlandArchivalDecision"));
     this.existenceForms = valuesToEnumCollection(node.getProperties("existenceForms"),
       ExistenceForm.class, ArrayList::new);
+    this.physicalLocation = toLangValueMap(node.getProperties("physicalLocation"));
     
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -370,6 +372,14 @@ public class Study implements NodeEntity {
   public void setGroundsForRetention(Map<String, String> groundsForRetention) {
     this.groundsForRetention = groundsForRetention;
   }
+  
+  public Map<String, String> getNationalArchivesFinlandArchivalDecision() {
+    return nationalArchivesFinlandArchivalDecision;
+  }
+
+  public Map<String, String> getPhysicalLocation() {
+    return physicalLocation;
+  }
 
   public List<ExistenceForm> getExistenceForms() {
     return existenceForms;
@@ -378,6 +388,10 @@ public class Study implements NodeEntity {
   public void setExistenceForms(List<ExistenceForm> existenceForms) {
     this.existenceForms = existenceForms;
   }
+
+  public void setPhysicalLocation(Map<String, String> physicalLocation) {
+    this.physicalLocation = physicalLocation;
+  }
   
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
@@ -385,10 +399,6 @@ public class Study implements NodeEntity {
 
   public void setComment(String comment) {
     this.comment = comment;
-  }
-
-  public Map<String, String> getNationalArchivesFinlandArchivalDecision() {
-    return nationalArchivesFinlandArchivalDecision;
   }
   
   public Optional<UserProfile> getLastModifiedByUser() {
@@ -502,6 +512,7 @@ public class Study implements NodeEntity {
     props.putAll("groundsForRetention", toPropertyValues(groundsForRetention));
     props.putAll("nationalArchivesFinlandArchivalDecision", toPropertyValues(nationalArchivesFinlandArchivalDecision));
     props.putAll("existenceForms", PropertyMappings.enumsToPropertyValues(existenceForms));
+    props.putAll("physicalLocation", toPropertyValues(physicalLocation));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
@@ -565,6 +576,7 @@ public class Study implements NodeEntity {
             && Objects.equals(groundsForRetention, study.groundsForRetention)
             && Objects.equals(nationalArchivesFinlandArchivalDecision, study.nationalArchivesFinlandArchivalDecision)
             && Objects.equals(existenceForms, study.existenceForms)
+            && Objects.equals(physicalLocation, study.physicalLocation)
             && Objects.equals(comment, study.comment)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
@@ -617,6 +629,7 @@ public class Study implements NodeEntity {
         retentionPeriod,
         groundsForRetention,
         nationalArchivesFinlandArchivalDecision,
+        physicalLocation,
         comment,
         lastModifiedByUser,
         ownerOrganization,

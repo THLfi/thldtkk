@@ -179,6 +179,8 @@
     "PAPER": "Paperi",
     "SAMPLE": "Näyte"
   },
+  "physicalLocation": "Fyysinen sijaintipaikka",
+  "noPhysicalLocation": "Ei määritetty",
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Lisää uusi henkilö...",
   "newPerson": "Uusi henkilö",

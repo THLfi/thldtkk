@@ -101,6 +101,9 @@
         "id": "existenceForms"
       },
       {
+        "id": "physicalLocation"
+      },
+      {
         "id": "comment"
       }
     ],

@@ -266,7 +266,11 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     if (study.getPrinciplesForDigitalSecurity().size() > 1) {
       Collections.sort(study.getPrinciplesForDigitalSecurity());
     }
-
+    
+    if(study.getExistenceForms().size() > 1) {
+      Collections.sort(study.getExistenceForms());
+    }
+    
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {

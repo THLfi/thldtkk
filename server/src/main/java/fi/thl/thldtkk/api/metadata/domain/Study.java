@@ -142,7 +142,7 @@ public class Study implements NodeEntity {
     this.existenceForms = valuesToEnumCollection(node.getProperties("existenceForms"),
       ExistenceForm.class, ArrayList::new);
     this.physicalLocation = toLangValueMap(node.getProperties("physicalLocation"));
-    
+
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
     node.getReferencesFirst("ownerOrganization")
@@ -182,11 +182,31 @@ public class Study implements NodeEntity {
    * Constructor for testing purposes. Add attributes if needed.
    */
   public Study(UUID id,
+               Date lastModifiedDate,
                Map<String, String> prefLabel,
+               Map<String, String> registryPolicy,
+               Map<String, String> purposeOfPersonRegistry,
+               Map<String, String> personRegistrySources,
+               Map<String, String> personRegisterDataTransfers,
+               Map<String, String> personRegisterDataTransfersOutsideEuOrEea,
+               List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity,
+               List<PrincipleForDigitalSecurity> principlesForDigitalSecurity,
+               Organization ownerOrganization,
+               List<PersonInRole> personInRoles,
                List<Dataset> datasets,
                List<Study> predecessors) {
     this.id = id;
+    this.lastModifiedDate = lastModifiedDate;
     this.prefLabel = prefLabel;
+    this.registryPolicy = registryPolicy;
+    this.purposeOfPersonRegistry = purposeOfPersonRegistry;
+    this.personRegistrySources = personRegistrySources;
+    this.personRegisterDataTransfers = personRegisterDataTransfers;
+    this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
+    this.principlesForPhysicalSecurity = principlesForPhysicalSecurity;
+    this.principlesForDigitalSecurity = principlesForDigitalSecurity;
+    this.ownerOrganization = ownerOrganization;
+    this.personInRoles = personInRoles;
     this.datasets = datasets;
     this.predecessors = predecessors;
   }
@@ -372,7 +392,7 @@ public class Study implements NodeEntity {
   public void setGroundsForRetention(Map<String, String> groundsForRetention) {
     this.groundsForRetention = groundsForRetention;
   }
-  
+
   public Map<String, String> getNationalArchivesFinlandArchivalDecision() {
     return nationalArchivesFinlandArchivalDecision;
   }
@@ -392,7 +412,7 @@ public class Study implements NodeEntity {
   public void setPhysicalLocation(Map<String, String> physicalLocation) {
     this.physicalLocation = physicalLocation;
   }
-  
+
   public Optional<String> getComment() {
     return Optional.ofNullable(comment);
   }
@@ -400,7 +420,7 @@ public class Study implements NodeEntity {
   public void setComment(String comment) {
     this.comment = comment;
   }
-  
+
   public Optional<UserProfile> getLastModifiedByUser() {
     return Optional.ofNullable(lastModifiedByUser);
   }

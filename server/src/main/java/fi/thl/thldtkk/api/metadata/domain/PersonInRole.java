@@ -34,7 +34,7 @@ public class PersonInRole implements NodeEntity {
   }
 
   public PersonInRole(UUID id, Person person, Role role) {
-    this(id);
+    this.id = id;
     this.person = person;
     this.role = role;
   }

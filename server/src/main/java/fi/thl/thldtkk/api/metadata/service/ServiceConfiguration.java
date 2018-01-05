@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyRegisterDescriptionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.thymeleaf.TemplateEngine;
 
 @Configuration
 public class ServiceConfiguration {
@@ -53,6 +55,8 @@ public class ServiceConfiguration {
 
   @Autowired
   private UserHelper userHelper;
+  @Autowired
+  private TemplateEngine thymeleafTemplateEngine;
 
   // public services
 
@@ -72,7 +76,13 @@ public class ServiceConfiguration {
   }
 
   // editor services
-  
+
+  @Bean
+  public StudyRegisterDescriptionService editorStudyRegisterDescriptionService() {
+    return new EditorStudyRegisterDescriptionServiceImpl(
+      editorStudyService(), thymeleafTemplateEngine);
+  }
+
   @Bean
   public EditorStudyService editorStudyService() {
     return new EditorStudyServiceImpl(editorNodeRepository(), userHelper);
@@ -87,12 +97,12 @@ public class ServiceConfiguration {
   public EditorInstanceVariableService editorInstanceVariableService() {
     return new EditorInstanceVariableServiceImpl(editorNodeRepository());
   }
-  
+
   @Bean
   public UserProfileService editorUserProfileService() {
     return new UserProfileServiceImpl(editorNodeRepository());
   }
-  
+
   @Bean
   public EditorDatasetService editorDatasetService() {
     return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService());

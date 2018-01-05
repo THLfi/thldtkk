@@ -16,6 +16,8 @@ public class OrganizationBuilder {
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
+  private Map<String, String> addressForRegistryPolicy = new LinkedHashMap<>();
+  private String phoneNumberForRegistryPolicy;
   private List<String> virtuIds = new ArrayList<>();
 
   public OrganizationBuilder() {
@@ -42,13 +44,47 @@ public class OrganizationBuilder {
     return withPrefLabel(langValues);
   }
 
+  public OrganizationBuilder withAbbreviation(Map<String, String> abbreviation) {
+    this.abbreviation = abbreviation;
+    return this;
+  }
+
+  public OrganizationBuilder withAbbreviation(String abbreviationValue) {
+    Map<String, String> langValues = new LinkedHashMap<>();
+    langValues.put("fi", abbreviationValue);
+    return withAbbreviation(langValues);
+  }
+
+  public OrganizationBuilder withAddressForRegistryPolicy(Map<String, String> addressForRegistryPolicy) {
+    this.addressForRegistryPolicy = addressForRegistryPolicy;
+    return this;
+  }
+
+  public OrganizationBuilder withAddressForRegistryPolicy(String addressForRegistryPolicyValue) {
+    Map<String, String> langValues = new LinkedHashMap<>();
+    langValues.put("fi", addressForRegistryPolicyValue);
+    return withAddressForRegistryPolicy(langValues);
+  }
+
+  public OrganizationBuilder withPhoneNumberForRegistryPolicy(String phoneNumberForRegistryPolicy) {
+    this.phoneNumberForRegistryPolicy = phoneNumberForRegistryPolicy;
+    return this;
+  }
+
   public OrganizationBuilder withVirtuId(String... virtuIds) {
     this.virtuIds = asList(virtuIds);
     return this;
   }
 
   public Organization build() {
-    return new Organization(id, prefLabel, abbreviation, virtuIds);
+    return new Organization(
+      id,
+      prefLabel,
+      abbreviation,
+      addressForRegistryPolicy,
+      phoneNumberForRegistryPolicy,
+      virtuIds
+    );
   }
 
 }

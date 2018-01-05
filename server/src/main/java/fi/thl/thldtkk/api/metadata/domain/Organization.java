@@ -55,10 +55,14 @@ public class Organization implements NodeEntity, Serializable {
   public Organization(UUID id,
                       Map<String, String> prefLabel,
                       Map<String, String> abbreviation,
+                      Map<String, String> addressForRegistryPolicy,
+                      String phoneNumberForRegistryPolicy,
                       List<String> virtuIds) {
     this.id = id;
     this.prefLabel = prefLabel;
     this.abbreviation = abbreviation;
+    this.addressForRegistryPolicy = addressForRegistryPolicy;
+    this.phoneNumberForRegistryPolicy = phoneNumberForRegistryPolicy;
     this.virtuIds = virtuIds;
   }
 

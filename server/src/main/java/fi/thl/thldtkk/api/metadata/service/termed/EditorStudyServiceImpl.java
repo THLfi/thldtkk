@@ -12,6 +12,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.slf4j.Logger;
@@ -266,11 +267,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     if (study.getPrinciplesForDigitalSecurity().size() > 1) {
       Collections.sort(study.getPrinciplesForDigitalSecurity());
     }
-    
-    if(study.getExistenceForms().size() > 1) {
+    if (study.getExistenceForms().size() > 1) {
       Collections.sort(study.getExistenceForms());
     }
-    
+
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {
@@ -503,6 +503,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       + "' was not found after saving, it might have been updated simultaneously by another user");
   }
 
+  @AdminOnly
   @Override
   public void delete(UUID id) {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));
@@ -580,6 +581,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       + studyId + "' might have been updated simultaneously by another user");
   }
 
+  @AdminOnly
   @Override
   public void deleteDataset(UUID studyId, UUID datasetId) {
     Study study = get(studyId)

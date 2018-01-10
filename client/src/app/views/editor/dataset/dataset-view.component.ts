@@ -1,10 +1,11 @@
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { TranslateService } from "@ngx-translate/core"
 import { Title } from '@angular/platform-browser'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
+import { CurrentUserService } from '../../../services-editor/user.service'
 import { Dataset } from '../../../model2/dataset'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
@@ -23,14 +24,18 @@ export class DatasetViewComponent implements OnInit {
 
   sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
+  deleteInProgress: boolean = false
+
   constructor(
     private studyService: EditorStudyService,
     private datasetService: EditorDatasetService,
     private route: ActivatedRoute,
+    private router: Router,
     private translateService: TranslateService,
     private titleService: Title,
     private langPipe: LangPipe,
-    private breadcrumbService: BreadcrumbService
+    private breadcrumbService: BreadcrumbService,
+    public currentUserService: CurrentUserService
   ) {
     this.language = this.translateService.currentLang
   }
@@ -56,6 +61,22 @@ export class DatasetViewComponent implements OnInit {
       let bareTitle:string = this.titleService.getTitle()
       this.titleService.setTitle(translatedLabel + ' - ' + bareTitle)
     }
+  }
+
+  confirmRemove(): void {
+    this.translateService.get('confirmDatasetDelete')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.deleteInProgress = true
+
+          this.datasetService.delete(this.study.id, this.dataset.id)
+            .finally(() => {
+              this.deleteInProgress = false
+            })
+            .subscribe(() => this.router.navigate(
+              ['/editor/studies', this.study.id, 'datasets']))
+        }
+      })
   }
 
 }

@@ -16,11 +16,11 @@
       </dataset-tabs>
 
       <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-8">
           <p><strong class="field-label">{{ 'altLabel' | translate }}</strong></p>
           <p>{{ dataset.altLabel | lang }}</p>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
           <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/edit"
                     class="btn btn-default">
@@ -32,6 +32,13 @@
                     class="btn btn-default">
               <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
               {{ 'duplicate' | translate }}
+            </button>
+            <button *ngIf="currentUserService.isUserAdmin() | async"
+                    (click)="confirmRemove()"
+                    [disabled]="deleteInProgress"
+                    class="btn btn-default">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              {{ 'remove' | translate }}
             </button>
           </div>
         </div>
@@ -347,7 +354,7 @@
       </div>
 
       <div class="row">
-        <div class="col-xs-3 col-xs-offset-9">
+        <div class="col-xs-12">
           <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/edit"
                     class="btn btn-default">
@@ -359,6 +366,12 @@
                     class="btn btn-default">
               <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
               {{ 'duplicate' | translate }}
+            </button>
+            <button (click)="confirmRemove()"
+                    [disabled]="deleteInProgress"
+                    class="btn btn-default">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+              {{ 'remove' | translate }}
             </button>
           </div>
         </div>

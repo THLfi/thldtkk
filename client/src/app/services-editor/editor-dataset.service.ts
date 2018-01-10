@@ -52,21 +52,20 @@ export class EditorDatasetService {
       .map(response => response.json() as Dataset)
   }
 
-  publish(dataset: Dataset): Observable<Dataset> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
+  delete(studyId: string, datasetId: string): Observable<any> {
+    const path: string = env.contextPath
+      + '/api/v3/editor/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId
 
-    return this.http.post(env.contextPath + '/api/v3/editor/dataset-functions/publish?datasetId=' + dataset.id, {}, options)
-      .map(response => response.json() as Dataset)
+    return this.http.delete(path)
+      .map(response => response.json())
+      .do(() => {
+        this.growlMessageService.buildAndShowMessage('info', 'operations.dataset.delete.result.success')
+      })
   }
 
-  withdraw(dataset: Dataset): Observable<Dataset> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
-    return this.http.post(env.contextPath + '/api/v3/editor/dataset-functions/withdraw?datasetId=' + dataset.id, {}, options)
-      .map(response => response.json() as Dataset)
-  }
 
   importDataset(event): Observable<Dataset> {
     return Observable.throw('Not implemented')

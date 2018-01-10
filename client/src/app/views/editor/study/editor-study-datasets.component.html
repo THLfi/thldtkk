@@ -69,6 +69,15 @@
                         <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                         <span class="sr-only">{{ 'duplicate' | translate }}</span>
                       </button>
+                      <button *ngIf="currentUserService.isUserAdmin() | async"
+                              (click)="confirmRemoveDataset($event, dataset.id)"
+                              pTooltip="{{ 'remove' | translate }}"
+                              tooltipPosition="bottom"
+                              [disabled]="deleteInProgress"
+                              class="btn btn-default">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <span class="sr-only">{{ 'remove' | translate }}</span>
+                      </button>
                     </div>
                   </td>
               </tr>

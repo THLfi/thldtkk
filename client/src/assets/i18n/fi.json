@@ -71,6 +71,7 @@
   "false": "Ei",
   "true": "Kyllä",
   "addDataset": "Lisää dataset",
+  "confirmDatasetDelete": "Haluatko varmasti poistaa datasetin?",
   "inputDateFormat": "vvvv-kk-pp",
   "addInstanceVariable": "Lisää muuttuja",
   "newInstanceVariable": "Uusi muuttuja",
@@ -401,6 +402,11 @@
       "save": {
         "result": {
           "success": "Dataset tallennettu"
+        }
+      },
+      "delete": {
+        "result": {
+          "success": "Dataset poistettu"
         }
       },
       "publish": {

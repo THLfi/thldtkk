@@ -31,7 +31,7 @@ public class Person {
   }
 
   public Person(UUID id, String firstName, String lastName, String email, String phone) {
-    this(id);
+    this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;

@@ -146,6 +146,8 @@ public class VirtuSamlUserDetailsService implements SAMLUserDetailsService {
       UUID.randomUUID(),
       prefLabel,
       new LinkedHashMap<>(),
+      new LinkedHashMap<>(),
+      "",
       asList(virtuId)
     );
 

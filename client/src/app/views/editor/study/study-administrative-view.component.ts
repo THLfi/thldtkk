@@ -4,6 +4,8 @@ import { LangPipe } from '../../../utils/lang.pipe'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
 
+import { environment as env} from '../../../../environments/environment'
+
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { ConfidentialityClass } from '../../../model2/confidentiality-class'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
@@ -21,6 +23,8 @@ export class StudyAdministrativeViewComponent implements OnInit {
   sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
   confidentialityClassType = ConfidentialityClass
+
+  printRegisterDescriptionUrl: string
 
   constructor(private breadcrumbService: BreadcrumbService,
               private studyService: EditorStudyService,
@@ -42,6 +46,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
         this.study = study
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
         this.updatePageTitle()
+        this.printRegisterDescriptionUrl = `${env.contextPath}/api/v3/editor/studies/${study.id}/register-description`
       })
   }
 

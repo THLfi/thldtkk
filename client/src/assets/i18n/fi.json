@@ -524,7 +524,7 @@
       }
     }
   },
-
+  "printRegisterDescription": "Tulosta rekisteriseloste",
   "importInstanceVariablesAsCsvButton": "Lisää muuttujia CSV-tiedostosta...",
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",

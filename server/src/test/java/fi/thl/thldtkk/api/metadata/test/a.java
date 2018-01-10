@@ -21,6 +21,14 @@ public class a {
     return new PopulationBuilder();
   }
 
+  public static PersonBuilder person() {
+    return new PersonBuilder();
+  }
+
+  public static PersonInRoleBuilder personInRole() {
+    return new PersonInRoleBuilder();
+  }
+
   public static NodeBuilder node() {
     return new NodeBuilder();
   }

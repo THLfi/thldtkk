@@ -103,6 +103,16 @@ export class EditorStudyService {
       .map(response => response.json() as Study)
   }
 
+  delete(studyId: string): Observable<any> {
+    const path: string = env.contextPath
+      + '/api/v3/editor/studies/'
+      + studyId
+
+    return this.http.delete(path)
+      .map(response => response.json())
+      .do(() => this.growlMessageService.buildAndShowMessage('info', 'operations.study.delete.result.success'))
+  }
+
   saveDataset(studyId: string, dataset: Dataset): Observable<Dataset> {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })

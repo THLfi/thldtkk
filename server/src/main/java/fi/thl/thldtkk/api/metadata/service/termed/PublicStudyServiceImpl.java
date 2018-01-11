@@ -416,6 +416,9 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       + "' was not found after saving, it might have been updated simultaneously by another user");
   }
 
+  // Deletion from public graph cannot be limited with @AdminOnly because
+  // otherwise studies could not be withdrawn (and therefoe re-published)
+  // by non-admin users
   @Override
   public void delete(UUID id) {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));

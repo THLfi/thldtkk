@@ -4,8 +4,10 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
+import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class EditorStudyController {
 
   @Autowired
   private EditorStudyService editorStudyService;
+  @Autowired
+  private PublicStudyService publicStudyService;
 
   @ApiOperation("Search studies")
   @GetJsonMapping
@@ -60,6 +64,12 @@ public class EditorStudyController {
   @ResponseStatus(NO_CONTENT)
   public void deleteStudy(@PathVariable UUID studyId) {
     editorStudyService.delete(studyId);
+    try {
+      publicStudyService.delete(studyId);
+    }
+    catch (NotFoundException e) {
+      // Study hasn't been published, nothing to delete
+    }
   }
 
   @ApiOperation("Get one dataset by study ID and dataset ID")

@@ -66,7 +66,6 @@ export class EditorDatasetService {
       })
   }
 
-
   importDataset(event): Observable<Dataset> {
     return Observable.throw('Not implemented')
   }

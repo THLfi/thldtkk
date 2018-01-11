@@ -1,8 +1,9 @@
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Component } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
+import { CurrentUserService } from '../../../services-editor/user.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 import { LangPipe  } from '../../../utils/lang.pipe'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
@@ -20,13 +21,18 @@ export class EditorStudyViewComponent {
   sidebarActiveSection: StudySidebarActiveSection
   language: string
 
+  deleteInProgress: boolean = false
+
   constructor(
     private editorStudyService: EditorStudyService,
     private route: ActivatedRoute,
+    private router: Router,
     private translateService: TranslateService,
     private titleService: Title,
     private breadcrumbService: BreadcrumbService,
-    private langPipe: LangPipe) {
+    private langPipe: LangPipe,
+    public currentUserService: CurrentUserService
+  ) {
       this.sidebarActiveSection = StudySidebarActiveSection.STUDY
       this.language = this.translateService.currentLang
     }
@@ -71,6 +77,19 @@ export class EditorStudyViewComponent {
             .subscribe(study => this.study = study)
         }
     })
+  }
+
+  confirmRemove(): void {
+    this.translateService.get('study.confirmRemove')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.deleteInProgress = true
+
+          this.editorStudyService.delete(this.study.id)
+            .finally(() => this.deleteInProgress = false)
+            .subscribe(() => this.router.navigate(['/editor/studies']))
+        }
+      })
   }
 
 }

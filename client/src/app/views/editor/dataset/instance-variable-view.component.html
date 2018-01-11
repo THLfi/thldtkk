@@ -29,12 +29,14 @@
                class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ instanceVariable.id }}/edit"
                     [disabled]="deleteInProgress"
+                    type="button"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
               {{ 'edit' | translate }}
             </button>
             <button (click)="confirmRemove()"
                     [disabled]="deleteInProgress"
+                    type="button"
                     class="btn btn-default">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
               {{ 'remove' | translate }}
@@ -237,6 +239,8 @@
             </p>
             <div *ngIf="instanceVariable.codeList.codeItems.length">
               <button (click)="viewCodeListCodeItemsModal.toggle()"
+                      [disabled]="deleteInProgress"
+                      type="button"
                       class="btn btn-default btn-sm">
                 <i class="fa fa-eye" aria-hidden="true"></i>
                 {{ 'viewCodeItems' | translate }}
@@ -352,12 +356,14 @@
           <div class="pull-right">
             <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ instanceVariable.id }}/edit"
                     [disabled]="deleteInProgress"
+                    type="button"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
               {{ 'edit' | translate }}
             </button>
             <button (click)="confirmRemove()"
                     [disabled]="deleteInProgress"
+                    type="button"
                     class="btn btn-default">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
               {{ 'remove' | translate }}

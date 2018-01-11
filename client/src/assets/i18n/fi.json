@@ -527,6 +527,11 @@
         "result": {
           "success": "Aineisto tallennettu"
         }
+      },
+      "delete": {
+        "result": {
+          "success": "Aineisto poistettu"
+        }
       }
     }
   },
@@ -644,6 +649,7 @@
     "personInRolesLabel": "Aineistoon liittyvät henkilöt",
     "noPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
+    "confirmRemove": "Haluatko varmasti poistaa aineiston?",
     "sidebar": {
       "study": "Aineisto",
       "datasetsAndVariables": "Datasetit & muuttujat",

@@ -43,15 +43,21 @@
               <span class="preserve-line-breaks">{{codeList.description | lang}}</span>
             </td>
             <td>
-              <button (click)="showEditCodeListModal(codeList)" type="button"
+              <button (click)="showEditCodeListModal(codeList)"
+                      pTooltip="{{ 'edit' | translate }}"
+                      tooltipPosition="bottom"
+                      type="button"
                       class="btn btn-default code-list-edit-controls">
                 <span class="glyphicon glyphicon-pencil"></span>
-                {{ 'edit' | translate }}
+                <span class="sr-only">{{ 'edit' | translate }}</span>
               </button>
-              <button (click)="confirmRemoveCodeList(codeList)" type="button"
+              <button (click)="confirmRemoveCodeList(codeList)"
+                      pTooltip="{{ 'remove' | translate }}"
+                      tooltipPosition="bottom"
+                      type="button"
                       class="btn btn-default code-list-edit-controls">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
-                {{ 'remove' | translate }}
+                <span class="sr-only">{{ 'remove' | translate }}</span>
               </button>
             </td>
           </tr>

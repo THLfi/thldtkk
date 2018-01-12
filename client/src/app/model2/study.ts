@@ -13,6 +13,7 @@ import {Population} from './population';
 import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
 import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
 import {SecurityClassification} from './security-classification'
+import {SystemInRole} from './system-in-role'
 import {RetentionPolicy} from './retention-policy'
 import {ExistenceForm} from './existence-form'
 import {StudyGroup} from './study-group'
@@ -54,6 +55,7 @@ export interface Study extends Node {
   groundsForRetention?: LangValues
   nationalArchivesFinlandArchivalDecision?: LangValues
   existenceForms: ExistenceForm[]
+  systemInRoles: SystemInRole[]
   physicalLocation?: LangValues
   comment?: string
 

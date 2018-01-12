@@ -86,6 +86,8 @@ public class Study implements NodeEntity {
   private List<Dataset> datasets = new ArrayList<>();
   private List<Study> predecessors = new ArrayList<>();
   private List<Study> successors = new ArrayList<>();
+  @Valid
+  private List<SystemInRole> systemInRoles = new ArrayList<>();
 
   /**
    * Required by GSON deserialization.
@@ -173,6 +175,9 @@ public class Study implements NodeEntity {
       .forEach(d -> this.datasets.add(new Dataset(d)));
     node.getReferences("predecessors")
       .forEach(s -> this.predecessors.add(new Study(s)));
+    node.getReferences("systemInRoles")
+      .forEach(sir -> this.systemInRoles.add(new SystemInRole(sir)));
+
 
     node.getReferrers("predecessors")
       .forEach(s -> this.successors.add(new Study(s)));
@@ -497,6 +502,15 @@ public class Study implements NodeEntity {
     return successors;
   }
 
+  public List<SystemInRole> getSystemInRoles() {
+    return systemInRoles;
+  }
+
+  public void setSystemInRoles(List<SystemInRole> systemInRoles) {
+    this.systemInRoles = systemInRoles;
+  }
+  
+
   /**
    * Transforms dataset into node
    */
@@ -551,6 +565,7 @@ public class Study implements NodeEntity {
     getStudyGroup().ifPresent(sg -> refs.put("studyGroup", sg.toNode()));
     getDatasets().forEach(d -> refs.put("dataSets", d.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
+    getSystemInRoles().forEach(sir -> refs.put("systemInRoles", sir.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }
@@ -612,7 +627,8 @@ public class Study implements NodeEntity {
             && Objects.equals(datasetTypes, study.datasetTypes)
             && Objects.equals(studyGroup, study.studyGroup)
             && Objects.equals(datasets, study.datasets)
-            && Objects.equals(predecessors, study.predecessors);
+            && Objects.equals(predecessors, study.predecessors)
+            && Objects.equals(systemInRoles, study.systemInRoles);
   }
 
   @Override
@@ -665,7 +681,8 @@ public class Study implements NodeEntity {
         datasetTypes,
         studyGroup,
         datasets,
-        predecessors
+        predecessors,
+        systemInRoles
       );
   }
 

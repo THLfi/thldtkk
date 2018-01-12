@@ -10,6 +10,8 @@ import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorStudyServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorSystemRoleServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorSystemServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.InstanceQuestionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.LifecyclePhaseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.NodeHttpRepository;
@@ -107,7 +109,17 @@ public class ServiceConfiguration {
   public EditorDatasetService editorDatasetService() {
     return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService());
   }
-
+  
+  @Bean
+  public EditorSystemService editorSystemService() {
+    return new EditorSystemServiceImpl(editorNodeRepository(), userHelper);
+  }
+  
+  @Bean
+  public EditorSystemRoleService editorSystemRoleService() {
+    return new EditorSystemRoleServiceImpl(editorNodeRepository());
+  }
+  
   // common services
 
   // Work in progress, remove '' suffix from bean names after refactoring is complete

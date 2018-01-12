@@ -21,15 +21,22 @@ public class Link implements NodeEntity {
     }
 
     public Link(UUID id) {
-        this.id = requireNonNull(id);
+      this.id = requireNonNull(id);
     }
 
     public Link(Node node) {
-        this(node.getId());
-        checkArgument(Objects.equals(node.getTypeId(), "Link"));
-        this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
-        this.linkUrl = toLangValueMap(node.getProperties("linkUrl"));
+      this(node.getId());
+      checkArgument(Objects.equals(node.getTypeId(), "Link"));
+      this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
+      this.linkUrl = toLangValueMap(node.getProperties("linkUrl"));
     }
+    
+    public Link(UUID id, Map<String, String> prefLabel, Map<String, String> linkUrl) {
+      this.id = requireNonNull(id);
+      this.prefLabel = prefLabel;
+      this.linkUrl = linkUrl;
+    }
+
 
     public UUID getId() {
         return id;

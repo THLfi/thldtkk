@@ -4,8 +4,10 @@ import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
+import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Study;
+import fi.thl.thldtkk.api.metadata.domain.SystemInRole;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
@@ -137,8 +139,11 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.population:2",
         "references.universe:2",
         "references.datasetType:2",
-        "references.ownerOrganization:2",
+        "references.ownerOrganization:3",
         "references.ownerOrganizationUnit:2",
+        "references.system:2",
+        "references.systemRole:2",
+        "references.link:3",
         "references.predecessors:3",
         "referrers.predecessors:3",
         "referrers.dataSets:2"
@@ -238,6 +243,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
           .append("' because it has a self reference in 'predecessors'")
           .toString());
     }
+    
+    if (studyHasDifferentOwnerOrganizationForItsSystems(study)) {
+        throw new IllegalArgumentException(new StringBuilder()
+          .append("Cannot save study '")
+          .append(study.getId())
+          .append("' because its owner organization doesn't match the owner organization of its associated systems")
+          .toString());
+    }
 
     boolean isStudyPublished = study.isPublished().orElse(false);
 
@@ -247,6 +260,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
     study.getPersonInRoles()
       .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
+    study.getSystemInRoles()
+      .forEach(sir -> sir.setId(firstNonNull(sir.getId(), randomUUID())));
 
     if (isNotPersonRegistry(study)) {
       study.setRegistryPolicy(emptyMap());
@@ -331,7 +346,28 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       return false;
     }
   }
-
+  
+   private boolean studyHasDifferentOwnerOrganizationForItsSystems(Study study) {
+    if (!study.getSystemInRoles().isEmpty()) {
+      Optional<UUID> studyOwnerOrganizationId = study.getOwnerOrganization()
+        .map(o -> o.getId());
+      
+      Set<Optional<UUID>> systemOrganizationIds = study.getSystemInRoles()
+              .stream()
+              .map(systemInRole -> systemInRole.getSystem())
+              .flatMap(system -> system.map(Stream::of).orElseGet(Stream::empty))
+              .map(system -> system.getOwnerOrganization())
+              .flatMap(organization -> organization.map(Stream::of).orElseGet(Stream::empty))
+              .map(organization -> Optional.of(organization.getId()))
+              .collect(Collectors.toSet());
+      
+      return !systemOrganizationIds.contains(studyOwnerOrganizationId) || systemOrganizationIds.size() > 1;      
+    }
+    else {
+      return false;
+    }
+  }
+  
   private <T extends NodeEntity> boolean containsSelf(T node, List<T> nodeRelations) {
     return nodeRelations != null ? nodeRelations.stream()
         .filter(s -> node.getId().equals(s.getId()))
@@ -373,6 +409,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPopulation().ifPresent(p -> save.add(p.toNode()));
     study.getLinks().forEach(l -> save.add(l.toNode()));
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
+    study.getSystemInRoles().forEach(sir -> save.add(sir.toNode()));
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
     return changeset;
@@ -406,7 +443,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         oldStudy.getLinks()))
       .merge(Changeset.buildChangeset(
         newStudy.getPersonInRoles(),
-        oldStudy.getPersonInRoles()));
+        oldStudy.getPersonInRoles()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getSystemInRoles(),
+        oldStudy.getSystemInRoles()));
 
     if (includeDatasets) {
       // Dataset updates
@@ -514,6 +554,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPopulation().ifPresent(v -> delete.add(v.toNode()));
     study.getLinks().forEach(v -> delete.add(v.toNode()));
     study.getPersonInRoles().forEach(pir -> delete.add(pir.toNode()));
+    study.getSystemInRoles().forEach(sir -> delete.add(sir.toNode()));
     study.getDatasets().forEach(dataset -> delete.addAll(getDatasetRelatedNodesForDelete(dataset)));
 
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));

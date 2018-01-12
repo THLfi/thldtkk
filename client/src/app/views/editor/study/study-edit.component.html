@@ -105,8 +105,10 @@
               <organization-dropdown [(ngModel)]="study.ownerOrganization"
                                      (onChange)="onOrganizationChange()"
                                      [required]="!isUserAdmin"
+                                     [study]="study"
                                      selectId="ownerOrganization"
-                                     name="ownerOrganization">
+                                     name="ownerOrganization"
+                                     validateOrganizationConsistency>
               </organization-dropdown>
               <p *ngFor="let errorKey of formErrors.ownerOrganization"
                  class="text-danger">

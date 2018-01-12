@@ -58,6 +58,7 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     study.setPredecessors(Collections.emptyList());
     study.getDatasets().forEach(d -> removeNonPublicPropertiesAndReferences(d));
     study.setPhysicalLocation(Collections.emptyMap());
+    study.setSystemInRoles(Collections.emptyList());
   }
 
   private void removeNonPublicPropertiesAndReferences(Dataset dataset) {

@@ -36,6 +36,8 @@ import { CodeListService3 } from './services-common/code-list.service'
 import { CommonErrorHandlingHttpService } from './services-common/common-error-handling-http.service'
 import { ConceptService } from './services-common/concept.service'
 import { EditorDatasetService } from './services-editor/editor-dataset.service'
+import { EditorSystemService } from './services-editor/editor-system.service'
+import { EditorSystemRoleService } from './services-editor/editor-system-role.service'
 import { DatasetTypeService } from './services-common/dataset-type.service'
 import { GrowlMessageService } from './services-common/growl-message.service'
 import { InstanceQuestionService } from './services-common/instance-question.service'
@@ -88,6 +90,7 @@ import { CurrentUserService } from './services-editor/user.service'
 import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
 import { StudyAdministrativeReadOnlyFieldsComponent } from './views/editor/study/study-administrative-read-only-fields.component'
 import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
+import { SystemEditModalComponent } from './views/editor/study/system-edit-modal.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetHeaderComponent } from './views/editor/dataset/dataset-header.component'
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
@@ -112,6 +115,7 @@ import { LastModifiedComponent } from './views/editor/dataset/last-modified.comp
 import { LoginAdviceComponent } from './views/editor/login/login-advice.component'
 import { LogoutMessageComponent } from './views/editor/login/logout-message.component'
 import { OrganizationDropdownComponent } from './views/common/organization-dropdown.component'
+import { OrganizationConsistencyValidator } from './views/editor/study/validation/organization-consistency.validator'
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
@@ -121,6 +125,7 @@ import { SidebarIconStudy } from './views/editor/study/sidebar/sidebar-icon-stud
 import { StudyRelationsEditComponent } from './views/editor/study/study-relationships/study-relations-edit.component'
 import { StudyRelationTypeDropdown } from './views/editor/study/study-relationships/study-relation-type-dropdown.component'
 import { StudySidebarComponent } from './views/editor/study/sidebar/study-sidebar.component'
+import { SystemConsistencyValidator } from './views/editor/study/validation/system-consistency.validator'
 import { UnitEditModalComponent } from './views/editor/dataset/unit-edit-modal.component'
 import { UnitTypeEditModalComponent } from './views/editor/dataset/unit-type-edit-modal.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
@@ -177,6 +182,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LoadingSpinner,
         LoginAdviceComponent,
         LogoutMessageComponent,
+        OrganizationConsistencyValidator,
         PersonEditModalComponent,
         RequiredFieldIndicator,
         StudyEditComponent,
@@ -184,6 +190,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         StudyRelationsEditComponent,
         StudyRelationTypeDropdown,
         StudyGroupEditModalComponent,
+        SystemEditModalComponent,
+        SystemConsistencyValidator,
         OrganizationDropdownComponent,
         UnitTypeEditModalComponent,
         UnitTypeListComponent,
@@ -246,6 +254,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         CodeListService3,
         ConceptService,
         EditorDatasetService,
+        EditorSystemRoleService,
+        EditorSystemService,
         DatasetTypeService,
         InstanceQuestionService,
         EditorInstanceVariableService,

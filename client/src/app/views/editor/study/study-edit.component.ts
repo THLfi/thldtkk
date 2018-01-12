@@ -580,7 +580,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         this.savingInProgress = true
 
         this.validate()
-
+                
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
             'operations.common.save.result.fail.summary',

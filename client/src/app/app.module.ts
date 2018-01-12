@@ -71,7 +71,7 @@ import { CatalogStudyListComponent } from './views/catalog/study/catalog-study-l
 import { CatalogStudyViewComponent } from './views/catalog/study/catalog-study-view.component'
 import { DatasetComponent } from './views/catalog/dataset/dataset.component'
 import { DatasetListComponent } from './views/catalog/dataset/dataset-list.component'
-import { IconUniverse } from './views/catalog/icons/icon-universe.component' 
+import { IconUniverse } from './views/catalog/icons/icon-universe.component'
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableSearchComponent } from './views/catalog/instancevariables/instance-variable-search.component'
 import { InstanceVariableSearchResultComponent } from './views/catalog/instancevariables/instance-variable-search-result.component'
@@ -95,6 +95,8 @@ import { DatasetRelationsEditComponent } from './views/editor/dataset/dataset-re
 import { DatasetRelationTypeDropdown } from './views/editor/dataset/dataset-relationships/dataset-relation-type-dropdown.component'
 import { DatasetTabsComponent } from './views/editor/dataset/dataset-tabs.component'
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
+import { EditorHelpLinkComponent } from './views/editor/help/editor-help-link.component'
+import { EditorHelpTextComponent } from './views/editor/help/editor-help-text.component'
 import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
 import { EditorStudyDatasetsComponent} from './views/editor/study/editor-study-datasets.component'
@@ -158,6 +160,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DatasetSidebarComponent,
         DatasetTabsComponent,
         EditorDatasetComponent,
+        EditorHelpLinkComponent,
+        EditorHelpTextComponent,
         EditorLoginComponent,
         EditorStudyListComponent,
         EditorStudyDatasetsComponent,

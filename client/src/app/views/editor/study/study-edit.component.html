@@ -33,6 +33,7 @@
               <label for="prefLabel">
                 {{ 'prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                <editor-help-link [helpTextComponent]="prefLabelHelpText"></editor-help-link>
               </label>
               <input [(ngModel)]="study.prefLabel[language]"
                      id="prefLabel"
@@ -45,30 +46,42 @@
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}
               </p>
+              <editor-help-text #prefLabelHelpText key="editor.study.prefLabel.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="altLabel" translate="altLabel"></label>
+          <label for="altLabel">
+            {{ 'altLabel' | translate }}
+            <editor-help-link [helpTextComponent]="altLabelHelpText"></editor-help-link>
+          </label>
           <input [(ngModel)]="study.altLabel[language]"
                  id="altLabel"
                  name="altLabel"
                  class="form-control"
                  type="text">
+          <editor-help-text #altLabelHelpText key="editor.study.altLabel.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="abbreviation" translate="abbreviation"></label>
+          <label for="abbreviation">
+            {{ 'abbreviation' | translate }}
+            <editor-help-link [helpTextComponent]="abbreviationHelpText"></editor-help-link>
+          </label>
           <input [(ngModel)]="study.abbreviation[language]"
                  id="abbreviation"
                  name="abbreviation"
                  class="form-control"
                  type="text">
+          <editor-help-text #abbreviationHelpText key="editor.study.abbreviation.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="description">{{ 'description' | translate }}</label>
+          <label for="description">
+            {{ 'description' | translate }}
+            <editor-help-link [helpTextComponent]="descriptionHelpText"></editor-help-link>
+          </label>
           <textarea [(ngModel)]="study.description[language]"
                     thlAutogrow
                     id="description"
@@ -76,6 +89,7 @@
                     class="form-control"
                     rows="5">
           </textarea>
+          <editor-help-text #descriptionHelpText key="editor.study.description.helpText"></editor-help-text>
         </div>
 
         <div [ngClass]="{ 'bg-danger': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
@@ -86,6 +100,7 @@
               <label for="ownerOrganization">
                 {{ 'organization' | translate }}
                 <thl-requiredFieldIndicator *ngIf="!isUserAdmin"></thl-requiredFieldIndicator>
+                <editor-help-link [helpTextComponent]="ownerOrganizationHelpText"></editor-help-link>
               </label>
               <organization-dropdown [(ngModel)]="study.ownerOrganization"
                                      (onChange)="onOrganizationChange()"
@@ -98,13 +113,17 @@
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}
               </p>
+              <editor-help-text #ownerOrganizationHelpText key="editor.study.ownerOrganization.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div *ngIf="availableOrganizations"
              class="form-group">
-          <label for="ownerOrganizationUnit" translate="organizationUnit"></label>
+          <label for="ownerOrganizationUnit">
+            {{ 'organizationUnit' | translate }}
+            <editor-help-link [helpTextComponent]="ownerOrganizationUnitHelpText"></editor-help-link>
+          </label>
           <select [(ngModel)]="study.ownerOrganizationUnit"
                   [compareWith]="nodeUtils.equals"
                   id="ownerOrganizationUnit"
@@ -121,10 +140,14 @@
               </option>
             </ng-container>
           </select>
+          <editor-help-text #ownerOrganizationUnitHelpText key="editor.study.ownerOrganizationUnit.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="personInRoles">{{ 'study.personInRolesLabel' | translate }}</label>
+          <label for="personInRoles">
+            {{ 'study.personInRolesLabel' | translate }}
+            <editor-help-link [helpTextComponent]="personInRolesHelpText"></editor-help-link>
+          </label>
           <table *ngIf="study.personInRoles.length; else noStudyPersonInRoles;"
                  id="personsInRole"
                  class="table table-striped">
@@ -170,7 +193,7 @@
                 <button (click)="showAddPersonModal(personInRole)"
                         type="button"
                         class="btn btn-default btn-sm">
-                  <span class="glyphicon glyphicon-plus"></span>
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   {{ 'addNewPerson' | translate }}
                 </button>
                 <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
@@ -221,13 +244,17 @@
             <p translate="study.noPersonInRoles"></p>
           </ng-template>
           <button type="button" class="btn btn-default" (click)="addPersonInRole()">
-            <span class="glyphicon glyphicon-plus"></span>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             {{ 'addNewPersonInRole' | translate }}
           </button>
+          <editor-help-text #personInRolesHelpText key="editor.study.personInRoles.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label translate="links"></label>
+          <label>
+            {{ 'links' | translate }}
+            <editor-help-link [helpTextComponent]="linksHelpText"></editor-help-link>
+          </label>
           <table *ngIf="study.links && study.links.length; else noStudyLinks;"
                  class="table table-striped">
             <tr>
@@ -277,29 +304,42 @@
           </ng-template>
 
           <button type="button" class="btn btn-default" (click)="addLink()">
-            <span class="glyphicon glyphicon-plus"></span>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             {{ 'addNewLink' | translate }}
           </button>
+
+          <editor-help-text #linksHelpText key="editor.study.links.helpText"></editor-help-text>
         </div>
 
         <div *ngIf="allUsageConditions"
-             class="form-group">
-          <label for="usageCondition">{{ 'usageCondition' | translate }}</label>
-          <select [(ngModel)]="study.usageCondition"
-                  [compareWith]="nodeUtils.equals"
-                  id="usageCondition"
-                  name="usageCondition"
-                  class="form-control">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let usageCondition of allUsageConditions"
-                    [ngValue]="usageCondition">
-              {{usageCondition.prefLabel|lang}}
-            </option>
-          </select>
+             class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <label for="usageCondition">
+                {{ 'usageCondition' | translate }}
+                <editor-help-link [helpTextComponent]="usageConditionHelpText"></editor-help-link>
+              </label>
+              <select [(ngModel)]="study.usageCondition"
+                      [compareWith]="nodeUtils.equals"
+                      id="usageCondition"
+                      name="usageCondition"
+                      class="form-control">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let usageCondition of allUsageConditions"
+                        [ngValue]="usageCondition">
+                  {{usageCondition.prefLabel|lang}}
+                </option>
+              </select>
+              <editor-help-text #usageConditionHelpText key="editor.study.usageCondition.helpText"></editor-help-text>
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="usageConditionAdditionalInformation">{{ 'usageConditionAdditionalInformation' | translate }}</label>
+          <label for="usageConditionAdditionalInformation">
+            {{ 'usageConditionAdditionalInformation' | translate }}
+            <editor-help-link [helpTextComponent]="usageConditionAdditionalInformationHelpText"></editor-help-link>
+          </label>
           <textarea [(ngModel)]="study.usageConditionAdditionalInformation[language]"
                     thlAutogrow
                     id="usageConditionAdditionalInformation"
@@ -307,13 +347,17 @@
                     class="form-control"
                     rows="2">
           </textarea>
+          <editor-help-text #usageConditionAdditionalInformationHelpText key="editor.study.usageConditionAdditionalInformation.helpText"></editor-help-text>
         </div>
 
         <ng-container *ngIf="allUnitTypes.length">
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label for="unitType">{{ 'unitType' | translate }}</label>
+                <label for="unitType">
+                  {{ 'unitType' | translate }}
+                  <editor-help-link [helpTextComponent]="unitTypeHelpText"></editor-help-link>
+                </label>
                 <br>
                 <div style="display:inline-block">
                   <select [(ngModel)]="study.unitType"
@@ -333,9 +377,10 @@
                   (click)="showAddUnitTypeModal()"
                   class="btn btn-default"
                   type="button">
-                  <span class="glyphicon glyphicon-plus"></span>
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   {{ 'addUnitType' | translate }}
                 </button>
+                <editor-help-text #unitTypeHelpText key="editor.study.unitType.helpText"></editor-help-text>
               </div>
             </div>
           </div>
@@ -349,12 +394,16 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="numberOfObservationUnits" translate="numberOfObservationUnits"></label>
+              <label for="numberOfObservationUnits">
+                {{ 'numberOfObservationUnits' | translate }}
+                <editor-help-link [helpTextComponent]="numberOfObservationUnitsHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="study.numberOfObservationUnits"
                      id="numberOfObservationUnits"
                      name="numberOfObservationUnits"
                      class="form-control"
                      type="text">
+              <editor-help-text #numberOfObservationUnitsHelpText key="editor.study.numberOfObservationUnits.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -363,7 +412,10 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label>{{ 'universe' | translate }}</label>
+                <label>
+                  {{ 'universe' | translate }}
+                  <editor-help-link [helpTextComponent]="universeHelpText"></editor-help-link>
+                </label>
                 <br>
                 <p-dropdown [(ngModel)]="study.universe"
                             [ngModelOptions]="{ standalone: true }"
@@ -391,9 +443,10 @@
                   (click)="showAddUniverseModal()"
                   class="btn btn-default btn-sm"
                   type="button">
-                  <span class="glyphicon glyphicon-plus"></span>
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                   {{ 'addUniverse' | translate }}
                 </button>
+                <editor-help-text #universeHelpText key="editor.study.universe.helpText"></editor-help-text>
               </div>
             </div>
           </div>
@@ -405,7 +458,10 @@
         </ng-container>
 
         <div class="form-group">
-          <label for="population-prefLabel">{{ 'population' | translate }}</label>
+          <label for="population-prefLabel">
+            {{ 'population' | translate }}
+            <editor-help-link [helpTextComponent]="populationPrefLabelText"></editor-help-link>
+          </label>
           <textarea [(ngModel)]="study.population.prefLabel[language]"
                     thlAutogrow
                     id="population-prefLabel"
@@ -413,10 +469,14 @@
                     class="form-control"
                     rows="3">
           </textarea>
+          <editor-help-text #populationPrefLabelText key="editor.study.population.prefLabel.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="population-geographicalCoverage">{{ 'geographicalCoverage' | translate }}</label>
+          <label for="population-geographicalCoverage">
+            {{ 'geographicalCoverage' | translate }}
+            <editor-help-link [helpTextComponent]="populationGeographicalCoverageHelpText"></editor-help-link>
+          </label>
           <textarea [(ngModel)]="study.population.geographicalCoverage[language]"
                     thlAutogrow
                     id="population-geographicalCoverage"
@@ -424,31 +484,43 @@
                     class="form-control"
                     rows="2">
           </textarea>
+          <editor-help-text #populationGeographicalCoverageHelpText key="editor.study.population.geographicalCoverage.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="population-sampleSize">{{ 'sampleSize' | translate }}</label>
+          <label for="population-sampleSize">
+            {{ 'sampleSize' | translate }}
+            <editor-help-link [helpTextComponent]="populationSampleSizeHelpText"></editor-help-link>
+          </label>
           <input [(ngModel)]="study.population.sampleSize[language]"
                  id="population-sampleSize"
                  name="population-sampleSize"
                  type="text"
                  class="form-control">
+          <editor-help-text #populationSampleSizeHelpText key="editor.study.population.sampleSize.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="population-loss">{{ 'loss' | translate }}</label>
+          <label for="population-loss">
+            {{ 'loss' | translate }}
+            <editor-help-link [helpTextComponent]="populationLossHelpText"></editor-help-link>
+          </label>
           <input [(ngModel)]="study.population.loss[language]"
                  id="population-loss"
                  name="population-loss"
                  type="text"
                  class="form-control">
+          <editor-help-text #populationLossHelpText key="editor.study.population.loss.helpText"></editor-help-text>
         </div>
 
         <div [ngClass]="{ 'bg-danger': (formErrors.referencePeriodStart && formErrors.referencePeriodStart.length) || (formErrors.referencePeriodEnd && formErrors.referencePeriodEnd.length) }"
              class="row">
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-5">
             <div class="form-group">
-              <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+              <label for="referencePeriodStart">
+                {{ 'referencePeriodStart' | translate }}
+                <editor-help-link [helpTextComponent]="referencePeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="referencePeriodStart"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -468,9 +540,12 @@
               </p>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-5">
             <div class="form-group">
-              <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+              <label for="referencePeriodEnd">
+                {{ 'referencePeriodEnd' | translate }}
+                <editor-help-link [helpTextComponent]="referencePeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="referencePeriodEnd"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -490,13 +565,19 @@
               </p>
             </div>
           </div>
+          <div class="col-xs-12">
+            <editor-help-text #referencePeriodHelpText key="editor.study.referencePeriod.helpText"></editor-help-text>
+          </div>
         </div>
 
         <div [ngClass]="{ 'bg-danger': (formErrors.collectionStartDate && formErrors.collectionStartDate.length) || (formErrors.collectionEndDate && formErrors.collectionEndDate.length) }"
              class="row">
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-5">
             <div class="form-group">
-              <label for="collectionStartDate">{{ 'collectionStartDate' | translate }}</label>
+              <label for="collectionStartDate">
+                {{ 'collectionStartDate' | translate }}
+                <editor-help-link [helpTextComponent]="collectionPeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="collectionStartDate"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -516,9 +597,12 @@
               </p>
             </div>
           </div>
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-5">
             <div class="form-group">
-              <label for="collectionEndDate">{{ 'collectionEndDate' | translate }}</label>
+              <label for="collectionEndDate">
+                {{ 'collectionEndDate' | translate }}
+                <editor-help-link [helpTextComponent]="collectionPeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="collectionEndDate"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -538,13 +622,19 @@
               </p>
             </div>
           </div>
+          <div class="col-xs-12">
+            <editor-help-text #collectionPeriodHelpText key="editor.study.collectionPeriod.helpText"></editor-help-text>
+          </div>
         </div>
 
         <div class="row">
           <div class="col-sm-6">
             <div *ngIf="allLifecyclePhases"
                  class="form-group">
-              <label for="lifecyclePhase" translate="study.lifecyclePhase"></label>
+              <label for="lifecyclePhase">
+                {{ 'study.lifecyclePhase' | translate }}
+                <editor-help-link [helpTextComponent]="lifecyclePhaseHelpText"></editor-help-link>
+              </label>
               <select [(ngModel)]="study.lifecyclePhase"
                       [compareWith]="nodeUtils.equals"
                       id="lifecyclePhase"
@@ -556,12 +646,16 @@
                   {{lifecyclePhase.prefLabel|lang}}
                 </option>
               </select>
+              <editor-help-text #lifecyclePhaseHelpText key="editor.study.lifecyclePhase.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+          <label for="conceptsFromScheme">
+            {{ 'conceptsFromScheme' | translate }}
+            <editor-help-link [helpTextComponent]="conceptsFromSchemeHelpText"></editor-help-link>
+          </label>
           <br>
           <p-autoComplete
             [(ngModel)]="study.conceptsFromScheme"
@@ -603,19 +697,26 @@
               </span>
             </ng-template>
           </p-autoComplete>
+          <editor-help-text #conceptsFromSchemeHelpText key="editor.study.conceptsFromScheme.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+          <label for="freeConcepts">
+            {{ 'freeConcepts' | translate }}
+            <editor-help-link [helpTextComponent]="freeConceptsHelpText"></editor-help-link>
+          </label>
           <p-chips [(ngModel)]="freeConcepts"
                    [ngModelOptions]="{ standalone: true }"
                    inputId="freeConcepts">
           </p-chips>
-          <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
+          <editor-help-text #freeConceptsHelpText key="editor.study.freeConcepts.helpText"></editor-help-text>
         </div>
 
         <div class="form-group">
-          <label for="datasetType">{{ 'datasetType' | translate }}</label>
+          <label for="datasetType">
+            {{ 'datasetType' | translate }}
+            <editor-help-link [helpTextComponent]="datasetTypeHelpText"></editor-help-link>
+          </label>
           <br>
           <p-multiSelect [(ngModel)]="selectedDatasetTypeItems"
                          [ngModelOptions]="{ standalone: true }"
@@ -624,12 +725,16 @@
                          selectedItemsLabel="{0} {{ 'amountDatasetTypesSelected' | translate }}"
                          inputId="datasetType">
           </p-multiSelect>
+          <editor-help-text #datasetTypeHelpText key="editor.study.datasetType.helpText"></editor-help-text>
         </div>
 
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label>{{ 'studyGroup.studyGroup' | translate }}</label>
+                <label>
+                  {{ 'studyGroup.studyGroup' | translate }}
+                  <editor-help-link [helpTextComponent]="studyGroupHelpText"></editor-help-link>
+                </label>
                 <ng-container *ngIf="availableStudyGroupItems.length > 1; else noAvailableStudyGroupItems;">
                   <br>
                   <p-dropdown [(ngModel)]="study.studyGroup"
@@ -669,7 +774,7 @@
                     (click)="showAddStudyGroupModal()"
                     class="btn btn-default btn-sm"
                     type="button">
-                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     {{ 'addStudyGroup' | translate }}
                   </button>
                   <study-group-edit-modal *ngIf="newStudyGroup"
@@ -678,6 +783,7 @@
                                           (onCancel)="closeAddStudyGroupModal()">
                   </study-group-edit-modal>
                 </ng-container>
+                <editor-help-text #studyGroupHelpText key="editor.study.studyGroup.helpText"></editor-help-text>
               </div>
             </div>
           </div>
@@ -689,7 +795,10 @@
         </div>
 
         <div class="form-group">
-          <label for="comment" translate="comment"></label>
+          <label for="comment">
+            {{ 'comment' | translate }}
+            <editor-help-link [helpTextComponent]="commentHelpText"></editor-help-link>
+          </label>
           <textarea [(ngModel)]="study.comment"
                     thlAutogrow
                     id="comment"
@@ -697,6 +806,7 @@
                     class="form-control"
                     rows="2">
           </textarea>
+          <editor-help-text #commentHelpText key="editor.study.comment.helpText"></editor-help-text>
         </div>
 
       </form>
@@ -715,7 +825,7 @@
                   [disabled]="savingInProgress"
                   class="btn btn-primary"
                   type="button">
-            <span class="glyphicon glyphicon-floppy-disk"></span>
+            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
             {{ 'save' | translate }}
           </button>
           <button (click)="goBack()"

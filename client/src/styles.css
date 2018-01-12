@@ -37,6 +37,10 @@ h3 {
   line-height: 1.1em;
 }
 
+.example {
+  font-style: italic;
+}
+
 .row.bg-highlight,
 .row.bg-primary,
 .row.bg-success,

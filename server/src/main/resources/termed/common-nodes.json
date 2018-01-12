@@ -1682,6 +1682,20 @@
     }
   },
   {
+    "id": "0286f4cf-9f77-4718-9a41-2155b8a14821",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Vastaava tutkija"
+        }
+      ]
+    }
+  },
+  {
     "id": "369e1843-d4a5-4d59-9825-62d1a62516ff",
     "type": {
       "id": "LifecyclePhase"

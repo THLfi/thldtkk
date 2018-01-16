@@ -8,6 +8,7 @@ import { StringUtils } from '../../../utils/string-utils'
      class="help-text-container">
   <div class="pull-right">
     <a (click)="toggle($event)"
+       class="close-link"
        href="#">
       <i class="fa fa-fw fa-close" aria-hidden="true"></i>
       <span class="sr-only">{{ 'close' | translate }}</span>
@@ -25,6 +26,10 @@ import { StringUtils } from '../../../utils/string-utils'
   padding: 1em;
   border-radius: 1px;
   background-color: rgb(192, 221, 219);
+}
+
+a.close-link {
+  color: rgb(51, 51, 51);
 }
 
 .help-text {

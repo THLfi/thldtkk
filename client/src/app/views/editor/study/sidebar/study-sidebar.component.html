@@ -1,7 +1,7 @@
 <nav class="sidebar" role="navigation">
   <ul *ngIf="study">
     <li [ngClass]="{ active: activeSection == StudySidebarActiveSection.STUDY }">
-      <a routerLink="{{ '/editor/studies/' + study.id }}">
+      <a routerLink="{{ '/editor/studies/' + (study.id ? study.id : 'new') }}">
         <div class="icon" style="padding-bottom:0.5em;" aria-hidden="true">
           <sidebar-icon-study></sidebar-icon-study>
         </div>

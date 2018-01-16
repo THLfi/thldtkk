@@ -35,12 +35,16 @@
         <div *ngIf="codeList.codeListType == 'external'" class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="referenceId">{{ 'codeList.referenceId' | translate }}</label>
+              <label for="referenceId">
+                {{ 'codeList.referenceId' | translate }}
+                <editor-help-link [helpTextComponent]="referenceIdHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="codeList.referenceId"
                      id="referenceId"
                      name="referenceId"
                      type="text"
                      class="form-control">
+              <editor-help-text #referenceIdHelpText key="editor.codeList.referenceId.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -51,6 +55,7 @@
               <label for="prefLabel">
                 {{ 'codeList.prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                <editor-help-link [helpTextComponent]="prefLabelHelpText"></editor-help-link>
               </label>
               <input [(ngModel)]="codeList.prefLabel[language]"
                      [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
@@ -64,13 +69,17 @@
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}
               </p>
+              <editor-help-text #prefLabelHelpText key="editor.codeList.prefLabel.helpText"></editor-help-text>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="description">{{ 'codeList.description' | translate }}</label>
+              <label for="description">
+                {{ 'codeList.description' | translate }}
+                <editor-help-link [helpTextComponent]="descriptionHelpText"></editor-help-link>
+              </label>
               <textarea [(ngModel)]="codeList.description[language]"
                         thlAutogrow
                         rows="2"
@@ -78,25 +87,33 @@
                         name="description"
                         class="form-control">
               </textarea>
+              <editor-help-text #descriptionHelpText key="editor.codeList.description.helpText"></editor-help-text>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="owner">{{ 'codeList.owner' | translate }}</label>
+              <label for="owner">
+                {{ 'codeList.owner' | translate }}
+                <editor-help-link [helpTextComponent]="ownerHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="codeList.owner[language]"
                      id="owner"
                      name="owner"
                      type="text"
                      class="form-control">
+              <editor-help-text #ownerHelpText key="editor.codeList.owner.helpText"></editor-help-text>
             </div>
           </div>
         </div>
         <div *ngIf="codeList.codeListType == 'internal'" class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label>{{ 'codeItems' | translate }}</label>
+              <label>
+                {{ 'codeItems' | translate }}
+                <editor-help-link [helpTextComponent]="codeItemsHelpText"></editor-help-link>
+              </label>
               <table *ngIf="codeList.codeItems.length; else noCodeItems;"
                      class="table table-striped">
                 <tr>
@@ -144,6 +161,7 @@
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 {{ 'addCodeItem' | translate }}
               </button>
+              <editor-help-text #codeItemsHelpText key="editor.codeList.codeItems.helpText"></editor-help-text>
             </div>
           </div>
         </div>

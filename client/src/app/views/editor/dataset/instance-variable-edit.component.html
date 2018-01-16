@@ -26,7 +26,10 @@
         <div class="row bg-highlight">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="variable">{{ 'variable' | translate }}</label>
+              <label for="variable">
+                {{ 'variable' | translate }}
+                <editor-help-link [helpTextComponent]="variableHelpText"></editor-help-link>
+              </label>
               <br>
               <p-autoComplete
                 [(ngModel)]="instanceVariable.variable"
@@ -58,13 +61,22 @@
 
               <button (click)="editVariableModal.show()"
                       class="btn btn-sm btn-default">
-                <span class="glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 {{ 'addVariable' | translate }}
               </button>
             </div>
           </div>
           <div class="col-md-6">
-            <p class="preserve-line-breaks">{{ 'variableHelpText' | translate }}</p>
+            <p>{{ 'editor.instanceVariable.variable.tagline' | translate }}</p>
+            <p>
+              <a (click)="$event.preventDefault(); variableHelpText.toggle()"
+                 href="#">
+                {{ 'editor.instanceVariable.variable.readMoreLink' | translate }}
+              </a>
+            </p>
+          </div>
+          <div class="col-xs-12">
+            <editor-help-text #variableHelpText key="editor.instanceVariable.variable.helpText"></editor-help-text>
           </div>
         </div>
 
@@ -81,6 +93,7 @@
               <label for="prefLabel">
                 {{ 'prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                <editor-help-link [helpTextComponent]="prefLabelHelpText"></editor-help-link>
               </label>
               <input [(ngModel)]="instanceVariable.prefLabel[language]"
                      id="prefLabel"
@@ -93,6 +106,7 @@
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}
               </p>
+              <editor-help-text #prefLabelHelpText key="editor.instanceVariable.prefLabel.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -100,12 +114,16 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="technicalName" translate="technicalName"></label>
+              <label for="technicalName">
+                {{ 'technicalName' | translate }}
+                <editor-help-link [helpTextComponent]="technicalNameHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.technicalName"
                      id="technicalName"
                      name="technicalName"
                      type="text"
                      class="form-control">
+              <editor-help-text #technicalNameHelpText key="editor.instanceVariable.technicalName.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -113,7 +131,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="description">{{ 'description' | translate }}</label>
+              <label for="description">
+                {{ 'description' | translate }}
+                <editor-help-link [helpTextComponent]="descriptionNameHelpText"></editor-help-link>
+              </label>
               <textarea [(ngModel)]="instanceVariable.description[language]"
                         thlAutogrow
                         id="description"
@@ -121,6 +142,7 @@
                         class="form-control"
                         rows="3">
               </textarea>
+              <editor-help-text #descriptionNameHelpText key="editor.instanceVariable.description.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -128,12 +150,16 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="partOfGroup">{{ 'partOfGroup' | translate }}</label>
+              <label for="partOfGroup">
+                {{ 'partOfGroup' | translate }}
+                <editor-help-link [helpTextComponent]="partOfGroupHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.partOfGroup[language]"
                      id="partOfGroup"
                      name="partOfGroup"
                      type="text"
                      class="form-control">
+              <editor-help-text #partOfGroupHelpText key="editor.instanceVariable.partOfGroup.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -141,7 +167,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="conceptsFromScheme">{{ 'conceptsFromScheme' | translate }}</label>
+              <label for="conceptsFromScheme">
+                {{ 'conceptsFromScheme' | translate }}
+                <editor-help-link [helpTextComponent]="conceptsFromSchemeHelpText"></editor-help-link>
+              </label>
               <br>
               <p-autoComplete
                 [(ngModel)]="instanceVariable.conceptsFromScheme"
@@ -183,6 +212,7 @@
                   </span>
                 </ng-template>
               </p-autoComplete>
+              <editor-help-text #conceptsFromSchemeHelpText key="editor.instanceVariable.conceptsFromScheme.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -190,12 +220,15 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="freeConcepts">{{ 'freeConcepts' | translate }}</label>
+              <label for="freeConcepts">
+                {{ 'freeConcepts' | translate }}
+                <editor-help-link [helpTextComponent]="freeConceptsHelpText"></editor-help-link>
+              </label>
               <p-chips [(ngModel)]="freeConcepts"
                        [ngModelOptions]="{ standalone: true }"
                        inputId="freeConcepts">
               </p-chips>
-              <p class="help-block">{{ 'freeConceptsHelpText' | translate }}</p>
+              <editor-help-text #freeConceptsHelpText key="editor.instanceVariable.freeConcepts.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -204,7 +237,10 @@
              class="row">
           <div class="col-sm-6 col-md-4">
             <div class="form-group">
-              <label for="referencePeriodStart">{{ 'referencePeriodStart' | translate }}</label>
+              <label for="referencePeriodStart">
+                {{ 'referencePeriodStart' | translate }}
+                <editor-help-link [helpTextComponent]="referencePeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="referencePeriodStart"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -226,7 +262,10 @@
           </div>
           <div class="col-sm-6 col-md-4">
             <div class="form-group">
-              <label for="referencePeriodEnd">{{ 'referencePeriodEnd' | translate }}</label>
+              <label for="referencePeriodEnd">
+                {{ 'referencePeriodEnd' | translate }}
+                <editor-help-link [helpTextComponent]="referencePeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="referencePeriodEnd"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -246,12 +285,18 @@
               </p>
             </div>
           </div>
+          <div class="col-xs-12">
+            <editor-help-text #referencePeriodHelpText key="editor.instanceVariable.referencePeriod.helpText"></editor-help-text>
+          </div>
         </div>
 
         <div class="row">
-          <div class="col-sm-6 col-md-4">
+          <div class="col-xs-12">
             <div class="form-group">
-              <label for="value-domain-type">{{ 'valueDomainType.label' | translate }}</label>
+              <label for="value-domain-type">
+                {{ 'valueDomainType.label' | translate }}
+                <editor-help-link [helpTextComponent]="valueDomainTypeHelpText"></editor-help-link>
+              </label>
               <div id="value-domain-type" class="radio">
                 <label>
                   <input [(ngModel)]="instanceVariable.valueDomainType" name="value-domain-type" type="radio" value="described">
@@ -264,6 +309,7 @@
                   {{ 'valueDomainType.enumerated' | translate }}
                 </label>
               </div>
+              <editor-help-text #valueDomainTypeHelpText key="editor.instanceVariable.valueDomainType.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -273,7 +319,10 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <label>{{ 'quantity' | translate }}</label>
+                  <label>
+                    {{ 'quantity' | translate }}
+                    <editor-help-link [helpTextComponent]="quantityHelpText"></editor-help-link>
+                  </label>
                   <br>
                   <p-dropdown [(ngModel)]="instanceVariable.quantity"
                               [ngModelOptions]="{ standalone: true }"
@@ -287,6 +336,7 @@
                     <span class="glyphicon glyphicon-plus"></span>
                     {{ 'addQuantity' | translate }}
                   </button>
+                  <editor-help-text #quantityHelpText key="editor.instanceVariable.quantity.helpText"></editor-help-text>
                 </div>
               </div>
             </div>
@@ -301,7 +351,10 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <label>{{ 'unit' | translate }}</label>
+                  <label>
+                    {{ 'unit' | translate }}
+                    <editor-help-link [helpTextComponent]="unitHelpText"></editor-help-link>
+                  </label>
                   <br>
                   <p-dropdown [(ngModel)]="instanceVariable.unit"
                               [ngModelOptions]="{ standalone: true }"
@@ -315,6 +368,7 @@
                     <span class="glyphicon glyphicon-plus"></span>
                     {{ 'addUnit' | translate }}
                   </button>
+                  <editor-help-text #unitHelpText key="editor.instanceVariable.unit.helpText"></editor-help-text>
                 </div>
               </div>
             </div>
@@ -328,7 +382,10 @@
           <div class="row">
             <div class="col-sm-6 col-md-4">
               <div class="form-group">
-                <label for="valueRangeMin">{{ 'valueRangeMin' | translate }}</label>
+                <label for="valueRangeMin">
+                  {{ 'valueRangeMin' | translate }}
+                  <editor-help-link [helpTextComponent]="valueRangeHelpText"></editor-help-link>
+                </label>
                 <input [(ngModel)]="instanceVariable.valueRangeMin"
                        [ngModelOptions]="{ standalone: true }"
                        id="valueRangeMin"
@@ -339,7 +396,10 @@
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="form-group">
-                <label for="valueRangeMax">{{ 'valueRangeMax' | translate }}</label>
+                <label for="valueRangeMax">
+                  {{ 'valueRangeMax' | translate }}
+                  <editor-help-link [helpTextComponent]="valueRangeHelpText"></editor-help-link>
+                </label>
                 <input [(ngModel)]="instanceVariable.valueRangeMax"
                        [ngModelOptions]="{ standalone: true }"
                        id="valueRangeMax"
@@ -347,6 +407,9 @@
                        class="form-control"
                        type="number">
               </div>
+            </div>
+            <div class="col-xs-12">
+              <editor-help-text #valueRangeHelpText key="editor.instanceVariable.valueRange.helpText"></editor-help-text>
             </div>
           </div>
 
@@ -357,7 +420,10 @@
                class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label for="codeList">{{ 'codeList.label' | translate }}</label>
+                <label for="codeList">
+                  {{ 'codeList.label' | translate }}
+                  <editor-help-link [helpTextComponent]="codeListHelpText"></editor-help-link>
+                </label>
                 <br>
                 <p-dropdown [(ngModel)]="instanceVariable.codeList"
                             [ngModelOptions]="{ standalone: true }"
@@ -406,6 +472,7 @@
                   <span class="glyphicon glyphicon-plus"></span>
                   {{ 'addCodeList' | translate }}
                 </button>
+                <editor-help-text #codeListHelpText key="editor.instanceVariable.codeList.helpText"></editor-help-text>
               </div>
             </div>
           </div>
@@ -425,7 +492,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="missingValues">{{ 'missingValues' | translate }}</label>
+              <label for="missingValues">
+                {{ 'missingValues' | translate }}
+                <editor-help-link [helpTextComponent]="missingValuesHelpText"></editor-help-link>
+              </label>
               <textarea [(ngModel)]="instanceVariable.missingValues[language]"
                         thlAutogrow
                         id="missingValues"
@@ -433,6 +503,7 @@
                         class="form-control"
                         rows="3">
               </textarea>
+              <editor-help-text #missingValuesHelpText key="editor.instanceVariable.missingValues.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -440,12 +511,16 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="defaultMissingValue">{{ 'defaultMissingValue' | translate }}</label>
+              <label for="defaultMissingValue">
+                {{ 'defaultMissingValue' | translate }}
+                <editor-help-link [helpTextComponent]="defaultMissingValueHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.defaultMissingValue"
                      id="defaultMissingValue"
                      name="defaultMissingValue"
                      class="form-control"
                      type="text">
+              <editor-help-text #defaultMissingValueHelpText key="editor.instanceVariable.defaultMissingValue.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -453,7 +528,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="qualityStatement">{{ 'qualityStatement' | translate }}</label>
+              <label for="qualityStatement">
+                {{ 'qualityStatement' | translate }}
+                <editor-help-link [helpTextComponent]="qualityStatementHelpText"></editor-help-link>
+              </label>
               <textarea [(ngModel)]="instanceVariable.qualityStatement[language]"
                         thlAutogrow
                         id="qualityStatement"
@@ -461,6 +539,7 @@
                         class="form-control"
                         rows="3">
               </textarea>
+              <editor-help-text #qualityStatementHelpText key="editor.instanceVariable.qualityStatement.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -468,7 +547,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="source">{{ 'instanceVariableSource' | translate }}</label>
+              <label for="source">
+                {{ 'instanceVariableSource' | translate }}
+                <editor-help-link [helpTextComponent]="sourceHelpText"></editor-help-link>
+              </label>
               <br>
               <p-autoComplete
                 *ngIf="!instanceVariable.source || !instanceVariable.source.prefLabel"
@@ -495,45 +577,58 @@
                   {{ 'remove' | translate }}
                 </button>
               </div>
+              <editor-help-text #sourceHelpText key="editor.instanceVariable.source.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-8">
             <div class="form-group">
-              <label for="sourceDescription">{{ 'sourceDescription' | translate }}</label>
+              <label for="sourceDescription">
+                {{ 'sourceDescription' | translate }}
+                <editor-help-link [helpTextComponent]="sourceDescriptionHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.sourceDescription[language]"
                      id="sourceDescription"
                      name="sourceDescription"
                      class="form-control"
                      type="text">
+              <editor-help-text #sourceDescriptionHelpText key="editor.instanceVariable.sourceDescription.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-sm-8">
             <div class="form-group">
-              <label for="dataType" translate="dataType"></label>
+              <label for="dataType">
+                {{ 'dataType' | translate }}
+                <editor-help-link [helpTextComponent]="dataTypeHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.dataType"
                      id="dataType"
                      name="dataType"
                      type="text"
                      class="form-control">
+              <editor-help-text #dataTypeHelpText key="editor.instanceVariable.dataType.helpText"></editor-help-text>
             </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-sm-8">
             <div class="form-group">
-              <label for="dataFormat"> {{'dataFormat' | translate}} </label>
+              <label for="dataFormat">
+                {{'dataFormat' | translate}}
+                <editor-help-link [helpTextComponent]="dataFormatHelpText"></editor-help-link>
+              </label>
               <input [(ngModel)]="instanceVariable.dataFormat[language]"
                      id="dataFormat"
                      name="dataFormat"
                      type="text"
                      class="form-control">
+              <editor-help-text #dataFormatHelpText key="editor.instanceVariable.dataFormat.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -542,7 +637,10 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label for="unitType">{{ 'unitType' | translate }}</label>
+                <label for="unitType">
+                  {{ 'unitType' | translate }}
+                  <editor-help-link [helpTextComponent]="unitTypeHelpText"></editor-help-link>
+                </label>
                 <br>
                 <div style="display:inline-block">
                   <select [(ngModel)]="instanceVariable.unitType"
@@ -564,6 +662,7 @@
                   <span class="glyphicon glyphicon-plus"></span>
                   {{ 'addUnitType' | translate }}
                 </button>
+                <editor-help-text #unitTypeHelpText key="editor.instanceVariable.unitType.helpText"></editor-help-text>
               </div>
             </div>
           </div>
@@ -578,7 +677,11 @@
           <div class="row">
             <div class="form-group">
               <div class="col-xs-12 col-sm-8">
-                <label for="instanceQuestions" class="field-label">{{ 'instanceQuestions' | translate }}</label>
+                <label for="instanceQuestions"
+                       class="field-label">
+                  {{ 'instanceQuestions' | translate }}
+                  <editor-help-link [helpTextComponent]="instanceQuestionsHelpText"></editor-help-link>
+                </label>
                 <br>
                 <p-autoComplete
                   [(ngModel)]="instanceVariable.instanceQuestions"
@@ -617,6 +720,9 @@
                     </button>
                   </span>
                 </div>
+              </div>
+              <div class="col-xs-12">
+                <editor-help-text #instanceQuestionsHelpText key="editor.instanceVariable.instanceQuestions.helpText"></editor-help-text>
               </div>
             </div>
           </div>

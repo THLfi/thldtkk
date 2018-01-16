@@ -306,7 +306,7 @@
   "codeItems": "Koodit",
   "codeItem": {
     "code": "Koodi",
-    "prefLabel": "Selite"
+    "prefLabel": "Arvo"
   },
   "noCodeItems": "Koodeja ei ole määritelty.",
   "addCodeItem": "Lisää koodi",
@@ -713,7 +713,7 @@
         "helpText": "<p>Yleensä havaintoyksiköiden lukumäärä ilmaistaan kirjoittamalla täsmällinen numeerinen arvo.</p><p>Esimerkki 1:</p><p class=\"example\">32 275</p><p>Havaintoyksiköiden lukumäärän voi myös ilmoittaa vuositasolla.</p><p>Esimerkki 2:</p><p class=\"example\">Hoitojaksoja 1 miljoona (vuonna 2015)</p>"
       },
       "universe": {
-        "helpText": "<p>Perusjoukko on kaikkien havaintoyksiköiden muodostama kokonaisuus (lähde: FSD). Perusjoukko on yleistys kohdejoukosta. Perusjoukko valitaan valintalistasta. Mikäli sopivaa ei löydy, määrittele uusi perusjoukko. Uutta perusjoukkoa määriteltäessä siihen lisätään maantieteellinen rajaus. Muita sisäänotto- tai ulossulkurajauksia ei käytetä.</p><p>Perusjoukot ovat vain palvelun ylläpidon editoitavissa.</p><p>Esimerkkejä:</p><p class=\"example\">Hoitojaksot Suomessa</p><p class=\"example\">Suomen 20 vuotta täyttänyt väestö</p><p class=\"example\">Nokian ja Kangasalan väestö</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä</p>"
+        "helpText": "<p>Perusjoukko on kaikkien havaintoyksiköiden muodostama kokonaisuus. Perusjoukko on yleistys kohdejoukosta. Perusjoukko valitaan valintalistasta. Mikäli sopivaa ei löydy, määrittele uusi perusjoukko. Uutta perusjoukkoa määriteltäessä siihen lisätään maantieteellinen rajaus. Muita sisäänotto- tai ulossulkurajauksia ei käytetä.</p><p>Perusjoukot ovat vain palvelun ylläpidon editoitavissa.</p><p>Esimerkkejä:</p><p class=\"example\">Hoitojaksot Suomessa</p><p class=\"example\">Suomen 20 vuotta täyttänyt väestö</p><p class=\"example\">Nokian ja Kangasalan väestö</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä</p>"
       },
       "population": {
         "prefLabel": {
@@ -723,14 +723,14 @@
           "helpText": "<p>Alueellinen kattavuus määrittää aineiston maantieteellisen kattavuuden mahdollisimman tarkalla tasolla. Tarvittaessa merkitse täsmällinen ja tarkkarajainen paikkatieto esimerkiksi koordinaatein.</p><p>Esimerkkejä:</p><p class=\"example\">Helsinki</p><p class=\"example\">Koko Suomi</p><p class=\"example\">Suomi ilman Ahvenanmaata</p><p class=\"example\">Pelkosenniemi, Ranua, Posio, Kittilä, Sodankylä, Salla, Alatornio, Tervola, Rovaniemi ja Pudasjärvi</p> "
         },
         "sampleSize": {
-          "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. (lähde: FSD) Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
+          "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
         },
         "loss": {
-          "helpText": "<p>Kato kertoo aineiston kattavuuden puutteista. Kenttään merkitään kaikki oleellinen tieto katoon, vastausaktiivisuuteen sekä mahdollisiin kadon korjaustoimenpiteisiin liittyen.</p><p>Kadolla tarkoitetaan joko kokonaisten otosyksiköiden (henkilöiden tai kotitalouksien) puuttumista tutkimusaineistosta tai puuttuvia tietoja, \"reikiä\" joidenkin havaintoyksiköiden tiedoissa. Edellinen voi johtua kohdehenkilöiden kieltäytymisestä tai tavoittamatta jäämisestä (ulkoinen kato), kun taas jälkimmäinen johtuu vastausten puuttumisesta lomakkeelta tiedon puutteen tai vastaushaluttomuuden vuoksi (sisäinen kato).(<a href=\"http://www.stat.fi/meta/kas/kato.html\">lähde: Tilastokeskus</a>)</p><p>Esimerkki 1:</p><p class=\"example\">495</p><p>Esimerkki 2:</p><p class=\"example\">Vastausaktiivisuus 49%. Vastauskadon vaikutukset on huomioitu käyttämällä katoa korjaavia painokertoimia. Tulokset ovat näin ollen yleistettävissä tiedonkeruuvuoden 20 vuotta täyttäneeseen väestöön.</p><p>Esimerkki 3:</p><p class=\"example\">Kato 16,0 %. Kutsutuista 17 561 eli 84,0 % osallistui.</p>"
+          "helpText": "<p>Kato kertoo aineiston kattavuuden puutteista. Kenttään merkitään kaikki oleellinen tieto katoon, vastausaktiivisuuteen sekä mahdollisiin kadon korjaustoimenpiteisiin liittyen.</p><p>Kadolla tarkoitetaan joko kokonaisten otosyksiköiden (henkilöiden tai kotitalouksien) puuttumista tutkimusaineistosta tai puuttuvia tietoja, \"reikiä\" joidenkin havaintoyksiköiden tiedoissa. Edellinen voi johtua kohdehenkilöiden kieltäytymisestä tai tavoittamatta jäämisestä (ulkoinen kato), kun taas jälkimmäinen johtuu vastausten puuttumisesta lomakkeelta tiedon puutteen tai vastaushaluttomuuden vuoksi (sisäinen kato).</p><p>Esimerkki 1:</p><p class=\"example\">495</p><p>Esimerkki 2:</p><p class=\"example\">Vastausaktiivisuus 49%. Vastauskadon vaikutukset on huomioitu käyttämällä katoa korjaavia painokertoimia. Tulokset ovat näin ollen yleistettävissä tiedonkeruuvuoden 20 vuotta täyttäneeseen väestöön.</p><p>Esimerkki 3:</p><p class=\"example\">Kato 16,0 %. Kutsutuista 17 561 eli 84,0 % osallistui.</p>"
         }
       },
       "referencePeriod": {
-        "helpText": "<p>Viiteajankohta tarkoittaa aineiston ajallista kattavuutta, eli sitä ajankohtaa, jota aineiston/datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon aineiston tiedot viittaavat ts. aineiston tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten aineiston tiedot kuvaavat keräämisajankohtaa, mutta toisinaan aineiston viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa. (lähde: FSD)</p>"
+        "helpText": "<p>Viiteajankohta tarkoittaa aineiston ajallista kattavuutta, eli sitä ajankohtaa, jota aineiston/datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon aineiston tiedot viittaavat ts. aineiston tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten aineiston tiedot kuvaavat keräämisajankohtaa, mutta toisinaan aineiston viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa.</p>"
       },
       "collectionPeriod": {
         "helpText": "<p>Keruuajankohta tarkoittaa aineiston keruun alku- ja loppuajankohtaa. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p>"
@@ -792,7 +792,7 @@
         "helpText": "<p>Yleensä datasetin havaintoyksiköiden lukumäärä ilmaistaan kirjoittamalla täsmällinen numeerinen arvo.</p><p>Esimerkki:</p><p class=\"example\">32 275</p>"
       },
       "universe": {
-        "helpText": "<p>Perusjoukko on kaikkien havaintoyksiköiden muodostama kokonaisuus (lähde: FSD). Perusjoukko on yleistys kohdejoukosta. Perusjoukko valitaan valintalistasta. Mikäli sopivaa ei löydy, määrittele uusi perusjoukko. Uutta perusjoukkoa määriteltäessä siihen lisätään maantieteellinen rajaus. Muita sisäänotto- tai ulossulkurajauksia ei käytetä.</p><p>Perusjoukot ovat vain palvelun ylläpidon editoitavissa.</p><p>Esimerkkejä:</p><p class=\"example\">Hoitojaksot Suomessa</p><p class=\"example\">Suomen 20 vuotta täyttänyt väestö</p><p class=\"example\">Nokian ja Kangasalan väestö</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä</p>"
+        "helpText": "<p>Perusjoukko on kaikkien havaintoyksiköiden muodostama kokonaisuus. Perusjoukko on yleistys kohdejoukosta. Perusjoukko valitaan valintalistasta. Mikäli sopivaa ei löydy, määrittele uusi perusjoukko. Uutta perusjoukkoa määriteltäessä siihen lisätään maantieteellinen rajaus. Muita sisäänotto- tai ulossulkurajauksia ei käytetä.</p><p>Perusjoukot ovat vain palvelun ylläpidon editoitavissa.</p><p>Esimerkkejä:</p><p class=\"example\">Hoitojaksot Suomessa</p><p class=\"example\">Suomen 20 vuotta täyttänyt väestö</p><p class=\"example\">Nokian ja Kangasalan väestö</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä</p>"
       },
       "population": {
         "prefLabel": {
@@ -802,14 +802,14 @@
           "helpText": "<p>Alueellinen kattavuus määrittää datasetin maantieteellisen kattavuuden mahdollisimman tarkalla tasolla. Tarvittaessa merkitse täsmällinen ja tarkkarajainen paikkatieto esimerkiksi koordinaatein.</p><p>Esimerkkejä:</p><p class=\"example\">Helsinki</p><p class=\"example\">Koko Suomi</p><p class=\"example\">Suomi ilman Ahvenanmaata</p><p class=\"example\">Pelkosenniemi, Ranua, Posio, Kittilä, Sodankylä, Salla, Alatornio, Tervola, Rovaniemi ja Pudasjärvi.</p>"
         },
         "sampleSize": {
-          "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. (lähde: FSD) Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
+          "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
         },
         "loss": {
-          "helpText": "<p>Kato kertoo datasetin kattavuuden puutteista. Kenttään merkitään kaikki oleellinen tieto katoon, vastausaktiivisuuteen sekä mahdollisiin kadon korjaustoimenpiteisiin liittyen.</p><p>Kadolla tarkoitetaan joko kokonaisten otosyksiköiden (henkilöiden tai kotitalouksien) puuttumista tutkimusaineistosta tai puuttuvia tietoja, \"reikiä\" joidenkin havaintoyksiköiden tiedoissa. Edellinen voi johtua kohdehenkilöiden kieltäytymisestä tai tavoittamatta jäämisestä (ulkoinen kato), kun taas jälkimmäinen johtuu vastausten puuttumisesta lomakkeelta tiedon puutteen tai vastaushaluttomuuden vuoksi (sisäinen kato). (lähde: Tilastokeskus)</p><p>Esimerkki 1:</p><p class=\"example\">495</p><p>Esimerkki 2:</p><p class=\"example\">Vastausaktiivisuus 49%. Vastauskadon vaikutukset on huomioitu käyttämällä katoa korjaavia painokertoimia. Tulokset ovat näin ollen yleistettävissä tiedonkeruuvuoden 20 vuotta täyttäneeseen väestöön.</p><p>Esimerkki 3:</p><p class=\"example\">Kato 16,0 %. Kutsutuista 17 561 eli 84,0 % osallistui.</p>"
+          "helpText": "<p>Kato kertoo datasetin kattavuuden puutteista. Kenttään merkitään kaikki oleellinen tieto katoon, vastausaktiivisuuteen sekä mahdollisiin kadon korjaustoimenpiteisiin liittyen.</p><p>Kadolla tarkoitetaan joko kokonaisten otosyksiköiden (henkilöiden tai kotitalouksien) puuttumista tutkimusaineistosta tai puuttuvia tietoja, \"reikiä\" joidenkin havaintoyksiköiden tiedoissa. Edellinen voi johtua kohdehenkilöiden kieltäytymisestä tai tavoittamatta jäämisestä (ulkoinen kato), kun taas jälkimmäinen johtuu vastausten puuttumisesta lomakkeelta tiedon puutteen tai vastaushaluttomuuden vuoksi (sisäinen kato).</p><p>Esimerkki 1:</p><p class=\"example\">495</p><p>Esimerkki 2:</p><p class=\"example\">Vastausaktiivisuus 49%. Vastauskadon vaikutukset on huomioitu käyttämällä katoa korjaavia painokertoimia. Tulokset ovat näin ollen yleistettävissä tiedonkeruuvuoden 20 vuotta täyttäneeseen väestöön.</p><p>Esimerkki 3:</p><p class=\"example\">Kato 16,0 %. Kutsutuista 17 561 eli 84,0 % osallistui.</p>"
         }
       },
       "referencePeriod": {
-        "helpText": "<p>Viiteajankohta tarkoittaa datasetin ajallista kattavuutta, eli sitä ajankohtaa, jota datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon datasetin tiedot viittaavat ts. datasetin tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten datasetin tiedot kuvaavat keräämisajankohtaa, mutta toisinaan datasetin viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa. (lähde: FSD)</p>"
+        "helpText": "<p>Viiteajankohta tarkoittaa datasetin ajallista kattavuutta, eli sitä ajankohtaa, jota datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon datasetin tiedot viittaavat ts. datasetin tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten datasetin tiedot kuvaavat keräämisajankohtaa, mutta toisinaan datasetin viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa.</p><p>Jos sekä alku- että loppupäivämääräkentän jättää tyhjäksi, viiteajankohta periytyy aineiston tiedoista.</p>"
       },
       "collectionPeriod": {
         "helpText": "<p>Keruuajankohta tarkoittaa datasetin keruun alku- ja loppuajankohtaa. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p>"
@@ -831,6 +831,93 @@
       },
       "comment": {
         "helpText": "<p>Lisätietoja datasetistä. HUOM: Kommentti-kentän tiedot eivät näy julkisesti katalogissa, ainoastaan muille editorin käyttäjille.</p><p>Esimerkki:</p><p class=\"example\">Mukana kaikki Suomen julkiset sairaalat ja terveyskeskusten vuodeosastot. Yksityiset sairaalat ovat mukana osastohoitojaksojen osalta.</p>"
+      }
+    },
+    "instanceVariable": {
+      "variable": {
+        "tagline": "Käsitemuuttuja yhdistää eri aineistoissa samaa ominaisuutta tai asiaa kuvaavat yksittäiset muuttujat.",
+        "readMoreLink": "Lue ohje",
+        "helpText": "<p>Käsitemuuttujan avulla tutkijat pystyvät löytämään kaikki yksittäistä ilmiötä (esimerkiksi tupakointi) eri näkökulmasta tarkastelevat muuttujat.</p><p>Aineiston mahdollisille hallinnollisille muuttujille (kuten aineistonumero) ei tarvitse tehdä käsitemuuttujia.</p><p>Esimerkkejä:</p><p class=\"example\">Ikä<p class=\"example\">Tupakointi<p class=\"example\">Raskaus<p>Käsitemuuttujat ovat vain palvelun ylläpidon editoitavissa.</p>"
+      },
+      "prefLabel": {
+        "helpText": "<p>Muuttujan nimi.</p><p>Esimerkki:</p><p class=\"example\">Ikä</p>"
+      },
+      "technicalName": {
+        "helpText": "<p>Tekninen nimi on usein muuttujan nimi datatiedostossa.</p><p>Esimerkki:</p><p class=\"example\">ika_2017</p>"
+      },
+      "description": {
+        "helpText": "<p>Nimeä tarkempi kuvaus muuttujasta.</p><p>Esimerkki:</p><p class=\"example\">Henkilön ikä vuosina</p>"
+      },
+      "partOfGroup": {
+        "helpText": "<p>Ryhmä, johon muuttuja kuuluu.</p><p>Esimerkki:</p><p class=\"example\">Taustatiedot</p>"
+      },
+      "conceptsFromScheme": {
+        "helpText": "<p>Muuttujan keskeistä sisältöä ja muotoa kuvaavat asiasanat (max 5 kpl) haetaan palveluun liitetyistä Finto-palvelun ontologioista tässä järjestyksessä: YSO, MeSH, (TERO). Kirjoitettaessa asiasanaa, palvelu ehdottaa vaihtoehtoa ontologiasta.</p><p>Esimerkki:</p><p class=\"example\">ikä (YSO), nuoruus (YSO), vanhuus (YSO)</p><p>Asiasanoja valitessasi huomioi ero aineisto- ja dataset-tasojen yleisempien ja muuttujaa tarkasti kuvaavien asiasanojen välillä.</p>"
+      },
+      "freeConcepts": {
+        "helpText": "<p>Muuttujaa kuvaavat vapaat asiasanat, joita ei löydy palveluun liitetyistä Finto-ontologioista (max 5 kpl)</p><p>Esimerkki:</p><p class=\"example\">RAI</p>"
+      },
+      "referencePeriod": {
+        "helpText": "<p>Viiteajankohta on ajankohta, jota muuttujan sisältämä tieto koskee.</p><p>Lisää viiteajankohdan alku- ja loppupäivämäärä.</p><p>Jos sekä alku- että loppupäivämääräkentän jättää tyhjäksi, viiteajankohta periytyy datasetin tai aineiston tiedoista.</p>"
+      },
+      "valueDomainType": {
+        "helpText": "<p>Valitse muuttujan arvoaluetyyppi.</p><p>Esimerkkejä, jatkuva:</p><p class=\"example\">aika</p><p class=\"example\">pituus</p><p class=\"example\">energian kulutus</p><p>Esimerkki, luokiteltu:</p><p class=\"example\">Hilmo - käynnin vastaanottaja</p>"
+      },
+      "quantity": {
+        "helpText": "<p>Valitse alasvetovalikosta muuttujassa käytetty suure tai lisää valikosta puuttuva suure Lisää suure -painiketta klikkaamalla.</p>"
+      },
+      "unit": {
+        "helpText": "<p>Valitse alasvetovalikosta muuttujassa käytetty mittayksikkö tai lisää valikosta puuttuva mittayksikkö Lisää mittayksikkö -painiketta klikkaamalla.</p>"
+      },
+      "valueRange": {
+        "helpText": "<p>Lisää tähän muuttujan pienin ja suurin sallittu arvo.</p>"
+      },
+      "codeList": {
+        "helpText": "<p>Koodisto sisältää muuttujissa käytetyt koodit ja niiden arvot.</p><p>Valitse alasvetovalikosta muuttujassa käytetty koodisto tai luokitus. Mikäli haluamaasi koodistoa/luokitusta ei löydy, lisää koodisto joko viittauksena muualla kuten esimerkiksi Koodistopalvelussa julkaistuun koodistoon tai määrittele käyttämäsi koodisto koodeineen järjestelmään itse.</p><p>Koodistot ovat vain palvelun ylläpidon editoitavissa.</p>"
+      },
+      "missingValues": {
+        "helpText": "<p>Kenttään merkitään muuttujan puuttuvan tiedon koodin mahdollisesti käytetty selite.</p><p>Esimerkki:</p><p class=\"example\">mittaustulos puuttuu</p>"
+      },
+      "defaultMissingValue": {
+        "helpText": "<p>Kenttään merkitään, millä koodilla puuttuvat tiedot ovat esitetty datassa.</p><p>Esimerkki:</p><p class=\"example\">-1</p>"
+      },
+      "qualityStatement": {
+        "helpText": "<p>Kenttään merkitään kaikki oleellinen mikä voi vaikuttaa tietojen tulkintaan: muuttujan kattavuus ja oleelliset muutokset ajassa.</p>"
+      },
+      "source": {
+        "helpText": "<p>Muuttujan tietolähde esimerkiksi yhdistelmäaineistossa. Valitse muuttujalle tietolähde, mikäli muuttuja on peräisin jostain toisesta datasetistä järjestelmän sisällä.</p><p>Esimerkki:</p><p class=\"example\">Terveydenhuollon hoitoilmoitusrekisteri</p>"
+      },
+      "sourceDescription": {
+        "helpText": "<p>Kirjoita tähän tietolähde vapaatekstinä, mikäli muuttuja on peräisin jostain toisesta aineistosta tai datasetistä, jota ei ole kuvattu järjestelmään.</p><p>Esimerkki:</p><p class=\"example\">Väestörekisterikeskus</p>"
+      },
+      "dataType": {
+        "helpText": "<p>Muuttujan datatyyppi.</p><p>Esimerkki 1:</p><p class=\"example\">integer</p><p>Esimerkki 2:</p><p class=\"example\">text</p>"
+      },
+      "dataFormat": {
+        "helpText": "<p>Tähän voit esimerkin tai \"tietotyyppitarkennuksen\" avulla kuvata tarkemmin, missä muodossa muuttujan tieto on. Esimerkiksi päivämäärätyyppisen kentän tapauksessa kentässä voisi lukea <span class=\"example\">30.8.2017</span> tai <span class=\"example\">pv.kk.vuosi</span>.</p>"
+      },
+      "unitType": {
+        "helpText": "<p>Valitse vetovalikosta sopiva havaintoyksikön tyyppi tai lisää uusi.</p><p>Aineiston/datasetin havaintoyksikkötyyppi periytyy muuttujille. Halutessaan sen voi muuttaa muuttujan tasolla.</p><p>Havaintoyksikkötyypit ovat vain palvelun ylläpidon editoitavissa.</p>"
+      },
+      "instanceQuestions": {
+        "helpText": "<p>Muuttujaan liittyvät kyselykysymykset, joita ei ole merkitty muuttujan nimeksi.</p><p>Kyselykysymykset ovat dataset-kohtaisia, joten voit tarvittaessa käyttää samaa kyselykysymystä useamman muuttujan kohdalla. Hae olemassa oleva kyselykysymys datasetin sisältä tai lisää uusi kyselykysymys.</p>"
+      }
+    },
+    "codeList": {
+      "referenceId": {
+        "helpText": "<p>Koodiston tai luokituksen saama tunniste.</p><p>Esimerkki:</p><p class=\"example\">1.2.246.537.6.229</p>"
+      },
+      "prefLabel": {
+        "helpText": "<p>Koodiston tai luokituksen nimi.</p><p>Esimerkki:</p><p class=\"example\">Hilmo - Käynnin vastaanottaja</p>"
+      },
+      "description": {
+        "helpText": "<p>Mitä luokitus kuvaa ja luokituksen erityispiirteet.</p>"
+      },
+      "owner": {
+        "helpText": "<p>Kuka koodistoa/luokitusta hallinnoi.</p>"
+      },
+      "codeItems": {
+        "helpText": "<p>Muuttujan koodit ja koodeja vastaavat arvot.</p><p>Esimerkki 1:</p><p class=\"example\">Koodi: 1<br>Arvo: Mies</p><p>Esimerkki 2:</p><p class=\"example\">Koodi: 020<br>Arvo: Akaa</p>"
       }
     }
   }

@@ -53,7 +53,14 @@ h3 {
   border-radius: 2px;
 }
 .row.bg-highlight {
-  background-color: lightgray;
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #eee;
+}
+.row.bg-highlight a {
+  color: #01a197;
 }
 /* !important needed for overriding background color in striped tables */
 .bg-danger {

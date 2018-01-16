@@ -255,7 +255,7 @@
       "latestStudies": "Uusimmat aineistot",
       "allStudiesButton": "Kaikki aineistokuvaukset",
       "searchVariables": "Hae muuttujia",
-      "searchVariableInfo": "Hae muuttujia nimen, kuvauksen tai asiasanan perusteella. Kokeile esim. sukupuoli.",
+      "searchVariableInfo": "Hae muuttujia nimen, kuvauksen tai asiasanan perusteella. Kokeile esim. tupakointi.",
       "searchVariablePlaceholder": "Kirjoita hakusana",
       "noStudies": "Aineistoja ei löytynyt"
     },
@@ -720,7 +720,7 @@
           "helpText": "<p>Kohdejoukko on joukko, jonka aineisto kattaa. Täytä tiedot mahdollisimman tarkalla tasolla: havaintoyksiköiden joukon kuvaus, maantieteellinen ja ajallinen rajaus sekä mahdolliset sisääänotto- ja ulossulkurajaukset.</p><p>Esimerkkejä:</p><p class=\"example\">Vuodeosastokäyntien ja hoitojaksojen potilaat Suomen terveydenhuollossa vuonna 2015</p><p class=\"example\">Toimeentulotuen saajat Varsinais-Suomessa vuonna 2014</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä vuonna 2016</p><p class=\"example\">Suomessa vakituisesti asuva 20 vuotta täyttänyt väestö vuonna 2017</p><p class=\"example\">Nokian ja Kangasalan väestö 27.11.2007</p><p class=\"example\">15–79-vuotiaat suomalaiset pois lukien Ahvenanmaalla asuvat vuoden 2007 lopusssa</p>"
         },
         "geographicalCoverage": {
-          "helpText": "<p>Alueellinen kattavuus määrittää aineiston maantieteellisen kattavuuden mahdollisimman tarkalla tasolla. Tarvittaessa merkitse täsmällinen ja tarkkarajainen paikkatieto esim. koordinaatein.</p><p>Esimerkkejä:</p><p class=\"example\">Helsinki</p><p class=\"example\">Koko Suomi</p><p class=\"example\">Suomi ilman Ahvenanmaata</p><p class=\"example\">Pelkosenniemi, Ranua, Posio, Kittilä, Sodankylä, Salla, Alatornio, Tervola, Rovaniemi ja Pudasjärvi</p> "
+          "helpText": "<p>Alueellinen kattavuus määrittää aineiston maantieteellisen kattavuuden mahdollisimman tarkalla tasolla. Tarvittaessa merkitse täsmällinen ja tarkkarajainen paikkatieto esimerkiksi koordinaatein.</p><p>Esimerkkejä:</p><p class=\"example\">Helsinki</p><p class=\"example\">Koko Suomi</p><p class=\"example\">Suomi ilman Ahvenanmaata</p><p class=\"example\">Pelkosenniemi, Ranua, Posio, Kittilä, Sodankylä, Salla, Alatornio, Tervola, Rovaniemi ja Pudasjärvi</p> "
         },
         "sampleSize": {
           "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. (lähde: FSD) Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
@@ -730,10 +730,10 @@
         }
       },
       "referencePeriod": {
-        "helpText": "<p>Viiteajankohta tarkoittaa aineiston ajallista kattavuutta, eli sitä ajankohtaa, jota aineiston/datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupvm ei tarvita.</p><p>Viiteajankohta on aika, johon aineiston tiedot viittaavat ts. aineiston tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten aineiston tiedot kuvaavat keräämisajankohtaa, mutta toisinaan aineiston viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa. (lähde: FSD)</p>"
+        "helpText": "<p>Viiteajankohta tarkoittaa aineiston ajallista kattavuutta, eli sitä ajankohtaa, jota aineiston/datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon aineiston tiedot viittaavat ts. aineiston tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten aineiston tiedot kuvaavat keräämisajankohtaa, mutta toisinaan aineiston viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa. (lähde: FSD)</p>"
       },
       "collectionPeriod": {
-        "helpText": "Keruuajankohta tarkoittaa aineiston keruun alku- ja loppuajankohtaa. Jos tiedokeruu jatkuu edelleen, loppupäivämäärää ei tarvita."
+        "helpText": "<p>Keruuajankohta tarkoittaa aineiston keruun alku- ja loppuajankohtaa. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p>"
       },
       "lifecyclePhase": {
         "helpText": "<p>Valitse alasvetovalikosta sopivin elinkaaren vaihe. Aktiivikäytössä olevalle aineistolle valitaan Analyysi- ja raportointivaihe. Vaikka aineisto hävitetään, sen tiedot säilytetään aineistoeditorissa (mutta tietoja ei näytetä katalogissa).</p><p>Määritelmät:</p><ol><li>Analyysi- ja raportointivaihe: Aineisto on aktiivikäytössä</li><li>Arkistoitu: Aineisto on arkistoitu (tarkennettava vielä)</li><li>Hävitetty: Aineisto on hävitetty</li><li>Suunnitteluvaihe: Aineisto on suunnitteluvaiheessa, tiedonkeruu ei ole vielä alkanut</li><li>Tiedonkeruuvaihe: Aineiston tiedonkeruu on käynnissä</li></ol>"
@@ -755,6 +755,82 @@
       },
       "comment": {
         "helpText": "<p>Lisätietoja aineistosta. HUOM: Kommentti-kentän tiedot eivät näy julkisesti katalogissa, ainoastaan muille editorin käyttäjille.</p><p>Esimerkki:</p><p class=\"example\">Mukana kaikki Suomen julkiset sairaalat ja terveyskeskusten vuodeosastot. Yksityiset sairaalat ovat mukana osastohoitojaksojen osalta.</p>"
+      }
+    },
+    "dataset": {
+      "prefLabel": {
+        "helpText": "<p>Tähän datasetin nimi. Jos kuvaat vuosittaista tiedonkeruuta laajemmasta kokonaisuudesta, niin ilmoita tässä myös vuosi. Datasetin nimen on syytä olla mahdollisimman informatiivinen ja aineiston yksilöivä.</p><p>Pääotsikon ja alaotsikon väliin kirjoitetaan kaksoispiste. Alaotsikko aloitetaan pienellä alkukirjaimella (ellei kyseessä ole erisnimi).</p><p>Esimerkki 1:</p><p class=\"example\">Terveydenhuollon hoitoilmoitusrekisteri</p><p>Esimerkki 2:</p><p class=\"example\">Aikuisten liikuntatutkimus 2016: pyöräilyn alaotos</p>"
+      },
+      "altLabel": {
+        "helpText": "<p>Datasetin mahdolliset, yleisesti käytössä olevat vaihtoehtoiset nimet. Esimerkiksi nimet, joilla dataset tunnetaan laajalti tai joita siitä on aikaisemmin käytetty. Erota vaihtoehtoiset nimet toisistaan puolipisteellä.</p><p>Esimerkki:</p><p class=\"example\">Terveys-Hilmo</p>"
+      },
+      "abbreviation": {
+        "helpText": "<p>Datasetin mahdollinen, yleisesti käytössä oleva lyhenne. Erota vaihtoehtoiset lyhenteet toisistaan puolipisteellä.</p><p>Esimerkki 1:</p><p class=\"example\">Hilmo</p><p>Esimerkki 2:</p><p class=\"example\">FAR</p>"
+      },
+      "description": {
+        "helpText": "<p>Tiivis yhteenveto datasetistä. Kuvauksen pituussuositus on max 1500 merkkiä.</p><p>Kerro tiiviisti mitä dataset sisältää ja mitä tarkoitusta varten, miten, missä, mistä ja milloin dataset on kerätty. Huomioi datasetistä myöhemmin kysyttävät kentät eli vältä toistoa.</p><p>Esimerkki:</p><p class=\"example\">Terveydenhuollon hoitoilmoitusrekisteri sisältää tieto­ja potilaan hoidon alkamisesta ja päättymisestä, diagnooseista, toimenpiteistä ja tuottajasta sekä eräistä muista hoitoon liittyvistä seikoista. Vaativan sydänpotilaan lisätiedot sisältävät potilaalle tehtyjä toimenpiteitä sekä hänen riskien arviointia koskevia tietoja (vuodesta 2017 alkaen vain riskitietoja). Psykiatrian lisätiedot sisältävät lääkehoitoa, pakkotoimia, tulotapaa sekä psyykkisen tilan arviointia koskevia tietoja.</p>"
+      },
+      "ownerOrganizationUnit": {
+        "helpText": "<p>Datasetistä vastaava organisaatioyksikkö.</p>"
+      },
+      "personInRoles": {
+        "helpText": "<p>Lisää henkilö -toiminnolla lisäät järjestelmästä jo löytyvän henkilön datasetin kuvaukseen. Lisää uusi henkilö -toiminnolla lisäät kokonaan uuden datasettiin liittyvän henkilön järjestelmään.</p><p>Henkilöiden nimet kirjoitetaan kokonaisina ao. kenttiin.<p>Jokaiselle datasettiin liittyvälle henkilölle merkitään rooli valintalistasta.</p><p>Jos samalla henkilöllä on useita rooleja, henkilö on kirjattava jokaiseen rooliin erikseen.</p><p>Jos haluat henkilön näkyvän katalogissa, valitse ao. täppä. Vähintään Yhteyshenkilö on merkittävä.</p><p>Roolit ja niiden määritelmät:</p><ol><li>Näytevastaava: Näytevastaava vastaa datasettiin kuuluvista näytteistä.</li><li>Rekisterivastaava: Rekisterivastaava vastaa datasettinä/sen osana olevasta rekisteristä.</li><li>Tekijä: Tekijä on datasetin tekijä.</li><li>Tiedon käsittelijä: Tiedon käsittelijä käsittelee datasetin tietoja.</li><li>Tiedonhallintavastaava: Tiedonhallintavastaava vastaa datasetin tietojen oikeellisuudesta (data manager) ja siitä tehtävistä poiminnoista.</li><li>Tilastovastaava: Tilastovastaava vastaa datasetistä tuotettavista tilastoista.</li><li>Tutkimuksen vastuullinen johtaja (HetiL): Tutkimuksen vastuullinen johtaja vastaa tutkimuksen johtamisesta, jossa dataset on kerätty.</li><li>Tutkimuksesta vastaava henkilö (TVH): Tutkimuksesta vastaava henkilö vastaa tutkimuksesta, jossa dataset on kerätty.</li><li>Vastaava tutkija</li><li>Yhteyshenkilö: Yhteyshenkilö vastaa datasettiin liittyvistä kysymyksistä.</li></ol>"
+      },
+      "links": {
+        "helpText": "<p>Datasettiin liittyvien verkkosivujen tiedot. Lisää tänne datasetin mahdollisen sekundäärikäyttäjän kannalta oleelliset lisätietolinkit. Tähän lisätään myös käyttöehtojen lisätietolinkit.</p><p>Esimerkki 1:</p><p class=\"example\">Linkin teksti: Lisätietoa thl.fi -verkkopalvelussa<br>Linkin URL: https://www.thl.fi/en_US/tilastot/tiedonkeruut/hoitoilmoitusjarjestelma-hilmo</p><p>Esimerkki 2:</p><p class=\"example\">Linkin teksti: Tutkimuslomakkeet pdf-muodossa<br>Linkin URL: https://www.thl.fi/fi/tutkimus-ja-asiantuntijatyo/vaestotutkimukset/aikuisten-terveys-hyvinvointi-ja-palvelututkimus-ath/miten-ath-tutkimus-tehdaan/lomakkeet</p><p>Esimerkki 3:</p><p class=\"example\">Linkin teksti: Tutkimuksen tulosraportit Terveytemme.fi-verkkopalvelussa<br>Linkin URL: http://www.terveytemme.fi/ath/</p>"
+      },
+      "usageCondition": {
+        "helpText": "<p>Käyttöehdoilla määritellään se, miten organisaation ulkopuolinen saa datasetin käyttöönsä. Valitse alasvetolistasta sopivat käyttöehdot. Seuraavassa lisätietokentässä voit kertoa datasetin käyttöehdoista tarkemmin.</p><p>Lyhyet määritelmät:</p><ol><li>Dataset on avoimesti saatavilla.</li><li>Datasetin voi saada käyttöönsä käyttöluvalla.</li><li>Datasetin voi saada käyttöönsä biopankkiluvalla.</li><li>Datasetin siirtäminen tutkimuskäyttöön tai muu hyödyntäminen yhteistyösopimuksella on mahdollista. Hakemukset arvioidaan tapauskohtaisesti.</li><li>Datasettiä ei luovuteta lainkaan.</li></ol>"
+      },
+      "usageConditionAdditionalInformation": {
+        "helpText": "<p>Kirjoita tähän tarvittaessa lisätietoja aineiston käyttöehdoista (tekstimuodossa). Lisätietolinkit lisätään Linkit -kenttään.</p><p>Esimerkki:</p><p class=\"example\">Siirtäminen tutkimuskäyttöön tai muu hyödyntäminen mahdollista yhteistyösopimuksella. Hakemukset arvioidaan tapauskohtaisesti.</p>"
+      },
+      "unitType": {
+        "helpText": "<p>Valitse valintalistasta sopiva havaintoyksikön tyyppi tai lisää uusi.</p><p>Datasetin havaintoyksikön tyyppi periytyy muuttujille. Halutessaan muuttujakohtaisen havaintoyksikön tyypin voi käydä muuttamassa muuttujakuvauksessa.</p><p>Jos aineistoon liittyvillä dataseteillä on eri havaintoyksikkötyyppejä, aineiston havaintoyksikkötyypiksi merkitään pääasiallinen.</p><p>Havaintoyksikkötyypit ovat vain palvelun ylläpidon editoitavissa.</p>"
+      },
+      "numberOfObservationUnits": {
+        "helpText": "<p>Yleensä datasetin havaintoyksiköiden lukumäärä ilmaistaan kirjoittamalla täsmällinen numeerinen arvo.</p><p>Esimerkki:</p><p class=\"example\">32 275</p>"
+      },
+      "universe": {
+        "helpText": "<p>Perusjoukko on kaikkien havaintoyksiköiden muodostama kokonaisuus (lähde: FSD). Perusjoukko on yleistys kohdejoukosta. Perusjoukko valitaan valintalistasta. Mikäli sopivaa ei löydy, määrittele uusi perusjoukko. Uutta perusjoukkoa määriteltäessä siihen lisätään maantieteellinen rajaus. Muita sisäänotto- tai ulossulkurajauksia ei käytetä.</p><p>Perusjoukot ovat vain palvelun ylläpidon editoitavissa.</p><p>Esimerkkejä:</p><p class=\"example\">Hoitojaksot Suomessa</p><p class=\"example\">Suomen 20 vuotta täyttänyt väestö</p><p class=\"example\">Nokian ja Kangasalan väestö</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä</p>"
+      },
+      "population": {
+        "prefLabel": {
+          "helpText": "<p>Kohdejoukko on joukko, jonka dataset kattaa. Täytä tiedot mahdollisimman tarkalla tasolla: havaintoyksiköiden joukon kuvaus, maantieteellinen ja ajallinen rajaus sekä mahdolliset sisääänotto- ja ulossulkurajaukset</p><p>Esimerkkejä:</p><p class=\"example\">Vuodeosastokäyntien ja hoitojaksojen potilaat Suomen terveydenhuollossa vuonna 2015</p><p class=\"example\">Toimeentulotuen saajat Varsinais-Suomessa vuonna 2014</p><p class=\"example\">Palkansaajat Etelä-Suomen läänissä vuonna 2016</p><p class=\"example\">Suomessa vakituisesti asuva 20 vuotta täyttänyt väestö vuonna 2017</p><p class=\"example\">Nokian ja Kangasalan väestö 27.11.2007</p><p class=\"example\">15–79-vuotiaat suomalaiset pois lukien Ahvenanmaalla asuvat vuoden 2007 lopusssa.</p>"
+        },
+        "geographicalCoverage": {
+          "helpText": "<p>Alueellinen kattavuus määrittää datasetin maantieteellisen kattavuuden mahdollisimman tarkalla tasolla. Tarvittaessa merkitse täsmällinen ja tarkkarajainen paikkatieto esimerkiksi koordinaatein.</p><p>Esimerkkejä:</p><p class=\"example\">Helsinki</p><p class=\"example\">Koko Suomi</p><p class=\"example\">Suomi ilman Ahvenanmaata</p><p class=\"example\">Pelkosenniemi, Ranua, Posio, Kittilä, Sodankylä, Salla, Alatornio, Tervola, Rovaniemi ja Pudasjärvi.</p>"
+        },
+        "sampleSize": {
+          "helpText": "<p>Otos on sellainen havaintoyksikköjen joukko, johon kaikilla havaintoyksiköillä on tiedossa oleva, nollaa suurempi todennäköisyys tulla valituksi. (lähde: FSD) Kenttään merkitään otoksen koko mahdollisimman tarkkana lukumäärätietona.</p><p>Esimerkki 1:</p><p class=\"example\">25 000</p><p>Esimerkki 2:</p><p class=\"example\">Tutkimukseen kutsuttiin 20 908 naista</p>"
+        },
+        "loss": {
+          "helpText": "<p>Kato kertoo datasetin kattavuuden puutteista. Kenttään merkitään kaikki oleellinen tieto katoon, vastausaktiivisuuteen sekä mahdollisiin kadon korjaustoimenpiteisiin liittyen.</p><p>Kadolla tarkoitetaan joko kokonaisten otosyksiköiden (henkilöiden tai kotitalouksien) puuttumista tutkimusaineistosta tai puuttuvia tietoja, \"reikiä\" joidenkin havaintoyksiköiden tiedoissa. Edellinen voi johtua kohdehenkilöiden kieltäytymisestä tai tavoittamatta jäämisestä (ulkoinen kato), kun taas jälkimmäinen johtuu vastausten puuttumisesta lomakkeelta tiedon puutteen tai vastaushaluttomuuden vuoksi (sisäinen kato). (lähde: Tilastokeskus)</p><p>Esimerkki 1:</p><p class=\"example\">495</p><p>Esimerkki 2:</p><p class=\"example\">Vastausaktiivisuus 49%. Vastauskadon vaikutukset on huomioitu käyttämällä katoa korjaavia painokertoimia. Tulokset ovat näin ollen yleistettävissä tiedonkeruuvuoden 20 vuotta täyttäneeseen väestöön.</p><p>Esimerkki 3:</p><p class=\"example\">Kato 16,0 %. Kutsutuista 17 561 eli 84,0 % osallistui.</p>"
+        }
+      },
+      "referencePeriod": {
+        "helpText": "<p>Viiteajankohta tarkoittaa datasetin ajallista kattavuutta, eli sitä ajankohtaa, jota datasetin tieto koskee. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p><p>Viiteajankohta on aika, johon datasetin tiedot viittaavat ts. datasetin tietojen käsittelemä ajanjakso. Ei viittaa siihen, milloin tiedot on koodattu, dokumentit on saatettu konekieliseen muotoon tai tiedot on kerätty. Useimmiten datasetin tiedot kuvaavat keräämisajankohtaa, mutta toisinaan datasetin viittausajankohta voi kuitenkin olla toinen.</p><p>Esimerkiksi tietoa kerätään vuonna 2017, mutta aineisto koskee 1990-luvun lamaan liittyviä tietoja.</p><p>Esimerkiksi 1999 on voitu kerätä aineisto, jossa tutkittavat muistelevat 1950-luvun elämänmenoa. (lähde: FSD)</p>"
+      },
+      "collectionPeriod": {
+        "helpText": "<p>Keruuajankohta tarkoittaa datasetin keruun alku- ja loppuajankohtaa. Jos tiedonkeruu jatkuu edelleen, loppupäivämäärää ei tarvita.</p>"
+      },
+      "lifecyclePhase": {
+        "helpText": "<p>Valitse alasvetovalikosta sopivin elinkaaren vaihe. Aktiivikäytössä olevalle datasetille valitaan Analyysi- ja raportointivaihe. Vaikka dataset hävitetään, sen tiedot säilytetään aineistoeditorissa (mutta tietoja ei näytetä katalogissa).</p><p>Määritelmät:</p><ol><li>Analyysi- ja raportointivaihe: Dataset on aktiivikäytössä</li><li>Arkistoitu: Dataset on arkistoitu</li><li>Hävitetty: Dataset on hävitetty</li><li>Suunnitteluvaihe: Dataset on suunnitteluvaiheessa, tiedonkeruu ei ole vielä alkanut</li><li>Tiedonkeruuvaihe: Datasetin tiedonkeruu on käynnissä</li></ol>"
+      },
+      "conceptsFromScheme": {
+        "helpText": "<p>Datasetin keskeistä sisältöä ja muotoa kuvaavat asiasanat haetaan palveluun liitetyistä Finto-palvelun ontologioista tässä järjestyksessä: YSO, MeSH, (TERO). Kirjoitettaessa asiasanaa, palvelu ehdottaa vaihtoehtoa ontologiasta.</p><p>Esimerkkejä:</p><p class=\"example\">terveydenhuolto (YSO)</p><p class=\"example\">rekisterit (YSO)</p><p class=\"example\">hoitojaksot (TERO)</p>"
+      },
+      "freeConcepts": {
+        "helpText": "<p>Tähän kenttään lisätään ne aineiston keskeistä sisältöä ja muotoa kuvaavat asiasanat, joita ei löydy ontologioista. Sanan jälkeen paina ENTER, jotta sana tallentuu.</p><p>Esimerkki 1:</p><p class=\"example\">hoitoilmoitusrekisteri</p><p>Esimerkki 2:</p><p class=\"example\">WHOQOL-BREF</p>"
+      },
+      "datasetType": {
+        "helpText": "<p>Valitse vetovalikosta aineistoasi parhaiten kuvaava aineistotyyppi. Voit myös valita useita tyyppejä.</p>"
+      },
+      "datasetRelations": {
+        "helpText": "<p>Merkitse tähän, miten dataset liittyy muihin datasetteihin.</p><p>Edeltäjä: Liitetty dataset on tämän datasetin ajallinen edeltäjä.</p>"
+      },
+      "comment": {
+        "helpText": "<p>Lisätietoja datasetistä. HUOM: Kommentti-kentän tiedot eivät näy julkisesti katalogissa, ainoastaan muille editorin käyttäjille.</p><p>Esimerkki:</p><p class=\"example\">Mukana kaikki Suomen julkiset sairaalat ja terveyskeskusten vuodeosastot. Yksityiset sairaalat ovat mukana osastohoitojaksojen osalta.</p>"
       }
     }
   }

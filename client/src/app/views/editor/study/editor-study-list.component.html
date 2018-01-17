@@ -8,6 +8,22 @@
   </div>
 
   <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchInput" (keyup)="searchStudies(searchInput)" placeholder="{{'studySearchPlaceholder' | translate}}"
+                 class="form-control">
+          <span class="input-group-btn">
+          <button class="btn btn-default" (click)="searchStudies(searchInput)">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
     <div *ngIf="(organizations && organizations.length) || user.isAdmin"
          class="row"
          style="margin-bottom: 1em;">

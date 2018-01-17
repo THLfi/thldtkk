@@ -49,6 +49,11 @@ export class EditorStudyListComponent implements OnInit {
       })
   }
 
+  searchStudies(searchString: string) {
+    this.editorStudyService.searchStudies(searchString)
+      .subscribe(studies => this.studies = studies)
+  }
+
   private loadUserAndOrganizations() {
     this.currentUserService.getCurrentUserObservable()
       .subscribe(user => this.user = user)

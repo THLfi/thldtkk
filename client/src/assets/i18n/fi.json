@@ -342,6 +342,7 @@
   "universeSearchPlaceholder":"Hae perusjoukkoja...",
   "variableSearchPlaceholder":"Hae käsitemuuttujia...",
   "codeListSearchPlaceholder":"Hae koodistoja...",
+  "studySearchPlaceholder":"Hae aineistoja...",
   "confirmRemoveCodeListModal": {
     "message": "Haluatko varmasti poistaa koodiston {{codeList}}? Koodistoa käyttää {{instanceVariableCount}} muuttujaa.",
     "header": "Poiston vahvistus",

@@ -18,7 +18,7 @@ a {
   border-bottom: 1px dotted #ccc;
   border-radius: 2px;
   color: #01a197;
-  font-size: .7em;
+  font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
@@ -33,7 +33,7 @@ export class EditorHelpLinkComponent {
 
   @Input() helpTextComponent: EditorHelpTextComponent
 
-  toggle(event?: any): void {
+  toggle(event?: Event): void {
     if (event) {
       event.preventDefault()
     }

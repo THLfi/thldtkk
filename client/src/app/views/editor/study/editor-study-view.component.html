@@ -25,7 +25,7 @@
                       [disabled]="deleteInProgress"
                       type="button"
                       class="btn btn-default btn-withdraw">
-                {{ 'unpublish' | translate }}
+                {{ 'editor.EditorStudyViewComponent.unpublishButton.label' | translate }}
               </button>
             </ng-container>
             <ng-template #unpublished>
@@ -36,10 +36,18 @@
                       [disabled]="deleteInProgress"
                       type="button"
                       class="btn btn-default btn-publish">
-                {{ 'publish' | translate }}
+                {{ 'editor.EditorStudyViewComponent.publishButton.label' | translate }}
               </button>
             </ng-template>
+            <span style="margin-left: 3px;">
+              <editor-help-link [helpTextComponent]="publishButtonHelpText"></editor-help-link>
+            </span>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <editor-help-text #publishButtonHelpText key="editor.EditorStudyViewComponent.publishButton.helpText"></editor-help-text>
         </div>
       </div>
     </div>

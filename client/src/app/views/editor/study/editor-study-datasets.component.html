@@ -24,16 +24,26 @@
       <div class="row"
            style="margin-bottom: 1em;">
         <div class="col-xs-8">
-          <h2>{{ 'study.manageDatasets' | translate }}</h2>
+          <h2 style="display: inline-block;">
+            {{ 'editor.EditorStudyDatasetsComponent.header' | translate }}
+          </h2>
+          <span style="margin-left: 3px;">
+            <editor-help-link [helpTextComponent]="viewHelpText"></editor-help-link>
+          </span>
         </div>
         <div class="col-xs-4">
           <div class="pull-right">
             <button routerLink="/editor/studies/{{study.id}}/datasets/new"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              {{ 'addDataset' | translate }}
+              {{ 'editor.EditorStudyDatasetsComponent.addDatasetButton.label' | translate }}
             </button>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <editor-help-text #viewHelpText key="editor.EditorStudyDatasetsComponent.viewHelpText"></editor-help-text>
         </div>
       </div>
       <div class="row">
@@ -94,7 +104,7 @@
             <button routerLink="/editor/studies/{{study.id}}/datasets/new"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              {{ 'addDataset' | translate }}
+              {{ 'editor.EditorStudyDatasetsComponent.addDatasetButton.label' | translate }}
             </button>
           </div>
         </div>

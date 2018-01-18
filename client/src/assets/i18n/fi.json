@@ -71,7 +71,6 @@
   "unpublished": "Julkaisematon",
   "false": "Ei",
   "true": "Kyllä",
-  "addDataset": "Lisää dataset",
   "confirmDatasetDelete": "Haluatko varmasti poistaa datasetin?",
   "inputDateFormat": "vvvv-kk-pp",
   "addInstanceVariable": "Lisää muuttuja",
@@ -79,8 +78,6 @@
   "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
   "organizations": "Organisaatiot",
   "organizationUnit": "Organisaatioyksikkö",
-  "publish": "Julkaise",
-  "unpublish": "Peru julkaisu",
   "confirmPublishDataset": "Haluatko varmasti julkaista datasetin?",
   "confirmWithdrawDataset": "Haluatko varmasti perua datasetin julkaisun?",
   "functions": "Toiminnot",
@@ -638,7 +635,6 @@
   "addStudyGroup": "Lisää sarja...",
   "newStudyGroup": "Uusi sarja",
   "study": {
-    "manageDatasets": "Aineiston datasetit",
     "add": "Lisää aineisto",
     "new":"Uusi aineisto",
     "study":"Aineisto",
@@ -919,6 +915,22 @@
       },
       "codeItems": {
         "helpText": "<p>Muuttujan koodit ja koodeja vastaavat arvot.</p><p>Esimerkki 1:</p><p class=\"example\">Koodi: 1<br>Arvo: Mies</p><p>Esimerkki 2:</p><p class=\"example\">Koodi: 020<br>Arvo: Akaa</p>"
+      }
+    },
+    "EditorStudyViewComponent": {
+      "publishButton": {
+        "label": "Julkaise",
+        "helpText": "<p>Julkaise-painikkeella aineistokuvaus julkaistaan näkymään avoimesti Aineistokatalogissa. Julkaisemisen voi perua Peru julkaisu -painikkeella.</p><p>HUOM: Jos teet muutoksia aineistokuvaukseen julkaisun jälkeen ja haluat päivittää ne myös Aineistokatalogiin, klikkaa ensin Peru julkaisu -painiketta ja julkaise aineisto sitten uudestaan Julkaise-painikkeella.</p>"
+      },
+      "unpublishButton": {
+        "label": "Peru julkaisu"
+      }
+    },
+    "EditorStudyDatasetsComponent": {
+      "header": "Aineiston datasetit",
+      "viewHelpText": "<p>Lisää aineistoon uusi dataset klikkaammalla Lisää dataset -painiketta. Voit myös kopioida olemassa olevan datasetin uuden datasetin pohjatiedoiksi klikkaamalla halutun datasetin kohdalla olevaa Kopioi-painiketta.</p><p>HUOM 1: Aineiston muuttujat kuvataan datasetin alle, joten jos haluat lisätä aineistolle muuttujia, lisää ensin dataset.</p><p>HUOM 2: Datasetin kopiointitoiminto ei kopioi datasetin muuttujia uudelle datasetille.</p><p>HUOM 3: Editoriin tuodaan vain datasettien <em>kuvauksia</em>, ei itse datatiedostoja.</p>",
+      "addDatasetButton": {
+        "label": "Lisää dataset"
       }
     }
   }

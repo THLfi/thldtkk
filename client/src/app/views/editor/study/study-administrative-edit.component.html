@@ -411,6 +411,86 @@
               </div>
             </div>
           </div>
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="systemInRoles">{{ 'systemInRoles.label' | translate }}</label>
+                <table *ngIf="study.systemInRoles.length; else noSystemsInRoles;"
+                      id="systemsInRole"
+                      class="table table-striped">
+                  <tr>
+                    <th>
+                      {{ 'systemInRoles.system' | translate }}
+                      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                    </th>
+                    <th translate="systemInRoles.role"></th>
+                    <th translate="functions"></th>
+                  </tr>
+                  <tr *ngFor="let systemInRole of study.systemInRoles; let index = index;"
+                      [ngClass]="{ 'bg-danger': formErrors['systemInRole-system-' + index] && formErrors['systemInRole-system-' + index].length }">
+                    <td>
+                      <p-dropdown *ngIf="allSystemItems && allSystemItems.length"
+                                  [(ngModel)]="systemInRole.system"
+                                  [options]="allSystemItems"
+                                  filter="true"
+                                  autoWidth="false"
+                                  [style]="{ 'max-width': '400px' }"
+                                  name="{{ 'systemInRole-system-' + index }}"
+                                  required
+                                  [dataKey]="id"
+                                  validateSystemConsistency
+                                  [study]="study">
+                      </p-dropdown>
+                      <button (click)="showAddSystemModal(systemInRole)"
+                              type="button"
+                              class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        {{ 'systemInRoles.addNew' | translate }}
+                      </button>
+                      <p *ngFor="let errorKey of formErrors['systemInRole-system-' + index]"
+                        class="text-danger">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ errorKey | translate }}
+                      </p>
+                      <system-edit-modal *ngIf="newSystem"
+                                        [system]="newSystem"
+                                        (onSave)="saveSystem($event)"
+                                        (onCancel)="closeAddSystemModal()">
+                      </system-edit-modal>
+                    </td>
+                    <td>
+                      <select *ngIf="allSystemRoles && allSystemRoles.length"
+                              [(ngModel)]="systemInRole.role"
+                              [compareWith]="nodeUtils.equals"
+                              dataKey="id"
+                              name="{{ 'systemInRole-role-' + index }}"
+                              class="form-control">
+                        <option [ngValue]="null"></option>
+                        <option *ngFor="let role of allSystemRoles"
+                                [ngValue]="role">
+                          {{ role.prefLabel | lang }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-default" (click)="removeSystemInRole(systemInRole)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        {{ 'remove' | translate }}
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <ng-template #noSystemsInRoles>
+                  <p translate="systemInRoles.noSystemsInRoles"></p>
+                </ng-template>
+                <button type="button" class="btn btn-default" (click)="addSystemInRole()">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  {{ 'systemInRoles.add' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
 
       </form>
 

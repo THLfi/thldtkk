@@ -360,7 +360,9 @@
     "form": {
       "required": "Tieto on pakollinen",
       "invalidDate": "Virheellinen päivämäärä.",
-      "invalidLinkUrlFormat": "Virheellinen URL. Täytä etuliite esim. 'http://osoite.fi'"
+      "invalidLinkUrlFormat": "Virheellinen URL. Täytä etuliite esim. 'http://osoite.fi'",
+      "inconsistentStudyAndSystemOrganizations": "Aineistolla ja liitetyillä tietojärjestelmillä ei ole sama organisaatio. Peru organisaatiomuutos tai poista liitetyt tietojärjestelmät hallinnollisista tiedoista.",
+      "inconsistentSystemAndStudyOrganizations": "Liitetyillä tietojärjestelmillä ja aineistolla ei ole sama organisaatio. Poista järjestelmät, jotka eivät kuulu aineiston organisaatiolle tai vaihda aineiston organisaatio"
     },
     "server": {
       "operationFailed": "Toiminto epäonnistui",
@@ -523,12 +525,27 @@
     "study": {
       "save": {
         "result": {
-          "success": "Aineisto tallennettu"
+          "success": "Aineisto tallennettu",
+          "fail": {
+            "summary": "Aineiston tallennus epäonnistui"
+          }
         }
       },
       "delete": {
         "result": {
           "success": "Aineisto poistettu"
+        }
+      }
+    },
+    "system": {
+      "save": {
+        "result": {
+          "success": "Järjestelmä tallennettu"
+        }
+      },
+      "delete": {
+        "result": {
+          "success": "Järjestelmä poistettu"
         }
       }
     }
@@ -670,7 +687,6 @@
     "confirmWithdraw": "Haluatko varmasti perua aineiston julkaisun?"
   },
   "piecesAbbreviation": "kpl",
-
   "editor": {
     "study": {
       "prefLabel": {
@@ -933,5 +949,23 @@
         "label": "Lisää dataset"
       }
     }
+  },
+  "noSystem":"Ei järjestelmää",
+  "systemInRoles": {
+    "label": "Tietojärjestelmät",
+    "system": "Tietojärjestelmä",
+    "role": "Rooli",
+    "linkToSystemDescription": "Linkki järjestelmäkuvaukseen",
+    "add": "Lisää järjestelmä",
+    "addNew": "Lisää uusi järjestelmä",
+    "noSystemsInRoles": "Aineistoon ei ole liitetty tietojärjestelmiä",
+    "noLink": "Ei linkkiä"
+  },
+
+  "editSystemModal": {
+   "newSystem": "Uusi järjestelmä",
+   "externalLink": "Linkki ulkoiseen järjestelmäkuvaukseen",
+   "noOwnerOrganization": "Aineistolla ei ole organisaatiota, määritä aineistolle organisaatio"
   }
+
 }

@@ -13,7 +13,8 @@ import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 
 @Component({
-  templateUrl: './study-administrative-view.component.html'
+  templateUrl: './study-administrative-view.component.html',
+  styleUrls: ['./study-administrative-view.component.css'],
 })
 export class StudyAdministrativeViewComponent implements OnInit {
 

@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "id": "c3e69d0b-2cc0-4923-a913-56681394d1a2",
+    "type": {
+      "id": "SystemRole"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "ei määritelty"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a62510e6-80e7-4061-929f-c9d19e2aacef",
+    "type": {
+      "id": "SystemRole"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kerätään"
+        }
+      ]
+    }
+  },
+  {
+    "id": "877ca682-eacf-4c8b-84ad-31d2d5836014",
+    "type": {
+      "id": "SystemRole"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "kopioidaan"
+        }
+      ]
+    }
+  },
+  {
+    "id": "c97dfcb5-99b2-4c06-9c82-ed9e6aae1893",
+    "type": {
+      "id": "SystemRole"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "käytetään kopioimatta"
+        }
+      ]
+    }
+  },
+  {
+    "id": "b2e1bcd9-9f5a-468d-bc5f-48890dc45bb5",
+    "type": {
+      "id": "SystemRole"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "sijaitsee"
+        }
+      ]
+    }
+  }
+]

@@ -7,8 +7,12 @@ import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
 import {DateUtils} from '../../../utils/date-utils'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
+import {EditorSystemService} from '../../../services-editor/editor-system.service'
+import {EditorSystemRoleService} from '../../../services-editor/editor-system-role.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
+import {NodeUtils} from '../../../utils/node-utils';
+import {Observable, Subscription} from 'rxjs';
 import {PrincipleForDigitalSecurity} from '../../../model2/principle-for-digital-security'
 import {PrincipleForPhysicalSecurity} from '../../../model2/principle-for-physical-security'
 import {SelectItem} from 'primeng/components/common/api'
@@ -16,6 +20,10 @@ import {RetentionPolicy} from '../../../model2/retention-policy';
 import {ExistenceForm} from '../../../model2/existence-form';
 import {Study} from '../../../model2/study';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
+import {System} from '../../../model2/system';
+import {SystemRole} from '../../../model2/system-role';
+import {SystemInRole} from '../../../model2/system-in-role';
+
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
@@ -48,8 +56,18 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     principlesForPhysicalSecurityItems: SelectItem[] = []
     principlesForDigitalSecurityItems: SelectItem[] = []
 
+    allSystemRoles: SystemRole[]
+    allSystemItems: SelectItem[]
+
+    systemInRoleForNewSystem: SystemInRole
+    newSystem: System
+
+    defaultSystemLinkDescription: string
+
     constructor(
         private studyService: EditorStudyService,
+        private systemService: EditorSystemService,
+        private systemRoleService: EditorSystemRoleService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -57,7 +75,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private translateService: TranslateService,
         private langPipe: LangPipe,
         private titleService: Title,
-        private dateUtils: DateUtils
+        private dateUtils: DateUtils,
+        private nodeUtils: NodeUtils
     ) {
         this.language = this.translateService.currentLang
     }
@@ -81,9 +100,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
               return { label: translations[key], value: key }
             })
         })
+      
+      this.translateService.get('editSystemModal.externalLink')
+        .subscribe(translation =>  this.defaultSystemLinkDescription = translation)
 
-      this.populateRetentionPolicies();
-      this.populateExistenceForms();
+      this.populateRetentionPolicies()
+      this.populateExistenceForms()
+      this.getAllSystemRoles()
+      this.getAllSystems()
     }
 
     private getStudy() {
@@ -147,6 +171,79 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             })
         })
       }
+    }
+
+    private getAllSystemRoles() {
+      this.systemRoleService.getAll().subscribe(systemRoles => 
+        this.allSystemRoles = systemRoles)
+    }
+
+    removeSystemInRole(systemInRole: SystemInRole) {
+      let index: number = this.study.systemInRoles.indexOf(systemInRole)
+      if (index !== -1) {
+        this.study.systemInRoles.splice(index, 1)
+      }
+    }
+
+    showAddSystemModal(systemInRole: SystemInRole): void {
+      this.systemInRoleForNewSystem = systemInRole
+      this.initNewSystem()
+    }
+
+    private initNewSystem(): void {
+      this.newSystem = this.systemService.initNew()
+      this.newSystem.ownerOrganization = this.study.ownerOrganization
+
+    }
+
+    saveSystem(event): void {
+      if(this.newSystem.link && this.newSystem.link.linkUrl) {
+        this.newSystem.link.prefLabel[this.language] = this.defaultSystemLinkDescription
+      }
+
+      this.systemService.save(this.newSystem)
+        .subscribe(savedSystem => {
+          this.getAllSystems()
+          if (this.systemInRoleForNewSystem) {
+            this.systemInRoleForNewSystem.system = savedSystem
+          }
+          this.closeAddSystemModal()
+        })
+    }
+
+    closeAddSystemModal() {
+      this.newSystem = null
+      this.systemInRoleForNewSystem = null
+    }
+
+    private getAllSystems() {
+      this.allSystemItems = []
+
+      Observable.forkJoin(
+        this.translateService.get('noSystem'),
+        this.systemService.getAll()
+      ).subscribe(data => {
+        this.allSystemItems.push({
+          label: data[0],
+          value: null
+        })
+        data[1].forEach(system => this.allSystemItems.push({
+          label: this.langPipe.transform(system.prefLabel),
+          value: system
+        }))
+      })
+    }
+
+    addSystemInRole() {
+      if (!this.study.systemInRoles) {
+          this.study.systemInRoles = []
+      }
+      const systemInRole = {
+        id: null,
+        system: null,
+        systemRole: null,
+      }
+      this.study.systemInRoles = [ ...this.study.systemInRoles,systemInRole ]
     }
 
     ngAfterContentChecked(): void {

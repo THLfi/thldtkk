@@ -1,0 +1,86 @@
+<ng-container *ngIf="system">
+  <p-dialog [visible]="system"
+            (onHide)="doCancel()"
+            modal="modal"
+            draggable="false"
+            resizable="false"
+            closeOnEscape="false"
+            width="500">
+    <p-header>
+      {{ 'editSystemModal.newSystem' | translate }}
+    </p-header>
+    <form #systemForm="ngForm">
+      <div class="container-fluid">
+       <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="ownerOrganization">
+                {{ 'organization' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <ng-container *ngIf="system.ownerOrganization;else noOwnerOrganization">
+                <p>{{ system.ownerOrganization.prefLabel | lang }}</p>
+              </ng-container>
+              <ng-template #noOwnerOrganization>
+                <p translate="editSystemModal.noOwnerOrganization"></p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+                 class="form-group">
+              <label for="prefLabel">
+                {{ 'prefLabel' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input [(ngModel)]="system.prefLabel[language]"
+                     id="prefLabel"
+                     name="prefLabel"
+                     type="text"
+                     class="form-control"
+                     required>
+              <p *ngFor="let errorKey of formErrors.prefLabel"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="link">
+                {{ 'editSystemModal.externalLink' | translate }}
+              </label>
+              <input [(ngModel)]="system.link.linkUrl[language]"
+                     id="link"
+                     name="link"
+                     type="text"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doSave()"
+                [disabled]="savingInProgress"
+                class="btn btn-primary">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{ 'save' | translate }}
+        </button>
+        <button (click)="doCancel()"
+                [disabled]="savingInProgress"
+                class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

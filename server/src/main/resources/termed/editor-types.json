@@ -205,6 +205,12 @@
         }
       },
       {
+        "id": "systemInRoles",
+        "range": {
+          "id": "SystemInRole"
+        }
+      },
+      {
         "id": "studyGroup",
         "range": {
           "id": "StudyGroup",
@@ -614,5 +620,56 @@
         }
       }
     ]
+  },
+  {
+    "id": "SystemRole",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "System",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "link",
+        "range": {
+          "id": "Link"
+        }
+      },
+      {
+        "id": "ownerOrganization",
+        "range": {
+          "id": "Organization",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "SystemInRole",
+    "referenceAttributes": [
+      {
+        "id": "system",
+        "range": {
+          "id": "System"
+        }
+      },
+      {
+        "id": "systemRole",
+        "range": {
+          "id": "SystemRole"
+        }
+      }
+    ]
   }
+
 ]

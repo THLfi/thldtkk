@@ -39,7 +39,15 @@
               <i class="fa fa-download" aria-hidden="true"></i>
               {{ 'exportInstanceVariablesAsCsvButton' | translate }}
             </a>
+            <span style="margin-left: 3px;">
+              <editor-help-link [helpTextComponent]="viewHelpText"></editor-help-link>
+            </span>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <editor-help-text #viewHelpText key="editor.DatasetInstanceVariablesViewComponent.viewHelpText"></editor-help-text>
         </div>
       </div>
 

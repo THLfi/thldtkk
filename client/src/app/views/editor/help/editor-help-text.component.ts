@@ -35,10 +35,6 @@ a.close-link {
 .help-text {
   margin-right: 1.5em;
 }
-
-.help-text p:last-of-type {
-  margin-bottom: 0;
-}
 `]
 })
 export class EditorHelpTextComponent implements OnInit {

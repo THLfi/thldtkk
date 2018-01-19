@@ -948,6 +948,9 @@
       "addDatasetButton": {
         "label": "Lisää dataset"
       }
+    },
+    "DatasetInstanceVariablesViewComponent": {
+      "viewHelpText": "<p>Voit lisätä datasetille muuttujia CSV-tiedostosta tuomalla tai editorin käyttöliittymän kautta.</p><p>Tarkemmat ohjeet CSV-tiedostosta tuomiseen löytyvät aineistoeditorin dokumentaatiosta: <a href=\"https://yhteistyotilat.fi/wiki08/x/vdWsAg\" target=\"_blank\">Muuttujien tuonti CSV-tiedostosta</a></p><p>Lataa muuttujat CSV-tiedostona -painikkeen avulla voit ladata datasetin nykyiset muuttujat CSV-muodossa.</p>"
     }
   },
   "noSystem":"Ei järjestelmää",

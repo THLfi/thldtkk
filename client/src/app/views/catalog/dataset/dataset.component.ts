@@ -53,9 +53,6 @@ export class DatasetComponent implements OnInit {
   showInstanceVariableFilters: boolean
   selectedInstanceVariableFilterGroups: string[] = []
 
-  readonly secondaryHiglightFontResizeThreshold: number = 9
-  unitTypeLabelFontResizeThresholdExceeded: boolean
-
   constructor(
     private studyService: PublicStudyService,
     private datasetService: PublicDatasetService,
@@ -97,7 +94,6 @@ export class DatasetComponent implements OnInit {
       this.groupInstanceVariables()
       this.resetInstanceVariableGroupFilters()
       this.pickHighlightedDetails()
-      this.resolveUnitTypeLabelLength()
     })
   }
 
@@ -229,13 +225,5 @@ export class DatasetComponent implements OnInit {
 
   toggleShowInstanceVariableFilters() {
     this.showInstanceVariableFilters = !this.showInstanceVariableFilters 
-  }
-
-  resolveUnitTypeLabelLength() {
-    let unitTypeLabel: string = this.dataset.unitType ? 
-      this.langPipe.transform(this.dataset.unitType.prefLabel) :
-      this.study.unitType ? this.langPipe.transform(this.study.unitType.prefLabel) : ""
-
-    this.unitTypeLabelFontResizeThresholdExceeded = unitTypeLabel && unitTypeLabel.length > this.secondaryHiglightFontResizeThreshold ? true : false
   }
 }

@@ -155,7 +155,7 @@
                 <div class="secondary-highlight-label">
                   {{ 'unitType' | translate }}
                 </div>
-                <div class="secondary-highlight-value" [ngClass]="{ 'secondary-highlight-value': !unitTypeLabelFontResizeThresholdExceeded, 'small-highlight-value': unitTypeLabelFontResizeThresholdExceeded }" >
+                <div class="secondary-highlight-value">
                   <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
                     {{ dataset.unitType.prefLabel | lang }}
                   </ng-container>
@@ -169,7 +169,7 @@
                 <div class="secondary-highlight-label">
                   {{ 'numberOfObservationUnits' | translate }}
                 </div>
-                <div [ngClass]="{'small-highlight-value': dataset.numberOfObservationUnits.length > secondaryHiglightFontResizeThreshold , 'secondary-highlight-value': dataset.numberOfObservationUnits.length <= secondaryHiglightFontResizeThreshold  }">
+                <div class="secondary-highlight-value">
                   {{ dataset.numberOfObservationUnits }}
                 </div>
               </ng-container>
@@ -178,11 +178,10 @@
                 <div class="secondary-highlight-label">
                   {{ 'datasetLifecyclePhase' | translate }}
                 </div>
-                <div *ngIf="dataset.lifecyclePhase.prefLabel | lang as lifecycleLabel" [ngClass]="{'secondary-highlight-value': lifecycleLabel.length <= secondaryHiglightFontResizeThreshold, 'small-highlight-value': lifecycleLabel.length > secondaryHiglightFontResizeThreshold}">
-                  {{ lifecycleLabel }}
+                <div *ngIf="dataset.lifecyclePhase.prefLabel" class="secondary-highlight-value">
+                  {{ dataset.lifecyclePhase.prefLabel | lang }}
                 </div>
               </ng-container>
-
             </div>
           </div>
 

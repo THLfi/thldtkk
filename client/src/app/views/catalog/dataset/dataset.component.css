@@ -81,7 +81,7 @@
 }
 
 .secondary-highlight .secondary-highlight-value {
-  font-size: 2em;
+  font-size: 1.3em;
   min-height: 50px;
 }
 
@@ -92,11 +92,6 @@
 .minor-highlight-heading {
   font-size: 1em;
   color: #CCCCCC;
-}
-
-.small-highlight-value {
-  font-size: 1.3em;
-  min-height: 50px;
 }
 
 .concepts {

@@ -4,7 +4,8 @@ import { EditorHelpTextComponent } from './editor-help-text.component'
 @Component({
   selector: 'editor-help-link',
   template: `
-<a (click)="toggle($event)"
+<a *ngIf="helpTextComponent"
+   (click)="toggle($event)"
    [ngClass]="{ active: helpTextComponent.visible }"
    href="#"
    class="help-link">

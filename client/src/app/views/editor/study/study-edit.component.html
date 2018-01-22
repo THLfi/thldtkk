@@ -195,7 +195,7 @@
                 <button (click)="showAddPersonModal(personInRole)"
                         type="button"
                         class="btn btn-default btn-sm">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <glyphicon icon="plus"></glyphicon>
                   {{ 'addNewPerson' | translate }}
                 </button>
                 <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
@@ -246,7 +246,7 @@
             <p translate="study.noPersonInRoles"></p>
           </ng-template>
           <button type="button" class="btn btn-default" (click)="addPersonInRole()">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <glyphicon icon="plus"></glyphicon>
             {{ 'addNewPersonInRole' | translate }}
           </button>
           <editor-help-text #personInRolesHelpText key="editor.study.personInRoles.helpText"></editor-help-text>
@@ -306,7 +306,7 @@
           </ng-template>
 
           <button type="button" class="btn btn-default" (click)="addLink()">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <glyphicon icon="plus"></glyphicon>
             {{ 'addNewLink' | translate }}
           </button>
 
@@ -379,7 +379,7 @@
                   (click)="showAddUnitTypeModal()"
                   class="btn btn-default"
                   type="button">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <glyphicon icon="plus"></glyphicon>
                   {{ 'addUnitType' | translate }}
                 </button>
                 <editor-help-text #unitTypeHelpText key="editor.study.unitType.helpText"></editor-help-text>
@@ -445,7 +445,7 @@
                   (click)="showAddUniverseModal()"
                   class="btn btn-default btn-sm"
                   type="button">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  <glyphicon icon="plus"></glyphicon>
                   {{ 'addUniverse' | translate }}
                 </button>
                 <editor-help-text #universeHelpText key="editor.study.universe.helpText"></editor-help-text>
@@ -776,7 +776,7 @@
                     (click)="showAddStudyGroupModal()"
                     class="btn btn-default btn-sm"
                     type="button">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    <glyphicon icon="plus"></glyphicon>
                     {{ 'addStudyGroup' | translate }}
                   </button>
                   <study-group-edit-modal *ngIf="newStudyGroup"
@@ -827,7 +827,7 @@
                   [disabled]="savingInProgress"
                   class="btn btn-primary"
                   type="button">
-            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+            <glyphicon icon="floppy-disk"></glyphicon>
             {{ 'save' | translate }}
           </button>
           <button (click)="goBack()"

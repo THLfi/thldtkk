@@ -702,7 +702,7 @@
         "helpText": "<p>Tiivis yhteenveto aineistosta. Kuvauksen pituussuositus on max 1500 merkkiä.</p><p>Kerro tiiviisti mitä aineisto sisältää ja mitä tarkoitusta varten, miten, missä, mistä ja milloin aineisto on kerätty. Huomioi aineistosta myöhemmin kysyttävät kentät eli vältä toistoa.</p><p>Esimerkki:</p><p class=\"example\">Hoitoilmoitusrekisteri sisältää tieto­ja potilaan hoidon alkamisesta ja päättymisestä, diagnooseista, toimenpiteistä ja tuottajasta sekä eräistä muista hoitoon liittyvistä seikoista. Vaativan sydänpotilaan lisätiedot sisältävät potilaalle tehtyjä toimenpiteitä sekä hänen riskien arviointia koskevia tietoja (vuodesta 2017 alkaen vain riskitietoja). Psykiatrian lisätiedot sisältävät lääkehoitoa, pakkotoimia, tulotapaa sekä psyykkisen tilan arviointia koskevia tietoja.</p>"
       },
       "ownerOrganization": {
-        "helpText": "<p>Aineistosta nykyhetkellä vastaava organisaatio. Keruuajankohdan mahdollisen edeltäjälaitoksen voit mainita aineiston kuvauskentässä. Muita aineiston tuottamiseen osallistuneita organisaatioita voit myös mainita aineiston kuvauskentässä.</p><p>Mikäli kyseessä on henkilörekisteri, organisaatio on rekisterinpitäjä.</p>"
+        "helpText": "<p>Aineistosta nykyhetkellä vastaava organisaatio. Keruuajankohdan mahdollisen edeltäjälaitoksen voit mainita aineiston kuvauskentässä. Muita aineiston tuottamiseen osallistuneita organisaatioita voit myös mainita aineiston kuvauskentässä.</p><p>Mikäli kyseessä on henkilörekisteri, organisaatio on rekisterinpitäjä.</p><p>Uusien organisaatioiden lisäyksestä ja vanhojen muokkauksesta vastaa palvelun ylläpito.</p>"
       },
       "ownerOrganizationUnit": {
         "helpText": "<p>Aineistosta vastaava organisaatioyksikkö.</p>"

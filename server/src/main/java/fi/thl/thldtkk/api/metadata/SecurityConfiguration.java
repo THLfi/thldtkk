@@ -1,6 +1,9 @@
 package fi.thl.thldtkk.api.metadata;
 
+import static com.google.common.base.Strings.nullToEmpty;
+
 import fi.thl.thldtkk.api.metadata.security.JsonBooleanResponseHandler;
+import fi.thl.thldtkk.api.metadata.security.UserRoles;
 import fi.thl.thldtkk.api.metadata.security.thlsso.ThlSsoRestAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,10 +21,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.servlet.http.HttpServletResponse;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(1)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -37,45 +37,68 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     authManagerBuilder.authenticationProvider(thlSsoRestAuthenticationProvider);
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-      .csrf()
-        .ignoringAntMatchers("/saml/**")
-        .ignoringAntMatchers("/Virtu/**")
-        // Set "XSRF-TOKEN" cookie which Angular's HTTP components can use out-of-the-box. For more info, see:
-        // https://docs.spring.io/spring-security/site/docs/current/reference/html/csrf.html
-        // https://angular.io/guide/http#security-xsrf-protection
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .and()
-      .authorizeRequests()
-        .antMatchers("/saml/**").permitAll()
-        .antMatchers("/Virtu/**").permitAll()
-        .antMatchers("/api/v3/editor/**").authenticated()
-        .antMatchers(HttpMethod.POST).authenticated()
-        .antMatchers(HttpMethod.PUT).authenticated()
-        .antMatchers(HttpMethod.DELETE).authenticated()
-        .antMatchers(HttpMethod.PATCH).authenticated()
-        .antMatchers(HttpMethod.HEAD).permitAll()
-        .antMatchers(HttpMethod.GET).permitAll()
-        .anyRequest().denyAll()
-        .and()
-      .formLogin()
-        .loginPage("/login")
-          .permitAll()
-        .loginProcessingUrl("/api/v3/user-functions/login")
-          .permitAll()
-        .successHandler(new JsonBooleanResponseHandler(true))
-        .failureHandler(new JsonBooleanResponseHandler(false))
-        .and()
-      .logout()
-        .logoutUrl("/api/v3/user-functions/logout")
-          .permitAll()
-        .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
-        .and()
-      .exceptionHandling()
-        .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-        .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN));
+  @Configuration
+  @Order(1)
+  public static class HttpBasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      http
+          .requestMatcher(req -> nullToEmpty(req.getHeader("Authorization")).startsWith("Basic "))
+          .authorizeRequests()
+            .anyRequest().hasAnyAuthority(UserRoles.SYSTEM)
+            .and()
+          .csrf()
+            .disable()
+          .httpBasic();
+    }
+  }
+
+  @Configuration
+  @EnableGlobalMethodSecurity(prePostEnabled = true)
+  @Order(2)
+  public static class FormLoginSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      http
+          .csrf()
+            .ignoringAntMatchers("/saml/**")
+            .ignoringAntMatchers("/Virtu/**")
+            // Set "XSRF-TOKEN" cookie which Angular's HTTP components can use out-of-the-box. For more info, see:
+            // https://docs.spring.io/spring-security/site/docs/current/reference/html/csrf.html
+            // https://angular.io/guide/http#security-xsrf-protection
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .and()
+          .authorizeRequests()
+            .antMatchers("/saml/**").permitAll()
+            .antMatchers("/Virtu/**").permitAll()
+            .antMatchers("/api/v3/editor/**").authenticated()
+            .antMatchers(HttpMethod.POST).authenticated()
+            .antMatchers(HttpMethod.PUT).authenticated()
+            .antMatchers(HttpMethod.DELETE).authenticated()
+            .antMatchers(HttpMethod.PATCH).authenticated()
+            .antMatchers(HttpMethod.HEAD).permitAll()
+            .antMatchers(HttpMethod.GET).permitAll()
+            .anyRequest().denyAll()
+            .and()
+          .formLogin()
+            .loginPage("/login")
+              .permitAll()
+            .loginProcessingUrl("/api/v3/user-functions/login")
+              .permitAll()
+            .successHandler(new JsonBooleanResponseHandler(true))
+            .failureHandler(new JsonBooleanResponseHandler(false))
+            .and()
+          .logout()
+            .logoutUrl("/api/v3/user-functions/logout")
+              .permitAll()
+            .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
+            .and()
+          .exceptionHandling()
+            .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+            .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN));
+    }
   }
 
 }

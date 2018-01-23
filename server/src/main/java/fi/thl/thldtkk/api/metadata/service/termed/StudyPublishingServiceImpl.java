@@ -55,6 +55,7 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
   private void removeNonPublicPropertiesAndReferences(Study study) {
     study.setLastModifiedByUser(null);
     study.setComment(null);
+    study.setExternalId(null);
     study.setPredecessors(Collections.emptyList());
     study.getDatasets().forEach(d -> removeNonPublicPropertiesAndReferences(d));
     study.setPhysicalLocation(Collections.emptyMap());

@@ -105,6 +105,9 @@
       },
       {
         "id": "comment"
+      },
+      {
+        "id": "externalId"
       }
     ],
     "referenceAttributes": [

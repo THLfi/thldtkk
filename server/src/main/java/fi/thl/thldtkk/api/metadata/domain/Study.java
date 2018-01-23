@@ -68,6 +68,7 @@ public class Study implements NodeEntity {
   private List<ExistenceForm> existenceForms = new ArrayList<>();
   private Map<String, String> physicalLocation = new LinkedHashMap<>();
   private String comment;
+  private String externalId;
 
   private UserProfile lastModifiedByUser;
   private Organization ownerOrganization;
@@ -144,6 +145,7 @@ public class Study implements NodeEntity {
     this.existenceForms = valuesToEnumCollection(node.getProperties("existenceForms"),
       ExistenceForm.class, ArrayList::new);
     this.physicalLocation = toLangValueMap(node.getProperties("physicalLocation"));
+    this.externalId = PropertyMappings.toString(node.getProperties("externalId"));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -426,6 +428,14 @@ public class Study implements NodeEntity {
     this.comment = comment;
   }
 
+  public Optional<String> getExternalId() {
+    return Optional.ofNullable(externalId);
+  }
+
+  public void setExternalId(String externalId) {
+    this.externalId = externalId;
+  }
+
   public Optional<UserProfile> getLastModifiedByUser() {
     return Optional.ofNullable(lastModifiedByUser);
   }
@@ -509,7 +519,6 @@ public class Study implements NodeEntity {
   public void setSystemInRoles(List<SystemInRole> systemInRoles) {
     this.systemInRoles = systemInRoles;
   }
-  
 
   /**
    * Transforms dataset into node
@@ -548,6 +557,7 @@ public class Study implements NodeEntity {
     props.putAll("existenceForms", PropertyMappings.enumsToPropertyValues(existenceForms));
     props.putAll("physicalLocation", toPropertyValues(physicalLocation));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
+    getExternalId().ifPresent(ei -> props.put("externalId", toPropertyValue(ei)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
@@ -613,6 +623,7 @@ public class Study implements NodeEntity {
             && Objects.equals(existenceForms, study.existenceForms)
             && Objects.equals(physicalLocation, study.physicalLocation)
             && Objects.equals(comment, study.comment)
+            && Objects.equals(externalId, study.externalId)
             && Objects.equals(lastModifiedByUser, study.lastModifiedByUser)
             && Objects.equals(ownerOrganization, study.ownerOrganization)
             && Objects.equals(ownerOrganizationUnit, study.ownerOrganizationUnit)
@@ -667,6 +678,7 @@ public class Study implements NodeEntity {
         nationalArchivesFinlandArchivalDecision,
         physicalLocation,
         comment,
+        externalId,
         lastModifiedByUser,
         ownerOrganization,
         ownerOrganizationUnit,

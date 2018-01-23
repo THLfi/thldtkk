@@ -2,12 +2,11 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
-import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Study;
-import fi.thl.thldtkk.api.metadata.domain.SystemInRole;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
@@ -425,7 +424,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     dataset.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
 
     if (includeInstanceVariables) {
-      dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
+      dataset.getInstanceVariables().forEach(iv -> {
+         save.add(iv.toNode());
+         iv.getInstanceQuestions().forEach(iq -> save.add(iq.toNode()));
+      });
     }
 
     return new Changeset(Collections.emptyList(), save);
@@ -493,9 +495,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     dataset.getPopulation().ifPresent(p -> nodes.add(p.toNode()));
     dataset.getLinks().forEach(l -> nodes.add(l.toNode()));
     dataset.getPersonInRoles().forEach(pir -> nodes.add(pir.toNode()));
-    dataset.getInstanceVariables().forEach(iv -> nodes.add(iv.toNode()));
+    dataset.getInstanceVariables().forEach(iv -> {
+      nodes.add(iv.toNode());
+      iv.getInstanceQuestions().forEach(iq -> nodes.add(iq.toNode()));
+    });
     return nodes;
-  }
+  } 
 
   private Changeset<NodeId, Node> changesetForUpdate(Dataset newDataset,
                                                      Dataset oldDataset,
@@ -513,7 +518,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     if (includeInstanceVariables) {
       changeset = changeset.merge(Changeset.buildChangeset(
         newDataset.getInstanceVariables(),
-        oldDataset.getInstanceVariables()));
+        oldDataset.getInstanceVariables()))
+          .merge(buildChangesetForInstanceQuestions(
+                  newDataset.getInstanceVariables(), 
+                  oldDataset.getInstanceVariables()));
     }
     return changeset;
   }
@@ -538,6 +546,25 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return Changeset.empty();
   }
 
+ private Changeset<NodeId, Node> buildChangesetForInstanceQuestions(List<InstanceVariable> newInstanceVariables,
+                                                 List<InstanceVariable> oldInstanceVariables) {
+    
+    List<InstanceQuestion> newInstanceQuestions = newInstanceVariables
+            .stream()
+            .flatMap(niv -> niv.getInstanceQuestions().stream())
+            .distinct()
+            .collect(Collectors.toList());
+    
+    List<InstanceQuestion> oldInstanceQuestions = oldInstanceVariables
+            .stream()
+            .flatMap(oiv -> oiv.getInstanceQuestions().stream())
+            .distinct()
+            .collect(Collectors.toList());
+    
+    return Changeset.<NodeId, Node>empty().merge(
+                    Changeset.buildChangeset(newInstanceQuestions, oldInstanceQuestions));
+  }
+  
   private Supplier<IllegalStateException> studyNotFoundAfterSave(UUID studyId) {
     return () -> new IllegalStateException("Study '" + studyId
       + "' was not found after saving, it might have been updated simultaneously by another user");

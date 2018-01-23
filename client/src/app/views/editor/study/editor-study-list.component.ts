@@ -17,6 +17,9 @@ export class EditorStudyListComponent implements OnInit {
   studies: Study[]
   user: User
 
+  searchTerms: string = ""
+  maxResults: number = 50
+
   isLoadingStudies: boolean = false
   deleteInProgress: boolean = false
 
@@ -28,30 +31,23 @@ export class EditorStudyListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadStudies(true)
+    this.searchStudies()
+    this.loadUserAndOrganizations()
   }
 
-  private loadStudies(loadUserAndOrganizations: boolean = false) {
-    this.isLoadingStudies = true
+  loadMoreResults(): void {
+    this.maxResults += 50
+    this.searchStudies(this.searchTerms)
+  }
 
-    this.editorStudyService.getAll()
-      .finally(() => this.deleteInProgress = false)
+  searchStudies(searchString: string = this.searchTerms) {
+    this.isLoadingStudies = true
+    this.searchTerms = searchString
+    this.editorStudyService.searchStudies(searchString, this.maxResults)
       .subscribe(studies => {
         this.studies = studies
-
-        if (loadUserAndOrganizations) {
-          this.loadUserAndOrganizations()
-        }
-
-        this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable()
-
         this.isLoadingStudies = false
       })
-  }
-
-  searchStudies(searchString: string) {
-    this.editorStudyService.searchStudies(searchString)
-      .subscribe(studies => this.studies = studies)
   }
 
   private loadUserAndOrganizations() {
@@ -71,7 +67,7 @@ export class EditorStudyListComponent implements OnInit {
 
           this.editorStudyService.delete(studyId)
             .finally(() => this.deleteInProgress = false)
-            .subscribe(() => this.loadStudies())
+            .subscribe(() => this.searchStudies())
         }
       })
   }

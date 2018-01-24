@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "./node/node -- node_modules/@angular/cli/bin/ng",
     "start": "./node/node -- node_modules/@angular/cli/bin/ng serve --proxy-config proxy.conf.json",
-    "build": "./node/node -- node_modules/@angular/cli/bin/ng build",
+    "build": "./node/node -- node_modules/@angular/cli/bin/ng build --aot",
     "test": "./node/node -- node_modules/@angular/cli/bin/ng test",
     "lint": "./node/node -- node_modules/@angular/cli/bin/ng lint",
     "e2e": "./node/node -- node_modules/@angular/cli/bin/ng e2e --proxy-config proxy.conf.json"

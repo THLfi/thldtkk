@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
+import { Observable, Subject } from 'rxjs'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { CurrentUserService } from '../../../services-editor/user.service'
@@ -19,6 +20,10 @@ export class EditorStudyListComponent implements OnInit {
 
   searchTerms: string = ""
   maxResults: number = 50
+
+  static readonly searchDelay = 500;
+
+  searchItem: Subject<string> = new Subject<string>()
 
   isLoadingStudies: boolean = false
   deleteInProgress: boolean = false

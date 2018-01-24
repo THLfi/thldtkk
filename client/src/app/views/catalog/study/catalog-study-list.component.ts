@@ -5,7 +5,6 @@ import { Study } from '../../../model2/study'
 import { Organization } from '../../../model2/organization'
 import { OrganizationService } from '../../../services-common/organization.service'
 import { PublicStudyService } from '../../../services-public/public-study.service'
-import { Subscription } from 'rxjs'
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
@@ -15,7 +14,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/of';
 
 @Component({
-  templateUrl: './catalog-study-list.component.html'
+  templateUrl: './catalog-study-list.component.html',
+  styleUrls: [ './catalog-study-list.component.css' ]
 })
 export class CatalogStudyListComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class CatalogStudyListComponent implements OnInit {
   constructor(
     private organizationService: OrganizationService,
     private studyService: PublicStudyService
-  ) { 
+  ) {
     this.searchTerms = new Subject<string>()
   }
 
@@ -58,10 +58,10 @@ export class CatalogStudyListComponent implements OnInit {
     searchTerms.debounceTime(this.searchDelay)
       .distinctUntilChanged()
       .switchMap(term => {
-        this.loadingStudies = true;
+        this.loadingStudies = true
         return this.studyService.search(term, this.selectedOrganizationId)
       })
-      .catch(error => {
+      .catch(() => {
         this.initSearchSubscription(searchTerms)
         return Observable.of<Study[]>([])
       })
@@ -73,7 +73,8 @@ export class CatalogStudyListComponent implements OnInit {
 
   instantSearchStudies(literalSearchTerms: string): void {
     this.loadingStudies = true
-    this.studyService.search(literalSearchTerms, this.selectedOrganizationId).subscribe(studies => {
+    this.studyService.search(literalSearchTerms, this.selectedOrganizationId)
+      .subscribe(studies => {
       this.studies = studies
       this.loadingStudies = false
     })

@@ -237,6 +237,13 @@
     "logoText": "Aineistokatalogi",
     "personInRoles": "Yhteystiedot",
     "collectionDate": "Keruuajankohta",
+    "searchStudies": {
+      "filterByOrganizationsLabel": "Suodata organisaation perusteella",
+      "searchFieldLabel": "Hae aineistoja",
+      "searchFieldPlaceholder": "Hae aineistoja nimen perusteella...",
+      "noStudiesFoundText": "Haulla ei löytynyt yhtään aineistoa.",
+      "noStudiesFoundWithOrganizationSelectedText": "Haulla ja valitulla organisaatiorajauksella ei löytynyt yhtään aineistoa."
+    },
     "searchInstanceVariable": {
       "searchFieldLabel": "Hae muuttujia",
       "searchFieldPlaceholder": "Hae muuttujia...",
@@ -270,12 +277,17 @@
     "study": {
       "goToDataset": "Siirry datasettiin",
       "datasetVariableCountLabel": "muuttujaa",
-      "datasetVariablesBreakdown": "Aineiston muuttujat on jaettu {{datasetCount}} datasettiin"
+      "datasetVariablesBreakdown": "Aineiston muuttujat on jaettu {{datasetCount}} datasettiin",
+      "studiesLink": "Aineistolistaukseen"
     },
     "dataset": {
       "defaultInstanceVariableGroupName": "Muuttujat ilman muuttujaryhmää",
       "instanceVariableFilterRemoveAllSelections":"Poista valinnat",
-      "instanceVariableFilterSelectAll":"Valitse kaikki"
+      "instanceVariableFilterSelectAll":"Valitse kaikki",
+      "studyLink": "Datasetin aineistoon"
+    },
+    "instanceVariable": {
+      "datasetLink": "Muuttujan datasettiin"
     },
     "footer": {
       "infoText": "Katalogi on kehitetty THL:n, Tilastokeskuksen, Tietoarkiston ja Sitran yhteistyönä.",

@@ -25,12 +25,7 @@
   font-size: 16px;
 }
 .right-main-column .person-email {
-  color: #01A197;
   font-style: italic;
-}
-
-.right-main-column .link {
-  text-decoration: underline;
 }
 
 .detail-highlight {
@@ -44,7 +39,7 @@
 .detail-highlight .caption,
 .detail-highlight .icon,
 .detail-highlight .icon-svg   {
-  color: #CCCCCC;
+  color: #767676;
 }
 
 .detail-highlight .icon {
@@ -135,6 +130,5 @@
   .concepts .items {
     columns: 2;
   }
-
 }
 

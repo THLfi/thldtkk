@@ -1,7 +1,3 @@
-.study-reference a {
-  color: #767676;
-}
-
 .alt-label {
   color: #767676;
   margin-top: 0;
@@ -21,12 +17,7 @@
   font-size: 16px;
 }
 .right-main-column .person-email {
-  color: #01A197;
   font-style: italic;
-}
-
-.right-main-column .link {
-  text-decoration: underline;
 }
 
 .overridden-reference-period {
@@ -42,10 +33,10 @@
   margin-bottom: 3em;
 }
 
-.primary-highlight .caption, 
+.primary-highlight .caption,
 .primary-highlight .icon,
 .primary-highlight .icon-svg  {
-  color: #CCCCCC;
+  color: #767676;
 }
 
 .primary-highlight .icon {
@@ -88,10 +79,9 @@
 .minor-highlights {
   padding-bottom: 2em;
 }
-
-.minor-highlight-heading {
+.minor-highlights h2 {
+  color: #767676;
   font-size: 1em;
-  color: #CCCCCC;
 }
 
 .concepts {

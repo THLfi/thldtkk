@@ -18,7 +18,7 @@ a {
   margin-left: .3em;
   border-bottom: 1px dotted #ccc;
   border-radius: 2px;
-  color: #01a197;
+  color: #01837A;
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;

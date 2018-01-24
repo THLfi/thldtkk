@@ -63,6 +63,7 @@ import { VariableService } from './services-common/variable.service'
 // common components
 import { AutogrowTextarea } from './views/common/autogrow-textarea.directive'
 import { DateUtils } from './utils/date-utils'
+import { FontAwesomeComponent } from './views/common/font-awesome.component'
 import { GlyphiconComponent } from './views/common/glyphicon.component'
 import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
@@ -172,6 +173,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         EditorStudyListComponent,
         EditorStudyDatasetsComponent,
         EditorStudyViewComponent,
+        FontAwesomeComponent,
         GlyphiconComponent,
         IconUniverse,
         InstanceVariableComponent,

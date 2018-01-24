@@ -9,7 +9,7 @@ a {
 
 h1 {
     font-size: 36px;
-    color: #01A197;
+    color: #01837A;
     font-weight: 200;
 }
 h2 {
@@ -81,7 +81,7 @@ h3 {
   font-weight: bold;
 }
 .navbar-catalog .navbar-brand sup {
-  color: #01A197;
+  color: #01837A;
 }
 
 @media (max-width: 768px) {
@@ -189,7 +189,7 @@ h3 {
   color: #333;
 }
 .sidebar ul li:hover a {
-  background-color: #01A197;
+  background-color: #01837A;
   color: white;
   text-decoration: none;
 }
@@ -210,6 +210,16 @@ h3 {
 }
 .main-container.catalog.container h1 {
   margin-top: 0;
+}
+.main-container.catalog a {
+  color: #01837A;
+}
+.main-container.catalog table a,
+.main-container.catalog a.btn {
+  color: #2F4752;
+}
+.main-container.catalog a.secondary-navigation {
+  font-size: 16px;
 }
 
 .main-container.editor {

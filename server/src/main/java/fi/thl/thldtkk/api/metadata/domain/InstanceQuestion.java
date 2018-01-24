@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.UUID;
 
 
-public class InstanceQuestion {
+public class InstanceQuestion implements NodeEntity{
     
   public static final String TERMED_NODE_CLASS = "InstanceQuestion";
 
@@ -35,6 +35,7 @@ public class InstanceQuestion {
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
   }
 
+  @Override
   public UUID getId() {
     return id;
   }
@@ -43,6 +44,7 @@ public class InstanceQuestion {
     return prefLabel;
   }
   
+  @Override
   public Node toNode() {
     Node node = new Node(id, TERMED_NODE_CLASS);
     node.addProperties("prefLabel", toPropertyValues(prefLabel));

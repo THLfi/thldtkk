@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
@@ -301,12 +302,15 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     dataset.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
 
     if (includeInstanceVariables) {
-      dataset.getInstanceVariables().forEach(iv -> save.add(iv.toNode()));
+      dataset.getInstanceVariables().forEach(iv -> {
+        save.add(iv.toNode());
+        iv.getInstanceQuestions().forEach(iq -> save.add(iq.toNode()));
+      });
     }
 
     return new Changeset(Collections.emptyList(), save);
   }
-
+  
   private Changeset<NodeId, Node> changesetForUpdate(Study newStudy,
                                                      Study oldStudy,
                                                      boolean includeDatasets, boolean includeInstanceVariables) {
@@ -366,7 +370,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     dataset.getPopulation().ifPresent(p -> nodes.add(p.toNode()));
     dataset.getLinks().forEach(l -> nodes.add(l.toNode()));
     dataset.getPersonInRoles().forEach(pir -> nodes.add(pir.toNode()));
-    dataset.getInstanceVariables().forEach(iv -> nodes.add(iv.toNode()));
+    dataset.getInstanceVariables().forEach(iv -> {
+      nodes.add(iv.toNode());
+      iv.getInstanceQuestions().forEach(iq -> nodes.add(iq.toNode()));
+    });
     return nodes;
   }
 
@@ -386,7 +393,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     if (includeInstanceVariables) {
       changeset = changeset.merge(Changeset.buildChangeset(
         newDataset.getInstanceVariables(),
-        oldDataset.getInstanceVariables()));
+        oldDataset.getInstanceVariables()))
+          .merge(buildChangesetForInstanceQuestions(
+                  newDataset.getInstanceVariables(), 
+                  oldDataset.getInstanceVariables()));
     }
     return changeset;
   }
@@ -409,6 +419,25 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       return Changeset.delete(new NodeId(oldPopulation.toNode()));
     }
     return Changeset.empty();
+  }
+      
+  private Changeset<NodeId, Node> buildChangesetForInstanceQuestions(List<InstanceVariable> newInstanceVariables,
+                                                 List<InstanceVariable> oldInstanceVariables) {
+    
+    List<InstanceQuestion> newInstanceQuestions = newInstanceVariables
+            .stream()
+            .flatMap(niv -> niv.getInstanceQuestions().stream())
+            .distinct()
+            .collect(Collectors.toList());
+    
+    List<InstanceQuestion> oldInstanceQuestions = oldInstanceVariables
+            .stream()
+            .flatMap(oiv -> oiv.getInstanceQuestions().stream())
+            .distinct()
+            .collect(Collectors.toList());
+    
+    return Changeset.<NodeId, Node>empty().merge(
+                    Changeset.buildChangeset(newInstanceQuestions, oldInstanceQuestions));
   }
 
   private Supplier<IllegalStateException> studyNotFoundAfterSave(UUID studyId) {

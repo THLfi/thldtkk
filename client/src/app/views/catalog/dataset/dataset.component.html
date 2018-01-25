@@ -76,10 +76,12 @@
 
       <div *ngIf="dataset.links && dataset.links.length">
         <h2>{{'links'|translate}}</h2>
-        <p *ngFor="let link of dataset.links" class="link">
-          <a href="{{ link.linkUrl | lang }}" target="_blank">
+        <p *ngFor="let link of dataset.links">
+          <a href="{{ link.linkUrl | lang }}"
+             target="_blank"
+             class="external-link">
             {{ link.prefLabel | lang }}
-            <i class="fa fa-external-link" aria-hidden="true"></i>
+            <fa icon="external-link"></fa>
           </a>
         </p>
       </div>
@@ -112,7 +114,7 @@
 
               <ng-container *ngSwitchCase="DatasetDetailHighlight.REFERENCE_PERIOD">
                 <div class="icon">
-                  <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                  <fa icon="calendar-o"></fa>
                 </div>
                 <div class="caption">
                   {{ 'referencePeriod' | translate }}
@@ -130,7 +132,7 @@
 
               <ng-container *ngSwitchCase="DatasetDetailHighlight.GEOGRAPHICAL_COVERAGE">
                 <div class="icon">
-                  <i class="fa fa-globe" aria-hidden="true"></i>
+                  <fa icon="globe"></fa>
                 </div>
                 <div class="caption">
                   {{ 'geographicalCoverage' | translate }}
@@ -190,29 +192,24 @@
 
       <div class="row minor-highlights"
            *ngIf="dataset.population && ((dataset.population.prefLabel | lang)
-                  || (dataset.population.sampleSize | lang) 
+                  || (dataset.population.sampleSize | lang)
                   || (dataset.population.loss | lang))">
-                  
+
         <div *ngIf="dataset.population.prefLabel | lang" class="col-xs-12">
-          <div>
-            <h2 class="minor-highlight-heading">{{ 'population' | translate }}:</h2>
-            {{ dataset.population.prefLabel | lang }}
-          </div>
+          <h2>{{ 'population' | translate }}:</h2>
+          <p class="preserve-line-breaks">{{ dataset.population.prefLabel | lang }}</p>
         </div>
 
         <div *ngIf="dataset.population.sampleSize | lang" class="col-xs-12">
-          <div>
-            <h2 class="minor-highlight-heading">{{ 'sample' | translate }}:</h2>
-            {{ dataset.population.sampleSize | lang }}
-          </div>
+          <h2>{{ 'sample' | translate }}:</h2>
+          <p>{{ dataset.population.sampleSize | lang }}</p>
         </div>
 
         <div *ngIf="dataset.population.loss | lang" class="col-xs-12">
-          <div>
-            <h2 class="minor-highlight-heading">{{ 'loss' | translate }}:</h2>
-            {{ dataset.population.loss | lang }}
-          </div>
+          <h2>{{ 'loss' | translate }}:</h2>
+          <p>{{ dataset.population.loss | lang }}</p>
         </div>
+
       </div>
 
       <div *ngIf="dataset.conceptsFromScheme.length || (dataset.freeConcepts | lang)" class="row">
@@ -243,7 +240,7 @@
     <div class="col-xs-12">
       <h2>{{ 'instanceVariables' | translate }} ({{filteredInstanceVariables.length }} {{'piecesAbbreviation' | translate}})
       </h2>
-      
+
     <div class="row" *ngIf="allWrappedInstanceVariables.length">
       <div class="col-xs-12">
         <div class="instance-variable-filter-action-bar" [ngClass]="{ 'instance-variable-filter-action-bar-no-results': !filteredInstanceVariables.length }">
@@ -251,17 +248,17 @@
               <div class="col-sm-3">
                 {{'partOfGroup' | translate}}
                 <button type="button" class="btn btn-default instance-variable-filter-toggle" (click)="toggleShowInstanceVariableFilters()">
-                  <i *ngIf="!showInstanceVariableFilters" class="fa fa-angle-down instance-variable-filter-toggle-icon" aria-hidden="true"></i>
-                  <i *ngIf="showInstanceVariableFilters" class="fa fa-angle-up instance-variable-filter-toggle-icon" aria-hidden="true"></i>
+                  <fa icon="{{ showInstanceVariableFilters ? 'angle-up' : 'angle-down' }}" class="instance-variable-filter-toggle-icon"></fa>
                 </button>
               </div>
               <div class="col-sm-9">
                 <div class="export-as-csv" [ngClass]="{'export-as-csv-filters-expanded': showInstanceVariableFilters }">
                   <a class="btn btn-default" href="{{composeInstanceVariableExportUrl()}}">
-                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'exportInstanceVariablesAsCsvButton' | translate }}
-                  </a>            
+                    <fa icon="download"></fa>
+                    {{ 'exportInstanceVariablesAsCsvButton' | translate }}
+                  </a>
                 </div>
-              </div>           
+              </div>
           </div>
 
           <div class="row" *ngIf="showInstanceVariableFilters">
@@ -272,11 +269,11 @@
               </div>
               <div class="col-xs-12">
                 <button type="button" class="btn btn-link instance-variable-group-filter-select-button" (click)="deselectInstanceVariableGroupFilters()" [attr.disabled]="selectedInstanceVariableFilterGroups.length == 0 ?  'disabled' : null">
-                  {{'catalog.dataset.instanceVariableFilterRemoveAllSelections' | translate}}  
+                  {{'catalog.dataset.instanceVariableFilterRemoveAllSelections' | translate}}
                 </button>
                 |
                 <button type="button" class="btn btn-link instance-variable-group-filter-select-button" (click)="resetInstanceVariableGroupFilters()" [attr.disabled]="selectedInstanceVariableFilterGroups.length == instanceVariableGroupNames.length ?  'disabled' : null">
-                  {{'catalog.dataset.instanceVariableFilterSelectAll' | translate}}  
+                  {{'catalog.dataset.instanceVariableFilterSelectAll' | translate}}
                 </button>
               </div>
             </div>
@@ -311,7 +308,7 @@
         </table>
         <a class="btn btn-default"
            href="{{composeInstanceVariableExportUrl()}}">
-          <i class="fa fa-download" aria-hidden="true"></i>
+          <fa icon="download"></fa>
           {{ 'exportInstanceVariablesAsCsvButton' | translate }}
         </a>
       </ng-container>
@@ -327,10 +324,10 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <button class="btn btn-default" routerLink="/catalog/studies/{{study.id}}">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        {{ 'back' | translate }}
-      </button>
+      <a routerLink="/catalog/studies/{{study.id}}"
+         class="secondary-navigation">
+        {{ 'catalog.dataset.studyLink' | translate }}
+      </a>
     </div>
   </div>
 

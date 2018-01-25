@@ -14,10 +14,12 @@
         <ng-container *ngIf="studies.length; else noStudies;">
           <ul>
             <li *ngFor="let study of studies">
+              <fa icon="chevron-right" class="list-bullet"></fa>
               <a routerLink="/catalog/studies/{{ study.id }}">{{study.prefLabel | lang}}</a>
             </li>
           </ul>
           <button routerLink="/catalog/studies"
+                  type="button"
                   class="btn btn-default all-studies-button">
             {{ 'catalog.frontpage.allStudiesButton' | translate | uppercase }}
           </button>
@@ -43,7 +45,7 @@
           <button (click)="searchVariables(searchText)"
                   type="button"
                   class="btn btn-default search-button">
-            <i class="fa fa-search search-icon" aria-hidden="true"></i>
+            <fa icon="search" class="search-icon"></fa>
             <span class="sr-only">{{ 'search' | translate }}</span>
           </button>
         </span>

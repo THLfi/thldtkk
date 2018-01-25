@@ -110,8 +110,9 @@
       </p>
       <div *ngIf="instanceVariable.codeList.codeItems.length">
         <button (click)="viewCodeListCodeItemsModal.toggle()"
+                type="button"
                 class="btn btn-default btn-sm">
-          <i class="fa fa-eye" aria-hidden="true"></i>
+          <fa icon="eye"></fa>
           {{ 'viewCodeItems' | translate }}
         </button>
         <viewCodeListCodeItemsModal
@@ -185,7 +186,7 @@
         <p>
           <a routerLink="/catalog/datasets/{{ instanceVariable.source.id }}">
             {{ instanceVariable.source.prefLabel | lang }}
-            <span class="glyphicon glyphicon-link"></span>
+            <glyphicon icon="link"></glyphicon>
           </a>
         </p>
       </div>
@@ -262,11 +263,10 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <button routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}"
-              class="btn btn-default">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        {{ 'back' | translate }}
-      </button>
+      <a routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}"
+         class="secondary-navigation">
+        {{ 'catalog.instanceVariable.datasetLink' | translate }}
+      </a>
     </div>
   </div>
 

@@ -15,11 +15,11 @@
   text-align: center;
 }
 .has-variable {
-  border-color: #01A197;
+  border-color: #01837A;
 }
 .has-variable a {
   display: block;
-  color: #01A197;
+  color: #01837A;
 }
 .no-variable {
   border-color: lightgray;
@@ -31,8 +31,3 @@
 .dataset-label {
   margin-bottom: 1em;
 }
-
-.dataset-label a {
-  color: #01A197;
-}
-

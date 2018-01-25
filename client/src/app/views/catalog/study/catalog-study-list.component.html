@@ -1,46 +1,78 @@
 <div class="row">
-  <div class="col-xs-9 col-xs-offset-3">
+  <div class="col-sm-9 col-sm-push-3">
     <h1>
       {{'study.studies' | translate}}
     </h1>
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-3">
-    <label>{{'organizations' | translate}}</label>
-    <ul class="list-unstyled">
-      <li *ngFor="let organization of organizations">
-        <a *ngIf="organization.id == selectedOrganizationId"
-           (click)="selectOrganization('')"
-           href="javascript:void(0)">
-          <strong>{{ organization.prefLabel | lang }}</strong>
-        </a>
-        <a *ngIf="organization.id != selectedOrganizationId"
-           (click)="selectOrganization(organization.id)"
-            href="javascript:void(0)">
-          {{ organization.prefLabel | lang }}
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="col-xs-9">
+  <div class="col-sm-9 col-sm-push-3">
     <div class="input-group">
-      <input type="text" [(ngModel)]="searchText" class="form-control" (keyup)="searchStudies(searchText)">
+      <label for="search-field"
+             class="sr-only">
+        {{ 'catalog.searchStudies.searchFieldLabel' | translate }}
+      </label>
+      <input [(ngModel)]="searchText"
+             (keyup)="searchStudies(searchText)"
+             type="text"
+             placeholder="{{ 'catalog.searchStudies.searchFieldPlaceholder' | translate }}"
+             id="search-field"
+             class="form-control">
       <span class="input-group-btn">
         <button class="btn btn-default" (click)="instantSearchStudies(searchText)">
-          <span class="glyphicon glyphicon-search"></span>
+          <glyphicon icon="search"></glyphicon>
         </button>
       </span>
     </div>
-    <br>
-    <ul *ngIf="studies; else loadingStudies;">
-      <li *ngFor="let study of studies">
-        <a routerLink="/catalog/studies/{{ study.id }}">
-          {{ study.prefLabel | lang }}
-        </a>
-      </li>
-    </ul>
-    <ng-template #loadingStudies>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-3">
+    <div class="organizations">
+      <strong class="filter-title">
+        {{ 'catalog.searchStudies.filterByOrganizationsLabel' | translate }}
+      </strong>
+      <ul class="list-unstyled">
+        <li *ngFor="let organization of organizations">
+          <a *ngIf="organization.id == selectedOrganizationId"
+             (click)="selectOrganization('')"
+             href="javascript:void(0)">
+            <strong>{{ organization.prefLabel | lang }}</strong>
+          </a>
+          <a *ngIf="organization.id != selectedOrganizationId"
+             (click)="selectOrganization(organization.id)"
+              href="javascript:void(0)">
+            {{ organization.prefLabel | lang }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <div *ngIf="!loadingStudies; else loading;"
+         class="studies">
+      <ng-container *ngIf="studies.length; else noStudiesFound;">
+        <ul class="studies">
+          <li *ngFor="let study of studies">
+            <fa icon="chevron-right" class="list-bullet"></fa>
+            <a routerLink="/catalog/studies/{{ study.id }}">
+              {{ study.prefLabel | lang }}
+            </a>
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noStudiesFound>
+        <p>
+          <ng-container *ngIf="selectedOrganizationId; else noOrganizationSelected;">
+            {{ 'catalog.searchStudies.noStudiesFoundWithOrganizationSelectedText' | translate }}
+          </ng-container>
+          <ng-template #noOrganizationSelected>
+            {{ 'catalog.searchStudies.noStudiesFoundText' | translate }}
+          </ng-template>
+        </p>
+      </ng-template>
+    </div>
+    <ng-template #loading>
       <thl-spinner></thl-spinner>
     </ng-template>
   </div>

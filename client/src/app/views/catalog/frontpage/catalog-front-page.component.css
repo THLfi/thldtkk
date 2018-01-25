@@ -36,33 +36,35 @@ h1 {
 
 h2 {
   margin-top: 0;
-  margin-bottom: 36px;
-  font-size: 1.45em;
+  margin-bottom: 18px;
   color: #202020;
+  font-size: 1.45em;
+  font-weight: 600;
 }
 
 .latest-studies ul {
   padding-left: 0;
 }
-
 .latest-studies li {
-  padding-bottom: 24px;
+  margin-left: 1.2em;
+  padding-bottom: 16px;
   padding-left: 0;
+  color: #01837A;
   font-size: 1.15em;
   list-style: none;
 }
-
-.latest-studies li::before {
-  content: ">";
+.latest-studies li .list-bullet {
+  float: left;
+  margin-top: 2px;
+  margin-left: -1.2em;
+  font-size: .8em;
 }
-
-.latest-studies li,
-.latest-studies li a {
-  color: #01837A;
+.latest-studies li:last-of-type {
+  padding-bottom: 18px;
 }
 
 .all-studies-button {
-  padding: 28px;
+  padding: 20px;
   border: 1px solid #007169;
   border-radius: 2px;
   background-color: #01837A;

@@ -93,10 +93,12 @@
 
     <div *ngIf="studies && studies.length >= maxResults && !isLoadingStudies"
          class="col-xs-12">
+      <div *ngIf="!isLoadingAdditionalStudies; else loadingStudies;">
         <button (click)="loadMoreResults()"
                 class="btn btn-sm btn-default center-block">
           {{ 'loadMoreResults' | translate }}
         </button>
+      </div>
     </div>
     <div *ngIf="(organizations && organizations.length) || user.isAdmin" class="row">
       <div class="col-xs-12">

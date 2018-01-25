@@ -30,6 +30,7 @@ export class EditorStudyListComponent implements OnInit {
   latestLookupTerm: string
 
   isLoadingStudies: boolean = false
+  isLoadingAdditionalStudies: boolean = false
   deleteInProgress: boolean = false
 
   constructor(
@@ -95,13 +96,13 @@ export class EditorStudyListComponent implements OnInit {
 
   loadMoreResults(): void {
     this.maxResults += 100
-    this.isLoadingStudies = true
+    this.isLoadingAdditionalStudies = true
 
     this.searchStudies(this.searchText)
       .subscribe(studies => {
         this.updateQueryParam(this.searchText)
         this.studies = studies;
-        this.isLoadingStudies = false
+        this.isLoadingAdditionalStudies = false
       });
   }
 

@@ -10,10 +10,10 @@
     <div class="row" style="margin-bottom:1em;">
       <div class="col-xs-12">
         <div class="input-group">
-          <input type="text" [(ngModel)]="searchTerms" (keyup)="searchStudies(searchTerms)" placeholder="{{'studySearchPlaceholder' | translate}}"
+          <input type="text" [(ngModel)]="searchText" (keyup)="delayedSearchStudies(searchText)" placeholder="{{'studySearchPlaceholder' | translate}}"
                  class="form-control">
           <span class="input-group-btn">
-          <button class="btn btn-default" (click)="searchStudies(searchTerms)">
+          <button class="btn btn-default" (click)="delayedSearchStudies(searchText)">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
           </button>
           </span>

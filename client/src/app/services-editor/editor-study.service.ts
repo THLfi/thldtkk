@@ -79,7 +79,7 @@ export class EditorStudyService {
     this.nodeUtils.initLangValuesProperties(node, properties, [ this.translateService.currentLang ])
   }
 
-  searchStudies(searchString: string, maxResults: number): Observable<Study[]> {
+  search(searchString: string, maxResults: number): Observable<Study[]> {
       return this.http.get(env.contextPath + '/api/v3/editor/studies?query=' + searchString + '&max=' + maxResults)
         .map(response => response.json() as Study[])
   }

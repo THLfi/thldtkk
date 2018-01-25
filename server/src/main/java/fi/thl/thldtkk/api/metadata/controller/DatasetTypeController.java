@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "API for dataset types")
 @RestController
-@RequestMapping("/api/v3/datasetTypes")
+@RequestMapping(API.PATH_WITH_VERSION + "/datasetTypes")
 public class DatasetTypeController {
 
   @Autowired

@@ -21,12 +21,12 @@ export class UniverseService {
   ) { }
 
   search(searchText = ""): Observable<Universe[]> {
-      return this.http.get(env.contextPath + '/api/v3/universes?query=' + searchText + '&max=50')
+      return this.http.get(env.contextPath + env.apiPath + '/universes?query=' + searchText + '&max=50')
         .map(response => response.json() as Universe[])
   }
 
   delete(universeId: string): Observable<any> {
-      const path: string = env.contextPath + '/api/v3/universes/' + universeId
+      const path: string = env.contextPath + env.apiPath + '/universes/' + universeId
 
       return this.http.delete(path)
         .map(response => response.json())
@@ -36,12 +36,12 @@ export class UniverseService {
   }
 
   getAll(): Observable<Universe[]> {
-    return this.http.get(env.contextPath + '/api/v3/universes?query=')
+    return this.http.get(env.contextPath + env.apiPath + '/universes?query=')
           .map(response => response.json() as Universe[])
   }
 
   save(universe: Universe): Observable<Universe> {
-    const path: string = env.contextPath + '/api/v3/universes/'
+    const path: string = env.contextPath + env.apiPath + '/universes/'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
@@ -65,7 +65,8 @@ export class UniverseService {
 
   getUniverseDatasets(universe: Universe): Observable<Dataset[]> {
         const path: string = env.contextPath
-          + '/api/v3/universes/'
+          + env.apiPath
+          + '/universes/'
           + universe.id
           + '/datasets'
 

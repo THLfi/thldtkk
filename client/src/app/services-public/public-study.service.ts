@@ -13,18 +13,19 @@ export class PublicStudyService {
     private http: Http) {}
 
   getAll(): Observable<Study[]> {
-    return this.http.get(env.contextPath + '/api/v3/public/studies')
+    return this.http.get(env.contextPath + env.apiPath + '/public/studies')
       .map(response => response.json() as Study[])
   }
 
   getStudy(id: string): Observable<Study> {
-    return this.http.get(env.contextPath + '/api/v3/public/studies/' + id)
+    return this.http.get(env.contextPath + env.apiPath + '/public/studies/' + id)
       .map(response => response.json() as Study)
   }
 
   private searchInternal(searchText: string, organizationId: string, sort: string, max: number): Observable<Study[]> {
     const url = env.contextPath
-      + '/api/v3/public/studies?query='
+      + env.apiPath
+      + '/public/studies?query='
       + searchText
       + '&sort='
       + sort

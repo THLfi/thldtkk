@@ -24,7 +24,8 @@ export class StudyGroupService {
     }
     else {
       const url = env.contextPath
-        + '/api/v3/studyGroups?ownerOrganizationId='
+        + env.apiPath
+        + '/studyGroups?ownerOrganizationId='
         + organizationId
 
       return this.http.get(url)
@@ -33,7 +34,7 @@ export class StudyGroupService {
   }
 
   save(studyGroup: StudyGroup): Observable<StudyGroup> {
-    const path: string = env.contextPath + '/api/v3/studyGroups/'
+    const path: string = env.contextPath + env.apiPath + '/studyGroups/'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 

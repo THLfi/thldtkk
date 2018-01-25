@@ -15,7 +15,8 @@ export class PublicDatasetService {
 
   getDataset(studyId: string, datasetId: string): Observable<Dataset> {
     return this.http.get(env.contextPath
-      + '/api/v3/public/studies/'
+      + env.apiPath
+      + '/public/studies/'
       + studyId
       + '/datasets/'
       + datasetId)
@@ -33,7 +34,8 @@ export class PublicDatasetService {
 
   private searchInternal(searchText: string, organizationId: string, sort: string, max: number): Observable<Dataset[]> {
     const url = env.contextPath
-      + '/api/v3/public/datasets?query='
+      + env.apiPath
+      + '/public/datasets?query='
       + searchText
       + '&sort='
       + sort

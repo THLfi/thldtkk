@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Api(description = "Public API for instance variables")
 @RestController
-@RequestMapping("/api/v3/public")
+@RequestMapping(API.PATH_WITH_VERSION + "/public")
 public class PublicInstanceVariableController {
 
   @Autowired

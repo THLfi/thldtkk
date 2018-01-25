@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/api/v3/editor/studies")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor/studies")
 public class StudyRegisterDescriptionController {
 
   @Autowired

@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata;
 
 import static com.google.common.base.Strings.nullToEmpty;
 
+import fi.thl.thldtkk.api.metadata.controller.API;
 import fi.thl.thldtkk.api.metadata.security.JsonBooleanResponseHandler;
 import fi.thl.thldtkk.api.metadata.security.UserRoles;
 import fi.thl.thldtkk.api.metadata.security.thlsso.ThlSsoRestAuthenticationProvider;
@@ -73,7 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .authorizeRequests()
             .antMatchers("/saml/**").permitAll()
             .antMatchers("/Virtu/**").permitAll()
-            .antMatchers("/api/v3/editor/**").authenticated()
+            .antMatchers(API.PATH_WITH_VERSION + "/editor/**").authenticated()
             .antMatchers(HttpMethod.POST).authenticated()
             .antMatchers(HttpMethod.PUT).authenticated()
             .antMatchers(HttpMethod.DELETE).authenticated()
@@ -85,13 +86,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .formLogin()
             .loginPage("/login")
               .permitAll()
-            .loginProcessingUrl("/api/v3/user-functions/login")
+            .loginProcessingUrl(API.PATH_WITH_VERSION + "/user-functions/login")
               .permitAll()
             .successHandler(new JsonBooleanResponseHandler(true))
             .failureHandler(new JsonBooleanResponseHandler(false))
             .and()
           .logout()
-            .logoutUrl("/api/v3/user-functions/logout")
+            .logoutUrl(API.PATH_WITH_VERSION + "/user-functions/logout")
               .permitAll()
             .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
             .and()

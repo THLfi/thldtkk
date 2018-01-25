@@ -16,12 +16,12 @@ export class PersonService {
   ) { }
 
   getAll(): Observable<Person[]> {
-    return this.http.get(env.contextPath + '/api/v3/persons')
+    return this.http.get(env.contextPath + env.apiPath + '/persons')
       .map(response => response.json() as Person[])
   }
 
   save(person: Person): Observable<Person> {
-    const path: string = env.contextPath + '/api/v3/persons/'
+    const path: string = env.contextPath + env.apiPath + '/persons/'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 

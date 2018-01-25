@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  contextPath: ""
+  contextPath: "",
+  apiPath: "/api/v1"
 };

@@ -20,7 +20,7 @@ import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundExceptio
 
 @Api(description = "Public API for studies, their datasets and datasets' instance variables")
 @RestController
-@RequestMapping("/api/v3/public/studies")
+@RequestMapping(API.PATH_WITH_VERSION + "/public/studies")
 public class PublicStudyController {
 
   @Autowired

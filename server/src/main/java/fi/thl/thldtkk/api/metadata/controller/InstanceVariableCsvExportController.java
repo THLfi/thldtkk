@@ -20,7 +20,7 @@ import java.util.UUID;
 import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
 
 @Controller
-@RequestMapping("/api/v3")
+@RequestMapping(API.PATH_WITH_VERSION + "")
 public class InstanceVariableCsvExportController {
 
   @Autowired

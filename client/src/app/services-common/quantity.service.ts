@@ -16,12 +16,12 @@ export class QuantityService {
   ) { }
 
   getAll(): Observable<Quantity[]> {
-    return this.http.get(env.contextPath + '/api/v3/quantities')
+    return this.http.get(env.contextPath + env.apiPath + '/quantities')
       .map(response => response.json() as Quantity[])
   }
 
   save(quantity: Quantity): Observable<Quantity> {
-    const path: string = env.contextPath + '/api/v3/quantities'
+    const path: string = env.contextPath + env.apiPath + '/quantities'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 

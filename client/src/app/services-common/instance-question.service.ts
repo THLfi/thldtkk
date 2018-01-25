@@ -16,8 +16,9 @@ export class InstanceQuestionService {
   ) { }
 
   searchQuestion(searchText: string, studyId: string, datasetId: string): Observable<InstanceQuestion[]> {
-    return this.http.get(env.contextPath +
-      '/api/v3/instanceQuestions/studies/'
+    return this.http.get(env.contextPath
+      + env.apiPath
+      + '/instanceQuestions/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -26,7 +27,7 @@ export class InstanceQuestionService {
   }
 
   save(question: InstanceQuestion): Observable<InstanceQuestion> {
-    const path: string = env.contextPath + '/api/v3/instanceQuestions'
+    const path: string = env.contextPath + env.apiPath + '/instanceQuestions'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 

@@ -20,7 +20,8 @@ export class EditorInstanceVariableService {
 
   getInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -33,7 +34,8 @@ export class EditorInstanceVariableService {
 
   saveInstanceVariable(studyId: string, datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -60,7 +62,8 @@ export class EditorInstanceVariableService {
 
   deleteInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string): Observable<any> {
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -79,7 +82,8 @@ export class EditorInstanceVariableService {
     formData.append('file', file, file.name)
 
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -96,7 +100,8 @@ export class EditorInstanceVariableService {
 
   getInstanceVariableAsCsvExportPath(studyId: string, datasetId: string, encoding = 'ISO-8859-15'): string {
     return env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId

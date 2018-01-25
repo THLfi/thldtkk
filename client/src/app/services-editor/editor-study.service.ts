@@ -80,17 +80,17 @@ export class EditorStudyService {
   }
 
   search(searchString: string, maxResults: number): Observable<Study[]> {
-      return this.http.get(env.contextPath + '/api/v3/editor/studies?query=' + searchString + '&max=' + maxResults)
+      return this.http.get(env.contextPath + env.apiPath + '/editor/studies?query=' + searchString + '&max=' + maxResults)
         .map(response => response.json() as Study[])
   }
 
   getAll(): Observable<Study[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/studies')
+    return this.http.get(env.contextPath + env.apiPath + '/editor/studies')
       .map(response => response.json() as Study[])
   }
 
   getStudy(id: string): Observable<Study> {
-    return this.http.get(env.contextPath + '/api/v3/editor/studies/' + id)
+    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + id)
       .map(response => response.json() as Study)
   }
 
@@ -105,13 +105,14 @@ export class EditorStudyService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + '/api/v3/editor/studies', study, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/studies', study, options)
       .map(response => response.json() as Study)
   }
 
   delete(studyId: string): Observable<any> {
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
 
     return this.http.delete(path)
@@ -124,7 +125,8 @@ export class EditorStudyService {
     const options = new RequestOptions({ headers: headers })
 
     return this.http.post(env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets', dataset, options)
       .map(response => response.json() as Dataset)
@@ -138,7 +140,8 @@ export class EditorStudyService {
     const options = new RequestOptions({ headers: headers })
 
     const url = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId
@@ -155,7 +158,7 @@ export class EditorStudyService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + '/api/v3/editor/study-functions/publish?studyId=' + study.id, {}, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/publish?studyId=' + study.id, {}, options)
       .map(response => response.json() as Study)
   }
 
@@ -163,7 +166,7 @@ export class EditorStudyService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + '/api/v3/editor/study-functions/withdraw?studyId=' + study.id, {}, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/withdraw?studyId=' + study.id, {}, options)
       .map(response => response.json() as Study)
   }
 

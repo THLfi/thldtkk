@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v3/units")
+@RequestMapping(API.PATH_WITH_VERSION + "/units")
 public class UnitController {
 
   @Autowired

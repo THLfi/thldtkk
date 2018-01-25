@@ -49,12 +49,12 @@ export class EditorSystemService {
   }
 
   getAll(): Observable<System[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/systems')
+    return this.http.get(env.contextPath + env.apiPath + '/editor/systems')
       .map(response => response.json() as System[])
   }
 
   getSystem(id: string): Observable<System> {
-    return this.http.get(env.contextPath + '/api/v3/editor/systems/' + id)
+    return this.http.get(env.contextPath + env.apiPath + '/editor/systems/' + id)
       .map(response => response.json() as System)
   }
 
@@ -69,8 +69,8 @@ export class EditorSystemService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + '/api/v3/editor/systems', system, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/systems', system, options)
       .map(response => response.json() as System)
   }
-  
+
 }

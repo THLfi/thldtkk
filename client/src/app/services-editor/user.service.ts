@@ -24,7 +24,7 @@ export class CurrentUserService {
   private refreshCurrentUser() {
     this.currentUserSubject.next(null)
 
-    this.http.get(env.contextPath + '/api/v3/user-functions/get-current-user')
+    this.http.get(env.contextPath + env.apiPath + '/user-functions/get-current-user')
       .map(response => response.json() as User)
       .subscribe(user => {
         this.currentUserSubject.next(user)
@@ -44,7 +44,7 @@ export class CurrentUserService {
     return this.getCurrentUserObservable()
       .flatMap((user: User) => {
         if (user && user.isLoggedIn) {
-          return this.http.post(env.contextPath + '/api/v3/user-functions/list-current-user-organizations', {})
+          return this.http.post(env.contextPath + env.apiPath + '/user-functions/list-current-user-organizations', {})
             .map(response => response.json() as Organization[])
         }
         else {
@@ -58,7 +58,7 @@ export class CurrentUserService {
     formData.append('username', username)
     formData.append('password', password)
 
-    return this.http.post(env.contextPath + '/api/v3/user-functions/login', formData)
+    return this.http.post(env.contextPath + env.apiPath + '/user-functions/login', formData)
       .map(response => response.json() as boolean)
       .do(loginSuccessful => {
         if (loginSuccessful) {
@@ -68,7 +68,7 @@ export class CurrentUserService {
   }
 
   logout() {
-    this.http.post(env.contextPath + '/api/v3/user-functions/logout', {})
+    this.http.post(env.contextPath + env.apiPath + '/user-functions/logout', {})
       .subscribe(response => {
         this.refreshCurrentUser()
 

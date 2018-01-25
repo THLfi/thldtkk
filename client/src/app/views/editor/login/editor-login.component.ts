@@ -43,7 +43,7 @@ export class EditorLoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.http.get(env.contextPath + '/api/v3/virtu/idpDirectoryServiceUrl')
+    this.http.get(env.contextPath + env.apiPath + '/virtu/idpDirectoryServiceUrl')
       .map(response => response.json() as string)
       .subscribe(url => {
         if (StringUtils.isNotBlank(url)) {

@@ -22,7 +22,7 @@ export class CodeListService3 {
   ) { }
 
   search(query = ""): Observable<CodeList[]> {
-    return this.http.get(env.contextPath + '/api/v3/codeLists?query=' + query)
+    return this.http.get(env.contextPath + env.apiPath + '/codeLists?query=' + query)
       .map(response => response.json() as CodeList[])
   }
 
@@ -31,7 +31,7 @@ export class CodeListService3 {
   }
 
   save(codeList: CodeList): Observable<CodeList> {
-    const path: string = env.contextPath + '/api/v3/codeLists'
+    const path: string = env.contextPath + env.apiPath + '/codeLists'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
@@ -77,14 +77,15 @@ export class CodeListService3 {
 
   getCodeListInstanceVariables(codeListId: string): Observable<InstanceVariable[]> {
     const url = env.contextPath
-          + '/api/v3/editor/codeLists/'
+          + env.apiPath
+          + '/editor/codeLists/'
           + codeListId
           +'/instanceVariables'
     return this.http.get(url).map(response => response.json() as InstanceVariable[])
   }
 
   delete(codeListId: string): Observable<any>{
-    const path: string = env.contextPath + '/api/v3/codeLists/' + codeListId
+    const path: string = env.contextPath + env.apiPath + '/codeLists/' + codeListId
 
       return this.http.delete(path)
           .map(response => response.json())

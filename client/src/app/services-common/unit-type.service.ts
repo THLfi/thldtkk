@@ -22,17 +22,17 @@ export class UnitTypeService {
   ) { }
 
   search(searchTerms = ""): Observable<UnitType[]> {
-    return this.http.get(env.contextPath + '/api/v3/unitTypes?query=' + searchTerms)
+    return this.http.get(env.contextPath + env.apiPath + '/unitTypes?query=' + searchTerms)
       .map(response => response.json() as UnitType[])
   }
 
   getAll(): Observable<UnitType[]> {
-    return this.http.get(env.contextPath + '/api/v3/unitTypes?query=')
+    return this.http.get(env.contextPath + env.apiPath + '/unitTypes?query=')
       .map(response => response.json() as UnitType[])
   }
 
   save(unitType: UnitType): Observable<UnitType> {
-    const path: string = env.contextPath + '/api/v3/unitTypes'
+    const path: string = env.contextPath + env.apiPath + '/unitTypes'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
@@ -41,7 +41,7 @@ export class UnitTypeService {
   }
 
   delete(unitType:UnitType) {
-    const path: string = env.contextPath + '/api/v3/unitTypes/' + unitType.id
+    const path: string = env.contextPath + env.apiPath + '/unitTypes/' + unitType.id
 
     return this.http.delete(path)
       .map(response => response.json())
@@ -66,7 +66,8 @@ export class UnitTypeService {
 
   getUnitTypeDatasets(unitType: UnitType): Observable<Dataset[]> {
     const path: string = env.contextPath
-      + '/api/v3/unitTypes/'
+      + env.apiPath
+      + '/unitTypes/'
       + unitType.id
       + '/datasets'
 
@@ -76,7 +77,8 @@ export class UnitTypeService {
 
   getUnitTypeInstanceVariables(unitType: UnitType): Observable<InstanceVariable[]> {
     const path: string = env.contextPath
-      + '/api/v3/unitTypes/'
+      + env.apiPath
+      + '/unitTypes/'
       + unitType.id
       + '/instanceVariables'
 

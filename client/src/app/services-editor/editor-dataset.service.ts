@@ -23,17 +23,17 @@ export class EditorDatasetService {
   ) { }
 
   search(searchText: string): Observable<Dataset[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/datasets?query=' + searchText + '&max=50')
+    return this.http.get(env.contextPath + env.apiPath + '/editor/datasets?query=' + searchText + '&max=50')
       .map(response => response.json() as Dataset[])
   }
 
   getAll(): Observable<Dataset[]> {
-    return this.http.get(env.contextPath + '/api/v3/editor/datasets')
+    return this.http.get(env.contextPath + env.apiPath + '/editor/datasets')
       .map(response => response.json() as Dataset[])
   }
 
   getDataset(studyId: string, datasetId: string): Observable<Dataset> {
-    return this.http.get(env.contextPath + '/api/v3/editor/studies/' + studyId + '/datasets/' + datasetId)
+    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + studyId + '/datasets/' + datasetId)
       .map(response => response.json() as Dataset)
   }
 
@@ -48,13 +48,14 @@ export class EditorDatasetService {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + '/api/v3/editor/datasets', dataset, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/datasets', dataset, options)
       .map(response => response.json() as Dataset)
   }
 
   delete(studyId: string, datasetId: string): Observable<any> {
     const path: string = env.contextPath
-      + '/api/v3/editor/studies/'
+      + env.apiPath
+      + '/editor/studies/'
       + studyId
       + '/datasets/'
       + datasetId

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v3/concepts")
+@RequestMapping(API.PATH_WITH_VERSION + "/concepts")
 public class ConceptController {
 
   @Autowired

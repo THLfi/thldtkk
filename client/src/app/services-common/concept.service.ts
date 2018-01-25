@@ -14,7 +14,7 @@ export class ConceptService {
   ) { }
 
   search(searchText: string): Observable<Concept[]> {
-    return this.http.get(env.contextPath + '/api/v3/concepts?query=' + searchText + '&max=50')
+    return this.http.get(env.contextPath + env.apiPath + '/concepts?query=' + searchText + '&max=50')
       .map(response => response.json() as Concept[])
   }
 

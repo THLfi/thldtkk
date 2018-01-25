@@ -25,7 +25,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @Api(description = "API for variables")
 @RestController
-@RequestMapping("/api/v3/variables")
+@RequestMapping(API.PATH_WITH_VERSION + "/variables")
 public class VariableController {
 
   @Autowired

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v3/usageConditions")
+@RequestMapping(API.PATH_WITH_VERSION + "/usageConditions")
 public class UsageConditionController {
 
   @Autowired

@@ -18,7 +18,8 @@ export class PublicInstanceVariableService {
 
   getInstanceVariable(studyId:string, datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
     const url = env.contextPath
-      + '/api/v3/public/studies/'
+      + env.apiPath
+      + '/public/studies/'
       + studyId
       +'/datasets/'
       + datasetId
@@ -29,7 +30,8 @@ export class PublicInstanceVariableService {
 
   search(searchText = '', max = 100): Observable<InstanceVariable[]> {
     const url = env.contextPath
-      + '/api/v3/public/instanceVariables?query='
+      + env.apiPath
+      + '/public/instanceVariables?query='
       + searchText
       + '&max='
       + max
@@ -38,7 +40,8 @@ export class PublicInstanceVariableService {
 
   getInstanceVariableAsCsvExportPath(studyId: string, datasetId: string, encoding = 'ISO-8859-15'): string {
     return env.contextPath
-      + '/api/v3/public/studies/'
+      + env.apiPath
+      + '/public/studies/'
       + studyId
       + '/datasets/'
       + datasetId

@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Api(description = "Dataset XML API")
 @RestController
-@RequestMapping("/api/v3/editor/datasets")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor/datasets")
 public class EditorDatasetXmlImportController {
 
   private Logger log = LoggerFactory.getLogger(getClass());

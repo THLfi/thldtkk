@@ -14,7 +14,7 @@ export class RoleService {
   ) { }
 
   getAll(): Observable<Role[]> {
-    return this.http.get(env.contextPath + '/api/v3/roles')
+    return this.http.get(env.contextPath + env.apiPath + '/roles')
       .map(response => response.json() as Role[])
   }
 

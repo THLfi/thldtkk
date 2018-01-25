@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Api(description = "Editor API for instance variables")
 @RestController
-@RequestMapping("/api/v3/editor")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor")
 public class EditorInstanceVariableController {
 
   @Autowired

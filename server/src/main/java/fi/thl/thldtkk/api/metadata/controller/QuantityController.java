@@ -16,7 +16,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-@RequestMapping("/api/v3/quantities")
+@RequestMapping(API.PATH_WITH_VERSION + "/quantities")
 public class QuantityController {
 
   @Autowired

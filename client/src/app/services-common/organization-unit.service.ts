@@ -16,7 +16,7 @@ export class OrganizationUnitService {
   ) { }
 
   getAllOrganizationUnits(): Observable<OrganizationUnit[]> {
-    return this.http.get(env.contextPath + '/api/v3/organizationUnits')
+    return this.http.get(env.contextPath + env.apiPath + '/organizationUnits')
       .map(response => response.json() as OrganizationUnit[])
   }
 

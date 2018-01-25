@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v3/codeLists")
+@RequestMapping(API.PATH_WITH_VERSION + "/codeLists")
 public class CodeListController {
 
   @Autowired

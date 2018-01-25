@@ -7,7 +7,6 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
 import fi.thl.thldtkk.api.metadata.domain.Universe;
-import fi.thl.thldtkk.api.metadata.service.UniverseService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import java.util.List;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(description = "API for universes")
 @RestController
-@RequestMapping("/api/v3/universes")
+@RequestMapping(API.PATH_WITH_VERSION + "/universes")
 public class UniverseController {
 
   @Autowired

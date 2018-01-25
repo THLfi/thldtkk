@@ -16,7 +16,7 @@ export class OrganizationService {
   ) { }
 
   getAllOrganizations(): Observable<Organization[]> {
-    return this.http.get(env.contextPath + '/api/v3/organizations')
+    return this.http.get(env.contextPath + env.apiPath + '/organizations')
       .map(response => response.json() as Organization[])
   }
 

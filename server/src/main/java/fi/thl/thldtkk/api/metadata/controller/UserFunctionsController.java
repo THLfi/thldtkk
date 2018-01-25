@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v3/user-functions")
+@RequestMapping(API.PATH_WITH_VERSION + "/user-functions")
 public class UserFunctionsController {
 
   private final UserHelper userHelper;

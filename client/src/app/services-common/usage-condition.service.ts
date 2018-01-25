@@ -15,7 +15,7 @@ export class UsageConditionService {
   ) {}
 
   getAll(): Observable<UsageCondition[]> {
-    return this.http.get(env.contextPath + '/api/v3/usageConditions')
+    return this.http.get(env.contextPath + env.apiPath + '/usageConditions')
       .map(response => response.json() as UsageCondition[])
   }
 

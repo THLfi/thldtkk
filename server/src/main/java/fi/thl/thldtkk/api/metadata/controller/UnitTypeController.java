@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-@RequestMapping("/api/v3/unitTypes")
+@RequestMapping(API.PATH_WITH_VERSION + "/unitTypes")
 public class UnitTypeController {
 
   @Autowired

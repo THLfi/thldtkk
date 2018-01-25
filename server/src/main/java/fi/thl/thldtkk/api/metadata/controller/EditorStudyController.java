@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @Api(description = "Editor API for studies, their datasets and datasets' instance variables")
 @RestController
-@RequestMapping("/api/v3/editor/studies")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor/studies")
 public class EditorStudyController {
 
   @Autowired

@@ -16,12 +16,12 @@ export class UnitService {
   ) { }
 
   getAll(): Observable<Unit[]> {
-    return this.http.get(env.contextPath + '/api/v3/units')
+    return this.http.get(env.contextPath + env.apiPath + '/units')
       .map(response => response.json() as Unit[])
   }
 
   save(unit: Unit): Observable<Unit> {
-    const path: string = env.contextPath + '/api/v3/units/'
+    const path: string = env.contextPath + env.apiPath + '/units/'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 

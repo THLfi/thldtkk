@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fi.thl.thldtkk.api.metadata.service.EditorSystemRoleService;
 
 @RestController
-@RequestMapping("/api/v3/systemRoles")
+@RequestMapping(API.PATH_WITH_VERSION + "/systemRoles")
 
 public class EditorSystemRoleController {
 
@@ -21,5 +21,5 @@ public class EditorSystemRoleController {
   public List<SystemRole> query(@RequestParam(value = "query", defaultValue = "") String query) {
     return systemRoleService.find(query, -1);
   }
-  
+
 }

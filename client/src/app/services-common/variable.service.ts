@@ -23,22 +23,22 @@ export class VariableService {
   ) { }
 
   search(searchText = ""): Observable<Variable[]> {
-    return this.http.get(env.contextPath + '/api/v3/variables?query=' + searchText + '&max=50')
+    return this.http.get(env.contextPath + env.apiPath + '/variables?query=' + searchText + '&max=50')
       .map(response => response.json() as Variable[])
   }
 
   get(variableId: string): Observable<Variable> {
-    return this.http.get(env.contextPath + '/api/v3/variables/' + variableId)
+    return this.http.get(env.contextPath + env.apiPath + '/variables/' + variableId)
       .map(response => response.json() as Variable)
   }
 
   getAll(): Observable<Variable[]> {
-    return this.http.get(env.contextPath + '/api/v3/variables')
+    return this.http.get(env.contextPath + env.apiPath + '/variables')
       .map(response => response.json() as Variable[]);
   }
 
   save(variable: Variable): Observable<Variable> {
-    const path: string = env.contextPath + '/api/v3/variables'
+    const path: string = env.contextPath + env.apiPath + '/variables'
     const headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'})
     const options = new RequestOptions({ headers: headers })
 
@@ -50,7 +50,7 @@ export class VariableService {
   }
 
   delete(variableId: string): Observable<any> {
-    const path: string = env.contextPath + '/api/v3/variables/' + variableId
+    const path: string = env.contextPath + env.apiPath + '/variables/' + variableId
 
     return this.http.delete(path)
       .map(response => response.json())
@@ -61,7 +61,8 @@ export class VariableService {
 
   getInstanceVariables(variableId: string): Observable<InstanceVariable[]> {
     const url = env.contextPath
-      + '/api/v3/public/variables/'
+      + env.apiPath
+      + '/public/variables/'
       + variableId
       +'/instanceVariables'
     return this.http.get(url).map(response => response.json() as InstanceVariable[])
@@ -82,7 +83,7 @@ export class VariableService {
 
   getVariableDatasets(variable: Variable): Observable<Dataset[]> {
       const path: string = env.contextPath
-        + '/api/v3/variables/'
+        + env.apiPath + '/variables/'
         + variable.id
         + '/datasets'
 
@@ -92,7 +93,8 @@ export class VariableService {
 
     getVariableInstanceVariables(variable: Variable): Observable<InstanceVariable[]> {
         const path: string = env.contextPath
-          + '/api/v3/editor/variables/'
+          + env.apiPath
+          + '/editor/variables/'
           + variable.id
           + '/instanceVariables'
 

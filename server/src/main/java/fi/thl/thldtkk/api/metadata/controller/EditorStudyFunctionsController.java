@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Api(description = "Editor operations API for studys")
 @RestController
-@RequestMapping("/api/v3/editor/study-functions")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor/study-functions")
 public class EditorStudyFunctionsController {
 
   @Autowired

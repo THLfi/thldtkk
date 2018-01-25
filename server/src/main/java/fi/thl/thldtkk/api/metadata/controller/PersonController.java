@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v3/persons")
+@RequestMapping(API.PATH_WITH_VERSION + "/persons")
 public class PersonController {
 
   @Autowired

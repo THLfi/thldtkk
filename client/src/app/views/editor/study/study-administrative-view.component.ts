@@ -47,7 +47,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
         this.study = study
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
         this.updatePageTitle()
-        this.printRegisterDescriptionUrl = `${env.contextPath}/api/v3/editor/studies/${study.id}/register-description`
+        this.printRegisterDescriptionUrl = `${env.contextPath}${env.apiPath}/editor/studies/${study.id}/register-description`
       })
   }
 

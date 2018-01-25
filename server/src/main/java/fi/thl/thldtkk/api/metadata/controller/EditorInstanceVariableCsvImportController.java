@@ -28,7 +28,7 @@ import static java.util.UUID.randomUUID;
 
 @Api(description = "Editor CSV API for instance variables")
 @RestController
-@RequestMapping("/api/v3/editor")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor")
 public class EditorInstanceVariableCsvImportController {
 
   @Autowired

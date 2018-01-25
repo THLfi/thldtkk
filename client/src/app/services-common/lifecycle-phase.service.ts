@@ -16,7 +16,7 @@ export class LifecyclePhaseService {
   ) { }
 
   getAll(): Observable<LifecyclePhase[]> {
-    return this.http.get(env.contextPath + '/api/v3/lifecyclePhases')
+    return this.http.get(env.contextPath + env.apiPath + '/lifecyclePhases')
       .map(response => response.json() as LifecyclePhase[])
   }
 

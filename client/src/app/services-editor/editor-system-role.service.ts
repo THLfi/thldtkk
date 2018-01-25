@@ -14,7 +14,7 @@ export class EditorSystemRoleService {
   ) { }
 
   getAll(): Observable<SystemRole[]> {
-    return this.http.get(env.contextPath + '/api/v3/systemRoles')
+    return this.http.get(env.contextPath + env.apiPath + '/systemRoles')
       .map(response => response.json() as SystemRole[])
   }
 

@@ -17,7 +17,7 @@ import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 
 @Api(description = "Public API for datasets")
 @RestController
-@RequestMapping("/api/v3/public/datasets")
+@RequestMapping(API.PATH_WITH_VERSION + "/public/datasets")
 public class PublicDatasetController {
 
   @Autowired

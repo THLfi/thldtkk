@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "API for organizations")
 @RestController
-@RequestMapping("/api/v3/organizations")
+@RequestMapping(API.PATH_WITH_VERSION + "/organizations")
 public class OrganizationController {
 
   @Autowired
@@ -26,7 +26,7 @@ public class OrganizationController {
   public List<Organization> queryOrganizations() {
     return organizationService.findAll();
   }
-  
+
   @ApiOperation("Get a single organization based on its id")
   @GetJsonMapping("/{organization}")
   public Organization getOrganization(@PathVariable("organization") UUID organizationId) {

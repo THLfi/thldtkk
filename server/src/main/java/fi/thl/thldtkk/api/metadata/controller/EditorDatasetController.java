@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(description = "Editor API for datasets")
 @RestController
-@RequestMapping("/api/v3/editor/datasets")
+@RequestMapping(API.PATH_WITH_VERSION + "/editor/datasets")
 public class EditorDatasetController {
 
   @Autowired

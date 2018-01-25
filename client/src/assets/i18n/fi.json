@@ -278,16 +278,16 @@
       "goToDataset": "Siirry datasettiin",
       "datasetVariableCountLabel": "muuttujaa",
       "datasetVariablesBreakdown": "Aineiston muuttujat on jaettu {{datasetCount}} datasettiin",
-      "studiesLink": "Aineistolistaukseen"
+      "studiesLink": "Siirry aineistolistaukseen"
     },
     "dataset": {
       "defaultInstanceVariableGroupName": "Muuttujat ilman muuttujaryhmää",
       "instanceVariableFilterRemoveAllSelections":"Poista valinnat",
       "instanceVariableFilterSelectAll":"Valitse kaikki",
-      "studyLink": "Datasetin aineistoon"
+      "studyLink": "Siirry datasetin aineistoon"
     },
     "instanceVariable": {
-      "datasetLink": "Muuttujan datasettiin"
+      "datasetLink": "Siirry muuttujan datasettiin"
     },
     "footer": {
       "infoText": "Katalogi on kehitetty THL:n, Tilastokeskuksen, Tietoarkiston ja Sitran yhteistyönä.",

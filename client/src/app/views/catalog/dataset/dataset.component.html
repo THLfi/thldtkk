@@ -105,7 +105,7 @@
                   <icon-universe></icon-universe>
                 </div>
                 <div class="caption">
-                  {{ 'universe' | translate }}
+                  {{ 'universe' | translate }}:
                 </div>
                 <div class="value">
                   {{ dataset.universe.prefLabel | lang }}
@@ -117,7 +117,7 @@
                   <fa icon="calendar-o"></fa>
                 </div>
                 <div class="caption">
-                  {{ 'referencePeriod' | translate }}
+                  {{ 'referencePeriod' | translate }}:
                 </div>
                 <div class="value">
                   <ng-container *ngIf="referencePeriodStart">
@@ -135,7 +135,7 @@
                   <fa icon="globe"></fa>
                 </div>
                 <div class="caption">
-                  {{ 'geographicalCoverage' | translate }}
+                  {{ 'geographicalCoverage' | translate }}:
                 </div>
                 <div class="value">
                   {{ dataset.population.geographicalCoverage | lang }}
@@ -154,9 +154,7 @@
             <div class="secondary-highlight" [ngSwitch]="highlight">
 
               <ng-container *ngSwitchCase="DatasetDetailHighlight.UNIT_TYPE">
-                <div class="secondary-highlight-label">
-                  {{ 'unitType' | translate }}
-                </div>
+                <div>{{ 'unitType' | translate }}:</div>
                 <div class="secondary-highlight-value">
                   <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
                     {{ dataset.unitType.prefLabel | lang }}
@@ -168,18 +166,14 @@
               </ng-container>
 
               <ng-container *ngSwitchCase="DatasetDetailHighlight.NUMBER_OF_OBSERVATION_UNITS">
-                <div class="secondary-highlight-label">
-                  {{ 'numberOfObservationUnits' | translate }}
-                </div>
+                <div>{{ 'numberOfObservationUnits' | translate }}:</div>
                 <div class="secondary-highlight-value">
                   {{ dataset.numberOfObservationUnits }}
                 </div>
               </ng-container>
 
               <ng-container *ngSwitchCase="DatasetDetailHighlight.LIFECYCLE_PHASE">
-                <div class="secondary-highlight-label">
-                  {{ 'datasetLifecyclePhase' | translate }}
-                </div>
+                <div>{{ 'datasetLifecyclePhase' | translate }}:</div>
                 <div *ngIf="dataset.lifecyclePhase.prefLabel" class="secondary-highlight-value">
                   {{ dataset.lifecyclePhase.prefLabel | lang }}
                 </div>

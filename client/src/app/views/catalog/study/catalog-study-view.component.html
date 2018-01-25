@@ -104,7 +104,7 @@
                   <icon-universe></icon-universe>
                 </div>
                 <div class="caption">
-                  {{ 'universe' | translate }}
+                  {{ 'universe' | translate }}:
                 </div>
                 <div class="value">
                   {{ study.universe.prefLabel | lang }}
@@ -116,7 +116,7 @@
                   <fa icon="calendar-o"></fa>
                 </div>
                 <div class="caption">
-                  {{ 'referencePeriod' | translate }}
+                  {{ 'referencePeriod' | translate }}:
                 </div>
                 <div class="value" *ngIf="study.referencePeriodStart || study.referencePeriodEnd">
                   <ng-container *ngIf="study.referencePeriodStart">
@@ -134,7 +134,7 @@
                   <fa icon="globe"></fa>
                 </div>
                 <div class="caption">
-                  {{ 'geographicalCoverage' | translate }}
+                  {{ 'geographicalCoverage' | translate }}:
                 </div>
                 <div class="value">
                   {{ study.population.geographicalCoverage | lang }}

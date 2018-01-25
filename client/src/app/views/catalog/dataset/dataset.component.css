@@ -61,14 +61,10 @@
 
 .secondary-highlight {
   color: white;
-  background-color: #006860;
+  background-color: #01837A;
   text-align: center;
   padding-top: 2em;
   padding-bottom: 2em;
-}
-
-.secondary-highlight .secondary-highlight-label {
-  opacity: 0.8;
 }
 
 .secondary-highlight .secondary-highlight-value {

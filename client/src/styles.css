@@ -200,7 +200,7 @@ h3 {
 }
 
 .main-container.catalog {
-  min-height: 300px;
+  min-height: calc(100vh - 190px);
   background-color: white;
 }
 .main-container.catalog.container {

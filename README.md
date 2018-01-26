@@ -7,21 +7,22 @@ other environments as well.
 
 Clone Termed API and Termed UI to your workstation:
 
-https://github.com/THLfi/termed-api
-https://github.com/THLfi/termed-ui
+- https://github.com/THLfi/termed-api
+- https://github.com/THLfi/termed-ui
 
 Follow the instructions in above-mentioned repos to start Termed.
 
 ## Starting API module
 
 Install Oracle JDK 8 (if not already installed). You can download it on Oracle's
-website.
+website. Application should work with other JDK implementation (e.g. OpenJDK)
+but it has not been tested.
 
 Install Maven 3.3 or newer (if not already installed): `brew install maven`
 
 Configure server properties:
 
-    <nano/vim/emacs> server/application.properties
+    <nano/vim/emacs> server/src/main/resources/config/application.properties
     Enter the correct values for the following properties:
     - termed.apiUrl=http://localhost:8080/api
     - termed.username=<termed-username-for-api-calls>
@@ -31,7 +32,7 @@ Configure server properties:
     - users.properties.resource=<users-file-location-as-spring-resource>
     - sso.url=<THL SSO api url>
     - sso.application=aineistoeditori<-qa>
-    - sso.secretKey=<secret key, obtainable from THL SSO admin user interfce>
+    - sso.secretKey=<secret key, obtainable from THL SSO admin user interface>
     Save the file and exit the editor.
 
 Add users to user properties file you configured above. See
@@ -47,7 +48,8 @@ Run dev server:
 Omit the `-Dskip.npm=true` on first start so that Node and npm packages get
 installed by frontend-maven-plugin.
 
-API can be accessed via `http://localhost:8680/api/v2/datasets/`.
+You can test that the API works by accessing it via
+`http://localhost:8680/api/v1/public/studies`.
 
 ## Starting UI module
 
@@ -65,37 +67,30 @@ Run dev server:
 UI can be accessed via `http://localhost:8082/`. Changes to source files will
 cause an automatic reload in your browser.
 
-## Transforming XML files from outside schemas to internal schema
-
-Transformation requires a specific XSLT file for the inbound format. Also, a working xalan installation is needed for the task. You can download it from: http://www.apache.org/dyn/closer.cgi/xml/xalan-j
-
-Usage:
-
-    java -jar <path-to-xalan-jar>/xalan.jar -IN <inbound file> -XSL <xsl template file> -OUT <resulting xml file>
-
-Implemented transformations:
-
-    Tilastokeskus format: TilastokeskusToAineistokatalogi.xsl
-
 # Virtu configuration
 
-We assume you have already registered the service provider (SP) via
-[Virtu resource register](https://virtus.csc.fi/).
+Editor has a built-in feature that allows users to login with
+[Virtu identity and authorization service](https://wiki.eduuni.fi/display/CSCVIRTU/Virtu).
 
-To use Virtu you must first enable Spring profile named `virtu`. You can do it
-via _application.properties_ with `spring.profiles.active=virtu` or you can
-specify the profile as command line argument when starting Tomcat with
+First, you must register your (test) environment as a service provider (SP)
+by following [Virtu SP registration instructions](https://wiki.eduuni.fi/pages/viewpage.action?pageId=28345593).
+The rest of the steps assume you have completed the registration and are
+somewhat familiar with concepts SAML2 protocol that Virtu is based on.
+
+To use Virtu in editor enable Spring profile named `virtu`. You can do it
+via _application.properties_ by adding line `spring.profiles.active=virtu` or
+you can specify the profile as command line argument when starting Tomcat with
 `-Dspring.profiles.active=virtu`.
 
-Next you must define required Virtu properties in your
-_applications.properties_ file. Properties with examples are listed below:
+Next, define required Virtu properties in your _applications.properties_ file.
+Properties with examples are listed below:
 
     # Entity ID that you used register service to Virtu resource register.  
     virtu.entityId=https://qa.aineistoeditori.fi/virtu
     # Service's base URL. 
     virtu.entityBaseUrl=https://qa.aineistoeditori.fi
     # Java keystore (JKS) that includes SP certificate (and its private key) and Virtu metadata certificate.
-    virtu.samlKeystoreResource=file:/Users/joni/certs/thldtkk-saml/thldtkk-saml.jks
+    virtu.samlKeystoreResource=file:/path/to/your/saml-certificates-file.jks
     # Keystore's password.
     virtu.samlKeystorePassword=somepassword
     # Alias of SP certificate.

@@ -90,10 +90,12 @@
       </div>
     </div>
 
-
+    <div *ngIf="isLoadingAdditionalStudies">
+      <thl-spinner></thl-spinner>
+    </div>
     <div *ngIf="studies && studies.length >= maxResults && !isLoadingStudies"
          class="col-xs-12">
-      <div *ngIf="!isLoadingAdditionalStudies; else loadingStudies;">
+      <div *ngIf="!isLoadingAdditionalStudies">
         <button (click)="loadMoreResults()"
                 class="btn btn-sm btn-default center-block">
           {{ 'loadMoreResults' | translate }}

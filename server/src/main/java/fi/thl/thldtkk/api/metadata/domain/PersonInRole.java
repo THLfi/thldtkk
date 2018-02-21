@@ -63,6 +63,10 @@ public class PersonInRole implements NodeEntity {
     return Optional.ofNullable(this.person);
   }
 
+  public void setPerson(Person person) {
+    this.person = person;
+  }
+
   public Optional<Role> getRole() {
     return Optional.ofNullable(this.role);
   }

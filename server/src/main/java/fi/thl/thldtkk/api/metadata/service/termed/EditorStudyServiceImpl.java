@@ -1,13 +1,8 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
-import fi.thl.thldtkk.api.metadata.domain.Population;
-import fi.thl.thldtkk.api.metadata.domain.Study;
+import fi.thl.thldtkk.api.metadata.domain.*;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -15,9 +10,11 @@ import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
+import fi.thl.thldtkk.api.metadata.service.PersonService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
@@ -35,11 +32,13 @@ import java.util.stream.Stream;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
@@ -58,6 +57,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     this.nodes = nodes;
     this.userHelper = userHelper;
   }
+
+  @Autowired
+  private PersonService personService;
 
   @Override
   public List<Study> findAll() {
@@ -207,7 +209,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   public Study save(Study study) {
     Study savedStudy = saveStudyInternal(study, false, false);
 
-    LOG.info("Saved study '{}'", savedStudy.getId());
+    LOG.info("Saved study '{}' (externalId = {})", savedStudy.getId(), savedStudy.getExternalId().get());
 
     return savedStudy;
   }
@@ -216,8 +218,15 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Optional<Study> old;
 
     if (study.getId() == null) {
+      old = findByExternalId(study.getExternalId().get());
+
+      if (!old.isPresent()) {
+        study.setId(randomUUID());
+      } else {
+        study.setId(old.get().getId());
+        delete(study.getId());
+      }
       old = empty();
-      study.setId(randomUUID());
     } else {
       old = get(study.getId());
     }
@@ -315,6 +324,23 @@ public class EditorStudyServiceImpl implements EditorStudyService {
               });
           }
         });
+    }
+
+    if (!study.getPersonInRoles().isEmpty()) {
+      for (PersonInRole personInRole : study.getPersonInRoles()) {
+        if (personInRole.getPerson().isPresent()) {
+          Person person = personInRole.getPerson().get();
+          Person existingPerson = personService.findPersonByFirstNameAndLastNameAndEmail(
+                  person.getFirstName().get(), person.getLastName().get(), person.getEmail().get());
+
+          if (existingPerson != null) {
+            person = existingPerson;
+          } else {
+            person = personService.save(person);
+          }
+          personInRole.setPerson(person);
+        }
+      }
     }
 
     study.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
@@ -738,4 +764,19 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       instanceVariable.getId(), datasetId, studyId);
   }
 
+  private Optional<Study> findByExternalId(String externalId) {
+    if (externalId == null || externalId.isEmpty()) {
+      return Optional.empty();
+    }
+
+    externalId = "\"" + externalId + "\"";
+
+    return nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.externalId",
+                    externalId),
+            1)
+            .map(Study::new)
+            .findFirst();
+  }
 }

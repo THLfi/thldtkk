@@ -5,4 +5,5 @@ import java.util.UUID;
 
 public interface PersonService extends Service<UUID, Person> {
 
+    Person findPersonByFirstNameAndLastNameAndEmail(String firstName, String lastName, String email);
 }

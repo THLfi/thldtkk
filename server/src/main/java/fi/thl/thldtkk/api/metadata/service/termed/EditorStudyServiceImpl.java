@@ -32,13 +32,12 @@ import java.util.stream.Stream;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.OrCriteria.or;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
@@ -87,7 +86,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     if (hasText(query)) {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
-      criteria.add(keyWithAnyValue("properties.prefLabel", tokens));
+      criteria.add(or(keyWithAnyValue("properties.prefLabel", tokens),
+              keyWithAnyValue("r.personInRoles.r.person.p.lastName", tokens),
+              keyWithAnyValue("r.personInRoles.r.person.p.firstName", tokens)));
     }
 
     Stream<Node> studyNodes;

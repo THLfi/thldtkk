@@ -31,8 +31,9 @@ public class PublicStudyController {
   public List<Study> query(
       @RequestParam(name = "organizationId", required = false) UUID organizationId,
       @RequestParam(name = "query", defaultValue = "") String query,
-      @RequestParam(name = "max", defaultValue = "-1") int max) {
-    return publicStudyService.find(organizationId, query, max, null);
+      @RequestParam(name = "max", defaultValue = "-1") int max,
+      @RequestParam(name = "sort", defaultValue = "") String sort) {
+    return publicStudyService.find(organizationId, query, max, sort);
   }
 
   @ApiOperation("Get one study by ID")

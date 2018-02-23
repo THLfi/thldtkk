@@ -8,19 +8,25 @@
 
     <div class="content-header container-fluid">
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
           <h1>{{ study.prefLabel | lang }}</h1>
           <last-modified [modifier]="study.lastModifiedByUser"
                          [lastModifiedDate]="study.lastModifiedDate">
           </last-modified>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
           <div class="pull-right">
             <ng-container *ngIf="study.published; else unpublished;">
               <span class="label label-success">
                 {{ 'published' | translate }}
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
               </span>
+              <button (click)="confirmReissue()"
+                      [disabled]="deleteInProgress"
+                      type="button"
+                      class="btn btn-default btn-reissue">
+                {{ 'editor.EditorStudyViewComponent.reissueButton.label' | translate }}
+              </button>
               <button (click)="confirmWithdraw()"
                       [disabled]="deleteInProgress"
                       type="button"

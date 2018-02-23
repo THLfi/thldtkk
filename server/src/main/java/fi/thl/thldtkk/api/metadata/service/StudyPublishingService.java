@@ -10,4 +10,5 @@ public interface StudyPublishingService {
 
   Study withdraw(UUID studyId);
 
+  Study reissue(UUID studyId);
 }

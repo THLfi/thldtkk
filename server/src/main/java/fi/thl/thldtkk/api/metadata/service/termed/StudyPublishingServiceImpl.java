@@ -88,4 +88,20 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     return savedStudy;
   }
 
+  @Override
+  public Study reissue(UUID studyId) {
+    Study study = editorStudyService.get(studyId).orElseThrow(NotFoundException::new);
+
+    log.info("Reissuing study '{}'", studyId);
+
+    try {
+      removeNonPublicPropertiesAndReferences(study);
+      publicStudyService.save(study);
+    }
+    catch (Exception e) {
+      log.warn("Failed to reissue study '{}' into public graph", studyId, e);
+    }
+
+    return study;
+  }
 }

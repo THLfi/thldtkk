@@ -155,19 +155,22 @@ export class EditorStudyService {
   }
 
   publish(study: Study): Observable<Study> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
-    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/publish?studyId=' + study.id, {}, options)
-      .map(response => response.json() as Study)
+    return this.changeStudyState(study, 'publish');
   }
 
   withdraw(study: Study): Observable<Study> {
+    return this.changeStudyState(study, 'withdraw');
+  }
+
+  reissue(study: Study): Observable<Study> {
+    return this.changeStudyState(study, 'reissue');
+  }
+
+  private changeStudyState(study: Study, urlPart: string): Observable<Study> {
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
     const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/withdraw?studyId=' + study.id, {}, options)
+    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/' + urlPart + '?studyId=' + study.id, {}, options)
       .map(response => response.json() as Study)
   }
-
 }

@@ -32,4 +32,9 @@ public class EditorStudyFunctionsController {
     return studyPublishingService.withdraw(studyId);
   }
 
+  @ApiOperation("Reissue (re-publish) given study")
+  @PostMapping("/reissue")
+  public Study reissueStudy(@RequestParam("studyId") UUID studyId) {
+    return studyPublishingService.reissue(studyId);
+  }
 }

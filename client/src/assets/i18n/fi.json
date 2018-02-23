@@ -180,7 +180,7 @@
   "physicalLocation": "Fyysinen sijaintipaikka",
   "noPhysicalLocation": "Ei määritetty",
   "addNewPersonInRole": "Lisää henkilö",
-  "addNewPerson": "Lisää uusi henkilö...",
+  "addNewPerson": "Luo uusi henkilö...",
   "newPerson": "Uusi henkilö",
   "person": {
     "firstName": "Etunimi",
@@ -696,7 +696,8 @@
       "noRelations":"Aineistojen välisiä suhteita ei ole määritelty."
     },
     "confirmPublish": "Haluatko varmasti julkaista aineiston?",
-    "confirmWithdraw": "Haluatko varmasti perua aineiston julkaisun?"
+    "confirmWithdraw": "Haluatko varmasti perua aineiston julkaisun?",
+    "confirmReissue": "Haluatko varmasti julkaista aineiston uudelleen?"
   },
   "piecesAbbreviation": "kpl",
   "editor": {
@@ -952,6 +953,9 @@
       },
       "unpublishButton": {
         "label": "Peru julkaisu"
+      },
+      "reissueButton": {
+        "label": "Julkaise uudelleen"
       }
     },
     "EditorStudyDatasetsComponent": {

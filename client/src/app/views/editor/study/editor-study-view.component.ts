@@ -79,6 +79,16 @@ export class EditorStudyViewComponent {
     })
   }
 
+  confirmReissue(): void {
+    this.translateService.get('study.confirmReissue')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.editorStudyService.reissue(this.study)
+            .subscribe(study => this.study = study)
+        }
+    })
+  }
+
   confirmRemove(): void {
     this.translateService.get('study.confirmRemove')
       .subscribe((message: string) => {

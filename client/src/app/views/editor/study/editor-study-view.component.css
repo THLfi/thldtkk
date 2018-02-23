@@ -3,6 +3,7 @@
 }
 
 .btn-publish,
-.btn-withdraw {
-  margin-left: 1em;
+.btn-withdraw,
+.btn-reissue {
+  margin-left: 0.5em;
 }

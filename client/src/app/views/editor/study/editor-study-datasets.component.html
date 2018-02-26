@@ -61,7 +61,16 @@
                   routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}"
                   style="cursor: pointer;">
                   <td>{{ dataset.prefLabel | lang}}</td>
-                  <td class="preserve-line-breaks">{{ dataset.description | lang }}</td>
+                  <td *ngIf="(dataset.description | lang).length > 300; else shortDescriptionText"
+                      class="pull-left" pTooltip="{{ dataset.description | lang }}"
+                      tooltipPosition="top" tooltipStyleClass="dataset-description-tooltip">
+                    {{ (dataset.description | lang) | slice:0:300 }}...
+                  </td>
+
+                  <ng-template #shortDescriptionText>
+                    <td class="preserve-line-breaks">{{ dataset.description | lang }}</td>
+                  </ng-template>
+
                   <td>
                     <div class="pull-right">
                       <button routerLink="/editor/studies/{{ study.id }}/datasets/{{ dataset.id }}/edit"

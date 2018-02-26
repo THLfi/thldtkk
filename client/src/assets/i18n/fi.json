@@ -246,7 +246,7 @@
     },
     "searchInstanceVariable": {
       "searchFieldLabel": "Hae muuttujia",
-      "searchFieldPlaceholder": "Hae muuttujia...",
+      "searchFieldPlaceholder": "Hae muuttujia nimen, kuvauksen tai asiasanan perusteella...",
       "foundInDataset": "Datasetissä",
       "noVariable": "Ei käsitemuuttujaa",
       "noReferencePeriod": "Ei määritetty",

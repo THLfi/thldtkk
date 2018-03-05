@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.SecurityClassification;
@@ -89,6 +90,7 @@ public class Study implements NodeEntity {
   private List<Study> successors = new ArrayList<>();
   @Valid
   private List<SystemInRole> systemInRoles = new ArrayList<>();
+  private Boolean changedAfterPublish;
 
   /**
    * Required by GSON deserialization.
@@ -520,6 +522,14 @@ public class Study implements NodeEntity {
     this.systemInRoles = systemInRoles;
   }
 
+  public Boolean isChangedAfterPublish() {
+    return changedAfterPublish;
+  }
+
+  public void setChangedAfterPublish(Boolean changedAfterPublish) {
+    this.changedAfterPublish = changedAfterPublish;
+  }
+
   /**
    * Transforms dataset into node
    */
@@ -698,4 +708,58 @@ public class Study implements NodeEntity {
       );
   }
 
+  @JsonIgnore
+  public Study getSimplified() {
+    Study study = new Study();
+    study.id = this.id;
+    study.published = this.published;
+    study.prefLabel = this.prefLabel;
+    study.altLabel = this.altLabel;
+    study.abbreviation = this.abbreviation;
+    study.description = this.description;
+    study.usageConditionAdditionalInformation = this.usageConditionAdditionalInformation;
+    study.referencePeriodStart = this.referencePeriodStart;
+    study.referencePeriodEnd = this.referencePeriodEnd;
+    study.collectionStartDate = this.collectionStartDate;
+    study.collectionEndDate = this.collectionEndDate;
+    study.numberOfObservationUnits = this.numberOfObservationUnits;
+    study.freeConcepts = this.freeConcepts;
+    study.personRegistry = this.personRegistry;
+    study.registryPolicy = this.registryPolicy;
+    study.purposeOfPersonRegistry = this.purposeOfPersonRegistry;
+    study.personRegistrySources = this.personRegistrySources;
+    study.personRegisterDataTransfers = this.personRegisterDataTransfers;
+    study.personRegisterDataTransfersOutsideEuOrEea = this.personRegisterDataTransfersOutsideEuOrEea;
+    study.confidentialityClass = this.confidentialityClass;
+    study.groundsForConfidentiality = this.groundsForConfidentiality;
+    study.securityClassification = this.securityClassification;
+    study.principlesForPhysicalSecurity = this.principlesForPhysicalSecurity;
+    study.principlesForDigitalSecurity = this.principlesForDigitalSecurity;
+    study.dataProcessingStartDate = this.dataProcessingStartDate;
+    study.dataProcessingEndDate = this.dataProcessingEndDate;
+    study.retentionPolicy = this.retentionPolicy;
+    study.retentionPeriod = this.retentionPeriod;
+    study.groundsForRetention = this.groundsForRetention;
+    study.nationalArchivesFinlandArchivalDecision = this.nationalArchivesFinlandArchivalDecision;
+    study.existenceForms = this.existenceForms;
+    study.ownerOrganization = this.ownerOrganization;
+    study.ownerOrganizationUnit = this.ownerOrganizationUnit;
+    study.personInRoles = this.personInRoles;
+    study.links = this.links;
+    study.usageCondition = this.usageCondition;
+    study.universe = this.universe;
+    study.population = this.population;
+    study.unitType = this.unitType;
+    study.lifecyclePhase = this.lifecyclePhase;
+    study.conceptsFromScheme = this.conceptsFromScheme;
+    study.datasetTypes = this.datasetTypes;
+    study.studyGroup = this.studyGroup;
+    study.predecessors = this.predecessors;
+    study.systemInRoles = this.systemInRoles;
+
+    for (Dataset dataset : this.datasets) {
+      study.datasets.add(dataset.getSimplified());
+    }
+    return study;
+  }
 }

@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -441,4 +443,36 @@ public class InstanceVariable implements NodeEntity {
         source, sourceDescription, dataType, unitType, instanceQuestions, published, dataFormat);
   }
 
+  @JsonIgnore
+  public InstanceVariable getSimplified() {
+    InstanceVariable instanceVariable = new InstanceVariable();
+    instanceVariable.id = this.id;
+    instanceVariable.prefLabel = this.prefLabel;
+    instanceVariable.description = this.description;
+    instanceVariable.referencePeriodStart = this.referencePeriodStart;
+    instanceVariable.referencePeriodEnd = this.referencePeriodEnd;
+    instanceVariable.technicalName = this.technicalName;
+    instanceVariable.valueDomainType = this.valueDomainType;
+    instanceVariable.quantity = this.quantity;
+    instanceVariable.unit = this.unit;
+    instanceVariable.codeList = this.codeList;
+    instanceVariable.conceptsFromScheme = this.conceptsFromScheme;
+    instanceVariable.freeConcepts = this.freeConcepts;
+    instanceVariable.qualityStatement = this.qualityStatement;
+    instanceVariable.missingValues = this.missingValues;
+    instanceVariable.defaultMissingValue = this.defaultMissingValue;
+    instanceVariable.valueRangeMax = this.valueRangeMax;
+    instanceVariable.valueRangeMin = this.valueRangeMin;
+    instanceVariable.partOfGroup = this.partOfGroup;
+    instanceVariable.source = this.source;
+    instanceVariable.sourceDescription = this.sourceDescription;
+    instanceVariable.valueRangeMin = this.valueRangeMin;
+    instanceVariable.variable = this.variable;
+    instanceVariable.dataType = this.dataType;
+    instanceVariable.unitType = this.unitType;
+    instanceVariable.instanceQuestions = this.instanceQuestions;
+    instanceVariable.published = this.published;
+    instanceVariable.dataFormat = this.dataFormat;
+    return instanceVariable;
+  }
 }

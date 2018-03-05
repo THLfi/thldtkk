@@ -101,6 +101,7 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     catch (Exception e) {
       log.warn("Failed to reissue study '{}' into public graph", studyId, e);
     }
+    study.setChangedAfterPublish(false);
 
     return study;
   }

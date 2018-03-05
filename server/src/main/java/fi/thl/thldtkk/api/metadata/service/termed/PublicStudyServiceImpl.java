@@ -122,7 +122,8 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "references.population:2",
         "references.universe:2",
         "references.datasetType:2",
-        "references.ownerOrganizationUnit:2"),
+        "references.ownerOrganizationUnit:2",
+        "referrers.dataSets:2"),
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 
     return study;

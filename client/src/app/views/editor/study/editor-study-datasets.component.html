@@ -63,7 +63,7 @@
                   <td>{{ dataset.prefLabel | lang}}</td>
                   <td *ngIf="(dataset.description | lang).length > 300; else shortDescriptionText"
                       class="pull-left" pTooltip="{{ dataset.description | lang }}"
-                      tooltipPosition="top" tooltipStyleClass="dataset-description-tooltip">
+                      tooltipPosition="bottom" tooltipStyleClass="dataset-description-tooltip">
                     {{ (dataset.description | lang) | slice:0:300 }}...
                   </td>
 

@@ -75,5 +75,6 @@ export interface Study extends Node {
   datasets: Dataset[]
   predecessors: Study[]
   successors: Study[]
+  changedAfterPublish?: boolean
 
 }

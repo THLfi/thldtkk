@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -450,4 +451,37 @@ public class Dataset implements NodeEntity {
       predecessors);
   }
 
+  @JsonIgnore
+  public Dataset getSimplified() {
+    Dataset dataset = new Dataset();
+    dataset.id = this.id;
+    dataset.prefLabel = this.prefLabel;
+    dataset.altLabel = this.altLabel;
+    dataset.abbreviation = this.abbreviation;
+    dataset.description = this.description;
+    dataset.usageConditionAdditionalInformation = this.usageConditionAdditionalInformation;
+    dataset.published = this.published;
+    dataset.referencePeriodStart = this.referencePeriodStart;
+    dataset.referencePeriodEnd = this.referencePeriodEnd;
+    dataset.ownerOrganizationUnit = this. ownerOrganizationUnit;
+    dataset.usageCondition = this.usageCondition;
+    dataset.lifecyclePhase = this.lifecyclePhase;
+    dataset.population = this.population;
+    dataset.universe = this.universe;
+    dataset.datasetTypes = this.datasetTypes;
+    dataset.numberOfObservationUnits = this.numberOfObservationUnits;
+    dataset.links = this.links;
+    dataset.conceptsFromScheme = this.conceptsFromScheme;
+    dataset.freeConcepts = this.freeConcepts;
+    dataset.unitType = this.unitType;
+    dataset.personInRoles = this.personInRoles;
+    dataset.collectionStartDate = this.collectionStartDate;
+    dataset.collectionEndDate = this.collectionEndDate;
+    dataset.predecessors = this.predecessors;
+
+    for (InstanceVariable instanceVariable : this.instanceVariables) {
+      dataset.instanceVariables.add(instanceVariable.getSimplified());
+    }
+    return dataset;
+  }
 }

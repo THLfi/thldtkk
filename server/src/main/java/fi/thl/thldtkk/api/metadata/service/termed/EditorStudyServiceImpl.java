@@ -9,23 +9,13 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.PersonService;
-import fi.thl.thldtkk.api.metadata.service.Repository;
+import fi.thl.thldtkk.api.metadata.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -60,6 +50,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   @Autowired
   private PersonService personService;
 
+  @Autowired
+  private PublicStudyService publicStudyService;
+
   @Override
   public List<Study> findAll() {
     return find("", -1);
@@ -88,7 +81,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
       criteria.add(or(keyWithAnyValue("properties.prefLabel", tokens),
               keyWithAnyValue("r.personInRoles.r.person.p.lastName", tokens),
-              keyWithAnyValue("r.personInRoles.r.person.p.firstName", tokens)));
+              keyWithAnyValue("r.personInRoles.r.person.p.firstName", tokens),
+              keyWithAnyValue("r.ownerOrganizationUnit.p.prefLabel", tokens),
+              keyWithAnyValue("r.ownerOrganizationUnit.p.abbreviation", tokens),
+              keyWithAnyValue("r.dataSets.p.prefLabel", tokens)));
     }
 
     Stream<Node> studyNodes;
@@ -154,6 +150,16 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     if (study.isPresent()) {
       checkUserIsAllowedToAccessStudy(study.get());
+
+      if (study.get().isPublished().isPresent() && Boolean.TRUE.equals(study.get().isPublished().get())) {
+        Optional<Study> catalogStudy = publicStudyService.get(id);
+
+        if (catalogStudy.isPresent()) {
+          if (!study.get().getSimplified().equals(catalogStudy.get().getSimplified())) {
+            study.get().setChangedAfterPublish(true);
+          }
+        }
+      }
     }
 
     return study;

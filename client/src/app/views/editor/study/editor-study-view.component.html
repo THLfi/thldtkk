@@ -48,6 +48,9 @@
             <span style="margin-left: 3px;">
               <editor-help-link [helpTextComponent]="publishButtonHelpText"></editor-help-link>
             </span>
+            <span *ngIf="study.published && study.changedAfterPublish">
+              <small>{{ 'changedAfterPublish' | translate }}</small>
+            </span>
           </div>
         </div>
       </div>

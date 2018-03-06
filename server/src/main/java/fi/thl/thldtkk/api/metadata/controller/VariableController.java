@@ -34,9 +34,8 @@ public class VariableController {
   @ApiOperation("List all variables")
   @GetJsonMapping
   public List<Variable> query(
-      @RequestParam(value = "query", defaultValue = "") String query,
-      @RequestParam(value = "max", defaultValue = "10") Integer max) {
-    return variableService.find(query, max);
+      @RequestParam(value = "query", defaultValue = "") String query) {
+    return variableService.find(query, -1);
   }
 
   @ApiOperation("Get one variable by ID")

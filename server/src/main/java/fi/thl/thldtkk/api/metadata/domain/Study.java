@@ -522,6 +522,10 @@ public class Study implements NodeEntity {
     this.systemInRoles = systemInRoles;
   }
 
+  public void setOwnerOrganizationUnit(OrganizationUnit ownerOrganizationUnit) {
+    this.ownerOrganizationUnit = ownerOrganizationUnit;
+  }
+
   public Boolean isChangedAfterPublish() {
     return changedAfterPublish;
   }

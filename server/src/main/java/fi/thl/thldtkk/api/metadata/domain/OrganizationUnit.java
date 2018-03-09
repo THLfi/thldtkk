@@ -53,6 +53,10 @@ public class OrganizationUnit implements Serializable {
     return prefLabel;
   }
 
+  public Map<String, String> getAbbreviation() {
+    return abbreviation;
+  }
+
   public Node toNode() {
     Node node = new Node(id, "OrganizationUnit");
     node.addProperties("prefLabel", toPropertyValues(prefLabel));

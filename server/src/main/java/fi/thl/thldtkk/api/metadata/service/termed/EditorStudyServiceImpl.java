@@ -51,6 +51,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   private PersonService personService;
 
   @Autowired
+  private OrganizationUnitService organizationUnitService;
+
+  @Autowired
   private PublicStudyService publicStudyService;
 
   @Override
@@ -225,7 +228,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Optional<Study> old;
 
     if (study.getId() == null) {
-      old = findByExternalId(study.getExternalId().get());
+      old = findByExternalId(study.getExternalId());
 
       if (!old.isPresent()) {
         study.setId(randomUUID());
@@ -347,6 +350,23 @@ public class EditorStudyServiceImpl implements EditorStudyService {
           }
           personInRole.setPerson(person);
         }
+      }
+    }
+
+    if (study.getOwnerOrganizationUnit().isPresent()) {
+      OrganizationUnit ownerOrganizationUnit = study.getOwnerOrganizationUnit().get();
+      Map<String, String> abbreviation = ownerOrganizationUnit.getAbbreviation();
+
+      if (abbreviation != null) {
+        Optional<OrganizationUnit> existingOwnerOrganizationUnit = organizationUnitService
+                .findByAbbreviation(abbreviation.get("fi"));
+
+        if (existingOwnerOrganizationUnit.isPresent()) {
+          ownerOrganizationUnit = existingOwnerOrganizationUnit.get();
+        } else {
+          ownerOrganizationUnit = organizationUnitService.save(ownerOrganizationUnit);
+        }
+        study.setOwnerOrganizationUnit(ownerOrganizationUnit);
       }
     }
 
@@ -771,17 +791,20 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       instanceVariable.getId(), datasetId, studyId);
   }
 
-  private Optional<Study> findByExternalId(String externalId) {
-    if (externalId == null || externalId.isEmpty()) {
+  private Optional<Study> findByExternalId(Optional<String> externalId) {
+    if (!externalId.isPresent()) {
+      return Optional.empty();
+    }
+    if (externalId.get().isEmpty()) {
       return Optional.empty();
     }
 
-    externalId = "\"" + externalId + "\"";
+    String externalIdString = "\"" + externalId.get() + "\"";
 
     return nodes.query(
             KeyValueCriteria.keyValue(
                     "properties.externalId",
-                    externalId),
+                    externalIdString),
             1)
             .map(Study::new)
             .findFirst();

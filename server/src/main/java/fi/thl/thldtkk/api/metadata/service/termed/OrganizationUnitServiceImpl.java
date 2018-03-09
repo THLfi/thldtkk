@@ -4,6 +4,7 @@ import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.OrganizationUnitService;
@@ -37,4 +38,25 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
     return nodes.get(new NodeId(id, "OrganizationUnit")).map(OrganizationUnit::new);
   }
 
+  @Override
+  public Optional<OrganizationUnit> findByAbbreviation(String abbreviation) {
+    if (abbreviation == null || abbreviation.isEmpty()) {
+      return Optional.empty();
+    }
+
+    abbreviation = "\"" + abbreviation + "\"";
+
+    return nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.abbreviation",
+                    abbreviation),
+            1)
+            .map(OrganizationUnit::new)
+            .findFirst();
+  }
+
+  @Override
+  public OrganizationUnit save(OrganizationUnit organizationUnit) {
+    return new OrganizationUnit(nodes.save(organizationUnit.toNode()));
+  }
 }

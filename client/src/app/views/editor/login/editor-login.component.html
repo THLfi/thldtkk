@@ -102,4 +102,5 @@
   </div>
 
   <logout-message *ngIf="showLogoutSuccessMessage" [message]="logoutMessage" [messageDetails]="logoutMessageDetails" (onClose)="closeLogoutMessage()"></logout-message>
+  <logout-message *ngIf="showTimeoutMessage" [message]="timeoutMessage" [messageDetails]="timeoutMessageDetails" (onClose)="closeTimeoutMessage()"></logout-message>
 </div>

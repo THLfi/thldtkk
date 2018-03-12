@@ -25,6 +25,9 @@ export class CommonErrorHandlingHttpService extends Http {
 
   request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     return super.request(url, options).catch((error: Response) => {
+      if (error.status === 401) {
+        window.location.href = '/login?timeout=true';
+      }
       this.growlMessageService.buildAndShowMessage('error', 'errors.server.operationFailed',
         HttpMessageHelper.getErrorMessageByStatusCode(error.status))
       return Observable.throw(error)

@@ -34,6 +34,10 @@ export class EditorLoginComponent implements OnInit {
   logoutMessage: string
   logoutMessageDetails: string
 
+  showTimeoutMessage: boolean = false
+  timeoutMessage: string
+  timeoutMessageDetails: string
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private currentUserService: CurrentUserService,
@@ -73,6 +77,19 @@ export class EditorLoginComponent implements OnInit {
       })
     }
 
+    let shouldShowTimeoutMessage = this.showTimeoutMessage = this.activatedRoute.snapshot.queryParamMap.get('timeout') ? true : false
+
+    if(shouldShowTimeoutMessage) {
+      Observable.forkJoin(
+          this.translateService.get('editorLoginComponent.timeout'),
+          this.translateService.get('editorLoginComponent.timeoutDetails')
+      ).subscribe(data => {
+          this.timeoutMessage = data[0]
+          this.timeoutMessageDetails = data[1]
+          this.showTimeoutMessage = true
+      })
+    }
+
   }
 
   toggleThlLoginExpanded(): void {
@@ -92,6 +109,7 @@ export class EditorLoginComponent implements OnInit {
     this.thlLoginInProgress = true
     this.showThlLoginFailedMessage = false
     this.showLogoutSuccessMessage = false
+    this.showTimeoutMessage = false
 
     this.currentUserService.login(this.username, this.password)
       .subscribe(loginSuccessful => {
@@ -112,6 +130,10 @@ export class EditorLoginComponent implements OnInit {
 
   closeLogoutMessage(): void {
     this.showLogoutSuccessMessage = false
+  }
+
+  closeTimeoutMessage(): void {
+    this.showTimeoutMessage = false
   }
 
 }

@@ -646,6 +646,8 @@
     "thlLoginFailed": "Kirjautuminen epäonnistui. Tarkista käyttäjätunnus ja salasana.",
     "logoutSuccess": "Olet nyt kirjautunut ulos onnistuneesti",
     "logoutSuccessDetails": "Kirjaudu sisään jatkaaksesi editorin käyttöä",
+    "timeout": "Istunto on vanhentunut",
+    "timeoutDetails": "Tarkistathan tehtyjen muokkausten tallentumisen",
     "loginAdvice": "Mitä kirjautumista minun pitäisi käyttää?",
     "loginAdviceTooltip": "Jos olet Virtu-viraston työntekijä, käytä Virtua. Muille tarjoamme vaihtoehtona THL:n omaa kirjautumispalvelua"
   },

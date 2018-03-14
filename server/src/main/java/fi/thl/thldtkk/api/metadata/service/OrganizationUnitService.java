@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface OrganizationUnitService extends Service<UUID, OrganizationUnit> {
 
     Optional<OrganizationUnit> findByAbbreviation(String abbreviation);
+
+    OrganizationUnit save(UUID organizationId, OrganizationUnit organizationUnit);
 }

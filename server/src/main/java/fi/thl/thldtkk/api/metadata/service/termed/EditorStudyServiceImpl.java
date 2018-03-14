@@ -364,7 +364,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         if (existingOwnerOrganizationUnit.isPresent()) {
           ownerOrganizationUnit = existingOwnerOrganizationUnit.get();
         } else {
-          ownerOrganizationUnit = organizationUnitService.save(ownerOrganizationUnit);
+            if (study.getOwnerOrganization().isPresent()) {
+                ownerOrganizationUnit = organizationUnitService
+                        .save(study.getOwnerOrganization().get().getId(), ownerOrganizationUnit);
+            } else {
+                ownerOrganizationUnit = organizationUnitService.save(ownerOrganizationUnit);
+            }
         }
         study.setOwnerOrganizationUnit(ownerOrganizationUnit);
       }

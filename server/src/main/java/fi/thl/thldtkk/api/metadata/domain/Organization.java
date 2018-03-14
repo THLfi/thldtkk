@@ -86,6 +86,10 @@ public class Organization implements NodeEntity, Serializable {
     return organizationUnit;
   }
 
+  public void addOrganizationUnit(OrganizationUnit unit) {
+    organizationUnit.add(unit);
+  }
+
   public Optional<String> getPhoneNumberForRegistryPolicy() {
     return Optional.ofNullable(phoneNumberForRegistryPolicy);
   }

@@ -7,6 +7,9 @@ import java.util.List;
 public enum AdditionalCsvField {
   DATASET("dataset.prefLabel", "dataset.id"),
   DATASET_REFERENCE_PERIOD("referencePeriodEnd", "dataset.referencePeriodStart", "dataset.referencePeriodEnd"),
+  DATASET_UNIT_TYPE("dataset.unitType.prefLabel", "dataset.unitType.id", "dataset.unitType.description"),
+  STUDY_REFERENCE_PERIOD("study.prefLabel", "study.referencePeriodStart", "study.referencePeriodEnd"),
+  STUDY_UNIT_TYPE("study.unitType.prefLabel", "study.unitType.id", "study.unitType.description"),
   QUANTITY("quantity.prefLabel", "quantity.id"),
   CODELIST("codeList.prefLabel", "codeList.id", "codeList.description", "codeList.owner", "codeList.referenceId", "codeList.codeListType","codeList.codeItems"),
   UNIT_TYPE("unitType.prefLabel", "unitType.id", "unitType.description"),

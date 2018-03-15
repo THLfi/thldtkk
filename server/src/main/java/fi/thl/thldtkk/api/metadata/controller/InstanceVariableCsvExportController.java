@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.service.csv.CsvFileNameBuilder;
@@ -44,6 +45,9 @@ public class InstanceVariableCsvExportController {
   }
 
   private byte[] instanceVariablesAsCsv(Dataset dataset, String language, String encoding, HttpServletResponse response) {
+    for (InstanceVariable instanceVariable : dataset.getInstanceVariables()) {
+      instanceVariable.setDataset(dataset);
+    }
     InstanceVariableCsvGenerator generator = new InstanceVariableCsvGenerator(dataset.getInstanceVariables(), language, encoding);
     GeneratorResult result = generator.generate();
 

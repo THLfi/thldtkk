@@ -346,6 +346,18 @@ public class InstanceVariable implements NodeEntity {
     this.dataset = dataset;
   }
 
+  public Optional<Study> getStudy() {
+    return dataset != null ? dataset.getStudy() : Optional.empty();
+  }
+
+  public Optional<UnitType> getDatasetUnitType() {
+    return dataset != null ? dataset.getUnitType() : Optional.empty();
+  }
+
+  public Optional<UnitType> getStudyUnitType() {
+    return dataset != null ? dataset.getStudy().flatMap(Study::getUnitType) : Optional.empty();
+  }
+
   public Optional<Date> getLastModifiedDate() {
     return Optional.ofNullable(lastModifiedDate);
   }

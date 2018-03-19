@@ -5,26 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fi.thl.thldtkk.api.metadata.domain.CodeList;
-import fi.thl.thldtkk.api.metadata.domain.Concept;
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
-import fi.thl.thldtkk.api.metadata.domain.Quantity;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
-import fi.thl.thldtkk.api.metadata.domain.UnitType;
-import fi.thl.thldtkk.api.metadata.domain.UserProfile;
-import fi.thl.thldtkk.api.metadata.domain.Variable;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.CodeListSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.ConceptSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.InstanceQuestionSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.InstanceVariableDatasetSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.LangValueSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.OptionalToStringSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.QuantitySerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.SourceDatasetSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.UnitSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.UnitTypeSerializer;
-import fi.thl.thldtkk.api.metadata.service.csv.serialize.VariableSerializer;
+import fi.thl.thldtkk.api.metadata.domain.*;
+import fi.thl.thldtkk.api.metadata.service.csv.serialize.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @JsonPropertyOrder(value = {"prefLabel", "id", "technicalName", "description",
-  "dataset", "freeConcepts", "conceptsFromScheme",
+  "dataset", "datasetUnitType", "study", "studyUnitType", "freeConcepts", "conceptsFromScheme",
   "referencePeriodStart", "referencePeriodEnd", "partOfGroup", "published",
   "unitType", "valueDomainType", "dataFormat", "dataType", "missingValues",
   "defaultMissingValue", "qualityStatement", "quantity", "unit",
@@ -64,6 +46,18 @@ public interface InstanceVariableCsvExportFormat {
   @JsonProperty("dataset.prefLabel")
   @JsonSerialize(using = InstanceVariableDatasetSerializer.class)
   public Optional<Dataset> getDataset();
+
+  @JsonProperty("dataset.unitType.prefLabel")
+  @JsonSerialize(using = DatasetUnitTypeSerializer.class)
+  public Optional<UnitType> getDatasetUnitType();
+
+  @JsonProperty("study.prefLabel")
+  @JsonSerialize(using = StudySerializer.class)
+  public Optional<Study> getStudy();
+
+  @JsonProperty("study.unitType.prefLabel")
+  @JsonSerialize(using = StudyUnitTypeSerializer.class)
+  public Optional<UnitType> getStudyUnitType();
 
   public Optional<String> getDefaultMissingValue();
 

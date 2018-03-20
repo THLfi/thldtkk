@@ -3,8 +3,7 @@ package fi.thl.thldtkk.api.metadata.service.csv;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Unit;
-import fi.thl.thldtkk.api.metadata.service.CodeListService;
-import fi.thl.thldtkk.api.metadata.service.UnitService;
+import fi.thl.thldtkk.api.metadata.service.*;
 import fi.thl.thldtkk.api.metadata.test.a;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,11 +35,24 @@ public class InstanceVariableCsvParserTest {
   CodeListService mockedCodeListService;
   @Mock
   UnitService mockedUnitService;
+  @Mock
+  UnitTypeService mockedUnitTypeService;
+  @Mock
+  QuantityService quantityService;
+  @Mock
+  EditorDatasetService editorDatasetService;
+  @Mock
+  VariableService variableService;
+  @Mock
+  InstanceQuestionService instanceQuestionService;
+  @Mock
+  ConceptService conceptService;
 
   @Before
   public void initParserAndMocks() {
     MockitoAnnotations.initMocks(this);
-    parser = new InstanceVariableCsvParser(mockedCodeListService, mockedUnitService);
+    parser = new InstanceVariableCsvParser(mockedCodeListService, mockedUnitService, mockedUnitTypeService,
+            quantityService, editorDatasetService, variableService, instanceQuestionService, conceptService);
   }
 
   @Test

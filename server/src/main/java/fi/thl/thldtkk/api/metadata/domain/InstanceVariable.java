@@ -254,6 +254,10 @@ public class InstanceVariable implements NodeEntity {
     return Optional.ofNullable(unitType);
   }
 
+  public void setUnitType(UnitType unitType) {
+    this.unitType = unitType;
+  }
+
   public Optional<String> getValueDomainType() {
     return Optional.ofNullable(valueDomainType);
   }
@@ -298,6 +302,10 @@ public class InstanceVariable implements NodeEntity {
     return conceptsFromScheme;
   }
 
+  public void addConceptsFromScheme(Concept concept) {
+    this.conceptsFromScheme.add(concept);
+  }
+
   public Map<String, String> getFreeConcepts() {
     return freeConcepts;
   }
@@ -330,8 +338,16 @@ public class InstanceVariable implements NodeEntity {
     return Optional.ofNullable(variable);
   }
 
+  public void setVariable(Variable variable) {
+    this.variable = variable;
+  }
+
   public List<InstanceQuestion> getInstanceQuestions() {
     return instanceQuestions;
+  }
+
+  public void addInstanceQuestion(InstanceQuestion instanceQuestion) {
+    this.instanceQuestions.add(instanceQuestion);
   }
 
   public Map<String, String> getDataFormat() {

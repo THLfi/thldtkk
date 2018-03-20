@@ -29,9 +29,9 @@ public class ConceptSerializer extends JsonSerializer<List<Concept>> {
         
         serializedConcepts.append("'");
         serializedConcepts.append(prefLabel);
-        serializedConcepts.append(" (");
+        serializedConcepts.append(" <");
         serializedConcepts.append(conceptScheme);
-        serializedConcepts.append(")");
+        serializedConcepts.append(">");
         serializedConcepts.append("'");
         
         if(itemIterator.hasNext()) {

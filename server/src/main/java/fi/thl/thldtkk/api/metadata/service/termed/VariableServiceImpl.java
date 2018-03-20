@@ -1,6 +1,7 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Variable;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
@@ -61,4 +62,20 @@ public class VariableServiceImpl implements VariableService {
     nodes.delete(new NodeId(id, "Variable"));
   }
 
+  @Override
+  public Optional<Variable> findByPrefLabel(String prefLabel) {
+    if (prefLabel == null || prefLabel.isEmpty()) {
+      return Optional.empty();
+    }
+
+    prefLabel = "\"" + prefLabel + "\"";
+
+    return nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.prefLabel",
+                    prefLabel),
+            1)
+            .map(Variable::new)
+            .findFirst();
+  }
 }

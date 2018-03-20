@@ -7,6 +7,7 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
@@ -54,4 +55,20 @@ public class QuantityServiceImpl implements QuantityService {
     return new Quantity(nodes.save(quantity.toNode()));
   }
 
+  @Override
+  public Optional<Quantity> findByPrefLabel(String prefLabel) {
+    if (prefLabel == null || prefLabel.isEmpty()) {
+      return Optional.empty();
+    }
+
+    prefLabel = "\"" + prefLabel + "\"";
+
+    return nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.prefLabel",
+                    prefLabel),
+            1)
+            .map(Quantity::new)
+            .findFirst();
+  }
 }

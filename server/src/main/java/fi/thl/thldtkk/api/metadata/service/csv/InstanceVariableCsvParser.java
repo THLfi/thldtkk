@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import fi.thl.thldtkk.api.metadata.domain.CodeList;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.Unit;
+import fi.thl.thldtkk.api.metadata.domain.*;
+import fi.thl.thldtkk.api.metadata.service.*;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.AmbiguousUnitSymbolException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedUnitSymbolException;
-import fi.thl.thldtkk.api.metadata.service.CodeListService;
-import fi.thl.thldtkk.api.metadata.service.UnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -21,14 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +38,31 @@ public class InstanceVariableCsvParser {
 
   private UnitService unitService;
 
+  private UnitTypeService unitTypeService;
+
+  private QuantityService quantityService;
+
+  private EditorDatasetService editorDatasetService;
+
+  private VariableService variableService;
+
+  private InstanceQuestionService instanceQuestionService;
+
+  private ConceptService conceptService;
+
   @Autowired
-  public InstanceVariableCsvParser(CodeListService codeListService, UnitService unitService) {
+  public InstanceVariableCsvParser(CodeListService codeListService, UnitService unitService,
+                                   UnitTypeService unitTypeService, QuantityService quantityService,
+                                   EditorDatasetService editorDatasetService, VariableService variableService,
+                                   InstanceQuestionService instanceQuestionService, ConceptService conceptService) {
     this.codeListService = codeListService;
     this.unitService = unitService;
+    this.unitTypeService = unitTypeService;
+    this.quantityService = quantityService;
+    this.editorDatasetService = editorDatasetService;
+    this.variableService = variableService;
+    this.instanceQuestionService = instanceQuestionService;
+    this.conceptService = conceptService;
   }
 
   public ParsingResult<List<ParsingResult<InstanceVariable>>> parse(InputStream csv, String encoding) {
@@ -162,6 +178,56 @@ public class InstanceVariableCsvParser {
           isRowValid = false;
           rowMessages.add("import.csv.error.missingRequiredValue.codeList.prefLabel");
       }
+    }
+
+    Optional<String> unitTypePrefLabel = sanitize(row.get("unitType.prefLabel"));
+    if (unitTypePrefLabel.isPresent()) {
+        Optional<UnitType> unitType = unitTypeService.findByPrefLabel(unitTypePrefLabel.get());
+        unitType.ifPresent(instanceVariable::setUnitType);
+    }
+
+    Optional<String> quantityPrefLabel = sanitize(row.get("quantity.prefLabel"));
+    if (quantityPrefLabel.isPresent()) {
+        Optional<Quantity> quantity = quantityService.findByPrefLabel(quantityPrefLabel.get());
+        quantity.ifPresent(instanceVariable::setQuantity);
+    }
+
+    sanitize(row.get("valueRangeMin")).ifPresent(valueRangeMin -> instanceVariable.setValueRangeMin(getBigDecimalFromString(valueRangeMin)));
+    sanitize(row.get("valueRangeMax")).ifPresent(valueRangeMax -> instanceVariable.setValueRangeMax(getBigDecimalFromString(valueRangeMax)));
+
+    Optional<String> sourceDatasetPrefLabel = sanitize(row.get("source.dataset.prefLabel"));
+    if (sourceDatasetPrefLabel.isPresent()) {
+        Optional<Dataset> source = editorDatasetService.findByPrefLabel(sourceDatasetPrefLabel.get());
+        source.ifPresent(instanceVariable::setSource);
+    }
+
+    Optional<String> variablePrefLabel = sanitize(row.get("variable.prefLabel"));
+    if (variablePrefLabel.isPresent()) {
+        Optional<Variable> variable = variableService.findByPrefLabel(variablePrefLabel.get());
+        variable.ifPresent(instanceVariable::setVariable);
+    }
+
+    sanitize(row.get("source.description")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
+
+    Optional<String> instanceQuestionsString = sanitize(row.get("instanceQuestions"));
+    if (instanceQuestionsString.isPresent() && !StringUtils.isEmpty(instanceQuestionsString.get())) {
+        String[] instanceQuestions = instanceQuestionsString.get().split(", ");
+        for (String instanceQuestionString : instanceQuestions) {
+            instanceQuestionString = instanceQuestionString.substring(1, instanceQuestionString.length() - 1);
+            Optional<InstanceQuestion> instanceQuestion = instanceQuestionService.getByPrefLabel(instanceQuestionString);
+            instanceQuestion.ifPresent(instanceVariable::addInstanceQuestion);
+        }
+    }
+
+    Optional<String> conceptsFromSchemeString = sanitize(row.get("conceptsFromScheme"));
+    if (conceptsFromSchemeString.isPresent() && !StringUtils.isEmpty(conceptsFromSchemeString.get())) {
+        String[] conceptsFromScheme = conceptsFromSchemeString.get().split(", ");
+        for (String conceptWithSchemeString : conceptsFromScheme) {
+            conceptWithSchemeString = conceptWithSchemeString.substring(1, conceptWithSchemeString.length() - 1);
+            String conceptWithoutSchemeString = conceptWithSchemeString.split(" <")[0];
+            Optional<Concept> conceptFromScheme = conceptService.findByPrefLabel(conceptWithoutSchemeString);
+            conceptFromScheme.ifPresent(instanceVariable::addConceptsFromScheme);
+        }
     }
 
     parseUnit(row, language, rowMessages).ifPresent(unit -> instanceVariable.setUnit(unit));
@@ -341,4 +407,14 @@ public class InstanceVariableCsvParser {
     return unitService.save(unit);
   }
 
+  private BigDecimal getBigDecimalFromString(String numberString) {
+      if (!StringUtils.isEmpty(numberString)) {
+          try {
+              return new BigDecimal(numberString.replaceAll(",", "."));
+          } catch (NumberFormatException e) {
+              LOG.warn("Invalid format for decimal number: {}", numberString, e);
+          }
+      }
+      return null;
+  }
 }

@@ -4,16 +4,17 @@ import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Concept;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.ConceptService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 public class ConceptServiceImpl implements ConceptService {
 
@@ -45,4 +46,20 @@ public class ConceptServiceImpl implements ConceptService {
     return nodes.get(new NodeId(id, "Concept")).map(Concept::new);
   }
 
+  @Override
+  public Optional<Concept> findByPrefLabel(String prefLabel) {
+    if (prefLabel == null || prefLabel.isEmpty()) {
+      return Optional.empty();
+    }
+
+    prefLabel = "\"" + prefLabel + "\"";
+
+    return nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.prefLabel",
+                    prefLabel),
+            1)
+            .map(Concept::new)
+            .findFirst();
+  }
 }

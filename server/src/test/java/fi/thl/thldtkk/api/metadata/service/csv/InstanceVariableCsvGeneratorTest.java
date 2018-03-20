@@ -677,7 +677,7 @@ public class InstanceVariableCsvGeneratorTest {
 
     assertTrue(columnDataByHeaders.containsKey("conceptsFromScheme"));
     
-    String expectedConceptsFromScheme = "'Health and Wellness Sector (YSO)', 'Health Education (MeSH)'";
+    String expectedConceptsFromScheme = "'Health and Wellness Sector <YSO>', 'Health Education <MeSH>'";
     String actualConceptsFromScheme = columnDataByHeaders.get("conceptsFromScheme");
     
     assertEquals(expectedConceptsFromScheme, actualConceptsFromScheme);    

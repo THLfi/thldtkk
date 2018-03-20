@@ -6,11 +6,13 @@ import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.domain.query.Sort.sort;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
+import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
@@ -18,10 +20,7 @@ import fi.thl.thldtkk.api.metadata.service.InstanceQuestionService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 
@@ -82,4 +81,29 @@ public class InstanceQuestionServiceImpl implements InstanceQuestionService {
     return new InstanceQuestion(nodes.save(instanceQuestion.toNode()));
   }
 
+  @Override
+  public Optional<InstanceQuestion> getByPrefLabel(String prefLabel) {
+    if (prefLabel == null || prefLabel.isEmpty()) {
+      return Optional.empty();
+    }
+
+    String prefLabelSearch = "\"" + prefLabel + "\"";
+
+    Optional<InstanceQuestion> instanceQuestion =  nodes.query(
+            KeyValueCriteria.keyValue(
+                    "properties.prefLabel",
+                    prefLabelSearch),
+            1)
+            .map(InstanceQuestion::new)
+            .findFirst();
+
+    if (!instanceQuestion.isPresent()) {
+      Map<String, String> prefLabelMap = new LinkedHashMap<>();
+      prefLabelMap.put("fi", prefLabel);
+      InstanceQuestion instanceQuestionNew = new InstanceQuestion(randomUUID(), prefLabelMap);
+      instanceQuestionNew = save(instanceQuestionNew);
+      return Optional.ofNullable(instanceQuestionNew);
+    }
+    return instanceQuestion;
+  }
 }

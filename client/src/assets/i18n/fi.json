@@ -560,6 +560,18 @@
           "success": "Järjestelmä poistettu"
         }
       }
+    },
+    "organization_unit": {
+      "save": {
+        "result": {
+          "success": "Organisaatioyksikkö tallennettu"
+        }
+      },
+      "delete": {
+        "result": {
+          "success": "Organisaatioyksikkö poistettu"
+        }
+      }
     }
   },
   "printRegisterDescription": "Tulosta rekisteriseloste",
@@ -988,6 +1000,8 @@
    "externalLink": "Linkki ulkoiseen järjestelmäkuvaukseen",
    "noOwnerOrganization": "Aineistolla ei ole organisaatiota, määritä aineistolle organisaatio"
   },
-  "changedAfterPublish": "Muokattu julkaisun jälkeen"
+  "changedAfterPublish": "Muokattu julkaisun jälkeen",
+  "addNewOrganizationUnit": "Luo uusi organisaatioyksikkö",
+  "newOrganizationUnit": "Uusi organisaatioyksikkö"
 
 }

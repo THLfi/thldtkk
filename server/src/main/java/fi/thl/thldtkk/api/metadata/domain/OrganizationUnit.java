@@ -16,6 +16,7 @@ import java.util.UUID;
 public class OrganizationUnit implements Serializable {
 
   private UUID id;
+  private UUID parentOrganizationId;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
 
@@ -51,6 +52,14 @@ public class OrganizationUnit implements Serializable {
 
   public void setId(UUID id) {
     this.id = id;
+  }
+
+  public UUID getParentOrganizationId() {
+    return parentOrganizationId;
+  }
+
+  public void setParentOrganizationId(UUID id) {
+    this.parentOrganizationId = id;
   }
 
   public Map<String, String> getPrefLabel() {

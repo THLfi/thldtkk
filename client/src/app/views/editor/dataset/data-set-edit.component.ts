@@ -30,6 +30,7 @@ import {Organization} from "../../../model2/organization";
 import {OrganizationService} from '../../../services-common/organization.service'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
+import {OrganizationUnitService} from '../../../services-common/organization-unit.service'
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
@@ -91,6 +92,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     allUniverseItems: SelectItem[] = []
     newUniverse: Universe
 
+    newOrganizationUnit: OrganizationUnit
+
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
     selectedDatasetTypeItems: string[] = [];
@@ -112,6 +115,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
         private organizationService: OrganizationService,
+        private organizationUnitService: OrganizationUnitService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -401,6 +405,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
             }
         }
         return languages
+    }
+
+    showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+      this.initNewOrganizationUnit()
+    }
+
+    private initNewOrganizationUnit(): void {
+      this.newOrganizationUnit = this.organizationUnitService.initNew()
+    }
+
+    saveOrganizationUnit(event): void {
+      this.newOrganizationUnit.parentOrganizationId = this.ownerOrganization.id;
+      this.organizationUnitService.save(this.newOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.getAvailableOrganizations()
+          this.closeAddOrganizationUnitModal()
+        })
+    }
+
+    closeAddOrganizationUnitModal() {
+      this.newOrganizationUnit = null
     }
 
     addPersonInRole() {

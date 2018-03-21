@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms'
 import { Dataset } from '../../../model2/dataset'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
 import { Study } from '../../../model2/study'
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -25,6 +26,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   }
 
   file: File
+  overwrite: boolean = false
   encoding: string
 
   importInProgress: boolean = false
@@ -34,7 +36,8 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
-    private instanceVariableService: EditorInstanceVariableService
+    private instanceVariableService: EditorInstanceVariableService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -97,7 +100,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       return
     }
 
-    this.instanceVariableService.importInstanceVariablesAsCsv(this.study.id, this.dataset.id, this.file, this.encoding)
+    this.instanceVariableService.importInstanceVariablesAsCsv(this.study.id, this.dataset.id, this.file, this.encoding, this.overwrite)
       .finally(() => {
         this.importInProgress = false
       })
@@ -112,4 +115,19 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
     this.onCancel.emit()
   }
 
+  showWarning(): void {
+    this.translateService.get('importInstanceVariablesModal.overwrite.warningQuestion')
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          this.doImport()
+      }})
+  }
+
+  importButtonClick(): void {
+    if (this.overwrite) {
+      this.showWarning()
+    } else {
+      this.doImport()
+    }
+  }
 }

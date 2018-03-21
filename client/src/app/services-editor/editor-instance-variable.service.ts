@@ -77,7 +77,7 @@ export class EditorInstanceVariableService {
       })
   }
 
-  importInstanceVariablesAsCsv(studyId: string, datasetId: string, file: File, encoding: string): Observable<any> {
+  importInstanceVariablesAsCsv(studyId: string, datasetId: string, file: File, encoding: string, overwrite: boolean): Observable<any> {
     const formData: FormData = new FormData()
     formData.append('file', file, file.name)
 
@@ -87,7 +87,8 @@ export class EditorInstanceVariableService {
       + studyId
       + '/datasets/'
       + datasetId
-      + '/instanceVariables'
+      + '/instanceVariables?overwrite='
+      + overwrite
     const headers = new Headers({ 'Content-Type': 'text/csv;charset=' + encoding })
     const options = new RequestOptions({ headers: headers })
 

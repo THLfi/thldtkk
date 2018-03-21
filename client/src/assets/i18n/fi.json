@@ -578,9 +578,14 @@
   "importInstanceVariablesAsCsvButton": "Lisää muuttujia CSV-tiedostosta...",
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
-    "existingInstanceVariablesWillBeRemovedNotification": "Huom. Uusien muuttujien tuominen CSV-tiedostosta poistaa datasetin nykyiset muuttujat.",
     "file": {
       "label": "Tuotava CSV-tiedosto"
+    },
+    "overwrite": {
+      "false": "Säilytä olemassa olevat muuttujat",
+      "true": "Korvaa olemassa olevat muuttujat",
+      "warningText": "Huom. Tämä vaihtoehto poistaa datasetin nykyiset muuttujat!",
+      "warningQuestion": "Haluatko varmasti poistaa datasetin nykyiset muuttujat?"
     },
     "encoding": {
       "label": "Tiedoston merkistö",

@@ -13,13 +13,6 @@
     </p-header>
     <form #importForm="ngForm">
       <div class="container-fluid">
-        <div class="row bg-warning">
-          <div class="col-xs-12">
-            <p>
-              {{ 'importInstanceVariablesModal.existingInstanceVariablesWillBeRemovedNotification' | translate }}
-            </p>
-          </div>
-        </div>
         <div [ngClass]="{ 'bg-danger': formErrors.file && formErrors.file.length }"
              class="row">
           <div class="col-xs-12">
@@ -65,11 +58,31 @@
             <p [innerHtml]="'importInstanceVariablesModal.encoding.helpText' | translate" class="help-block"></p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group"
+                 style="padding-left:2px;">
+              <div class="radio">
+                <label>
+                  <input [(ngModel)]="overwrite" type="radio" name="overwrite" [value]="false">
+                  {{ 'importInstanceVariablesModal.overwrite.false' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input [(ngModel)]="overwrite" type="radio" name="overwrite" [value]="true">
+                  {{ 'importInstanceVariablesModal.overwrite.true' | translate }}
+                </label>
+              </div>
+              <p *ngIf="overwrite == true" [innerHtml]="'importInstanceVariablesModal.overwrite.warningText' | translate" class="alert alert-warning"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
     <p-footer>
       <div>
-        <button (click)="doImport()"
+        <button (click)="importButtonClick()"
                 [disabled]="importInProgress"
                 class="btn btn-primary">
           {{ 'importInstanceVariablesModal.buttons.import' | translate }}

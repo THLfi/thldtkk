@@ -12,11 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -43,6 +39,7 @@ public class EditorInstanceVariableCsvImportController {
       @PathVariable("studyId") UUID studyId,
       @PathVariable("datasetId") UUID datasetId,
       @RequestHeader("content-type") String contentType,
+      @RequestParam("overwrite") boolean overwrite,
       HttpServletRequest request) throws IOException {
 
     Dataset dataset = editorStudyService.getDataset(studyId, datasetId)
@@ -55,7 +52,11 @@ public class EditorInstanceVariableCsvImportController {
       return new ResponseEntity<>(parsingResult, HttpStatus.BAD_REQUEST);
     }
 
-    dataset.setInstanceVariables(getInstanceVariables(parsingResult));
+    if (overwrite) {
+      dataset.setInstanceVariables(getInstanceVariables(parsingResult));
+    } else {
+      dataset.addInstanceVariables(getInstanceVariables(parsingResult));
+    }
 
     editorStudyService.saveDatasetAndInstanceVariables(studyId, dataset);
 

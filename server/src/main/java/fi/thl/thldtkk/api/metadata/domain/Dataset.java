@@ -281,6 +281,10 @@ public class Dataset implements NodeEntity {
     this.instanceVariables = instanceVariables;
   }
 
+  public void addInstanceVariables(List<InstanceVariable> instanceVariables) {
+    this.instanceVariables.addAll(instanceVariables);
+  }
+
   public List<DatasetType> getDatasetTypes() {
     return datasetTypes;
   }

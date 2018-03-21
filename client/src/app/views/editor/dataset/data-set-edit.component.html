@@ -123,6 +123,17 @@
             </ng-container>
           </select>
           <editor-help-text #ownerOrganizationUnitHelpText key="editor.dataset.ownerOrganizationUnit.helpText"></editor-help-text>
+          <button (click)="showAddOrganizationUnitModal(organizationUnit)"
+                  type="button"
+                  class="btn btn-default btn-sm">
+            <glyphicon icon="plus"></glyphicon>
+            {{ 'addNewOrganizationUnit' | translate }}
+          </button>
+          <organization-unit-edit-modal *ngIf="newOrganizationUnit"
+                                        [organizationUnit]="newOrganizationUnit"
+                                        (onSave)="saveOrganizationUnit($event)"
+                                        (onCancel)="closeAddOrganizationUnitModal()">
+          </organization-unit-edit-modal>
         </div>
 
         <div class="form-group">

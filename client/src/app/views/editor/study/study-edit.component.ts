@@ -29,6 +29,7 @@ import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
 import {Organization} from "../../../model2/organization";
 import {OrganizationService} from '../../../services-common/organization.service'
+import {OrganizationUnitService} from '../../../services-common/organization-unit.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
@@ -54,27 +55,29 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     study: Study;
 
-    @ViewChild('studyForm') studyForm: NgForm
-    currentForm: NgForm
-    formErrors: { [key: string]: any[] } = { }
+    @ViewChild('studyForm') studyForm: NgForm;
+    currentForm: NgForm;
+    formErrors: { [key: string]: any[] } = { };
 
-    yearRangeForReferencePeriodFields: string =  ('1900:' + (new Date().getFullYear() + 20))
-    referencePeriodStart: Date
-    referencePeriodEnd: Date
+    yearRangeForReferencePeriodFields: string =  ('1900:' + (new Date().getFullYear() + 20));
+    referencePeriodStart: Date;
+    referencePeriodEnd: Date;
 
-    collectionStartDate: Date
-    collectionEndDate: Date
+    collectionStartDate: Date;
+    collectionEndDate: Date;
 
     allLifecyclePhases: LifecyclePhase[];
     availableOrganizations: Organization[];
 
-    organizationUnitsOfOrganization: { [organizationId: string]: OrganizationUnit[] } = {}
+    organizationUnitsOfOrganization: { [organizationId: string]: OrganizationUnit[] } = {};
 
-    allPersonItems: SelectItem[]
-    allRoles: Role[]
+    allPersonItems: SelectItem[];
+    allRoles: Role[];
 
-    personInRoleForNewPerson: PersonInRole
-    newPerson: Person
+    personInRoleForNewPerson: PersonInRole;
+    newPerson: Person;
+
+    newOrganizationUnit: OrganizationUnit;
 
     allUsageConditions: UsageCondition[];
     language: string;
@@ -83,36 +86,37 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     conceptSearchResults: Concept[] = [];
     freeConcepts: string[] = [];
 
-    allUnitTypes: UnitType[] = []
-    newUnitType: UnitType
+    allUnitTypes: UnitType[] = [];
+    newUnitType: UnitType;
 
-    allUniverseItems: SelectItem[] = []
-    newUniverse: Universe
+    allUniverseItems: SelectItem[] = [];
+    newUniverse: Universe;
 
     datasetTypeItems: DatasetTypeItem[] = [];
     selectedDatasetTypeItems: string[] = [];
     datasetTypesById: {[datasetTypeId: string]: DatasetType} = {};
 
-    availableStudyGroupItems: SelectItem[] = []
-    newStudyGroup: StudyGroup
+    availableStudyGroupItems: SelectItem[] = [];
+    newStudyGroup: StudyGroup;
 
-    savingInProgress: boolean = false
-    savingHasFailed: boolean = false
+    savingInProgress: boolean = false;
+    savingHasFailed: boolean = false;
 
-    sidebarActiveSection = StudySidebarActiveSection.STUDY
+    sidebarActiveSection = StudySidebarActiveSection.STUDY;
 
-    urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*'
-    urlSchemeHttpPrefix: string = "http://"
-    partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/ // e.g. 'http:/thl.fi'
-    validUrlExpression: RegExp
+    urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*';
+    urlSchemeHttpPrefix: string = "http://";
+    partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/; // e.g. 'http:/thl.fi'
+    validUrlExpression: RegExp;
 
-    isUserAdmin: boolean
+    isUserAdmin: boolean;
 
     constructor(
         private editorStudyService: EditorStudyService,
         private lifecyclePhaseService: LifecyclePhaseService,
         private nodeUtils: NodeUtils,
         private organizationService: OrganizationService,
+        private organizationUnitService: OrganizationUnitService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -150,54 +154,54 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                 this.editorStudyService.getStudy(studyId)
             ).subscribe(
                 data => {
-                    this.study = this.initializeStudyProperties(data[0])
+                    this.study = this.initializeStudyProperties(data[0]);
                     this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.study);
-                    this.updateAvailableStudyGroups()
-                    this.updatePageTitle()
+                    this.updateAvailableStudyGroups();
+                    this.updatePageTitle();
                     this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
                 })
         } else if (copyOfStudyId) {
           this.editorStudyService.getStudy(copyOfStudyId).subscribe(existingStudy => {
-            this.study = this.initializeStudyProperties(existingStudy)
+            this.study = this.initializeStudyProperties(existingStudy);
             this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.study);
-            this.study.id = null
-            this.study.published = false
+            this.study.id = null;
+            this.study.published = false;
             this.translateService.get('copy').subscribe(msg => {
               this.study.prefLabel[this.language] =
                 this.study.prefLabel[this.language] + " (" + msg + ")"
             });
-            this.study.population.id = null
-            this.study.links.forEach(l => l.id = null)
-            this.study.personInRoles.forEach(p => p.id = null)
-            this.updateAvailableStudyGroups()
+            this.study.population.id = null;
+            this.study.links.forEach(l => l.id = null);
+            this.study.personInRoles.forEach(p => p.id = null);
+            this.updateAvailableStudyGroups();
             this.updatePageTitle()
           })
         } else {
             this.study = this.editorStudyService.initNew()
         }
 
-        this.getAvailableOrganizations()
-        this.getAllPersons()
-        this.getAllRoles()
+        this.getAvailableOrganizations();
+        this.getAllPersons();
+        this.getAllRoles();
         this.lifecyclePhaseService.getAll()
-            .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases)
+            .subscribe(lifecyclePhases => this.allLifecyclePhases = lifecyclePhases);
         this.usageConditionService.getAll()
-            .subscribe(usageConditions => this.allUsageConditions = usageConditions)
-        this.getAllUnitTypes()
-        this.getAllUniverses()
+            .subscribe(usageConditions => this.allUsageConditions = usageConditions);
+        this.getAllUnitTypes();
+        this.getAllUniverses();
 
         this.datasetTypeService.getAll()
           .subscribe(datasetTypes => {
             datasetTypes.forEach(datasetType => {
-              let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel)
-              this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id))
+              let translatedTypeLabel = this.langPipe.transform(datasetType.prefLabel);
+              this.datasetTypeItems.push(new DatasetTypeItem(translatedTypeLabel, datasetType.id));
               this.datasetTypesById[datasetType.id] = datasetType
             })
           })
     }
 
     private initializeStudyProperties(study: Study): Study {
-        this.editorStudyService.initializeProperties(study)
+        this.editorStudyService.initializeProperties(study);
 
         if (study.referencePeriodStart) {
           this.referencePeriodStart = new Date(study.referencePeriodStart)
@@ -214,7 +218,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         }
 
         if (study.freeConcepts && study.freeConcepts[this.language]) {
-            this.freeConcepts = study.freeConcepts[this.language].split(';')
+            this.freeConcepts = study.freeConcepts[this.language].split(';');
             this.freeConcepts = this.freeConcepts.map(freeConcept => freeConcept.trim())
         }
 
@@ -222,7 +226,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private initializeSelectedDatasetTypes(study: Study): string[] {
-        let storedDatasetTypeItems = []
+        let storedDatasetTypeItems = [];
         study.datasetTypes.forEach(datasetType => {storedDatasetTypeItems.push(datasetType.id)});
         return storedDatasetTypeItems;
     }
@@ -233,7 +237,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     private updatePageTitle():void {
         if(this.study.prefLabel) {
-            let translatedLabel:string = this.langPipe.transform(this.study.prefLabel)
+            let translatedLabel:string = this.langPipe.transform(this.study.prefLabel);
             let bareTitle:string = this.titleService.getTitle();
             this.titleService.setTitle(translatedLabel + " - " + bareTitle)
         }
@@ -242,12 +246,12 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     private getAvailableOrganizations() {
       this.userService.isUserAdmin()
         .subscribe(isAdmin => {
-          this.isUserAdmin = isAdmin
+          this.isUserAdmin = isAdmin;
 
           if (isAdmin) {
               this.organizationService.getAllOrganizations()
               .subscribe(organizations => {
-                this.availableOrganizations = organizations
+                this.availableOrganizations = organizations;
                 this.extractOrganizationUnits(organizations)
               })
           }
@@ -256,10 +260,10 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
               .subscribe(organizations => {
                 // Pre-select organization for a new study
                 if (!this.study.id && organizations.length === 1) {
-                  this.study.ownerOrganization = organizations[0]
+                  this.study.ownerOrganization = organizations[0];
                   this.updateAvailableStudyGroups()
                 }
-                this.availableOrganizations = organizations
+                this.availableOrganizations = organizations;
                 this.extractOrganizationUnits(organizations)
               })
           }
@@ -271,7 +275,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getAllPersons() {
-      this.allPersonItems = []
+      this.allPersonItems = [];
 
       Observable.forkJoin(
         this.translateService.get('noPerson'),
@@ -280,20 +284,20 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         this.allPersonItems.push({
           label: data[0],
           value: null
-        })
+        });
         data[1].forEach(person => this.allPersonItems.push(this.convertPersonToSelectItem(person)))
       })
     }
 
     private convertPersonToSelectItem(person: Person): SelectItem {
-      let label = person.firstName
+      let label = person.firstName;
 
       if (StringUtils.isNotBlank(person.lastName)) {
-        label += ' '
+        label += ' ';
         label += person.lastName
       }
       if (StringUtils.isNotBlank(person.email)) {
-        label += ', '
+        label += ', ';
         label += person.email
       }
 
@@ -314,7 +318,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getAllUniverses() {
-      this.allUniverseItems = []
+      this.allUniverseItems = [];
 
       Observable.forkJoin(
         this.translateService.get('noUniverse'),
@@ -323,7 +327,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         this.allUniverseItems.push({
           label: data[0],
           value: null
-        })
+        });
 
         data[1].forEach(universe => this.allUniverseItems.push(this.convertEntityToSelectItem(universe)))
       })
@@ -332,7 +336,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     private convertEntityToSelectItem(entity: { prefLabel: LangValues, description?: LangValues }): SelectItem {
       let label = this.langPipe.transform(entity.prefLabel);
 
-      let description = this.langPipe.transform(entity.description)
+      let description = this.langPipe.transform(entity.description);
       if (StringUtils.isNotBlank(description)) {
         label += (' - ' + this.truncatePipe.transform(description, 50))
       }
@@ -344,7 +348,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private updateAvailableStudyGroups() {
-      this.availableStudyGroupItems = []
+      this.availableStudyGroupItems = [];
 
       if (this.study.ownerOrganization) {
         Observable.forkJoin(
@@ -354,7 +358,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
           this.availableStudyGroupItems.push({
             label: data[0],
             value: null
-          })
+          });
 
           data[1].forEach(studyGroup => this.availableStudyGroupItems.push(this.convertEntityToSelectItem(studyGroup)))
         })
@@ -364,17 +368,17 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     ngAfterContentChecked(): void {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {
-          this.currentForm = this.studyForm
+          this.currentForm = this.studyForm;
           this.currentForm.valueChanges.subscribe(data => this.validate(data))
         }
       }
     }
 
     private validate(data?: any): void {
-      this.formErrors = { }
+      this.formErrors = { };
 
       for (const name in this.currentForm.form.controls) {
-        const control: AbstractControl = this.currentForm.form.get(name)
+        const control: AbstractControl = this.currentForm.form.get(name);
         if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
           for (const errorKey in control.errors) {
             if (!this.formErrors[name]) {
@@ -390,9 +394,9 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     onOrganizationChange(): void {
-      this.study.ownerOrganizationUnit = null
+      this.study.ownerOrganizationUnit = null;
       if (this.study.studyGroup) {
-        this.study.studyGroup = null
+        this.study.studyGroup = null;
         this.growlMessageService.buildAndShowMessage(
           'info',
           'StudyEditComponent.studyGroupReset.summary',
@@ -402,7 +406,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     searchConcept(event: any): void {
-        const searchText: string = event.query
+        const searchText: string = event.query;
         if (this.conceptSearchSubscription) {
             // Cancel possible on-going search
             this.conceptSearchSubscription.unsubscribe()
@@ -412,7 +416,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     getConceptLanguages(concept: Concept): any {
-        const languages = []
+        const languages = [];
         for (let lang in concept.prefLabel) {
             if (concept.prefLabel.hasOwnProperty(lang) && lang != this.language) {
                 languages.push(lang)
@@ -430,19 +434,19 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         person: null,
         role: null,
         public: true
-      }
+      };
       this.study.personInRoles = [ ...this.study.personInRoles, personInRole ]
     }
 
     removePersonInRole(personInRole: PersonInRole) {
-      let index: number = this.study.personInRoles.indexOf(personInRole)
+      let index: number = this.study.personInRoles.indexOf(personInRole);
       if (index !== -1) {
         this.study.personInRoles.splice(index, 1)
       }
     }
 
     showAddPersonModal(personInRole: PersonInRole): void {
-      this.personInRoleForNewPerson = personInRole
+      this.personInRoleForNewPerson = personInRole;
       this.initNewPerson()
     }
 
@@ -453,7 +457,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     savePerson(event): void {
       this.personService.save(this.newPerson)
         .subscribe(savedPerson => {
-          this.getAllPersons()
+          this.getAllPersons();
           if (this.personInRoleForNewPerson) {
             this.personInRoleForNewPerson.person = savedPerson
           }
@@ -462,9 +466,30 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     closeAddPersonModal() {
-      this.newPerson = null
+      this.newPerson = null;
       this.personInRoleForNewPerson = null
     }
+
+  showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+    this.initNewOrganizationUnit()
+  }
+
+  private initNewOrganizationUnit(): void {
+    this.newOrganizationUnit = this.organizationUnitService.initNew()
+  }
+
+  saveOrganizationUnit(event): void {
+    this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
+    this.organizationUnitService.save(this.newOrganizationUnit)
+      .subscribe(organizationUnit => {
+        this.getAvailableOrganizations();
+        this.closeAddOrganizationUnitModal()
+      })
+  }
+
+  closeAddOrganizationUnitModal() {
+    this.newOrganizationUnit = null
+  }
 
     addLink() {
       if (!this.study.links) {
@@ -474,8 +499,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         id: null,
         prefLabel: null,
         linkUrl: null
-      }
-      this.initProperties(link, [ 'prefLabel', 'linkUrl' ])
+      };
+      this.initProperties(link, [ 'prefLabel', 'linkUrl' ]);
       this.study.links = [ ...this.study.links, link ]
     }
 
@@ -487,10 +512,10 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     correctLinkUrlFormat(link: Link): void {
-      let linkUrl: string = link.linkUrl[this.language]
+      let linkUrl: string = link.linkUrl[this.language];
 
-      let isValidUrl: boolean = this.validUrlExpression.test(linkUrl)
-      let isPartiallyValidUrlScheme: boolean = this.partiallyValidUrlSchemeExpression.test(linkUrl)
+      let isValidUrl: boolean = this.validUrlExpression.test(linkUrl);
+      let isPartiallyValidUrlScheme: boolean = this.partiallyValidUrlSchemeExpression.test(linkUrl);
 
       link.linkUrl[this.language] = isValidUrl || (!isValidUrl && isPartiallyValidUrlScheme) ? linkUrl :  this.urlSchemeHttpPrefix+linkUrl
     }
@@ -520,8 +545,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     saveUnitType(): void {
       this.unitTypeService.save(this.newUnitType)
         .subscribe(savedUnitType => {
-          this.getAllUnitTypes()
-          this.study.unitType = savedUnitType
+          this.getAllUnitTypes();
+          this.study.unitType = savedUnitType;
           this.closeAddUnitTypeModal()
         })
     }
@@ -541,8 +566,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     saveUniverse(): void {
       this.universeService.save(this.newUniverse)
         .subscribe(savedUniverse => {
-          this.getAllUniverses()
-          this.study.universe = savedUniverse
+          this.getAllUniverses();
+          this.study.universe = savedUniverse;
           this.closeAddUniverseModal()
         })
     }
@@ -556,18 +581,18 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private initNewStudyGroup(): void {
-      const studyGroup = this.studyGroupService.initNew()
+      const studyGroup = this.studyGroupService.initNew();
       // Using study's currently selected organization as default value as
       // new study group's organization because organizations must be the same
-      studyGroup.ownerOrganization = this.study.ownerOrganization
+      studyGroup.ownerOrganization = this.study.ownerOrganization;
       this.newStudyGroup = studyGroup
     }
 
     saveStudyGroup(): void {
       this.studyGroupService.save(this.newStudyGroup)
         .subscribe(savedStudyGroup => {
-          this.updateAvailableStudyGroups()
-          this.study.studyGroup = savedStudyGroup
+          this.updateAvailableStudyGroups();
+          this.study.studyGroup = savedStudyGroup;
           this.closeAddStudyGroupModal()
         })
     }
@@ -577,36 +602,36 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     save() {
-        this.savingInProgress = true
+        this.savingInProgress = true;
 
-        this.validate()
-                
+        this.validate();
+
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
             'operations.common.save.result.fail.summary',
-            'operations.common.save.result.fail.detail')
-          this.savingInProgress = false
-          this.savingHasFailed = true
+            'operations.common.save.result.fail.detail');
+          this.savingInProgress = false;
+          this.savingHasFailed = true;
           return
         }
 
         this.study.referencePeriodStart = this.referencePeriodStart ?
-          this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null
+          this.dateUtils.convertToIsoDate(this.referencePeriodStart) : null;
         this.study.referencePeriodEnd = this.referencePeriodEnd ?
-          this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null
+          this.dateUtils.convertToIsoDate(this.referencePeriodEnd) : null;
 
         this.study.collectionStartDate = this.collectionStartDate ?
-          this.dateUtils.convertToIsoDate(this.collectionStartDate) : null
+          this.dateUtils.convertToIsoDate(this.collectionStartDate) : null;
         this.study.collectionEndDate = this.collectionEndDate ?
-          this.dateUtils.convertToIsoDate(this.collectionEndDate) : null
+          this.dateUtils.convertToIsoDate(this.collectionEndDate) : null;
 
         // trailing white space to separate free concepts in search queries
-        this.study.freeConcepts[this.language] = this.freeConcepts.join('; ')
+        this.study.freeConcepts[this.language] = this.freeConcepts.join('; ');
 
         this.study.datasetTypes = this.resolveSelectedDatasetTypes();
 
         // Remove empty/null predecessors
-        this.study.predecessors = this.study.predecessors.filter(predecessor => predecessor && predecessor.id)
+        this.study.predecessors = this.study.predecessors.filter(predecessor => predecessor && predecessor.id);
 
         this.editorStudyService.save(this.study)
             .finally(() => {

@@ -9,5 +9,6 @@ public interface OrganizationUnitService extends Service<UUID, OrganizationUnit>
 
     Optional<OrganizationUnit> findByAbbreviation(String abbreviation);
 
-    OrganizationUnit save(UUID organizationId, OrganizationUnit organizationUnit);
+    OrganizationUnit save(UUID parentOrganizationId, OrganizationUnit organizationUnit);
+    OrganizationUnit save(OrganizationUnit organizationUnit);
 }

@@ -592,7 +592,8 @@
       "helpText": "Merkistö vaikuttaa siihen, näkyvätkö ääkköset ja muut erikoismerkit oikein tuonnin jälkeen. Windows-käyttöjärjestelmän Excelillä tallennetun CSV-tiedoston merkistö on yleensä <em>ISO-8859-15</em>. Mac-tietokoneen Excelillä merkistö on yleensä <em>MacRoman</em>."
     },
     "buttons": {
-      "import": "Tuo muuttujat"
+      "import": "Tuo muuttujat",
+      "preview": "Esikatselu"
     }
   },
   "exportInstanceVariablesAsCsvButton":"Lataa muuttujat CSV-tiedostona",

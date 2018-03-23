@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms'
 
 import { Dataset } from '../../../model2/dataset'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
+import { PapaParseService } from 'ngx-papaparse';
 import { Study } from '../../../model2/study'
 import {TranslateService} from '@ngx-translate/core';
 
@@ -28,15 +29,24 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   file: File
   overwrite: boolean = false
   encoding: string
+  showPreview: boolean = false
+  csvJSON: Object
 
   importInProgress: boolean = false
   importHasFailed: boolean = false
+
+  parseOptions: Object = {
+      header: true,
+      preview: 25,
+      skipEmptyLines: true
+  }
 
   @Output() onImport: EventEmitter<void> = new EventEmitter<void>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
     private instanceVariableService: EditorInstanceVariableService,
+    private papaParseService: PapaParseService,
     private translateService: TranslateService
   ) { }
 
@@ -85,6 +95,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
     else {
       this.file = null
     }
+    this.showPreview = false
 
     this.validate()
   }
@@ -112,6 +123,8 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   }
 
   doCancel(): void {
+    this.showPreview = false
+    this.file = null
     this.onCancel.emit()
   }
 
@@ -128,6 +141,23 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       this.showWarning()
     } else {
       this.doImport()
+    }
+  }
+
+  doPreview(): void {
+    this.showPreview = !this.showPreview
+
+    if (this.showPreview) {
+      const reader: FileReader = new FileReader()
+      reader.readAsText(this.file, this.encoding)
+
+      reader.onload = () => {
+        const csvString: string = reader.result.replace(/^.*/, function(m) {
+            return m.replace(/\./g, '_')
+        })
+
+        this.csvJSON = this.papaParseService.parse(csvString, this.parseOptions).data
+      }
     }
   }
 }

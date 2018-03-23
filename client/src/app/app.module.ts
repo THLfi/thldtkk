@@ -21,6 +21,7 @@ import { CalendarModule } from 'primeng/components/calendar/calendar'
 import { DataTableModule } from 'primeng/primeng'
 import { SharedModule } from 'primeng/primeng'
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng'
+import { PapaParseModule } from 'ngx-papaparse';
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -238,6 +239,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         DataTableModule,
         SharedModule,
         ConfirmDialogModule,
+        PapaParseModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

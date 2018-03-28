@@ -5,7 +5,7 @@
             draggable="false"
             resizable="false"
             closeOnEscape="false"
-            width="600"
+            width="900"
             positionTop="70"
             [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
     <p-header>
@@ -66,7 +66,7 @@
               {{ 'importInstanceVariablesModal.buttons.preview' | translate }}
               <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
             </button>
-            <p-dataTable [value]="csvJSON" scrollable="true" scrollHeight="300px">
+            <p-dataTable [value]="csvJSON" scrollable="true" scrollHeight="250px">
               <p-column field="prefLabel" header="prefLabel" [style]="{'width':'250px'}"></p-column>
               <p-column field="id" header="id" [style]="{'width':'250px'}"></p-column>
               <p-column field="technicalName" header="technicalName" [style]="{'width':'250px'}"></p-column>

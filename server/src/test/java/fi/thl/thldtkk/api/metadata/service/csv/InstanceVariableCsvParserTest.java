@@ -130,7 +130,7 @@ public class InstanceVariableCsvParserTest {
     assertThat(results.getParsedObject().get()).hasSize(2);
     ParsingResult<InstanceVariable> firstResult = results.getParsedObject().get().iterator().next();
     assertFalse(firstResult.getParsedObject().isPresent());
-    assertThat(firstResult.getMessages()).containsExactly("import.csv.error.missingRequiredValue.prefLabel");
+    assertThat(firstResult.getMessages()).containsExactly("import.csv.error.missingRequiredValue.rowOmitted|prefLabel");
   }
 
   @Test
@@ -142,8 +142,8 @@ public class InstanceVariableCsvParserTest {
     assertThat(results.getParsedObject().get()).hasSize(1);
     ParsingResult<InstanceVariable> firstResult = results.getParsedObject().get().iterator().next();
     assertTrue(firstResult.getParsedObject().isPresent());
-    assertThat(firstResult.getMessages()).containsExactly("import.csv.warn.invalidIsoDate.referencePeriodStart",
-      "import.csv.warn.invalidIsoDate.referencePeriodEnd");
+    assertThat(firstResult.getMessages()).containsExactly("import.csv.warn.invalidIsoDate|referencePeriodStart",
+      "import.csv.warn.invalidIsoDate|referencePeriodEnd");
   }
 
   @Test
@@ -249,7 +249,7 @@ public class InstanceVariableCsvParserTest {
     Optional<Unit> actualUnit = iv.getUnit();
 
     assertFalse(actualUnit.isPresent());
-    assertThat(firstResult.getMessages()).containsExactly("import.csv.warn.missingRequiredValue.unit.prefLabel");
+    assertThat(firstResult.getMessages()).containsExactly("import.csv.warn.missingRequiredValue|unit.prefLabel");
   }
 
   @Test

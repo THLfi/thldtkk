@@ -2,6 +2,7 @@ import {
   Component, Input, EventEmitter, Output, OnInit,
   ViewChild, AfterContentChecked
 } from '@angular/core'
+import swal from 'sweetalert2'
 import { NgForm } from '@angular/forms'
 
 import { Dataset } from '../../../model2/dataset'
@@ -9,6 +10,7 @@ import { EditorInstanceVariableService } from '../../../services-editor/editor-i
 import { PapaParseService } from 'ngx-papaparse';
 import { Study } from '../../../model2/study'
 import {TranslateService} from '@ngx-translate/core';
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -118,7 +120,29 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       .subscribe(result => {
         this.importInProgress = false
         this.importHasFailed = false
+
+        // collect all row messages
+        const messages: Array<String> = result.messages.slice(0)
+        for (let i = 0; i < result.parsedObject.length; i++) {
+          for (let j = 0; j < result.parsedObject[i].messages.length; j++) {
+            messages.push(result.parsedObject[i].messages[j] + '|' + (i + 1))
+          }
+        }
+
+        if (!Array.isArray(messages) || !messages.length) {
+          this.showSwalSuccess(result.parsedObject.length)
+        } else {
+          this.showSwalErrors(messages)
+        }
+
+        this.showPreview = false
+        this.file = null
         this.onImport.emit()
+      }, error => {
+        const messages: Array<String> = error.json().messages
+        if (Array.isArray(messages) && messages.length > 0) {
+          this.showSwalErrors(messages)
+        }
       })
   }
 
@@ -159,5 +183,59 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
         this.csvJSON = this.papaParseService.parse(csvString, this.parseOptions).data
       }
     }
+  }
+
+  private showSwalSuccess(instanceVariablesImported: number): void {
+    Observable.forkJoin(
+      this.translateService.get('importInstanceVariablesModal.result.success'),
+      this.translateService.get('importInstanceVariablesModal.result.instanceVariablesImported')
+    ).subscribe(data => {
+      swal({
+        title: data[0] as string,
+        html: instanceVariablesImported + ' ' + (data[1] as string),
+        type: 'success',
+        animation: false
+      })
+    })
+  }
+
+  private showSwalErrors(messages: Array<String>): void {
+    const messagesToTranslate: string[] = []
+    messages.forEach( (message) => {
+      const stringToTranslate: string = message as string
+      messagesToTranslate.push(stringToTranslate.split('|', 1)[0])
+    })
+
+    const observableBatch = []
+    observableBatch.push(this.translateService.get('importInstanceVariablesModal.result.errors'))
+    observableBatch.push(this.translateService.get('importInstanceVariablesModal.result.row'))
+    observableBatch.push(this.translateService.get('importInstanceVariablesModal.result.column'))
+    messagesToTranslate.forEach( (message) => {
+      observableBatch.push(this.translateService.get(message))
+    })
+
+    Observable.forkJoin(
+      observableBatch
+    ).subscribe(data => {
+      const translatedMessages: string[] = []
+      for (let i = 3; i < data.length; i++) {
+        const message: string = messages[i - 3] as string
+        if (message.indexOf('|') > -1) {
+          translatedMessages.push((data[1] as string) + ' ' + message.split('|', 3)[2] + ', '
+              + (data[2] as string) + ' \"' + message.split('|', 3)[1] + '\": '
+              + (data[i] as string))
+        } else {
+          translatedMessages.push(data[i] as string)
+        }
+      }
+
+      swal({
+        title: data[0] as string,
+        html: translatedMessages.join('<br><br>'),
+        type: 'warning',
+        animation: false,
+        width: '800px'
+      })
+    })
   }
 }

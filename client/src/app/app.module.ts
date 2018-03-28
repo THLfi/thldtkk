@@ -22,6 +22,7 @@ import { DataTableModule } from 'primeng/primeng'
 import { SharedModule } from 'primeng/primeng'
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng'
 import { PapaParseModule } from 'ngx-papaparse';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -246,6 +247,12 @@ export function TranslateHttpLoaderFactory(http: Http) {
                 useFactory: TranslateHttpLoaderFactory,
                 deps: [Http]
             }
+        }),
+        SweetAlert2Module.forRoot({
+            buttonsStyling: false,
+            customClass: 'modal-content',
+            confirmButtonClass: 'btn btn-primary',
+            cancelButtonClass: 'btn'
         })
     ],
     providers: [

@@ -134,7 +134,7 @@ public class InstanceVariableCsvParser {
     }
     else {
       isRowValid = false;
-      rowMessages.add("import.csv.error.missingRequiredValue.prefLabel");
+      rowMessages.add("import.csv.error.missingRequiredValue.rowOmitted|prefLabel");
     }
 
     sanitize(row.get("technicalName")).ifPresent(technicalName -> instanceVariable.setTechnicalName(technicalName));
@@ -176,33 +176,37 @@ public class InstanceVariableCsvParser {
 
       catch(UndefinedLabelException e) {
           isRowValid = false;
-          rowMessages.add("import.csv.error.missingRequiredValue.codeList.prefLabel");
+          rowMessages.add("import.csv.error.missingRequiredValue.emptyField|codeList.prefLabel");
       }
     }
 
     Optional<String> unitTypePrefLabel = sanitize(row.get("unitType.prefLabel"));
-    if (unitTypePrefLabel.isPresent()) {
+    if (unitTypePrefLabel.isPresent() && !unitTypePrefLabel.get().isEmpty()) {
         Optional<UnitType> unitType = unitTypeService.findByPrefLabel(unitTypePrefLabel.get());
         unitType.ifPresent(instanceVariable::setUnitType);
     }
 
     Optional<String> quantityPrefLabel = sanitize(row.get("quantity.prefLabel"));
-    if (quantityPrefLabel.isPresent()) {
+    if (quantityPrefLabel.isPresent() && !quantityPrefLabel.get().isEmpty()) {
         Optional<Quantity> quantity = quantityService.findByPrefLabel(quantityPrefLabel.get());
         quantity.ifPresent(instanceVariable::setQuantity);
     }
 
-    sanitize(row.get("valueRangeMin")).ifPresent(valueRangeMin -> instanceVariable.setValueRangeMin(getBigDecimalFromString(valueRangeMin)));
-    sanitize(row.get("valueRangeMax")).ifPresent(valueRangeMax -> instanceVariable.setValueRangeMax(getBigDecimalFromString(valueRangeMax)));
+    sanitize(row.get("valueRangeMin")).ifPresent(valueRangeMin -> instanceVariable.setValueRangeMin(getBigDecimalFromString(valueRangeMin, rowMessages, "valueRangeMin")));
+    sanitize(row.get("valueRangeMax")).ifPresent(valueRangeMax -> instanceVariable.setValueRangeMax(getBigDecimalFromString(valueRangeMax, rowMessages, "valueRangeMax")));
 
     Optional<String> sourceDatasetPrefLabel = sanitize(row.get("source.dataset.prefLabel"));
-    if (sourceDatasetPrefLabel.isPresent()) {
+    if (sourceDatasetPrefLabel.isPresent() && !sourceDatasetPrefLabel.get().isEmpty()) {
         Optional<Dataset> source = editorDatasetService.findByPrefLabel(sourceDatasetPrefLabel.get());
-        source.ifPresent(instanceVariable::setSource);
+        if (source.isPresent()) {
+            instanceVariable.setSource(source.get());
+        } else {
+            rowMessages.add("import.csv.error.missingRequiredValue.fieldMissingFromDb|source.dataset.prefLabel");
+        }
     }
 
     Optional<String> variablePrefLabel = sanitize(row.get("variable.prefLabel"));
-    if (variablePrefLabel.isPresent()) {
+    if (variablePrefLabel.isPresent() && !variablePrefLabel.get().isEmpty()) {
         Optional<Variable> variable = variableService.findByPrefLabel(variablePrefLabel.get());
         variable.ifPresent(instanceVariable::setVariable);
     }
@@ -222,11 +226,17 @@ public class InstanceVariableCsvParser {
     Optional<String> conceptsFromSchemeString = sanitize(row.get("conceptsFromScheme"));
     if (conceptsFromSchemeString.isPresent() && !StringUtils.isEmpty(conceptsFromSchemeString.get())) {
         String[] conceptsFromScheme = conceptsFromSchemeString.get().split(", ");
+        int wordNumber = 1;
         for (String conceptWithSchemeString : conceptsFromScheme) {
             conceptWithSchemeString = conceptWithSchemeString.substring(1, conceptWithSchemeString.length() - 1);
             String conceptWithoutSchemeString = conceptWithSchemeString.split(" <")[0];
             Optional<Concept> conceptFromScheme = conceptService.findByPrefLabel(conceptWithoutSchemeString);
-            conceptFromScheme.ifPresent(instanceVariable::addConceptsFromScheme);
+            if (conceptFromScheme.isPresent()) {
+                instanceVariable.addConceptsFromScheme(conceptFromScheme.get());
+            } else {
+                rowMessages.add("import.csv.error.missingRequiredValue.fieldMissingFromDb|conceptFromScheme (" + wordNumber + ")");
+            }
+            wordNumber++;
         }
     }
 
@@ -243,7 +253,7 @@ public class InstanceVariableCsvParser {
         date = LocalDate.parse(dateString);
       }
       catch (DateTimeParseException e) {
-        rowMessages.add("import.csv.warn.invalidIsoDate." + field);
+        rowMessages.add("import.csv.warn.invalidIsoDate|" + field);
       }
     }
     return date;
@@ -315,7 +325,7 @@ public class InstanceVariableCsvParser {
       }
 
       if(bestMatches.size() > 1) {
-          rowMessages.add("import.csv.warn.ambiguousCodeList"); // should fail import?
+          rowMessages.add("import.csv.warn.ambiguousCodeList|codeList.prefLabel"); // should fail import?
       }
 
       return bestMatches.isEmpty() ? Optional.empty() : Optional.of(bestMatches.get(0));
@@ -350,11 +360,11 @@ public class InstanceVariableCsvParser {
         unit = searchUnitBySymbol(unitSymbol.get(), language);
         unit = unit.isPresent() ? unit : Optional.of(createUnit(unitLabel, unitSymbol, language));
       } catch (AmbiguousUnitSymbolException ex) {
-        rowMessages.add("import.csv.warn.ambiguousUnitSymbol");
+        rowMessages.add("import.csv.warn.ambiguousUnitSymbol|unit.symbol");
       } catch (UndefinedLabelException ex) {
-        rowMessages.add("import.csv.warn.missingRequiredValue.unit.prefLabel");
+        rowMessages.add("import.csv.warn.missingRequiredValue|unit.prefLabel");
       } catch (UndefinedUnitSymbolException ex) {
-        rowMessages.add("import.csv.warn.missingRequiredValue.unit.symbol");
+        rowMessages.add("import.csv.warn.missingRequiredValue|unit.symbol");
       }
     }
 
@@ -407,12 +417,13 @@ public class InstanceVariableCsvParser {
     return unitService.save(unit);
   }
 
-  private BigDecimal getBigDecimalFromString(String numberString) {
+  private BigDecimal getBigDecimalFromString(String numberString, List<String> rowMessages, String field) {
       if (!StringUtils.isEmpty(numberString)) {
           try {
               return new BigDecimal(numberString.replaceAll(",", "."));
           } catch (NumberFormatException e) {
               LOG.warn("Invalid format for decimal number: {}", numberString, e);
+              rowMessages.add("import.csv.warn.invalidDecimalNumber|" + field);
           }
       }
       return null;

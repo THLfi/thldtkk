@@ -594,6 +594,13 @@
     "buttons": {
       "import": "Tuo muuttujat",
       "preview": "Esikatselu"
+    },
+    "result": {
+      "column": "sarake",
+      "errors": "CSV-tuonnissa oli virhe(-itä)",
+      "instanceVariablesImported": "muuttujaa tuotiin",
+      "row": "Rivi",
+      "success": "Muuttujien tuonti onnistui!"
     }
   },
   "exportInstanceVariablesAsCsvButton":"Lataa muuttujat CSV-tiedostona",
@@ -1008,6 +1015,31 @@
   },
   "changedAfterPublish": "Muokattu julkaisun jälkeen",
   "addNewOrganizationUnit": "Luo uusi organisaatioyksikkö",
-  "newOrganizationUnit": "Uusi organisaatioyksikkö"
+  "newOrganizationUnit": "Uusi organisaatioyksikkö",
+  "import": {
+    "csv": {
+      "error": {
+        "missingRequiredColumn": {
+          "prefLabel": "prefLabel -sarake puuttuu"
+        },
+        "missingRequiredValue": {
+          "emptyField": "arvo puuttuu",
+          "fieldMissingFromDb": "tietokannasta ei löydy arvoa",
+          "rowOmitted": "arvo puuttuu. Rivi ohitettu"
+        },
+        "noEncoding": "CSV-tiedoston merkistö puuttuu",
+        "unsupportedEncoding": "CSV-tiedoston merkistö on virheellinen",
+        "unknown": "CSV-tuonnissa tapahtui tuntematon virhe"
+      },
+      "warn": {
+        "ambiguousCodeList": "lista on epäselvä",
+        "ambiguousUnitSymbol": "mittayksikön symbooli on epäselvä",
+        "invalidDecimalNumber": "desimaaliluku -kenttä on virheellisessä muodossa",
+        "invalidIsoDate": "päivämäärä -kenttä on virheellisessä muodossa. Oikea muoto on: vvvv-kk-pp",
+        "missingRequiredValue": "arvo puuttuu"
+      }
+    }
+  }
+
 
 }

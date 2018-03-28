@@ -373,3 +373,7 @@ h3 {
 .dataset-description-tooltip .ui-tooltip-text  {
   white-space: normal;
 }
+
+.swal2-popup .swal2-content {
+  font-size: 1.5em !important;
+}

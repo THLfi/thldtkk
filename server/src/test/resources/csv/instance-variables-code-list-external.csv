@@ -1,2 +1,2 @@
-prefLabel;valueDomainType;codeList.prefLabel;codeList.referenceId;codeList.description;codeList.owner
-Sukupuoli;enumerated;Sukupuoli (THL, 2017);sukupuoli_thl_2017;THL:n sukupuoliluokitus vuonna 2017.;THL
+prefLabel;valueDomainType;codeList.prefLabel;codeList.referenceId;codeList.description;codeList.owner;codeList.codeListType
+Sukupuoli;enumerated;Sukupuoli (THL, 2017);sukupuoli_thl_2017;THL:n sukupuoliluokitus vuonna 2017.;THL;external

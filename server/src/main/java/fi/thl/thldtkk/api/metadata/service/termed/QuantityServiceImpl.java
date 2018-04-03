@@ -4,6 +4,7 @@ import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Quantity;
@@ -15,9 +16,7 @@ import fi.thl.thldtkk.api.metadata.service.QuantityService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.springframework.security.access.method.P;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class QuantityServiceImpl implements QuantityService {
 

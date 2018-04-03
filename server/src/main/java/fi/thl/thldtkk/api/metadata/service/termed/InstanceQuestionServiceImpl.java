@@ -82,28 +82,19 @@ public class InstanceQuestionServiceImpl implements InstanceQuestionService {
   }
 
   @Override
-  public Optional<InstanceQuestion> getByPrefLabel(String prefLabel) {
+  public Optional<InstanceQuestion> findByPrefLabel(String prefLabel) {
     if (prefLabel == null || prefLabel.isEmpty()) {
       return Optional.empty();
     }
 
-    String prefLabelSearch = "\"" + prefLabel + "\"";
+    prefLabel = "\"" + prefLabel + "\"";
 
-    Optional<InstanceQuestion> instanceQuestion =  nodes.query(
+    return nodes.query(
             KeyValueCriteria.keyValue(
                     "properties.prefLabel",
-                    prefLabelSearch),
+                    prefLabel),
             1)
             .map(InstanceQuestion::new)
             .findFirst();
-
-    if (!instanceQuestion.isPresent()) {
-      Map<String, String> prefLabelMap = new LinkedHashMap<>();
-      prefLabelMap.put("fi", prefLabel);
-      InstanceQuestion instanceQuestionNew = new InstanceQuestion(randomUUID(), prefLabelMap);
-      instanceQuestionNew = save(instanceQuestionNew);
-      return Optional.ofNullable(instanceQuestionNew);
-    }
-    return instanceQuestion;
   }
 }

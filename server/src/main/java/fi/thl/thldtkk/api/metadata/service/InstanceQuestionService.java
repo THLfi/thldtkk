@@ -9,5 +9,5 @@ public interface InstanceQuestionService extends Service<UUID, InstanceQuestion>
 
   List<InstanceQuestion> findDatasetInstanceQuestions(UUID studyId, UUID datasetId, String query);
 
-  Optional<InstanceQuestion> getByPrefLabel(String prefLabel);
+  Optional<InstanceQuestion> findByPrefLabel(String prefLabel);
 }

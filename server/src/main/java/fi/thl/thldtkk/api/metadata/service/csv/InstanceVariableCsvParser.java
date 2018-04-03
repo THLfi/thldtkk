@@ -19,11 +19,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_EXTERNAL;
+import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_INTERNAL;
 import static java.util.UUID.randomUUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Component;
 public class InstanceVariableCsvParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(InstanceVariableCsvParser.class);
+  private static final int CODE_ITEM_PARTS = 2;
 
   private CodeListService codeListService;
 
@@ -154,41 +156,73 @@ public class InstanceVariableCsvParser {
     sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
     sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(language, dataFormat));
 
-    Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
-    Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
+    Optional<String> codeListType = sanitize(row.get("codeList.codeListType"));
 
-    if((codeListPrefLabel.isPresent() && !StringUtils.isEmpty(codeListPrefLabel.get()))
-            || (codeListReferenceId.isPresent() && !StringUtils.isEmpty(codeListReferenceId.get()))) {
-
+    if (codeListType.isPresent()) {
+      Optional<String> codeListPrefLabel = sanitize(row.get("codeList.prefLabel"));
       Optional<String> codeListDescription = sanitize(row.get("codeList.description"));
       Optional<String> codeListOwner = sanitize(row.get("codeList.owner"));
 
-      try {
-          Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, language, rowMessages);
-          if(!codeList.isPresent()) {
-              codeList = createCodeList(codeListPrefLabel, language, codeListReferenceId, codeListDescription, codeListOwner);
-          }
-          codeList.ifPresent(cl -> {
-                  instanceVariable.setCodeList(cl);
-                  instanceVariable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
-                });
-      }
+      if (codeListType.get().equals(CODE_LIST_TYPE_EXTERNAL)) {
+        Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
 
-      catch(UndefinedLabelException e) {
-          isRowValid = false;
-          rowMessages.add("import.csv.error.missingRequiredValue.emptyField|codeList.prefLabel");
+        try {
+            Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, language, rowMessages);
+            if (!codeList.isPresent()) {
+                codeList = createCodeList(rowMessages, language, CODE_LIST_TYPE_EXTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, codeListReferenceId, Optional.empty());
+            }
+            codeList.ifPresent(cl -> {
+                instanceVariable.setCodeList(cl);
+                instanceVariable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
+            });
+        } catch (UndefinedLabelException e) {
+            isRowValid = false;
+            rowMessages.add("import.csv.error.missingRequiredValue.rowOmitted|codeList.prefLabel");
+        }
+      } else if (codeListType.get().equals(CODE_LIST_TYPE_INTERNAL)) {
+        Optional<String> codeListItems = sanitize(row.get("codeList.codeItems"));
+
+        try {
+            Optional<CodeList> codeList = createCodeList(rowMessages, language, CODE_LIST_TYPE_INTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, Optional.empty(), codeListItems);
+
+            codeList.ifPresent(cl -> {
+                instanceVariable.setCodeList(cl);
+                instanceVariable.setValueDomainType(InstanceVariable.VALUE_DOMAIN_TYPE_ENUMERATED);
+            });
+        } catch (UndefinedLabelException e) {
+            isRowValid = false;
+            rowMessages.add("import.csv.error.missingRequiredValue.rowOmitted|codeList.prefLabel");
+        }
       }
     }
 
     Optional<String> unitTypePrefLabel = sanitize(row.get("unitType.prefLabel"));
     if (unitTypePrefLabel.isPresent() && !unitTypePrefLabel.get().isEmpty()) {
+        Optional<String> unitTypeDescription = sanitize(row.get("unitType.description"));
         Optional<UnitType> unitType = unitTypeService.findByPrefLabel(unitTypePrefLabel.get());
+        if (!unitType.isPresent()) {
+            Map<String, String> prefLabelMap = new LinkedHashMap<>();
+            Map<String, String> descriptionMap = new LinkedHashMap<>();
+
+            prefLabelMap.put("fi", prefLabel);
+            if (!StringUtils.isEmpty(unitTypeDescription.get())) {
+                descriptionMap.put("fi", unitTypeDescription.get());
+            }
+            UnitType unitTypeNew = new UnitType(randomUUID(), prefLabelMap, descriptionMap);
+            unitType = Optional.ofNullable(unitTypeService.save(unitTypeNew));
+        }
         unitType.ifPresent(instanceVariable::setUnitType);
     }
 
     Optional<String> quantityPrefLabel = sanitize(row.get("quantity.prefLabel"));
     if (quantityPrefLabel.isPresent() && !quantityPrefLabel.get().isEmpty()) {
         Optional<Quantity> quantity = quantityService.findByPrefLabel(quantityPrefLabel.get());
+        if (!quantity.isPresent()) {
+            Map<String, String> prefLabelMap = new LinkedHashMap<>();
+            prefLabelMap.put("fi", prefLabel);
+            Quantity quantityNew = new Quantity(randomUUID(), prefLabelMap);
+            quantity = Optional.ofNullable(quantityService.save(quantityNew));
+        }
         quantity.ifPresent(instanceVariable::setQuantity);
     }
 
@@ -207,7 +241,19 @@ public class InstanceVariableCsvParser {
 
     Optional<String> variablePrefLabel = sanitize(row.get("variable.prefLabel"));
     if (variablePrefLabel.isPresent() && !variablePrefLabel.get().isEmpty()) {
+        Optional<String> variableDescription = sanitize(row.get("variable.description"));
         Optional<Variable> variable = variableService.findByPrefLabel(variablePrefLabel.get());
+        if (!variable.isPresent()) {
+            Map<String, String> prefLabelMap = new LinkedHashMap<>();
+            Map<String, String> descriptionMap = new LinkedHashMap<>();
+
+            prefLabelMap.put("fi", prefLabel);
+            if (!StringUtils.isEmpty(variableDescription.get())) {
+                descriptionMap.put("fi", variableDescription.get());
+            }
+            Variable variableNew = new Variable(randomUUID(), prefLabelMap, descriptionMap);
+            variable = Optional.ofNullable(variableService.save(variableNew));
+        }
         variable.ifPresent(instanceVariable::setVariable);
     }
 
@@ -218,7 +264,13 @@ public class InstanceVariableCsvParser {
         String[] instanceQuestions = instanceQuestionsString.get().split(", ");
         for (String instanceQuestionString : instanceQuestions) {
             instanceQuestionString = instanceQuestionString.substring(1, instanceQuestionString.length() - 1);
-            Optional<InstanceQuestion> instanceQuestion = instanceQuestionService.getByPrefLabel(instanceQuestionString);
+            Optional<InstanceQuestion> instanceQuestion = instanceQuestionService.findByPrefLabel(instanceQuestionString);
+            if (!instanceQuestion.isPresent()) {
+                Map<String, String> prefLabelMap = new LinkedHashMap<>();
+                prefLabelMap.put("fi", prefLabel);
+                InstanceQuestion instanceQuestionNew = new InstanceQuestion(randomUUID(), prefLabelMap);
+                instanceQuestion = Optional.ofNullable(instanceQuestionService.save(instanceQuestionNew));
+            }
             instanceQuestion.ifPresent(instanceVariable::addInstanceQuestion);
         }
     }
@@ -331,7 +383,9 @@ public class InstanceVariableCsvParser {
       return bestMatches.isEmpty() ? Optional.empty() : Optional.of(bestMatches.get(0));
   }
 
-  private Optional<CodeList> createCodeList(Optional<String> label, String language, Optional<String> referenceId, Optional<String> description, Optional<String> owner) throws UndefinedLabelException {
+  private Optional<CodeList> createCodeList(List<String> rowMessages, String language, String codeListType,
+                                            Optional<String> label, Optional<String> description, Optional<String> owner,
+                                            Optional<String> referenceId, Optional<String> codeListItems) throws UndefinedLabelException {
 
       if(!label.isPresent() || (label.isPresent() && StringUtils.isEmpty(label.get())) ) {
           throw new UndefinedLabelException();
@@ -340,11 +394,50 @@ public class InstanceVariableCsvParser {
       CodeList codeList = new CodeList();
       codeList.getPrefLabel().put(language, label.get());
 
-      codeList.setCodeListType(CodeList.CODE_LIST_TYPE_EXTERNAL);
+      codeList.setCodeListType(codeListType);
 
-      referenceId.ifPresent(refId -> codeList.setReferenceId(refId));
+      referenceId.ifPresent(codeList::setReferenceId);
       description.ifPresent(localizedDescription -> codeList.getDescription().put(language, localizedDescription));
       owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
+
+      if (codeListItems.isPresent() && !StringUtils.isEmpty(codeListItems.get())) {
+          String[] codeListCodeItems = codeListItems.get().split(", ");
+
+          int wordNumber = 1;
+          for (String codeListCodeItem : codeListCodeItems) {
+              String[] codeListCodeItemParts = codeListCodeItem.split(":");
+
+              if (codeListCodeItemParts.length == CODE_ITEM_PARTS) {
+                  String codeItemCode = null, codeItemPrefLabel = null;
+
+                  String codeItemCodePart = codeListCodeItemParts[0];
+                  if (codeItemCodePart.substring(0, 1).equals("'") && codeItemCodePart.substring(codeItemCodePart.length() - 1).equals("'")) {
+                      codeItemCode = codeItemCodePart.substring(1, codeItemCodePart.length() - 1);
+                  }
+
+                  String codeItemPrefLabelPart = codeListCodeItemParts[1];
+                  if (codeItemPrefLabelPart.substring(0, 1).equals("'") && codeItemPrefLabelPart.substring(codeItemPrefLabelPart.length() - 1).equals("'")) {
+                      codeItemPrefLabel = codeItemPrefLabelPart.substring(1, codeItemPrefLabelPart.length() - 1);
+                  }
+
+                  if (codeItemCode != null && codeItemPrefLabel != null) {
+                      CodeItem codeItem = new CodeItem(randomUUID());
+                      codeItem.setCode(codeItemCode);
+
+                      Map<String, String> prefLabelMap = new LinkedHashMap<>();
+                      prefLabelMap.put(language, codeItemPrefLabel);
+                      codeItem.setPrefLabel(prefLabelMap);
+
+                      codeList.addCodeItem(codeItem);
+                  } else {
+                      rowMessages.add("import.csv.warn.codeItemWrongFormat|codeList.codeItems (" + wordNumber + ")");
+                  }
+              } else {
+                  rowMessages.add("import.csv.warn.codeItemWrongFormat|codeList.codeItems (" + wordNumber + ")");
+              }
+              wordNumber++;
+          }
+      }
 
       return Optional.ofNullable(codeListService.save(codeList));
   }

@@ -119,6 +119,10 @@ public class CodeList {
     return codeItems;
   }
 
+  public void addCodeItem(CodeItem codeItem) {
+    this.codeItems.add(codeItem);
+  }
+
   public Node toNode() {
     Node node = new Node(id, TERMED_NODE_CLASS);
     getCodeListType().ifPresent(clt -> node.getProperties().put("codeListType", toPropertyValue(clt)));

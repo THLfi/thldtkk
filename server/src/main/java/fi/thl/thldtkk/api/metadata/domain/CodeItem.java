@@ -60,6 +60,14 @@ public class CodeItem {
     return prefLabel;
   }
 
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public void setPrefLabel(Map<String, String> prefLabel) {
+    this.prefLabel = prefLabel;
+  }
+
   public Node toNode() {
     Node node = new Node(id, TERMED_NODE_CLASS);
     getCode().ifPresent(rid -> node.getProperties().put("code", toPropertyValue(rid)));

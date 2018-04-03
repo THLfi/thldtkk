@@ -10,15 +10,15 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.springframework.security.access.method.P;
+import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 public class UnitTypeServiceImpl implements UnitTypeService {

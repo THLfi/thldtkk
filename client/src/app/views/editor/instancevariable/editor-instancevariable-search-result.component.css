@@ -1,0 +1,33 @@
+.search-result {
+    margin: 1em 1em;
+    padding-right: 1em;
+}
+
+.instance-variable-label {
+    margin-bottom: 0.5em;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.has-variable,
+.no-variable {
+    border: 2px solid;
+    text-align: center;
+}
+.has-variable {
+    border-color: #01837A;
+}
+.has-variable a {
+    display: block;
+    color: #01837A;
+}
+.no-variable {
+    border-color: lightgray;
+    color: #767676;
+}
+
+.variable-label,
+.instance-variable-description,
+.dataset-label {
+    margin-bottom: 1em;
+}

@@ -104,6 +104,9 @@ import { DatasetTabsComponent } from './views/editor/dataset/dataset-tabs.compon
 import { DatasetSidebarComponent } from './views/editor/dataset/sidebar/dataset-sidebar.component'
 import { EditorHelpLinkComponent } from './views/editor/help/editor-help-link.component'
 import { EditorHelpTextComponent } from './views/editor/help/editor-help-text.component'
+import { EditorInstanceVariableSearchComponent } from './views/editor/instancevariable/editor-instancevariable-search.component'
+import { EditorInstanceVariableSearchResultComponent} from './views/editor/instancevariable/editor-instancevariable-search-result.component'
+import { EditorVariableViewComponent } from './views/editor/variable/editor-variable-view.component'
 import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
 import { EditorStudyDatasetsComponent} from './views/editor/study/editor-study-datasets.component'
@@ -172,6 +175,9 @@ export function TranslateHttpLoaderFactory(http: Http) {
         EditorDatasetComponent,
         EditorHelpLinkComponent,
         EditorHelpTextComponent,
+        EditorInstanceVariableSearchComponent,
+        EditorInstanceVariableSearchResultComponent,
+        EditorVariableViewComponent,
         EditorLoginComponent,
         EditorStudyListComponent,
         EditorStudyDatasetsComponent,

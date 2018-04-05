@@ -1,0 +1,68 @@
+<div class="search-result">
+  <div class="row">
+    <div *ngIf="instanceVariable.prefLabel"
+         class="col-xs-12 col-sm-8 col-md-9 instance-variable-label">
+      <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
+        <a routerLink="/editor/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang}}</a>
+      </ng-container>
+      <ng-container *ngIf="!instanceVariable.dataset">
+        {{instanceVariable.prefLabel | lang}}
+      </ng-container>
+    </div>
+    <div class="col-xs-10 col-sm-4 col-md-3 variable-label">
+      <div [ngClass]="{ 'has-variable': instanceVariable.variable, 'no-variable': !instanceVariable.variable }">
+        <ng-container *ngIf="instanceVariable.variable; else noVariable;">
+          <a routerLink="/editor/variables/{{instanceVariable.variable.id}}">{{instanceVariable.variable.prefLabel | lang }}</a>
+        </ng-container>
+        <ng-template #noVariable>
+          {{'editor.searchInstanceVariable.noVariable' | translate }}
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-9 instance-variable-description">
+      {{ instanceVariable.description | lang }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-9">
+      <div *ngIf="instanceVariable.dataset && instanceVariable.dataset.study"
+           class="dataset-label">
+        <a routerLink="/editor/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">
+          {{ 'editor.searchInstanceVariable.foundInDataset' | translate }}:
+          {{ instanceVariable.dataset.prefLabel | lang }}
+        </a>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-3 instance-variable-reference-period">
+      {{'referencePeriod' | translate}}:<br/>
+
+      <ng-container *ngIf="(instanceVariable.referencePeriodStart || instanceVariable.referencePeriodEnd); else inheritedDatasetReferencePeriod">
+        {{ instanceVariable.referencePeriodStart | date:'dd.MM.yyyy' }}
+        —
+        {{ instanceVariable.referencePeriodEnd | date:'dd.MM.yyyy' }}
+      </ng-container>
+
+      <ng-template #inheritedDatasetReferencePeriod>
+        <ng-container *ngIf="(instanceVariable.dataset && (instanceVariable.dataset.referencePeriodStart || instanceVariable.dataset.referencePeriodEnd)); else inheritedStudyReferencePeriod">
+          {{ instanceVariable.dataset.referencePeriodStart | date:'dd.MM.yyyy' }}
+          —
+          {{ instanceVariable.dataset.referencePeriodEnd | date:'dd.MM.yyyy' }}
+        </ng-container>
+      </ng-template>
+
+      <ng-template #inheritedStudyReferencePeriod>
+        <ng-container *ngIf="(instanceVariable.dataset.study && (instanceVariable.dataset.study.referencePeriodStart || instanceVariable.dataset.study.referencePeriodEnd)); else noReferencePeriod">
+          {{ instanceVariable.dataset.study.referencePeriodStart | date:'dd.MM.yyyy' }}
+          —
+          {{ instanceVariable.dataset.study.referencePeriodEnd | date:'dd.MM.yyyy' }}
+        </ng-container>
+      </ng-template>
+
+      <ng-template #noReferencePeriod>
+        {{'editor.searchInstanceVariable.noReferencePeriod' | translate}}
+      </ng-template>
+    </div>
+  </div>
+</div>

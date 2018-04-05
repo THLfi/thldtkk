@@ -1,0 +1,86 @@
+<div class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{ 'instanceVariables' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12">
+        <div class="input-group">
+          <input [(ngModel)]="searchText"
+                 (keyup)="delayedSearchInstanceVariables(searchText)"
+                 placeholder="{{ 'editor.searchInstanceVariable.searchFieldPlaceholder' | translate }}"
+                 type="text"
+                 id="search-field"
+                 class="form-control">
+          <span class="input-group-btn">
+            <button (click)="delayedSearchInstanceVariables(searchText)"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-search"></span>
+              <span class="sr-only">{{ 'search' | translate }}</span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="instanceVariables" class="content-body container-fluid">
+    <ng-container *ngIf="instanceVariables && (!searchInProgress || searchingMoreResults)">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="search-results-summary">
+            {{ 'editor.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase }}
+            "{{ latestLookupTerm }}"
+          </div>
+        </div>
+      </div>
+
+        <div *ngIf="instanceVariables.length"
+             class="row">
+          <div class="col-xs-12 col-sm-9">
+            <div class="search-results-container">
+              <ng-container *ngFor="let instanceVariable of instanceVariables;let isLastResult=last">
+                <editor-instancevariable-search-result [instanceVariable]="instanceVariable"></editor-instancevariable-search-result>
+                <ng-container *ngIf="!isLastResult">
+                  <hr>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <div *ngIf="variables && variables.length"
+                 class="col-xs-12 col-sm-3">
+            <h2>{{ 'variables' | translate | uppercase }}</h2>
+            <a *ngFor="let variable of variables"
+               routerLink="/editor/variables/{{ variable.id }}"
+               class="variable-link">
+              {{ variable.prefLabel | lang }}
+            </a>
+          </div>
+        </div>
+
+    </ng-container>
+
+    <div *ngIf="instanceVariables && instanceVariables.length >= maxResults && !searchInProgress && !searchingMoreResults"
+         class="row">
+      <div class="col-xs-12 show-more-results">
+        <button (click)="loadMoreResults()"
+                class="btn btn-sm btn-default">
+          {{ 'loadMoreResults' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchInProgress || searchingMoreResults"
+       class="row">
+    <div class="col-xs-12">
+      <thl-spinner></thl-spinner>
+    </div>
+  </div>
+
+</div>

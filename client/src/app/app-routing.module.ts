@@ -20,6 +20,8 @@ import { EditorLoginComponent } from './views/editor/login/editor-login.componen
 import { InstanceVariableComponent } from "./views/catalog/dataset/instance-variable.component";
 import { InstanceVariableEditComponent } from "./views/editor/dataset/instance-variable-edit.component";
 import { InstanceVariableSearchComponent } from "./views/catalog/instancevariables/instance-variable-search.component";
+import { EditorInstanceVariableSearchComponent } from "./views/editor/instancevariable/editor-instancevariable-search.component";
+import { EditorVariableViewComponent } from "./views/editor/variable/editor-variable-view.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
 import { RequireLoginGuard } from './require-login-guard'
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
@@ -212,6 +214,17 @@ const routes: Routes = [
             path: '',
             redirectTo: 'studies',
             pathMatch: 'full'
+          },
+          {
+            path: 'variables/:id',
+            component: EditorVariableViewComponent
+          },
+          {
+            path: 'instancevariables',
+            component: EditorInstanceVariableSearchComponent,
+            data: {
+              title: 'pageTitles.editor.instanceVariableSearch'
+            }
           }
         ]
     },

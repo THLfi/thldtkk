@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,6 +35,14 @@ public class EditorInstanceVariableController {
   public List<InstanceVariable> getCodeListInstanceVariables(
           @PathVariable("codeListId") UUID codeListId) {
     return instanceVariableService.getInstanceVariablesByCodeList(codeListId);
+  }
+
+  @ApiOperation("Search instance variables")
+  @GetJsonMapping("/instanceVariables")
+  public List<InstanceVariable> getInstanceVariables(
+          @RequestParam(value = "query", defaultValue = "") String query,
+          @RequestParam(value = "max", defaultValue = "10") Integer max) {
+    return instanceVariableService.find(query, max);
   }
 
 }

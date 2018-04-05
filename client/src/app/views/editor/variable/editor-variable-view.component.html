@@ -1,0 +1,50 @@
+<div class="content-container">
+  <ng-container *ngIf="!loadingInstanceVariables">
+    <div *ngIf="variable" class="content-header container-fluid">
+      <div class="col-xs-12">
+        <h1>{{variable.prefLabel | lang}}</h1>
+        <p>{{variable.description | lang}}</p>
+      </div>
+    </div>
+    <div class="content-body container-fluid">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover">
+          <tr>
+            <th translate="editor.variableData.instanceVariableColumnHeading"></th>
+            <th translate="editor.variableData.studyColumnHeading"></th>
+            <th translate="editor.variableData.datasetColumnHeading"></th>
+          </tr>
+          <tr *ngFor="let instanceVariable of instanceVariables">
+            <td class="col-xs-3">
+              <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study; else noStudyAndDataset">
+                <span><a routerLink="/editor/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}/instanceVariables/{{instanceVariable.id}}">{{instanceVariable.prefLabel | lang }}</a></span>
+              </ng-container>
+              <ng-template #noStudyAndDataset>
+                <span>{{ instanceVariable.prefLabel | lang }}</span>
+              </ng-template>
+            </td>
+            <td class="col-xs-3">
+              <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study">
+                <span><a routerLink="/editor/studies/{{ instanceVariable.dataset.study.id  }}">{{instanceVariable.dataset.study.prefLabel | lang }}</a></span>
+              </ng-container>
+              <ng-container *ngIf="!instanceVariable.dataset || !instanceVariable.dataset.study">
+                <span>{{'editor.variableData.noStudy' | translate }}</span>
+              </ng-container>
+            </td>
+            <td class="col-xs-3">
+              <ng-container *ngIf="instanceVariable.dataset && instanceVariable.dataset.study; else noStudyAndDataset">
+                <span><a routerLink="/editor/studies/{{ instanceVariable.dataset.study.id }}/datasets/{{ instanceVariable.dataset.id }}">{{instanceVariable.dataset.prefLabel | lang }}</a></span>
+              </ng-container>
+              <ng-template #noStudyAndDataset>
+                <span>{{'editor.variableData.noDataset' | translate }}</span>
+              </ng-template>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="loadingInstanceVariables">
+    <thl-spinner></thl-spinner>
+  </ng-container>
+</div>

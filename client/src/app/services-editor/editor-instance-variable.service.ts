@@ -110,4 +110,14 @@ export class EditorInstanceVariableService {
       + 'encoding=' + encoding
   }
 
+  search(searchText = '', max = 100): Observable<InstanceVariable[]> {
+    const url = env.contextPath
+      + env.apiPath
+      + '/editor/instanceVariables?query='
+      + searchText
+      + '&max='
+      + max
+    return this.http.get(url).map(response => response.json() as InstanceVariable[])
+  }
+
 }

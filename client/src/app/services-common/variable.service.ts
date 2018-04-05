@@ -59,10 +59,10 @@ export class VariableService {
       })
   }
 
-  getInstanceVariables(variableId: string): Observable<InstanceVariable[]> {
+  getInstanceVariables(variableId: string, graph: string): Observable<InstanceVariable[]> {
     const url = env.contextPath
       + env.apiPath
-      + '/public/variables/'
+      + '/' + graph + '/variables/'
       + variableId
       +'/instanceVariables'
     return this.http.get(url).map(response => response.json() as InstanceVariable[])

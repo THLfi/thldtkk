@@ -503,4 +503,20 @@ public class InstanceVariable implements NodeEntity {
     instanceVariable.dataFormat = this.dataFormat;
     return instanceVariable;
   }
+
+  public String getOwnerOrganizationIdAsString() {
+    if (getDataset().isPresent()) {
+      Dataset dataset = getDataset().get();
+
+      if (dataset.getStudy().isPresent()) {
+        Study study = dataset.getStudy().get();
+
+        if (study.getOwnerOrganization().isPresent()) {
+          Organization ownerOrganization = study.getOwnerOrganization().get();
+          return ownerOrganization.getId().toString();
+        }
+      }
+    }
+    return "";
+  }
 }

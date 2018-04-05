@@ -34,7 +34,7 @@ export class VariableViewComponent implements OnInit {
       this.variable = variable
       this.updatePageTitle()
       });
-    this.variableService.getInstanceVariables(variableId)
+    this.variableService.getInstanceVariables(variableId, 'public')
       .subscribe(instanceVariables => {
         this.instanceVariables = instanceVariables
         this.loadingInstanceVariables = false  

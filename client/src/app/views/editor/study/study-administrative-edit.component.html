@@ -34,7 +34,12 @@
         <study-administrative-read-only-fields [study]="study"></study-administrative-read-only-fields>
 
         <div class="form-group">
-          <p><strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong></p>
+          <p>
+            <strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong>
+            <editor-help-link [helpTextComponent]="personRegistryHelpText"></editor-help-link>
+          </p>
+          <editor-help-text #personRegistryHelpText key="editor.studyAdministrative.personRegistry.helpText"></editor-help-text>
+
           <div class="radio">
             <label for="person-registry-true">
               <input [(ngModel)]="study.personRegistry"
@@ -134,7 +139,12 @@
         </div>
 
         <div class="form-group">
-          <p><strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong></p>
+          <p>
+            <strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong>
+            <editor-help-link [helpTextComponent]="confidentialityClassHelpText"></editor-help-link>
+          </p>
+          <editor-help-text #confidentialityClassHelpText key="editor.studyAdministrative.confidentialityClass.helpText"></editor-help-text>
+
           <div class="radio">
             <label for="confidentiality-class-public">
               <input [(ngModel)]="study.confidentialityClass"
@@ -250,7 +260,9 @@
 
         <div class="form-group">
           <label for="principlesForPhysicalSecurity" translate="principlesForPhysicalSecurity.label"></label>
+          <editor-help-link [helpTextComponent]="principlesForPhysicalSecurityHelpText"></editor-help-link>
           <br>
+          <editor-help-text #principlesForPhysicalSecurityHelpText key="editor.studyAdministrative.principlesForPhysicalSecurity.helpText"></editor-help-text>
           <p-multiSelect [(ngModel)]="study.principlesForPhysicalSecurity"
                          [ngModelOptions]="{ standalone: true }"
                          [options]="principlesForPhysicalSecurityItems"
@@ -263,7 +275,9 @@
 
         <div class="form-group">
           <label for="principlesForDigitalSecurity" translate="principlesForDigitalSecurity.label"></label>
+          <editor-help-link [helpTextComponent]="principlesForDigitalSecurityHelpText"></editor-help-link>
           <br>
+          <editor-help-text #principlesForDigitalSecurityHelpText key="editor.studyAdministrative.principlesForDigitalSecurity.helpText"></editor-help-text>
           <p-multiSelect [(ngModel)]="study.principlesForDigitalSecurity"
                          [ngModelOptions]="{ standalone: true }"
                          [options]="principlesForDigitalSecurityItems"
@@ -284,7 +298,10 @@
              class="row">
           <div class="col-sm-6 col-md-4">
             <div class="form-group">
-              <label for="dataProcessingStartDate">{{ 'dataProcessingStartDate' | translate }}</label>
+              <label for="dataProcessingStartDate">
+                {{ 'dataProcessingStartDate' | translate }}
+                <editor-help-link [helpTextComponent]="dataProcessingPeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="dataProcessingStartDate"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -306,7 +323,10 @@
           </div>
           <div class="col-sm-6 col-md-4">
             <div class="form-group">
-              <label for="dataProcessingEndDate">{{ 'dataProcessingEndDate' | translate }}</label>
+              <label for="dataProcessingEndDate">
+                {{ 'dataProcessingEndDate' | translate }}
+                <editor-help-link [helpTextComponent]="dataProcessingPeriodHelpText"></editor-help-link>
+              </label>
               <br>
               <p-calendar [(ngModel)]="dataProcessingEndDate"
                           dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
@@ -326,13 +346,20 @@
               </p>
             </div>
           </div>
+          <div class="col-xs-12">
+            <editor-help-text #dataProcessingPeriodHelpText key="editor.studyAdministrative.dataProcessingPeriod.helpText"></editor-help-text>
+          </div>
         </div>
 
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <p><strong class="field-label">{{ 'retentionPolicy.label' | translate }}</strong></p>
-              <p-dropdown 
+              <p>
+                <strong class="field-label">{{ 'retentionPolicy.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="retentionPolicyHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #retentionPolicyHelpText key="editor.studyAdministrative.retentionPolicy.helpText"></editor-help-text>
+              <p-dropdown
                 [(ngModel)]="study.retentionPolicy"
                 [options]="retentionPolicies"
                 name="retention-policy">
@@ -345,6 +372,8 @@
           <div class="col-xs-12">
             <div class="form-group">
               <label for="retentionPeriod" translate="retentionPeriod"></label>
+              <editor-help-link [helpTextComponent]="retentionPeriodHelpText"></editor-help-link>
+              <editor-help-text #retentionPeriodHelpText key="editor.studyAdministrative.retentionPeriod.helpText"></editor-help-text>
               <textarea [(ngModel)]="study.retentionPeriod[language]"
                         thlAutogrow
                         id="retentionPeriod"
@@ -358,6 +387,8 @@
           <div class="col-xs-12">
             <div class="form-group">
               <label for="groundsForRetention" translate="groundsForRetention"></label>
+              <editor-help-link [helpTextComponent]="groundsForRetentionHelpText"></editor-help-link>
+              <editor-help-text #groundsForRetentionHelpText key="editor.studyAdministrative.groundsForRetention.helpText"></editor-help-text>
               <textarea [(ngModel)]="study.groundsForRetention[language]"
                         thlAutogrow
                         id="groundsForRetention"
@@ -373,6 +404,8 @@
           <div class="col-xs-12">
             <div class="form-group">
               <label for="nationalArchivesFinlandArchivalDecision" translate="nationalArchivesFinlandArchivalDecision"></label>
+              <editor-help-link [helpTextComponent]="nationalArchivesFinlandArchivalDecisionHelpText"></editor-help-link>
+              <editor-help-text #nationalArchivesFinlandArchivalDecisionHelpText key="editor.studyAdministrative.nationalArchivesFinlandArchivalDecision.helpText"></editor-help-text>
               <input [(ngModel)]="study.nationalArchivesFinlandArchivalDecision[language]"
                         id="nationalArchivesFinlandArchivalDecision"
                         name="nationalArchivesFinlandArchivalDecision"
@@ -384,7 +417,11 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <p><strong class="field-label">{{ 'existenceForm.label' | translate }}</strong></p>
+              <p>
+                <strong class="field-label">{{ 'existenceForm.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="existenceFormsHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #existenceFormsHelpText key="editor.studyAdministrative.existenceForms.helpText"></editor-help-text>
               <p-multiSelect [(ngModel)]="study.existenceForms"
                         [ngModelOptions]="{ standalone: true }"
                         [options]="existenceForms"
@@ -401,6 +438,8 @@
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="physicalLocation" translate="physicalLocation"></label>
+                <editor-help-link [helpTextComponent]="physicalLocationHelpText"></editor-help-link>
+                <editor-help-text #physicalLocationHelpText key="editor.studyAdministrative.physicalLocation.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.physicalLocation[language]"
                           thlAutogrow
                           id="physicalLocation"
@@ -415,7 +454,11 @@
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
-                <label for="systemInRoles">{{ 'systemInRoles.label' | translate }}</label>
+                <label for="systemInRoles">
+                  {{ 'systemInRoles.label' | translate }}
+                  <editor-help-link [helpTextComponent]="systemInRolesHelpText"></editor-help-link>
+                </label>
+                <editor-help-text #systemInRolesHelpText key="editor.studyAdministrative.systemInRoles.helpText"></editor-help-text>
                 <table *ngIf="study.systemInRoles.length; else noSystemsInRoles;"
                       id="systemsInRole"
                       class="table table-striped">

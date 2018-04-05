@@ -811,6 +811,44 @@
         "helpText": "<p>Lisätietoja aineistosta. HUOM: Kommentti-kentän tiedot eivät näy julkisesti katalogissa, ainoastaan muille editorin käyttäjille.</p><p>Esimerkki:</p><p class=\"example\">Mukana kaikki Suomen julkiset sairaalat ja terveyskeskusten vuodeosastot. Yksityiset sairaalat ovat mukana osastohoitojaksojen osalta.</p>"
       }
     },
+    "studyAdministrative": {
+      "personRegistry": {
+        "helpText": "<p>Onko aineisto henkilörekisteri vai ei -ohjeet tähän</p>"
+      },
+      "confidentialityClass": {
+        "helpText": "<p>Tietosisällön julkisuusluokka -ohjeet tähän</p>"
+      },
+      "principlesForPhysicalSecurity": {
+        "helpText": "<p>Fyysisen suojauksen periaatteet -ohjeet tähän</p>"
+      },
+      "principlesForDigitalSecurity": {
+        "helpText": "<p>Digitaalisen suojauksen periaatteet -ohjeet tähän</p>"
+      },
+      "dataProcessingPeriod": {
+        "helpText": "<p>Tietojenkäsittelyn ajankohta -ohjeet tähän</p>"
+      },
+      "retentionPolicy": {
+        "helpText": "<p>Säilyttäminen -ohjeet tähän</p>"
+      },
+      "retentionPeriod": {
+        "helpText": "<p>Säilytysaika -ohjeet tähän</p>"
+      },
+      "groundsForRetention": {
+        "helpText": "<p>Säilytysajan peruste -ohjeet tähän</p>"
+      },
+      "nationalArchivesFinlandArchivalDecision": {
+        "helpText": "<p>Kansallisarkiston pysyvän säilyttämisen päätös -ohjeet tähän</p>"
+      },
+      "existenceForms": {
+        "helpText": "<p>Aineiston olomuoto -ohjeet tähän</p>"
+      },
+      "physicalLocation": {
+        "helpText": "<p>Fyysinen sijaintipaikka -ohjeet tähän</p>"
+      },
+      "systemInRoles": {
+        "helpText": "<p>Tietojärjestelmät -ohjeet tähän</p>"
+      }
+    },
     "dataset": {
       "prefLabel": {
         "helpText": "<p>Tähän datasetin nimi. Jos kuvaat vuosittaista tiedonkeruuta laajemmasta kokonaisuudesta, niin ilmoita tässä myös vuosi. Datasetin nimen on syytä olla mahdollisimman informatiivinen ja aineiston yksilöivä.</p><p>Pääotsikon ja alaotsikon väliin kirjoitetaan kaksoispiste. Alaotsikko aloitetaan pienellä alkukirjaimella (ellei kyseessä ole erisnimi).</p><p>Esimerkki 1:</p><p class=\"example\">Terveydenhuollon hoitoilmoitusrekisteri</p><p>Esimerkki 2:</p><p class=\"example\">Aikuisten liikuntatutkimus 2016: pyöräilyn alaotos</p>"

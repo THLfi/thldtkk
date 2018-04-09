@@ -479,4 +479,15 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       .findFirst();
   }
 
+  @Override
+  public List<Study> getStudiesByStudyGroup(UUID studyGroupId) {
+    return nodes.query(
+            select("id", "type", "properties.*", "references.*"),
+            and(
+                    keyValue("type.id", Study.TERMED_NODE_CLASS),
+                    keyValue("references.studyGroup.id", studyGroupId.toString())))
+            .map(Study::new)
+            .collect(Collectors.toList());
+  }
+
 }

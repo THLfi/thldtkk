@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <ng-container *ngIf="!loadingStudies">
+    <div class="row" *ngIf="studyGroup">
+      <div class="col-xs-12">
+        <h1>{{ studyGroup.prefLabel | lang }}</h1>
+        <p class="studygroup-organization-preflabel">{{ studyGroup.ownerOrganization.prefLabel | lang }}</p>
+        <p class="studygroup-description" *ngIf="studyGroup.description">{{ studyGroup.description | lang }}</p>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-10" style="padding-left: 0">
+      <p-dataTable tableStyleClass="data-table-plain" [value]="studies">
+        <p-column field="prefLabel" [style]="{'border':'none','background-color':'white','font-size':'16px'}" header="{{'catalog.studyGroupData.studyColumnHeading' | translate}}">
+          <ng-template let-study="rowData" pTemplate="body">
+            <span><a routerLink="/catalog/studies/{{ study.id }}">{{ study.prefLabel | lang }}</a></span>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="loadingStudies">
+    <thl-spinner></thl-spinner>
+  </ng-container>
+</div>

@@ -34,7 +34,7 @@ public class StudyGroupController {
   }
 
   @GetJsonMapping("/{id}")
-  public StudyGroup getById(@RequestParam("id") UUID id) {
+  public StudyGroup getById(@PathVariable("id") UUID id) {
     return studyGroupService.get(id)
       .orElseThrow(entityNotFound(StudyGroup.class, id));
   }

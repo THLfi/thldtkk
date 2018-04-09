@@ -20,14 +20,14 @@ import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundExceptio
 
 @Api(description = "Public API for studies, their datasets and datasets' instance variables")
 @RestController
-@RequestMapping(API.PATH_WITH_VERSION + "/public/studies")
+@RequestMapping(API.PATH_WITH_VERSION + "/public")
 public class PublicStudyController {
 
   @Autowired
   private PublicStudyService publicStudyService;
 
   @ApiOperation("Search studies")
-  @GetJsonMapping
+  @GetJsonMapping("/studies")
   public List<Study> query(
       @RequestParam(name = "organizationId", required = false) UUID organizationId,
       @RequestParam(name = "query", defaultValue = "") String query,
@@ -37,14 +37,14 @@ public class PublicStudyController {
   }
 
   @ApiOperation("Get one study by ID")
-  @GetJsonMapping("/{studyId}")
+  @GetJsonMapping("/studies/{studyId}")
   public Study getStudy(@PathVariable UUID studyId) {
     return publicStudyService.get(studyId)
       .orElseThrow(entityNotFound(Study.class, studyId));
   }
 
   @ApiOperation("Get one dataset by study ID and dataset ID")
-  @GetJsonMapping("/{studyId}/datasets/{datasetId}")
+  @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}")
   public Dataset getDataset(
     @PathVariable UUID studyId,
     @PathVariable UUID datasetId) {
@@ -53,7 +53,7 @@ public class PublicStudyController {
   }
 
   @ApiOperation("Get one instance variable by study ID, dataset ID and instance variable ID")
-  @GetJsonMapping(path = "/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}")
+  @GetJsonMapping(path = "/studies/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}")
   public InstanceVariable getInstanceVariable(
     @PathVariable UUID studyId,
     @PathVariable UUID datasetId,
@@ -62,4 +62,10 @@ public class PublicStudyController {
             .orElseThrow(entityNotFound(InstanceVariable.class, instanceVariableId));
   }
 
+  @ApiOperation("List all studies of given study group")
+  @GetJsonMapping("/studyGroups/{studyGroupId}/studies")
+  public List<Study> getStudyGroupStudies(
+          @PathVariable("studyGroupId") UUID studyGroupId) {
+    return publicStudyService.getStudiesByStudyGroup(studyGroupId);
+  }
 }

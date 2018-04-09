@@ -5,6 +5,12 @@
   font-weight: 200;
 }
 
+.study-group {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .bordered-box {
   margin-top: .5em;
   margin-bottom: 1em;

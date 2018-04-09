@@ -28,6 +28,7 @@ import { StudyEditComponent } from './views/editor/study/study-edit.component'
 
 import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
 import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
+import { StudyGroupViewComponent} from './views/catalog/studygroup/studygroup-view.component'
 import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.component'
 import { UniverseListComponent } from "./views/editor/universe/universe-list.component"
 import { VariableListComponent } from "./views/editor/variable/variable-list.component"
@@ -68,6 +69,11 @@ const routes: Routes = [
         path: 'catalog/instancevariables',
         component: InstanceVariableSearchComponent,
         data: {title:'pageTitles.catalog.instanceVariableSearch',pageType:PageIdentifier.CATALOG}
+    },
+    {
+        path: 'catalog/studygroups/:id',
+        component: StudyGroupViewComponent,
+        data: {pageType:PageIdentifier.CATALOG}
     },
 
     {

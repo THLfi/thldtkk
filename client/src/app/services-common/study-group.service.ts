@@ -8,6 +8,7 @@ import { environment as env} from '../../environments/environment'
 import { NodeUtils } from '../utils/node-utils'
 import { StudyGroup } from '../model2/study-group'
 import { StringUtils } from '../utils/string-utils'
+import { Study } from '../model2/study';
 
 @Injectable()
 export class StudyGroupService {
@@ -56,4 +57,17 @@ export class StudyGroupService {
     return studyGroup
   }
 
+  get(studyGroupId: string): Observable<StudyGroup> {
+    return this.http.get(env.contextPath + env.apiPath + '/studyGroups/' + studyGroupId)
+      .map(response => response.json() as StudyGroup)
+  }
+
+  getStudies(studyGroupId: string): Observable<Study[]> {
+    const url = env.contextPath
+      + env.apiPath
+      + '/public/studyGroups/'
+      + studyGroupId
+      + '/studies'
+    return this.http.get(url).map(response => response.json() as Study[])
+  }
 }

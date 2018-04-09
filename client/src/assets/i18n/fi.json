@@ -292,6 +292,9 @@
     "footer": {
       "infoText": "Katalogi on kehitetty THL:n, Tilastokeskuksen, Tietoarkiston ja Sitran yhteistyönä.",
       "contactEmail": "info@aineistokatalogi.fi"
+    },
+    "studyGroupData": {
+      "studyColumnHeading": "Sarjan aineistot"
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",

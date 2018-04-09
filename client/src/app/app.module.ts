@@ -82,6 +82,7 @@ import { InstanceVariableComponent } from "./views/catalog/dataset/instance-vari
 import { InstanceVariableSearchComponent } from './views/catalog/instancevariables/instance-variable-search.component'
 import { InstanceVariableSearchResultComponent } from './views/catalog/instancevariables/instance-variable-search-result.component'
 import { CatalogFrontPageComponent } from './views/catalog/frontpage/catalog-front-page.component'
+import { StudyGroupViewComponent} from './views/catalog/studygroup/studygroup-view.component'
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
 
 // editor components
@@ -223,6 +224,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         UniverseListComponent,
         VariableListComponent,
         VariableModalComponent,
+        StudyGroupViewComponent,
         VariableViewComponent
     ],
     imports: [

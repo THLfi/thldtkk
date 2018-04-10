@@ -377,3 +377,8 @@ h3 {
 .swal2-popup .swal2-content {
   font-size: 1.5em !important;
 }
+
+.dataset-predecessor-successor-link {
+  color: #01837A;
+  text-decoration: underline;
+}

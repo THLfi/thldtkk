@@ -324,8 +324,14 @@
             <h3>{{ 'datasetRelations.predecessors' | translate }}</h3>
             <ul>
               <li *ngFor="let predecessor of dataset.predecessors">
-                <!-- TODO: Make this a link -->
-                {{ predecessor.prefLabel | lang }}
+                <ng-container *ngIf="predecessor.study; else noPredecessorStudy;">
+                  <a routerLink="/editor/studies/{{ predecessor.study.id }}/datasets/{{ predecessor.id }}" class="dataset-predecessor-successor-link">
+                    {{ predecessor.prefLabel | lang }}
+                  </a>
+                </ng-container>
+                <ng-template #noPredecessorStudy>
+                  {{ predecessor.prefLabel | lang }}
+                </ng-template>
               </li>
             </ul>
           </div>
@@ -336,8 +342,14 @@
             </h3>
             <ul>
               <li *ngFor="let successor of dataset.successors">
-                <!-- TODO: Make this a link -->
-                {{ successor.prefLabel | lang }}
+                <ng-container *ngIf="successor.study; else noSuccessorStudy;">
+                  <a routerLink="/editor/studies/{{ successor.study.id }}/datasets/{{ successor.id }}" class="dataset-predecessor-successor-link">
+                    {{ successor.prefLabel | lang }}
+                  </a>
+                </ng-container>
+                <ng-template #noSuccessorStudy>
+                  {{ successor.prefLabel | lang }}
+                </ng-template>
               </li>
             </ul>
           </div>

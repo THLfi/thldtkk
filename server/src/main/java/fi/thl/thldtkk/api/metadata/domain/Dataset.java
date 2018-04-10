@@ -327,6 +327,10 @@ public class Dataset implements NodeEntity {
 
   public void setLastModifiedByUser(UserProfile userProfile) { this.lastModifiedByUser = userProfile; }
 
+  public void setStudy(Study study) {
+    this.study = study;
+  }
+
   public Optional<Study> getStudy() {
     return Optional.ofNullable(study);
   }

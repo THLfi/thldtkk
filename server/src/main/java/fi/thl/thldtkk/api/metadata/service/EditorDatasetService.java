@@ -14,4 +14,6 @@ public interface EditorDatasetService extends Service<UUID, Dataset> {
   List<Dataset> getUniverseDatasets(UUID universeId);
 
   Optional<Dataset> findByPrefLabel(String prefLabel);
+
+  Optional<Dataset> getDatasetWithPredecessorsSuccessors(UUID studyId, UUID datasetId);
 }

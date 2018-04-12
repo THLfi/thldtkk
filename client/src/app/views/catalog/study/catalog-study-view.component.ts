@@ -21,8 +21,7 @@ export class CatalogStudyViewComponent {
   language: string
 
   Math: Math
-  readonly datasetLabelTruncateLength: number = 50
-  readonly datasetLabelTruncateFromEndLength: number = -20
+  readonly datasetLabelTruncateLength: number = 70
 
   StudyDetailHighlight = StudyDetailHighlight
   highlights: StudyDetailHighlight[] = []

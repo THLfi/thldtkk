@@ -188,12 +188,14 @@
         <div *ngFor="let dataset of study.datasets" class="col-sm-4">
           <div class="dataset">
             <div *ngIf="dataset.prefLabel | lang as datasetLabel" class="prefLabel">
-              {{ datasetLabel | truncate: datasetLabelTruncateLength : "" }}
-              <span *ngIf="datasetLabel.length > datasetLabelTruncateLength" >
-                {{  datasetLabel | truncate:
-                    Math.max(datasetLabelTruncateFromEndLength,-(datasetLabel.length-datasetLabelTruncateLength) )
-                }}
+              <span *ngIf="datasetLabel.length > datasetLabelTruncateLength; else shortDatasetLabel"
+                  pTooltip="{{ datasetLabel }}" tooltipPosition="bottom" tooltipStyleClass="dataset-catalog-label-tooltip">
+                {{ datasetLabel | slice:0:datasetLabelTruncateLength }}...
               </span>
+              <ng-template #shortDatasetLabel>
+                <span>{{ datasetLabel }}</span>
+              </ng-template>
+
             </div>
             <div class="variables">
               <div class="row">

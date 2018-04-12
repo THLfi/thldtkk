@@ -21,6 +21,8 @@ public class Variable {
     @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();
     private Map<String, String> description = new LinkedHashMap<>();
+    private int referenceCount = 0;
+    private int refererCount = 0;
 
     public Variable(UUID id) {
         this.id = requireNonNull(id);
@@ -31,18 +33,20 @@ public class Variable {
         checkArgument(Objects.equals(node.getTypeId(), "Variable"));
         this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
         this.description = toLangValueMap(node.getProperties("description"));
+        this.referenceCount = node.getReferences().size();
+        this.refererCount = node.getReferrers().size();
     }
-    
-    /** 
+
+    /**
      * Constructor for testing purposes
      */
-    
+
     public Variable(UUID id, Map<String, String> prefLabel, Map<String, String> description) {
       this.id = id;
       this.prefLabel = prefLabel;
       this.description = description;
     }
-    
+
     public UUID getId() {
         return id;
     }
@@ -58,6 +62,10 @@ public class Variable {
     public Map<String, String> getDescription() {
         return description;
     }
+
+    public int getReferenceCount() { return referenceCount; }
+
+    public int getRefererCount() { return refererCount; }
 
     public Node toNode() {
         Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();

@@ -40,6 +40,11 @@ export class CurrentUserService {
       .map(user => user ? user.isAdmin : false)
   }
 
+  isUserOrganizationAdmin(): Observable<boolean> {
+    return this.getCurrentUserObservable()
+      .map(user => user ? user.isOrganizationAdmin : false)
+  }
+
   getUserOrganizations(): Observable<Organization[]> {
     return this.getCurrentUserObservable()
       .flatMap((user: User) => {

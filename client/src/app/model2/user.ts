@@ -5,4 +5,5 @@ export interface User {
   email?: string
   isLoggedIn: boolean
   isAdmin: boolean
+  isOrganizationAdmin: boolean
 }

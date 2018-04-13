@@ -120,4 +120,18 @@ export class EditorInstanceVariableService {
     return this.http.get(url).map(response => response.json() as InstanceVariable[])
   }
 
+  getNextInstanceVariableId(studyId: string, datasetId: string, instanceVariableId: string): Observable<string> {
+    const path: string = env.contextPath
+      + env.apiPath
+      + '/editor/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId
+      + '/instanceVariables/'
+      + instanceVariableId
+      + '/next'
+
+    return this.http.get(path)
+      .map(response => response.json() as string)
+  }
 }

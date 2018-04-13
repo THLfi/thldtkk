@@ -745,11 +745,17 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <button (click)="saveInstanceVariable()"
+          <button (click)="saveInstanceVariable(false)"
                   [disabled]="savingInProgress"
                   class="btn btn-primary">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             {{ 'save' | translate }}
+          </button>
+          <button (click)="saveInstanceVariable(true)"
+                  [disabled]="savingInProgress"
+                  class="btn btn-primary">
+            <span class="glyphicon glyphicon-step-forward"></span>
+            {{ 'saveAndGoToNext' | translate }}
           </button>
           <button (click)="goBack()"
                   [disabled]="savingInProgress"

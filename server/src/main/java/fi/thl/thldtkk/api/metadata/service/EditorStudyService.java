@@ -26,4 +26,6 @@ public interface EditorStudyService extends Service<UUID, Study> {
 
   void deleteInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
 
+  String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
+
 }

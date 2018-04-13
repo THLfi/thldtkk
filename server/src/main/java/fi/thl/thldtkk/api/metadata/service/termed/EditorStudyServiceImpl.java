@@ -814,4 +814,27 @@ public class EditorStudyServiceImpl implements EditorStudyService {
             .map(Study::new)
             .findFirst();
   }
+
+  @Override
+  public String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
+
+    Optional<Dataset> dataset = getDataset(studyId, datasetId);
+
+    if (dataset.isPresent()) {
+      List<InstanceVariable> instanceVariables = dataset.get().getInstanceVariables();
+
+      for (InstanceVariable instanceVariable : instanceVariables) {
+        if (instanceVariable.getId().equals(instanceVariableId)) {
+          int currentIndex = instanceVariables.indexOf(instanceVariable);
+          currentIndex++;
+
+          if (currentIndex == instanceVariables.size()) {
+            currentIndex = 0;
+          }
+          return instanceVariables.get(currentIndex).getId().toString();
+        }
+      }
+    }
+    return instanceVariableId.toString();
+  }
 }

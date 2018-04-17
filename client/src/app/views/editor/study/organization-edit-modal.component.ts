@@ -1,21 +1,20 @@
-import {
-  AfterContentChecked, Component, EventEmitter, Input, Output, ViewChild
-} from '@angular/core'
+import { AfterContentChecked, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms'
 
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
-import { OrganizationUnit } from '../../../model2/organization-unit'
-import {TranslateService} from "@ngx-translate/core";
+import { Organization } from '../../../model2/organization'
+import { TranslateService } from "@ngx-translate/core";
+import { ConfirmationService } from "primeng/primeng";
 
 @Component({
-  selector: 'organization-unit-edit-modal',
-  templateUrl: './organization-unit-edit-modal.component.html'
+  selector: 'organization-edit-modal',
+  templateUrl: './organization-edit-modal.component.html'
 })
-export class OrganizationUnitEditModalComponent implements AfterContentChecked {
+export class OrganizationEditModalComponent implements AfterContentChecked {
 
-  @Input() organizationUnit: OrganizationUnit
+  @Input() organization: Organization
 
-  @ViewChild('organizationUnitForm') organizationUnitForm: NgForm
+  @ViewChild('organizationForm') organizationForm: NgForm
   currentForm: NgForm
   formErrors: any = {
     'prefLabel': []
@@ -26,20 +25,20 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
   savingInProgress: boolean = false
   savingHasFailed: boolean = false
 
-  @Output() onSave: EventEmitter<OrganizationUnit> = new EventEmitter<OrganizationUnit>()
+  @Output() onSave: EventEmitter<Organization> = new EventEmitter<Organization>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
     private growlMessageService: GrowlMessageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
-      this.language = translateService.currentLang
+    this.language = translateService.currentLang
   }
 
   ngAfterContentChecked(): void {
-    if (this.organizationUnitForm) {
-      if (this.organizationUnitForm !== this.currentForm) {
-        this.currentForm = this.organizationUnitForm
+    if (this.organizationForm) {
+      if (this.organizationForm !== this.currentForm) {
+        this.currentForm = this.organizationForm
         this.currentForm.valueChanges.subscribe(data => this.validate(data))
       }
     }
@@ -73,11 +72,10 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
 
     this.savingInProgress = false
 
-    this.onSave.emit(this.organizationUnit)
+    this.onSave.emit(this.organization)
   }
 
   doCancel() {
     this.onCancel.emit()
   }
-
 }

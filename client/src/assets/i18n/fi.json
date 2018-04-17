@@ -182,6 +182,8 @@
   "addNewPersonInRole": "Lisää henkilö",
   "addNewPerson": "Luo uusi henkilö...",
   "newPerson": "Uusi henkilö",
+  "editPerson": "Muokkaa henkilöä...",
+  "editedPerson": "Muokattava henkilö",
   "person": {
     "firstName": "Etunimi",
     "lastName": "Sukunimi",
@@ -488,6 +490,11 @@
         "result": {
           "success": "Henkilö tallennettu"
         }
+      },
+      "delete": {
+        "result": {
+          "success": "Henkilö poistettu "
+        }
       }
     },
     "role": {
@@ -564,7 +571,7 @@
         }
       }
     },
-    "organization_unit": {
+    "organizationUnit": {
       "save": {
         "result": {
           "success": "Organisaatioyksikkö tallennettu"
@@ -573,6 +580,13 @@
       "delete": {
         "result": {
           "success": "Organisaatioyksikkö poistettu"
+        }
+      }
+    },
+    "organization": {
+      "save": {
+        "result": {
+          "success": "Organisaatioyksikkö tallennettu"
         }
       }
     }
@@ -1072,7 +1086,11 @@
   },
   "changedAfterPublish": "Muokattu julkaisun jälkeen",
   "addNewOrganizationUnit": "Luo uusi organisaatioyksikkö",
+  "editOrganizationUnit": "Muokkaa organisaatioyksikköä",
   "newOrganizationUnit": "Uusi organisaatioyksikkö",
+  "editedOrganizationUnit": "Muokattava organisaatioyksikkö",
+  "editOrganization": "Muokkaa organisaatiota",
+  "editedOrganization": "Muokattava organisaatio",
   "import": {
     "csv": {
       "error": {
@@ -1097,7 +1115,7 @@
         "missingRequiredValue": "arvo puuttuu"
       }
     }
-  }
-
-
+  },
+  "confirmOrganizationUnitDelete": "Haluatko varmasti poistaa organisaatioyksikön?",
+  "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?"
 }

@@ -8,6 +8,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,16 +79,28 @@ public class Organization implements NodeEntity, Serializable {
     return abbreviation;
   }
 
+  public void setPrefLabel(Map<String, String> prefLabel) {
+    this.prefLabel = prefLabel;
+  }
+
+  public void setAbbreviation(Map<String, String> abbreviation) {
+    this.abbreviation = abbreviation;
+  }
+
   public List<String> getVirtuIds() {
     return virtuIds;
   }
 
-  public List<OrganizationUnit> getOrganizationUnit() {
+  public List<OrganizationUnit> getOrganizationUnits() {
     return organizationUnit;
   }
 
   public void addOrganizationUnit(OrganizationUnit unit) {
     organizationUnit.add(unit);
+  }
+
+  public void removeOrganizationUnit(OrganizationUnit unit ) {
+    organizationUnit.removeIf(currentUnit -> currentUnit.getId().equals(unit.getId()));
   }
 
   public Optional<String> getPhoneNumberForRegistryPolicy() {
@@ -109,7 +122,7 @@ public class Organization implements NodeEntity, Serializable {
     getPhoneNumberForRegistryPolicy().ifPresent(v -> props.put("phoneNumberForRegistryPolicy", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
-    getOrganizationUnit().forEach(ou -> refs.put("organizationUnit", ou.toNode()));
+    getOrganizationUnits().forEach(ou -> refs.put("organizationUnit", ou.toNode()));
 
     return new Node(id, "Organization", props, refs);
   }

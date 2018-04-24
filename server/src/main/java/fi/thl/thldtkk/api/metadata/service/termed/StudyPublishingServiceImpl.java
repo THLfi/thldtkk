@@ -54,9 +54,18 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
 
   private void removeNonPublicPropertiesAndReferences(Study study) {
     study.setLastModifiedByUser(null);
+    study.setPublished(null);
     study.setComment(null);
     study.setExternalId(null);
+
+    study.getPersonInRoles().removeIf(personInRole -> !personInRole.isPublic().isPresent()
+            || !personInRole.isPublic().get().equals(Boolean.TRUE));
+
     study.setPredecessors(Collections.emptyList());
+
+    // sanitize linked entities
+    study.getPredecessors().forEach(predecessor -> removeNonPublicPropertiesAndReferences(predecessor));
+    study.getSuccessors().forEach(successor -> removeNonPublicPropertiesAndReferences(successor));
     study.getDatasets().forEach(d -> removeNonPublicPropertiesAndReferences(d));
     study.setPhysicalLocation(Collections.emptyMap());
     study.setSystemInRoles(Collections.emptyList());
@@ -64,13 +73,22 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
 
   private void removeNonPublicPropertiesAndReferences(Dataset dataset) {
     dataset.setLastModifiedByUser(null);
+    dataset.setPublished(null);
     dataset.setComment(null);
+
+    dataset.getPersonInRoles().removeIf(personInRole -> !personInRole.isPublic().isPresent()
+            || !personInRole.isPublic().get().equals(Boolean.TRUE));
+
     dataset.setPredecessors(Collections.emptyList());
+
+    // sanitize linked entities
+    dataset.getSuccessors().forEach(successor -> removeNonPublicPropertiesAndReferences(successor));
     dataset.getInstanceVariables().forEach(iv -> removeNonPublicPropertiesAndReferences(iv));
   }
 
   private void removeNonPublicPropertiesAndReferences(InstanceVariable instanceVariable) {
     instanceVariable.setLastModifiedByUser(null);
+    instanceVariable.setPublished(null);
     instanceVariable.setSource(null);
   }
 

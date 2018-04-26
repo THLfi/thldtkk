@@ -15,7 +15,11 @@
 
   <div class="row" *ngIf="instanceVariable.partOfGroup | lang">
     <div class="col-xs-12">
-      <h2>{{"partOfGroup" | translate}}</h2>
+      <h2>
+        {{"partOfGroup" | translate}}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.partOfGroup' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.partOfGroup | lang }}</p>
     </div>
   </div>
@@ -23,7 +27,11 @@
   <div *ngIf="(instanceVariable.conceptsFromScheme.length || (instanceVariable.freeConcepts | lang))"
     class="row">
     <div class="col-xs-12">
-      <h2>{{ 'conceptsFromScheme' | translate }}</h2>
+      <h2>
+        {{ 'conceptsFromScheme' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.conceptsFromScheme' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>
         <span *ngFor="let concept of instanceVariable.conceptsFromScheme">
           <span pTooltip="{{ 'source' | translate }}: {{ (concept.conceptScheme ? (concept.conceptScheme.prefLabel | lang) : '') }}"
@@ -45,7 +53,11 @@
 
   <div *ngIf="referencePeriod.hasValue()" class="row">
     <div class="col-xs-12">
-      <h2>{{ 'referencePeriod' | translate }}</h2>
+      <h2>
+        {{ 'referencePeriod' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.referencePeriod' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>
         {{ referencePeriod.start | date:'dd.MM.yyyy' }}
         —
@@ -73,14 +85,22 @@
   <div *ngIf="instanceVariable.valueDomainType"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'valueDomain' | translate }}</h2>
+      <h2>
+        {{ 'valueDomain' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueDomain' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ 'valueDomainType.' + instanceVariable.valueDomainType | translate }}</p>
     </div>
   </div>
 
   <div class="row" *ngIf="instanceVariable.unit">
     <div class="col-xs-12">
-      <h2>{{ 'unit' | translate }}</h2>
+      <h2>
+        {{ 'unit' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.unit' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>
         {{ instanceVariable.unit.prefLabel | lang }}
         <span *ngIf="instanceVariable.unit.symbol | lang">
@@ -92,7 +112,11 @@
 
   <div class="row" *ngIf="instanceVariable.codeList">
     <div class="col-xs-12">
-      <h2>{{ 'codeList.label' | translate }}</h2>
+      <h2>
+        {{ 'codeList.label' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.codeList' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>
         <strong>{{ instanceVariable.codeList.prefLabel | lang }}</strong>
         <span *ngIf="instanceVariable.codeList.referenceId"
@@ -126,7 +150,11 @@
   <div *ngIf="instanceVariable.technicalName"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'technicalName' | translate }}</h2>
+      <h2>
+        {{ 'technicalName' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.technicalName' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.technicalName }}</p>
     </div>
   </div>
@@ -134,7 +162,11 @@
   <div *ngIf="instanceVariable.valueRangeMin"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'valueRangeMin' | translate }}</h2>
+      <h2>
+        {{ 'valueRangeMin' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueRangeMin' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.valueRangeMin }}</p>
     </div>
   </div>
@@ -142,7 +174,11 @@
   <div *ngIf="instanceVariable.valueRangeMax"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'valueRangeMax' | translate }}</h2>
+      <h2>
+        {{ 'valueRangeMax' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueRangeMax' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.valueRangeMax }}</p>
     </div>
   </div>
@@ -150,7 +186,11 @@
   <div *ngIf="instanceVariable.missingValues && instanceVariable.missingValues[language]"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'missingValues' | translate }}</h2>
+      <h2>
+        {{ 'missingValues' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.missingValues' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.missingValues | lang }}</p>
     </div>
   </div>
@@ -158,7 +198,11 @@
   <div *ngIf="instanceVariable.defaultMissingValue"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'defaultMissingValue' | translate }}</h2>
+      <h2>
+        {{ 'defaultMissingValue' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.defaultMissingValue' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.defaultMissingValue }}</p>
     </div>
   </div>
@@ -166,20 +210,32 @@
   <div *ngIf="instanceVariable.qualityStatement && instanceVariable.qualityStatement[language]"
        class="row" >
     <div class="col-xs-12">
-      <h2>{{ 'qualityStatement' | translate }}</h2>
+      <h2>
+        {{ 'qualityStatement' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.qualityStatement' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.qualityStatement | lang }}</p>
     </div>
   </div>
 
 <div class="row">
     <div class="col-xs-12" *ngIf="instanceVariable.variable">
-      <h2>{{ 'variable' | translate }}</h2>
+      <h2>
+        {{ 'variable' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.variable' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
     </div>
 </div>
 
   <div *ngIf="instanceVariable.source || (instanceVariable.sourceDescription | lang)">
-    <h2>{{ 'instanceVariableSource' | translate }}</h2>
+    <h2>
+      {{ 'instanceVariableSource' | translate }}
+      <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.instanceVariableSource' | translate }}"
+            tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+    </h2>
     <div *ngIf="instanceVariable.source"
          class="row" >
       <div class="col-xs-12">
@@ -202,14 +258,22 @@
 
   <div *ngIf="instanceVariable.dataType" class="row">
     <div class="col-xs-12">
-      <h2>{{ 'dataType' | translate }}</h2>
+      <h2>
+        {{ 'dataType' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.dataType' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>{{ instanceVariable.dataType }}</p>
     </div>
   </div>
 
   <div *ngIf="instanceVariable.dataFormat | lang" class="row">
       <div class="col-xs-12">
-        <h2>{{'dataFormat' | translate}}</h2>
+        <h2>
+          {{'dataFormat' | translate}}
+          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.dataFormat' | translate }}"
+                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        </h2>
         <p>{{ instanceVariable.dataFormat | lang }}</p>
       </div>
   </div>
@@ -217,7 +281,11 @@
   <div *ngIf="instanceVariable.unitType || dataset.unitType || study.unitType"
        class="row">
     <div class="col-xs-12">
-      <h2>{{ 'unitType' | translate }}</h2>
+      <h2>
+        {{ 'unitType' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.unitType' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <p>
         <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
           {{ instanceVariable.unitType.prefLabel | lang }}
@@ -248,7 +316,11 @@
 
   <div *ngIf="instanceVariable.instanceQuestions.length" class="row">
     <div class="col-xs-12">
-      <h2>{{ 'instanceQuestions' | translate }}</h2>
+      <h2>
+        {{ 'instanceQuestions' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.instanceQuestions' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      </h2>
       <ul>
           <li class="preserve-line-breaks" *ngFor="let question of instanceVariable.instanceQuestions">{{question.prefLabel | lang }}</li>
       </ul>

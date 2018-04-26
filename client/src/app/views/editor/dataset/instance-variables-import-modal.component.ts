@@ -104,6 +104,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
 
   doImport(): void {
     this.importInProgress = true
+    this.showPreview = false
 
     this.validate()
 
@@ -135,7 +136,6 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
           this.showSwalErrors(messages)
         }
 
-        this.showPreview = false
         this.file = null
         this.onImport.emit()
       }, error => {
@@ -237,5 +237,9 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
         width: '800px'
       })
     })
+  }
+
+  downloadExampleInstanceVariableCsv(): string {
+    return this.instanceVariableService.downloadExampleInstanceVariableCsv()
   }
 }

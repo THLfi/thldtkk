@@ -134,4 +134,17 @@ export class EditorInstanceVariableService {
     return this.http.get(path)
       .map(response => response.json() as string)
   }
+
+  downloadExampleInstanceVariableCsv(): string {
+    let encoding
+    if (navigator && navigator.platform && navigator.platform.indexOf('Mac') > -1) {
+      encoding = 'MacRoman'
+    } else {
+      encoding = 'ISO-8859-15'
+    }
+    return env.contextPath
+      + env.apiPath
+      + '/editor/exampleInstanceVariables.csv?'
+      + 'encoding=' + encoding
+  }
 }

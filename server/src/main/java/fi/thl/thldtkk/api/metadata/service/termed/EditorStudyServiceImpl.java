@@ -13,8 +13,15 @@ import fi.thl.thldtkk.api.metadata.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -37,6 +44,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class EditorStudyServiceImpl implements EditorStudyService {
 
   private static final Logger LOG = LoggerFactory.getLogger(EditorStudyServiceImpl.class);
+  private static final String FILE_PATH = "csv/exampleInstanceVariables.csv";
 
   private final Repository<NodeId, Node> nodes;
   private final UserHelper userHelper;
@@ -836,5 +844,18 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       }
     }
     return instanceVariableId.toString();
+  }
+
+  @Override
+  public HttpEntity<byte[]> getExampleInstanceVariablesCsv(String encoding) throws IOException, URISyntaxException {
+    Path path = Paths.get(getClass().getClassLoader()
+            .getResource(FILE_PATH).toURI());
+    byte[] document = Files.readAllBytes(path);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Content-Disposition", "attachment; filename=exampleInstanceVariables.csv");
+    headers.set("Content-Type", "text/csv; charset=" + encoding);
+
+    return new HttpEntity<>(document, headers);
   }
 }

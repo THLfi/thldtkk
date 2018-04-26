@@ -8,6 +8,7 @@ import fi.thl.thldtkk.api.metadata.service.csv.CsvFileNameBuilder;
 import fi.thl.thldtkk.api.metadata.service.csv.GeneratorResult;
 import fi.thl.thldtkk.api.metadata.service.csv.InstanceVariableCsvGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
@@ -77,4 +80,12 @@ public class InstanceVariableCsvExportController {
     return instanceVariablesAsCsv(dataset, language, encoding, response);
   }
 
+  @RequestMapping(
+          value = "/editor/exampleInstanceVariables.csv",
+          method = RequestMethod.GET)
+  public @ResponseBody HttpEntity<byte[]> editorExampleInstanceVariablesCsv(
+          @RequestParam(value = "encoding", defaultValue = "ISO-8859-15") String encoding
+  ) throws IOException, URISyntaxException {
+    return editorStudyService.getExampleInstanceVariablesCsv(encoding);
+  }
 }

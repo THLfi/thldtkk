@@ -3,7 +3,10 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Study;
+import org.springframework.http.HttpEntity;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,5 +30,7 @@ public interface EditorStudyService extends Service<UUID, Study> {
   void deleteInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
 
   String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
+
+  HttpEntity<byte[]> getExampleInstanceVariablesCsv(String encoding) throws IOException, URISyntaxException;
 
 }

@@ -390,3 +390,15 @@ h3 {
 .dataset-catalog-label-tooltip .ui-tooltip-text  {
   white-space: normal;
 }
+
+.link-underline {
+  text-decoration: underline;
+}
+
+.ui-tooltip.catalog-helptext-tooltip {
+  max-width: 600px;
+}
+
+.catalog-helptext-tooltip .ui-tooltip-text  {
+  white-space: normal;
+}

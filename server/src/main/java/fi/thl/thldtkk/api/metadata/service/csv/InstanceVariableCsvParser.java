@@ -204,7 +204,7 @@ public class InstanceVariableCsvParser {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
             Map<String, String> descriptionMap = new LinkedHashMap<>();
 
-            prefLabelMap.put("fi", prefLabel);
+            prefLabelMap.put("fi", unitTypePrefLabel.get());
             if (!StringUtils.isEmpty(unitTypeDescription.get())) {
                 descriptionMap.put("fi", unitTypeDescription.get());
             }
@@ -219,7 +219,7 @@ public class InstanceVariableCsvParser {
         Optional<Quantity> quantity = quantityService.findByPrefLabel(quantityPrefLabel.get());
         if (!quantity.isPresent()) {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
-            prefLabelMap.put("fi", prefLabel);
+            prefLabelMap.put("fi", quantityPrefLabel.get());
             Quantity quantityNew = new Quantity(randomUUID(), prefLabelMap);
             quantity = Optional.ofNullable(quantityService.save(quantityNew));
         }
@@ -247,7 +247,7 @@ public class InstanceVariableCsvParser {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
             Map<String, String> descriptionMap = new LinkedHashMap<>();
 
-            prefLabelMap.put("fi", prefLabel);
+            prefLabelMap.put("fi", variablePrefLabel.get());
             if (!StringUtils.isEmpty(variableDescription.get())) {
                 descriptionMap.put("fi", variableDescription.get());
             }
@@ -267,7 +267,7 @@ public class InstanceVariableCsvParser {
             Optional<InstanceQuestion> instanceQuestion = instanceQuestionService.findByPrefLabel(instanceQuestionString);
             if (!instanceQuestion.isPresent()) {
                 Map<String, String> prefLabelMap = new LinkedHashMap<>();
-                prefLabelMap.put("fi", prefLabel);
+                prefLabelMap.put("fi", instanceQuestionString);
                 InstanceQuestion instanceQuestionNew = new InstanceQuestion(randomUUID(), prefLabelMap);
                 instanceQuestion = Optional.ofNullable(instanceQuestionService.save(instanceQuestionNew));
             }

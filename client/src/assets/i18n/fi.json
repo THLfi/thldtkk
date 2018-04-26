@@ -296,6 +296,57 @@
     },
     "studyGroupData": {
       "studyColumnHeading": "Sarjan aineistot"
+    },
+    "helpText": {
+      "instanceVariableSearch": {
+        "variable": "Käsitemuuttujat -ohjeet tähän"
+      },
+      "study": {
+        "personInRoles": "Yhteystiedot -ohjeet tähän",
+        "datasetType": "Aineistotyyppi -ohjeet tähän",
+        "usageCondition": "Käyttöehdot -ohjeet tähän",
+        "links": "Linkit -ohjeet tähän",
+        "universe": "Perusjoukko -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "geographicalCoverage": "Alueellinen kattavuus -ohjeet tähän",
+        "concepts": "Asiasanat -ohjeet tähän"
+      },
+      "dataset": {
+        "personInRoles": "Yhteystiedot -ohjeet tähän",
+        "datasetType": "Aineistotyyppi -ohjeet tähän",
+        "usageCondition": "Käyttöehdot -ohjeet tähän",
+        "links": "Linkit -ohjeet tähän",
+        "universe": "Perusjoukko -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "geographicalCoverage": "Alueellinen kattavuus -ohjeet tähän",
+        "unitType": "Havaintoyksikön tyyppi -ohjeet tähän",
+        "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä -ohjeet tähän",
+        "datasetLifecyclePhase": "Datasetin elinkaaren vaihe -ohjeet tähän",
+        "population": "Kohdejoukko -ohjeet tähän",
+        "sample": "Otos -ohjeet tähän",
+        "loss": "Kato -ohjeet tähän",
+        "concepts": "Asiasanat -ohjeet tähän"
+      },
+      "instanceVariable": {
+        "partOfGroup": "Muuttujaryhmä -ohjeet tähän",
+        "conceptsFromScheme": "Asiasanat -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "valueDomain": "Arvoalue -ohjeet tähän",
+        "unit": "Mittayksikkö -ohjeet tähän",
+        "codeList": "Koodisto -ohjeet tähän",
+        "technicalName": "Tekninen nimi -ohjeet tähän",
+        "valueRangeMin": "Muuttujan pienin sallittu arvo -ohjeet tähän",
+        "valueRangeMax": "Muuttujan suurin sallittu arvo -ohjeet tähän",
+        "missingValues": "Muuttujan puuttuvien tietojen selite -ohjeet tähän",
+        "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi -ohjeet tähän",
+        "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot -ohjeet tähän",
+        "variable": "Käsitemuuttuja -ohjeet tähän",
+        "instanceVariableSource": "Muuttujan tietolähde -ohjeet tähän",
+        "dataType": "Tietotyyppi -ohjeet tähän",
+        "dataFormat": "Tiedon muoto -ohjeet tähän",
+        "unitType": "Havaintoyksikön tyyppi -ohjeet tähän",
+        "instanceQuestions": "Muuttujaan liittyvät kyselykysymykset -ohjeet tähän"
+      }
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -583,7 +634,11 @@
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
     "file": {
-      "label": "Tuotava CSV-tiedosto"
+      "label": "Tuotava CSV-tiedosto",
+      "exampleInstanceVariableCsv": {
+        "helpText": "Esimerkkitiedoston voi ladata",
+        "linkText": "tästä"
+      }
     },
     "overwrite": {
       "false": "Säilytä olemassa olevat muuttujat",
@@ -1019,7 +1074,7 @@
     "EditorStudyViewComponent": {
       "publishButton": {
         "label": "Julkaise",
-        "helpText": "<p>Julkaise-painikkeella aineistokuvaus julkaistaan näkymään avoimesti Aineistokatalogissa. Julkaisemisen voi perua Peru julkaisu -painikkeella.</p><p>HUOM: Jos teet muutoksia aineistokuvaukseen julkaisun jälkeen ja haluat päivittää ne myös Aineistokatalogiin, klikkaa ensin Peru julkaisu -painiketta ja julkaise aineisto sitten uudestaan Julkaise-painikkeella.</p>"
+        "helpText": "<p>Julkaise-painikkeella aineistokuvaus julkaistaan näkymään avoimesti Aineistokatalogissa. Julkaisemisen voi perua Peru julkaisu -painikkeella.</p><p>HUOM: Jos teet muutoksia aineistokuvaukseen julkaisun jälkeen ja haluat päivittää ne myös Aineistokatalogiin, klikkaa Julkaise Uudelleen -painiketta.</p>"
       },
       "unpublishButton": {
         "label": "Peru julkaisu"

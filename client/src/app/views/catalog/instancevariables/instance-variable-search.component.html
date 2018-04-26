@@ -55,7 +55,11 @@
       </div>
       <div *ngIf="variables && variables.length"
            class="col-xs-12 col-sm-3">
-        <h2>{{ 'variables' | translate | uppercase }}</h2>
+        <h2>
+          {{ 'variables' | translate | uppercase }}
+          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariableSearch.variable' | translate }}"
+                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        </h2>
         <a *ngFor="let variable of variables"
            routerLink="/catalog/variables/{{ variable.id }}"
            class="variable-link">

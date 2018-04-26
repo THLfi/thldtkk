@@ -2,9 +2,6 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <a *ngIf="study.studyGroup" routerLink="/catalog/studygroups/{{ study.studyGroup.id }}" class="study-group">
-        {{ study.studyGroup.prefLabel | lang }}
-      </a>
       <h1>
         {{ study.prefLabel | lang }}
         <span *ngIf="study.abbreviation | lang">
@@ -14,6 +11,12 @@
       <h2 class="sr-only">{{ 'altLabel' | translate }}</h2>
       <p *ngIf="study.altLabel | lang" class="alt-label">
         {{ study.altLabel | lang }}
+      </p>
+      <p *ngIf="study.studyGroup">
+        {{ 'studyGroup.studyGroup' | translate }}:&nbsp;
+        <a routerLink="/catalog/studygroups/{{ study.studyGroup.id }}" class="study-group">
+          {{ study.studyGroup.prefLabel | lang }}
+        </a>
       </p>
     </div>
   </div>
@@ -33,7 +36,11 @@
       </ng-container>
 
       <ng-container *ngIf="study.personInRoles && study.personInRoles.length">
-        <h2>{{ 'catalog.personInRoles' | translate }}</h2>
+        <h2>
+          {{ 'catalog.personInRoles' | translate }}
+          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.personInRoles' | translate }}"
+                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        </h2>
         <ng-container *ngFor="let personInRole of study.personInRoles">
           <p *ngIf="personInRole.public">
             <span class="person-name">
@@ -61,6 +68,8 @@
       <ng-container *ngIf="study.datasetTypes && study.datasetTypes.length">
         <h2>
           {{ 'datasetType' | translate }}
+          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.datasetType' | translate }}"
+                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
         </h2>
         <p *ngFor="let datasetType of study.datasetTypes">
           {{ datasetType.prefLabel | lang }}
@@ -69,6 +78,8 @@
 
       <h2 *ngIf="study.usageCondition || (study.usageConditionAdditionalInformation | lang)">
         {{ 'usageCondition' | translate }}
+        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.usageCondition' | translate }}"
+              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
       </h2>
       <p *ngIf="study.usageCondition">
         {{ study.usageCondition.prefLabel | lang }}
@@ -78,7 +89,11 @@
       </p>
 
       <div *ngIf="study.links && study.links.length">
-        <h2>{{'links'|translate}}</h2>
+        <h2>
+          {{'links'|translate}}
+          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.links' | translate }}"
+                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        </h2>
         <p *ngFor="let link of study.links">
           <a href="{{ link.linkUrl | lang }}"
              target="_blank"
@@ -108,6 +123,8 @@
                 </div>
                 <div class="caption">
                   {{ 'universe' | translate }}:
+                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.universe' | translate }}"
+                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
                 </div>
                 <div class="value">
                   {{ study.universe.prefLabel | lang }}
@@ -120,6 +137,8 @@
                 </div>
                 <div class="caption">
                   {{ 'referencePeriod' | translate }}:
+                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.referencePeriod' | translate }}"
+                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
                 </div>
                 <div class="value" *ngIf="study.referencePeriodStart || study.referencePeriodEnd">
                   <ng-container *ngIf="study.referencePeriodStart">
@@ -138,6 +157,8 @@
                 </div>
                 <div class="caption">
                   {{ 'geographicalCoverage' | translate }}:
+                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.geographicalCoverage' | translate }}"
+                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
                 </div>
                 <div class="value">
                   {{ study.population.geographicalCoverage | lang }}
@@ -153,7 +174,11 @@
       <div *ngIf="study.conceptsFromScheme.length || (study.freeConcepts | lang)" class="row">
         <div class="col-xs-12">
           <div class="concepts">
-            <h2>{{ 'concepts' | translate }}</h2>
+            <h2>
+              {{ 'concepts' | translate }}
+              <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.study.concepts' | translate }}"
+                    tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+            </h2>
             <div class="items">
               <ng-container *ngIf="study.conceptsFromScheme.length">
                 <p *ngFor="let concept of study.conceptsFromScheme"

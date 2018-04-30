@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Title } from '@angular/platform-browser'
@@ -44,6 +44,17 @@ export class InstanceVariableViewComponent implements OnInit {
 
   ngOnInit() {
     this.getInstanceVariable()
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+    }
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.router.navigated = false;
+        window.scrollTo(0, 0);
+      }
+    })
   }
 
   private getInstanceVariable() {
@@ -89,4 +100,16 @@ export class InstanceVariableViewComponent implements OnInit {
       })
   }
 
+  goToNextInstanceVariable(): void {
+    this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
+      .subscribe(instanceVariableId => {
+        this.router.navigate([
+          '/editor/studies',
+          this.study.id,
+          'datasets',
+          this.dataset.id,
+          'instanceVariables',
+          instanceVariableId])
+      })
+  }
 }

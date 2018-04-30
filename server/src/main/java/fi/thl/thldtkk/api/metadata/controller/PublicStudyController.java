@@ -68,4 +68,13 @@ public class PublicStudyController {
           @PathVariable("studyGroupId") UUID studyGroupId) {
     return publicStudyService.getStudiesByStudyGroup(studyGroupId);
   }
+
+  @ApiOperation("Get next instance variable for given one")
+  @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}/next")
+  public String getNextInstanceVariable(
+          @PathVariable("studyId") UUID studyId,
+          @PathVariable("datasetId") UUID datasetId,
+          @PathVariable("instanceVariableId") UUID instanceVariableId) {
+    return publicStudyService.getNextInstanceVariable(studyId, datasetId, instanceVariableId);
+  }
 }

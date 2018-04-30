@@ -2,6 +2,19 @@
 
   <div class="row">
     <div class="col-xs-12">
+      <div class="pull-right">
+        <button (click)="goToNextInstanceVariable()"
+                [disabled]="deleteInProgress"
+                class="btn btn-default">
+          <span class="glyphicon glyphicon-play"></span>
+          {{ 'goToNext' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
       <h1>{{ instanceVariable.prefLabel | lang }}</h1>
     </div>
   </div>

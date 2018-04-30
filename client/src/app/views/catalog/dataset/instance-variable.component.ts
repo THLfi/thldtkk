@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
@@ -35,7 +35,8 @@ export class InstanceVariableComponent implements OnInit {
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private langPipe: LangPipe,
-    private titleService: Title
+    private titleService: Title,
+    private router: Router
   ) {
     this.language = this.translateService.currentLang
   }
@@ -47,6 +48,17 @@ export class InstanceVariableComponent implements OnInit {
         params['datasetId'],
         params['instanceVariableId']
       ))
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+    }
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.router.navigated = false;
+        window.scrollTo(0, 0);
+      }
+    })
   }
 
   private updateInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string) {
@@ -76,4 +88,16 @@ export class InstanceVariableComponent implements OnInit {
     this.referencePeriod = new InstanceVariableReferencePeriod(this.study, this.dataset, this.instanceVariable)
   }
 
+  goToNextInstanceVariable(): void {
+    this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
+      .subscribe(instanceVariableId => {
+        this.router.navigate([
+          '/catalog/studies',
+          this.study.id,
+          'datasets',
+          this.dataset.id,
+          'instanceVariables',
+          instanceVariableId])
+      })
+  }
 }

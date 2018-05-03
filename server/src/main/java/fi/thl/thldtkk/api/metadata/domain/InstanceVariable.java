@@ -492,14 +492,12 @@ public class InstanceVariable implements NodeEntity {
     instanceVariable.valueRangeMax = this.valueRangeMax;
     instanceVariable.valueRangeMin = this.valueRangeMin;
     instanceVariable.partOfGroup = this.partOfGroup;
-    instanceVariable.source = this.source;
     instanceVariable.sourceDescription = this.sourceDescription;
     instanceVariable.valueRangeMin = this.valueRangeMin;
     instanceVariable.variable = this.variable;
     instanceVariable.dataType = this.dataType;
     instanceVariable.unitType = this.unitType;
     instanceVariable.instanceQuestions = this.instanceQuestions;
-    instanceVariable.published = this.published;
     instanceVariable.dataFormat = this.dataFormat;
     return instanceVariable;
   }

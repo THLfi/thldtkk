@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 
+import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.sanitizeDataset;
+import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.sanitizeDatasetList;
+
 @Api(description = "Public API for datasets")
 @RestController
 @RequestMapping(API.PATH_WITH_VERSION + "/public/datasets")
@@ -32,13 +35,13 @@ public class PublicDatasetController {
       @RequestParam(name = "datasetTypeId", required = false) UUID datasetTypeId,
       @RequestParam(name = "max", defaultValue = "-1") int max,
       @RequestParam(name = "sort", defaultValue = "") String sort) {
-    return publicDatasetService.find(organizationId, datasetTypeId, query, max, sort);
+    return sanitizeDatasetList(publicDatasetService.find(organizationId, datasetTypeId, query, max, sort));
   }
 
   @ApiOperation("Get one published dataset by ID")
   @GetJsonMapping("/{datasetId}")
   public Dataset getDataset(@PathVariable("datasetId") UUID datasetId) {
-    return publicDatasetService.get(datasetId).orElseThrow(NotFoundException::new);
+    return sanitizeDataset(publicDatasetService.get(datasetId).orElseThrow(NotFoundException::new));
   }
 
 }

@@ -20,7 +20,6 @@
       <div class="navbar-header" style="width: 100%;">
         <a class="navbar-brand" routerLink="/editor">
           {{ 'datasetEditor' | translate }}
-          <sup>{{ 'beta' | translate }}</sup>
         </a>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
           <li [routerLinkActive]="['active']"><a routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>

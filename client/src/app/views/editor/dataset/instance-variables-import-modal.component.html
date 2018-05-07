@@ -8,11 +8,11 @@
             width="900"
             positionTop="70"
             [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
-    <p-header>
+    <p-header class="import-instancevariables-modal-header">
       {{ 'importInstanceVariablesModal.header' | translate }}
     </p-header>
     <form #importForm="ngForm">
-      <div class="container-fluid">
+      <div class="container-fluid import-instancevariables-modal-content">
         <div [ngClass]="{ 'bg-danger': formErrors.file && formErrors.file.length }"
              class="row">
           <div class="col-xs-12">
@@ -34,8 +34,9 @@
                 {{ errorKey | translate }}
               </p>
               <p class="help-block">
-                {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.helpText' | translate }}
+                {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.helpText.exampleFile' | translate }}
                 <a href="{{ downloadExampleInstanceVariableCsv() }}" class="link-underline"> {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.linkText' | translate }}</a>
+                {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.helpText.dateFormat' | translate }}
               </p>
             </div>
           </div>
@@ -66,7 +67,7 @@
           <ng-container *ngIf="showPreview; else previewNotVisible">
             <button (click)="doPreview()"
                     [disabled]="importInProgress"
-                    class="btn btn-info">
+                    class="btn btn-info btn-preview">
               {{ 'importInstanceVariablesModal.buttons.preview' | translate }}
               <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
             </button>
@@ -108,7 +109,7 @@
           <ng-template #previewNotVisible>
             <button (click)="doPreview()"
                     [disabled]="importInProgress"
-                    class="btn btn-info">
+                    class="btn btn-info btn-preview">
               {{ 'importInstanceVariablesModal.buttons.preview' | translate }}
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             </button>
@@ -140,7 +141,7 @@
       <thl-spinner></thl-spinner>
     </div>
     <p-footer>
-      <div>
+      <div class="import-instancevariables-modal-footer">
         <button (click)="importButtonClick()"
                 [disabled]="importInProgress"
                 class="btn btn-primary">

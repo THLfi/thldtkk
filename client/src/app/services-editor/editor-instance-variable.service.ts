@@ -144,7 +144,7 @@ export class EditorInstanceVariableService {
     }
     return env.contextPath
       + env.apiPath
-      + '/editor/exampleInstanceVariables.csv?'
+      + '/editor/exampleImportVariables.xls?'
       + 'encoding=' + encoding
   }
 }

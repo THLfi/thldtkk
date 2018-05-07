@@ -44,7 +44,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class EditorStudyServiceImpl implements EditorStudyService {
 
   private static final Logger LOG = LoggerFactory.getLogger(EditorStudyServiceImpl.class);
-  private static final String FILE_PATH = "csv/exampleInstanceVariables.csv";
+  private static final String FILE_PATH = "csv/exampleImportVariables.xls";
 
   private final Repository<NodeId, Node> nodes;
   private final UserHelper userHelper;
@@ -853,7 +853,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     byte[] document = Files.readAllBytes(path);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.set("Content-Disposition", "attachment; filename=exampleInstanceVariables.csv");
+    headers.set("Content-Disposition", "attachment; filename=example-import-variables.xls");
     headers.set("Content-Type", "text/csv; charset=" + encoding);
 
     return new HttpEntity<>(document, headers);

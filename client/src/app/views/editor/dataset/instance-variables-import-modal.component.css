@@ -1,0 +1,18 @@
+.import-instancevariables-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
+.import-instancevariables-modal-header
+.import-instancevariables-modal-footer {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
+.btn-preview {
+  min-height: 35px;
+  width: 120px;
+}

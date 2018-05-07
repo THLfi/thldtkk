@@ -81,7 +81,7 @@ public class InstanceVariableCsvExportController {
   }
 
   @RequestMapping(
-          value = "/editor/exampleInstanceVariables.csv",
+          value = "/editor/exampleImportVariables.xls",
           method = RequestMethod.GET)
   public @ResponseBody HttpEntity<byte[]> editorExampleInstanceVariablesCsv(
           @RequestParam(value = "encoding", defaultValue = "ISO-8859-15") String encoding

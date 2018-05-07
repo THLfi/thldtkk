@@ -14,6 +14,7 @@ import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'instance-variables-import-modal',
+  styleUrls: [ './instance-variables-import-modal.component.css' ],
   templateUrl: './instance-variables-import-modal.component.html'
 })
 export class InstanceVariablesImportModalComponent implements OnInit, AfterContentChecked {

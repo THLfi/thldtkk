@@ -637,8 +637,11 @@
     "file": {
       "label": "Tuotava CSV-tiedosto",
       "exampleInstanceVariableCsv": {
-        "helpText": "Esimerkkitiedoston voi ladata",
-        "linkText": "tästä"
+        "helpText": {
+          "exampleFile": "Esimerkkitiedoston voi ladata",
+          "dateFormat": "Varmista ennen tuontia että kaikki päivämäärät CSV -tiedostossa ovat oikeassa formatissa (ISO 8601, vvvv-kk-pp), esimerkiksi 2018-04-15."
+        },
+        "linkText": "tästä."
       }
     },
     "overwrite": {

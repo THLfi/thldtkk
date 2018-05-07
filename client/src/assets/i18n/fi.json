@@ -91,7 +91,7 @@
   "conceptsFromScheme": "Asiasanat",
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
   "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
-  "noConceptsFromScheme": "Luokitteluihin perustuvia asiasanoja ei ole määritelty.",
+  "noConceptsFromScheme": "Asiasanoja ei ole määritelty.",
   "freeConcepts": "Vapaat asiasanat",
   "noFreeConcepts": "Vapaita asiasanoja ei ole määritelty.",
   "source": "Lähde",

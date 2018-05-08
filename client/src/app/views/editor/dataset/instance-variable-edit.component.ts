@@ -502,7 +502,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       this.instanceVariable.variable = variable
     }
 
-    saveInstanceVariable(): void {
+    saveInstanceVariable(goToNext: boolean): void {
         this.savingInProgress = true
 
         this.validate()
@@ -536,8 +536,26 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
           .subscribe(instanceVariable => {
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable
-            this.goBack()
+
+            if (goToNext) {
+              this.goToNext()
+            } else {
+              this.goBack()
+            }
           })
+    }
+
+    goToNext(): void {
+      this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
+        .subscribe(instanceVariableId => {
+          this.router.navigate([
+            '/editor/studies',
+            this.study.id,
+            'datasets',
+            this.dataset.id,
+            'instanceVariables',
+            instanceVariableId])
+        })
     }
 
     searchInstanceQuestion(event: any): void {

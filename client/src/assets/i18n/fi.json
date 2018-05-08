@@ -64,6 +64,8 @@
   "edit": "Muokkaa",
   "remove": "Poista",
   "save": "Tallenna",
+  "saveAndGoToNext": "Tallenna ja siirry seuraavaan",
+  "goToNext": "Siirry seuraavaan",
   "cancel": "Peruuta",
   "duplicate": "Kopioi",
   "copy": "Kopio",
@@ -89,7 +91,7 @@
   "conceptsFromScheme": "Asiasanat",
   "conceptsFromSchemePlaceholder": "Hae asiasanoja...",
   "noMatchingConcepts": "Haulla ei löytynyt asiasanoja.",
-  "noConceptsFromScheme": "Luokitteluihin perustuvia asiasanoja ei ole määritelty.",
+  "noConceptsFromScheme": "Asiasanoja ei ole määritelty.",
   "freeConcepts": "Vapaat asiasanat",
   "noFreeConcepts": "Vapaita asiasanoja ei ole määritelty.",
   "source": "Lähde",
@@ -295,6 +297,57 @@
     },
     "studyGroupData": {
       "studyColumnHeading": "Sarjan aineistot"
+    },
+    "helpText": {
+      "instanceVariableSearch": {
+        "variable": "Käsitemuuttujat -ohjeet tähän"
+      },
+      "study": {
+        "personInRoles": "Yhteystiedot -ohjeet tähän",
+        "datasetType": "Aineistotyyppi -ohjeet tähän",
+        "usageCondition": "Käyttöehdot -ohjeet tähän",
+        "links": "Linkit -ohjeet tähän",
+        "universe": "Perusjoukko -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "geographicalCoverage": "Alueellinen kattavuus -ohjeet tähän",
+        "concepts": "Asiasanat -ohjeet tähän"
+      },
+      "dataset": {
+        "personInRoles": "Yhteystiedot -ohjeet tähän",
+        "datasetType": "Aineistotyyppi -ohjeet tähän",
+        "usageCondition": "Käyttöehdot -ohjeet tähän",
+        "links": "Linkit -ohjeet tähän",
+        "universe": "Perusjoukko -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "geographicalCoverage": "Alueellinen kattavuus -ohjeet tähän",
+        "unitType": "Havaintoyksikön tyyppi -ohjeet tähän",
+        "numberOfObservationUnits": "Havaintoyksiköiden lukumäärä -ohjeet tähän",
+        "datasetLifecyclePhase": "Datasetin elinkaaren vaihe -ohjeet tähän",
+        "population": "Kohdejoukko -ohjeet tähän",
+        "sample": "Otos -ohjeet tähän",
+        "loss": "Kato -ohjeet tähän",
+        "concepts": "Asiasanat -ohjeet tähän"
+      },
+      "instanceVariable": {
+        "partOfGroup": "Muuttujaryhmä -ohjeet tähän",
+        "conceptsFromScheme": "Asiasanat -ohjeet tähän",
+        "referencePeriod": "Viiteajankohta -ohjeet tähän",
+        "valueDomain": "Arvoalue -ohjeet tähän",
+        "unit": "Mittayksikkö -ohjeet tähän",
+        "codeList": "Koodisto -ohjeet tähän",
+        "technicalName": "Tekninen nimi -ohjeet tähän",
+        "valueRangeMin": "Muuttujan pienin sallittu arvo -ohjeet tähän",
+        "valueRangeMax": "Muuttujan suurin sallittu arvo -ohjeet tähän",
+        "missingValues": "Muuttujan puuttuvien tietojen selite -ohjeet tähän",
+        "defaultMissingValue": "Muuttujan puuttuvan tiedon koodi -ohjeet tähän",
+        "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot -ohjeet tähän",
+        "variable": "Käsitemuuttuja -ohjeet tähän",
+        "instanceVariableSource": "Muuttujan tietolähde -ohjeet tähän",
+        "dataType": "Tietotyyppi -ohjeet tähän",
+        "dataFormat": "Tiedon muoto -ohjeet tähän",
+        "unitType": "Havaintoyksikön tyyppi -ohjeet tähän",
+        "instanceQuestions": "Muuttujaan liittyvät kyselykysymykset -ohjeet tähän"
+      }
     }
   },
   "qualityStatement": "Muuttujan muut laatuun vaikuttavat tiedot",
@@ -582,7 +635,14 @@
   "importInstanceVariablesModal": {
     "header": "Muuttujien tuonti CSV-tiedostosta",
     "file": {
-      "label": "Tuotava CSV-tiedosto"
+      "label": "Tuotava CSV-tiedosto",
+      "exampleInstanceVariableCsv": {
+        "helpText": {
+          "exampleFile": "Esimerkkitiedoston voi ladata",
+          "dateFormat": "Varmista ennen tuontia että kaikki päivämäärät CSV -tiedostossa ovat oikeassa formatissa (ISO 8601, vvvv-kk-pp), esimerkiksi 2018-04-15."
+        },
+        "linkText": "tästä."
+      }
     },
     "overwrite": {
       "false": "Säilytä olemassa olevat muuttujat",
@@ -657,7 +717,7 @@
     "title": "Ylläpito"
   },
   "editorLoginComponent": {
-    "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>. Molemmat palvelut ovat beta-testausvaiheessa.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistokatalogi.fi'>info@aineistokatalogi.fi</a></p>",
+    "aboutEditor": "<p>Aineistoeditori on kansallinen aineistojen kuvailujärjestelmä. Valitut aineistot julkaistaan avoimessa <a href='https://aineistokatalogi.fi'>Aineistokatalogi-palvelussa</a>.</p><p>Käyttäjät edustavat organisaatioitaan, mutta kirjautuvat käyttäen henkilökohtaisia tunnuksia.</p><strong>Aineistoeditoriin pääsee kirjautumaan:</strong><ul><li>Virtua käyttävät virastot</li><li>Käyttöoikeuden anoneet viranomaiset</li></ul><p>Jos haluat ottaa editorin käyttöön organisaatiossasi, ota yhteyttä <a href='mailto:info@aineistokatalogi.fi'>info@aineistokatalogi.fi</a></p>",
     "loginHeading":"Kirjaudu sisään",
     "userName":"Käyttäjätunnus",
     "password":"Salasana",
@@ -1018,7 +1078,7 @@
     "EditorStudyViewComponent": {
       "publishButton": {
         "label": "Julkaise",
-        "helpText": "<p>Julkaise-painikkeella aineistokuvaus julkaistaan näkymään avoimesti Aineistokatalogissa. Julkaisemisen voi perua Peru julkaisu -painikkeella.</p><p>HUOM: Jos teet muutoksia aineistokuvaukseen julkaisun jälkeen ja haluat päivittää ne myös Aineistokatalogiin, klikkaa ensin Peru julkaisu -painiketta ja julkaise aineisto sitten uudestaan Julkaise-painikkeella.</p>"
+        "helpText": "<p>Julkaise-painikkeella aineistokuvaus julkaistaan näkymään avoimesti Aineistokatalogissa. Julkaisemisen voi perua Peru julkaisu -painikkeella.</p><p>HUOM: Jos teet muutoksia aineistokuvaukseen julkaisun jälkeen ja haluat päivittää ne myös Aineistokatalogiin, klikkaa Julkaise Uudelleen -painiketta.</p>"
       },
       "unpublishButton": {
         "label": "Peru julkaisu"

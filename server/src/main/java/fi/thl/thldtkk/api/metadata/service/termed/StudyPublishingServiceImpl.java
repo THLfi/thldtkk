@@ -38,6 +38,7 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     try {
       removeNonPublicPropertiesAndReferences(savedEditorStudy);
       publicStudyService.save(savedEditorStudy);
+      savedEditorStudy = editorStudyService.get(studyId).orElseThrow(NotFoundException::new);
     }
     catch (Exception e) {
       log.warn("Failed to save study '{}' into public graph", studyId, e);
@@ -56,7 +57,19 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     study.setLastModifiedByUser(null);
     study.setComment(null);
     study.setExternalId(null);
-    study.setPredecessors(Collections.emptyList());
+
+    study.getPersonInRoles().removeIf(personInRole -> !personInRole.isPublic().isPresent()
+            || !personInRole.isPublic().get().equals(Boolean.TRUE));
+
+    study.getPredecessors().removeIf(predecessor -> !predecessor.isPublished().isPresent()
+            || !predecessor.isPublished().get().equals(Boolean.TRUE));
+
+    study.getSuccessors().removeIf(successor -> !successor.isPublished().isPresent()
+            || !successor.isPublished().get().equals(Boolean.TRUE));
+
+    // sanitize linked entities
+    study.getPredecessors().forEach(predecessor -> removeNonPublicPropertiesAndReferences(predecessor));
+    study.getSuccessors().forEach(successor -> removeNonPublicPropertiesAndReferences(successor));
     study.getDatasets().forEach(d -> removeNonPublicPropertiesAndReferences(d));
     study.setPhysicalLocation(Collections.emptyMap());
     study.setSystemInRoles(Collections.emptyList());
@@ -65,7 +78,19 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
   private void removeNonPublicPropertiesAndReferences(Dataset dataset) {
     dataset.setLastModifiedByUser(null);
     dataset.setComment(null);
-    dataset.setPredecessors(Collections.emptyList());
+
+    dataset.getPersonInRoles().removeIf(personInRole -> !personInRole.isPublic().isPresent()
+            || !personInRole.isPublic().get().equals(Boolean.TRUE));
+
+    dataset.getPredecessors().removeIf(predecessor -> !predecessor.isPublished().isPresent()
+            || !predecessor.isPublished().get().equals(Boolean.TRUE));
+
+    dataset.getSuccessors().removeIf(successor -> !successor.isPublished().isPresent()
+            || !successor.isPublished().get().equals(Boolean.TRUE));
+
+    // sanitize linked entities
+    dataset.getPredecessors().forEach(predecessor -> removeNonPublicPropertiesAndReferences(predecessor));
+    dataset.getSuccessors().forEach(successor -> removeNonPublicPropertiesAndReferences(successor));
     dataset.getInstanceVariables().forEach(iv -> removeNonPublicPropertiesAndReferences(iv));
   }
 
@@ -97,6 +122,7 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     try {
       removeNonPublicPropertiesAndReferences(study);
       publicStudyService.save(study);
+      study = editorStudyService.get(studyId).orElseThrow(NotFoundException::new);
     }
     catch (Exception e) {
       log.warn("Failed to reissue study '{}' into public graph", studyId, e);

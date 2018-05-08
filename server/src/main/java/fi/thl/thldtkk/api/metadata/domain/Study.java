@@ -716,7 +716,6 @@ public class Study implements NodeEntity {
   public Study getSimplified() {
     Study study = new Study();
     study.id = this.id;
-    study.published = this.published;
     study.prefLabel = this.prefLabel;
     study.altLabel = this.altLabel;
     study.abbreviation = this.abbreviation;
@@ -748,7 +747,6 @@ public class Study implements NodeEntity {
     study.existenceForms = this.existenceForms;
     study.ownerOrganization = this.ownerOrganization;
     study.ownerOrganizationUnit = this.ownerOrganizationUnit;
-    study.personInRoles = this.personInRoles;
     study.links = this.links;
     study.usageCondition = this.usageCondition;
     study.universe = this.universe;
@@ -758,12 +756,24 @@ public class Study implements NodeEntity {
     study.conceptsFromScheme = this.conceptsFromScheme;
     study.datasetTypes = this.datasetTypes;
     study.studyGroup = this.studyGroup;
-    study.predecessors = this.predecessors;
     study.systemInRoles = this.systemInRoles;
+
+    for (PersonInRole personInRole : this.personInRoles) {
+      if (personInRole.isPublic().isPresent() && personInRole.isPublic().get().equals(Boolean.TRUE)) {
+        study.personInRoles.add(personInRole);
+      }
+    }
+
+    for (Study predecessor : this.predecessors) {
+      if (predecessor.isPublished().isPresent() && predecessor.isPublished().get().equals(Boolean.TRUE)) {
+        study.predecessors.add(predecessor.getSimplified());
+      }
+    }
 
     for (Dataset dataset : this.datasets) {
       study.datasets.add(dataset.getSimplified());
     }
+
     return study;
   }
 }

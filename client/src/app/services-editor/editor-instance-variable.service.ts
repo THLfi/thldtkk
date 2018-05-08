@@ -120,4 +120,31 @@ export class EditorInstanceVariableService {
     return this.http.get(url).map(response => response.json() as InstanceVariable[])
   }
 
+  getNextInstanceVariableId(studyId: string, datasetId: string, instanceVariableId: string): Observable<string> {
+    const path: string = env.contextPath
+      + env.apiPath
+      + '/editor/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId
+      + '/instanceVariables/'
+      + instanceVariableId
+      + '/next'
+
+    return this.http.get(path)
+      .map(response => response.json() as string)
+  }
+
+  downloadExampleInstanceVariableCsv(): string {
+    let encoding
+    if (navigator && navigator.platform && navigator.platform.indexOf('Mac') > -1) {
+      encoding = 'MacRoman'
+    } else {
+      encoding = 'ISO-8859-15'
+    }
+    return env.contextPath
+      + env.apiPath
+      + '/editor/exampleImportVariables.xls?'
+      + 'encoding=' + encoding
+  }
 }

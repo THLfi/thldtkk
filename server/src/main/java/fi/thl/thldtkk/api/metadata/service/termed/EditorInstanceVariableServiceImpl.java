@@ -1,11 +1,13 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 
 import java.util.List;
@@ -25,10 +27,13 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
 
   private final Repository<NodeId, Node> nodes;
   private final UserHelper userHelper;
+  private EditorStudyService editorStudyService;
 
-  public EditorInstanceVariableServiceImpl(Repository<NodeId, Node> nodes, UserHelper userHelper) {
+  public EditorInstanceVariableServiceImpl(Repository<NodeId, Node> nodes, UserHelper userHelper,
+                                           EditorStudyService editorStudyService) {
     this.nodes = nodes;
     this.userHelper = userHelper;
+    this.editorStudyService = editorStudyService;
   }
 
   @AdminOnly

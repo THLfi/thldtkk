@@ -13,8 +13,15 @@ import fi.thl.thldtkk.api.metadata.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -37,6 +44,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class EditorStudyServiceImpl implements EditorStudyService {
 
   private static final Logger LOG = LoggerFactory.getLogger(EditorStudyServiceImpl.class);
+  private static final String FILE_PATH = "csv/exampleImportVariables.xls";
 
   private final Repository<NodeId, Node> nodes;
   private final UserHelper userHelper;
@@ -813,5 +821,41 @@ public class EditorStudyServiceImpl implements EditorStudyService {
             1)
             .map(Study::new)
             .findFirst();
+  }
+
+  @Override
+  public String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
+
+    Optional<Dataset> dataset = getDataset(studyId, datasetId);
+
+    if (dataset.isPresent()) {
+      List<InstanceVariable> instanceVariables = dataset.get().getInstanceVariables();
+
+      for (InstanceVariable instanceVariable : instanceVariables) {
+        if (instanceVariable.getId().equals(instanceVariableId)) {
+          int currentIndex = instanceVariables.indexOf(instanceVariable);
+          currentIndex++;
+
+          if (currentIndex == instanceVariables.size()) {
+            currentIndex = 0;
+          }
+          return instanceVariables.get(currentIndex).getId().toString();
+        }
+      }
+    }
+    return instanceVariableId.toString();
+  }
+
+  @Override
+  public HttpEntity<byte[]> getExampleInstanceVariablesCsv(String encoding) throws IOException, URISyntaxException {
+    Path path = Paths.get(getClass().getClassLoader()
+            .getResource(FILE_PATH).toURI());
+    byte[] document = Files.readAllBytes(path);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Content-Disposition", "attachment; filename=example-import-variables.xls");
+    headers.set("Content-Type", "text/csv; charset=" + encoding);
+
+    return new HttpEntity<>(document, headers);
   }
 }

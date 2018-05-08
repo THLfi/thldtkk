@@ -97,7 +97,7 @@ public class ServiceConfiguration {
 
   @Bean
   public EditorInstanceVariableService editorInstanceVariableService() {
-    return new EditorInstanceVariableServiceImpl(editorNodeRepository(), userHelper);
+    return new EditorInstanceVariableServiceImpl(editorNodeRepository(), userHelper, editorStudyService());
   }
 
   @Bean

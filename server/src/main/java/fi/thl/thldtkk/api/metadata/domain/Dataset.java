@@ -468,7 +468,6 @@ public class Dataset implements NodeEntity {
     dataset.abbreviation = this.abbreviation;
     dataset.description = this.description;
     dataset.usageConditionAdditionalInformation = this.usageConditionAdditionalInformation;
-    dataset.published = this.published;
     dataset.referencePeriodStart = this.referencePeriodStart;
     dataset.referencePeriodEnd = this.referencePeriodEnd;
     dataset.ownerOrganizationUnit = this. ownerOrganizationUnit;
@@ -482,14 +481,25 @@ public class Dataset implements NodeEntity {
     dataset.conceptsFromScheme = this.conceptsFromScheme;
     dataset.freeConcepts = this.freeConcepts;
     dataset.unitType = this.unitType;
-    dataset.personInRoles = this.personInRoles;
     dataset.collectionStartDate = this.collectionStartDate;
     dataset.collectionEndDate = this.collectionEndDate;
-    dataset.predecessors = this.predecessors;
+
+    for (PersonInRole personInRole : this.personInRoles) {
+      if (personInRole.isPublic().isPresent() && personInRole.isPublic().get().equals(Boolean.TRUE)) {
+        dataset.personInRoles.add(personInRole);
+      }
+    }
+
+    for (Dataset predecessor : this.predecessors) {
+      if (predecessor.isPublished().isPresent() && predecessor.isPublished().get().equals(Boolean.TRUE)) {
+        dataset.predecessors.add(predecessor.getSimplified());
+      }
+    }
 
     for (InstanceVariable instanceVariable : this.instanceVariables) {
       dataset.instanceVariables.add(instanceVariable.getSimplified());
     }
+
     return dataset;
   }
 }

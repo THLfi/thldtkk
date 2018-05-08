@@ -1,7 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -16,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.sanitizeInstanceVariable;
+import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.sanitizeInstanceVariableList;
+
 @Api(description = "Public API for instance variables")
 @RestController
 @RequestMapping(API.PATH_WITH_VERSION + "/public")
@@ -24,13 +26,10 @@ public class PublicInstanceVariableController {
   @Autowired
   private PublicInstanceVariableService instanceVariableService;
 
-  @Autowired
-  private PublicDatasetService datasetService;
-
   @ApiOperation("List all instance variables of given dataset")
   @GetJsonMapping("/datasets/{datasetId}/instanceVariables")
   public List<InstanceVariable> getInstanceVariablesOfDataset(@PathVariable("datasetId") UUID id) {
-    return instanceVariableService.getDatasetInstanceVariables(id);
+    return sanitizeInstanceVariableList(instanceVariableService.getDatasetInstanceVariables(id));
   }
 
   @ApiOperation("Get instance variable by ID")
@@ -38,14 +37,14 @@ public class PublicInstanceVariableController {
       "/datasets/{datasetId}/instanceVariables/{id}",
       "/instanceVariables/{id}"})
   public InstanceVariable getInstanceVariable(@PathVariable("id") UUID id) {
-    return instanceVariableService.get(id).orElseThrow(NotFoundException::new);
+    return sanitizeInstanceVariable(instanceVariableService.get(id).orElseThrow(NotFoundException::new));
   }
 
   @ApiOperation("List all instances of given variable")
   @GetJsonMapping("/variables/{variableId}/instanceVariables")
   public List<InstanceVariable> getInstancesOfVariable(
       @PathVariable("variableId") UUID variableId) {
-    return instanceVariableService.getVariableInstancesVariables(variableId, -1);
+    return sanitizeInstanceVariableList(instanceVariableService.getVariableInstancesVariables(variableId, -1));
   }
 
   @ApiOperation("Search instance variables")
@@ -53,7 +52,7 @@ public class PublicInstanceVariableController {
   public List<InstanceVariable> getInstanceVariables(
       @RequestParam(value = "query", defaultValue = "") String query,
       @RequestParam(value = "max", defaultValue = "10") Integer max) {
-    return instanceVariableService.find(query, max);
+    return sanitizeInstanceVariableList(instanceVariableService.find(query, max));
   }
 
 }

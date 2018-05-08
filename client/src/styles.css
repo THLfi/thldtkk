@@ -382,3 +382,23 @@ h3 {
   color: #01837A;
   text-decoration: underline;
 }
+
+.ui-tooltip.dataset-catalog-label-tooltip {
+  max-width: 600px;
+}
+
+.dataset-catalog-label-tooltip .ui-tooltip-text  {
+  white-space: normal;
+}
+
+.link-underline {
+  text-decoration: underline;
+}
+
+.ui-tooltip.catalog-helptext-tooltip {
+  max-width: 600px;
+}
+
+.catalog-helptext-tooltip .ui-tooltip-text  {
+  white-space: normal;
+}

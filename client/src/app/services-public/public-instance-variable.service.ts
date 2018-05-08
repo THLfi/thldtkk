@@ -49,4 +49,18 @@ export class PublicInstanceVariableService {
       + 'encoding=' + encoding
   }
 
+  getNextInstanceVariableId(studyId: string, datasetId: string, instanceVariableId: string): Observable<string> {
+    const path: string = env.contextPath
+      + env.apiPath
+      + '/public/studies/'
+      + studyId
+      + '/datasets/'
+      + datasetId
+      + '/instanceVariables/'
+      + instanceVariableId
+      + '/next'
+
+    return this.http.get(path)
+      .map(response => response.json() as string)
+  }
 }

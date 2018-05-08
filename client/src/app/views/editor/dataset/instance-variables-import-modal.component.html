@@ -8,11 +8,11 @@
             width="900"
             positionTop="70"
             [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
-    <p-header>
+    <p-header class="import-instancevariables-modal-header">
       {{ 'importInstanceVariablesModal.header' | translate }}
     </p-header>
     <form #importForm="ngForm">
-      <div class="container-fluid">
+      <div class="container-fluid import-instancevariables-modal-content">
         <div [ngClass]="{ 'bg-danger': formErrors.file && formErrors.file.length }"
              class="row">
           <div class="col-xs-12">
@@ -32,6 +32,11 @@
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                 {{ errorKey | translate }}
+              </p>
+              <p class="help-block">
+                {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.helpText.exampleFile' | translate }}
+                <a href="{{ downloadExampleInstanceVariableCsv() }}" class="link-underline"> {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.linkText' | translate }}</a>
+                {{ 'importInstanceVariablesModal.file.exampleInstanceVariableCsv.helpText.dateFormat' | translate }}
               </p>
             </div>
           </div>
@@ -62,36 +67,20 @@
           <ng-container *ngIf="showPreview; else previewNotVisible">
             <button (click)="doPreview()"
                     [disabled]="importInProgress"
-                    class="btn btn-info">
+                    class="btn btn-info btn-preview">
               {{ 'importInstanceVariablesModal.buttons.preview' | translate }}
               <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
             </button>
-            <p-dataTable [value]="csvJSON" scrollable="true" scrollHeight="250px">
+            <p-dataTable [value]="csvJSON" scrollable="true" scrollHeight="175px">
               <p-column field="prefLabel" header="prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="id" header="id" [style]="{'width':'250px'}"></p-column>
               <p-column field="technicalName" header="technicalName" [style]="{'width':'250px'}"></p-column>
               <p-column field="description" header="description" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_prefLabel" header="dataset.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_id" header="dataset.id" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_unitType_prefLabel" header="dataset.unitType.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_unitType_id" header="dataset.unitType.id" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_unitType_description" header="dataset.unitType.description" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_prefLabel" header="study.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_referencePeriodStart" header="study.referencePeriodStart" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_referencePeriodEnd" header="study.referencePeriodEnd" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_unitType_prefLabel" header="study.unitType.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_unitType_id" header="study.unitType.id" [style]="{'width':'250px'}"></p-column>
-              <p-column field="study_unitType_description" header="study.unitType.description" [style]="{'width':'250px'}"></p-column>
               <p-column field="freeConcepts" header="freeConcepts" [style]="{'width':'250px'}"></p-column>
               <p-column field="conceptsFromScheme" header="conceptsFromScheme" [style]="{'width':'250px'}"></p-column>
               <p-column field="referencePeriodStart" header="referencePeriodStart" [style]="{'width':'250px'}"></p-column>
               <p-column field="referencePeriodEnd" header="referencePeriodEnd" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_referencePeriodStart" header="dataset.referencePeriodStart" [style]="{'width':'250px'}"></p-column>
-              <p-column field="dataset_referencePeriodEnd" header="dataset.referencePeriodEnd" [style]="{'width':'250px'}"></p-column>
               <p-column field="partOfGroup" header="partOfGroup" [style]="{'width':'250px'}"></p-column>
-              <p-column field="published" header="published" [style]="{'width':'250px'}"></p-column>
               <p-column field="unitType_prefLabel" header="unitType.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="unitType_id" header="unitType.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="unitType_description" header="unitType.description" [style]="{'width':'250px'}"></p-column>
               <p-column field="valueDomainType" header="valueDomainType" [style]="{'width':'250px'}"></p-column>
               <p-column field="dataFormat" header="dataFormat" [style]="{'width':'250px'}"></p-column>
@@ -100,14 +89,11 @@
               <p-column field="defaultMissingValue" header="defaultMissingValue" [style]="{'width':'250px'}"></p-column>
               <p-column field="qualityStatement" header="qualityStatement" [style]="{'width':'250px'}"></p-column>
               <p-column field="quantity_prefLabel" header="quantity.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="quantity_id" header="quantity.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="unit_prefLabel" header="unit.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="unit_id" header="unit.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="unit_symbol" header="unit.symbol" [style]="{'width':'250px'}"></p-column>
               <p-column field="valueRangeMin" header="valueRangeMin" [style]="{'width':'250px'}"></p-column>
               <p-column field="valueRangeMax" header="valueRangeMax" [style]="{'width':'250px'}"></p-column>
               <p-column field="codeList_prefLabel" header="codeList.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="codeList_id" header="codeList.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="codeList_description" header="codeList.description" [style]="{'width':'250px'}"></p-column>
               <p-column field="codeList_owner" header="codeList.owner" [style]="{'width':'250px'}"></p-column>
               <p-column field="codeList_referenceId" header="codeList.referenceId" [style]="{'width':'250px'}"></p-column>
@@ -115,18 +101,15 @@
               <p-column field="codeList_codeItems" header="codeList.codeItems" [style]="{'width':'250px'}"></p-column>
               <p-column field="instanceQuestions" header="instanceQuestions" [style]="{'width':'250px'}"></p-column>
               <p-column field="source_dataset_prefLabel" header="source.dataset.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="source_dataset_id" header="source.dataset.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="source_description" header="source.description" [style]="{'width':'250px'}"></p-column>
               <p-column field="variable_prefLabel" header="variable.prefLabel" [style]="{'width':'250px'}"></p-column>
-              <p-column field="variable_id" header="variable.id" [style]="{'width':'250px'}"></p-column>
               <p-column field="variable_description" header="variable.description" [style]="{'width':'250px'}"></p-column>
-              <p-column field="lastModifiedDate" header="lastModifiedDate" [style]="{'width':'250px'}"></p-column>
             </p-dataTable>
           </ng-container>
           <ng-template #previewNotVisible>
             <button (click)="doPreview()"
                     [disabled]="importInProgress"
-                    class="btn btn-info">
+                    class="btn btn-info btn-preview">
               {{ 'importInstanceVariablesModal.buttons.preview' | translate }}
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             </button>
@@ -154,8 +137,11 @@
         </div>
       </div>
     </form>
+    <div *ngIf="importInProgress">
+      <thl-spinner></thl-spinner>
+    </div>
     <p-footer>
-      <div>
+      <div class="import-instancevariables-modal-footer">
         <button (click)="importButtonClick()"
                 [disabled]="importInProgress"
                 class="btn btn-primary">

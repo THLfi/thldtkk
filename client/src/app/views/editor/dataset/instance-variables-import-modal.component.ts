@@ -14,6 +14,7 @@ import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'instance-variables-import-modal',
+  styleUrls: [ './instance-variables-import-modal.component.css' ],
   templateUrl: './instance-variables-import-modal.component.html'
 })
 export class InstanceVariablesImportModalComponent implements OnInit, AfterContentChecked {
@@ -104,6 +105,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
 
   doImport(): void {
     this.importInProgress = true
+    this.showPreview = false
 
     this.validate()
 
@@ -135,7 +137,6 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
           this.showSwalErrors(messages)
         }
 
-        this.showPreview = false
         this.file = null
         this.onImport.emit()
       }, error => {
@@ -237,5 +238,9 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
         width: '800px'
       })
     })
+  }
+
+  downloadExampleInstanceVariableCsv(): string {
+    return this.instanceVariableService.downloadExampleInstanceVariableCsv()
   }
 }

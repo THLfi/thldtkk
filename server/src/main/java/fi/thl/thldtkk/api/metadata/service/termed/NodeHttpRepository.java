@@ -35,7 +35,7 @@ import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 /**
- * Termed REST API backed repository for Nodes.
+ * Termed REST API backend repository for Nodes.
  */
 public class NodeHttpRepository implements Repository<NodeId, Node> {
 

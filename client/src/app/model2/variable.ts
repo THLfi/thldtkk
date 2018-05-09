@@ -4,5 +4,4 @@ import { Node } from './node'
 export interface Variable extends Node {
   prefLabel: LangValues
   description: LangValues
-  referenceCount: number;
 }

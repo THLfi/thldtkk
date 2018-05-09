@@ -177,43 +177,56 @@
         </td>
       </tr>
       <tr>
-        <th><h2>3<br/><span th:text="#{registerName}">Rekisterin nimi</span></h2></th>
+        <th rowspan="2"><h2>3<br/><span th:text="#{dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
+        <td>
+          <div th:text="#{dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
+          <div th:text="${dataProtectionPersonName}"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div th:text="#{dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
+          <div th:text="${dataProtectionPersonContactInfo}" class="preserve-line-breaks"></div>
+        </td>
+      </tr>
+      <tr>
+        <th><h2>4<br/><span th:text="#{registerName}">Rekisterin nimi</span></h2></th>
         <td>
           <div th:text="${registerName}"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>4<br/><span th:text="#{purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
+        <th><h2>5<br/><span th:text="#{purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
         <td>
           <div th:text="${purposeOfPersonRegister}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>5<br/><span th:text="#{registerContent}">Rekisterin tietosisältö</span></h2></th>
+        <th><h2>6<br/><span th:text="#{registerContent}">Rekisterin tietosisältö</span></h2></th>
         <td>
           <div th:text="${registerContent}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>6<br/><span th:text="#{registerSources}">Säännönmukaiset tietolähteet</span></h2></th>
+        <th><h2>7<br/><span th:text="#{registerSources}">Säännönmukaiset tietolähteet</span></h2></th>
         <td>
           <div th:text="${registerSources}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>7<br/><span th:text="#{dataTransfers}">Tietojen säännönmukaiset luovutukset</span></h2></th>
+        <th><h2>8<br/><span th:text="#{dataTransfers}">Tietojen säännönmukaiset luovutukset</span></h2></th>
         <td>
           <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>8<br/><span th:utext="#{dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
+        <th><h2>9<br/><span th:utext="#{dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
         <td>
           <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th rowspan="2" class="no-bottom-border"><h2>9<br/><span th:text="#{principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
+        <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
         <td class="no-bottom-border">
           <div th:text="#{principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>
           <div>

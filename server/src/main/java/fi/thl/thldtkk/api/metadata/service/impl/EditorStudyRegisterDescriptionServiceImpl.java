@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterDescriptionService {
 
+  private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
+
   private final EditorStudyService editorStudyService;
   private final TemplateEngine templateEngine;
 
@@ -47,9 +49,20 @@ public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterD
 
     if (!study.getPersonInRoles().isEmpty()) {
       PersonInRole pir = study.getPersonInRoles().iterator().next();
-      Person person = pir.getPerson().get();
-      context.setVariable("contactPersonName", getContactPersonName(person));
-      context.setVariable("contactPersonOtherInfo", getContactPersonOtherInfo(person));
+      Person contactPerson = pir.getPerson().get();
+      context.setVariable("contactPersonName", getPersonName(contactPerson));
+      context.setVariable("contactPersonOtherInfo", getPersonPhoneAndEmail(contactPerson));
+
+      for (PersonInRole personInRole : study.getPersonInRoles()) {
+        if (personInRole.getRole().isPresent() && personInRole.getPerson().isPresent()
+                && personInRole.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON)) {
+
+          Person dataProtectionPerson = personInRole.getPerson().get();
+          context.setVariable("dataProtectionPersonName", getPersonName(dataProtectionPerson));
+          context.setVariable("dataProtectionPersonContactInfo", getPersonPhoneAndEmail(dataProtectionPerson));
+          break;
+        }
+      }
     }
 
     context.setVariable("registerName", study.getPrefLabel().get(lang));
@@ -93,7 +106,7 @@ public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterD
     return name.toString();
   }
 
-  private String getContactPersonName(Person person) {
+  private String getPersonName(Person person) {
     StringBuilder name = new StringBuilder();
     name.append(person.getFirstName().get());
     if (person.getLastName().isPresent()) {
@@ -103,7 +116,7 @@ public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterD
     return name.toString();
   }
 
-  private String getContactPersonOtherInfo(Person person) {
+  private String getPersonPhoneAndEmail(Person person) {
     StrBuilder info = new StrBuilder();
     person.getPhone().ifPresent(phone -> info.append(phone));
     person.getEmail().ifPresent(email -> {

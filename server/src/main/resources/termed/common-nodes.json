@@ -1682,6 +1682,20 @@
     }
   },
   {
+    "id": "8aa48eb9-3d1a-4641-a14e-fdc42ddca9f0",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Tietosuojavastaava"
+        }
+      ]
+    }
+  },
+  {
     "id": "0286f4cf-9f77-4718-9a41-2155b8a14821",
     "type": {
       "id": "Role"

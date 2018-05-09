@@ -23,6 +23,10 @@ public class UserHelper {
     return getUserRoles().contains(UserRoles.ADMIN);
   }
 
+  public boolean isCurrentUserOrganizationAdmin() {
+    return getUserRoles().contains(UserRoles.ORG_ADMIN);
+  }
+
   public List<String> getUserRoles() {
     return SecurityContextHolder.getContext()
       .getAuthentication()

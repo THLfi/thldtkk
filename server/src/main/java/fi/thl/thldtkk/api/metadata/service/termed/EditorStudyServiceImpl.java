@@ -269,7 +269,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
           .append("' because it has a self reference in 'predecessors'")
           .toString());
     }
-    
+
     if (studyHasDifferentOwnerOrganizationForItsSystems(study)) {
         throw new IllegalArgumentException(new StringBuilder()
           .append("Cannot save study '")
@@ -411,12 +411,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       return false;
     }
   }
-  
+
    private boolean studyHasDifferentOwnerOrganizationForItsSystems(Study study) {
     if (!study.getSystemInRoles().isEmpty()) {
       Optional<UUID> studyOwnerOrganizationId = study.getOwnerOrganization()
         .map(o -> o.getId());
-      
+
       Set<Optional<UUID>> systemOrganizationIds = study.getSystemInRoles()
               .stream()
               .map(systemInRole -> systemInRole.getSystem())
@@ -425,14 +425,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
               .flatMap(organization -> organization.map(Stream::of).orElseGet(Stream::empty))
               .map(organization -> Optional.of(organization.getId()))
               .collect(Collectors.toSet());
-      
-      return !systemOrganizationIds.contains(studyOwnerOrganizationId) || systemOrganizationIds.size() > 1;      
+
+      return !systemOrganizationIds.contains(studyOwnerOrganizationId) || systemOrganizationIds.size() > 1;
     }
     else {
       return false;
     }
   }
-  
+
   private <T extends NodeEntity> boolean containsSelf(T node, List<T> nodeRelations) {
     return nodeRelations != null ? nodeRelations.stream()
         .filter(s -> node.getId().equals(s.getId()))
@@ -566,7 +566,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       iv.getInstanceQuestions().forEach(iq -> nodes.add(iq.toNode()));
     });
     return nodes;
-  } 
+  }
 
   private Changeset<NodeId, Node> changesetForUpdate(Dataset newDataset,
                                                      Dataset oldDataset,
@@ -586,7 +586,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         newDataset.getInstanceVariables(),
         oldDataset.getInstanceVariables()))
           .merge(buildChangesetForInstanceQuestions(
-                  newDataset.getInstanceVariables(), 
+                  newDataset.getInstanceVariables(),
                   oldDataset.getInstanceVariables()));
     }
     return changeset;
@@ -614,23 +614,23 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
  private Changeset<NodeId, Node> buildChangesetForInstanceQuestions(List<InstanceVariable> newInstanceVariables,
                                                  List<InstanceVariable> oldInstanceVariables) {
-    
+
     List<InstanceQuestion> newInstanceQuestions = newInstanceVariables
             .stream()
             .flatMap(niv -> niv.getInstanceQuestions().stream())
             .distinct()
             .collect(Collectors.toList());
-    
+
     List<InstanceQuestion> oldInstanceQuestions = oldInstanceVariables
             .stream()
             .flatMap(oiv -> oiv.getInstanceQuestions().stream())
             .distinct()
             .collect(Collectors.toList());
-    
+
     return Changeset.<NodeId, Node>empty().merge(
                     Changeset.buildChangeset(newInstanceQuestions, oldInstanceQuestions));
   }
-  
+
   private Supplier<IllegalStateException> studyNotFoundAfterSave(UUID studyId) {
     return () -> new IllegalStateException("Study '" + studyId
       + "' was not found after saving, it might have been updated simultaneously by another user");
@@ -642,7 +642,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));
 
     List<Node> delete = new ArrayList<>();
-
+    
     delete.add(study.toNode());
     study.getPopulation().ifPresent(v -> delete.add(v.toNode()));
     study.getLinks().forEach(v -> delete.add(v.toNode()));

@@ -7,6 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasAuthority('" + UserRoles.ADMIN + "')")
+@PreAuthorize("hasAnyAuthority('" + UserRoles.ADMIN + "','" + UserRoles.ORG_ADMIN + "')")
 public @interface AdminOnly {
 }

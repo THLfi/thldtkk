@@ -42,7 +42,8 @@ public class UserFunctionsController {
         user.getUserProfile().getLastName().orElse(""),
         user.getUserProfile().getEmail().orElse(""),
         userHelper.isCurrentUserLoggedIn(),
-        userHelper.isCurrentUserAdmin()));
+        userHelper.isCurrentUserAdmin(),
+        userHelper.isCurrentUserOrganizationAdmin()));
     }
     else {
       return Optional.empty();
@@ -67,14 +68,16 @@ public class UserFunctionsController {
     private final String email;
     private final boolean isLoggedIn;
     private final boolean isAdmin;
+    private final boolean isOrganizationAdmin;
 
-    public UserDTO(String username, String firstName, String lastName, String email, boolean isLoggedIn, boolean isAdmin) {
+    public UserDTO(String username, String firstName, String lastName, String email, boolean isLoggedIn, boolean isAdmin, boolean isOrganizationAdmin) {
       this.username = username;
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
       this.isLoggedIn = isLoggedIn;
       this.isAdmin = isAdmin;
+      this.isOrganizationAdmin = isOrganizationAdmin;
     }
 
     public String getUsername() {
@@ -100,6 +103,8 @@ public class UserFunctionsController {
     public boolean isAdmin() {
       return isAdmin;
     }
+
+    public boolean isOrganizationAdmin() { return isOrganizationAdmin; }
 
   }
 

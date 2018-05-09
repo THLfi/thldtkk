@@ -66,6 +66,7 @@ export class VariableEditModalComponent implements OnInit, AfterContentChecked {
                 id: null,
                 prefLabel: null,
                 description: null,
+                referenceCount: null
             }
         return variable;
     }

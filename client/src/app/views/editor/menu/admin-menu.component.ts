@@ -9,7 +9,7 @@ import { User } from '../../../model2/user'
 @Component({
   selector: 'adminMenu',
   template: `
-<ul *ngIf="currentUser && currentUser.isAdmin"
+<ul *ngIf="currentUser && (currentUser.isAdmin||currentUser.isOrganizationAdmin)"
     class="nav navbar-nav">
   <li [routerLinkActive]="['active']" [ngClass]="{ 'dropdown': true, 'open' : dropdownOpen }">
     <a #dropdownToggle

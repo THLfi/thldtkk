@@ -72,8 +72,7 @@ export class VariableService {
     const variable = {
       id: null,
       prefLabel: null,
-      description: null,
-      referenceCount: null
+      description: null
     }
     this.nodeUtils.initLangValuesProperties(variable,
           [ 'prefLabel', 'description' ],

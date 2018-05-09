@@ -15,6 +15,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.EditorSystemServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.InstanceQuestionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.LifecyclePhaseServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.NodeHttpRepository;
+import fi.thl.thldtkk.api.metadata.service.termed.NodeRefCountServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.OrganizationUnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PersonServiceImpl;
@@ -109,17 +110,17 @@ public class ServiceConfiguration {
   public EditorDatasetService editorDatasetService() {
     return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService(), userHelper);
   }
-  
+
   @Bean
   public EditorSystemService editorSystemService() {
     return new EditorSystemServiceImpl(editorNodeRepository(), userHelper);
   }
-  
+
   @Bean
   public EditorSystemRoleService editorSystemRoleService() {
     return new EditorSystemRoleServiceImpl(editorNodeRepository());
   }
-  
+
   // common services
 
   // Work in progress, remove '' suffix from bean names after refactoring is complete
@@ -205,6 +206,11 @@ public class ServiceConfiguration {
   @Bean
   public StudyGroupService studyGroupService() {
     return new StudyGroupServiceImpl(commonNodeRepository());
+  }
+
+  @Bean
+  public NodeRefCountService nodeRefCountService() {
+    return new NodeRefCountServiceImpl(commonNodeRepository());
   }
 
   // lower level termed HTTP APIs

@@ -1,49 +1,49 @@
-import {
-  AfterContentChecked, Component, EventEmitter, Input, Output, ViewChild
-} from '@angular/core'
+import { AfterContentChecked, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core'
 import { NgForm } from '@angular/forms'
 
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
-import { Person } from '../../../model2/person'
-import {TranslateService} from "@ngx-translate/core";
-import {PersonService} from "../../../services-common/person.service";
+import { OrganizationUnit } from '../../../model2/organization-unit'
+import { TranslateService } from "@ngx-translate/core";
+import { OrganizationUnitService } from "../../../services-common/organization-unit.service";
 
 @Component({
-  selector: 'person-edit-modal',
-  templateUrl: './person-edit-modal.component.html'
+  selector: 'organization-unit-edit-modal',
+  templateUrl: './organization-unit-edit-modal.component.html'
 })
-export class PersonEditModalComponent implements AfterContentChecked {
+export class OrganizationUnitEditModalComponent implements AfterContentChecked {
 
-  @Input() person: Person
-  @Input() isNewPerson: boolean
+  @Input() organizationUnit: OrganizationUnit
+  @Input() isNewOrganizationUnit
 
-  @ViewChild('personForm') personForm: NgForm
+  @ViewChild('organizationUnitForm') organizationUnitForm: NgForm
   currentForm: NgForm
   formErrors: any = {
-    'firstName': []
+    'prefLabel': []
   }
-  // TODO: Add email validation?
+
+  language: string
 
   savingInProgress: boolean = false
   savingHasFailed: boolean = false
   deleteInProgress: boolean = false
 
-  @Output() onSave: EventEmitter<Person> = new EventEmitter<Person>()
+
+  @Output() onSave: EventEmitter<OrganizationUnit> = new EventEmitter<OrganizationUnit>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
   @Output() onDelete: EventEmitter<void> = new EventEmitter<void>()
-
 
   constructor(
     private growlMessageService: GrowlMessageService,
     private translateService: TranslateService,
-    private personService: PersonService
+    private organizationUnitService: OrganizationUnitService
   ) {
+      this.language = translateService.currentLang
   }
 
   ngAfterContentChecked(): void {
-    if (this.personForm) {
-      if (this.personForm !== this.currentForm) {
-        this.currentForm = this.personForm
+    if (this.organizationUnitForm) {
+      if (this.organizationUnitForm !== this.currentForm) {
+        this.currentForm = this.organizationUnitForm
         this.currentForm.valueChanges.subscribe(data => this.validate(data))
       }
     }
@@ -77,7 +77,7 @@ export class PersonEditModalComponent implements AfterContentChecked {
 
     this.savingInProgress = false
 
-    this.onSave.emit(this.person)
+    this.onSave.emit(this.organizationUnit)
   }
 
   doCancel() {
@@ -85,17 +85,17 @@ export class PersonEditModalComponent implements AfterContentChecked {
   }
 
   confirmRemove() {
-    this.translateService.get('confirmPersonDelete')
+      this.translateService.get('confirmOrganizationUnitDelete')
       .subscribe((message: string) => {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.personService.delete(this.person.id)
+          this.organizationUnitService.delete(this.organizationUnit.id)
             .finally(() => this.deleteInProgress = false)
-            .subscribe(() => {})
+            .subscribe(() => { /*TODO!! Should something be done here?*/ })
         }
       })
+
     this.onDelete.emit()
   }
-
 }

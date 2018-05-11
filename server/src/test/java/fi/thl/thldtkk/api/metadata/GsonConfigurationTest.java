@@ -32,7 +32,7 @@ public class GsonConfigurationTest {
       .isNotNull();
     assertThat(gson.fromJson("{}", InstanceVariable.class).getConceptsFromScheme())
       .isNotNull();
-    assertThat(gson.fromJson("{}", Organization.class).getOrganizationUnit())
+    assertThat(gson.fromJson("{}", Organization.class).getOrganizationUnits())
       .isNotNull();
     assertThat(gson.fromJson("{}", CodeList.class).getCodeItems())
       .isNotNull();

@@ -6,7 +6,10 @@
             resizable="false"
             closeOnEscape="false"
             width="500">
-    <p-header>
+    <p-header *ngIf="!isNewPerson">
+      {{ 'editedPerson' | translate }}
+    </p-header>
+    <p-header *ngIf="isNewPerson">
       {{ 'newPerson' | translate }}
     </p-header>
     <form #personForm="ngForm">
@@ -90,6 +93,14 @@
                 [disabled]="savingInProgress"
                 class="btn btn-default">
           {{ 'cancel' | translate }}
+        </button>
+        <button *ngIf="(!isNewPerson)"
+                (click)="confirmRemove()"
+                [disabled]="savingInProgress"
+                class="btn btn-default"
+                style="float: right">
+          <span class="glyphicon glyphicon-trash"></span>
+          {{ 'remove' | translate }}
         </button>
       </div>
     </p-footer>

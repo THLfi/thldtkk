@@ -77,7 +77,13 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     personInRoleForNewPerson: PersonInRole;
     newPerson: Person;
 
+    personInRoleForEditedPerson: PersonInRole
+    editedPerson: Person
+
     newOrganizationUnit: OrganizationUnit;
+    editedOrganizationUnit: OrganizationUnit;
+
+    editedOrganization: Organization;
 
     allUsageConditions: UsageCondition[];
     language: string;
@@ -450,6 +456,11 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
       this.initNewPerson()
     }
 
+    showEditPersonModal(personInRole: PersonInRole): void {
+      this.personInRoleForEditedPerson = personInRole
+      this.editedPerson = personInRole.person;
+    }
+
     private initNewPerson(): void {
       this.newPerson = this.personService.initNew()
     }
@@ -465,31 +476,80 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         })
     }
 
+    updatePerson(event): void {
+      this.personService.save(this.editedPerson)
+        .subscribe(editedPerson => {
+          this.getAllPersons()
+          if (this.personInRoleForEditedPerson) {
+            this.personInRoleForEditedPerson.person = editedPerson
+          }
+          this.closeEditPersonModal()
+        })
+    }
+
     closeAddPersonModal() {
       this.newPerson = null;
       this.personInRoleForNewPerson = null
     }
 
-  showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
-    this.initNewOrganizationUnit()
-  }
+    closeEditPersonModal() {
+      this.editedPerson = null;
+      this.personInRoleForEditedPerson = null;
+    }
 
-  private initNewOrganizationUnit(): void {
-    this.newOrganizationUnit = this.organizationUnitService.initNew()
-  }
+    showEditOrganizationModal(organization: Organization): void {
+      this.editedOrganization = organization;
+    }
 
-  saveOrganizationUnit(event): void {
-    this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
-    this.organizationUnitService.save(this.newOrganizationUnit)
-      .subscribe(organizationUnit => {
-        this.getAvailableOrganizations();
-        this.closeAddOrganizationUnitModal()
-      })
-  }
+    updateOrganization(event): void {
+      this.organizationService.save(this.editedOrganization)
+        .subscribe(organization => {
+          this.getAvailableOrganizations()
+          this.closeEditOrganizationModal()
+        })
+    }
 
-  closeAddOrganizationUnitModal() {
-    this.newOrganizationUnit = null
-  }
+    closeEditOrganizationModal() {
+      this.editedOrganization = null;
+    }
+
+    showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+      this.initNewOrganizationUnit()
+    }
+
+    showEditOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+      this.editedOrganizationUnit = organizationUnit;
+    }
+
+    private initNewOrganizationUnit(): void {
+      this.newOrganizationUnit = this.organizationUnitService.initNew()
+    }
+
+    saveOrganizationUnit(event): void {
+      this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
+      this.organizationUnitService.save(this.newOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.getAvailableOrganizations()
+          this.closeAddOrganizationUnitModal()
+        })
+    }
+
+    updateOrganizationUnit(event): void {
+      this.editedOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
+      this.organizationUnitService.save(this.editedOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.getAvailableOrganizations();
+          this.closeEditOrganizationUnitModal()
+        })
+    }
+
+    closeAddOrganizationUnitModal() {
+      this.newOrganizationUnit = null
+    }
+
+    closeEditOrganizationUnitModal() {
+      this.editedOrganizationUnit = null
+    }
 
     addLink() {
       if (!this.study.links) {

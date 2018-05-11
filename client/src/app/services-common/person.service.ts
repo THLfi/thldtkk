@@ -42,4 +42,14 @@ export class PersonService {
     }
   }
 
+  delete(personId: string): Observable<any> {
+    const path: string = env.contextPath + env.apiPath + '/persons/' + personId
+
+    return this.http.delete(path)
+      .map(response => response.json())
+      .do(() => {
+        this.growlMessageService.buildAndShowMessage('info', 'operations.person.delete.result.success')
+      })
+  }
+
 }

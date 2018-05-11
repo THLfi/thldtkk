@@ -123,16 +123,32 @@
             </ng-container>
           </select>
           <editor-help-text #ownerOrganizationUnitHelpText key="editor.dataset.ownerOrganizationUnit.helpText"></editor-help-text>
-          <button (click)="showAddOrganizationUnitModal(organizationUnit)"
-                  type="button"
-                  class="btn btn-default btn-sm">
-            <glyphicon icon="plus"></glyphicon>
-            {{ 'addNewOrganizationUnit' | translate }}
-          </button>
+          <tr>
+            <button (click)="showAddOrganizationUnitModal(organizationUnit)"
+                    type="button"
+                    class="btn btn-default btn-sm">
+              <glyphicon icon="plus"></glyphicon>
+              {{ 'addNewOrganizationUnit' | translate }}
+            </button>
+            <button (click)="showEditOrganizationUnitModal(organizationUnit)"
+                    type="button"
+                    class="btn btn-default btn-sm">
+              <glyphicon icon="plus"></glyphicon>
+              {{ 'editOrganizationUnit' | translate }}
+            </button>
+          </tr>
           <organization-unit-edit-modal *ngIf="newOrganizationUnit"
                                         [organizationUnit]="newOrganizationUnit"
+                                        [isNewOrganizationUnit]=true
                                         (onSave)="saveOrganizationUnit($event)"
                                         (onCancel)="closeAddOrganizationUnitModal()">
+          </organization-unit-edit-modal>
+          <organization-unit-edit-modal *ngIf="editedOrganizationUnit"
+                                        [organizationUnit]="editedOrganizationUnit"
+                                        [isNewOrganizationUnit]=false
+                                        (onSave)="updateOrganizationUnit($event)"
+                                        (onCancel)="closeEditOrganizationUnitModal()"
+                                        (onDelete)="closeEditOrganizationUnitModal()">
           </organization-unit-edit-modal>
         </div>
 
@@ -183,12 +199,20 @@
                     </ng-template>
                   </ng-template>
                 </p-dropdown>
-                <button (click)="showAddPersonModal(personInRole)"
-                        type="button"
-                        class="btn btn-default btn-sm">
-                  <span class="glyphicon glyphicon-plus"></span>
-                  {{ 'addNewPerson' | translate }}
-                </button>
+                <tr>
+                  <button (click)="showAddPersonModal(personInRole)"
+                          type="button"
+                          class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    {{ 'addNewPerson' | translate }}
+                  </button>
+                  <button (click)="showEditPersonModal(personInRole)"
+                          type="button"
+                          class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    {{ 'editPerson' | translate }}
+                  </button>
+                </tr>
                 <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
                    class="text-danger">
                   <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -196,8 +220,15 @@
                 </p>
                 <person-edit-modal *ngIf="newPerson"
                                    [person]="newPerson"
+                                   [isNewPerson]=true
                                    (onSave)="savePerson($event)"
                                    (onCancel)="closeAddPersonModal()">
+                </person-edit-modal>
+                <person-edit-modal *ngIf="editedPerson"
+                                   [person]="editedPerson"
+                                   [isNewPerson]=false
+                                   (onSave)="updatePerson($event)"
+                                   (onCancel)="closeEditPersonModal()">
                 </person-edit-modal>
               </td>
               <td>

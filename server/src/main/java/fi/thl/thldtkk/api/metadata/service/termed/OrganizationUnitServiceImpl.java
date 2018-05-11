@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -13,13 +15,14 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.OrganizationUnitService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
+
+
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.springframework.security.access.method.P;
-
 
 public class OrganizationUnitServiceImpl implements OrganizationUnitService {
 
@@ -31,7 +34,12 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
 
   @Override
   public List<OrganizationUnit> findAll() {
-    return nodes.query(keyValue("type.id", "OrganizationUnit"))
+    return nodes.query(select("id",
+                              "type",
+                              "properties.*",
+                              "references.*",
+                              "referrers.*",
+                              "lastModifiedDate"), keyValue("type.id", "OrganizationUnit"))
         .map(OrganizationUnit::new)
         .collect(toList());
   }
@@ -43,7 +51,13 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
 
   @Override
   public Optional<OrganizationUnit> get(UUID id) {
-    return nodes.get(new NodeId(id, "OrganizationUnit")).map(OrganizationUnit::new);
+    return nodes.get(select("id",
+                            "type",
+                            "properties.*",
+                            "references.*",
+                            "referrers.*",
+                            "referrers.organization:2",
+                            "lastModifiedDate") , new NodeId(id, "OrganizationUnit")).map(OrganizationUnit::new);
   }
 
   @Override
@@ -80,8 +94,23 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
     if (organizationUnit.getId() == null) {
       organizationUnit.setId(randomUUID());
     }
+
     nodes.save(asList(organization.toNode(), organizationUnit.toNode()));
 
     return organizationUnit;
+  }
+
+  @Override
+  public void delete(UUID id) {
+    OrganizationUnit organizationUnit = get(id).orElseThrow(NotFoundException::new);
+
+    UUID parentOrganizationId = organizationUnit.getParentOrganizationId();
+
+    Organization organization = new Organization(
+    nodes.get(new NodeId(parentOrganizationId, "Organization")).orElseThrow(NotFoundException::new));
+    organization.removeOrganizationUnit(organizationUnit);
+
+    nodes.save(organization.toNode());
+    nodes.delete(new NodeId(id, "OrganizationUnit"));
   }
 }

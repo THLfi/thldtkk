@@ -6,6 +6,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPrope
 import static java.util.Objects.requireNonNull;
 
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class OrganizationUnit implements Serializable {
+public class OrganizationUnit implements NodeEntity, Serializable {
 
   private UUID id;
   private UUID parentOrganizationId;
@@ -32,9 +33,12 @@ public class OrganizationUnit implements Serializable {
   }
 
   public OrganizationUnit(UUID id,
-    Map<String, String> prefLabel,
-    Map<String, String> abbreviation) {
+                          UUID parentOrganizationId,
+                          Map<String, String> prefLabel,
+                          Map<String, String> abbreviation) {
+
     this(id);
+    this.parentOrganizationId = parentOrganizationId;
     this.prefLabel = prefLabel;
     this.abbreviation = abbreviation;
   }
@@ -44,6 +48,12 @@ public class OrganizationUnit implements Serializable {
     checkArgument(Objects.equals(node.getTypeId(), "OrganizationUnit"));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
+
+    try {
+      this.parentOrganizationId = new Organization(node.getReferrersFirst("organizationUnit").orElseThrow(NotFoundException::new)).getId();
+    } catch (Exception e) {
+      this.parentOrganizationId = null;
+    }
   }
 
   public UUID getId() {
@@ -57,15 +67,9 @@ public class OrganizationUnit implements Serializable {
   public UUID getParentOrganizationId() {
     return parentOrganizationId;
   }
-
-  public void setParentOrganizationId(UUID id) {
-    this.parentOrganizationId = id;
-  }
-
   public Map<String, String> getPrefLabel() {
     return prefLabel;
   }
-
   public Map<String, String> getAbbreviation() {
     return abbreviation;
   }

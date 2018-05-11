@@ -79,6 +79,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     personInRoleForNewPerson: PersonInRole
     newPerson: Person
 
+    personInRoleForEditedPerson: PersonInRole
+    editedPerson: Person
+
     allUsageConditions: UsageCondition[];
     language: string;
     lifecyclePhase: LifecyclePhase;
@@ -93,6 +96,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     newUniverse: Universe
 
     newOrganizationUnit: OrganizationUnit
+    editedOrganizationUnit: OrganizationUnit
 
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
@@ -428,6 +432,22 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       this.newOrganizationUnit = null
     }
 
+    showEditOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+      this.editedOrganizationUnit = organizationUnit;
+    }
+
+    updateOrganizationUnit(event): void {
+      this.organizationUnitService.save(this.editedOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.getAvailableOrganizations();
+          this.closeAddOrganizationUnitModal()
+        })
+    }
+
+    closeEditOrganizationUnitModal() {
+      this.editedOrganizationUnit = null;
+    }
+
     addPersonInRole() {
       if (!this.dataset.personInRoles) {
           this.dataset.personInRoles = []
@@ -453,6 +473,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       this.initNewPerson()
     }
 
+    showEditPersonModal(personInRole: PersonInRole): void {
+      this.personInRoleForEditedPerson = personInRole
+      this.editedPerson = personInRole.person;
+    }
+
     private initNewPerson(): void {
       this.newPerson = this.personService.initNew()
     }
@@ -468,9 +493,25 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         })
     }
 
+    updatePerson(event): void {
+      this.personService.save(this.editedPerson)
+        .subscribe(editedPerson => {
+          this.getAllPersons()
+          if (this.personInRoleForEditedPerson) {
+            this.personInRoleForEditedPerson.person = editedPerson
+          }
+          this.closeEditPersonModal()
+        })
+    }
+
     closeAddPersonModal() {
       this.newPerson = null
       this.personInRoleForNewPerson = null
+    }
+
+    closeEditPersonModal() {
+      this.editedPerson = null;
+      this.personInRoleForEditedPerson = null;
     }
 
     addLink() {

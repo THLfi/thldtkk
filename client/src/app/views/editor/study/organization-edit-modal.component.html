@@ -1,18 +1,15 @@
-<ng-container *ngIf="organizationUnit">
-  <p-dialog [visible]="organizationUnit"
+<ng-container *ngIf="organization">
+  <p-dialog [visible]="organization"
             (onHide)="doCancel()"
             modal="modal"
             draggable="false"
             resizable="false"
             closeOnEscape="false"
             width="500">
-    <p-header *ngIf="isNewOrganizationUnit">
-      {{ 'newOrganizationUnit' | translate }}
+    <p-header>
+      {{ 'editedOrganization' | translate }}
     </p-header>
-    <p-header *ngIf="!isNewOrganizationUnit">
-      {{ 'editedOrganizationUnit' | translate }}
-    </p-header>
-    <form #organizationUnitForm="ngForm">
+    <form #organizationForm="ngForm">
       <div class="container-fluid">
         <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
              class="row">
@@ -23,7 +20,7 @@
                 {{ 'prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
               </label>
-              <input [(ngModel)]="organizationUnit.prefLabel[language]"
+              <input [(ngModel)]="organization.prefLabel[language]"
                      id="prefLabel"
                      name="prefLabel"
                      type="text"
@@ -43,7 +40,7 @@
               <label for="abbreviation">
                 {{ 'abbreviation' | translate }}
               </label>
-              <input [(ngModel)]="organizationUnit.abbreviation[language]"
+              <input [(ngModel)]="organization.abbreviation[language]"
                      id="abbreviation"
                      name="abbreviation"
                      type="text"
@@ -66,15 +63,8 @@
                 class="btn btn-default">
           {{ 'cancel' | translate }}
         </button>
-        <button *ngIf="(!isNewOrganizationUnit)"
-                (click)="confirmRemove()"
-                [disabled]="savingInProgress"
-                class="btn btn-default"
-                style="float: right">
-          <span class="glyphicon glyphicon-trash"></span>
-          {{ 'remove' | translate }}
-        </button>
       </div>
     </p-footer>
   </p-dialog>
 </ng-container>
+

@@ -5,4 +5,4 @@ export interface Person extends Node {
   lastName?: string
   email?: string
   phone?: string
-}
+  }

@@ -85,4 +85,9 @@ public class PersonServiceImpl implements PersonService {
 
     return persons != null && !persons.isEmpty() ? persons.get(0) : null;
   }
+
+  @Override
+  public void delete(UUID id) {
+    nodes.delete(new NodeId(id, "Person"));
+  }
 }

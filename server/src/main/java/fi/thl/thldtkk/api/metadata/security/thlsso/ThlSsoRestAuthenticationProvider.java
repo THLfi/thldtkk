@@ -1,5 +1,7 @@
 package fi.thl.thldtkk.api.metadata.security.thlsso;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import fi.thl.thldtkk.api.metadata.security.UserDirectory;
 import fi.thl.thldtkk.api.metadata.security.UserProfileHelper;
 import fi.thl.thldtkk.api.metadata.util.EncryptionUtils;
@@ -43,7 +45,7 @@ public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider 
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    if (authentication instanceof UsernamePasswordAuthenticationToken) {
+    if (authentication instanceof UsernamePasswordAuthenticationToken && isConfigured()) {
       UsernamePasswordAuthenticationToken usernameAndPassword =
           ((UsernamePasswordAuthenticationToken) authentication);
 
@@ -64,6 +66,10 @@ public class ThlSsoRestAuthenticationProvider implements AuthenticationProvider 
       }
     }
     return null;
+  }
+
+  private boolean isConfigured() {
+    return !isNullOrEmpty(url) && !isNullOrEmpty(application) && !isNullOrEmpty(secretKey);
   }
 
   private boolean authenticate(String username, String password) {

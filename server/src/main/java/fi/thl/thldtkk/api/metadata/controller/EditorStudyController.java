@@ -3,7 +3,6 @@ package fi.thl.thldtkk.api.metadata.controller;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Study;
-import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
@@ -37,8 +36,6 @@ public class EditorStudyController {
   private EditorStudyService editorStudyService;
   @Autowired
   private PublicStudyService publicStudyService;
-  @Autowired
-  private EditorDatasetService editorDatasetService;
 
   @ApiOperation("Search studies")
   @GetJsonMapping
@@ -80,7 +77,7 @@ public class EditorStudyController {
   public Dataset getDataset(
     @PathVariable UUID studyId,
     @PathVariable UUID datasetId) {
-    return editorDatasetService.getDatasetWithPredecessorsSuccessors(studyId, datasetId)
+    return editorStudyService.getDataset(studyId, datasetId)
       .orElseThrow(entityNotFound(Dataset.class, datasetId));
   }
 

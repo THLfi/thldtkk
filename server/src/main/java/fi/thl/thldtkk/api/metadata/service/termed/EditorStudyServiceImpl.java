@@ -148,14 +148,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.population:2",
         "references.universe:2",
         "references.datasetType:2",
-        "references.ownerOrganization:3",
+        "references.ownerOrganization:4",
         "references.ownerOrganizationUnit:2",
         "references.system:2",
         "references.systemRole:2",
         "references.link:3",
         "references.predecessors:3",
         "referrers.predecessors:3",
-        "referrers.dataSets:2"
+        "referrers.dataSets:3"
       ),
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 

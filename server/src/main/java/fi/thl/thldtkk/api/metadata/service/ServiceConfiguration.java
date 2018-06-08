@@ -108,7 +108,7 @@ public class ServiceConfiguration {
 
   @Bean
   public EditorDatasetService editorDatasetService() {
-    return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService(), userHelper);
+    return new EditorDatasetServiceImpl(editorNodeRepository(), editorStudyService());
   }
 
   @Bean

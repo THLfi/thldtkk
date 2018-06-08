@@ -82,7 +82,9 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   searchInstanceVariables(searchText: string): Observable<InstanceVariable[]> {
-    return this.instanceVariableService.search(searchText, this.maxResults)
+    return searchText.length > 2 ? 
+      this.instanceVariableService.search(searchText, this.maxResults) :
+      Observable.of<InstanceVariable[]>([])
   }
 
   private updateQueryParam(searchText:string): void {

@@ -34,7 +34,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <div class="search-results-summary">
+        <div class="search-results-summary" *ngIf="latestLookupTerm.length > 2">
           {{ 'catalog.searchInstanceVariable.searchSummary' | translate:{resultCount: instanceVariables.length} | uppercase }}
           "{{ latestLookupTerm }}"
         </div>

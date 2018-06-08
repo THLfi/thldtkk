@@ -27,7 +27,9 @@ Configure server properties:
     - termed.apiUrl=http://localhost:8080/api
     - termed.username=<termed-username-for-api-calls>
     - termed.password=<termed-password-for-api-calls>
-    - termed.graphId=<current-termed-dtkk-graph-id>
+    - termed.editorGraphId=<termed-dtkk-editor-graph-uuid>
+    - termed.publicGraphId=<termed-dtkk-public-graph-uuid>
+    - termed.commonGraphId=<termed-dtkk-common-graph-uuid>
     - server.port=8680
     - users.properties.resource=<users-file-location-as-spring-resource>
     - sso.url=<THL SSO api url>

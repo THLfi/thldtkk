@@ -26,6 +26,7 @@ import java.util.*;
 import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_EXTERNAL;
 import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_INTERNAL;
 import static java.util.UUID.randomUUID;
+
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -261,17 +262,21 @@ public class InstanceVariableCsvParser {
 
     Optional<String> instanceQuestionsString = sanitize(row.get("instanceQuestions"));
     if (instanceQuestionsString.isPresent() && !StringUtils.isEmpty(instanceQuestionsString.get())) {
-        String[] instanceQuestions = instanceQuestionsString.get().split(", ");
+
+      instanceQuestionsString = encloseInstanceQuestionsWithQuotes(instanceQuestionsString.get());
+      String[] instanceQuestions = instanceQuestionsString.get().split(", ");
+
         for (String instanceQuestionString : instanceQuestions) {
+            // question format 'How healthy do you feel?'
             instanceQuestionString = instanceQuestionString.substring(1, instanceQuestionString.length() - 1);
-            Optional<InstanceQuestion> instanceQuestion = instanceQuestionService.findByPrefLabel(instanceQuestionString);
-            if (!instanceQuestion.isPresent()) {
-                Map<String, String> prefLabelMap = new LinkedHashMap<>();
-                prefLabelMap.put("fi", instanceQuestionString);
-                InstanceQuestion instanceQuestionNew = new InstanceQuestion(randomUUID(), prefLabelMap);
-                instanceQuestion = Optional.ofNullable(instanceQuestionService.save(instanceQuestionNew));
-            }
-            instanceQuestion.ifPresent(instanceVariable::addInstanceQuestion);
+
+            Map<String, String> prefLabelMap = new LinkedHashMap<>();
+            prefLabelMap.put("fi", instanceQuestionString);
+
+            InstanceQuestion instanceQuestion = new InstanceQuestion(randomUUID(), prefLabelMap);
+            Optional<InstanceQuestion> savedInstanceQuestion = Optional.of(instanceQuestionService.save(instanceQuestion));
+
+            savedInstanceQuestion.ifPresent(question -> instanceVariable.addInstanceQuestion(question));
         }
     }
 
@@ -521,4 +526,17 @@ public class InstanceVariableCsvParser {
       }
       return null;
   }
+
+  private Optional<String> encloseInstanceQuestionsWithQuotes(String instanceQuestionsDelimited) {
+    if(!instanceQuestionsDelimited.startsWith("'")) {
+      instanceQuestionsDelimited = "'" + instanceQuestionsDelimited;
+    }
+
+    if(!instanceQuestionsDelimited.endsWith("'")) {
+      instanceQuestionsDelimited += "'";
+    }
+
+    return Optional.of(instanceQuestionsDelimited);
+  }
+
 }

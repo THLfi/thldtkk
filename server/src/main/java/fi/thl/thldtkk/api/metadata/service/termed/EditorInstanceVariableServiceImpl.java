@@ -1,20 +1,5 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.security.UserHelper;
-import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
-import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.anyKeyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -23,6 +8,20 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
+import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
+import fi.thl.thldtkk.api.metadata.service.Repository;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 public class EditorInstanceVariableServiceImpl implements EditorInstanceVariableService {
 
   private final Repository<NodeId, Node> nodes;
@@ -30,7 +29,7 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
   private EditorStudyService editorStudyService;
 
   public EditorInstanceVariableServiceImpl(Repository<NodeId, Node> nodes, UserHelper userHelper,
-                                           EditorStudyService editorStudyService) {
+      EditorStudyService editorStudyService) {
     this.nodes = nodes;
     this.userHelper = userHelper;
     this.editorStudyService = editorStudyService;
@@ -40,38 +39,38 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
   @Override
   public List<InstanceVariable> getInstancesVariablesByVariable(UUID variableId, int max) {
     return nodes.query(
-      select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
-      and(
-        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
-        keyValue("references.variable.id", variableId.toString())
-      ),
-      max)
-      .map(InstanceVariable::new)
-      .collect(toList());
+        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
+        and(
+            keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
+            keyValue("references.variable.id", variableId.toString())
+        ),
+        max)
+        .map(InstanceVariable::new)
+        .collect(toList());
   }
 
   @AdminOnly
   @Override
   public List<InstanceVariable> getInstanceVariablesByUnitType(UUID unitTypeId) {
     return nodes.query(
-      select("id", "type", "properties.*", "references.*"),
-      and(
-        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
-        keyValue("references.unitType.id", unitTypeId.toString())))
-      .map(InstanceVariable::new)
-      .collect(Collectors.toList());
+        select("id", "type", "properties.*", "references.*"),
+        and(
+            keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
+            keyValue("references.unitType.id", unitTypeId.toString())))
+        .map(InstanceVariable::new)
+        .collect(Collectors.toList());
   }
 
   @AdminOnly
   @Override
   public List<InstanceVariable> getInstanceVariablesByCodeList(UUID codeListId) {
     return nodes.query(
-            select("id", "type", "properties.*", "references.*"),
-            and(
-                    keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
-                    keyValue("references.codeList.id", codeListId.toString())))
-            .map(InstanceVariable::new)
-            .collect(Collectors.toList());
+        select("id", "type", "properties.*", "references.*"),
+        and(
+            keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
+            keyValue("references.codeList.id", codeListId.toString())))
+        .map(InstanceVariable::new)
+        .collect(Collectors.toList());
   }
 
   // Following methods throw exception on purpose. Instance variables search
@@ -86,20 +85,24 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
 
   @Override
   public List<InstanceVariable> find(String query, int max) {
+    Criteria criteria = query.isEmpty() ?
+        keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS) :
+        and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
+            anyKeyWithAllValues(asList(
+                "properties.prefLabel",
+                "properties.description",
+                "properties.technicalName",
+                "properties.freeConcepts",
+                "references.conceptsFromScheme.properties.prefLabel",
+                "references.variable.properties.prefLabel"),
+                tokenizeAndMap(query, t -> t + "*")));
+
     List<InstanceVariable> instanceVariables = nodes.query(
-            select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2", "references.ownerOrganization:3"),
-            and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
-                    anyKeyWithAllValues(asList(
-                            "properties.prefLabel",
-                            "properties.description",
-                            "properties.technicalName",
-                            "properties.freeConcepts",
-                            "references.conceptsFromScheme.properties.prefLabel",
-                            "references.variable.properties.prefLabel"),
-                            tokenizeAndMap(query, t -> t + "*"))),
-            max)
-            .map(InstanceVariable::new)
-            .collect(toList());
+        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2",
+            "references.ownerOrganization:3"),
+        criteria, max)
+        .map(InstanceVariable::new)
+        .collect(toList());
 
     if (!userHelper.isCurrentUserAdmin()) {
       instanceVariables = filterByOrganization(instanceVariables);
@@ -115,10 +118,11 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
 
   private List<InstanceVariable> filterByOrganization(List<InstanceVariable> instanceVariables) {
     List<String> organizationIds = userHelper.getCurrentUserOrganizations().stream()
-            .map(organization -> organization.getId().toString())
-            .collect(Collectors.toList());
+        .map(organization -> organization.getId().toString())
+        .collect(Collectors.toList());
 
-    instanceVariables.removeIf(instanceVariable -> !organizationIds.contains(instanceVariable.getOwnerOrganizationIdAsString()));
+    instanceVariables.removeIf(instanceVariable -> !organizationIds
+        .contains(instanceVariable.getOwnerOrganizationIdAsString()));
     return instanceVariables;
   }
 

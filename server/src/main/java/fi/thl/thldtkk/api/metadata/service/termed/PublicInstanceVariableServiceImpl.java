@@ -1,18 +1,5 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
-import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
-import fi.thl.thldtkk.api.metadata.service.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.anyKeyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -21,13 +8,27 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
+import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.Repository;
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public class PublicInstanceVariableServiceImpl implements PublicInstanceVariableService {
 
   private final Repository<NodeId, Node> nodes;
   private final PublicDatasetService datasetService;
 
   public PublicInstanceVariableServiceImpl(Repository<NodeId, Node> nodes,
-                                           PublicDatasetService datasetService) {
+      PublicDatasetService datasetService) {
     this.nodes = nodes;
     this.datasetService = datasetService;
   }
@@ -35,7 +36,7 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
   @Override
   public List<InstanceVariable> getDatasetInstanceVariables(UUID datasetId) {
     Dataset dataset = datasetService.get(datasetId)
-      .orElseThrow(NotFoundException::new);
+        .orElseThrow(NotFoundException::new);
     return dataset.getInstanceVariables();
   }
 
@@ -60,9 +61,16 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
 
   @Override
   public List<InstanceVariable> find(String query, int max) {
-    return nodes.query(
-        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
-        and(keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
+    Select select = select("id", "type",
+        "properties.*",
+        "references.*",
+        "referrers.*",
+        "referrers.dataSets:2");
+
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS)
+        : and(
+            keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             anyKeyWithAllValues(asList(
                 "properties.prefLabel",
                 "properties.description",
@@ -70,8 +78,9 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
                 "properties.freeConcepts",
                 "references.conceptsFromScheme.properties.prefLabel",
                 "references.variable.properties.prefLabel"),
-                tokenizeAndMap(query, t -> t + "*"))),
-        max)
+                tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(select, criteria, max)
         .map(InstanceVariable::new)
         .collect(toList());
   }

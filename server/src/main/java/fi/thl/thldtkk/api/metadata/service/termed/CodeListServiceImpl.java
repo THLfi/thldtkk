@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.CodeItem;
 import fi.thl.thldtkk.api.metadata.domain.CodeList;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
@@ -24,13 +25,12 @@ import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpda
 import fi.thl.thldtkk.api.metadata.service.CodeListService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.springframework.security.access.method.P;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.access.method.P;
 
 public class CodeListServiceImpl implements CodeListService {
 
@@ -52,14 +52,19 @@ public class CodeListServiceImpl implements CodeListService {
 
   @Override
   public List<CodeList> find(String query, int max) {
-    return nodes.query(
-        select("id", "type", "properties.*", "references.*"),
-        and(keyValue("type.id", "CodeList"),
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", "CodeList")
+        : and(
+            keyValue("type.id", "CodeList"),
             anyKeyWithAllValues(asList(
                 "properties.prefLabel",
                 "properties.owner",
                 "properties.referenceId"),
-                tokenizeAndMap(query, t -> t + "*"))),
+                tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(
+        select("id", "type", "properties.*", "references.*"),
+        criteria,
         sort("properties.prefLabel.sortable"),
         max)
         .map(CodeList::new)
@@ -73,15 +78,13 @@ public class CodeListServiceImpl implements CodeListService {
 
   private List<CodeList> findByExactProperty(String property, String value, int max) {
     return nodes.query(
-      select("id", "type", "properties.*", "references.*"),
-      and(
-        keyValue("type.id", "CodeList"),
-        keyValue("properties." + property, "\"" + value + "\"")
-      ),
-      sort("properties.prefLabel.sortable"),
-      max)
-      .map(CodeList::new)
-      .collect(toList());
+        select("id", "type", "properties.*", "references.*"),
+        and(keyValue("type.id", "CodeList"),
+            keyValue("properties." + property, "\"" + value + "\"")),
+        sort("properties.prefLabel.sortable"),
+        max)
+        .map(CodeList::new)
+        .collect(toList());
   }
 
   @Override

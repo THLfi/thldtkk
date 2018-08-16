@@ -7,16 +7,16 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Unit;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UnitService;
-import org.springframework.security.access.method.P;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.access.method.P;
 
 public class UnitServiceImpl implements UnitService {
 
@@ -35,10 +35,13 @@ public class UnitServiceImpl implements UnitService {
 
   @Override
   public List<Unit> find(String query, int max) {
-    return nodes.query(
-        and(keyValue("type.id", "Unit"),
-            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
-        max)
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", "Unit")
+        : and(
+            keyValue("type.id", "Unit"),
+            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(criteria, max)
         .map(Unit::new)
         .collect(toList());
   }

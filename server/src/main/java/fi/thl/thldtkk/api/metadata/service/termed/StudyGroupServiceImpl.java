@@ -1,5 +1,12 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
+import static java.util.stream.Collectors.toList;
+
 import fi.thl.thldtkk.api.metadata.domain.StudyGroup;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -8,20 +15,12 @@ import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.StudyGroupService;
-import org.springframework.security.access.method.P;
-import org.springframework.util.StringUtils;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-import static fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException.entityNotFound;
-import static java.util.stream.Collectors.toList;
+import org.springframework.security.access.method.P;
+import org.springframework.util.StringUtils;
 
 public class StudyGroupServiceImpl implements StudyGroupService {
 
@@ -37,23 +36,23 @@ public class StudyGroupServiceImpl implements StudyGroupService {
   }
 
   private List<StudyGroup> internalFind(String query, UUID organizationId, int max) {
-    List<Criteria> criterias = new LinkedList<>();
+    List<Criteria> criteria = new LinkedList<>();
 
-    criterias.add(keyValue("type.id", StudyGroup.TERMED_NODE_CLASS));
+    criteria.add(keyValue("type.id", StudyGroup.TERMED_NODE_CLASS));
 
     if (StringUtils.hasText(query)) {
-      criterias.add(
-        keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+      criteria.add(
+          keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
     }
 
     if (organizationId != null) {
-      criterias.add(
-        keyValue("references.ownerOrganization.id", organizationId.toString()));
+      criteria.add(
+          keyValue("references.ownerOrganization.id", organizationId.toString()));
     }
 
-    return nodes.query(and(criterias), max)
-      .map(StudyGroup::new)
-      .collect(toList());
+    return nodes.query(and(criteria), max)
+        .map(StudyGroup::new)
+        .collect(toList());
   }
 
   @Override
@@ -69,7 +68,7 @@ public class StudyGroupServiceImpl implements StudyGroupService {
   @Override
   public Optional<StudyGroup> get(UUID id) {
     return nodes.get(new NodeId(id, StudyGroup.TERMED_NODE_CLASS))
-      .map(StudyGroup::new);
+        .map(StudyGroup::new);
   }
 
   @UserCanCreateAdminCanUpdate

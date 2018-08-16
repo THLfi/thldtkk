@@ -4,17 +4,18 @@ import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Concept;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.ConceptService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class ConceptServiceImpl implements ConceptService {
 
@@ -33,10 +34,13 @@ public class ConceptServiceImpl implements ConceptService {
 
   @Override
   public List<Concept> find(String query, int max) {
-    return nodes.query(
-        and(keyValue("type.id", "Concept"),
-            keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
-        max)
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", "Concept")
+        : and(
+            keyValue("type.id", "Concept"),
+            keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(criteria, max)
         .map(Concept::new)
         .collect(toList());
   }
@@ -55,11 +59,11 @@ public class ConceptServiceImpl implements ConceptService {
     prefLabel = "\"" + prefLabel + "\"";
 
     return nodes.query(
-            KeyValueCriteria.keyValue(
-                    "properties.prefLabel",
-                    prefLabel),
-            1)
-            .map(Concept::new)
-            .findFirst();
+        KeyValueCriteria.keyValue(
+            "properties.prefLabel",
+            prefLabel),
+        1)
+        .map(Concept::new)
+        .findFirst();
   }
 }

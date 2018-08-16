@@ -7,16 +7,16 @@ import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.UsageCondition;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UsageConditionService;
-import org.springframework.security.access.method.P;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.access.method.P;
 
 public class UsageConditionServiceImpl implements UsageConditionService {
 
@@ -35,10 +35,13 @@ public class UsageConditionServiceImpl implements UsageConditionService {
 
   @Override
   public List<UsageCondition> find(String query, int max) {
-    return nodes.query(
-        and(keyValue("type.id", "UsageCondition"),
-            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
-        max)
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", "UsageCondition")
+        : and(
+            keyValue("type.id", "UsageCondition"),
+            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(criteria, max)
         .map(UsageCondition::new)
         .collect(toList());
   }

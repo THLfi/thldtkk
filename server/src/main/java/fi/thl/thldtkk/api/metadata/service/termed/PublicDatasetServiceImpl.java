@@ -1,5 +1,16 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.Optional.empty;
+import static java.util.UUID.randomUUID;
+import static java.util.stream.Collectors.toList;
+import static org.springframework.util.StringUtils.hasText;
+
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Population;
@@ -11,22 +22,10 @@ import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.google.common.base.MoreObjects.firstNonNull;
-import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
-import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-import static java.util.Optional.empty;
-import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
-import static org.springframework.util.StringUtils.hasText;
 
 
 public class PublicDatasetServiceImpl implements PublicDatasetService {
@@ -58,20 +57,20 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
   @Override
   public Optional<Dataset> getDatasetWithAllInstanceVariableProperties(UUID datasetId) {
     Optional<Dataset> dataset = nodes.get(select("id", "type", "properties.*", "references.*",
-      "references.conceptsFromScheme:2",
-      "references.variable:2",
-      "references.quantity:2",
-      "references.unit:2",
-      "references.codeList:2",
-      "references.source:2",
-      "references.instanceQuestions:2",
-      "references.personInRoles:2",
-      "references.person:2",
-      "references.role:2",
-      "references.unitType:2",
-      "references.inScheme:3",
-      "references.codeItems:3"),
-      new NodeId(datasetId, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
+        "references.conceptsFromScheme:2",
+        "references.variable:2",
+        "references.quantity:2",
+        "references.unit:2",
+        "references.codeList:2",
+        "references.source:2",
+        "references.instanceQuestions:2",
+        "references.personInRoles:2",
+        "references.person:2",
+        "references.role:2",
+        "references.unitType:2",
+        "references.inScheme:3",
+        "references.codeItems:3"),
+        new NodeId(datasetId, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
 
     return dataset;
   }
@@ -86,10 +85,13 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
 
   @Override
   public List<Dataset> find(String query, int max) {
-    return nodes.query(
-        and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
-            keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
-        max)
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", Dataset.TERMED_NODE_CLASS)
+        : and(
+            keyValue("type.id", Dataset.TERMED_NODE_CLASS),
+            keyWithAnyValue("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(criteria, max)
         .map(Dataset::new)
         .collect(toList());
   }
@@ -115,7 +117,8 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
   }
 
   @Override
-  public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max, String sortString) {
+  public List<Dataset> find(UUID organizationId, UUID datasetTypeId, String query, int max,
+      String sortString) {
     List<Criteria> criteria = new ArrayList<>();
 
     criteria.add(keyValue("type.id", Dataset.TERMED_NODE_CLASS));
@@ -132,9 +135,9 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
     }
 
     if (hasText(sortString)) {
-      return nodes.query(and(criteria), max, Sort.sort(sortString)).map(Dataset::new).collect(toList());
-    }
-    else {
+      return nodes.query(and(criteria), max, Sort.sort(sortString)).map(Dataset::new)
+          .collect(toList());
+    } else {
       return nodes.query(and(criteria), max).map(Dataset::new).collect(toList());
     }
   }

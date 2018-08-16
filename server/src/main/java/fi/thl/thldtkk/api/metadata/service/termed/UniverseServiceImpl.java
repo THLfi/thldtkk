@@ -6,8 +6,8 @@ import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
 import static java.util.stream.Collectors.toList;
 
-import fi.thl.thldtkk.api.metadata.domain.UnitType;
 import fi.thl.thldtkk.api.metadata.domain.Universe;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
@@ -15,11 +15,10 @@ import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpda
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.springframework.security.access.method.P;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.access.method.P;
 
 public class UniverseServiceImpl implements UniverseService {
 
@@ -38,10 +37,13 @@ public class UniverseServiceImpl implements UniverseService {
 
   @Override
   public List<Universe> find(String query, int max) {
-    return nodes.query(
-        and(keyValue("type.id", "Universe"),
-            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*"))),
-        max)
+    Criteria criteria = query.isEmpty()
+        ? keyValue("type.id", "Universe")
+        : and(
+            keyValue("type.id", "Universe"),
+            keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
+
+    return nodes.query(criteria, max)
         .map(Universe::new)
         .collect(toList());
   }

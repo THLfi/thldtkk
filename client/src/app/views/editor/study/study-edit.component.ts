@@ -145,7 +145,6 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         this.language = this.translateService.currentLang
     }
 
-
     ngOnInit() {
         this.getStudy();
         this.validUrlExpression = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
@@ -165,6 +164,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                     this.updateAvailableStudyGroups();
                     this.updatePageTitle();
                     this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+                    this.getAvailableOrganizations()
                 })
         } else if (copyOfStudyId) {
           this.editorStudyService.getStudy(copyOfStudyId).subscribe(existingStudy => {
@@ -181,12 +181,13 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
             this.study.personInRoles.forEach(p => p.id = null);
             this.updateAvailableStudyGroups();
             this.updatePageTitle()
+            this.getAvailableOrganizations()
           })
         } else {
             this.study = this.editorStudyService.initNew()
+            this.getAvailableOrganizations()
         }
 
-        this.getAvailableOrganizations();
         this.getAllPersons();
         this.getAllRoles();
         this.lifecyclePhaseService.getAll()

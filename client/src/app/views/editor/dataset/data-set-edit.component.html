@@ -26,17 +26,6 @@
 
       <form #datasetForm="ngForm">
 
-        <!-- Temporarily disabled XML import since import not yet supporting latest model for studies and dataset
-          <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label for="file" translate="uploadFromFile"></label>
-              <input id="file" class="form-control" type="file" (change)="importXml($event)" placeholder="{{'uploadDataset'|translate}}" accept=".xml">
-            </div>
-          </div>
-        </div>
-        -->
-
         <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
              class="row">
           <div class="col-xs-12">

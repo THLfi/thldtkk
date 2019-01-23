@@ -9,7 +9,6 @@ import static java.util.stream.Collectors.toList;
 
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
@@ -18,13 +17,9 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.method.P;
 
 public class PersonServiceImpl implements PersonService {
-
-  private static final Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
 
   private Repository<NodeId, Node> nodes;
 
@@ -63,30 +58,6 @@ public class PersonServiceImpl implements PersonService {
   @Override
   public Person save(@P("entity") Person person) {
     return new Person(nodes.save(person.toNode()));
-  }
-
-  public Person findPersonByFirstNameAndLastNameAndEmail(String firstName, String lastName,
-      String email) {
-
-    firstName = "\"" + firstName + "\"";
-    lastName = "\"" + lastName + "\"";
-    email = "\"" + email + "\"";
-
-    List<Person> persons = nodes.query(
-        and(KeyValueCriteria.keyValue(
-            "properties.firstName",
-            firstName),
-            KeyValueCriteria.keyValue(
-                "properties.lastName",
-                lastName),
-            KeyValueCriteria.keyValue(
-                "properties.email",
-                email)),
-        1)
-        .map(Person::new)
-        .collect(toList());
-
-    return persons != null && !persons.isEmpty() ? persons.get(0) : null;
   }
 
   @Override

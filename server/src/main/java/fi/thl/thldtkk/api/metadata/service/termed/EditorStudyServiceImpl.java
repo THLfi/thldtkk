@@ -2,7 +2,6 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.*;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -54,12 +53,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     this.nodes = nodes;
     this.userHelper = userHelper;
   }
-
-  @Autowired
-  private PersonService personService;
-
-  @Autowired
-  private OrganizationUnitService organizationUnitService;
 
   @Autowired
   private PublicStudyService publicStudyService;
@@ -236,15 +229,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Optional<Study> old;
 
     if (study.getId() == null) {
-      old = findByExternalId(study.getExternalId());
-
-      if (!old.isPresent()) {
-        study.setId(randomUUID());
-      } else {
-        study.setId(old.get().getId());
-        delete(study.getId());
-      }
       old = empty();
+      study.setId(randomUUID());
     } else {
       old = get(study.getId());
     }
@@ -342,45 +328,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
               });
           }
         });
-    }
-
-    if (!study.getPersonInRoles().isEmpty()) {
-      for (PersonInRole personInRole : study.getPersonInRoles()) {
-        if (personInRole.getPerson().isPresent()) {
-          Person person = personInRole.getPerson().get();
-          Person existingPerson = personService.findPersonByFirstNameAndLastNameAndEmail(
-                  person.getFirstName().get(), person.getLastName().get(), person.getEmail().get());
-
-          if (existingPerson != null) {
-            person = existingPerson;
-          } else {
-            person = personService.save(person);
-          }
-          personInRole.setPerson(person);
-        }
-      }
-    }
-
-    if (study.getOwnerOrganizationUnit().isPresent()) {
-      OrganizationUnit ownerOrganizationUnit = study.getOwnerOrganizationUnit().get();
-      Map<String, String> abbreviation = ownerOrganizationUnit.getAbbreviation();
-
-      if (abbreviation != null) {
-        Optional<OrganizationUnit> existingOwnerOrganizationUnit = organizationUnitService
-                .findByAbbreviation(abbreviation.get("fi"));
-
-        if (existingOwnerOrganizationUnit.isPresent()) {
-          ownerOrganizationUnit = existingOwnerOrganizationUnit.get();
-        } else {
-            if (study.getOwnerOrganization().isPresent()) {
-                ownerOrganizationUnit = organizationUnitService
-                        .save(study.getOwnerOrganization().get().getId(), ownerOrganizationUnit);
-            } else {
-                ownerOrganizationUnit = organizationUnitService.save(ownerOrganizationUnit);
-            }
-        }
-        study.setOwnerOrganizationUnit(ownerOrganizationUnit);
-      }
     }
 
     study.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
@@ -802,25 +749,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     LOG.info("Deleted instance variable '{}' (of dataset '{}' of study '{}')",
       instanceVariable.getId(), datasetId, studyId);
-  }
-
-  private Optional<Study> findByExternalId(Optional<String> externalId) {
-    if (!externalId.isPresent()) {
-      return Optional.empty();
-    }
-    if (externalId.get().isEmpty()) {
-      return Optional.empty();
-    }
-
-    String externalIdString = "\"" + externalId.get() + "\"";
-
-    return nodes.query(
-            KeyValueCriteria.keyValue(
-                    "properties.externalId",
-                    externalIdString),
-            1)
-            .map(Study::new)
-            .findFirst();
   }
 
   @Override

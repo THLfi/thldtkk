@@ -134,3 +134,20 @@ When importing Virtu metadata signing certificate the process is more simple:
 Afterwards you can verify contents of the keystore by running:
 
     keytool -list -keystore thldtkk-saml.jks -storepass somepassword
+
+## Licence
+
+The Work Aineistokatalogi/Aineistoeditori is licenced under European Union 
+Public Licence (EUPL). You irrevocably accept this Licence (EUPL) and all 
+of its terms and conditions by exercising any rights granted to You by 
+Article 2 of this Licence (EUPL), such as the use of the Work, the creation 
+by You of a Derivative Work or the Distribution or Communication by You of 
+the Work or copies thereof.
+
+In addition, THL requests that the layout of any Derivative Work should 
+differ from the original Work in such a distinctive way that there is no 
+possibility of confusion between Aineistokatalogi/Aineistoeditori and the 
+Derivative Work to the end user.
+
+Please provide information of any published Derivative Works 
+to info@aineistokatalogi.fi

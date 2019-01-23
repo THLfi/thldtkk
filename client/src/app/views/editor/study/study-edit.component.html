@@ -120,7 +120,7 @@
                       (click)="showEditOrganizationModal(study.ownerOrganization)"
                       type="button"
                       class="btn btn-default btn-sm">
-                <glyphicon icon="plus"></glyphicon>
+                <glyphicon icon="pencil"></glyphicon>
                 {{ 'editOrganization' | translate }}
               </button>
               <organization-edit-modal *ngIf="editedOrganization"
@@ -168,7 +168,7 @@
                     type="button"
                     class="btn btn-default btn-sm"
                     [disabled]="study.ownerOrganization == null">
-              <glyphicon icon="plus"></glyphicon>
+              <glyphicon icon="pencil"></glyphicon>
               {{ 'editOrganizationUnit' | translate }}
             </button>
           </tr>
@@ -244,7 +244,7 @@
                   <button (click)="showEditPersonModal(personInRole)"
                           type="button"
                           class="btn btn-default btn-sm">
-                    <glyphicon icon="plus"></glyphicon>
+                    <glyphicon icon="pencil"></glyphicon>
                     {{ 'editPerson' | translate }}
                   </button>
                 </tr>

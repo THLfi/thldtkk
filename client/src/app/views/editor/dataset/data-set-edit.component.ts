@@ -113,6 +113,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/ // e.g. 'http:/thl.fi'
     validUrlExpression: RegExp = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
 
+    isUserAdmin: boolean;
+
     constructor(
         private editorStudyService: EditorStudyService,
         private datasetService: EditorDatasetService,
@@ -269,6 +271,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     private getAvailableOrganizations() {
       this.userService.isUserAdmin()
         .subscribe(isAdmin => {
+          this.isUserAdmin = isAdmin
+
           if (isAdmin) {
               this.organizationService.getAllOrganizations()
               .subscribe(organizations => {

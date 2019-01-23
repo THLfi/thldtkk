@@ -23,6 +23,11 @@ export class OrganizationService {
       .map(response => response.json() as Organization[])
   }
 
+  get(id: string): Observable<Organization> {
+    return this.http.get(env.contextPath + env.apiPath + '/organizations/' + id)
+      .map(response => response.json() as Organization)
+  }
+
   save(organization: Organization): Observable<Organization> {
     const path: string = env.contextPath + env.apiPath + '/organizations/'
     const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })

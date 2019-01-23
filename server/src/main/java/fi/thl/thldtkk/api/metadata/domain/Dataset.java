@@ -38,7 +38,7 @@ public class Dataset implements NodeEntity {
   private LocalDate referencePeriodEnd;
   private LocalDate collectionStartDate;
   private LocalDate collectionEndDate;
-  private List<OrganizationUnit> ownerOrganizationUnit = new ArrayList<>();
+  private OrganizationUnit ownerOrganizationUnit;
   private UsageCondition usageCondition;
   private LifecyclePhase lifecyclePhase;
   private Population population;
@@ -129,9 +129,8 @@ public class Dataset implements NodeEntity {
     this.collectionEndDate = toLocalDate(node.getProperties(
             "collectionEndDate"), null);
 
-    node.getReferences("ownerOrganizationUnit")
-            .forEach(v -> this.ownerOrganizationUnit.add(
-                    new OrganizationUnit(v)));
+    node.getReferencesFirst("ownerOrganizationUnit")
+            .ifPresent(v -> this.ownerOrganizationUnit = new OrganizationUnit(v));
     node.getReferencesFirst("population").ifPresent(v -> this.population
             = new Population(v));
     node.getReferencesFirst("universe").ifPresent(v -> this.universe
@@ -253,8 +252,8 @@ public class Dataset implements NodeEntity {
     return Optional.ofNullable(collectionEndDate);
   }
 
-  public List<OrganizationUnit> getOwnerOrganizationUnit() {
-    return ownerOrganizationUnit;
+  public Optional<OrganizationUnit> getOwnerOrganizationUnit() {
+    return Optional.ofNullable(ownerOrganizationUnit);
   }
 
   public Optional<Population> getPopulation() {
@@ -358,7 +357,7 @@ public class Dataset implements NodeEntity {
     props.putAll("freeConcepts", toPropertyValues(freeConcepts));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
-    getOwnerOrganizationUnit().forEach(v -> refs
+    getOwnerOrganizationUnit().ifPresent(v -> refs
             .put("ownerOrganizationUnit", v.toNode()));
     getPopulation().ifPresent(v -> refs.put("population", v.toNode()));
     getUniverse().ifPresent(v -> refs.put("universe", v.toNode()));

@@ -155,23 +155,21 @@
             </ng-container>
           </select>
           <editor-help-text #ownerOrganizationUnitHelpText key="editor.study.ownerOrganizationUnit.helpText"></editor-help-text>
-          <tr>
-            <button (click)="showAddOrganizationUnitModal(study.ownerOrganizationUnit)"
-                    type="button"
-                    class="btn btn-default btn-sm"
-                    [disabled]="study.ownerOrganization == null">
-              <glyphicon icon="plus"></glyphicon>
-              {{ 'addNewOrganizationUnit' | translate }}
-            </button>
-            <button *ngIf="study.ownerOrganizationUnit"
-                    (click)="showEditOrganizationUnitModal(study.ownerOrganizationUnit)"
-                    type="button"
-                    class="btn btn-default btn-sm"
-                    [disabled]="study.ownerOrganization == null">
-              <glyphicon icon="pencil"></glyphicon>
-              {{ 'editOrganizationUnit' | translate }}
-            </button>
-          </tr>
+          <button (click)="showAddOrganizationUnitModal(study.ownerOrganizationUnit)"
+                  type="button"
+                  class="btn btn-default btn-sm"
+                  [disabled]="study.ownerOrganization == null">
+            <glyphicon icon="plus"></glyphicon>
+            {{ 'addNewOrganizationUnit' | translate }}
+          </button>
+          <button *ngIf="study.ownerOrganizationUnit && (isUserAdmin || isUserOrganizationAdmin)"
+                  (click)="showEditOrganizationUnitModal(study.ownerOrganizationUnit)"
+                  type="button"
+                  class="btn btn-default btn-sm"
+                  [disabled]="study.ownerOrganization == null">
+            <glyphicon icon="pencil"></glyphicon>
+            {{ 'editOrganizationUnit' | translate }}
+          </button>
           <organization-unit-edit-modal *ngIf="newOrganizationUnit"
                                         [organizationUnit]="newOrganizationUnit"
                                         [isNewOrganizationUnit]=true

@@ -26,7 +26,6 @@ import {LifecyclePhase} from "../../../model2/lifecycle-phase";
 import {LifecyclePhaseService} from '../../../services-common/lifecycle-phase.service'
 import {Link} from "../../../model2/link";
 import {NodeUtils} from '../../../utils/node-utils';
-import {Organization} from "../../../model2/organization";
 import {OrganizationService} from '../../../services-common/organization.service'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {OrganizationUnit} from "../../../model2/organization-unit";
@@ -54,8 +53,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     study: Study
     dataset: Dataset
-    ownerOrganization: Organization
-    ownerOrganizationUnit: OrganizationUnit
 
     @ViewChild('datasetForm') datasetForm: NgForm
     currentForm: NgForm
@@ -69,9 +66,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     collectionEndDate: Date
 
     allLifecyclePhases: LifecyclePhase[];
-    availableOrganizations: Organization[];
 
-    organizationUnitsOfOrganization: {[organizatioId: string]: OrganizationUnit[]} = {}
+    organizationUnits: OrganizationUnit[]
 
     allPersonItems: SelectItem[]
     allRoles: Role[]
@@ -113,7 +109,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/ // e.g. 'http:/thl.fi'
     validUrlExpression: RegExp = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
 
-    isUserAdmin: boolean;
+    isUserAdmin: boolean
+    isUserOrganizationAdmin: boolean
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -194,7 +191,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       ).subscribe(data => {
         const dataset = data[0]
         this.study = data[1]
-        this.ownerOrganization = this.study.ownerOrganization
+        this.getOrganizationUnits()
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, dataset)
       })
     }
@@ -216,14 +213,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.collectionEndDate = new Date(dataset.collectionEndDate)
         }
 
-        if (dataset.ownerOrganizationUnit.length > 0) {
-            this.ownerOrganizationUnit = dataset.ownerOrganizationUnit[0];
-        }
-
         if (dataset.freeConcepts && dataset.freeConcepts[this.language]) {
             this.freeConcepts = dataset.freeConcepts[this.language].split(';')
             this.freeConcepts = this.freeConcepts.map(freeConcept => freeConcept.trim())
-
         }
 
         return dataset;
@@ -247,8 +239,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         }
     }
 
+    private getOrganizationUnits() {
+      this.organizationService.get(this.study.ownerOrganization.id)
+        .subscribe(organization => this.organizationUnits = organization.organizationUnit)
+    }
+
     private getOtherStuff() {
-      this.getAvailableOrganizations()
+      this.getUserRights()
       this.getAllPersons()
       this.getAllRoles()
       this.lifecyclePhaseService.getAll()
@@ -268,30 +265,12 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         })
     }
 
-    private getAvailableOrganizations() {
-      this.userService.isUserAdmin()
-        .subscribe(isAdmin => {
-          this.isUserAdmin = isAdmin
-
-          if (isAdmin) {
-              this.organizationService.getAllOrganizations()
-              .subscribe(organizations => {
-                this.availableOrganizations = organizations
-                this.extractOrganizationUnits(organizations)
-              })
-          }
-          else {
-              this.userService.getUserOrganizations()
-              .subscribe(organizations => {
-                this.availableOrganizations = organizations
-                this.extractOrganizationUnits(organizations)
-              })
-          }
+    private getUserRights() {
+      this.userService.getCurrentUserObservable()
+        .subscribe(user => {
+          this.isUserAdmin = user && user.isAdmin
+          this.isUserOrganizationAdmin = user && user.isOrganizationAdmin
         })
-    }
-
-    private extractOrganizationUnits(organizations: Organization[]) {
-      organizations.map(organization => this.organizationUnitsOfOrganization[organization.id] = organization.organizationUnit)
     }
 
     private getAllPersons() {
@@ -424,10 +403,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     saveOrganizationUnit(event): void {
-      this.newOrganizationUnit.parentOrganizationId = this.ownerOrganization.id;
+      this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id
       this.organizationUnitService.save(this.newOrganizationUnit)
-        .subscribe(organizationUnit => {
-          this.getAvailableOrganizations()
+        .subscribe(newOrganizationUnit => {
+          this.dataset.ownerOrganizationUnit = newOrganizationUnit
+          this.getOrganizationUnits()
           this.closeAddOrganizationUnitModal()
         })
     }
@@ -441,10 +421,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     updateOrganizationUnit(event): void {
+      this.editedOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id
       this.organizationUnitService.save(this.editedOrganizationUnit)
-        .subscribe(organizationUnit => {
-          this.getAvailableOrganizations();
-          this.closeAddOrganizationUnitModal()
+        .subscribe(updatedOrganizationUnit => {
+          this.getOrganizationUnits()
+          this.closeEditOrganizationUnitModal()
         })
     }
 
@@ -635,12 +616,6 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
           this.dateUtils.convertToIsoDate(this.collectionStartDate) : null
         this.dataset.collectionEndDate = this.collectionEndDate ?
           this.dateUtils.convertToIsoDate(this.collectionEndDate) : null
-
-        this.dataset.ownerOrganizationUnit = [];
-
-        if (this.ownerOrganization && this.ownerOrganizationUnit) {
-            this.dataset.ownerOrganizationUnit.push(this.ownerOrganizationUnit);
-        }
 
         // trailing white space to separate free concepts in search queries
         this.dataset.freeConcepts[this.language] = this.freeConcepts.join('; ')

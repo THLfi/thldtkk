@@ -93,39 +93,43 @@
           <editor-help-text #descriptionHelpText key="editor.dataset.description.helpText"></editor-help-text>
         </div>
 
-        <div *ngIf="availableOrganizations && ownerOrganization" class="form-group">
+        <div *ngIf="organizationUnits" class="form-group">
           <label for="ownerOrganizationUnit">
             {{ 'organizationUnit' | translate }}
             <editor-help-link [helpTextComponent]="ownerOrganizationUnitHelpText"></editor-help-link>
           </label>
-          <select [(ngModel)]="ownerOrganizationUnit"
+          <select [(ngModel)]="dataset.ownerOrganizationUnit"
                   [compareWith]="nodeUtils.equals"
                   id="ownerOrganizationUnit"
                   name="ownerOrganizationUnit"
                   class="form-control">
             <option [ngValue]="null"></option>
-            <ng-container *ngIf="ownerOrganization">
-              <option *ngFor="let organizationUnit of organizationUnitsOfOrganization[ownerOrganization.id]"
+            <ng-container *ngIf="organizationUnits">
+              <option *ngFor="let organizationUnit of organizationUnits"
                     [ngValue]="organizationUnit">
-              {{organizationUnit.prefLabel | lang}}
+                {{ organizationUnit.prefLabel | lang }}
+                <span *ngIf="organizationUnit.abbreviation | lang">
+                  ({{ organizationUnit.abbreviation | lang }})
+                </span>
               </option>
             </ng-container>
           </select>
           <editor-help-text #ownerOrganizationUnitHelpText key="editor.dataset.ownerOrganizationUnit.helpText"></editor-help-text>
-          <tr>
-            <button (click)="showAddOrganizationUnitModal(organizationUnit)"
-                    type="button"
-                    class="btn btn-default btn-sm">
-              <glyphicon icon="plus"></glyphicon>
-              {{ 'addNewOrganizationUnit' | translate }}
-            </button>
-            <button (click)="showEditOrganizationUnitModal(organizationUnit)"
-                    type="button"
-                    class="btn btn-default btn-sm">
-              <glyphicon icon="pencil"></glyphicon>
-              {{ 'editOrganizationUnit' | translate }}
-            </button>
-          </tr>
+          <button (click)="showAddOrganizationUnitModal(organizationUnit)"
+                  type="button"
+                  class="btn btn-default btn-sm"
+                  [disabled]="study.ownerOrganization == null">
+            <glyphicon icon="plus"></glyphicon>
+            {{ 'addNewOrganizationUnit' | translate }}
+          </button>
+          <button *ngIf="dataset.ownerOrganizationUnit && (isUserAdmin || isUserOrganizationAdmin)"
+                  (click)="showEditOrganizationUnitModal(dataset.ownerOrganizationUnit)"
+                  type="button"
+                  class="btn btn-default btn-sm"
+                  [disabled]="study.ownerOrganization == null">
+            <glyphicon icon="pencil"></glyphicon>
+            {{ 'editOrganizationUnit' | translate }}
+          </button>
           <organization-unit-edit-modal *ngIf="newOrganizationUnit"
                                         [organizationUnit]="newOrganizationUnit"
                                         [isNewOrganizationUnit]=true

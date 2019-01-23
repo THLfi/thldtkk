@@ -38,7 +38,7 @@ export interface Dataset extends Node {
 
   collectionEndDate: string
 
-  ownerOrganizationUnit: OrganizationUnit[]
+  ownerOrganizationUnit?: OrganizationUnit
 
   usageCondition: UsageCondition
 

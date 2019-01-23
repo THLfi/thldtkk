@@ -64,7 +64,7 @@ export class CurrentUserService {
     formData.append('password', password)
 
     return this.http.post(env.contextPath + env.apiPath + '/user-functions/login', formData)
-      .map(response => response.json() as boolean)
+      .map(response => response.status == 204)
       .do(loginSuccessful => {
         if (loginSuccessful) {
           this.refreshCurrentUser()

@@ -1,9 +1,10 @@
 package fi.thl.thldtkk.api.metadata;
 
 import static com.google.common.base.Strings.nullToEmpty;
+import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import fi.thl.thldtkk.api.metadata.controller.API;
-import fi.thl.thldtkk.api.metadata.security.JsonBooleanResponseHandler;
 import fi.thl.thldtkk.api.metadata.security.UserRoles;
 import fi.thl.thldtkk.api.metadata.security.thlsso.ThlSsoRestAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,13 +89,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
               .permitAll()
             .loginProcessingUrl(API.PATH_WITH_VERSION + "/user-functions/login")
               .permitAll()
-            .successHandler(new JsonBooleanResponseHandler(true))
-            .failureHandler(new JsonBooleanResponseHandler(false))
+              .successHandler((req, res, auth) -> res.setStatus(SC_NO_CONTENT))
+              .failureHandler((req, res, e) -> res.sendError(SC_UNAUTHORIZED))
             .and()
           .logout()
             .logoutUrl(API.PATH_WITH_VERSION + "/user-functions/logout")
               .permitAll()
-            .logoutSuccessHandler(new JsonBooleanResponseHandler(true))
+            .logoutSuccessHandler((req, res, e) -> res.setStatus(SC_NO_CONTENT))
             .and()
           .exceptionHandling()
             .authenticationEntryPoint(new Http401AuthenticationEntryPoint("unauthorized"))

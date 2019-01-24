@@ -241,7 +241,8 @@
                     <glyphicon icon="plus"></glyphicon>
                     {{ 'addNewPerson' | translate }}
                   </button>
-                  <button (click)="showEditPersonModal(personInRole)"
+                  <button *ngIf="isUserAdmin"
+                          (click)="showEditPersonModal(personInRole)"
                           type="button"
                           class="btn btn-default btn-sm">
                     <glyphicon icon="pencil"></glyphicon>

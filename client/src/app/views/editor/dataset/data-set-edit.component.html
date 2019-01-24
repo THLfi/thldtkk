@@ -195,7 +195,8 @@
                     <span class="glyphicon glyphicon-plus"></span>
                     {{ 'addNewPerson' | translate }}
                   </button>
-                  <button (click)="showEditPersonModal(personInRole)"
+                  <button *ngIf="isUserAdmin"
+                          (click)="showEditPersonModal(personInRole)"
                           type="button"
                           class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-pencil"></span>

@@ -66,10 +66,10 @@
       <div class="row">
         <div class="col-xs-12">
           <p><strong class="field-label">{{ 'organizationUnit' | translate }}</strong></p>
-          <p *ngFor="let ownerOrganizationUnit of dataset.ownerOrganizationUnit">
-            {{ ownerOrganizationUnit.prefLabel | lang }}
-            <span *ngIf="ownerOrganizationUnit.abbreviation | lang">
-              ({{ ownerOrganizationUnit.abbreviation | lang }})
+          <p *ngIf="dataset.ownerOrganizationUnit && (dataset.ownerOrganizationUnit.prefLabel | lang)">
+            {{ dataset.ownerOrganizationUnit.prefLabel | lang }}
+            <span *ngIf="dataset.ownerOrganizationUnit.abbreviation | lang">
+              ({{ dataset.ownerOrganizationUnit.abbreviation | lang }})
             </span>
           </p>
         </div>

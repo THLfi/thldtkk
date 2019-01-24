@@ -10,6 +10,6 @@ import java.lang.annotation.RetentionPolicy;
  * Entity parameter of the target method must be named <code>entity</code> or denoted with <code>@P("entity")</code>.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("#entity.id == null ? hasAnyAuthority('" + UserRoles.USER + "," + UserRoles.ADMIN + "," + UserRoles.ORG_ADMIN + "') : hasAuthority('" + UserRoles.ADMIN + "')")
-public @interface UserCanCreateAdminCanUpdate {
+@PreAuthorize("#entity.id == null ? hasAnyAuthority('" + UserRoles.USER + "," + UserRoles.ADMIN + "," + UserRoles.ORG_ADMIN + "') : hasAnyAuthority('" + UserRoles.ADMIN + "," + UserRoles.ORG_ADMIN + "')")
+public @interface UserCanCreateAdminAndOrgAdminCanUpdate {
 }

@@ -115,7 +115,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/; // e.g. 'http:/thl.fi'
     validUrlExpression: RegExp;
 
-    isUserAdmin: boolean;
+    isUserAdmin: boolean
+    isUserOrganizationAdmin: boolean
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -251,11 +252,15 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getAvailableOrganizations() {
-      this.userService.isUserAdmin()
-        .subscribe(isAdmin => {
-          this.isUserAdmin = isAdmin;
+      this.availableOrganizations = null
+      this.organizationUnitsOfOrganization = null
 
-          if (isAdmin) {
+      this.userService.getCurrentUserObservable()
+        .subscribe(user => {
+          this.isUserAdmin = user && user.isAdmin
+          this.isUserOrganizationAdmin = user && user.isOrganizationAdmin
+
+          if (this.isUserAdmin) {
               this.organizationService.getAllOrganizations()
               .subscribe(organizations => {
                 this.availableOrganizations = organizations;
@@ -529,7 +534,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     saveOrganizationUnit(event): void {
       this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
       this.organizationUnitService.save(this.newOrganizationUnit)
-        .subscribe(organizationUnit => {
+        .subscribe(newOrganizationUnit => {
+          this.study.ownerOrganizationUnit = newOrganizationUnit
           this.getAvailableOrganizations()
           this.closeAddOrganizationUnitModal()
         })
@@ -538,8 +544,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     updateOrganizationUnit(event): void {
       this.editedOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
       this.organizationUnitService.save(this.editedOrganizationUnit)
-        .subscribe(organizationUnit => {
-          this.getAvailableOrganizations();
+        .subscribe(updatedOrganizationUnit => {
+          this.getAvailableOrganizations()
           this.closeEditOrganizationUnitModal()
         })
     }

@@ -1,28 +1,25 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
-
-import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
-
 import fi.thl.thldtkk.api.metadata.domain.Organization;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.OrganizationUnitService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-
-
+import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.security.access.method.P;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
+import static java.util.Arrays.asList;
+import static java.util.UUID.randomUUID;
+import static java.util.stream.Collectors.toList;
 
 public class OrganizationUnitServiceImpl implements OrganizationUnitService {
 
@@ -78,14 +75,15 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
   }
 
 
-  @UserCanCreateAdminCanUpdate
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public OrganizationUnit save(OrganizationUnit organizationUnit) {
     return new OrganizationUnit(nodes.save(organizationUnit.toNode()));
   }
 
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
-  public OrganizationUnit save(UUID organizationId, OrganizationUnit organizationUnit) {
+  public OrganizationUnit save(UUID organizationId, @P("entity") OrganizationUnit organizationUnit) {
     Organization organization = new Organization(
       nodes.get(new NodeId(organizationId, "Organization")).orElseThrow(NotFoundException::new));
 

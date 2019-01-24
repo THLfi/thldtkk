@@ -27,7 +27,6 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
   savingHasFailed: boolean = false
   deleteInProgress: boolean = false
 
-
   @Output() onSave: EventEmitter<OrganizationUnit> = new EventEmitter<OrganizationUnit>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
   @Output() onDelete: EventEmitter<void> = new EventEmitter<void>()

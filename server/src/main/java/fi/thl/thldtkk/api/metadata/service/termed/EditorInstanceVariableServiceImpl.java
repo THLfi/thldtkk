@@ -35,11 +35,11 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
     this.editorStudyService = editorStudyService;
   }
 
-  @AdminOnly
   @Override
   public List<InstanceVariable> getInstancesVariablesByVariable(UUID variableId, int max) {
-    return nodes.query(
-        select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2"),
+    List<InstanceVariable> instanceVariables = nodes.query(
+      select("id", "type", "properties.*", "references.*", "referrers.*", "referrers.dataSets:2",
+        "references.ownerOrganization:3"),
         and(
             keyValue("type.id", InstanceVariable.TERMED_NODE_CLASS),
             keyValue("references.variable.id", variableId.toString())
@@ -47,6 +47,10 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
         max)
         .map(InstanceVariable::new)
         .collect(toList());
+
+    return userHelper.isCurrentUserAdmin()
+      ? instanceVariables
+      : filterByOrganization(instanceVariables);
   }
 
   @AdminOnly
@@ -104,11 +108,9 @@ public class EditorInstanceVariableServiceImpl implements EditorInstanceVariable
         .map(InstanceVariable::new)
         .collect(toList());
 
-    if (!userHelper.isCurrentUserAdmin()) {
-      instanceVariables = filterByOrganization(instanceVariables);
-    }
-
-    return instanceVariables;
+    return userHelper.isCurrentUserAdmin()
+      ? instanceVariables
+      : filterByOrganization(instanceVariables);
   }
 
   @Override

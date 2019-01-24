@@ -253,7 +253,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     private getAvailableOrganizations() {
       this.availableOrganizations = null
-      this.organizationUnitsOfOrganization = null
+      this.organizationUnitsOfOrganization = {}
 
       this.userService.getCurrentUserObservable()
         .subscribe(user => {

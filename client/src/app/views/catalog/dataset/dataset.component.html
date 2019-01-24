@@ -32,8 +32,7 @@
       <ng-container *ngIf="dataset.personInRoles && dataset.personInRoles.length">
         <h2>
           {{ 'catalog.personInRoles' | translate }}
-          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.personInRoles' | translate }}"
-                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+          <thl-info-tooltip key="catalog.helpText.dataset.personInRoles"></thl-info-tooltip>
         </h2>
         <ng-container *ngFor="let personInRole of dataset.personInRoles">
           <p *ngIf="personInRole.public">
@@ -62,8 +61,7 @@
       <ng-container *ngIf="dataset.datasetTypes && dataset.datasetTypes.length">
         <h2 *ngIf="dataset.datasetTypes">
           {{ 'datasetType' | translate }}
-          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.datasetType' | translate }}"
-                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+          <thl-info-tooltip key="catalog.helpText.dataset.datasetType"></thl-info-tooltip>
         </h2>
         <p *ngFor="let datasetType of dataset.datasetTypes">
           {{ datasetType.prefLabel | lang }}
@@ -72,8 +70,7 @@
 
       <h2 *ngIf="dataset.usageCondition || (dataset.usageConditionAdditionalInformation | lang)">
         {{ 'usageCondition' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.usageCondition' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.dataset.usageCondition"></thl-info-tooltip>
       </h2>
       <p *ngIf="dataset.usageCondition">
         {{ dataset.usageCondition.prefLabel | lang }}
@@ -85,8 +82,7 @@
       <div *ngIf="dataset.links && dataset.links.length">
         <h2>
           {{'links'|translate}}
-          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.links' | translate }}"
-                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+          <thl-info-tooltip key="catalog.helpText.dataset.links"></thl-info-tooltip>
         </h2>
         <p *ngFor="let link of dataset.links">
           <a href="{{ link.linkUrl | lang }}"
@@ -118,8 +114,7 @@
                 </div>
                 <div class="caption">
                   {{ 'universe' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.universe' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.universe"></thl-info-tooltip>
                 </div>
                 <div class="value">
                   {{ dataset.universe.prefLabel | lang }}
@@ -132,8 +127,7 @@
                 </div>
                 <div class="caption">
                   {{ 'referencePeriod' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.referencePeriod' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.referencePeriod"></thl-info-tooltip>
                 </div>
                 <div class="value">
                   <ng-container *ngIf="referencePeriodStart">
@@ -152,8 +146,7 @@
                 </div>
                 <div class="caption">
                   {{ 'geographicalCoverage' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.geographicalCoverage' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.geographicalCoverage"></thl-info-tooltip>
                 </div>
                 <div class="value">
                   {{ dataset.population.geographicalCoverage | lang }}
@@ -174,8 +167,7 @@
               <ng-container *ngSwitchCase="DatasetDetailHighlight.UNIT_TYPE">
                 <div>
                   {{ 'unitType' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.unitType' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.unitType"></thl-info-tooltip>
                 </div>
                 <div class="secondary-highlight-value">
                   <ng-container *ngIf="dataset.unitType; else unitTypeFromStudy;">
@@ -190,8 +182,7 @@
               <ng-container *ngSwitchCase="DatasetDetailHighlight.NUMBER_OF_OBSERVATION_UNITS">
                 <div>
                   {{ 'numberOfObservationUnits' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.numberOfObservationUnits' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.numberOfObservationUnits"></thl-info-tooltip>
                 </div>
                 <div class="secondary-highlight-value">
                   {{ dataset.numberOfObservationUnits }}
@@ -201,8 +192,7 @@
               <ng-container *ngSwitchCase="DatasetDetailHighlight.LIFECYCLE_PHASE">
                 <div>
                   {{ 'datasetLifecyclePhase' | translate }}:
-                  <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.datasetLifecyclePhase' | translate }}"
-                        tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+                  <thl-info-tooltip key="catalog.helpText.dataset.datasetLifecyclePhase"></thl-info-tooltip>
                 </div>
                 <div *ngIf="dataset.lifecyclePhase.prefLabel" class="secondary-highlight-value">
                   {{ dataset.lifecyclePhase.prefLabel | lang }}
@@ -222,8 +212,7 @@
         <div *ngIf="dataset.population.prefLabel | lang" class="col-xs-12">
           <h2>
             {{ 'population' | translate }}:
-            <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.population' | translate }}"
-                  tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+            <thl-info-tooltip key="catalog.helpText.dataset.population"></thl-info-tooltip>
           </h2>
           <p class="preserve-line-breaks">{{ dataset.population.prefLabel | lang }}</p>
         </div>
@@ -231,8 +220,7 @@
         <div *ngIf="dataset.population.sampleSize | lang" class="col-xs-12">
           <h2>
             {{ 'sample' | translate }}:
-            <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.sample' | translate }}"
-                  tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+            <thl-info-tooltip key="catalog.helpText.dataset.sample"></thl-info-tooltip>
           </h2>
           <p>{{ dataset.population.sampleSize | lang }}</p>
         </div>
@@ -240,8 +228,7 @@
         <div *ngIf="dataset.population.loss | lang" class="col-xs-12">
           <h2>
             {{ 'loss' | translate }}:
-            <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.loss' | translate }}"
-                  tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+            <thl-info-tooltip key="catalog.helpText.dataset.loss"></thl-info-tooltip>
           </h2>
           <p>{{ dataset.population.loss | lang }}</p>
         </div>
@@ -253,8 +240,7 @@
           <div class="concepts">
             <h2>
               {{ 'concepts' | translate }}
-              <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.dataset.concepts' | translate }}"
-                    tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+              <thl-info-tooltip key="catalog.helpText.dataset.concepts"></thl-info-tooltip>
             </h2>
             <div class="items">
               <ng-container *ngIf="dataset.conceptsFromScheme.length">

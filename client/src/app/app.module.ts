@@ -71,6 +71,7 @@ import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
 import { RequiredFieldIndicator } from './views/common/required-field-indicator.component'
 import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view-code-list-code-items-modal.component'
+import { InfoTooltipComponent } from './views/common/info-tooltip.component'
 
 // catalog components (few renamed to avoid name clash with editor)
 import { CatalogStudyListComponent } from './views/catalog/study/catalog-study-list.component'
@@ -186,6 +187,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         EditorStudyViewComponent,
         FontAwesomeComponent,
         GlyphiconComponent,
+        InfoTooltipComponent,
         IconUniverse,
         InstanceVariableComponent,
         InstanceVariableEditComponent,

@@ -57,8 +57,7 @@
            class="col-xs-12 col-sm-3">
         <h2>
           {{ 'variables' | translate | uppercase }}
-          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariableSearch.variable' | translate }}"
-                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+          <thl-info-tooltip key="catalog.helpText.instanceVariableSearch.variable"></thl-info-tooltip>
         </h2>
         <a *ngFor="let variable of variables"
            routerLink="/catalog/variables/{{ variable.id }}"

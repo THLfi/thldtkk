@@ -30,8 +30,7 @@
     <div class="col-xs-12">
       <h2>
         {{"partOfGroup" | translate}}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.partOfGroup' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.partOfGroup"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.partOfGroup | lang }}</p>
     </div>
@@ -42,8 +41,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'conceptsFromScheme' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.conceptsFromScheme' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.conceptsFromScheme"></thl-info-tooltip>
       </h2>
       <p>
         <span *ngFor="let concept of instanceVariable.conceptsFromScheme">
@@ -68,8 +66,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'referencePeriod' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.referencePeriod' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.referencePeriod"></thl-info-tooltip>
       </h2>
       <p>
         {{ referencePeriod.start | date:'dd.MM.yyyy' }}
@@ -100,8 +97,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'valueDomain' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueDomain' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.valueDomain"></thl-info-tooltip>
       </h2>
       <p>{{ 'valueDomainType.' + instanceVariable.valueDomainType | translate }}</p>
     </div>
@@ -111,8 +107,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'unit' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.unit' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.unit"></thl-info-tooltip>
       </h2>
       <p>
         {{ instanceVariable.unit.prefLabel | lang }}
@@ -127,8 +122,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'codeList.label' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.codeList' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.codeList"></thl-info-tooltip>
       </h2>
       <p>
         <strong>{{ instanceVariable.codeList.prefLabel | lang }}</strong>
@@ -165,8 +159,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'technicalName' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.technicalName' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.technicalName"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.technicalName }}</p>
     </div>
@@ -177,8 +170,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'valueRangeMin' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueRangeMin' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.valueRangeMin"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.valueRangeMin }}</p>
     </div>
@@ -189,8 +181,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'valueRangeMax' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.valueRangeMax' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.valueRangeMax"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.valueRangeMax }}</p>
     </div>
@@ -201,8 +192,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'missingValues' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.missingValues' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.missingValues"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.missingValues | lang }}</p>
     </div>
@@ -213,8 +203,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'defaultMissingValue' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.defaultMissingValue' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.defaultMissingValue"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.defaultMissingValue }}</p>
     </div>
@@ -225,8 +214,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'qualityStatement' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.qualityStatement' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.qualityStatement"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.qualityStatement | lang }}</p>
     </div>
@@ -236,8 +224,7 @@
     <div class="col-xs-12" *ngIf="instanceVariable.variable">
       <h2>
         {{ 'variable' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.variable' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.variable"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.variable.prefLabel | lang }}</p>
     </div>
@@ -246,8 +233,7 @@
   <div *ngIf="instanceVariable.source || (instanceVariable.sourceDescription | lang)">
     <h2>
       {{ 'instanceVariableSource' | translate }}
-      <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.instanceVariableSource' | translate }}"
-            tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+      <thl-info-tooltip key="catalog.helpText.instanceVariable.instanceVariableSource"></thl-info-tooltip>
     </h2>
     <div *ngIf="instanceVariable.source"
          class="row" >
@@ -273,8 +259,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'dataType' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.dataType' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.dataType"></thl-info-tooltip>
       </h2>
       <p>{{ instanceVariable.dataType }}</p>
     </div>
@@ -284,8 +269,7 @@
       <div class="col-xs-12">
         <h2>
           {{'dataFormat' | translate}}
-          <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.dataFormat' | translate }}"
-                tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+          <thl-info-tooltip key="catalog.helpText.instanceVariable.dataFormat"></thl-info-tooltip>
         </h2>
         <p>{{ instanceVariable.dataFormat | lang }}</p>
       </div>
@@ -296,8 +280,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'unitType' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.unitType' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.unitType"></thl-info-tooltip>
       </h2>
       <p>
         <ng-container *ngIf="instanceVariable.unitType; else unitTypeFromDataset;">
@@ -331,8 +314,7 @@
     <div class="col-xs-12">
       <h2>
         {{ 'instanceQuestions' | translate }}
-        <span class="glyphicon glyphicon-info-sign" pTooltip="{{ 'catalog.helpText.instanceVariable.instanceQuestions' | translate }}"
-              tooltipPosition="bottom" tooltipStyleClass="catalog-helptext-tooltip"></span>
+        <thl-info-tooltip key="catalog.helpText.instanceVariable.instanceQuestions"></thl-info-tooltip>
       </h2>
       <ul>
           <li class="preserve-line-breaks" *ngFor="let question of instanceVariable.instanceQuestions">{{question.prefLabel | lang }}</li>

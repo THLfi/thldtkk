@@ -116,7 +116,7 @@
                 {{ errorKey | translate }}
               </p>
               <editor-help-text #ownerOrganizationHelpText key="editor.study.ownerOrganization.helpText"></editor-help-text>
-              <button *ngIf="study.ownerOrganization"
+              <button *ngIf="isUserAdmin"
                       (click)="showEditOrganizationModal(study.ownerOrganization)"
                       type="button"
                       class="btn btn-default btn-sm">

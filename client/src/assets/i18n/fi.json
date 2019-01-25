@@ -639,7 +639,7 @@
     "organization": {
       "save": {
         "result": {
-          "success": "Organisaatioyksikkö tallennettu"
+          "success": "Organisaatio tallennettu"
         }
       }
     }

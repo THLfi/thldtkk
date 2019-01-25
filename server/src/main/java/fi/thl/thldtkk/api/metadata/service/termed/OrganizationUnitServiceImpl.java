@@ -5,6 +5,7 @@ import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.OrganizationUnitService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
@@ -98,6 +99,7 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
     return organizationUnit;
   }
 
+  @AdminOnly
   @Override
   public void delete(UUID id) {
     OrganizationUnit organizationUnit = get(id).orElseThrow(NotFoundException::new);

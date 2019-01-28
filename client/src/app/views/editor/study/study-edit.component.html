@@ -92,7 +92,8 @@
           <editor-help-text #descriptionHelpText key="editor.study.description.helpText"></editor-help-text>
         </div>
 
-        <div [ngClass]="{ 'bg-danger': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
+        <div *ngIf="availableOrganizations"
+             [ngClass]="{ 'bg-danger': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"
              class="row">
           <div class="col-xs-12">
             <div [ngClass]="{ 'has-error': formErrors.ownerOrganization && formErrors.ownerOrganization.length }"

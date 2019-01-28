@@ -126,6 +126,7 @@ import { LogoutMessageComponent } from './views/editor/login/logout-message.comp
 import { OrganizationDropdownComponent } from './views/common/organization-dropdown.component'
 import { OrganizationConsistencyValidator } from './views/editor/study/validation/organization-consistency.validator'
 import { OrganizationUnitEditModalComponent} from "./views/editor/dataset/organization-unit-edit-modal.component";
+import { OrganizationListComponent } from './views/editor/organization/organization-list.component'
 import { OrganizationEditModalComponent} from "./views/editor/study/organization-edit-modal.component";
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
@@ -201,6 +202,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LogoutMessageComponent,
         OrganizationConsistencyValidator,
         OrganizationUnitEditModalComponent,
+        OrganizationListComponent,
         OrganizationEditModalComponent,
         PersonEditModalComponent,
         RequiredFieldIndicator,

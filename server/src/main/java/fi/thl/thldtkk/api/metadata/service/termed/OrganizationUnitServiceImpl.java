@@ -75,7 +75,6 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
             .findFirst();
   }
 
-
   @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public OrganizationUnit save(OrganizationUnit organizationUnit) {
@@ -111,6 +110,6 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
     organization.removeOrganizationUnit(organizationUnit);
 
     nodes.save(organization.toNode());
-    nodes.delete(new NodeId(id, "OrganizationUnit"));
+    nodes.delete(new NodeId(id, "OrganizationUnit"), true);
   }
 }

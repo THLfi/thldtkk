@@ -23,6 +23,7 @@ import { InstanceVariableSearchComponent } from "./views/catalog/instancevariabl
 import { EditorInstanceVariableSearchComponent } from "./views/editor/instancevariable/editor-instancevariable-search.component";
 import { EditorVariableViewComponent } from "./views/editor/variable/editor-variable-view.component";
 import { InstanceVariableViewComponent } from "./views/editor/dataset/instance-variable-view.component";
+import { OrganizationListComponent } from './views/editor/organization/organization-list.component'
 import { RequireLoginGuard } from './require-login-guard'
 import { StudyEditComponent } from './views/editor/study/study-edit.component'
 
@@ -112,6 +113,13 @@ const routes: Routes = [
             component: UnitTypeListComponent,
             data: {
               title:'pageTitles.editor.unitTypeList'
+            }
+          },
+          {
+            path: 'organizations',
+            component: OrganizationListComponent,
+            data: {
+              title:'pageTitles.editor.organizationsAndOrganizationUnits'
             }
           },
           {

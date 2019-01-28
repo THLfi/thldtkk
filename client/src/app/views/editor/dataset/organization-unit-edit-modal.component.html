@@ -6,14 +6,27 @@
             resizable="false"
             closeOnEscape="false"
             width="500">
-    <p-header *ngIf="isNewOrganizationUnit">
-      {{ 'newOrganizationUnit' | translate }}
-    </p-header>
-    <p-header *ngIf="!isNewOrganizationUnit">
-      {{ 'editedOrganizationUnit' | translate }}
+    <p-header>
+      <ng-container *ngIf="!organizationUnit.id; else existingOrganizationUnit;">
+        {{ 'newOrganizationUnit' | translate }}
+      </ng-container>
+      <ng-template #existingOrganizationUnit>
+        {{ 'editedOrganizationUnit' | translate }}
+      </ng-template>
     </p-header>
     <form #organizationUnitForm="ngForm">
       <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'organization' | translate }}</strong></p>
+            <p>
+              {{ parentOrganization.prefLabel | lang }}
+              <ng-container *ngIf="parentOrganization.abbreviation | lang">
+                ({{ parentOrganization.abbreviation | lang }})
+              </ng-container>
+            </p>
+          </div>
+        </div>
         <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
              class="row">
           <div class="col-xs-12">
@@ -65,14 +78,6 @@
                 [disabled]="savingInProgress"
                 class="btn btn-default">
           {{ 'cancel' | translate }}
-        </button>
-        <button *ngIf="(!isNewOrganizationUnit)"
-                (click)="confirmRemove()"
-                [disabled]="savingInProgress"
-                class="btn btn-default"
-                style="float: right">
-          <span class="glyphicon glyphicon-trash"></span>
-          {{ 'remove' | translate }}
         </button>
       </div>
     </p-footer>

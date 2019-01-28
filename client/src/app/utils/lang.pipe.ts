@@ -11,7 +11,7 @@ export class LangPipe implements PipeTransform {
     private translate: TranslateService
   ) { }
 
-  transform(langValues: LangValues): any {
+  transform(langValues: LangValues): string {
     const lang = this.translate.currentLang
     if (langValues[lang]) {
       return langValues[lang]

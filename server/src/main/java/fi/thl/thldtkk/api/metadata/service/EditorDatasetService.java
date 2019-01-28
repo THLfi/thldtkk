@@ -13,6 +13,8 @@ public interface EditorDatasetService extends Service<UUID, Dataset> {
 
   List<Dataset> getUniverseDatasets(UUID universeId);
 
+  List<Dataset> getOrganizationUnitDatasets(UUID organizationUnitId);
+
   Optional<Dataset> findByPrefLabel(String prefLabel);
 
 }

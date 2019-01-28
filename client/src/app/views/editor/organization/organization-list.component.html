@@ -1,0 +1,128 @@
+<div *ngIf="!loadingOrganizations; else loadingOrganizationUnits;"
+     class="content-container">
+
+  <div class="content-header container-fluid">
+    <div class="col-xs-12">
+      <h1>{{ 'organizationsAndOrganizationUnits' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="content-body container-fluid">
+    <div class="row" style="margin-bottom:1em;">
+      <div class="col-xs-12"
+           [ngClass]="{ 'col-sm-8': isUserAdmin, 'col-md-9': isUserAdmin }">
+        <div class="input-group">
+          <input (input)="updateSearchTerms($event.target.value)"
+                 type="text"
+                 class="form-control"
+                 placeholder="{{ 'organizationAndOrganizationUnitSearchPlaceholder' | translate }}"
+                 value="{{ searchTermSubject.getValue() }}">
+          <span class="input-group-btn">
+          <button (click)="refreshOrganizations()"
+                  type="button"
+                  class="btn btn-default">
+            <glyphicon icon="search"></glyphicon>
+            <span class="sr-only">{{ 'search' | translate }}</span>
+          </button>
+          </span>
+        </div>
+
+      </div>
+      <div *ngIf="isUserAdmin"
+           class="col-xs-12 col-sm-4 col-md-3">
+          <button (click)="showEditOrganizationModal(null)"
+                  type="button"
+                  class="btn btn-default organization-add-new">
+            <glyphicon icon="plus"></glyphicon>
+            {{ 'addOrganization' | translate }}
+          </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-hover organization-list">
+          <tr>
+            <th translate="prefLabel"></th>
+            <th translate="functions"></th>
+          </tr>
+          <ng-container *ngFor="let organization of filteredOrganizations">
+            <tr>
+              <td>
+                {{ organization.prefLabel | lang }}
+                <ng-container *ngIf="organization.abbreviation | lang">
+                  ({{ organization.abbreviation | lang }})
+                </ng-container>
+              </td>
+              <td>
+                <button (click)="showEditOrganizationUnitModal(organization, null)"
+                        pTooltip="{{ 'addOrganizationUnitButton.tooltip' | translate }}"
+                        tooltipPosition="bottom"
+                        type="button"
+                        class="btn btn-default organization-edit-controls">
+                  <glyphicon icon="plus"></glyphicon>
+                  {{ 'addOrganizationUnitButton.label' | translate }}
+                </button>
+                <button (click)="showEditOrganizationModal(organization)"
+                        pTooltip="{{ 'edit' | translate }}"
+                        tooltipPosition="bottom"
+                        type="button"
+                        class="btn btn-default organization-edit-controls">
+                  <glyphicon icon="pencil"></glyphicon>
+                  <span class="sr-only">{{ 'edit' | translate }}</span>
+                </button>
+              </td>
+            </tr>
+            <tr *ngFor="let organizationUnit of filteredOrganizationUnits[organization.id]"
+                class="organization-unit">
+              <td>
+                {{ organizationUnit.prefLabel | lang }}
+                <ng-container *ngIf="organizationUnit.abbreviation | lang">
+                  ({{ organizationUnit.abbreviation | lang }})
+                </ng-container>
+              </td>
+              <td>
+                <button (click)="showEditOrganizationUnitModal(organization, organizationUnit)"
+                        pTooltip="{{ 'edit' | translate }}"
+                        tooltipPosition="bottom"
+                        type="button"
+                        class="btn btn-default organization-edit-controls">
+                  <glyphicon icon="pencil"></glyphicon>
+                  <span class="sr-only">{{ 'edit' | translate }}</span>
+                </button>
+                <button (click)="confirmRemoveOrganizationUnit(organizationUnit)"
+                        pTooltip="{{ 'remove' | translate }}"
+                        tooltipPosition="bottom"
+                        type="button"
+                        class="btn btn-default universe-edit-controls">
+                  <fa icon="trash-o"></fa>
+                  <span class="sr-only">{{ 'remove' | translate }}</span>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+          <organization-edit-modal *ngIf="editOrganization"
+                                   [organization]="editOrganization"
+                                   (onSave)="saveOrganization($event)"
+                                   (onCancel)="closeOrganizationModal()">
+          </organization-edit-modal>
+          <organization-unit-edit-modal *ngIf="editOrganizationUnit"
+                                        [parentOrganization]="parentOrganizationForEditOrganizationUnit"
+                                        [organizationUnit]="editOrganizationUnit"
+                                        (onSave)="saveOrganizationUnit($event)"
+                                        (onCancel)="closeOrganizationUnitModal()">
+          </organization-unit-edit-modal>
+          <p-confirmDialog header="{{ 'confirmRemoveOrganizationUnitModal.header' | translate }}"
+                           acceptLabel="{{ 'remove' | translate }}"
+                           rejectLabel="{{ 'cancel' | translate }}">
+          </p-confirmDialog>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #loadingOrganizationUnits>
+  <thl-spinner></thl-spinner>
+</ng-template>

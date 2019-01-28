@@ -600,6 +600,18 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));
   }
 
+  @AdminOnly
+  @Override
+  public List<Study> getOrganizationUnitStudies(UUID organizationUnitId) {
+    List<Study> list =  nodes.query(
+      select("id", "type", "properties.prefLabel"),
+      and(keyValue("type.id", Study.TERMED_NODE_CLASS),
+        keyValue("references.ownerOrganizationUnit.id", organizationUnitId.toString())))
+      .map(Study::new)
+      .collect(toList());
+    return list;
+  }
+
   @Override
   public Dataset saveDataset(UUID studyId, Dataset dataset) {
     return saveDatasetInternal(studyId, dataset, false);

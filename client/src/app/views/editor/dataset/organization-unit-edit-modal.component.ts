@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms'
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { OrganizationUnit } from '../../../model2/organization-unit'
 import { TranslateService } from "@ngx-translate/core";
-import { OrganizationUnitService } from "../../../services-common/organization-unit.service";
 
 @Component({
   selector: 'organization-unit-edit-modal',
@@ -12,8 +11,8 @@ import { OrganizationUnitService } from "../../../services-common/organization-u
 })
 export class OrganizationUnitEditModalComponent implements AfterContentChecked {
 
+  @Input() parentOrganization: OrganizationUnit
   @Input() organizationUnit: OrganizationUnit
-  @Input() isNewOrganizationUnit
 
   @ViewChild('organizationUnitForm') organizationUnitForm: NgForm
   currentForm: NgForm
@@ -29,12 +28,10 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
 
   @Output() onSave: EventEmitter<OrganizationUnit> = new EventEmitter<OrganizationUnit>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
-  @Output() onDelete: EventEmitter<void> = new EventEmitter<void>()
 
   constructor(
     private growlMessageService: GrowlMessageService,
-    private translateService: TranslateService,
-    private organizationUnitService: OrganizationUnitService
+    private translateService: TranslateService
   ) {
       this.language = translateService.currentLang
   }
@@ -74,6 +71,8 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
       return
     }
 
+    this.organizationUnit.parentOrganizationId = this.parentOrganization.id
+
     this.savingInProgress = false
 
     this.onSave.emit(this.organizationUnit)
@@ -83,18 +82,4 @@ export class OrganizationUnitEditModalComponent implements AfterContentChecked {
     this.onCancel.emit()
   }
 
-  confirmRemove() {
-      this.translateService.get('confirmOrganizationUnitDelete')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.deleteInProgress = true
-
-          this.organizationUnitService.delete(this.organizationUnit.id)
-            .finally(() => this.deleteInProgress = false)
-            .subscribe(() => { /*TODO!! Should something be done here?*/ })
-        }
-      })
-
-    this.onDelete.emit()
-  }
 }

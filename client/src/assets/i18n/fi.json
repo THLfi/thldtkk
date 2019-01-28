@@ -80,6 +80,12 @@
   "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
   "organizations": "Organisaatiot",
   "organizationUnit": "Organisaatioyksikkö",
+  "organizationsAndOrganizationUnits": "Organisaatiot ja yksiköt",
+  "addOrganization": "Lisää organisaatio...",
+  "addOrganizationUnitButton": {
+    "label": "Lisää yksikkö...",
+    "tooltip": "Lisää orgaanisaatiolle uusi organisaatioyksikkö"
+  },
   "confirmPublishDataset": "Haluatko varmasti julkaista datasetin?",
   "confirmWithdrawDataset": "Haluatko varmasti perua datasetin julkaisun?",
   "functions": "Toiminnot",
@@ -410,6 +416,7 @@
   "variableSearchPlaceholder":"Hae käsitemuuttujia...",
   "codeListSearchPlaceholder":"Hae koodistoja...",
   "studySearchPlaceholder":"Hae aineistoja...",
+  "organizationAndOrganizationUnitSearchPlaceholder": "Hae organisaatioita ja organisaatioyksiöitä...",
   "confirmRemoveCodeListModal": {
     "message": "Haluatko varmasti poistaa koodiston {{codeList}}? Koodistoa käyttää {{instanceVariableCount}} muuttujaa.",
     "header": "Poiston vahvistus",
@@ -425,6 +432,10 @@
   "confirmRemoveUniverseModal": {
     "header": "Poiston vahvistus",
     "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} datasettiä."
+  },
+  "confirmRemoveOrganizationUnitModal": {
+    "header": "Poiston vahvistus",
+    "message": "Haluatko varmasti poistaa organisaatioyksikön '{{organizationUnit}}'? Organisaatioyksikköön viittaa {{studyCount}} aineistoa ja {{datasetCount}} datasettiä."
   },
   "errors": {
     "form": {
@@ -701,6 +712,7 @@
       "newStudy": "Uusi aineisto",
       "variables": "Käsitemuuttujat",
       "unitTypeList":"Havaintoyksikkötyypit",
+      "organizationsAndOrganizationUnits":"Organisaatiot ja yksiköt",
       "frontpageLogin":"Kirjautuminen palveluun",
       "administrativeInformation": "Hallinnolliset tiedot",
       "codeLists": "Koodistot",

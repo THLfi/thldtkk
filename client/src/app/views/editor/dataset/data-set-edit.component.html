@@ -132,16 +132,13 @@
           </button>
           <organization-unit-edit-modal *ngIf="newOrganizationUnit"
                                         [organizationUnit]="newOrganizationUnit"
-                                        [isNewOrganizationUnit]=true
                                         (onSave)="saveOrganizationUnit($event)"
                                         (onCancel)="closeAddOrganizationUnitModal()">
           </organization-unit-edit-modal>
           <organization-unit-edit-modal *ngIf="editedOrganizationUnit"
                                         [organizationUnit]="editedOrganizationUnit"
-                                        [isNewOrganizationUnit]=false
                                         (onSave)="updateOrganizationUnit($event)"
-                                        (onCancel)="closeEditOrganizationUnitModal()"
-                                        (onDelete)="closeEditOrganizationUnitModal()">
+                                        (onCancel)="closeEditOrganizationUnitModal()">
           </organization-unit-edit-modal>
         </div>
 

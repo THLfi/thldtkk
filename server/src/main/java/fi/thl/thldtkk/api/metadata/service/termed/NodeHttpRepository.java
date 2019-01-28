@@ -141,7 +141,12 @@ public class NodeHttpRepository implements Repository<NodeId, Node> {
 
   @Override
   public void delete(NodeId node) {
-    termed.delete("/types/{typeId}/nodes/{nodeId}", node.getTypeId(), node.getId());
+    delete(node, false);
+  }
+
+  @Override
+  public void delete(NodeId node, boolean disconnect) {
+    termed.delete("/types/{typeId}/nodes/{nodeId}?disconnect={disconnect}", node.getTypeId(), node.getId(), disconnect);
   }
 
   @Override

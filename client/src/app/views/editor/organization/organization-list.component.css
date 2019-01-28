@@ -1,0 +1,31 @@
+.organization-list td:last-child,
+.organization-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+tr.organization-unit td:first-child {
+  padding-left: 2em;
+}
+
+@media (max-width: 768px) {
+  .organization-list td:last-child,
+  .organization-list th:last-child {
+    text-align: left;
+  }
+
+  .organization-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .organization-add-new {
+    margin-top: 1em;
+  }
+
+}
+
+@media(min-width: 768px) {
+  .organization-add-new {
+    float: right;
+  }
+}

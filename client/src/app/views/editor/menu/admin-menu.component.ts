@@ -3,7 +3,6 @@ import {
   HostListener, ViewChild, ElementRef
 } from '@angular/core'
 
-import { StringUtils } from '../../../utils/string-utils'
 import { User } from '../../../model2/user'
 
 @Component({
@@ -27,6 +26,7 @@ import { User } from '../../../model2/user'
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/unitTypes/">{{ 'unitTypes' | translate }}</a></li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/universes/">{{ 'universes' | translate }}</a></li>
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/codelists/">{{ 'codeLists' | translate }}</a></li>
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a routerLink="/editor/organizations/">{{ 'organizationsAndOrganizationUnits' | translate }}</a></li>
     </ul>
   </li>
 </ul>`

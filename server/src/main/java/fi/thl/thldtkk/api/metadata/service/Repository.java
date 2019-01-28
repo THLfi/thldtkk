@@ -116,6 +116,10 @@ public interface Repository<K, V> {
     throw new UnsupportedOperationException();
   }
 
+  default void delete(K id, boolean disconnect) {
+    throw new UnsupportedOperationException();
+  }
+
   /**
    * Post multiple deletes and saves in one batch
    *

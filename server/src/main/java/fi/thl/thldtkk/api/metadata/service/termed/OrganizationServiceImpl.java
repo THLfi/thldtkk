@@ -1,10 +1,9 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
-import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -12,7 +11,6 @@ import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.security.access.method.P;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
@@ -61,23 +59,33 @@ public class OrganizationServiceImpl implements OrganizationService {
       .findFirst();
   }
 
-  @UserCanCreateAdminAndOrgAdminCanUpdate
+  @AdminOnly
   @Override
-  public Organization save(@P("entity") Organization organization) {
-    //As we can only edit abbreviation and prefered label, check for existing organization entity
-    //and merge changes. If that fails, make new organization with just that information
-    try {
-      Organization oldOrganization = new Organization(
-        nodes.get(new NodeId(organization.getId(), "Organization")).orElseThrow(NotFoundException::new));
-
-      oldOrganization.setAbbreviation(organization.getAbbreviation());
-      oldOrganization.setPrefLabel(organization.getPrefLabel());
-
-      return new Organization(nodes.save(oldOrganization.toNode()));
-
-    } catch (NotFoundException e) {
-      return new Organization(nodes.save(organization.toNode()));
+  public Organization save(Organization organization) {
+    if (organization.getId() == null) {
+      return saveNewOrganization(organization);
     }
 
+    // As we can only edit abbreviation and preferred label, check for existing organization entity
+    // and merge changes. If that fails, make new organization with just that information
+    try {
+      return updateOldOrganization(organization);
+    } catch (NotFoundException e) {
+      return saveNewOrganization(organization);
+    }
   }
+
+  private Organization saveNewOrganization(Organization organization) {
+    return new Organization(nodes.save(organization.toNode()));
+  }
+
+  private Organization updateOldOrganization(Organization organization) {
+    Organization oldOrganization = new Organization(
+      nodes.get(new NodeId(organization.getId(), "Organization"))
+        .orElseThrow(NotFoundException::new));
+    oldOrganization.setPrefLabel(organization.getPrefLabel());
+    oldOrganization.setAbbreviation(organization.getAbbreviation());
+    return new Organization(nodes.save(oldOrganization.toNode()));
+  }
+
 }

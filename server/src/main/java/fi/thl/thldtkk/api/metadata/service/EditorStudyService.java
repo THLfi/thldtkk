@@ -15,6 +15,8 @@ public interface EditorStudyService extends Service<UUID, Study> {
 
   List<Study> find(UUID organizationId, String query, int max, String sortString);
 
+  List<Study> getOrganizationUnitStudies(UUID organizationUnitId);
+
   Optional<Dataset> getDataset(UUID studyId, UUID datasetId);
 
   Dataset saveDataset(UUID studyId, Dataset dataset);

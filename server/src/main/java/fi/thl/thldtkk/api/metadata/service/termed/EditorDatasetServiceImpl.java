@@ -67,13 +67,25 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
 
   @AdminOnly
   @Override
-  public List<Dataset> getUniverseDatasets(UUID universeId){
+  public List<Dataset> getUniverseDatasets(UUID universeId) {
     List<Dataset> list =  nodes.query(
             select("id", "type", "properties.*", "references.*", "referrers.*"),
             and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
                     keyValue("references.universe.id", universeId.toString())))
             .map(Dataset::new)
             .collect(toList());
+    return list;
+  }
+
+  @AdminOnly
+  @Override
+  public List<Dataset> getOrganizationUnitDatasets(UUID organizationUnitId) {
+    List<Dataset> list =  nodes.query(
+      select("id", "type", "properties.prefLabel"),
+      and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
+        keyValue("references.ownerOrganizationUnit.id", organizationUnitId.toString())))
+      .map(Dataset::new)
+      .collect(toList());
     return list;
   }
 

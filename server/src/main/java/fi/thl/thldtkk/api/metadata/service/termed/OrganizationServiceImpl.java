@@ -4,6 +4,7 @@ import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -11,6 +12,7 @@ import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.access.method.P;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
@@ -59,9 +61,9 @@ public class OrganizationServiceImpl implements OrganizationService {
       .findFirst();
   }
 
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
-  public Organization save(Organization organization) {
-
+  public Organization save(@P("entity") Organization organization) {
     //As we can only edit abbreviation and prefered label, check for existing organization entity
     //and merge changes. If that fails, make new organization with just that information
     try {

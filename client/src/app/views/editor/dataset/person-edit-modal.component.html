@@ -94,14 +94,6 @@
                 class="btn btn-default">
           {{ 'cancel' | translate }}
         </button>
-        <button *ngIf="(!isNewPerson)"
-                (click)="confirmRemove()"
-                [disabled]="savingInProgress"
-                class="btn btn-default"
-                style="float: right">
-          <span class="glyphicon glyphicon-trash"></span>
-          {{ 'remove' | translate }}
-        </button>
       </div>
     </p-footer>
   </p-dialog>

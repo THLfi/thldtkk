@@ -9,6 +9,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorInstanceVariableServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.EditorPersonInRoleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorSystemRoleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.EditorSystemServiceImpl;
@@ -21,6 +22,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.OrganizationUnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PersonServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicDatasetServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicInstanceVariableServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.PublicPersonInRoleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.PublicStudyServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.QuantityServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.RoleServiceImpl;
@@ -78,6 +80,11 @@ public class ServiceConfiguration {
     return new PublicStudyServiceImpl(publicNodeRepository(), userHelper);
   }
 
+  @Bean
+  public PublicPersonInRoleService publicPersonInRoleService() {
+    return new PublicPersonInRoleServiceImpl(publicNodeRepository());
+  }
+
   // editor services
 
   @Bean
@@ -119,6 +126,11 @@ public class ServiceConfiguration {
   @Bean
   public EditorSystemRoleService editorSystemRoleService() {
     return new EditorSystemRoleServiceImpl(editorNodeRepository());
+  }
+
+  @Bean
+  public EditorPersonInRoleService editorPersonInRoleService() {
+    return new EditorPersonInRoleServiceImpl(editorNodeRepository());
   }
 
   // common services

@@ -129,6 +129,7 @@ import { OrganizationUnitEditModalComponent} from "./views/editor/dataset/organi
 import { OrganizationListComponent } from './views/editor/organization/organization-list.component'
 import { OrganizationEditModalComponent} from "./views/editor/study/organization-edit-modal.component";
 import { PersonEditModalComponent } from './views/editor/dataset/person-edit-modal.component'
+import { PersonListComponent } from "./views/editor/person/person-list.component";
 import { QuantityEditModalComponent } from './views/editor/dataset/quantity-edit-modal.component'
 import { RequireLoginGuard } from './require-login-guard'
 import { SidebarIconAdministrativeInfo } from './views/editor/study/sidebar/sidebar-icon-administrative-info.component'
@@ -205,6 +206,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         OrganizationListComponent,
         OrganizationEditModalComponent,
         PersonEditModalComponent,
+        PersonListComponent,
         RequiredFieldIndicator,
         StudyEditComponent,
         StudySidebarComponent,

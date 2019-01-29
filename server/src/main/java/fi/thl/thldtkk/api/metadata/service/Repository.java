@@ -116,6 +116,12 @@ public interface Repository<K, V> {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Delete one value by id and optionally disconnect lingering references
+   *
+   * @param id of value to be deleted
+   * @param disconnect disconnect references to the value being deleted
+   */
   default void delete(K id, boolean disconnect) {
     throw new UnsupportedOperationException();
   }

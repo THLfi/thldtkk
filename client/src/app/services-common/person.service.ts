@@ -6,6 +6,7 @@ import { environment as env} from '../../environments/environment'
 
 import { GrowlMessageService } from './growl-message.service'
 import { Person } from '../model2/person'
+import { PersonInRole } from "../model2/person-in-role";
 
 @Injectable()
 export class PersonService {
@@ -51,5 +52,16 @@ export class PersonService {
         this.growlMessageService.buildAndShowMessage('info', 'operations.person.delete.result.success')
       })
   }
+
+  getRoleReferences(person: Person): Observable<PersonInRole[]> {
+    return this.http.get(env.contextPath + env.apiPath + '/persons/' + person.id + '/roles/')
+      .map(response => response.json() as PersonInRole[])
+  }
+
+  search(searchText = ""): Observable<Person[]> {
+    return this.http.get(env.contextPath + env.apiPath + '/persons?query=' + searchText + '&max=-1')
+      .map(response => response.json() as Person[])
+  }
+
 
 }

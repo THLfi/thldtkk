@@ -417,6 +417,7 @@
   "codeListSearchPlaceholder":"Hae koodistoja...",
   "studySearchPlaceholder":"Hae aineistoja...",
   "organizationAndOrganizationUnitSearchPlaceholder": "Hae organisaatioita ja organisaatioyksiöitä...",
+  "personSearchPlaceholder": "Hae henkilöitä...",
   "confirmRemoveCodeListModal": {
     "message": "Haluatko varmasti poistaa koodiston {{codeList}}? Koodistoa käyttää {{instanceVariableCount}} muuttujaa.",
     "header": "Poiston vahvistus",
@@ -432,6 +433,10 @@
   "confirmRemoveUniverseModal": {
     "header": "Poiston vahvistus",
     "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} datasettiä."
+  },
+  "confirmRemovePersonModal": {
+    "header": "Haluatko varmasti poistaa henkilön?",
+    "message": "Henkilö '{{personName}}' esiintyy aineisto- tai dataset-viittauksissa {{personInRoleCount}} kertaa."
   },
   "confirmRemoveOrganizationUnitModal": {
     "header": "Poiston vahvistus",
@@ -711,14 +716,15 @@
       "editStudy": "Muokkaa aineistoa",
       "newStudy": "Uusi aineisto",
       "variables": "Käsitemuuttujat",
-      "unitTypeList":"Havaintoyksikkötyypit",
+      "unitTypeList": "Havaintoyksikkötyypit",
       "organizationsAndOrganizationUnits":"Organisaatiot ja yksiköt",
       "frontpageLogin":"Kirjautuminen palveluun",
       "administrativeInformation": "Hallinnolliset tiedot",
       "codeLists": "Koodistot",
       "universes": "Perusjoukot",
       "studies": "Aineistot",
-      "instanceVariableSearch": "Muuttujahaku"
+      "instanceVariableSearch": "Muuttujahaku",
+      "personList": "Henkilöt"
     }
     ,
     "catalog": {
@@ -1189,5 +1195,6 @@
     }
   },
   "confirmOrganizationUnitDelete": "Haluatko varmasti poistaa organisaatioyksikön?",
-  "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?"
+  "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?",
+  "people": "Henkilöt"
 }

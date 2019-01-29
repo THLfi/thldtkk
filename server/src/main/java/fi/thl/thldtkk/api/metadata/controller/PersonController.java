@@ -4,7 +4,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.Person;
+import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.service.PersonService;
+import fi.thl.thldtkk.api.metadata.service.EditorPersonInRoleService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import java.util.List;
@@ -26,9 +28,13 @@ public class PersonController {
   @Autowired
   private PersonService personService;
 
+  @Autowired
+  private EditorPersonInRoleService personInRoleService;
+
   @GetJsonMapping
-  public List<Person> query(@RequestParam(value = "query", defaultValue = "") String query) {
-    return personService.find(query, -1);
+  public List<Person> query(@RequestParam(value = "query", defaultValue = "") String query,
+                            @RequestParam(value = "max", defaultValue = "-1") Integer max) {
+    return personService.find(query, max);
   }
 
   @PostJsonMapping(produces = APPLICATION_JSON_UTF8_VALUE)
@@ -41,4 +47,10 @@ public class PersonController {
   public void delete(@PathVariable("personId") UUID personId) {
     personService.delete(personId);
   }
+
+  @GetJsonMapping("/{personId}/roles")
+  public List<PersonInRole> getRoles(@PathVariable UUID personId) {
+    return personInRoleService.getPersonInRoles(personId);
+  }
+
 }

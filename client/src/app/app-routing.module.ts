@@ -11,6 +11,7 @@ import { CodeListListComponent } from './views/editor/code-list/code-list-list.c
 import { DatasetInstanceVariablesViewComponent } from './views/editor/dataset/dataset-instance-variables-view.component'
 import { DatasetViewComponent as EditorDataSetComponent } from './views/editor/dataset/dataset-view.component';
 import { DataSetEditComponent } from "./views/editor/dataset/data-set-edit.component";
+import { PersonListComponent } from "./views/editor/person/person-list.component";
 import { EditorStudyListComponent } from './views/editor/study/editor-study-list.component'
 import { EditorStudyDatasetsComponent } from './views/editor/study/editor-study-datasets.component'
 import { EditorStudyViewComponent } from './views/editor/study/editor-study-view.component'
@@ -120,6 +121,13 @@ const routes: Routes = [
             component: OrganizationListComponent,
             data: {
               title:'pageTitles.editor.organizationsAndOrganizationUnits'
+            }
+          },
+          {
+            path: 'persons',
+            component: PersonListComponent,
+            data: {
+              title:'pageTitles.editor.personList'
             }
           },
           {

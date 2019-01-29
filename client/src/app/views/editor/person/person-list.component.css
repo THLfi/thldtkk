@@ -1,0 +1,25 @@
+.person-list td:last-child,.person-list th:last-child {
+  width: 30%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .person-list td:last-child,.person-list th:last-child {
+    text-align: left;
+  }
+
+  .person-edit-controls {
+    margin-top: 0.5em;
+  }
+
+  .person-add-new {
+    margin-top: 1em;
+  }
+
+}
+
+@media(min-width: 768px) {
+  .person-add-new {
+    float: right;
+  }
+}

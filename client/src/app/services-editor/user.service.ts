@@ -76,6 +76,7 @@ export class CurrentUserService {
 
     return this.http.post(env.contextPath + env.apiPath + '/user-functions/login', formData)
       .map(response => response.status == 204)
+      .catch(() => Observable.of(false))
       .do(loginSuccessful => {
         if (loginSuccessful) {
           this.refreshCurrentUser()

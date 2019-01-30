@@ -117,7 +117,7 @@
                 {{ errorKey | translate }}
               </p>
               <editor-help-text #ownerOrganizationHelpText key="editor.study.ownerOrganization.helpText"></editor-help-text>
-              <button *ngIf="isUserAdmin"
+              <button *ngIf="isUserAdmin || isUserOrganizationAdmin"
                       (click)="showEditOrganizationModal(study.ownerOrganization)"
                       type="button"
                       class="btn btn-default btn-sm">
@@ -156,7 +156,7 @@
             </ng-container>
           </select>
           <editor-help-text #ownerOrganizationUnitHelpText key="editor.study.ownerOrganizationUnit.helpText"></editor-help-text>
-          <button (click)="showAddOrganizationUnitModal(study.ownerOrganizationUnit)"
+          <button (click)="showEditOrganizationUnitModal(null)"
                   type="button"
                   class="btn btn-default btn-sm"
                   [disabled]="study.ownerOrganization == null">
@@ -171,14 +171,10 @@
             <glyphicon icon="pencil"></glyphicon>
             {{ 'editOrganizationUnit' | translate }}
           </button>
-          <organization-unit-edit-modal *ngIf="newOrganizationUnit"
-                                        [organizationUnit]="newOrganizationUnit"
+          <organization-unit-edit-modal *ngIf="editOrganizationUnit"
+                                        [parentOrganization]="study.ownerOrganization"
+                                        [organizationUnit]="editOrganizationUnit"
                                         (onSave)="saveOrganizationUnit($event)"
-                                        (onCancel)="closeAddOrganizationUnitModal()">
-          </organization-unit-edit-modal>
-          <organization-unit-edit-modal *ngIf="editedOrganizationUnit"
-                                        [organizationUnit]="editedOrganizationUnit"
-                                        (onSave)="updateOrganizationUnit($event)"
                                         (onCancel)="closeEditOrganizationUnitModal()">
           </organization-unit-edit-modal>
         </div>

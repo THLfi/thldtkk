@@ -80,10 +80,8 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     personInRoleForEditedPerson: PersonInRole
     editedPerson: Person
 
-    newOrganizationUnit: OrganizationUnit;
-    editedOrganizationUnit: OrganizationUnit;
-
     editedOrganization: Organization;
+    editOrganizationUnit: OrganizationUnit;
 
     allUsageConditions: UsageCondition[];
     language: string;
@@ -519,43 +517,26 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
       this.editedOrganization = null;
     }
 
-    showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
-      this.initNewOrganizationUnit()
-    }
-
     showEditOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
-      this.editedOrganizationUnit = organizationUnit;
-    }
-
-    private initNewOrganizationUnit(): void {
-      this.newOrganizationUnit = this.organizationUnitService.initNew()
+      if (organizationUnit == null) {
+        this.editOrganizationUnit = this.organizationUnitService.initNew()
+      }
+      else {
+        this.editOrganizationUnit = organizationUnit
+      }
     }
 
     saveOrganizationUnit(event): void {
-      this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
-      this.organizationUnitService.save(this.newOrganizationUnit)
-        .subscribe(newOrganizationUnit => {
-          this.study.ownerOrganizationUnit = newOrganizationUnit
-          this.getAvailableOrganizations()
-          this.closeAddOrganizationUnitModal()
-        })
-    }
-
-    updateOrganizationUnit(event): void {
-      this.editedOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id;
-      this.organizationUnitService.save(this.editedOrganizationUnit)
-        .subscribe(updatedOrganizationUnit => {
+      this.organizationUnitService.save(this.editOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.study.ownerOrganizationUnit = organizationUnit
           this.getAvailableOrganizations()
           this.closeEditOrganizationUnitModal()
         })
     }
 
-    closeAddOrganizationUnitModal() {
-      this.newOrganizationUnit = null
-    }
-
     closeEditOrganizationUnitModal() {
-      this.editedOrganizationUnit = null
+      this.editOrganizationUnit = null
     }
 
     addLink() {

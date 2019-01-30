@@ -91,8 +91,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     allUniverseItems: SelectItem[] = []
     newUniverse: Universe
 
-    newOrganizationUnit: OrganizationUnit
-    editedOrganizationUnit: OrganizationUnit
+    editOrganizationUnit: OrganizationUnit
 
     // separate type labels and values for multiselect, id of datasetType as value for select
     datasetTypeItems: DatasetTypeItem[] = [];
@@ -394,43 +393,27 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         return languages
     }
 
-    showAddOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
-      this.initNewOrganizationUnit()
-    }
-
-    private initNewOrganizationUnit(): void {
-      this.newOrganizationUnit = this.organizationUnitService.initNew()
+    showEditOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
+      if (organizationUnit == null) {
+        this.editOrganizationUnit = this.organizationUnitService.initNew()
+      }
+      else {
+        this.editOrganizationUnit = organizationUnit;
+      }
     }
 
     saveOrganizationUnit(event): void {
-      this.newOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id
-      this.organizationUnitService.save(this.newOrganizationUnit)
-        .subscribe(newOrganizationUnit => {
-          this.dataset.ownerOrganizationUnit = newOrganizationUnit
-          this.getOrganizationUnits()
-          this.closeAddOrganizationUnitModal()
-        })
-    }
-
-    closeAddOrganizationUnitModal() {
-      this.newOrganizationUnit = null
-    }
-
-    showEditOrganizationUnitModal(organizationUnit: OrganizationUnit): void {
-      this.editedOrganizationUnit = organizationUnit;
-    }
-
-    updateOrganizationUnit(event): void {
-      this.editedOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id
-      this.organizationUnitService.save(this.editedOrganizationUnit)
-        .subscribe(updatedOrganizationUnit => {
+      this.editOrganizationUnit.parentOrganizationId = this.study.ownerOrganization.id
+      this.organizationUnitService.save(this.editOrganizationUnit)
+        .subscribe(organizationUnit => {
+          this.dataset.ownerOrganizationUnit = organizationUnit
           this.getOrganizationUnits()
           this.closeEditOrganizationUnitModal()
         })
     }
 
     closeEditOrganizationUnitModal() {
-      this.editedOrganizationUnit = null;
+      this.editOrganizationUnit = null
     }
 
     addPersonInRole() {

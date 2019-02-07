@@ -26,6 +26,7 @@ public class StudyBuilder {
   private Map<String, String> prefLabel;
   private Map<String, String> registryPolicy;
   private Map<String, String> purposeOfPersonRegistry;
+  private Map<String, String> usageOfPersonalInformation;
   private Map<String, String> personRegistrySources;
   private Map<String, String> personRegisterDataTransfers;
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea;
@@ -86,6 +87,17 @@ public class StudyBuilder {
     Map<String, String> langValues = new LinkedHashMap<>();
     langValues.put(DEFAULT_LANG, purposeOfPersonRegistryValue);
     return withPurposeOfPersonRegistry(langValues);
+  }
+
+  public StudyBuilder withUsageOfPersonalInformation(Map<String, String> usageOfPersonalInformation) {
+    this.usageOfPersonalInformation = usageOfPersonalInformation;
+    return this;
+  }
+
+  public StudyBuilder withUsageOfPersonalInformation(String usageOfPersonalInformation) {
+    Map<String, String> langValues = new LinkedHashMap<>();
+    langValues.put(DEFAULT_LANG, usageOfPersonalInformation);
+    return withUsageOfPersonalInformation(langValues);
   }
 
   public StudyBuilder withPersonRegistrySources(Map<String, String> personRegistrySources) {
@@ -158,6 +170,7 @@ public class StudyBuilder {
       prefLabel,
       registryPolicy,
       purposeOfPersonRegistry,
+      usageOfPersonalInformation,
       personRegistrySources,
       personRegisterDataTransfers,
       personRegisterDataTransfersOutsideEuOrEea,

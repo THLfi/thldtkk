@@ -41,6 +41,7 @@ export interface Study extends Node {
   personRegistry?: boolean
   registryPolicy: LangValues
   purposeOfPersonRegistry: LangValues
+  usageOfPersonalInformation: LangValues
   personRegistrySources: LangValues
   personRegisterDataTransfers: LangValues
   personRegisterDataTransfersOutsideEuOrEea: LangValues

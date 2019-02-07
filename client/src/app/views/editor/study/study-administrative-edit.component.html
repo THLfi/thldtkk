@@ -98,6 +98,17 @@
           </div>
 
           <div class="form-group">
+            <label for="usageOfPersonalInformation" translate="usageOfPersonalInformation"></label>
+            <textarea [(ngModel)]="study.usageOfPersonalInformation[language]"
+                      thlAutogrow
+                      id="usageOfPersonalInformation"
+                      name="usageOfPersonalInformation"
+                      class="form-control"
+                      rows="4">
+            </textarea>
+          </div>
+
+          <div class="form-group">
             <label for="personRegistrySources" translate="personRegistrySources"></label>
             <textarea [(ngModel)]="study.personRegistrySources[language]"
                       thlAutogrow

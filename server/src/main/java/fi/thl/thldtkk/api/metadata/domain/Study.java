@@ -52,6 +52,7 @@ public class Study implements NodeEntity {
   private Boolean personRegistry;
   private Map<String, String> registryPolicy = new LinkedHashMap<>();
   private Map<String, String> purposeOfPersonRegistry = new LinkedHashMap<>();
+  private Map<String, String> usageOfPersonalInformation = new LinkedHashMap<>();
   private Map<String, String> personRegistrySources = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
@@ -126,6 +127,7 @@ public class Study implements NodeEntity {
     this.personRegistry = PropertyMappings.toBoolean(node.getProperties("personRegistry"), null);
     this.registryPolicy = toLangValueMap(node.getProperties("registryPolicy"));
     this.purposeOfPersonRegistry = toLangValueMap(node.getProperties("purposeOfPersonRegistry"));
+    this.usageOfPersonalInformation = toLangValueMap(node.getProperties("usageOfPersonalInformation"));
     this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
     this.personRegisterDataTransfers = toLangValueMap(node.getProperties("personRegisterDataTransfers"));
     this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
@@ -201,6 +203,7 @@ public class Study implements NodeEntity {
                Map<String, String> prefLabel,
                Map<String, String> registryPolicy,
                Map<String, String> purposeOfPersonRegistry,
+               Map<String, String> usageOfPersonalInformation,
                Map<String, String> personRegistrySources,
                Map<String, String> personRegisterDataTransfers,
                Map<String, String> personRegisterDataTransfersOutsideEuOrEea,
@@ -215,6 +218,7 @@ public class Study implements NodeEntity {
     this.prefLabel = prefLabel;
     this.registryPolicy = registryPolicy;
     this.purposeOfPersonRegistry = purposeOfPersonRegistry;
+    this.usageOfPersonalInformation = usageOfPersonalInformation;
     this.personRegistrySources = personRegistrySources;
     this.personRegisterDataTransfers = personRegisterDataTransfers;
     this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
@@ -307,6 +311,14 @@ public class Study implements NodeEntity {
 
   public Map<String, String> getPurposeOfPersonRegistry() {
     return purposeOfPersonRegistry;
+  }
+
+  public Map<String, String> getUsageOfPersonalInformation() {
+    return usageOfPersonalInformation;
+  }
+
+  public void setUsageOfPersonalInformation(Map<String, String> usageOfPersonalInformation) {
+    this.usageOfPersonalInformation = usageOfPersonalInformation;
   }
 
   public void setPurposeOfPersonRegistry(Map<String, String> purposeOfPersonRegistry) {
@@ -577,6 +589,7 @@ public class Study implements NodeEntity {
     getPersonRegistry().ifPresent(v -> props.put("personRegistry", toPropertyValue(v)));
     props.putAll("registryPolicy", toPropertyValues(registryPolicy));
     props.putAll("purposeOfPersonRegistry", toPropertyValues(purposeOfPersonRegistry));
+    props.putAll("usageOfPersonalInformation", toPropertyValues(usageOfPersonalInformation));
     props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
     props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
@@ -645,6 +658,7 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegistry, study.personRegistry)
             && Objects.equals(registryPolicy, study.registryPolicy)
             && Objects.equals(purposeOfPersonRegistry, study.purposeOfPersonRegistry)
+            && Objects.equals(usageOfPersonalInformation, study.usageOfPersonalInformation)
             && Objects.equals(personRegistrySources, study.personRegistrySources)
             && Objects.equals(personRegisterDataTransfers, study.personRegisterDataTransfers)
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
@@ -702,6 +716,7 @@ public class Study implements NodeEntity {
         personRegistry,
         registryPolicy,
         purposeOfPersonRegistry,
+        usageOfPersonalInformation,
         personRegistrySources,
         personRegisterDataTransfers,
         personRegisterDataTransfersOutsideEuOrEea,
@@ -759,6 +774,7 @@ public class Study implements NodeEntity {
     study.personRegistry = this.personRegistry;
     study.registryPolicy = this.registryPolicy;
     study.purposeOfPersonRegistry = this.purposeOfPersonRegistry;
+    study.usageOfPersonalInformation = this.usageOfPersonalInformation;
     study.personRegistrySources = this.personRegistrySources;
     study.personRegisterDataTransfers = this.personRegisterDataTransfers;
     study.personRegisterDataTransfersOutsideEuOrEea = this.personRegisterDataTransfersOutsideEuOrEea;

@@ -65,7 +65,7 @@ public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterD
       }
     }
 
-    context.setVariable("registerName", study.getPrefLabel().get(lang));
+    context.setVariable("studyName", study.getPrefLabel().get(lang));
     context.setVariable("purposeOfPersonRegister", study.getPurposeOfPersonRegistry().get(lang));
     context.setVariable("registerContent", study.getRegistryPolicy().get(lang));
     context.setVariable("registerSources", study.getPersonRegistrySources().get(lang));

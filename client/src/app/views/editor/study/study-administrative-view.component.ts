@@ -26,6 +26,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
   confidentialityClassType = ConfidentialityClass
 
   printRegisterDescriptionUrl: string
+  printPrivacyNoticeUrl: string
 
   constructor(private breadcrumbService: BreadcrumbService,
               private studyService: EditorStudyService,
@@ -48,6 +49,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
         this.updatePageTitle()
         this.printRegisterDescriptionUrl = `${env.contextPath}${env.apiPath}/editor/studies/${study.id}/register-description`
+        this.printPrivacyNoticeUrl = `${env.contextPath}${env.apiPath}/editor/studies/${study.id}/privacy-notice`
       })
   }
 

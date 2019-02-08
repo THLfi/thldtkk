@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyPrivacyNoticeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyRegisterDescriptionServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
@@ -90,6 +91,12 @@ public class ServiceConfiguration {
   @Bean
   public StudyRegisterDescriptionService editorStudyRegisterDescriptionService() {
     return new EditorStudyRegisterDescriptionServiceImpl(
+      editorStudyService(), thymeleafTemplateEngine);
+  }
+
+  @Bean
+  public StudyPrivacyNoticeService editorPrivacyNoticeService() {
+    return new EditorStudyPrivacyNoticeServiceImpl(
       editorStudyService(), thymeleafTemplateEngine);
   }
 

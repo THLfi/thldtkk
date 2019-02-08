@@ -37,6 +37,14 @@
               <i class="fa fa-print" aria-hidden="true"></i>
               {{ 'printRegisterDescription' | translate }}
             </a>
+            <a *ngIf="printPrivacyNoticeUrl"
+               href="{{ printPrivacyNoticeUrl }}"
+               target="_blank"
+               class="btn btn-default"
+               style="margin-right:2em;">
+              <i class="fa fa-print" aria-hidden="true"></i>
+              {{ 'printPrivacyNotice' | translate }}
+            </a>
             <button routerLink="/editor/studies/{{ study.id }}/edit-administrative-information"
                     type="button"
                     class="btn btn-default">

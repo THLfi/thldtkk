@@ -130,6 +130,29 @@
             </textarea>
           </div>
 
+          <div class="form-group">
+            <p>
+              <strong class="field-label">{{ 'legalBasisForHandlingPersonalData.label' | translate }}</strong>
+            </p>
+            <div class="radio" *ngFor="let legalBasis of legalBasisForHandlingPersonalDataOptions">
+              <label for="legal-basis-{{legalBasis}}">
+                <input type="radio"
+                  [(ngModel)]="study.legalBasisForHandlingPersonalData"
+                  [checked]="study.legalBasisForHandlingPersonalData == legalBasis"
+                  [value]="legalBasis" 
+                  name="legal-basis" 
+                  id="legal-basis-{{legalBasis}}">
+                {{ 'legalBasisForHandlingPersonalData.' + legalBasis | translate }}
+              </label>
+
+              <input *ngIf="legalBasis === legalBasisForHandlingPersonalDataEnum.OTHER && study.legalBasisForHandlingPersonalData === legalBasisForHandlingPersonalDataEnum.OTHER"
+                [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
+                id="otherLegalBasisForHandlingPersonalData"
+                name="otherLegalBasisForHandlingPersonalData"
+                class="form-control">
+            </div>
+          </div>
+
         </ng-container>
 
         <div class="row">

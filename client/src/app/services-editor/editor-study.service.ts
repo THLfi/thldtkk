@@ -40,6 +40,8 @@ export class EditorStudyService {
       groundsForConfidentiality: null,
       principlesForPhysicalSecurity: [],
       principlesForDigitalSecurity: [],
+      legalBasisForHandlingPersonalData: null,
+      otherLegalBasisForHandlingPersonalData: null,
       systemInRoles: [],
       existenceForms: [],
       personInRoles: [],
@@ -65,7 +67,8 @@ export class EditorStudyService {
       'personRegistrySources',
       'personRegisterDataTransfers',
       'personRegisterDataTransfersOutsideEuOrEea',
-      'groundsForConfidentiality'
+      'groundsForConfidentiality',
+      'otherLegalBasisForHandlingPersonalData'
     ])
 
     if (!study.population) {

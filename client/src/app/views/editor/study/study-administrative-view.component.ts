@@ -9,6 +9,7 @@ import { environment as env} from '../../../../environments/environment'
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { ConfidentialityClass } from '../../../model2/confidentiality-class'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
+import { LegalBasisForHandlingPersonalData } from '../../../model2/legal-basis-for-handling-personal-data'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 
@@ -24,6 +25,8 @@ export class StudyAdministrativeViewComponent implements OnInit {
   sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
   confidentialityClassType = ConfidentialityClass
+  legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData
+
 
   printRegisterDescriptionUrl: string
 

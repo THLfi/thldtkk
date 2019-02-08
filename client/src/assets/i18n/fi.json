@@ -158,6 +158,18 @@
     "MULTI_FACTOR_AUTHENTICATION": "Monivaihetunnistus",
     "ENCRYPTION_OF_INFORMATION": "Aineiston erillinen salaus"
   },
+  "legalBasisForHandlingPersonalData": {
+    "label": "Henkilötietojen käsittelyn oikeusperuste",
+    "CONSENT": "Suostumus",
+    "LEGAL_OBLIGATION": "Lakisääteisen velvoitteen noudattaminen",
+    "DUTY": "Yleistä etua koskevan tehtävän suorittaminen",
+    "RESEARCH": "Yleistä etua koskeva tieteellinen tutkimus",
+    "ARCHIVE": "Yleistä etua koskeva arkistointi",
+    "STATISTICS": "Yleistä etua koskeva tilastointi",
+    "GOVERNMENTAL": "Yleistä etua koskevan julkisen vallan käyttäminen",
+	"OTHER": "Muu, mikä",
+    "empty": "Ei määritetty"
+  },
   "selectPrinciples": "Valitse periaatteet",
   "amountPrinciplesSelected": "valittua periaatetta",
   "dataProcessingDuration": "Tietojenkäsittelyn kesto",

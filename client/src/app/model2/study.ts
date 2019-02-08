@@ -4,6 +4,7 @@ import {Dataset} from './dataset'
 import {DatasetType} from './dataset-type'
 import {LangValues} from './lang-values';
 import {LifecyclePhase} from './lifecycle-phase';
+import {LegalBasisForHandlingPersonalData} from './legal-basis-for-handling-personal-data';
 import {Link} from './link';
 import {Node} from './node'
 import {Organization} from './organization';
@@ -48,6 +49,8 @@ export interface Study extends Node {
   securityClassification?: SecurityClassification,
   principlesForPhysicalSecurity: PrincipleForPhysicalSecurity[]
   principlesForDigitalSecurity: PrincipleForDigitalSecurity[]
+  legalBasisForHandlingPersonalData?: LegalBasisForHandlingPersonalData
+  otherLegalBasisForHandlingPersonalData?: LangValues
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
   retentionPolicy?: RetentionPolicy

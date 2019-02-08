@@ -60,6 +60,8 @@ public class Study implements NodeEntity {
   private SecurityClassification securityClassification;
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
+  private LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData;
+  private Map<String, String> otherLegalBasisForHandlingPersonalData = new LinkedHashMap<>();;
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
   private RetentionPolicy retentionPolicy;
@@ -136,6 +138,10 @@ public class Study implements NodeEntity {
       PrincipleForPhysicalSecurity.class, ArrayList::new);
     this.principlesForDigitalSecurity = valuesToEnumCollection(node.getProperties("principlesForDigitalSecurity"),
       PrincipleForDigitalSecurity.class, ArrayList::new);
+    toOptionalString(node.getProperties("legalBasisForHandlingPersonalData"))
+      .ifPresent(lb -> this.legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData.valueOf(lb));
+    this.otherLegalBasisForHandlingPersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingPersonalData"));
+
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
@@ -370,6 +376,23 @@ public class Study implements NodeEntity {
     this.principlesForDigitalSecurity = principlesForDigitalSecurity;
   }
 
+  public Optional<LegalBasisForHandlingPersonalData> getLegalBasisForHandlingPersonalData() {
+	  return Optional.ofNullable(legalBasisForHandlingPersonalData);
+  }
+
+  public void setLegalBasisForHandlingPersonalData(LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData) {
+	  this.legalBasisForHandlingPersonalData = legalBasisForHandlingPersonalData;
+  }
+
+  public Map<String, String> getOtherLegalBasisForHandlingPersonalData() {
+	  return otherLegalBasisForHandlingPersonalData;
+  }
+
+  public void setOtherLegalBasisForHandlingPersonalData(Map<String, String> otherLegalBasisForHandlingPersonalData) {
+	  this.otherLegalBasisForHandlingPersonalData = otherLegalBasisForHandlingPersonalData;
+  }
+
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -562,6 +585,8 @@ public class Study implements NodeEntity {
     getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
     props.putAll("principlesForPhysicalSecurity", PropertyMappings.enumsToPropertyValues(principlesForPhysicalSecurity));
     props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
+    getLegalBasisForHandlingPersonalData().ifPresent(lb -> props.put("legalBasisForHandlingPersonalData", toPropertyValue(lb.toString())));
+    props.putAll("otherLegalBasisForHandlingPersonalData", toPropertyValues(otherLegalBasisForHandlingPersonalData));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     getRetentionPolicy().ifPresent(rp -> props.put("retentionPolicy", toPropertyValue(rp.toString())));
@@ -628,6 +653,8 @@ public class Study implements NodeEntity {
             && Objects.equals(securityClassification, study.securityClassification)
             && Objects.equals(principlesForPhysicalSecurity, study.principlesForPhysicalSecurity)
             && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
+            && Objects.equals(legalBasisForHandlingPersonalData, study.legalBasisForHandlingPersonalData)
+            && Objects.equals(otherLegalBasisForHandlingPersonalData, study.otherLegalBasisForHandlingPersonalData)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(retentionPolicy, study.retentionPolicy)
@@ -683,6 +710,8 @@ public class Study implements NodeEntity {
         securityClassification,
         principlesForPhysicalSecurity,
         principlesForDigitalSecurity,
+        legalBasisForHandlingPersonalData,
+        otherLegalBasisForHandlingPersonalData,
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPolicy,
@@ -738,6 +767,8 @@ public class Study implements NodeEntity {
     study.securityClassification = this.securityClassification;
     study.principlesForPhysicalSecurity = this.principlesForPhysicalSecurity;
     study.principlesForDigitalSecurity = this.principlesForDigitalSecurity;
+    study.legalBasisForHandlingPersonalData = this.legalBasisForHandlingPersonalData;
+    study.otherLegalBasisForHandlingPersonalData = this.otherLegalBasisForHandlingPersonalData;
     study.dataProcessingStartDate = this.dataProcessingStartDate;
     study.dataProcessingEndDate = this.dataProcessingEndDate;
     study.retentionPolicy = this.retentionPolicy;

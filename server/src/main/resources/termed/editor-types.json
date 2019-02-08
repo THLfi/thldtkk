@@ -117,6 +117,16 @@
       },
       {
         "id": "otherLegalBasisForHandlingPersonalData"
+      },
+      {
+        "id": "containsSensitivePersonalData",
+        "regex": "^(true|false|^$)$"
+      },
+      {
+        "id": "legalBasisForHandlingSensitivePersonalData"
+      },
+      {
+        "id": "otherLegalBasisForHandlingSensitivePersonalData"
       }
     ],
     "referenceAttributes": [

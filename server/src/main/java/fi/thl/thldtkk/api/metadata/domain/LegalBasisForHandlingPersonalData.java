@@ -5,7 +5,7 @@ public enum LegalBasisForHandlingPersonalData {
 	LEGAL_OBLIGATION,
 	DUTY,
 	RESEARCH,
-	ARHCIVE,
+	ARCHIVE,
 	STATISTICS,
 	GOVERNMENTAL,
 	OTHER

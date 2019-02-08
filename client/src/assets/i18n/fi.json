@@ -171,6 +171,17 @@
 	"OTHER": "Muu, mikä",
     "empty": "Ei määritetty"
   },
+  "containsSensitivePersonalData": "Aineistossa käsitellään arkaluontoista tietoa",
+  "legalBasisForHandlingSensitivePersonalData": {
+    "label": "Arkaluonteisten tietojen käsittelyn erityisehto",
+    "CONSENT": "Tutkittavan nimenomainen suostumus",
+    "RESEARCH_OR_STATISTICS": "Tieteellinen tai historiallinen tutkimustarkoitus tai tilastollinen tarkoitus",
+    "MARKED_AS_PUBLIC": "Tutkittava on saattanut käsiteltävät arkaluonteiset tiedot julkisiksi",
+    "PUBLIC_INTEREST": "Käsittely on tarpeen tärkeän yleisen edun vuoksi",
+    "PUBLIC_HEALTH": "Käsittely on tarpeen kansanterveyteen liittyvän yleisen edun vuoksi",
+ 	"OTHER": "Muu, mikä",
+    "empty": "Ei määritetty"
+  },
   "selectPrinciples": "Valitse periaatteet",
   "amountPrinciplesSelected": "valittua periaatetta",
   "dataProcessingDuration": "Tietojenkäsittelyn kesto",

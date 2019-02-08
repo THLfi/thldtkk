@@ -24,6 +24,7 @@ import {System} from '../../../model2/system';
 import {SystemRole} from '../../../model2/system-role';
 import {SystemInRole} from '../../../model2/system-in-role';
 import {LegalBasisForHandlingPersonalData} from '../../../model2/legal-basis-for-handling-personal-data';
+import {LegalBasisForHandlingSensitivePersonalData} from '../../../model2/legal-basis-for-handling-sensitive-personal-data';
 
 
 @Component({
@@ -67,6 +68,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     legalBasisForHandlingPersonalDataEnum = LegalBasisForHandlingPersonalData
     legalBasisForHandlingPersonalDataOptions = (<any>Object).values(LegalBasisForHandlingPersonalData)
+    legalBasisForHandlingSensitivePersonalDataEnum = LegalBasisForHandlingSensitivePersonalData
+    legalBasisForHandlingSensitivePersonalDataOptions = (<any>Object).values(LegalBasisForHandlingSensitivePersonalData)
 
     constructor(
         private studyService: EditorStudyService,
@@ -283,6 +286,11 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
         this.validate()
 
+        if (!this.study.containsSensitivePersonalData) {
+          this.study.legalBasisForHandlingSensitivePersonalData = null
+          this.study.otherLegalBasisForHandlingSensitivePersonalData = null
+        }
+
         if (!this.study.personRegistry) {
           this.study.registryPolicy = null
           this.study.purposeOfPersonRegistry = null
@@ -292,6 +300,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.personRegisterDataTransfersOutsideEuOrEea = null
           this.study.legalBasisForHandlingPersonalData = null
           this.study.otherLegalBasisForHandlingPersonalData = null
+          this.study.containsSensitivePersonalData = null;
+          this.study.legalBasisForHandlingSensitivePersonalData = null
+          this.study.otherLegalBasisForHandlingSensitivePersonalData = null
           this.studyService.initializeProperties(this.study)
         }
 

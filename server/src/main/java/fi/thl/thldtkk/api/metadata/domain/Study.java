@@ -62,7 +62,10 @@ public class Study implements NodeEntity {
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData;
-  private Map<String, String> otherLegalBasisForHandlingPersonalData = new LinkedHashMap<>();;
+  private Map<String, String> otherLegalBasisForHandlingPersonalData = new LinkedHashMap<>();
+  private Boolean containsSensitivePersonalData;
+  private LegalBasisForHandlingSensitivePersonalData legalBasisForHandlingSensitivePersonalData;
+  private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();;
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
   private RetentionPolicy retentionPolicy;
@@ -143,6 +146,10 @@ public class Study implements NodeEntity {
     toOptionalString(node.getProperties("legalBasisForHandlingPersonalData"))
       .ifPresent(lb -> this.legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData.valueOf(lb));
     this.otherLegalBasisForHandlingPersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingPersonalData"));
+    this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
+    toOptionalString(node.getProperties("legalBasisForHandlingSensitivePersonalData"))
+      .ifPresent(lb -> this.legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData.valueOf(lb));
+    this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
 
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
@@ -404,6 +411,25 @@ public class Study implements NodeEntity {
 	  this.otherLegalBasisForHandlingPersonalData = otherLegalBasisForHandlingPersonalData;
   }
 
+  public Optional<Boolean> getContainsSensitivePersonalData() {
+    return Optional.ofNullable(containsSensitivePersonalData);
+  }
+
+  public Optional<LegalBasisForHandlingSensitivePersonalData> getLegalBasisForHandlingSensitivePersonalData() {
+	  return Optional.ofNullable(legalBasisForHandlingSensitivePersonalData);
+  }
+
+  public void setLegalBasisForHandlingSensitivePersonalData(LegalBasisForHandlingSensitivePersonalData legalBasisForHandlingSensitivePersonalData) {
+	  this.legalBasisForHandlingSensitivePersonalData = legalBasisForHandlingSensitivePersonalData;
+  }
+
+  public Map<String, String> getOtherLegalBasisForHandlingSensitivePersonalData() {
+	  return otherLegalBasisForHandlingSensitivePersonalData;
+  }
+
+  public void setOtherLegalBasisForHandlingSensitivePersonalData(Map<String, String> otherLegalBasisForHandlingSensitivePersonalData) {
+	  this.otherLegalBasisForHandlingSensitivePersonalData = otherLegalBasisForHandlingSensitivePersonalData;
+  }
 
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
@@ -600,6 +626,9 @@ public class Study implements NodeEntity {
     props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
     getLegalBasisForHandlingPersonalData().ifPresent(lb -> props.put("legalBasisForHandlingPersonalData", toPropertyValue(lb.toString())));
     props.putAll("otherLegalBasisForHandlingPersonalData", toPropertyValues(otherLegalBasisForHandlingPersonalData));
+    getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
+    getLegalBasisForHandlingSensitivePersonalData().ifPresent(lb -> props.put("legalBasisForHandlingSensitivePersonalData", toPropertyValue(lb.toString())));
+    props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     getRetentionPolicy().ifPresent(rp -> props.put("retentionPolicy", toPropertyValue(rp.toString())));
@@ -669,6 +698,9 @@ public class Study implements NodeEntity {
             && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
             && Objects.equals(legalBasisForHandlingPersonalData, study.legalBasisForHandlingPersonalData)
             && Objects.equals(otherLegalBasisForHandlingPersonalData, study.otherLegalBasisForHandlingPersonalData)
+            && Objects.equals(containsSensitivePersonalData, study.containsSensitivePersonalData)
+            && Objects.equals(legalBasisForHandlingSensitivePersonalData, study.legalBasisForHandlingSensitivePersonalData)
+            && Objects.equals(otherLegalBasisForHandlingSensitivePersonalData, study.otherLegalBasisForHandlingSensitivePersonalData)
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(retentionPolicy, study.retentionPolicy)
@@ -727,6 +759,9 @@ public class Study implements NodeEntity {
         principlesForDigitalSecurity,
         legalBasisForHandlingPersonalData,
         otherLegalBasisForHandlingPersonalData,
+        containsSensitivePersonalData,
+        legalBasisForHandlingSensitivePersonalData,
+        otherLegalBasisForHandlingSensitivePersonalData,
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPolicy,
@@ -785,6 +820,9 @@ public class Study implements NodeEntity {
     study.principlesForDigitalSecurity = this.principlesForDigitalSecurity;
     study.legalBasisForHandlingPersonalData = this.legalBasisForHandlingPersonalData;
     study.otherLegalBasisForHandlingPersonalData = this.otherLegalBasisForHandlingPersonalData;
+    study.containsSensitivePersonalData = this.containsSensitivePersonalData;
+    study.legalBasisForHandlingSensitivePersonalData = this.legalBasisForHandlingSensitivePersonalData;
+    study.otherLegalBasisForHandlingSensitivePersonalData = this.otherLegalBasisForHandlingSensitivePersonalData;
     study.dataProcessingStartDate = this.dataProcessingStartDate;
     study.dataProcessingEndDate = this.dataProcessingEndDate;
     study.retentionPolicy = this.retentionPolicy;

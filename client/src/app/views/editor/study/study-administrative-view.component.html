@@ -95,6 +95,21 @@
           </div>
         </div>
 
+        <div class="row" *ngIf="study.containsSensitivePersonalData">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong></p>
+            <p>
+              <ng-container *ngIf="study.legalBasisForHandlingSensitivePersonalData; else noLegalBasisForHandlingSensitivePersonalData;">
+              {{ 'legalBasisForHandlingSensitivePersonalData.' + study.legalBasisForHandlingSensitivePersonalData | translate }}
+              <span *ngIf="study.legalBasisForHandlingSensitivePersonalData === legalBasisForHandlingSensitivePersonalData.OTHER">: {{ study.otherLegalBasisForHandlingSensitivePersonalData | lang }}</span>
+              </ng-container>
+              <ng-template #noLegalBasisForHandlingSensitivePersonalData>
+                {{ 'legalBasisForHandlingSensitivePersonalData.empty' | translate }}
+              </ng-template>
+            </p>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'usageOfPersonalInformation' | translate }}</strong></p>

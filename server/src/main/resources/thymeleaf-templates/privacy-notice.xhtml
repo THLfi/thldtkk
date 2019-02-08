@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
   <head>
-    <title th:text="#{title}"></title>
+    <title th:text="#{privacyNotice.screenTitle}"></title>
     <style type="text/css" th:inline="text">
 
       @page {
@@ -17,7 +17,7 @@
           font-size: 11pt;
           font-weight: bold;
           text-transform: uppercase;
-          content: "[[#{title}]]";
+          content: "[[#{privacyNotice.title}]]";
         }
 
         @top-right {
@@ -126,12 +126,12 @@
 
     <div class="header">
 
-      <h1 th:text="#{title}">Seloste käsittelytoimista</h1>
+      <h1 th:text="#{privacyNotice.title}">Tietosuojailmoitus</h1>
 
-      <div th:text="#{lawReference}" class="law-reference">EU-tietosuoja-asetus EU 2016/679</div>
+      <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
 
       <div class="date">
-        <div th:text="#{date}" class="label">Laatimispäivä</div>
+        <div th:text="#{privacyNotice.date}" class="label">Laatimispäivä</div>
         <div th:text="${#dates.format(lastModifiedDate, 'dd.MM.yyyy')}">05.01.2018</div>
       </div>
 
@@ -139,112 +139,112 @@
 
     <table>
       <tr>
-        <th rowspan="3"><h2>1<br/><span th:text="#{registrar}">Rekisterinpitäjä</span></h2></th>
+        <th rowspan="3"><h2>1<br/><span th:text="#{privacyNotice.registrar}">Rekisterinpitäjä</span></h2></th>
         <td>
-          <div th:text="#{registrar.name}" class="label">Nimi</div>
+          <div th:text="#{privacyNotice.registrar.name}" class="label">Nimi</div>
           <div th:text="${registrarName}"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{registrar.address}" class="label">Osoite</div>
+          <div th:text="#{privacyNotice.registrar.address}" class="label">Osoite</div>
           <div th:text="${registrarAddress}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{registrar.otherInfo}" class="label">Muut yhteystiedot</div>
+          <div th:text="#{privacyNotice.registrar.otherInfo}" class="label">Muut yhteystiedot</div>
           <div th:text="${registrarOtherInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th rowspan="3"><h2>2<br/><span th:text="#{contactPerson}">Yhteyshenkilö rekisteriä koskevissa asioissa</span></h2></th>
+        <th rowspan="3"><h2>2<br/><span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö rekisteriä koskevissa asioissa</span></h2></th>
         <td>
-          <div th:text="#{contactPerson.name}" class="label">Nimi</div>
+          <div th:text="#{privacyNotice.contactPerson.name}" class="label">Nimi</div>
           <div th:text="${contactPersonName}"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{contactPerson.address}" class="label">Osoite</div>
+          <div th:text="#{privacyNotice.contactPerson.address}" class="label">Osoite</div>
           <div class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{contactPerson.otherInfo}" class="label">Muut yhteystiedot</div>
+          <div th:text="#{privacyNotice.contactPerson.otherInfo}" class="label">Muut yhteystiedot</div>
           <div th:text="${contactPersonOtherInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th rowspan="2"><h2>3<br/><span th:text="#{dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
+        <th rowspan="2"><h2>3<br/><span th:text="#{privacyNotice.dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
         <td>
-          <div th:text="#{dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
+          <div th:text="#{privacyNotice.dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
           <div th:text="${dataProtectionPersonName}"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
+          <div th:text="#{privacyNotice.dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
           <div th:text="${dataProtectionPersonContactInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>4<br/><span th:text="#{registerName}">Rekisterin nimi</span></h2></th>
+        <th><h2>4<br/><span th:text="#{privacyNotice.registerName}">Rekisterin nimi</span></h2></th>
         <td>
           <div th:text="${registerName}"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>5<br/><span th:text="#{purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
+        <th><h2>5<br/><span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
         <td>
           <div th:text="${purposeOfPersonRegister}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>5<br/><span th:text="#{usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2></th>
+        <th><h2>5<br/><span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2></th>
         <td>
           <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>6<br/><span th:text="#{registerContent}">Rekisterin tietosisältö</span></h2></th>
+        <th><h2>6<br/><span th:text="#{privacyNotice.registerContent}">Rekisterin tietosisältö</span></h2></th>
         <td>
           <div th:text="${registerContent}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>7<br/><span th:text="#{registerSources}">Säännönmukaiset tietolähteet</span></h2></th>
+        <th><h2>7<br/><span th:text="#{privacyNotice.registerSources}">Säännönmukaiset tietolähteet</span></h2></th>
         <td>
           <div th:text="${registerSources}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>8<br/><span th:text="#{dataTransfers}">Tietojen säännönmukaiset luovutukset</span></h2></th>
+        <th><h2>8<br/><span th:text="#{privacyNotice.dataTransfers}">Tietojen säännönmukaiset luovutukset</span></h2></th>
         <td>
           <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th><h2>9<br/><span th:utext="#{dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
+        <th><h2>9<br/><span th:utext="#{privacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
         <td>
           <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
-        <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
+        <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
         <td class="no-bottom-border">
-          <div th:text="#{principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>
+          <div th:text="#{privacyNotice.principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>
           <div>
             <ul th:unless="${principlesForPhysicalSecurity.isEmpty()}">
-              <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'principlesForPhysicalSecurity.' + ${principle} }"></li>
+              <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'privacyNotice.principlesForPhysicalSecurity.' + ${principle} }"></li>
             </ul>
           </div>
         </td>
       </tr>
       <tr>
         <td class="no-bottom-border">
-          <div th:text="#{principlesForDigitalSecurity}" class="label">B ATK:lla käsiteltävät tiedot</div>
+          <div th:text="#{privacyNotice.principlesForDigitalSecurity}" class="label">B ATK:lla käsiteltävät tiedot</div>
           <div>
             <ul th:unless="${principlesForDigitalSecurity.isEmpty()}">
               <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>

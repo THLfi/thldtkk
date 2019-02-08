@@ -31,7 +31,7 @@ public class ThymeleafConfiguration {
   @Bean
   public ResourceBundleMessageSource thymeleafTranslationsMessageSource() {
     ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-    source.setBasenames("i18n/register-description");
+    source.setBasenames("i18n/register-description", "i18n/privacy-notice");
     source.setDefaultEncoding("UTF-8");
     source.setFallbackToSystemLocale(false);
     return source;

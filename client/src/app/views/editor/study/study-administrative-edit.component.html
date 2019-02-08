@@ -216,6 +216,61 @@
 
         </ng-container>
 
+        <div class="form-group">
+          <p>
+            <strong class="field-label">{{ 'isProfilingAndAutomationHappening' | translate }}</strong>
+            <editor-help-link [helpTextComponent]="profilingAndAutomationHelpText"></editor-help-link>
+          </p>
+          <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
+
+          <div class="radio">
+            <label for="profiling-and-automation-true">
+              <input [(ngModel)]="study.profilingAndAutomation"
+                     [value]="true"
+                     type="radio"
+                     id="profiling-and-automation-true"
+                     name="profiling-and-automation">
+              {{ 'true' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="profiling-and-automation-false">
+              <input [(ngModel)]="study.profilingAndAutomation"
+                     [value]="false"
+                     type="radio"
+                     id="profiling-and-automation-false"
+                     name="profiling-and-automation">
+              {{ 'false' | translate }}
+            </label>
+          <div class="radio">
+            <label for="profiling-and-automation-empty"
+                   class="radio-empty">
+              <input [(ngModel)]="study.profilingAndAutomation"
+                     [value]="undefined"
+                     type="radio"
+                     id="profiling-and-automation-empty"
+                     name="profiling-and-automation">
+              {{ 'undefined' | translate }}
+            </label>
+          </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="study.profilingAndAutomation">
+
+          <div class="form-group">
+            <label for="profiling-and-automation-description" translate="profilingAndAutomation"></label>
+            <textarea [(ngModel)]="study.profilingAndAutomationDescription[language]"
+                      thlAutogrow
+                      id="profiling-and-automation-description"
+                      name="profiling-and-automation-description"
+                      class="form-control"
+                      rows="4">
+            </textarea>
+          </div>
+
+        </ng-container>
+
         <div class="row">
           <div class="col-xs-12">
             <h2>{{ 'dataSecurity' | translate }}</h2>

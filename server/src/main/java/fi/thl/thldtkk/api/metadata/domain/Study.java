@@ -56,16 +56,22 @@ public class Study implements NodeEntity {
   private Map<String, String> personRegistrySources = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
-  private ConfidentialityClass confidentialityClass;
-  private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
-  private SecurityClassification securityClassification;
-  private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
-  private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData;
   private Map<String, String> otherLegalBasisForHandlingPersonalData = new LinkedHashMap<>();
   private Boolean containsSensitivePersonalData;
   private LegalBasisForHandlingSensitivePersonalData legalBasisForHandlingSensitivePersonalData;
   private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();;
+  private Boolean profilingAndAutomation;
+  private Map<String, String> profilingAndAutomationDescription;
+
+  // Data security
+  private ConfidentialityClass confidentialityClass;
+  private Map<String, String> groundsForConfidentiality = new LinkedHashMap<>();
+  private SecurityClassification securityClassification;
+  private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
+  private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
+
+  // Archiving
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
   private RetentionPolicy retentionPolicy;
@@ -134,6 +140,17 @@ public class Study implements NodeEntity {
     this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
     this.personRegisterDataTransfers = toLangValueMap(node.getProperties("personRegisterDataTransfers"));
     this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
+    toOptionalString(node.getProperties("legalBasisForHandlingPersonalData"))
+      .ifPresent(lb -> this.legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData.valueOf(lb));
+    this.otherLegalBasisForHandlingPersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingPersonalData"));
+    this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
+    toOptionalString(node.getProperties("legalBasisForHandlingSensitivePersonalData"))
+      .ifPresent(lb -> this.legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData.valueOf(lb));
+    this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
+    this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
+    this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
+
+    // Data security
     toOptionalString(node.getProperties("confidentialityClass"))
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
     this.groundsForConfidentiality = toLangValueMap(node.getProperties("groundsForConfidentiality"));
@@ -143,15 +160,10 @@ public class Study implements NodeEntity {
       PrincipleForPhysicalSecurity.class, ArrayList::new);
     this.principlesForDigitalSecurity = valuesToEnumCollection(node.getProperties("principlesForDigitalSecurity"),
       PrincipleForDigitalSecurity.class, ArrayList::new);
-    toOptionalString(node.getProperties("legalBasisForHandlingPersonalData"))
-      .ifPresent(lb -> this.legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData.valueOf(lb));
-    this.otherLegalBasisForHandlingPersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingPersonalData"));
-    this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
-    toOptionalString(node.getProperties("legalBasisForHandlingSensitivePersonalData"))
-      .ifPresent(lb -> this.legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData.valueOf(lb));
-    this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
 
     this.comment = PropertyMappings.toString(node.getProperties("comment"));
+
+    // Archival
     this.dataProcessingStartDate = toLocalDate(node.getProperties("dataProcessingStartDate"), null);
     this.dataProcessingEndDate = toLocalDate(node.getProperties("dataProcessingEndDate"), null);
     toOptionalString(node.getProperties("retentionPolicy"))
@@ -354,6 +366,14 @@ public class Study implements NodeEntity {
 
   public void setPersonRegisterDataTransfersOutsideEuOrEta(Map<String, String> personRegisterDataTransfersOutsideEuOrEea) {
     this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
+  }
+
+  public Optional<Boolean> getProfilingAndAutomation() {
+    return Optional.ofNullable(profilingAndAutomation);
+  }
+
+  public Map<String, String> getProfilingAndAutomationDescription() {
+    return profilingAndAutomationDescription;
   }
 
   public Optional<ConfidentialityClass> getConfidentialityClass() {
@@ -619,16 +639,22 @@ public class Study implements NodeEntity {
     props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
     props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
-    getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
-    props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
-    getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
-    props.putAll("principlesForPhysicalSecurity", PropertyMappings.enumsToPropertyValues(principlesForPhysicalSecurity));
-    props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
     getLegalBasisForHandlingPersonalData().ifPresent(lb -> props.put("legalBasisForHandlingPersonalData", toPropertyValue(lb.toString())));
     props.putAll("otherLegalBasisForHandlingPersonalData", toPropertyValues(otherLegalBasisForHandlingPersonalData));
     getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
     getLegalBasisForHandlingSensitivePersonalData().ifPresent(lb -> props.put("legalBasisForHandlingSensitivePersonalData", toPropertyValue(lb.toString())));
     props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
+    getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
+    props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
+
+    // Data security
+    getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
+    props.putAll("groundsForConfidentiality", toPropertyValues(groundsForConfidentiality));
+    getSecurityClassification().ifPresent(sc -> props.put("securityClassification", toPropertyValue(sc.toString())));
+    props.putAll("principlesForPhysicalSecurity", PropertyMappings.enumsToPropertyValues(principlesForPhysicalSecurity));
+    props.putAll("principlesForDigitalSecurity", PropertyMappings.enumsToPropertyValues(principlesForDigitalSecurity));
+
+    // Archiving
     getDataProcessingStartDate().ifPresent(v -> props.put("dataProcessingStartDate", toPropertyValue(v)));
     getDataProcessingEndDate().ifPresent(v -> props.put("dataProcessingEndDate", toPropertyValue(v)));
     getRetentionPolicy().ifPresent(rp -> props.put("retentionPolicy", toPropertyValue(rp.toString())));
@@ -691,16 +717,20 @@ public class Study implements NodeEntity {
             && Objects.equals(personRegistrySources, study.personRegistrySources)
             && Objects.equals(personRegisterDataTransfers, study.personRegisterDataTransfers)
             && Objects.equals(personRegisterDataTransfersOutsideEuOrEea, study.personRegisterDataTransfersOutsideEuOrEea)
-            && Objects.equals(confidentialityClass, study.confidentialityClass)
-            && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
-            && Objects.equals(securityClassification, study.securityClassification)
-            && Objects.equals(principlesForPhysicalSecurity, study.principlesForPhysicalSecurity)
-            && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
             && Objects.equals(legalBasisForHandlingPersonalData, study.legalBasisForHandlingPersonalData)
             && Objects.equals(otherLegalBasisForHandlingPersonalData, study.otherLegalBasisForHandlingPersonalData)
             && Objects.equals(containsSensitivePersonalData, study.containsSensitivePersonalData)
             && Objects.equals(legalBasisForHandlingSensitivePersonalData, study.legalBasisForHandlingSensitivePersonalData)
             && Objects.equals(otherLegalBasisForHandlingSensitivePersonalData, study.otherLegalBasisForHandlingSensitivePersonalData)
+            && Objects.equals(profilingAndAutomation, study.profilingAndAutomation)
+            && Objects.equals(profilingAndAutomationDescription, study.profilingAndAutomationDescription)
+            // Data security
+            && Objects.equals(confidentialityClass, study.confidentialityClass)
+            && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
+            && Objects.equals(securityClassification, study.securityClassification)
+            && Objects.equals(principlesForPhysicalSecurity, study.principlesForPhysicalSecurity)
+            && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
+            // Archiving
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
             && Objects.equals(retentionPolicy, study.retentionPolicy)
@@ -813,16 +843,22 @@ public class Study implements NodeEntity {
     study.personRegistrySources = this.personRegistrySources;
     study.personRegisterDataTransfers = this.personRegisterDataTransfers;
     study.personRegisterDataTransfersOutsideEuOrEea = this.personRegisterDataTransfersOutsideEuOrEea;
-    study.confidentialityClass = this.confidentialityClass;
-    study.groundsForConfidentiality = this.groundsForConfidentiality;
-    study.securityClassification = this.securityClassification;
-    study.principlesForPhysicalSecurity = this.principlesForPhysicalSecurity;
-    study.principlesForDigitalSecurity = this.principlesForDigitalSecurity;
     study.legalBasisForHandlingPersonalData = this.legalBasisForHandlingPersonalData;
     study.otherLegalBasisForHandlingPersonalData = this.otherLegalBasisForHandlingPersonalData;
     study.containsSensitivePersonalData = this.containsSensitivePersonalData;
     study.legalBasisForHandlingSensitivePersonalData = this.legalBasisForHandlingSensitivePersonalData;
     study.otherLegalBasisForHandlingSensitivePersonalData = this.otherLegalBasisForHandlingSensitivePersonalData;
+    study.profilingAndAutomation = this.profilingAndAutomation;
+    study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;
+
+    // Data security
+    study.confidentialityClass = this.confidentialityClass;
+    study.groundsForConfidentiality = this.groundsForConfidentiality;
+    study.securityClassification = this.securityClassification;
+    study.principlesForPhysicalSecurity = this.principlesForPhysicalSecurity;
+    study.principlesForDigitalSecurity = this.principlesForDigitalSecurity;
+
+    // Archiving
     study.dataProcessingStartDate = this.dataProcessingStartDate;
     study.dataProcessingEndDate = this.dataProcessingEndDate;
     study.retentionPolicy = this.retentionPolicy;

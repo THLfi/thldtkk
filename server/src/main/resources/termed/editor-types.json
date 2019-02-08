@@ -66,6 +66,13 @@
         "id": "personRegisterDataTransfersOutsideEuOrEea"
       },
       {
+        "id": "profilingAndAutomation",
+        "regex": "^(true|false|^$)$"
+      },
+      {
+        "id": "profilingAndAutomationDescription"
+      },
+      {
         "id": "confidentialityClass"
       },
       {

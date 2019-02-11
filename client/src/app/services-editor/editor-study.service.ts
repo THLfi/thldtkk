@@ -38,6 +38,8 @@ export class EditorStudyService {
       personRegistrySources: null,
       personRegisterDataTransfers: null,
       personRegisterDataTransfersOutsideEuOrEea: null,
+      profilingAndAutomation: null,
+      profilingAndAutomationDescription: null,
       groundsForConfidentiality: null,
       principlesForPhysicalSecurity: [],
       principlesForDigitalSecurity: [],
@@ -72,9 +74,10 @@ export class EditorStudyService {
       'personRegistrySources',
       'personRegisterDataTransfers',
       'personRegisterDataTransfersOutsideEuOrEea',
-      'groundsForConfidentiality',
       'otherLegalBasisForHandlingPersonalData',
-      'otherLegalBasisForHandlingSensitivePersonalData'
+      'otherLegalBasisForHandlingSensitivePersonalData',
+      'profilingAndAutomationDescription',
+      'groundsForConfidentiality'
     ])
 
     if (!study.population) {

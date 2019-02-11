@@ -46,16 +46,22 @@ export interface Study extends Node {
   personRegistrySources: LangValues
   personRegisterDataTransfers: LangValues
   personRegisterDataTransfersOutsideEuOrEea: LangValues
-  confidentialityClass?: ConfidentialityClass
-  groundsForConfidentiality: LangValues
-  securityClassification?: SecurityClassification,
-  principlesForPhysicalSecurity: PrincipleForPhysicalSecurity[]
-  principlesForDigitalSecurity: PrincipleForDigitalSecurity[]
   legalBasisForHandlingPersonalData?: LegalBasisForHandlingPersonalData
   otherLegalBasisForHandlingPersonalData?: LangValues
   containsSensitivePersonalData?: boolean,
   legalBasisForHandlingSensitivePersonalData?: LegalBasisForHandlingSensitivePersonalData
   otherLegalBasisForHandlingSensitivePersonalData?: LangValues
+  profilingAndAutomation?: boolean
+  profilingAndAutomationDescription?: LangValues
+
+  // Data security
+  confidentialityClass?: ConfidentialityClass
+  groundsForConfidentiality: LangValues
+  securityClassification?: SecurityClassification,
+  principlesForPhysicalSecurity: PrincipleForPhysicalSecurity[]
+  principlesForDigitalSecurity: PrincipleForDigitalSecurity[]
+
+  // Archiving
   dataProcessingStartDate?: string
   dataProcessingEndDate?: string
   retentionPolicy?: RetentionPolicy

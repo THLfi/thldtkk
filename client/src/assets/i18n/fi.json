@@ -73,6 +73,7 @@
   "unpublished": "Julkaisematon",
   "false": "Ei",
   "true": "Kyllä",
+  "undefined": "Ei määritetty",
   "confirmDatasetDelete": "Haluatko varmasti poistaa datasetin?",
   "inputDateFormat": "vvvv-kk-pp",
   "addInstanceVariable": "Lisää muuttuja",
@@ -127,6 +128,9 @@
   "personRegistrySources": "Rekisterin tietolähteet",
   "personRegisterDataTransfers": "Rekisterin tietojen luovutukset",
   "personRegisterDataTransfersOutsideEuOrEea": "Tietojen siirto EU:n tai ETA:n ulkopuolelle",
+  "isProfilingAndAutomationHappening": "Tehdäänkö profilointia ja päätöksenteko automaattisesti",
+  "profilingAndAutomation": "Profilointi ja automaattinen päätöksenteko",
+  "profilingAndAutomationNotOccurringByOrg": "{{organization}} ei tee automaattista päätöksentekoa perustuen mm. henkilöiden profilointiin",
   "confidentialityClass": {
     "label": "Tietosisällön julkisuusluokka",
     "PUBLIC": "Julkinen",
@@ -933,6 +937,9 @@
     "studyAdministrative": {
       "personRegistry": {
         "helpText": "<p>Onko aineisto henkilörekisteri vai ei -ohjeet tähän</p>"
+      },
+      "profilingAndAutomation": {
+        "helpText": "<p>Tehdäänkö profilointia ja päätöksenteko automaattisesti -ohjeet tähän</p>"
       },
       "confidentialityClass": {
         "helpText": "<p>Tietosisällön julkisuusluokka -ohjeet tähän</p>"

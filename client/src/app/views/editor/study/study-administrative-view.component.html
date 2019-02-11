@@ -140,6 +140,20 @@
 
       </ng-container>
 
+      <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'profilingAndAutomation' | translate }}</strong></p>
+          <p *ngIf="study.profilingAndAutomation">
+            {{ study.profilingAndAutomationDescription | lang }}
+          </p>
+          <p *ngIf="!study.profilingAndAutomation">
+            {{ 'profilingAndAutomationNotOccurringByOrg' |
+               translate:{ organization: (study.ownerOrganization && study.ownerOrganization.prefLabel | lang)
+                                         || 'organization' | translate } }}
+          </p>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-xs-12">
           <h2>{{ 'dataSecurity' | translate }}</h2>

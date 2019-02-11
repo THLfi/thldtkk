@@ -67,6 +67,12 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
     context.setVariable("registerName", study.getPrefLabel().get(lang));
     context.setVariable("purposeOfPersonRegister", study.getPurposeOfPersonRegistry().get(lang));
     context.setVariable("usageOfPersonalInformation", study.getUsageOfPersonalInformation().get(lang));
+    context.setVariable("legalBasisValue", study.getLegalBasisForHandlingPersonalData().get());
+    context.setVariable("otherLegalBasisValue", study.getOtherLegalBasisForHandlingPersonalData().get(lang));
+    if (study.getLegalBasisForHandlingSensitivePersonalData().isPresent()) {
+      context.setVariable("legalBasisSensitiveValue", study.getLegalBasisForHandlingSensitivePersonalData().get());
+      context.setVariable("otherLegalBasisSensitiveValue", study.getOtherLegalBasisForHandlingSensitivePersonalData().get(lang));
+    }
     context.setVariable("registerContent", study.getRegistryPolicy().get(lang));
     context.setVariable("registerSources", study.getPersonRegistrySources().get(lang));
     context.setVariable("dataTransfers", study.getPersonRegisterDataTransfers().get(lang));

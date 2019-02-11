@@ -202,6 +202,25 @@
         </td>
       </tr>
       <tr>
+        <th><h2>4<br/><span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2></th>
+        <td>
+          <div>
+            <p>
+              <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.ingress}"></span>
+              <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.body}"></span>
+              <span th:text="#{'privacyNotice.legalBasisForHandlingPersonalData.' + ${legalBasisValue}}"></span>
+              <span th:if="${legalBasisValue.name()} == 'OTHER' and ${otherLegalBasisValue} != ''" th:text="${': ' + otherLegalBasisValue}">: Käyttäjän antama peruste</span>.
+
+              <span th:if="${legalBasisSensitiveValue} != null">
+                <span th:text="#{privacyNotice.legalBasisForHandlingSensitivePersonalData.body}"></span>
+                <span th:text="#{'privacyNotice.legalBasisForHandlingSensitivePersonalData.' + ${legalBasisSensitiveValue}}"></span>
+                <span th:if="${legalBasisSensitiveValue.name()} == 'OTHER' and ${otherLegalBasisSensitiveValue} != ''" th:text="${': ' + otherLegalBasisSensitiveValue}">: Käyttäjän antama peruste</span>.
+              </span>
+            </p>
+          </div>
+        </td>
+      </tr>
+      <tr>
         <th><h2>5<br/><span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2></th>
         <td>
           <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>

@@ -64,7 +64,7 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
       }
     }
 
-    context.setVariable("registerName", study.getPrefLabel().get(lang));
+    context.setVariable("studyName", study.getPrefLabel().get(lang));
     context.setVariable("purposeOfPersonRegister", study.getPurposeOfPersonRegistry().get(lang));
     context.setVariable("usageOfPersonalInformation", study.getUsageOfPersonalInformation().get(lang));
     context.setVariable("legalBasisValue", study.getLegalBasisForHandlingPersonalData().get());

@@ -132,6 +132,9 @@
 
           <div class="form-group">
             <label for="personRegisterDataTransfersOutsideEuOrEea" translate="personRegisterDataTransfersOutsideEuOrEea"></label>
+            <editor-help-link [helpTextComponent]="personRegisterDataTransfersOutsideEuOrEeaHelpText"></editor-help-link>
+            <editor-help-text #personRegisterDataTransfersOutsideEuOrEeaHelpText key="personRegisterDataTransfersOutsideEuOrEeaHelpText"></editor-help-text>
+
             <textarea [(ngModel)]="study.personRegisterDataTransfersOutsideEuOrEea[language]"
                       thlAutogrow
                       id="personRegisterDataTransfersOutsideEuOrEea"

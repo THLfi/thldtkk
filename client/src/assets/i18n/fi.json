@@ -128,6 +128,7 @@
   "personRegistrySources": "Rekisterin tietolähteet",
   "personRegisterDataTransfers": "Tietojen siirto tai luovuttaminen",
   "personRegisterDataTransfersOutsideEuOrEea": "Tietojen siirto EU:n tai ETA:n ulkopuolelle",
+  "personRegisterDataTransfersOutsideEuOrEeaHelpText": "<p>Henkilötietoja ei siirretä EU:n tai ETA:n ulkopuolelle.</p><p>TAI (kirjoita käytetyt vaihtoehdot)</p><p>Henkilötiedot voidaan siirtää EU:n tai ETA:n ulkopuolelle. Henkilötietojen siirrossa noudatetaan seuraavia asianmukaisia suojantoimenpiteitä:</p><ol><li>Nimenomainen suostumus</li><li>EU:n komission hyväksymät mallisopimuslausekkeet</li><li>Siirto tapahtuu EU:n komission hyväksymään riittävän tietosuojatason tarjoavaan valtioon: Andorra, Argentina, Canada (commercial organisations), Faeroe Islands, Guernsey, Israel, Isle of Man, Jersey, New Zealand, Switzerland ja Uruguay</li><li>Privacy Shield-menettely</li></ol>",
   "isProfilingAndAutomationHappening": "Tehdäänkö profilointia ja päätöksenteko automaattisesti",
   "profilingAndAutomation": "Profilointi ja automaattinen päätöksenteko",
   "profilingAndAutomationNotOccurringByOrg": "{{organization}} ei tee automaattista päätöksentekoa perustuen mm. henkilöiden profilointiin",

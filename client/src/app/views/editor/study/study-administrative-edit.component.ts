@@ -289,6 +289,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         if (!this.study.containsSensitivePersonalData) {
           this.study.legalBasisForHandlingSensitivePersonalData = null
           this.study.otherLegalBasisForHandlingSensitivePersonalData = null
+          this.studyService.initializeProperties(this.study)
         }
 
         if (!this.study.personRegistry) {

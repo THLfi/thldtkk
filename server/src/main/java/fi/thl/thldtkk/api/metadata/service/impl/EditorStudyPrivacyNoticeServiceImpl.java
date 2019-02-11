@@ -15,12 +15,16 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeService {
 
   private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
+  private static final String REGISTRY_SUPERVISOR = "Rekisterivastaava";
 
   private final EditorStudyService editorStudyService;
   private final TemplateEngine templateEngine;
@@ -52,15 +56,26 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
       context.setVariable("contactPersonName", getPersonName(contactPerson));
       context.setVariable("contactPersonOtherInfo", getPersonPhoneAndEmail(contactPerson));
 
-      for (PersonInRole personInRole : study.getPersonInRoles()) {
-        if (personInRole.getRole().isPresent() && personInRole.getPerson().isPresent()
-          && personInRole.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON)) {
+      List<PersonInRole> personsWithAssociations = study.getPersonInRoles().stream()
+        .filter(personInRole -> personInRole.getRole().isPresent())
+        .filter(personInRole -> personInRole.getPerson().isPresent())
+        .collect(Collectors.toList());
 
-          Person dataProtectionPerson = personInRole.getPerson().get();
-          context.setVariable("dataProtectionPersonName", getPersonName(dataProtectionPerson));
-          context.setVariable("dataProtectionPersonContactInfo", getPersonPhoneAndEmail(dataProtectionPerson));
-          break;
-        }
+      Optional<PersonInRole> dataProtectionPerson = personsWithAssociations.stream()
+        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON))
+        .findFirst();
+
+      Optional<PersonInRole> registrySupervisor = personsWithAssociations.stream()
+        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(REGISTRY_SUPERVISOR))
+        .findFirst();
+
+      Optional<PersonInRole> responsiblePerson =
+        dataProtectionPerson.isPresent() ? dataProtectionPerson : registrySupervisor;
+
+      if (responsiblePerson.isPresent()) {
+        Person unwrappedPerson = responsiblePerson.get().getPerson().get();
+        context.setVariable("dataProtectionPersonName", getPersonName(unwrappedPerson));
+        context.setVariable("dataProtectionPersonContactInfo", getPersonPhoneAndEmail(unwrappedPerson));
       }
     }
 

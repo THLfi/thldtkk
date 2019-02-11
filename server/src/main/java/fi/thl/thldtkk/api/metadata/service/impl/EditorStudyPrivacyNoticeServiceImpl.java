@@ -92,6 +92,15 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
     context.setVariable("registerSources", study.getPersonRegistrySources().get(lang));
     context.setVariable("dataTransfers", study.getPersonRegisterDataTransfers().get(lang));
     context.setVariable("dataTransfersOutsideEuOrEea", study.getPersonRegisterDataTransfersOutsideEuOrEta().get(lang));
+
+    Optional<Boolean> profilingAndAutomation = study.getProfilingAndAutomation();
+    String profilingAndAutomationDescription = "";
+    if (profilingAndAutomation.orElse(false)) {
+        profilingAndAutomationDescription = study.getProfilingAndAutomationDescription().get(lang);
+    }
+    context.setVariable("profilingAndAutomation", profilingAndAutomation);
+    context.setVariable("profilingAndAutomationDescription", profilingAndAutomationDescription);
+
     context.setVariable("principlesForPhysicalSecurity", study.getPrinciplesForPhysicalSecurity());
     context.setVariable("principlesForDigitalSecurity", study.getPrinciplesForDigitalSecurity());
 

@@ -250,6 +250,14 @@
         </td>
       </tr>
       <tr>
+        <th><h2>9<br/><span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2></th>
+        <td th:switch="${profilingAndAutomation.orElse(null)}">
+          <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
+          <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${registrarName})}" class="preserve-line-breaks"></div>
+          <div th:case="*" class="preserve-line-breaks"></div>
+        </td>
+      </tr>
+      <tr>
         <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
         <td class="no-bottom-border">
           <div th:text="#{privacyNotice.principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>

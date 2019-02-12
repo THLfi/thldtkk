@@ -25,6 +25,7 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
 
   private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
   private static final String REGISTRY_SUPERVISOR = "Rekisterivastaava";
+  private static final String CONTACT_PERSON = "Yhteyshenkilö";
 
   private final EditorStudyService editorStudyService;
   private final TemplateEngine templateEngine;
@@ -49,31 +50,37 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
     }
 
     if (!study.getPersonInRoles().isEmpty()) {
-      PersonInRole pir = study.getPersonInRoles().iterator().next();
-      Person contactPerson = pir.getPerson().get();
-      context.setVariable("contactPersonName", getPersonName(contactPerson));
-      context.setVariable("contactPersonOtherInfo", getPersonPhoneAndEmail(contactPerson));
 
       List<PersonInRole> personsWithAssociations = study.getPersonInRoles().stream()
         .filter(personInRole -> personInRole.getRole().isPresent())
         .filter(personInRole -> personInRole.getPerson().isPresent())
         .collect(Collectors.toList());
 
-      Optional<PersonInRole> dataProtectionPerson = personsWithAssociations.stream()
-        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON))
+      Optional<PersonInRole> contactPerson = personsWithAssociations.stream()
+        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(CONTACT_PERSON))
         .findFirst();
 
       Optional<PersonInRole> registrySupervisor = personsWithAssociations.stream()
         .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(REGISTRY_SUPERVISOR))
         .findFirst();
 
-      Optional<PersonInRole> responsiblePerson =
-        dataProtectionPerson.isPresent() ? dataProtectionPerson : registrySupervisor;
+      Optional<PersonInRole> shownContactPerson =
+        contactPerson.isPresent() ? contactPerson : registrySupervisor;
 
-      if (responsiblePerson.isPresent()) {
-        Person unwrappedPerson = responsiblePerson.get().getPerson().get();
+      if (shownContactPerson.isPresent()) {
+        Person unwrappedPerson = shownContactPerson.get().getPerson().get();
+        context.setVariable("contactPerson", unwrappedPerson);
+        context.setVariable("contactPersonName", getPersonName(unwrappedPerson));
+      }
+
+      Optional<PersonInRole> dataProtectionPerson = personsWithAssociations.stream()
+        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON))
+        .findFirst();
+
+      if (dataProtectionPerson.isPresent()) {
+        Person unwrappedPerson = dataProtectionPerson.get().getPerson().get();
+        context.setVariable("dataProtectionPerson", unwrappedPerson);
         context.setVariable("dataProtectionPersonName", getPersonName(unwrappedPerson));
-        context.setVariable("dataProtectionPersonContactInfo", getPersonPhoneAndEmail(unwrappedPerson));
       }
     }
 
@@ -231,17 +238,4 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
     return name.toString();
   }
 
-  private String getPersonPhoneAndEmail(Person person) {
-    StrBuilder info = new StrBuilder();
-    person.getPhone().ifPresent(phone -> info.append(phone));
-    person.getEmail().ifPresent(email -> {
-      info.appendSeparator(", ");
-      info.append(email);
-    });
-    return info.toString();
-  }
-
 }
-
-
-

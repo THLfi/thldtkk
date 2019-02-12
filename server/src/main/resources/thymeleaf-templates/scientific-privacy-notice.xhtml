@@ -213,7 +213,13 @@
         </td>
       </tr>
       <tr>
-        <th rowspan="2"><h2>3<br/><span th:text="#{privacyNotice.dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
+        <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
+        <td>
+          <div th:text="${studyName}"></div>
+        </td>
+      </tr>
+      <tr>
+        <th rowspan="2"><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
         <td>
           <div th:text="#{privacyNotice.dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
           <div th:text="${dataProtectionPersonName}"></div>
@@ -223,12 +229,6 @@
         <td>
           <div th:text="#{privacyNotice.dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
           <div th:text="${dataProtectionPersonContactInfo}" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
-        <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
-        <td>
-          <div th:text="${studyName}"></div>
         </td>
       </tr>
       <tr>

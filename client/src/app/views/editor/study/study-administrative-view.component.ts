@@ -49,7 +49,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
 
   getStudy() {
     const studyId = this.route.snapshot.params['studyId']
-    this.studyService.getStudy(studyId)
+    this.studyService.getStudy(studyId, false)
       .subscribe(study => {
         this.study = study
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)

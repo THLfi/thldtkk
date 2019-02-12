@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public interface EditorStudyService extends Service<UUID, Study> {
 
+  Optional<Study> get(UUID studyId, boolean includeDatasets);
+
   List<Study> find(UUID organizationId, String query, int max, String sortString);
 
   List<Study> getOrganizationUnitStudies(UUID organizationUnitId);

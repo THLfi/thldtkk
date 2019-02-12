@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-@Api(description = "Editor operations API for studys")
+@Api(description = "Editor operations API for studies")
 @RestController
 @RequestMapping(API.PATH_WITH_VERSION + "/editor/study-functions")
 public class EditorStudyFunctionsController {

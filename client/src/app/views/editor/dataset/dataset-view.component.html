@@ -153,13 +153,13 @@
             <p>{{ dataset.unitType.prefLabel | lang }}</p>
           </ng-container>
           <ng-template #unitTypeFromStudy>
-            <ng-container *ngIf="study.unitType">
+            <p *ngIf="study.unitType">
               {{ study.unitType.prefLabel | lang }}
               <span style="margin-left:2em;opacity:.6;">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                 {{ 'inheritedFromStudy' | translate }}
               </span>
-            </ng-container>
+            </p>
           </ng-template>
         </div>
       </div>

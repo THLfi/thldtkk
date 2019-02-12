@@ -47,7 +47,10 @@ public class EditorSystemServiceImpl implements EditorSystemService {
   public List<System> find(String query, int max) {
     List<Criteria> criteria = new ArrayList<>();
     criteria.add(keyValue("type.id", System.TERMED_NODE_CLASS));
-    criteria.add(getCurrentUserOrganizationCriteria());
+
+    if (!userHelper.isCurrentUserAdmin()) {
+      criteria.add(getCurrentUserOrganizationCriteria());
+    }
 
     if(hasText(query)) {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
@@ -156,6 +159,10 @@ public class EditorSystemServiceImpl implements EditorSystemService {
   }
   
   private void checkUserIsAllowedToAccessSystem(System system) {
+    if (userHelper.isCurrentUserAdmin()) {
+      return;
+    }
+
     if (!system.getOwnerOrganization().isPresent()) {
       throwSystemAccessException(system, "which has no organization");
     }

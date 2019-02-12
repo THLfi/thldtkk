@@ -156,6 +156,20 @@
 
       </ng-container>
 
+
+      <div class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'isScientificStudy' | translate }}</strong></p>
+          <p>{{ (study.isScientificStudy === undefined ? 'undefined' : '' + study.isScientificStudy) | translate }}</p>
+        </div>
+      </div>
+
+      <ng-container *ngIf="study.isScientificStudy">
+
+        <h1>TODO</h1>
+
+      </ng-container>
+
       <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
         <div class="col-xs-12">
           <p><strong class="field-label">{{ 'profilingAndAutomation' | translate }}</strong></p>

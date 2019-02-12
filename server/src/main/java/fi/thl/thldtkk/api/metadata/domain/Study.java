@@ -61,6 +61,7 @@ public class Study implements NodeEntity {
   private Boolean containsSensitivePersonalData;
   private List<LegalBasisForHandlingSensitivePersonalData> legalBasisForHandlingSensitivePersonalData = new ArrayList<>();
   private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();
+  private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
 
@@ -145,6 +146,7 @@ public class Study implements NodeEntity {
     this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
     this.legalBasisForHandlingSensitivePersonalData = valuesToEnumCollection(node.getProperties("legalBasisForHandlingSensitivePersonalData"), LegalBasisForHandlingSensitivePersonalData.class, ArrayList::new);
     this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
+    this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
 
@@ -364,6 +366,10 @@ public class Study implements NodeEntity {
 
   public void setPersonRegisterDataTransfersOutsideEuOrEta(Map<String, String> personRegisterDataTransfersOutsideEuOrEea) {
     this.personRegisterDataTransfersOutsideEuOrEea = personRegisterDataTransfersOutsideEuOrEea;
+  }
+
+  public Optional<Boolean> getIsScientificStudy() {
+    return Optional.ofNullable(isScientificStudy);
   }
 
   public Optional<Boolean> getProfilingAndAutomation() {
@@ -642,6 +648,7 @@ public class Study implements NodeEntity {
     getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
     props.putAll("legalBasisForHandlingSensitivePersonalData", PropertyMappings.enumsToPropertyValues(legalBasisForHandlingSensitivePersonalData));
     props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
+    getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
 
@@ -846,6 +853,7 @@ public class Study implements NodeEntity {
     study.containsSensitivePersonalData = this.containsSensitivePersonalData;
     study.legalBasisForHandlingSensitivePersonalData = this.legalBasisForHandlingSensitivePersonalData;
     study.otherLegalBasisForHandlingSensitivePersonalData = this.otherLegalBasisForHandlingSensitivePersonalData;
+    study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;
 

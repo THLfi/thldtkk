@@ -48,6 +48,7 @@ export class EditorStudyService {
       containsSensitivePersonalData: null,
       legalBasisForHandlingSensitivePersonalData: [],
       otherLegalBasisForHandlingSensitivePersonalData: null,
+      isScientificStudy: null,
       systemInRoles: [],
       existenceForms: [],
       personInRoles: [],

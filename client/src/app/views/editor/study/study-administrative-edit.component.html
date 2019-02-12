@@ -211,6 +211,54 @@
 
         </ng-container>
 
+
+        <div class="form-group">
+          <p>
+            <strong class="field-label">{{ 'isScientificStudy' | translate }}</strong>
+            <editor-help-link [helpTextComponent]="scientificStudyHelpText"></editor-help-link>
+          </p>
+          <editor-help-text #scientificStudyHelpText key="editor.studyAdministrative.scientificStudy.helpText"></editor-help-text>
+
+          <div class="radio">
+            <label for="scientific-study-true">
+              <input [(ngModel)]="study.isScientificStudy"
+                     [value]="true"
+                     type="radio"
+                     id="scientific-study-true"
+                     name="scientific-study">
+              {{ 'true' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="scientific-study-false">
+              <input [(ngModel)]="study.isScientificStudy"
+                     [value]="false"
+                     type="radio"
+                     id="scientific-study-false"
+                     name="scientific-study">
+              {{ 'false' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="scientific-study-empty"
+                   class="radio-empty">
+              <input [(ngModel)]="study.isScientificStudy"
+                     [value]="undefined"
+                     type="radio"
+                     id="scientific-study-empty"
+                     name="scientific-study">
+              {{ 'undefined' | translate }}
+            </label>
+          </div>
+        </div>
+
+        <ng-container *ngIf="study.isScientificStudy">
+
+          <h1>TODO</h1>
+
+        </ng-container>
+
+
         <div class="form-group">
           <p>
             <strong class="field-label">{{ 'isProfilingAndAutomationHappening' | translate }}</strong>

@@ -119,6 +119,7 @@
   "dataSecurity": "Tietoturva",
   "archiving": "Arkistointi",
   "isStudyPersonRegistry": "Onko aineisto henkilörekisteri vai ei",
+  "isScientificStudy": "Onko aineisto tieteellisen tutkimuksen aineisto",
   "phoneNumberForRegistryPolicy":"Rekisterinpitäjän puhelinnumero",
   "addressForRegistryPolicy":"Rekisterinpitäjän osoite",
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",

@@ -66,6 +66,10 @@
         "id": "personRegisterDataTransfersOutsideEuOrEea"
       },
       {
+        "id": "isScientificStudy",
+        "regex": "^(true|false|^$)$"
+      },
+      {
         "id": "profilingAndAutomation",
         "regex": "^(true|false|^$)$"
       },

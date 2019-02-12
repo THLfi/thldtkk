@@ -181,6 +181,20 @@
         </td>
       </tr>
       <tr>
+        <th>
+          <h2>
+            2<br/>
+            <span th:text="#{scientificPrivacyNotice.studyDescriptionAndPurposeOfPersonRegister}">
+              Kuvaus tutkimushankkeesta ja henkilötietojen käsittelyn tarkoitus
+            </span>
+          </h2>
+        </th>
+        <td>
+          <div th:text="${description}" class="preserve-line-breaks"></div>
+          <div th:text="${purposeOfPersonRegister}" class="preserve-line-breaks"></div>
+        </td>
+      </tr>
+      <tr>
         <th rowspan="3"><h2>2<br/><span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2></th>
         <td>
           <div th:text="#{privacyNotice.contactPerson.name}" class="label">Nimi</div>

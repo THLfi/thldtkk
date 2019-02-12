@@ -41,8 +41,6 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
     Study study = editorStudyService.get(studyId)
       .orElseThrow(NotFoundException.entityNotFound(Study.class, studyId));
 
-    context.setVariable("lastModifiedDate", study.getLastModifiedDate().orElse(new Date()));
-
     if (study.getOwnerOrganization().isPresent()) {
       Organization organization = study.getOwnerOrganization().get();
       context.setVariable("registrarName", getRegistrarName(organization, lang));
@@ -128,8 +126,6 @@ public class EditorStudyPrivacyNoticeServiceImpl implements StudyPrivacyNoticeSe
 
     Study study = editorStudyService.get(studyId)
       .orElseThrow(NotFoundException.entityNotFound(Study.class, studyId));
-
-    context.setVariable("lastModifiedDate", study.getLastModifiedDate().orElse(new Date()));
 
     if (study.getOwnerOrganization().isPresent()) {
       Organization organization = study.getOwnerOrganization().get();

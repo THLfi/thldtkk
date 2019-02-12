@@ -14,6 +14,8 @@ import java.util.UUID;
 
 public class UnitType {
 
+    public static final String TERMED_NODE_CLASS = "UnitType";
+
     private UUID id;
     @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();

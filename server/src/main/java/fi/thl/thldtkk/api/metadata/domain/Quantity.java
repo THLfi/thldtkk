@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
 
 public class Quantity {
 
-  private static final String TERMED_NODE_CLASS = "Quantity";
+  public static final String TERMED_NODE_CLASS = "Quantity";
 
   private UUID id;
   @ContainsAtLeastOneNonBlankValue

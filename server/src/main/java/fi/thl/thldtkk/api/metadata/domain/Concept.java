@@ -16,6 +16,9 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangV
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 
 public class Concept {
+
+  public static final String TERMED_NODE_CLASS = "Concept";
+
   private UUID id;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private ConceptScheme conceptScheme;

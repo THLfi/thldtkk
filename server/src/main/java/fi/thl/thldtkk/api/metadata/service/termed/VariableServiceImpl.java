@@ -1,24 +1,24 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
-import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
-import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
-import static java.util.stream.Collectors.toList;
-
 import fi.thl.thldtkk.api.metadata.domain.Variable;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.VariableService;
+import org.springframework.security.access.method.P;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.security.access.method.P;
+
+import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
+import static java.util.stream.Collectors.toList;
 
 public class VariableServiceImpl implements VariableService {
 
@@ -30,7 +30,7 @@ public class VariableServiceImpl implements VariableService {
 
   @Override
   public List<Variable> findAll() {
-    return nodes.query(keyValue("type.id", "Variable"))
+    return nodes.query(keyValue("type.id", Variable.TERMED_NODE_CLASS))
         .map(Variable::new)
         .collect(toList());
   }
@@ -38,9 +38,9 @@ public class VariableServiceImpl implements VariableService {
   @Override
   public List<Variable> find(String query, int max) {
     Criteria criteria = query.isEmpty()
-        ? keyValue("type.id", "Variable")
+        ? keyValue("type.id", Variable.TERMED_NODE_CLASS)
         : and(
-            keyValue("type.id", "Variable"),
+            keyValue("type.id", Variable.TERMED_NODE_CLASS),
             keyWithAllValues("properties.prefLabel", tokenizeAndMap(query, t -> t + "*")));
 
     return nodes.query(criteria, max)
@@ -50,7 +50,7 @@ public class VariableServiceImpl implements VariableService {
 
   @Override
   public Optional<Variable> get(UUID id) {
-    return nodes.get(new NodeId(id, "Variable")).map(Variable::new);
+    return nodes.get(new NodeId(id, Variable.TERMED_NODE_CLASS)).map(Variable::new);
   }
 
   @UserCanCreateAdminCanUpdate
@@ -62,7 +62,7 @@ public class VariableServiceImpl implements VariableService {
   @AdminOnly
   @Override
   public void delete(UUID id) {
-    nodes.delete(new NodeId(id, "Variable"));
+    nodes.delete(new NodeId(id, Variable.TERMED_NODE_CLASS));
   }
 
   @Override
@@ -74,11 +74,12 @@ public class VariableServiceImpl implements VariableService {
     prefLabel = "\"" + prefLabel + "\"";
 
     return nodes.query(
-        KeyValueCriteria.keyValue(
-            "properties.prefLabel",
-            prefLabel),
-        1)
-        .map(Variable::new)
-        .findFirst();
+      and(
+        keyValue("type.id", Variable.TERMED_NODE_CLASS),
+        keyValue("properties.prefLabel", prefLabel)
+      ),
+      1)
+      .map(Variable::new)
+      .findFirst();
   }
 }

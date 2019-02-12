@@ -17,6 +17,8 @@ import java.util.UUID;
 
 public class Variable {
 
+    public static final String TERMED_NODE_CLASS = "Variable";
+
     private UUID id;
     @ContainsAtLeastOneNonBlankValue
     private Map<String, String> prefLabel = new LinkedHashMap<>();

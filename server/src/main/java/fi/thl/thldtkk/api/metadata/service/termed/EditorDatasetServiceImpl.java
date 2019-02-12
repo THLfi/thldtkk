@@ -1,18 +1,19 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
-import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.springframework.util.StringUtils;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -108,12 +109,13 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
     prefLabel = "\"" + prefLabel + "\"";
 
     return nodes.query(
-            KeyValueCriteria.keyValue(
-                    "properties.prefLabel",
-                    prefLabel),
-            1)
-            .map(Dataset::new)
-            .findFirst();
+      and(
+        keyValue("type.id", Dataset.TERMED_NODE_CLASS),
+        keyValue("properties.prefLabel", prefLabel)
+      ),
+      1)
+      .map(Dataset::new)
+      .findFirst();
   }
 
 }

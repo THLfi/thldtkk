@@ -85,8 +85,12 @@
             <p><strong class="field-label">{{ 'legalBasisForHandlingPersonalData.label' | translate }}</strong></p>
             <p>
               <ng-container *ngIf="study.legalBasisForHandlingPersonalData; else noLegalBasisForHandlingPersonalData;">
-              {{ 'legalBasisForHandlingPersonalData.' + study.legalBasisForHandlingPersonalData | translate }}
-              <span *ngIf="study.legalBasisForHandlingPersonalData === legalBasisForHandlingPersonalData.OTHER">: {{ study.otherLegalBasisForHandlingPersonalData | lang }}</span>
+                <ul *ngIf="study.legalBasisForHandlingPersonalData.length">
+                  <li *ngFor="let legalBasis of study.legalBasisForHandlingPersonalData">
+                    {{ 'legalBasisForHandlingPersonalData.' + legalBasis | translate }}
+                    <span *ngIf="legalBasis === legalBasisForHandlingPersonalData.OTHER">: {{ study.otherLegalBasisForHandlingPersonalData | lang }}</span>
+                  </li>
+                </ul>
               </ng-container>
               <ng-template #noLegalBasisForHandlingPersonalData>
                 {{ 'legalBasisForHandlingPersonalData.empty' | translate }}
@@ -100,8 +104,12 @@
             <p><strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong></p>
             <p>
               <ng-container *ngIf="study.legalBasisForHandlingSensitivePersonalData; else noLegalBasisForHandlingSensitivePersonalData;">
-              {{ 'legalBasisForHandlingSensitivePersonalData.' + study.legalBasisForHandlingSensitivePersonalData | translate }}
-              <span *ngIf="study.legalBasisForHandlingSensitivePersonalData === legalBasisForHandlingSensitivePersonalData.OTHER">: {{ study.otherLegalBasisForHandlingSensitivePersonalData | lang }}</span>
+                <ul *ngIf="study.legalBasisForHandlingSensitivePersonalData.length">
+                  <li *ngFor="let legalBasis of study.legalBasisForHandlingSensitivePersonalData">
+                    {{ 'legalBasisForHandlingSensitivePersonalData.' + legalBasis | translate }}
+                    <span *ngIf="legalBasis === legalBasisForHandlingSensitivePersonalData.OTHER">: {{ study.otherLegalBasisForHandlingSensitivePersonalData | lang }}</span>
+                  </li>
+                </ul>
               </ng-container>
               <ng-template #noLegalBasisForHandlingSensitivePersonalData>
                 {{ 'legalBasisForHandlingSensitivePersonalData.empty' | translate }}

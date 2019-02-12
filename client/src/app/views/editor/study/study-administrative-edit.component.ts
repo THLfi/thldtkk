@@ -66,10 +66,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     defaultSystemLinkDescription: string
 
-    legalBasisForHandlingPersonalDataEnum = LegalBasisForHandlingPersonalData
-    legalBasisForHandlingPersonalDataOptions = (<any>Object).values(LegalBasisForHandlingPersonalData)
-    legalBasisForHandlingSensitivePersonalDataEnum = LegalBasisForHandlingSensitivePersonalData
-    legalBasisForHandlingSensitivePersonalDataOptions = (<any>Object).values(LegalBasisForHandlingSensitivePersonalData)
+    legalBasisForHandlingPersonalDataOptions: SelectItem[] = []
+    legalBasisForHandlingSensitivePersonalDataOptions: SelectItem[] = []
 
     constructor(
         private studyService: EditorStudyService,
@@ -92,6 +90,22 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     ngOnInit() {
       this.getStudy()
 
+      this.translateService.get('legalBasisForHandlingPersonalData')
+        .subscribe(translations => {
+          this.legalBasisForHandlingPersonalDataOptions = Object.keys(LegalBasisForHandlingPersonalData)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
+
+      this.translateService.get('legalBasisForHandlingSensitivePersonalData')
+        .subscribe(translations => {
+          this.legalBasisForHandlingSensitivePersonalDataOptions = Object.keys(LegalBasisForHandlingSensitivePersonalData)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
+
       this.translateService.get('principlesForPhysicalSecurity')
         .subscribe(translations => {
           this.principlesForPhysicalSecurityItems = Object.keys(PrincipleForPhysicalSecurity)
@@ -107,7 +121,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
               return { label: translations[key], value: key }
             })
         })
-      
+
       this.translateService.get('editSystemModal.externalLink')
         .subscribe(translation =>  this.defaultSystemLinkDescription = translation)
 
@@ -287,7 +301,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         this.validate()
 
         if (!this.study.containsSensitivePersonalData) {
-          this.study.legalBasisForHandlingSensitivePersonalData = null
+          this.study.legalBasisForHandlingSensitivePersonalData = []
           this.study.otherLegalBasisForHandlingSensitivePersonalData = null
           this.studyService.initializeProperties(this.study)
         }
@@ -299,10 +313,10 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.personRegistrySources = null
           this.study.personRegisterDataTransfers = null
           this.study.personRegisterDataTransfersOutsideEuOrEea = null
-          this.study.legalBasisForHandlingPersonalData = null
+          this.study.legalBasisForHandlingPersonalData = []
           this.study.otherLegalBasisForHandlingPersonalData = null
-          this.study.containsSensitivePersonalData = null;
-          this.study.legalBasisForHandlingSensitivePersonalData = null
+          this.study.containsSensitivePersonalData = false
+          this.study.legalBasisForHandlingSensitivePersonalData = []
           this.study.otherLegalBasisForHandlingSensitivePersonalData = null
           this.studyService.initializeProperties(this.study)
         }

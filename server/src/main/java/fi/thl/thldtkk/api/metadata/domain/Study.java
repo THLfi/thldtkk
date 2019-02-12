@@ -56,11 +56,11 @@ public class Study implements NodeEntity {
   private Map<String, String> personRegistrySources = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfers = new LinkedHashMap<>();
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea = new LinkedHashMap<>();
-  private LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData;
+  private List<LegalBasisForHandlingPersonalData> legalBasisForHandlingPersonalData = new ArrayList<>();
   private Map<String, String> otherLegalBasisForHandlingPersonalData = new LinkedHashMap<>();
   private Boolean containsSensitivePersonalData;
-  private LegalBasisForHandlingSensitivePersonalData legalBasisForHandlingSensitivePersonalData;
-  private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();;
+  private List<LegalBasisForHandlingSensitivePersonalData> legalBasisForHandlingSensitivePersonalData = new ArrayList<>();
+  private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
 
@@ -140,12 +140,10 @@ public class Study implements NodeEntity {
     this.personRegistrySources = toLangValueMap(node.getProperties("personRegistrySources"));
     this.personRegisterDataTransfers = toLangValueMap(node.getProperties("personRegisterDataTransfers"));
     this.personRegisterDataTransfersOutsideEuOrEea = toLangValueMap(node.getProperties("personRegisterDataTransfersOutsideEuOrEea"));
-    toOptionalString(node.getProperties("legalBasisForHandlingPersonalData"))
-      .ifPresent(lb -> this.legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData.valueOf(lb));
+    this.legalBasisForHandlingPersonalData = valuesToEnumCollection(node.getProperties("legalBasisForHandlingPersonalData"), LegalBasisForHandlingPersonalData.class, ArrayList::new);
     this.otherLegalBasisForHandlingPersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingPersonalData"));
     this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
-    toOptionalString(node.getProperties("legalBasisForHandlingSensitivePersonalData"))
-      .ifPresent(lb -> this.legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData.valueOf(lb));
+    this.legalBasisForHandlingSensitivePersonalData = valuesToEnumCollection(node.getProperties("legalBasisForHandlingSensitivePersonalData"), LegalBasisForHandlingSensitivePersonalData.class, ArrayList::new);
     this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
@@ -415,11 +413,11 @@ public class Study implements NodeEntity {
     this.principlesForDigitalSecurity = principlesForDigitalSecurity;
   }
 
-  public Optional<LegalBasisForHandlingPersonalData> getLegalBasisForHandlingPersonalData() {
-	  return Optional.ofNullable(legalBasisForHandlingPersonalData);
+  public List<LegalBasisForHandlingPersonalData> getLegalBasisForHandlingPersonalData() {
+	  return legalBasisForHandlingPersonalData;
   }
 
-  public void setLegalBasisForHandlingPersonalData(LegalBasisForHandlingPersonalData legalBasisForHandlingPersonalData) {
+  public void setLegalBasisForHandlingPersonalData(List<LegalBasisForHandlingPersonalData> legalBasisForHandlingPersonalData) {
 	  this.legalBasisForHandlingPersonalData = legalBasisForHandlingPersonalData;
   }
 
@@ -435,11 +433,11 @@ public class Study implements NodeEntity {
     return Optional.ofNullable(containsSensitivePersonalData);
   }
 
-  public Optional<LegalBasisForHandlingSensitivePersonalData> getLegalBasisForHandlingSensitivePersonalData() {
-	  return Optional.ofNullable(legalBasisForHandlingSensitivePersonalData);
+  public List<LegalBasisForHandlingSensitivePersonalData> getLegalBasisForHandlingSensitivePersonalData() {
+	  return legalBasisForHandlingSensitivePersonalData;
   }
 
-  public void setLegalBasisForHandlingSensitivePersonalData(LegalBasisForHandlingSensitivePersonalData legalBasisForHandlingSensitivePersonalData) {
+  public void setLegalBasisForHandlingSensitivePersonalData(List<LegalBasisForHandlingSensitivePersonalData> legalBasisForHandlingSensitivePersonalData) {
 	  this.legalBasisForHandlingSensitivePersonalData = legalBasisForHandlingSensitivePersonalData;
   }
 
@@ -639,13 +637,11 @@ public class Study implements NodeEntity {
     props.putAll("personRegistrySources", toPropertyValues(personRegistrySources));
     props.putAll("personRegisterDataTransfers", toPropertyValues(personRegisterDataTransfers));
     props.putAll("personRegisterDataTransfersOutsideEuOrEea", toPropertyValues(personRegisterDataTransfersOutsideEuOrEea));
-    getLegalBasisForHandlingPersonalData().ifPresent(lb -> props.put("legalBasisForHandlingPersonalData", toPropertyValue(lb.toString())));
+    props.putAll("legalBasisForHandlingPersonalData", PropertyMappings.enumsToPropertyValues(legalBasisForHandlingPersonalData));
     props.putAll("otherLegalBasisForHandlingPersonalData", toPropertyValues(otherLegalBasisForHandlingPersonalData));
     getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
-    getLegalBasisForHandlingSensitivePersonalData().ifPresent(lb -> props.put("legalBasisForHandlingSensitivePersonalData", toPropertyValue(lb.toString())));
+    props.putAll("legalBasisForHandlingSensitivePersonalData", PropertyMappings.enumsToPropertyValues(legalBasisForHandlingSensitivePersonalData));
     props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
-    getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
-    props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
 
     // Data security
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));

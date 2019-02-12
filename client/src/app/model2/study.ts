@@ -46,10 +46,10 @@ export interface Study extends Node {
   personRegistrySources: LangValues
   personRegisterDataTransfers: LangValues
   personRegisterDataTransfersOutsideEuOrEea: LangValues
-  legalBasisForHandlingPersonalData?: LegalBasisForHandlingPersonalData
+  legalBasisForHandlingPersonalData: LegalBasisForHandlingPersonalData[]
   otherLegalBasisForHandlingPersonalData?: LangValues
   containsSensitivePersonalData?: boolean,
-  legalBasisForHandlingSensitivePersonalData?: LegalBasisForHandlingSensitivePersonalData
+  legalBasisForHandlingSensitivePersonalData: LegalBasisForHandlingSensitivePersonalData[]
   otherLegalBasisForHandlingSensitivePersonalData?: LangValues
   profilingAndAutomation?: boolean
   profilingAndAutomationDescription?: LangValues

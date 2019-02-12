@@ -6,4 +6,5 @@ public interface StudyPrivacyNoticeService {
 
   byte[] generatePrivacyNoticePdf(UUID studyId, String lang);
 
+  byte[] generateScientificPrivacyNoticePdf(UUID studyId, String lang);
 }

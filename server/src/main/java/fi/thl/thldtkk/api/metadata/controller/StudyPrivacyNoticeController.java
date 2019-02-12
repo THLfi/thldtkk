@@ -28,4 +28,12 @@ public class StudyPrivacyNoticeController {
     return service.generatePrivacyNoticePdf(studyId, lang);
   }
 
+  @RequestMapping(value = "/{studyId}/scientific-privacy-notice", produces = MediaType.APPLICATION_PDF_VALUE)
+  public @ResponseBody
+  byte[] generateScientificPdf(
+    @PathVariable UUID studyId,
+    @RequestParam(value = "lang", defaultValue = "fi") String lang
+  ) throws Exception {
+    return service.generateScientificPrivacyNoticePdf(studyId, lang);
+  }
 }

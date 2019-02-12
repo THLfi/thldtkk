@@ -1231,5 +1231,6 @@
   "confirmOrganizationUnitDelete": "Haluatko varmasti poistaa organisaatioyksikön?",
   "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?",
   "people": "Henkilöt",
-  "printPrivacyNotice": "Tulosta tietosuojailmoitus"
+  "printPrivacyNotice": "Tulosta tietosuojailmoitus",
+  "printScientificPrivacyNotice": "Tulosta tieteellinen tietosuojailmoitus"
 }

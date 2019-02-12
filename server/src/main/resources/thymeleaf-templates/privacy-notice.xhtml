@@ -180,8 +180,17 @@
       <tr>
         <td>
           <div th:text="#{privacyNotice.contactPerson.otherInfo}" class="label">Muut yhteystiedot</div>
-          <div th:if="${contactPerson.getEmail().isPresent()}"><span th:text="${contactPerson.getEmail().get()}"></span></div>
-          <div th:if="${contactPerson.getPhone().isPresent()}"><span th:text="${contactPerson.getPhone().get()}"></span></div>
+          <div th:if="${contactPerson != null}">
+            <div th:if="${contactPerson.getEmail().isPresent()}"><span th:text="${contactPerson.getEmail().get()}"></span></div>
+            <div th:if="${contactPerson.getPhone().isPresent()}"><span th:text="${contactPerson.getPhone().get()}"></span></div>
+          </div>
+        </td>
+      </tr>
+      <tr th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}">
+        <td colspan="2">
+          <div th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
+            Organisaation tietosuojavastaavan sähköpostiosoite on {0}
+          </div>
         </td>
       </tr>
       <tr>
@@ -194,8 +203,10 @@
       <tr>
         <td>
           <div th:text="#{privacyNotice.dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
-          <div th:if="${dataProtectionPerson.getEmail().isPresent()}"><span th:text="${dataProtectionPerson.getEmail().get()}"></span></div>
-          <div th:if="${dataProtectionPerson.getPhone().isPresent()}"><span th:text="${dataProtectionPerson.getPhone().get()}"></span></div>
+          <div th:if="${dataProtectionPerson != null}">
+            <div th:if="${dataProtectionPerson.getEmail().isPresent()}"><span th:text="${dataProtectionPerson.getEmail().get()}"></span></div>
+            <div th:if="${dataProtectionPerson.getPhone().isPresent()}"><span th:text="${dataProtectionPerson.getPhone().get()}"></span></div>
+          </div>
         </td>
       </tr>
       <tr>

@@ -126,7 +126,7 @@
   "purposeOfPersonRegistry": "Henkilötietojen käsittelyn tarkoitus/peruste",
   "usageOfPersonalInformation": "Käsiteltävät henkilötiedot",
   "personRegistrySources": "Rekisterin tietolähteet",
-  "personRegisterDataTransfers": "Rekisterin tietojen luovutukset",
+  "personRegisterDataTransfers": "Tietojen siirto tai luovuttaminen",
   "personRegisterDataTransfersOutsideEuOrEea": "Tietojen siirto EU:n tai ETA:n ulkopuolelle",
   "isProfilingAndAutomationHappening": "Tehdäänkö profilointia ja päätöksenteko automaattisesti",
   "profilingAndAutomation": "Profilointi ja automaattinen päätöksenteko",

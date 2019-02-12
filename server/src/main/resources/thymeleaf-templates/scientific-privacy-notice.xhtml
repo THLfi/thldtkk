@@ -139,7 +139,7 @@
 
       <div class="date">
         <div th:text="#{privacyNotice.date}" class="label">Laatimispäivä</div>
-        <div th:text="${#dates.format(lastModifiedDate, 'dd.MM.yyyy')}">05.01.2018</div>
+        <div th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}">12.02.2019</div>
       </div>
 
     </div>

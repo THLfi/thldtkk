@@ -14,18 +14,22 @@ h1 {
 }
 h2 {
     font-size: 24px;
-    font-weight: 200;
+    font-weight: 700;
 }
 h3 {
     font-size: 18px;
     font-weight: 200;
 }
 
+div p {
+    margin-left: 10px;
+}
+
 .field-label,
 .form-group > label {
   font-family: "Open Sans", sans-serif; /* needed to override default font in modals */
   font-size: 18px;
-  font-weight: 200;
+  font-weight: 600;
 }
 
 .radio-empty {
@@ -311,6 +315,10 @@ h3 {
 }
 
 /* Table format of e.g. the variable table in catalog  */
+
+.table {
+    margin-left: 10px;
+}
 
 .data-table-plain {
     margin-top: 2em;

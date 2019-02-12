@@ -642,6 +642,8 @@ public class Study implements NodeEntity {
     getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
     props.putAll("legalBasisForHandlingSensitivePersonalData", PropertyMappings.enumsToPropertyValues(legalBasisForHandlingSensitivePersonalData));
     props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
+    getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
+    props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
 
     // Data security
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));

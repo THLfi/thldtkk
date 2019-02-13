@@ -1,11 +1,11 @@
-package fi.thl.thldtkk.api.metadata.service.impl;
+package fi.thl.thldtkk.api.metadata.service.report;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.StudyReportService;
+import fi.thl.thldtkk.api.metadata.service.report.StudyReportService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.apache.commons.lang.text.StrBuilder;
 import org.springframework.util.StringUtils;

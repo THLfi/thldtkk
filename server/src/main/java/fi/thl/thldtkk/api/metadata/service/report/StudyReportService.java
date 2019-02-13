@@ -1,4 +1,4 @@
-package fi.thl.thldtkk.api.metadata.service;
+package fi.thl.thldtkk.api.metadata.service.report;
 
 import java.util.UUID;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import fi.thl.thldtkk.api.metadata.service.StudyReportService;
+import fi.thl.thldtkk.api.metadata.service.report.StudyReportService;
 
 import java.util.UUID;
 

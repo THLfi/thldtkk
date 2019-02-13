@@ -1,6 +1,6 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import fi.thl.thldtkk.api.metadata.service.StudyReportService;
+import fi.thl.thldtkk.api.metadata.service.report.StudyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;

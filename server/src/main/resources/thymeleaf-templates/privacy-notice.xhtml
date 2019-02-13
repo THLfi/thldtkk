@@ -202,9 +202,9 @@
         </td>
       </tr>
       <tr>
-        <th><h2>5<br/><span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
+        <th><h2>3<br/><span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
         <td>
-          <div th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
+          <div th:if="${purposeOfPersonRegister != null}" th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
             Käsittelemme henkilötietojasi {0}
           </div>
         </td>

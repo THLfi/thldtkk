@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
   <head>
-    <title th:text="#{privacyNotice.screenTitle}"></title>
+    <title th:text="#{scientificPrivacyNotice.windowTitle}"></title>
     <style type="text/css" th:inline="text">
 
       @page {
@@ -17,7 +17,7 @@
           font-size: 11pt;
           font-weight: bold;
           text-transform: uppercase;
-          content: "[[#{privacyNotice.title}]]";
+          content: "[[#{scientificPrivacyNotice.title}]]";
         }
 
         @top-right {
@@ -214,6 +214,20 @@
         <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
         <td>
           <div th:text="${studyName}"></div>
+        </td>
+      </tr>
+      <tr>
+        <th rowspan="2"><h2>5<br/><span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2></th>
+        <td>
+          <div th:text="#{scientificPrivacyNotice.principalInvestigator.name}" class="label">Tutkimuksen vastuullinen johtajan tai ryhmän nimi</div>
+          <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div th:text="#{scientificPrivacyNotice.principalInvestigator.contact}" class="label">Tutkimuksen vastuullinen johtajan tai ryhmän yhteystiedot</div>
+          <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}" th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
+          <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}" th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
         </td>
       </tr>
       <tr>

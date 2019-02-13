@@ -5,7 +5,7 @@ import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.StudyRegisterDescriptionService;
+import fi.thl.thldtkk.api.metadata.service.StudyReportService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.apache.commons.lang.text.StrBuilder;
 import org.springframework.util.StringUtils;
@@ -18,21 +18,20 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-public class EditorStudyRegisterDescriptionServiceImpl implements StudyRegisterDescriptionService {
+public class RegisterDescriptionReportService implements StudyReportService {
 
   private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
 
   private final EditorStudyService editorStudyService;
   private final TemplateEngine templateEngine;
 
-  public EditorStudyRegisterDescriptionServiceImpl(EditorStudyService editorStudyService,
-                                                   TemplateEngine templateEngine) {
+  public RegisterDescriptionReportService(EditorStudyService editorStudyService, TemplateEngine templateEngine) {
     this.editorStudyService = editorStudyService;
     this.templateEngine = templateEngine;
   }
 
   @Override
-  public byte[] generateRegisterDescriptionPdf(UUID studyId, String lang) {
+  public byte[] generatePDFReport(UUID studyId, String lang) {
     Context context = new Context(new Locale(lang));
 
     Study study = editorStudyService.get(studyId)

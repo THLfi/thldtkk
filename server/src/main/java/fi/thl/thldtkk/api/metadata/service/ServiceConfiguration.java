@@ -3,8 +3,9 @@ package fi.thl.thldtkk.api.metadata.service;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
-import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyPrivacyNoticeServiceImpl;
-import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyRegisterDescriptionServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.impl.PrivacyNoticeReportService;
+import fi.thl.thldtkk.api.metadata.service.impl.RegisterDescriptionReportService;
+import fi.thl.thldtkk.api.metadata.service.impl.ScientificPrivacyNoticeReportService;
 import fi.thl.thldtkk.api.metadata.service.termed.CodeListServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.ConceptServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.DatasetTypeServiceImpl;
@@ -37,6 +38,7 @@ import fi.thl.thldtkk.api.metadata.service.termed.UserProfileServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.VariableServiceImpl;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -89,15 +91,21 @@ public class ServiceConfiguration {
   // editor services
 
   @Bean
-  public StudyRegisterDescriptionService editorStudyRegisterDescriptionService() {
-    return new EditorStudyRegisterDescriptionServiceImpl(
-      editorStudyService(), thymeleafTemplateEngine);
+  @Qualifier("register-description")
+  public StudyReportService registerDescriptionReportService() {
+    return new RegisterDescriptionReportService(editorStudyService(), thymeleafTemplateEngine);
   }
 
   @Bean
-  public StudyPrivacyNoticeService editorPrivacyNoticeService() {
-    return new EditorStudyPrivacyNoticeServiceImpl(
-      editorStudyService(), thymeleafTemplateEngine);
+  @Qualifier("privacy-notice")
+  public StudyReportService privacyNoticeReportService() {
+    return new PrivacyNoticeReportService(editorStudyService(), thymeleafTemplateEngine);
+  }
+
+  @Bean
+  @Qualifier("scientific-privacy-notice")
+  public StudyReportService scientificPrivacyNoticeReportService() {
+    return new ScientificPrivacyNoticeReportService(editorStudyService(), thymeleafTemplateEngine);
   }
 
   @Bean

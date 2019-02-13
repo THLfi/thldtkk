@@ -1,6 +1,5 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import fi.thl.thldtkk.api.metadata.service.StudyPrivacyNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -8,6 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import fi.thl.thldtkk.api.metadata.service.StudyReportService;
 
 import java.util.UUID;
 
@@ -17,7 +19,12 @@ import java.util.UUID;
 public class StudyPrivacyNoticeController {
 
   @Autowired
-  private StudyPrivacyNoticeService service;
+  @Qualifier("privacy-notice")
+  private StudyReportService privacyNoticeReportService;
+
+  @Autowired
+  @Qualifier("scientific-privacy-notice")
+  private StudyReportService scientificPrivacyNoticeReportService;
 
   @RequestMapping(value = "/{studyId}/privacy-notice", produces = MediaType.APPLICATION_PDF_VALUE)
   public @ResponseBody
@@ -25,7 +32,7 @@ public class StudyPrivacyNoticeController {
     @PathVariable UUID studyId,
     @RequestParam(value = "lang", defaultValue = "fi") String lang
   ) throws Exception {
-    return service.generatePrivacyNoticePdf(studyId, lang);
+    return privacyNoticeReportService.generatePDFReport(studyId, lang);
   }
 
   @RequestMapping(value = "/{studyId}/scientific-privacy-notice", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -34,6 +41,6 @@ public class StudyPrivacyNoticeController {
     @PathVariable UUID studyId,
     @RequestParam(value = "lang", defaultValue = "fi") String lang
   ) throws Exception {
-    return service.generateScientificPrivacyNoticePdf(studyId, lang);
+    return scientificPrivacyNoticeReportService.generatePDFReport(studyId, lang);
   }
 }

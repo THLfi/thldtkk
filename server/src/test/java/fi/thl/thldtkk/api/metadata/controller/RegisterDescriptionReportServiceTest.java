@@ -8,8 +8,8 @@ import fi.thl.thldtkk.api.metadata.domain.PrincipleForDigitalSecurity;
 import fi.thl.thldtkk.api.metadata.domain.PrincipleForPhysicalSecurity;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.StudyRegisterDescriptionService;
-import fi.thl.thldtkk.api.metadata.service.impl.EditorStudyRegisterDescriptionServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.StudyReportService;
+import fi.thl.thldtkk.api.metadata.service.impl.RegisterDescriptionReportService;
 import fi.thl.thldtkk.api.metadata.test.PersonInRoleBuilder;
 import fi.thl.thldtkk.api.metadata.test.a;
 import fi.thl.thldtkk.api.metadata.test.an;
@@ -37,9 +37,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { ThymeleafConfiguration.class })
-public class EditorStudyRegisterDescriptionServiceImplTest {
+public class RegisterDescriptionReportServiceTest {
 
-  StudyRegisterDescriptionService service;
+  StudyReportService registerDescriptionReportService;
 
   @Mock
   EditorStudyService editorStudyService;
@@ -49,7 +49,7 @@ public class EditorStudyRegisterDescriptionServiceImplTest {
   @Before
   public void initService() {
     MockitoAnnotations.initMocks(this);
-    service = new EditorStudyRegisterDescriptionServiceImpl(editorStudyService, templateEngine);
+    registerDescriptionReportService = new RegisterDescriptionReportService(editorStudyService, templateEngine);
   }
 
   @Test
@@ -102,7 +102,7 @@ public class EditorStudyRegisterDescriptionServiceImplTest {
       .build();
     when(editorStudyService.get(eq(studyId))).thenReturn(Optional.of(study));
 
-    byte[] content = service.generateRegisterDescriptionPdf(studyId, "fi");
+    byte[] content = registerDescriptionReportService.generatePDFReport(studyId, "fi");
 
     assertThat(content).isNotEmpty();
 

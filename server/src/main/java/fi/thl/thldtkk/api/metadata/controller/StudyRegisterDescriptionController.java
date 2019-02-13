@@ -1,7 +1,8 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
-import fi.thl.thldtkk.api.metadata.service.StudyRegisterDescriptionService;
+import fi.thl.thldtkk.api.metadata.service.StudyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +17,15 @@ import java.util.UUID;
 public class StudyRegisterDescriptionController {
 
   @Autowired
-  private StudyRegisterDescriptionService service;
+  @Qualifier("register-description")
+  private StudyReportService registerDescriptionReportService;
 
   @RequestMapping(value = "/{studyId}/register-description", produces = MediaType.APPLICATION_PDF_VALUE)
   public @ResponseBody byte[] generatePdf(
     @PathVariable UUID studyId,
     @RequestParam(value = "lang", defaultValue = "fi") String lang
   ) throws Exception {
-    return service.generateRegisterDescriptionPdf(studyId, lang);
+    return registerDescriptionReportService.generatePDFReport(studyId, lang);
   }
 
 }

@@ -48,8 +48,9 @@ public class EditorStudyController {
 
   @ApiOperation("Get one study by ID")
   @GetJsonMapping("/{studyId}")
-  public Study getStudy(@PathVariable UUID studyId) {
-    return editorStudyService.get(studyId)
+  public Study getStudy(@PathVariable UUID studyId,
+                        @RequestParam(defaultValue = "true") boolean includeDatasets) {
+    return editorStudyService.get(studyId, includeDatasets)
       .orElseThrow(entityNotFound(Study.class, studyId));
   }
 

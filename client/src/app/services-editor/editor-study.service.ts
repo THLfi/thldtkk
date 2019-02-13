@@ -102,8 +102,8 @@ export class EditorStudyService {
       .map(response => response.json() as Study[])
   }
 
-  getStudy(id: string): Observable<Study> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + id)
+  getStudy(id: string, includeDatasets: boolean = true): Observable<Study> {
+    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + id + '?includeDatasets=' + includeDatasets)
       .map(response => response.json() as Study)
   }
 

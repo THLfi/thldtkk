@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.*;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -112,8 +113,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   @Override
   public Optional<Study> get(UUID id) {
-    Optional<Study> study = nodes.get(
-      select(
+    return get(id, true);
+  }
+
+  @Override
+  public Optional<Study> get(UUID id, boolean includeDatasets) {
+    Select select;
+    if (includeDatasets) {
+      select = select(
         "id",
         "type",
         "lastModifiedDate",
@@ -140,7 +147,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.lifecyclePhase:2",
         "references.population:2",
         "references.universe:2",
-        "references.datasetType:2",
+        "references.datasetTypes:2",
         "references.ownerOrganization:4",
         "references.ownerOrganizationUnit:2",
         "references.system:2",
@@ -149,8 +156,48 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.predecessors:3",
         "referrers.predecessors:3",
         "referrers.dataSets:3"
-      ),
-      new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
+      );
+    }
+    else {
+      select = select(
+        "id",
+        "type",
+        "lastModifiedDate",
+        "properties.*",
+        "references.personInRoles",
+        "references.role:2",
+        "references.person:2",
+        "references.systemInRoles",
+        "references.system:2",
+        "references.systemRole:2",
+        "references.links",
+        "references.variable",
+        "references.conceptsFromScheme",
+        "references.quantity",
+        "references.unit",
+        "references.codeList",
+        "references.codeItems",
+        "references.source",
+        "references.unitType",
+        "references.lastModifiedByUser",
+        "references.instanceQuestions",
+        "references.usageCondition",
+        "references.lifecyclePhase",
+        "references.population",
+        "references.universe",
+        "references.datasetTypes",
+        "references.ownerOrganization",
+        "references.ownerOrganizationUnit",
+        "references.systemInRoles",
+        "references.link",
+        "references.predecessors",
+        "references.studyGroup",
+        "references.predecessors",
+        "referrers.predecessors"
+      );
+    }
+
+    Optional<Study> study = nodes.get(select, new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 
     if (study.isPresent()) {
       checkUserIsAllowedToAccessStudy(study.get());

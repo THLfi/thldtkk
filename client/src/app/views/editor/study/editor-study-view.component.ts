@@ -42,7 +42,7 @@ export class EditorStudyViewComponent {
       this.loadingStudy = true
       this.study = null
 
-      this.editorStudyService.getStudy(params['id']).subscribe(study => {
+      this.editorStudyService.getStudy(params['id'], false).subscribe(study => {
         this.study = study
         this.updatePageTitle()
         this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(study)

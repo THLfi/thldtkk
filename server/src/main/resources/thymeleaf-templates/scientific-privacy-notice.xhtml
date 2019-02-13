@@ -195,7 +195,7 @@
         </td>
       </tr>
       <tr>
-        <th rowspan="3"><h2>2<br/><span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2></th>
+        <th rowspan="2"><h2>2<br/><span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2></th>
         <td>
           <div th:text="#{privacyNotice.contactPerson.name}" class="label">Nimi</div>
           <div th:text="${contactPersonName}"></div>
@@ -203,32 +203,17 @@
       </tr>
       <tr>
         <td>
-          <div th:text="#{privacyNotice.contactPerson.address}" class="label">Osoite</div>
-          <div class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
           <div th:text="#{privacyNotice.contactPerson.otherInfo}" class="label">Muut yhteystiedot</div>
+          <div th:if="${contactPerson != null}">
+            <div th:if="${contactPerson.getEmail().isPresent()}"><span th:text="${contactPerson.getEmail().get()}"></span></div>
+            <div th:if="${contactPerson.getPhone().isPresent()}"><span th:text="${contactPerson.getPhone().get()}"></span></div>
+          </div>
         </td>
       </tr>
       <tr>
         <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
         <td>
           <div th:text="${studyName}"></div>
-        </td>
-      </tr>
-      <tr>
-        <th rowspan="2"><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
-        <td>
-          <div th:text="#{privacyNotice.dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
-          <div th:text="${dataProtectionPersonName}"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{privacyNotice.dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
-          <div th:text="${dataProtectionPersonContactInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
@@ -261,6 +246,16 @@
                 </li>
               </ul>
             </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th rowspan="1"><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson.contactInfo}">Tietosuojavastaavan yhteystiedot</span></h2></th>
+        <td>
+          <br/>
+          <div th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}"
+               th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
+            Organisaation tietosuojavastaavan sähköpostiosoite on {0}
           </div>
         </td>
       </tr>

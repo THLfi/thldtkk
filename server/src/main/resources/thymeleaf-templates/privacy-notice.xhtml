@@ -196,22 +196,6 @@
         </td>
       </tr>
       <tr>
-        <th rowspan="2"><h2>3<br/><span th:text="#{privacyNotice.dataProtectionPerson}">Tietosuojavastaava</span></h2></th>
-        <td>
-          <div th:text="#{privacyNotice.dataProtectionPerson.name}" class="label">Tietosuojavastaavan nimi</div>
-          <div th:text="${dataProtectionPersonName}"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{privacyNotice.dataProtectionPerson.contactInfo}" class="label">Tietosuojavastaavan yhteystiedot</div>
-          <div th:if="${dataProtectionPerson != null}">
-            <div th:if="${dataProtectionPerson.getEmail().isPresent()}"><span th:text="${dataProtectionPerson.getEmail().get()}"></span></div>
-            <div th:if="${dataProtectionPerson.getPhone().isPresent()}"><span th:text="${dataProtectionPerson.getPhone().get()}"></span></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
         <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
         <td>
           <div th:text="${studyName}"></div>

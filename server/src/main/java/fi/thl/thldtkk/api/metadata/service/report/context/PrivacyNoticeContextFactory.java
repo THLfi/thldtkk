@@ -93,6 +93,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     context.setVariable("description", study.getDescription().get(lang));
     context.setVariable("studyName", study.getPrefLabel().get(lang));
+    context.setVariable("studyType", study.getStudyType());
     context.setVariable("purposeOfPersonRegister", study.getPurposeOfPersonRegistry().get(lang));
     context.setVariable("usageOfPersonalInformation", study.getUsageOfPersonalInformation().get(lang));
     context.setVariable("legalBasisValues", study.getLegalBasisForHandlingPersonalData());
@@ -116,6 +117,9 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     context.setVariable("principlesForPhysicalSecurity", study.getPrinciplesForPhysicalSecurity());
     context.setVariable("principlesForDigitalSecurity", study.getPrinciplesForDigitalSecurity());
+
+    context.setVariable("dataProcessingStartDate", study.getDataProcessingStartDate());
+    context.setVariable("dataProcessingEndDate", study.getDataProcessingEndDate());
 
     return context;
   }

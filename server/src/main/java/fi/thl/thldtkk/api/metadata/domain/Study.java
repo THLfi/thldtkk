@@ -28,6 +28,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toOptio
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valuesToEnumCollection;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valueToEnum;
 import static java.util.Objects.requireNonNull;
 
 public class Study implements NodeEntity {
@@ -42,6 +43,7 @@ public class Study implements NodeEntity {
   private Map<String, String> altLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
   private Map<String, String> description = new LinkedHashMap<>();
+  private StudyType studyType;
   private Map<String, String> usageConditionAdditionalInformation = new LinkedHashMap<>();
   private LocalDate referencePeriodStart;
   private LocalDate referencePeriodEnd;
@@ -127,6 +129,7 @@ public class Study implements NodeEntity {
     this.altLabel = toLangValueMap(node.getProperties("altLabel"));
     this.abbreviation = toLangValueMap(node.getProperties("abbreviation"));
     this.description = toLangValueMap(node.getProperties("description"));
+    this.studyType = valueToEnum(node.getProperties("studyType"), StudyType.class);
     this.usageConditionAdditionalInformation = toLangValueMap(node.getProperties("usageConditionAdditionalInformation"));
     this.referencePeriodStart = toLocalDate(node.getProperties("referencePeriodStart"), null);
     this.referencePeriodEnd = toLocalDate(node.getProperties("referencePeriodEnd"), null);
@@ -286,6 +289,10 @@ public class Study implements NodeEntity {
 
   public Map<String, String> getDescription() {
     return description;
+  }
+
+  public Optional<StudyType> getStudyType() {
+    return Optional.ofNullable(studyType);
   }
 
   public Map<String, String> getUsageConditionAdditionalInformation() {
@@ -629,6 +636,7 @@ public class Study implements NodeEntity {
     props.putAll("altLabel", toPropertyValues(altLabel));
     props.putAll("abbreviation", toPropertyValues(abbreviation));
     props.putAll("description", toPropertyValues(description));
+    getStudyType().ifPresent(v -> props.put("studyType", PropertyMappings.enumToPropertyValue(v)));
     props.putAll("usageConditionAdditionalInformation", toPropertyValues(usageConditionAdditionalInformation));
     getReferencePeriodStart().ifPresent(v -> props.put("referencePeriodStart", toPropertyValue(v)));
     getReferencePeriodEnd().ifPresent(v -> props.put("referencePeriodEnd", toPropertyValue(v)));
@@ -773,6 +781,7 @@ public class Study implements NodeEntity {
         altLabel,
         abbreviation,
         description,
+        studyType,
         usageConditionAdditionalInformation,
         referencePeriodStart,
         referencePeriodEnd,
@@ -834,6 +843,7 @@ public class Study implements NodeEntity {
     study.altLabel = this.altLabel;
     study.abbreviation = this.abbreviation;
     study.description = this.description;
+    study.studyType = this.studyType;
     study.usageConditionAdditionalInformation = this.usageConditionAdditionalInformation;
     study.referencePeriodStart = this.referencePeriodStart;
     study.referencePeriodEnd = this.referencePeriodEnd;

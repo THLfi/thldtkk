@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
@@ -14,6 +15,7 @@ public class ThymeleafConfiguration {
   @Bean
   public TemplateEngine thymeleafTemplateEngine() {
     SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+    templateEngine.addDialect(new Java8TimeDialect());
     templateEngine.setTemplateResolver(thymeleafTemplateResolver());
     templateEngine.setTemplateEngineMessageSource(thymeleafTranslationsMessageSource());
     return templateEngine;

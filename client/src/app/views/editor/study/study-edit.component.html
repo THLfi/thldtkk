@@ -404,6 +404,45 @@
           <editor-help-text #usageConditionAdditionalInformationHelpText key="editor.study.usageConditionAdditionalInformation.helpText"></editor-help-text>
         </div>
 
+        <div class="form-group">
+          <p>
+            <strong class="field-label">{{ 'studyType.label' | translate }}</strong>
+            <editor-help-link [helpTextComponent]="StudyTypeHelpText"></editor-help-link>
+          </p>
+          <editor-help-text #studyTypeHelpText key="editor.study.studyType.helpText"></editor-help-text>
+
+          <div class="radio">
+            <label for="study-type-cross-sectional">
+              <input [(ngModel)]="study.studyType"
+                     [value]="StudyType.CROSS_SECTIONAL_STUDY"
+                     type="radio"
+                     id="study-type-cross-sectional"
+                     name="study-type">
+              {{ 'studyType.CROSS_SECTIONAL_STUDY' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="study-type-longitudinal">
+              <input [(ngModel)]="study.studyType"
+                     [value]="StudyType.LONGITUDINAL_STUDY"
+                     type="radio"
+                     id="study-type-longitudinal"
+                     name="study-type">
+              {{ 'studyType.LONGITUDINAL_STUDY' | translate }}
+            </label>
+          </div>
+          <div class="radio">
+            <label for="study-type-undefined" class="radio-empty">
+              <input [(ngModel)]="study.studyType"
+                     [value]="undefined"
+                     type="radio"
+                     id="study-type-undefined"
+                     name="study-type">
+              {{ 'undefined' | translate }}
+            </label>
+          </div>
+        </div>
+
         <ng-container *ngIf="allUnitTypes.length">
           <div class="row">
             <div class="col-xs-12">

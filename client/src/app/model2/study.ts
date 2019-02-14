@@ -12,6 +12,7 @@ import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
 import {Population} from './population';
+import {StudyType} from './study-type';
 import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
 import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
 import {SecurityClassification} from './security-classification'
@@ -33,6 +34,7 @@ export interface Study extends Node {
   abbreviation: LangValues
   description: LangValues
   usageConditionAdditionalInformation: LangValues
+  studyType?: string
   referencePeriodStart?: string
   referencePeriodEnd?: string
   collectionStartDate?: string

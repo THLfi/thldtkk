@@ -64,10 +64,14 @@ public final class PropertyMappings {
       .collect(toList());
   }
 
+  public static <T extends Enum<T>> StrictLangValue enumToPropertyValue(T enumValue) {
+    return new StrictLangValue("", enumValue.toString(), ALL);
+  }
+
   public static <T extends Enum<T>> Collection<StrictLangValue> enumsToPropertyValues(Collection<T> enums) {
     return enums.stream()
       .filter(enumValue -> enumValue != null)
-      .map(enumValue -> new StrictLangValue("", enumValue.toString(), ALL))
+      .map(PropertyMappings::enumToPropertyValue)
       .collect(toList());
   }
 
@@ -127,6 +131,16 @@ public final class PropertyMappings {
     return langValues.stream()
       .map(langValue -> langValue.getValue())
       .collect(Collectors.toCollection(collectionSupplier));
+  }
+
+  public static <T extends Collection<E>, E extends Enum<E>> E valueToEnum(Collection<StrictLangValue> langValues, Class<E> enumClass) {
+    return valueToEnum(langValues, enumClass, null);
+  }
+  public static <T extends Collection<E>, E extends Enum<E>> E valueToEnum(Collection<StrictLangValue> langValues, Class<E> enumClass, E defaultValue) {
+    return langValues.stream()
+      .map(langValue -> Enum.valueOf(enumClass, langValue.getValue()))
+      .findFirst()
+      .orElse(defaultValue);
   }
 
   public static <T extends Collection<E>, E extends Enum<E>> T valuesToEnumCollection(Collection<StrictLangValue> langValues, Class<E> enumClass, Supplier<T> collectionSupplier) {

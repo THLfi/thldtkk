@@ -200,6 +200,13 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <p><strong class="field-label" translate="studyType.label"></strong></p>
+          <p *ngIf="study.studyType">{{ 'studyType.' + study.studyType | translate }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <p><strong class="field-label" translate="unitType"></strong></p>
           <p *ngIf="study.unitType">{{study.unitType.prefLabel | lang}}</p>
         </div>

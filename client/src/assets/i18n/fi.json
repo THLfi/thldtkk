@@ -133,6 +133,11 @@
   "isProfilingAndAutomationHappening": "Tehdäänkö profilointia ja päätöksenteko automaattisesti",
   "profilingAndAutomation": "Profilointi ja automaattinen päätöksenteko",
   "profilingAndAutomationNotOccurringByOrg": "{{organization}} ei tee automaattista päätöksentekoa perustuen mm. henkilöiden profilointiin",
+  "studyType": {
+    "label": "Tutkimuksen tyyppi",
+    "CROSS_SECTIONAL_STUDY": "Kertatutkimus",
+    "LONGITUDINAL_STUDY": "Seurantatutkimus"
+  },
   "confidentialityClass": {
     "label": "Tietosisällön julkisuusluokka",
     "PUBLIC": "Julkinen",

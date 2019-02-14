@@ -15,6 +15,7 @@ import {Concept} from '../../../model2/concept';
 import {ConceptService} from '../../../services-common/concept.service';
 import {CurrentUserService} from '../../../services-editor/user.service'
 import {Study} from '../../../model2/study';
+import {StudyType} from '../../../model2/study-type';
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {DatasetType} from '../../../model2/dataset-type'
 import {DatasetTypeItem} from '../../../model2/dataset-type-item'
@@ -54,6 +55,7 @@ import {UsageConditionService} from '../../../services-common/usage-condition.se
 export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     study: Study;
+    StudyType = StudyType;
 
     @ViewChild('studyForm') studyForm: NgForm;
     currentForm: NgForm;

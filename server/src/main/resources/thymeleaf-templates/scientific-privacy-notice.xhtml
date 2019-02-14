@@ -225,26 +225,17 @@
         </td>
       </tr>
       <tr>
-        <th><h2>4<br/><span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2></th>
+        <th><h2>8<br/><span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2></th>
         <td>
           <div>
             <div th:unless="${legalBasisValues.isEmpty()}">
               <p>
-                <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.ingress}"></span>
-                <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.body}"></span>
+                <span th:text="#{scientificPrivacyNotice.legalBasisForHandlingPersonalData.body}"></span>
               </p>
               <ul>
                 <li th:each="legalBasis : ${legalBasisValues}">
                   <span th:text="#{'privacyNotice.legalBasisForHandlingPersonalData.' + ${legalBasis} }"></span>
                   <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisValue} != ''" th:text="${': ' + otherLegalBasisValue}">: Käyttäjän antama peruste</span>
-                </li>
-              </ul>
-
-              <p th:if="${containsSensitiveData}" th:text="#{privacyNotice.legalBasisForHandlingSensitivePersonalData.body}"></p>
-              <ul th:unless="${legalBasisSensitiveValues.isEmpty()}">
-                <li th:each="legalBasis : ${legalBasisSensitiveValues}">
-                  <span th:text="#{'privacyNotice.legalBasisForHandlingSensitivePersonalData.' + ${legalBasis} }"></span>
-                  <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisSensitiveValue} != ''" th:text="${': ' + otherLegalBasisSensitiveValue}">: Käyttäjän antama peruste</span>
                 </li>
               </ul>
             </div>

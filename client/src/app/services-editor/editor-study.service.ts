@@ -48,6 +48,8 @@ export class EditorStudyService {
       containsSensitivePersonalData: null,
       legalBasisForHandlingSensitivePersonalData: [],
       otherLegalBasisForHandlingSensitivePersonalData: null,
+      typeOfSensitivePersonalData: [],
+      otherTypeOfSensitivePersonalData: null,
       isScientificStudy: null,
       systemInRoles: [],
       existenceForms: [],
@@ -77,6 +79,7 @@ export class EditorStudyService {
       'personRegisterDataTransfersOutsideEuOrEea',
       'otherLegalBasisForHandlingPersonalData',
       'otherLegalBasisForHandlingSensitivePersonalData',
+      'otherTypeOfSensitivePersonalData',
       'profilingAndAutomationDescription',
       'groundsForConfidentiality'
     ])

@@ -107,6 +107,25 @@
           </div>
         </div>
 
+        <div class="row" *ngIf="study.isScientificStudy">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong></p>
+            <p>
+              <ng-container *ngIf="study.typeOfSensitivePersonalData; else noTypeOfSensitivePersonalData;">
+                <ul *ngIf="study.typeOfSensitivePersonalData.length">
+                  <li *ngFor="let typeOfData of study.typeOfSensitivePersonalData">
+                    {{ 'typeOfSensitivePersonalData.' + typeOfData | translate }}
+                    <span *ngIf="typeOfData === typeOfSensitivePersonalData.OTHER">: {{ study.otherTypeOfSensitivePersonalData | lang }}</span>
+                  </li>
+                </ul>
+              </ng-container>
+              <ng-template #noTypeOfSensitivePersonalData>
+                {{ 'typeOfSensitivePersonalData.empty' | translate }}
+              </ng-template>
+            </p>
+          </div>
+        </div>
+
         <div class="row" *ngIf="study.containsSensitivePersonalData">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong></p>

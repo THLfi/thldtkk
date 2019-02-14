@@ -25,7 +25,7 @@ import {SystemRole} from '../../../model2/system-role';
 import {SystemInRole} from '../../../model2/system-in-role';
 import {LegalBasisForHandlingPersonalData} from '../../../model2/legal-basis-for-handling-personal-data';
 import {LegalBasisForHandlingSensitivePersonalData} from '../../../model2/legal-basis-for-handling-sensitive-personal-data';
-
+import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-personal-data';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
@@ -68,6 +68,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     legalBasisForHandlingPersonalDataOptions: SelectItem[] = []
     legalBasisForHandlingSensitivePersonalDataOptions: SelectItem[] = []
+    typeOfSensitivePersonalDataOptions: SelectItem[] = []
 
     constructor(
         private studyService: EditorStudyService,
@@ -101,6 +102,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.translateService.get('legalBasisForHandlingSensitivePersonalData')
         .subscribe(translations => {
           this.legalBasisForHandlingSensitivePersonalDataOptions = Object.keys(LegalBasisForHandlingSensitivePersonalData)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
+
+      this.translateService.get('typeOfSensitivePersonalData')
+        .subscribe(translations => {
+          this.typeOfSensitivePersonalDataOptions = Object.keys(TypeOfSensitivePersonalData)
             .map(key => {
               return { label: translations[key], value: key }
             })
@@ -303,6 +312,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         if (!this.study.containsSensitivePersonalData) {
           this.study.legalBasisForHandlingSensitivePersonalData = []
           this.study.otherLegalBasisForHandlingSensitivePersonalData = null
+          this.study.typeOfSensitivePersonalData = []
+          this.study.otherTypeOfSensitivePersonalData = null
           this.studyService.initializeProperties(this.study)
         }
 
@@ -318,6 +329,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.containsSensitivePersonalData = false
           this.study.legalBasisForHandlingSensitivePersonalData = []
           this.study.otherLegalBasisForHandlingSensitivePersonalData = null
+          this.study.typeOfSensitivePersonalData = []
+          this.study.otherTypeOfSensitivePersonalData = null
           this.studyService.initializeProperties(this.study)
         }
 

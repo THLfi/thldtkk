@@ -6,6 +6,7 @@ import {LangValues} from './lang-values';
 import {LifecyclePhase} from './lifecycle-phase';
 import {LegalBasisForHandlingPersonalData} from './legal-basis-for-handling-personal-data';
 import {LegalBasisForHandlingSensitivePersonalData} from './legal-basis-for-handling-sensitive-personal-data';
+import {TypeOfSensitivePersonalData} from './type-of-sensitive-personal-data';
 import {Link} from './link';
 import {Node} from './node'
 import {Organization} from './organization';
@@ -53,6 +54,8 @@ export interface Study extends Node {
   containsSensitivePersonalData?: boolean,
   legalBasisForHandlingSensitivePersonalData: LegalBasisForHandlingSensitivePersonalData[]
   otherLegalBasisForHandlingSensitivePersonalData?: LangValues
+  typeOfSensitivePersonalData: TypeOfSensitivePersonalData[]
+  otherTypeOfSensitivePersonalData?: LangValues
   isScientificStudy?: boolean,
   profilingAndAutomation?: boolean
   profilingAndAutomationDescription?: LangValues

@@ -1238,5 +1238,19 @@
   "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?",
   "people": "Henkilöt",
   "printPrivacyNotice": "Tulosta tietosuojailmoitus",
-  "printScientificPrivacyNotice": "Tulosta tieteellinen tietosuojailmoitus"
+  "printScientificPrivacyNotice": "Tulosta tieteellinen tietosuojailmoitus",
+  "typeOfSensitivePersonalData": {
+    "label": "Arkaluonteiset henkilötiedot",
+    "selectType": "Valitse tyyppi",
+    "ETHNIC": "rotu tai etninen alkuperä",
+    "POLITIC": "poliittiset mielipiteet",
+    "RELIGIOUS": "uskonnollinen tai filosofinen vakaumus",
+    "PROFESSIONAL_ORGANIZATION_MEMBERSHIP": "ammattiliiton jäsenyys",
+    "GENETIC": "geneettiset tiedot",
+    "BIOMETRIC": "biometristen tietojen käsittely henkilön yksiselitteistä tunnistamista varten",
+    "HEALTH": "terveystiedot",
+    "SEXUAL": "seksuaalinen käyttäytyminen tai suuntautuminen",
+    "OTHER": "muu, mikä",
+    "empty": "Ei määritetty"
+  }
 }

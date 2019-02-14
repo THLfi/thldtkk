@@ -63,6 +63,8 @@ public class Study implements NodeEntity {
   private Boolean containsSensitivePersonalData;
   private List<LegalBasisForHandlingSensitivePersonalData> legalBasisForHandlingSensitivePersonalData = new ArrayList<>();
   private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();
+  private List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData = new ArrayList<>();
+  private Map<String, String> otherTypeOfSensitivePersonalData = new LinkedHashMap<>();
   private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
@@ -149,6 +151,8 @@ public class Study implements NodeEntity {
     this.containsSensitivePersonalData = PropertyMappings.toBoolean(node.getProperties("containsSensitivePersonalData"), null);
     this.legalBasisForHandlingSensitivePersonalData = valuesToEnumCollection(node.getProperties("legalBasisForHandlingSensitivePersonalData"), LegalBasisForHandlingSensitivePersonalData.class, ArrayList::new);
     this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
+    this.typeOfSensitivePersonalData = valuesToEnumCollection(node.getProperties("typeOfSensitivePersonalData"), TypeOfSensitivePersonalData.class, ArrayList::new);
+    this.otherTypeOfSensitivePersonalData = toLangValueMap(node.getProperties("otherTypeOfSensitivePersonalData"));
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
@@ -462,6 +466,22 @@ public class Study implements NodeEntity {
 	  this.otherLegalBasisForHandlingSensitivePersonalData = otherLegalBasisForHandlingSensitivePersonalData;
   }
 
+  public List<TypeOfSensitivePersonalData> getTypeOfSensitivePersonalData() {
+	  return typeOfSensitivePersonalData;
+  }
+
+  public void setTypeOfSensitivePersonalData(List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData) {
+	  this.typeOfSensitivePersonalData = typeOfSensitivePersonalData;
+  }
+
+  public Map<String, String> getOtherTypeOfSensitivePersonalData() {
+	  return otherTypeOfSensitivePersonalData;
+  }
+
+  public void setOtherTypeOfSensitivePersonalData(Map<String, String> otherTypeOfSensitivePersonalData) {
+	  this.otherTypeOfSensitivePersonalData = otherTypeOfSensitivePersonalData;
+  }
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -656,6 +676,8 @@ public class Study implements NodeEntity {
     getContainsSensitivePersonalData().ifPresent(v -> props.put("containsSensitivePersonalData", toPropertyValue(v)));
     props.putAll("legalBasisForHandlingSensitivePersonalData", PropertyMappings.enumsToPropertyValues(legalBasisForHandlingSensitivePersonalData));
     props.putAll("otherLegalBasisForHandlingSensitivePersonalData", toPropertyValues(otherLegalBasisForHandlingSensitivePersonalData));
+    props.putAll("typeOfSensitivePersonalData", PropertyMappings.enumsToPropertyValues(typeOfSensitivePersonalData));
+    props.putAll("otherTypeOfSensitivePersonalData", toPropertyValues(otherTypeOfSensitivePersonalData));
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
@@ -735,6 +757,8 @@ public class Study implements NodeEntity {
             && Objects.equals(containsSensitivePersonalData, study.containsSensitivePersonalData)
             && Objects.equals(legalBasisForHandlingSensitivePersonalData, study.legalBasisForHandlingSensitivePersonalData)
             && Objects.equals(otherLegalBasisForHandlingSensitivePersonalData, study.otherLegalBasisForHandlingSensitivePersonalData)
+            && Objects.equals(typeOfSensitivePersonalData, study.typeOfSensitivePersonalData)
+            && Objects.equals(otherTypeOfSensitivePersonalData, study.otherTypeOfSensitivePersonalData)
             && Objects.equals(profilingAndAutomation, study.profilingAndAutomation)
             && Objects.equals(profilingAndAutomationDescription, study.profilingAndAutomationDescription)
             // Data security
@@ -806,6 +830,8 @@ public class Study implements NodeEntity {
         containsSensitivePersonalData,
         legalBasisForHandlingSensitivePersonalData,
         otherLegalBasisForHandlingSensitivePersonalData,
+        typeOfSensitivePersonalData,
+        otherTypeOfSensitivePersonalData,
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPolicy,
@@ -863,6 +889,8 @@ public class Study implements NodeEntity {
     study.containsSensitivePersonalData = this.containsSensitivePersonalData;
     study.legalBasisForHandlingSensitivePersonalData = this.legalBasisForHandlingSensitivePersonalData;
     study.otherLegalBasisForHandlingSensitivePersonalData = this.otherLegalBasisForHandlingSensitivePersonalData;
+    study.typeOfSensitivePersonalData = this.typeOfSensitivePersonalData;
+    study.otherTypeOfSensitivePersonalData = this.otherTypeOfSensitivePersonalData;
     study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;

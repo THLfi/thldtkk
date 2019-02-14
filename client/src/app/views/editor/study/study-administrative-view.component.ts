@@ -13,6 +13,7 @@ import { LegalBasisForHandlingPersonalData } from '../../../model2/legal-basis-f
 import { LegalBasisForHandlingSensitivePersonalData } from '../../../model2/legal-basis-for-handling-sensitive-personal-data'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
+import { TypeOfSensitivePersonalData } from '../../../model2/type-of-sensitive-personal-data'
 
 @Component({
   templateUrl: './study-administrative-view.component.html',
@@ -28,7 +29,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
   confidentialityClassType = ConfidentialityClass
   legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData
   legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData
-
+  typeOfSensitivePersonalData = TypeOfSensitivePersonalData
 
   printRegisterDescriptionUrl: string
   printPrivacyNoticeUrl: string

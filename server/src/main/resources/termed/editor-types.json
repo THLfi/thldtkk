@@ -141,6 +141,12 @@
       },
       {
         "id": "otherLegalBasisForHandlingSensitivePersonalData"
+      },
+      {
+        "id": "typeOfSensitivePersonalData"
+      },
+      {
+        "id": "otherTypeOfSensitivePersonalData"
       }
     ],
     "referenceAttributes": [

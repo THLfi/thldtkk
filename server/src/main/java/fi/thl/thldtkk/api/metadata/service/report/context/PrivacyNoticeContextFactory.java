@@ -101,6 +101,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     context.setVariable("containsSensitiveData", study.getContainsSensitivePersonalData().orElse(false));
     context.setVariable("legalBasisSensitiveValues", study.getLegalBasisForHandlingSensitivePersonalData());
     context.setVariable("otherLegalBasisSensitiveValue", study.getOtherLegalBasisForHandlingSensitivePersonalData().get(lang));
+    context.setVariable("typeOfSensitivePersonalDataValues", study.getTypeOfSensitivePersonalData());
+    context.setVariable("otherTypeOfSensitivePersonalDataValue", study.getOtherTypeOfSensitivePersonalData().get(lang));
 
     context.setVariable("registerContent", study.getRegistryPolicy().get(lang));
     context.setVariable("registerSources", study.getPersonRegistrySources().get(lang));

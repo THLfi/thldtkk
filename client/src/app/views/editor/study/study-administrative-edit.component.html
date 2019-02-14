@@ -190,6 +190,25 @@
             </div>
           </div>
 
+          <div class="form-group" *ngIf="study.containsSensitivePersonalData && study.isScientificStudy">
+            <p>
+              <strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong>
+            </p>
+            <p-multiSelect [(ngModel)]="study.typeOfSensitivePersonalData"
+              [ngModelOptions]="{ standalone: true }"
+              [options]="typeOfSensitivePersonalDataOptions"
+              [filter]="false"
+              defaultLabel="{{ 'typeOfSensitivePersonalData.selectType' | translate }}"
+              inputId="typeOfSensitivePersonalData">
+            </p-multiSelect>
+
+            <input *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1"
+                [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
+                id="otherTypeOfSensitivePersonalData"
+                name="otherTypeOfSensitivePersonalData"
+                class="form-control">
+          </div>
+
           <div class="form-group" *ngIf="study.containsSensitivePersonalData">
             <p>
               <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>

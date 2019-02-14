@@ -256,6 +256,37 @@
           </div>
         </td>
       </tr>
+
+      <tr>
+        <th><h2>9<br/><span th:text="#{scientificPrivacyNotice.sensitivePersonalData}">Arkaluonteiset henkilötiedot</span></h2></th>
+        <td>
+          <div>
+            <div th:unless="${!containsSensitiveData or typeOfSensitivePersonalDataValues.isEmpty()}">
+              <p>
+                <span th:text="#{scientificPrivacyNotice.sensitivePersonalData.body}"></span>
+              </p>
+              <ul>
+                <li th:each="typeOfData : ${typeOfSensitivePersonalDataValues}">
+                  <span th:text="#{'scientificPrivacyNotice.typeOfSensitivePersonalData.' + ${typeOfData} }"></span>
+                  <span th:if="${typeOfData.name()} == 'OTHER' and ${otherTypeOfSensitivePersonalDataValue} != ''" th:text="${': ' + otherTypeOfSensitivePersonalDataValue}">: Käyttäjän antama tyyppi</span>
+                </li>
+              </ul>
+
+              <p th:text="#{privacyNotice.legalBasisForHandlingSensitivePersonalData.body}"></p>
+              <ul th:unless="${legalBasisSensitiveValues.isEmpty()}">
+                <li th:each="legalBasis : ${legalBasisSensitiveValues}">
+                  <span th:text="#{'privacyNotice.legalBasisForHandlingSensitivePersonalData.' + ${legalBasis} }"></span>
+                  <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisSensitiveValue} != ''" th:text="${': ' + otherLegalBasisSensitiveValue}">: Käyttäjän antama peruste</span>
+                </li>
+              </ul>
+            </div>
+            <div th:if="${!containsSensitiveData or typeOfSensitivePersonalDataValues.isEmpty()}">
+              <p th:text="#{scientificPrivacyNotice.noSensitivePersonalData}"></p>
+            </div>
+          </div>
+        </td>
+      </tr>
+
       <tr>
         <th rowspan="1"><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson.contactInfo}">Tietosuojavastaavan yhteystiedot</span></h2></th>
         <td>

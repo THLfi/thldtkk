@@ -65,6 +65,7 @@ public class Study implements NodeEntity {
   private Map<String, String> otherLegalBasisForHandlingSensitivePersonalData = new LinkedHashMap<>();
   private List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData = new ArrayList<>();
   private Map<String, String> otherTypeOfSensitivePersonalData = new LinkedHashMap<>();
+  private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy = new LinkedHashMap<>();
   private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
@@ -153,6 +154,7 @@ public class Study implements NodeEntity {
     this.otherLegalBasisForHandlingSensitivePersonalData = toLangValueMap(node.getProperties("otherLegalBasisForHandlingSensitivePersonalData"));
     this.typeOfSensitivePersonalData = valuesToEnumCollection(node.getProperties("typeOfSensitivePersonalData"), TypeOfSensitivePersonalData.class, ArrayList::new);
     this.otherTypeOfSensitivePersonalData = toLangValueMap(node.getProperties("otherTypeOfSensitivePersonalData"));
+    this.partiesAndSharingOfResponsibilityInCollaborativeStudy = toLangValueMap(node.getProperties("partiesAndSharingOfResponsibilityInCollaborativeStudy"));
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
@@ -482,6 +484,14 @@ public class Study implements NodeEntity {
 	  this.otherTypeOfSensitivePersonalData = otherTypeOfSensitivePersonalData;
   }
 
+  public Map<String, String> getPartiesAndSharingOfResponsibilityInCollaborativeStudy() {
+    return partiesAndSharingOfResponsibilityInCollaborativeStudy;
+  }
+
+  public void setPartiesAndSharingOfResponsibilityInCollaborativeStudy(Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy) {
+    this.partiesAndSharingOfResponsibilityInCollaborativeStudy = partiesAndSharingOfResponsibilityInCollaborativeStudy;
+  }
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -679,6 +689,7 @@ public class Study implements NodeEntity {
     props.putAll("typeOfSensitivePersonalData", PropertyMappings.enumsToPropertyValues(typeOfSensitivePersonalData));
     props.putAll("otherTypeOfSensitivePersonalData", toPropertyValues(otherTypeOfSensitivePersonalData));
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
+    props.putAll("partiesAndSharingOfResponsibilityInCollaborativeStudy", toPropertyValues(partiesAndSharingOfResponsibilityInCollaborativeStudy));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
 
@@ -759,6 +770,8 @@ public class Study implements NodeEntity {
             && Objects.equals(otherLegalBasisForHandlingSensitivePersonalData, study.otherLegalBasisForHandlingSensitivePersonalData)
             && Objects.equals(typeOfSensitivePersonalData, study.typeOfSensitivePersonalData)
             && Objects.equals(otherTypeOfSensitivePersonalData, study.otherTypeOfSensitivePersonalData)
+            && Objects.equals(partiesAndSharingOfResponsibilityInCollaborativeStudy, study.partiesAndSharingOfResponsibilityInCollaborativeStudy)
+            && Objects.equals(isScientificStudy, study.isScientificStudy)
             && Objects.equals(profilingAndAutomation, study.profilingAndAutomation)
             && Objects.equals(profilingAndAutomationDescription, study.profilingAndAutomationDescription)
             // Data security
@@ -832,6 +845,8 @@ public class Study implements NodeEntity {
         otherLegalBasisForHandlingSensitivePersonalData,
         typeOfSensitivePersonalData,
         otherTypeOfSensitivePersonalData,
+        partiesAndSharingOfResponsibilityInCollaborativeStudy,
+        isScientificStudy,
         dataProcessingStartDate,
         dataProcessingEndDate,
         retentionPolicy,
@@ -891,6 +906,7 @@ public class Study implements NodeEntity {
     study.otherLegalBasisForHandlingSensitivePersonalData = this.otherLegalBasisForHandlingSensitivePersonalData;
     study.typeOfSensitivePersonalData = this.typeOfSensitivePersonalData;
     study.otherTypeOfSensitivePersonalData = this.otherTypeOfSensitivePersonalData;
+    study.partiesAndSharingOfResponsibilityInCollaborativeStudy = this.partiesAndSharingOfResponsibilityInCollaborativeStudy;
     study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;

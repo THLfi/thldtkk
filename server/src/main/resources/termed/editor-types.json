@@ -73,6 +73,9 @@
         "regex": "^(true|false|^$)$"
       },
       {
+        "id": "partiesAndSharingOfResponsibilityInCollaborativeStudy"
+      },
+      {
         "id": "profilingAndAutomation",
         "regex": "^(true|false|^$)$"
       },

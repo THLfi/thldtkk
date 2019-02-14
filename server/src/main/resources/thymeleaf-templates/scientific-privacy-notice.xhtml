@@ -195,19 +195,16 @@
         </td>
       </tr>
       <tr>
-        <th rowspan="2"><h2>2<br/><span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2></th>
+        <th>
+          <h2>
+            3<br/>
+            <span th:text="#{scientificPrivacyNotice.partiesAndSharingOfResponsibilityInCollaborativeStudy.header}">
+              Yhteistyöhankkeena tehtävän tutkimuksen osapuolet ja vastuunjako
+            </span>
+          </h2>
+        </th>
         <td>
-          <div th:text="#{privacyNotice.contactPerson.name}" class="label">Nimi</div>
-          <div th:text="${contactPersonName}"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{privacyNotice.contactPerson.otherInfo}" class="label">Muut yhteystiedot</div>
-          <div th:if="${contactPerson != null}">
-            <div th:if="${contactPerson.getEmail().isPresent()}"><span th:text="${contactPerson.getEmail().get()}"></span></div>
-            <div th:if="${contactPerson.getPhone().isPresent()}"><span th:text="${contactPerson.getPhone().get()}"></span></div>
-          </div>
+          <div th:text="${#strings.defaultString(partiesAndSharingOfResponsibilityInCollaborativeStudy,#messages.msg('scientificPrivacyNotice.partiesAndSharingOfResponsibilityInCollaborativeStudy.defaultText'))}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>

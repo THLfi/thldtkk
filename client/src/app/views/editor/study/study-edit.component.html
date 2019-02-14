@@ -305,6 +305,21 @@
         </div>
 
         <div class="form-group">
+          <label for="partiesAndSharingOfResponsibilityInCollaborativeStudy">
+            {{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}
+            <editor-help-link [helpTextComponent]="partiesAndSharingOfResponsibilityInCollaborativeStudyHelpText"></editor-help-link>
+          </label>
+          <textarea [(ngModel)]="study.partiesAndSharingOfResponsibilityInCollaborativeStudy[language]"
+                    thlAutogrow
+                    id="partiesAndSharingOfResponsibilityInCollaborativeStudy"
+                    name="partiesAndSharingOfResponsibilityInCollaborativeStudy"
+                    class="form-control"
+                    rows="3">
+          </textarea>
+          <editor-help-text #partiesAndSharingOfResponsibilityInCollaborativeStudyHelpText key="editor.study.partiesAndSharingOfResponsibilityInCollaborativeStudy.helpText"></editor-help-text>
+        </div>
+
+        <div class="form-group">
           <label>
             {{ 'links' | translate }}
             <editor-help-link [helpTextComponent]="linksHelpText"></editor-help-link>

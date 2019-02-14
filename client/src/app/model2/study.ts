@@ -56,6 +56,7 @@ export interface Study extends Node {
   otherLegalBasisForHandlingSensitivePersonalData?: LangValues
   typeOfSensitivePersonalData: TypeOfSensitivePersonalData[]
   otherTypeOfSensitivePersonalData?: LangValues
+  partiesAndSharingOfResponsibilityInCollaborativeStudy?: LangValues
   isScientificStudy?: boolean,
   profilingAndAutomation?: boolean
   profilingAndAutomationDescription?: LangValues

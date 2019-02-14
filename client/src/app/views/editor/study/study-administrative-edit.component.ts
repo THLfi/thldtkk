@@ -275,7 +275,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       }
       this.study.systemInRoles = [ ...this.study.systemInRoles,systemInRole ]
     }
-
+    
     ngAfterContentChecked(): void {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {

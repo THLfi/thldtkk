@@ -1,40 +1,38 @@
-package fi.thl.thldtkk.api.metadata.service.impl;
+package fi.thl.thldtkk.api.metadata.service.report.context;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
-import fi.thl.thldtkk.api.metadata.service.StudyReportService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.springframework.util.StringUtils;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class ScientificPrivacyNoticeReportService implements StudyReportService {
+public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
   private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
   private static final String REGISTRY_SUPERVISOR = "Rekisterivastaava";
   private static final String CONTACT_PERSON = "Yhteyshenkilö";
 
+  private final UUID studyId;
+  private final String lang;
   private final EditorStudyService editorStudyService;
-  private final TemplateEngine templateEngine;
 
-  public ScientificPrivacyNoticeReportService(EditorStudyService editorStudyService, TemplateEngine templateEngine) {
+  public PrivacyNoticeContextFactory(UUID studyId, String lang, EditorStudyService editorStudyService) {
+    this.studyId = studyId;
+    this.lang = lang;
     this.editorStudyService = editorStudyService;
-    this.templateEngine = templateEngine;
   }
 
   @Override
-  public byte[] generatePDFReport(UUID studyId, String lang) {
+  public Context makeContext() {
     Context context = new Context(new Locale(lang));
 
     Study study = editorStudyService.get(studyId)
@@ -100,7 +98,7 @@ public class ScientificPrivacyNoticeReportService implements StudyReportService 
     Optional<Boolean> profilingAndAutomation = study.getProfilingAndAutomation();
     String profilingAndAutomationDescription = "";
     if (profilingAndAutomation.orElse(false)) {
-      profilingAndAutomationDescription = study.getProfilingAndAutomationDescription().get(lang);
+        profilingAndAutomationDescription = study.getProfilingAndAutomationDescription().get(lang);
     }
     context.setVariable("profilingAndAutomation", profilingAndAutomation);
     context.setVariable("profilingAndAutomationDescription", profilingAndAutomationDescription);
@@ -108,22 +106,7 @@ public class ScientificPrivacyNoticeReportService implements StudyReportService 
     context.setVariable("principlesForPhysicalSecurity", study.getPrinciplesForPhysicalSecurity());
     context.setVariable("principlesForDigitalSecurity", study.getPrinciplesForDigitalSecurity());
 
-    String template = templateEngine.process("scientific-privacy-notice", context);
-
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-    ITextRenderer renderer = new ITextRenderer();
-    renderer.setDocumentFromString(template);
-    renderer.layout();
-    try {
-      renderer.createPDF(bytes);
-      bytes.close();
-    }
-    catch (Exception e) {
-      throw new RuntimeException("Failed to generate register description for study '" + studyId + "'", e);
-    }
-
-    return bytes.toByteArray();
+    return context;
   }
 
   private String getRegistrarName(Organization organization, String lang) {

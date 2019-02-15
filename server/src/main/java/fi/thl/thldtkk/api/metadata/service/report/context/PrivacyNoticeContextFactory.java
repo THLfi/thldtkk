@@ -20,6 +20,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
   private static final String DATA_PROTECTION_PERSON = "Tietosuojavastaava";
   private static final String REGISTRY_SUPERVISOR = "Rekisterivastaava";
   private static final String CONTACT_PERSON = "Yhteyshenkilö";
+  private static final String PRINCIPAL_INVESTIGATOR = "Tutkimuksen vastuullinen johtaja";
 
   private final UUID studyId;
   private final String lang;
@@ -78,6 +79,16 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
         context.setVariable("dataProtectionPerson", unwrappedPerson);
         context.setVariable("dataProtectionPersonName", getPersonName(unwrappedPerson));
       }
+
+      personsWithAssociations.stream()
+        .filter(personInRole -> personInRole.getRole().get().getPrefLabel().get("fi").equals(PRINCIPAL_INVESTIGATOR))
+        .findFirst()
+        .flatMap(PersonInRole::getPerson)
+        .ifPresent(principalInvestigator -> {
+          context.setVariable("principalInvestigatorName", getPersonName(principalInvestigator));
+          context.setVariable("principalInvestigatorPhone", principalInvestigator.getPhone().orElse(""));
+          context.setVariable("principalInvestigatorEmail", principalInvestigator.getEmail().orElse(""));
+        });
     }
 
     context.setVariable("description", study.getDescription().get(lang));

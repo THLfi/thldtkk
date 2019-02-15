@@ -343,12 +343,6 @@
         </td>
       </tr>
       <tr>
-        <th><h2>8<br/><span th:text="#{privacyNotice.dataTransfers}">Henkilötietojen siirto tai luovuttaminen</span></h2></th>
-        <td>
-          <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
         <th><h2>9<br/><span th:utext="#{privacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
         <td>
           <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
@@ -381,6 +375,12 @@
               <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>
             </ul>
           </div>
+        </td>
+      </tr>
+      <tr>
+        <th><h2>12<br/><span th:text="#{scientificPrivacyNotice.dataTransfers}">Tietojen siirto tai luovuttaminen tutkimusryhmän ulkopuolelle</span></h2></th>
+        <td>
+          <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>

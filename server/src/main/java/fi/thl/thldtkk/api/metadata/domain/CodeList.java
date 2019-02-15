@@ -23,7 +23,7 @@ public class CodeList {
 
   public static final String CODE_LIST_TYPE_EXTERNAL = "external";
   public static final String CODE_LIST_TYPE_INTERNAL = "internal";
-  private static final String TERMED_NODE_CLASS = "CodeList";
+  public static final String TERMED_NODE_CLASS = "CodeList";
 
   private UUID id;
   @NotNull

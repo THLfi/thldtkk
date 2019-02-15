@@ -169,11 +169,10 @@ public class CodeListServiceImpl implements CodeListService {
     List<Node> nodesToDelete = new LinkedList<>();
 
     CodeList codeList = get(id).orElseThrow(NotFoundException::new);
-    nodesToDelete.add(codeList.toNode());
-
     codeList.getCodeItems().forEach(ci -> nodesToDelete.add(ci.toNode()));
 
     nodes.delete(nodesToDelete.stream().map(NodeId::new).collect(toList()));
+    nodes.delete(new NodeId(id, CodeList.TERMED_NODE_CLASS), true);
   }
 
 }

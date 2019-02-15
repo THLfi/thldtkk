@@ -284,20 +284,22 @@
           <div th:text="${registerSources}" class="preserve-line-breaks"></div>
         </td>
       </tr>
-      <tr th:if="${studyType.isPresent()}">
+      <tr>
         <th rowspan="3"><h2>7<br/><span th:text="#{scientificPrivacyNotice.NameNatureAndDuration}">Tutkimuksen nimi, luonne ja kestoaika</span></h2></th>
         <td>
           <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.name}" class="label">Nimi</div>
           <div th:text="${studyName}"></div>
         </td>
       </tr>
-      <tr th:if="${studyType.isPresent()}">
+      <tr>
         <td>
-          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.nature}" class="label">Luonne</div>
-          <div th:text="#{ 'scientificPrivacyNotice.studyType.' + ${studyType.get()} }"></div>
+          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.studyType}" class="label">Tutkimuksen tyyppi</div>
+          <div>
+            <span th:if="${studyType.isPresent()}" th:text="#{ 'scientificPrivacyNotice.studyType.' + ${studyType.get()} }"></span>
+          </div>
         </td>
       </tr>
-      <tr th:if="${studyType.isPresent()}">
+      <tr>
         <td>
           <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.duration}" class="label">Tutkimuksen kestoaika (kuinka kauan henkilötietoja käsitellään)</div>
           <div>

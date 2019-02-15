@@ -62,7 +62,7 @@ public class VariableServiceImpl implements VariableService {
   @AdminOnly
   @Override
   public void delete(UUID id) {
-    nodes.delete(new NodeId(id, Variable.TERMED_NODE_CLASS));
+    nodes.delete(new NodeId(id, Variable.TERMED_NODE_CLASS), true);
   }
 
   @Override

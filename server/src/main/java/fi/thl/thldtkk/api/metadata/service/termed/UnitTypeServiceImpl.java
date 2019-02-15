@@ -64,7 +64,7 @@ public class UnitTypeServiceImpl implements UnitTypeService {
   @Override
   public void delete(UUID id) {
     UnitType unitType = get(id).orElseThrow(NotFoundException::new);
-    nodes.delete(new NodeId(unitType.toNode()));
+    nodes.delete(new NodeId(unitType.toNode()), true);
   }
 
   @Override

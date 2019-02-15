@@ -63,6 +63,6 @@ public class UniverseServiceImpl implements UniverseService {
   @Override
   public void delete(UUID id) {
     Universe universe = get(id).orElseThrow(NotFoundException::new);
-    nodes.delete(new NodeId(universe.toNode()));
+    nodes.delete(new NodeId(universe.toNode()), true);
   }
 }

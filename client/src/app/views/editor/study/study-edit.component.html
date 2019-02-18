@@ -320,6 +320,21 @@
         </div>
 
         <div class="form-group">
+          <label for="studyPerformers">
+            {{ 'studyPerformers' | translate }}
+            <editor-help-link [helpTextComponent]="studyPerformersHelpText"></editor-help-link>
+          </label>
+          <textarea [(ngModel)]="study.studyPerformers[language]"
+                    thlAutogrow
+                    id="studyPerformers"
+                    name="studyPerformers"
+                    class="form-control"
+                    rows="3">
+          </textarea>
+          <editor-help-text #studyPerformersHelpText key="editor.study.studyPerformers.helpText"></editor-help-text>
+        </div>
+
+        <div class="form-group">
           <label>
             {{ 'links' | translate }}
             <editor-help-link [helpTextComponent]="linksHelpText"></editor-help-link>

@@ -76,6 +76,9 @@
         "id": "partiesAndSharingOfResponsibilityInCollaborativeStudy"
       },
       {
+        "id": "studyPerformers"
+      },
+      {
         "id": "profilingAndAutomation",
         "regex": "^(true|false|^$)$"
       },

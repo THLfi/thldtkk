@@ -66,6 +66,7 @@ public class Study implements NodeEntity {
   private List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData = new ArrayList<>();
   private Map<String, String> otherTypeOfSensitivePersonalData = new LinkedHashMap<>();
   private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy = new LinkedHashMap<>();
+  private Map<String, String> studyPerformers = new LinkedHashMap<>();
   private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
@@ -155,6 +156,7 @@ public class Study implements NodeEntity {
     this.typeOfSensitivePersonalData = valuesToEnumCollection(node.getProperties("typeOfSensitivePersonalData"), TypeOfSensitivePersonalData.class, ArrayList::new);
     this.otherTypeOfSensitivePersonalData = toLangValueMap(node.getProperties("otherTypeOfSensitivePersonalData"));
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = toLangValueMap(node.getProperties("partiesAndSharingOfResponsibilityInCollaborativeStudy"));
+    this.studyPerformers = toLangValueMap(node.getProperties("studyPerformers"));
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
@@ -492,6 +494,10 @@ public class Study implements NodeEntity {
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = partiesAndSharingOfResponsibilityInCollaborativeStudy;
   }
 
+  public Map<String, String> getStudyPerformers() {
+    return studyPerformers;
+  }
+
   public Optional<LocalDate> getDataProcessingStartDate() {
     return Optional.ofNullable(dataProcessingStartDate);
   }
@@ -690,6 +696,7 @@ public class Study implements NodeEntity {
     props.putAll("otherTypeOfSensitivePersonalData", toPropertyValues(otherTypeOfSensitivePersonalData));
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
     props.putAll("partiesAndSharingOfResponsibilityInCollaborativeStudy", toPropertyValues(partiesAndSharingOfResponsibilityInCollaborativeStudy));
+    props.putAll("studyPerformers", toPropertyValues(studyPerformers));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
 
@@ -846,6 +853,7 @@ public class Study implements NodeEntity {
         typeOfSensitivePersonalData,
         otherTypeOfSensitivePersonalData,
         partiesAndSharingOfResponsibilityInCollaborativeStudy,
+        studyPerformers,
         isScientificStudy,
         dataProcessingStartDate,
         dataProcessingEndDate,
@@ -907,6 +915,7 @@ public class Study implements NodeEntity {
     study.typeOfSensitivePersonalData = this.typeOfSensitivePersonalData;
     study.otherTypeOfSensitivePersonalData = this.otherTypeOfSensitivePersonalData;
     study.partiesAndSharingOfResponsibilityInCollaborativeStudy = this.partiesAndSharingOfResponsibilityInCollaborativeStudy;
+    study.studyPerformers = this.studyPerformers;
     study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;

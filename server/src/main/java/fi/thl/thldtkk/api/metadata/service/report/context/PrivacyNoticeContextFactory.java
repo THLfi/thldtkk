@@ -109,6 +109,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     context.setVariable("dataTransfers", study.getPersonRegisterDataTransfers().get(lang));
     context.setVariable("dataTransfersOutsideEuOrEea", study.getPersonRegisterDataTransfersOutsideEuOrEta().get(lang));
 
+    context.setVariable("studyPerformers", study.getStudyPerformers().get(lang));
+
     Optional<Boolean> profilingAndAutomation = study.getProfilingAndAutomation();
     String profilingAndAutomationDescription = "";
     if (profilingAndAutomation.orElse(false)) {

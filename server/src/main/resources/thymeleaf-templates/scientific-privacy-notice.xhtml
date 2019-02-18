@@ -340,12 +340,6 @@
         </td>
       </tr>
       <tr>
-        <th><h2>9<br/><span th:utext="#{privacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto<br/>EU:n tai ETA:n ulkopuolelle</span></h2></th>
-        <td>
-          <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
         <th><h2>9<br/><span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2></th>
         <td th:switch="${profilingAndAutomation.orElse(null)}">
           <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
@@ -384,6 +378,12 @@
         <th><h2>14<br/><span th:utext="#{scientificPrivacyNotice.automatedDecisionMaking}">Automatisoitu päätöksenteko</span></h2></th>
         <td>
           <div th:text="#{scientificPrivacyNotice.automatedDecisionMaking.body}">Automaattisia päätöksiä ei tehdä tieteellisessä tutkimuksessa</div>
+        </td>
+      </tr>
+      <tr>
+        <th><h2>13<br/><span th:utext="#{scientificPrivacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirtäminen ja luovuttaminen<br/> EU:n tai Euroopan talousalueen ulkopuolelle</span></h2></th>
+        <td>
+          <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
         </td>
       </tr>
     </table>

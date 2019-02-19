@@ -349,9 +349,9 @@
       </tr>
 
       <tr>
-        <th><h2>11<br/><span>Mistä lähteistä henkilötietoja kerätään</span></h2></th>
+        <th><h2>11<br/><span th:text="#{scientificPrivacyNotice.registerSources}">Mistä lähteistä henkilötietoja kerätään</span></h2></th>
         <td>
-          TODO
+          <div th:text="${registerSources}" class="preserve-line-breaks"></div>
         </td>
       </tr>
 

@@ -51,6 +51,10 @@
         text-transform: uppercase;
       }
 
+      .section {
+        page-break-inside: avoid;
+      }
+
       .header {
         margin-left: 50%;
         font-weight: bold;
@@ -116,6 +120,21 @@
         white-space: pre-line;
       }
 
+      .legal-rights-section h2 {
+        font-size: 1.2em;
+      }
+
+      .legal-rights-section h3 {
+        font-weight: 500;
+        font-size: 1.1em;
+      }
+
+      ol.alphabetical-list {
+         list-style-type: none;
+         padding-left: 1rem;
+      }
+      ol.alphabetical-list li { counter-increment: section; }
+      ol.alphabetical-list li:before { content: counter(section, lower-alpha) ") "; }
     </style>
   </head>
 
@@ -379,6 +398,127 @@ ulkopuolelle</span></h2></th>
         </td>
       </tr>
     </table>
+
+    <div class="legal-rights-section">
+      <div class="section">
+        <h2>17. <span th:text="#{scientificPrivacyNotice.yourRights.title}">Rekisteröidyn oikeudet ja niiden mahdollinen rajoittaminen</span></h2>
+        <p th:utext="#{scientificPrivacyNotice.yourRights.introduction}">
+          Tietosuojalainsäädäntö takaa tutkittavalle tiettyä oikeuksia, joilla
+          tutkittava voi varmistaa perusoikeuksiin kuuluvan yksityisyyden
+          suojan toteutumisen. Mikäli haluat käyttää oikeuttasi, ota yhteyttä
+          organisaation kirjaamoon tai kohdassa 1. mainittuun yhteyshenkilöön.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToCancelConsent.title}">
+          Suostumuksen peruuttaminen (tietosuoja-asetuksen 7 artikla)
+        </h3>
+        <p th:text="#{scientificPrivacyNotice.yourRights.rightToCancelConsent.body}">
+          Sinulla on oikeus peruuttaa antamasi suostumus, mikäli
+          henkilötietojen käsittely perustuu suostumukseen. Suostumuksen
+          peruuttaminen ei vaikuta suostumuksen perusteella ennen sen
+          peruuttamista suoritetun käsittelyn lainmukaisuuteen.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToInformation.title}">
+          Oikeus saada pääsy tietoihin (tietosuoja-asetuksen 15 artikla)
+        </h3>
+        <p th:text="#{scientificPrivacyNotice.yourRights.rightToInformation.body}">
+          Sinulla on oikeus saada tieto siitä, käsitelläänkö henkilötietojasi
+          tutkimuksessa ja mitä henkilötietojasi tutkimuksessa käsitellään.
+          Voit myös halutessasi pyytää jäljennöksen käsiteltävistä
+          henkilötiedoista.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToCorrect.title}">
+          Oikeus tietojen oikaisemiseen (tietosuoja-asetuksen 16 artikla)
+        </h3>
+        <p th:text="#{scientificPrivacyNotice.yourRights.rightToCorrect.body}">
+          Jos käsiteltävissä henkilötiedoissasi on epätarkkuuksia tai
+          virheitä, sinulla on oikeus pyytää niiden oikaisua tai täydennystä.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.title}">
+          Oikeus tietojen poistamiseen (tietosuoja-asetuksen 17 artikla)
+        </h3>
+        <p th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.body}">
+          Sinulla on oikeus vaatia henkilötietojesi poistamista seuraavissa tapauksissa:
+        </p>
+
+        <ol class="alphabetical-list">
+          <li th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.noLongerNeeded}">
+            henkilötietoja ei enää tarvita niihin tarkoituksiin, joita varten
+            ne kerättiin tai joita varten niitä muutoin käsiteltiin
+          </li>
+          <li th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.cancelConsent}">
+            peruutat suostumuksen, johon käsittely on perustunut, eikä
+            käsittelyyn ole muuta laillista perustetta
+          </li>
+          <li th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.resistProcessing}">
+            vastustat käsittelyä eikä käsittelyyn ole olemassa perusteltua syytä
+          </li>
+          <li th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.illegalHandling}">
+            henkilötietoja on käsitelty lainvastaisesti; tai
+          </li>
+          <li th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.legalGrounds}">
+            henkilötiedot on poistettava unionin oikeuteen tai jäsenvaltion
+            lainsäädäntöön perustuvan rekisterinpitäjään sovellettavan
+            lakisääteisen velvoitteen noudattamiseksi.
+          </li>
+        </ol>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToRemoval.exclusions.title}">Oikeuksista poikkeaminen</h3>
+        <p th:utext="#{scientificPrivacyNotice.yourRights.rightToRemoval.exclusions.body}">
+          Tässä kohdassa <strong>17 Mitä oikeuksia sinulla on ja oikeuksista
+          poikkeaminen</strong> kuvatuista oikeuksista saatetaan poiketa tietosuojaa
+          koskevan lainsäädännön mukaisilla perusteilla siltä osin, kuin
+          oikeudet estävät tieteellisen tai historiallisen tutkimustarkoituksen
+          tai tilastollisen tarkoituksen saavuttamisen tai vaikeuttavat sitä
+          suuresti. Tarvetta poiketa oikeuksista arvioidaan aina
+          tapauskohtaisesti.
+          <br/> <br/>
+          <strong>Mikäli haluat käyttää oikeuttasi, ota yhteyttä organisaation kirjaamoon.</strong>
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.contacts.title}">Yhteydenotot</h3>
+        <p th:utext="#{scientificPrivacyNotice.yourRights.contacts.body}">
+          Mikäli sinulla on kysyttävää oikeuksista, ota yhteyttä organisaation
+          kirjaamoon tai kohdassa 1. mainittuun yhteyshenkilöön.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3 th:text="#{scientificPrivacyNotice.yourRights.rightToEscalate.title}">Oikeus saattaa asia tietosuojavaltuutetun käsiteltäväksi</h3>
+        <p th:text="#{scientificPrivacyNotice.yourRights.rightToEscalate.body}">
+          Sinulla on oikeus saattaa asia tietosuojavaltuutetun toimiston
+          käsiteltäväksi, mikäli katsot, että henkilötietojesi käsittelyssä on rikottu
+          voimassa olevaa tietosuojalainsäädäntöä.
+        </p>
+      </div>
+
+      <div class="section">
+        <p th:text="#{scientificPrivacyNotice.yourRights.contactDetails.title}">Yhteystiedot:</p>
+        <p th:utext="#{scientificPrivacyNotice.yourRights.contactDetails.body}">
+          <strong>Tietosuojavaltuutetun toimisto</strong><br/>
+          Käyntiosoite: Ratapihantie 9, 6. krs, 00520 Helsinki<br/>
+          Postiosoite: PL 800, 00521 Helsinki<br/>
+          Vaihde: 029 56 66700<br/>
+          Faksi: 029 56 66735<br/>
+          Sähköposti: <a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>
+        </p>
+      </div>
+    </div>
 
   </body>
 

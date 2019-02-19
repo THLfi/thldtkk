@@ -4,8 +4,7 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 
 /**
- * A helper class for tests based Object Builder pattern.
- * See e.g. http://blog.haystacktrace.com/test-object-builders-for-unit-testing/ for more.
+ * A helper class for tests based on Object Builder pattern.
  */
 public class a {
 

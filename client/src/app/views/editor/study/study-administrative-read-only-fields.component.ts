@@ -98,7 +98,7 @@ import { Study } from '../../../model2/study'
      class="row">
   <div class="col-xs-12">
     <p><strong class="field-label">{{ 'population' | translate }}</strong></p>
-    <p>{{ study.population.prefLabel | lang }}</p>
+    <p class="preserve-line-breaks">{{ study.population.prefLabel | lang }}</p>
   </div>
 </div>
 

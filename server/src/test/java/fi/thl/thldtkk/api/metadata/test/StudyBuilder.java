@@ -14,22 +14,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static fi.thl.thldtkk.api.metadata.test.Constants.DEFAULT_LANG;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 
 public class StudyBuilder {
 
-  public static final String DEFAULT_LANG = "fi";
-
   private UUID id;
   private Date lastModifiedDate;
   private Map<String, String> prefLabel;
+  private Map<String, String> description;
   private Map<String, String> registryPolicy;
   private Map<String, String> purposeOfPersonRegistry;
   private Map<String, String> usageOfPersonalInformation;
   private Map<String, String> personRegistrySources;
   private Map<String, String> personRegisterDataTransfers;
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea;
+  private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy;
+  private Boolean organizationsAreJointControllers;
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private Organization ownerOrganization;
@@ -65,6 +67,17 @@ public class StudyBuilder {
     Map<String, String> langValues = new LinkedHashMap<>();
     langValues.put(DEFAULT_LANG, prefLabelValue);
     return withPrefLabel(langValues);
+  }
+
+  public StudyBuilder withDescription(Map<String, String> description) {
+    this.description = description;
+    return this;
+  }
+
+  public StudyBuilder withDescription(String descriptionValue) {
+    Map<String, String> langValues = new LinkedHashMap<>();
+    langValues.put(DEFAULT_LANG, descriptionValue);
+    return withDescription(langValues);
   }
 
   public StudyBuilder withRegistryPolicy(Map<String, String> registryPolicy) {
@@ -133,6 +146,24 @@ public class StudyBuilder {
     return withPersonRegisterDataTransfersOutsideEuOrEea(langValues);
   }
 
+
+  public StudyBuilder withPartiesAndSharingOfResponsibilityInCollaborativeStudy(Map<String, String> value) {
+    this.partiesAndSharingOfResponsibilityInCollaborativeStudy = value;
+    return this;
+  }
+
+  public StudyBuilder withPartiesAndSharingOfResponsibilityInCollaborativeStudy(String value) {
+    Map<String, String> langValues = new LinkedHashMap<>();
+    langValues.put(DEFAULT_LANG, value);
+    return withPartiesAndSharingOfResponsibilityInCollaborativeStudy(langValues);
+  }
+
+
+  public StudyBuilder withOrganizationsAreJointControllers(Boolean organizationsAreJointControllers) {
+    this.organizationsAreJointControllers = organizationsAreJointControllers;
+    return this;
+  }
+
   public StudyBuilder withPrinciplesForPhysicalSecurity(PrincipleForPhysicalSecurity... principles) {
     this.principlesForPhysicalSecurity = asList(principles);
     return this;
@@ -168,6 +199,7 @@ public class StudyBuilder {
       id,
       lastModifiedDate,
       prefLabel,
+      description,
       registryPolicy,
       purposeOfPersonRegistry,
       usageOfPersonalInformation,
@@ -176,6 +208,8 @@ public class StudyBuilder {
       personRegisterDataTransfersOutsideEuOrEea,
       principlesForPhysicalSecurity,
       principlesForDigitalSecurity,
+      partiesAndSharingOfResponsibilityInCollaborativeStudy,
+      organizationsAreJointControllers,
       ownerOrganization,
       personInRoles,
       datasets,

@@ -144,7 +144,7 @@
 
     </div>
 
-    <p th:text="#{privacyNotice.introduction(${registrarName}, ${purposeOfPersonRegister})}">
+    <p th:text="#{privacyNotice.introduction(${controllerName}, ${purposeOfPersonRegister})}">
       {0} käsittelee henkilötietoja lakisääteisten tehtäviensä hoitamista varten. Organisaatio noudattaa henkilötietojen
       käsittelyssä voimassa olevaa tietosuojalainsäädäntöä ja huolehtii, että tietoturva on asianmukaisella tasolla.
       Tässä ilmoituksessa kerromme tarkemmin kuinka organisaatio käsittelee henkilötietojasi {1} varten.
@@ -152,24 +152,24 @@
 
     <table>
       <tr>
-        <th rowspan="3"><h2>1<br/><span th:text="#{privacyNotice.registrar}">Rekisterinpitäjä</span></h2></th>
+        <th rowspan="3"><h2>1<br/><span th:text="#{privacyNotice.controller}">Rekisterinpitäjä</span></h2></th>
         <td>
-          <div th:text="#{privacyNotice.registrar.name}" class="label">Nimi</div>
-          <div th:text="${registrarName}"></div>
+          <div th:text="#{privacyNotice.controller.name}" class="label">Nimi</div>
+          <div th:text="${controllerName}"></div>
           <div></div>
-          <div th:text="#{privacyNotice.registrar.controller}" class="label">Yllämainittu organisaatio päättää ja vastaa henkilötietojen käsittelystä tässä ilmoituksessa kerrottua tarkoitusta varten eli on näiden tietojen osalta rekisterinpitäjä.</div>
+          <div th:text="#{privacyNotice.controller.controller}" class="label">Yllämainittu organisaatio päättää ja vastaa henkilötietojen käsittelystä tässä ilmoituksessa kerrottua tarkoitusta varten eli on näiden tietojen osalta rekisterinpitäjä.</div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{privacyNotice.registrar.address}" class="label">Osoite</div>
-          <div th:text="${registrarAddress}" class="preserve-line-breaks"></div>
+          <div th:text="#{privacyNotice.controller.address}" class="label">Osoite</div>
+          <div th:text="${controllerAddress}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
         <td>
-          <div th:text="#{privacyNotice.registrar.otherInfo}" class="label">Muut yhteystiedot</div>
-          <div th:text="${registrarOtherInfo}" class="preserve-line-breaks"></div>
+          <div th:text="#{privacyNotice.controller.otherInfo}" class="label">Muut yhteystiedot</div>
+          <div th:text="${controllerOtherInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
       <tr>
@@ -270,7 +270,7 @@
         <th><h2>9<br/><span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2></th>
         <td th:switch="${profilingAndAutomation.orElse(null)}">
           <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
-          <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${registrarName})}" class="preserve-line-breaks"></div>
+          <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${controllerName})}" class="preserve-line-breaks"></div>
           <div th:case="*" class="preserve-line-breaks"></div>
         </td>
       </tr>

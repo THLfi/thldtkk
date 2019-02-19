@@ -53,18 +53,12 @@
 
       .header {
         margin-left: 50%;
-      }
-
-      .law-reference {
         font-weight: bold;
       }
 
-      .date {
-        width: 12em;
-        margin-top: .2em;
-        margin-bottom: 1em;
-        padding: .2em .3em;
-        border: 1px solid black;
+      .header > .law-reference,
+      .header > .date {
+        font-weight: normal;
       }
 
       .label {
@@ -122,10 +116,6 @@
         white-space: pre-line;
       }
 
-      .no-bottom-border {
-        border-bottom: 0;
-      }
-
     </style>
   </head>
 
@@ -137,16 +127,13 @@
 
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
 
-      <div class="date">
-        <div th:text="#{privacyNotice.date}" class="label">Laatimispäivä</div>
-        <div th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}">12.02.2019</div>
-      </div>
+      <div th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}" class="date">12.02.2019</div>
 
     </div>
 
     <h2 th:text="#{scientificPrivacyNotice.introductionHeader}">Tietoa tutkimukseen osallistuvalle</h2>
 
-    <p th:text="#{scienfiticPrivacyNotice.introduction(${registrarName})}">
+    <p th:text="#{scienfiticPrivacyNotice.introduction(${controllerName})}">
       Tässä selosteessa kuvataan, miten henkilötietojasi käsitellään [AINEISTOKUVAUKSEN ORGANISAATIO TÄHÄN] tutkimuksessa.
       Lähtökohtaisesti tutkimukseen osallistuminen on vapaaehtoista. Sinuun ei kohdistu mitään negatiivista seuraamusta,
       jos et osallistu tutkimukseen tai jos keskeytät osallistumisesi tutkimukseen. Jos keskeytät osallistumisesi
@@ -154,32 +141,29 @@
       kohdassa 17 kerrotaan tarkemmin, mitä oikeuksia sinulla on ja miten voit vaikuttaa tietojesi käsittelyyn.
     </p>
 
-    <p th:text="#{privacyNotice.introduction(${registrarName}, ${purposeOfPersonRegister})}">
-      {0} käsittelee henkilötietoja lakisääteisten tehtäviensä hoitamista varten. Organisaatio noudattaa henkilötietojen
-      käsittelyssä voimassa olevaa tietosuojalainsäädäntöä ja huolehtii, että tietoturva on asianmukaisella tasolla.
-      Tässä ilmoituksessa kerromme tarkemmin kuinka organisaatio käsittelee henkilötietojasi {1} varten.
-    </p>
-
     <table>
       <tr>
-        <th rowspan="3"><h2>1<br/><span th:text="#{scientificPrivacyNotice.registrar}">Tutkimuksen rekisterinpitäjä</span></h2></th>
+        <th rowspan="3"><h2>1<br/><span th:text="#{scientificPrivacyNotice.controller}">Tutkimuksen rekisterinpitäjä</span></h2></th>
         <td>
-          <div th:text="#{privacyNotice.registrar.name}" class="label">Nimi</div>
-          <div th:text="${registrarName}"></div>
+          <div th:text="#{privacyNotice.controller.name}" class="label">Nimi</div>
+          <div th:text="${controllerName}"></div>
         </td>
       </tr>
+
       <tr>
         <td>
-          <div th:text="#{privacyNotice.registrar.address}" class="label">Osoite</div>
-          <div th:text="${registrarAddress}" class="preserve-line-breaks"></div>
+          <div th:text="#{privacyNotice.controller.address}" class="label">Osoite</div>
+          <div th:text="${controllerAddress}" class="preserve-line-breaks"></div>
         </td>
       </tr>
+
       <tr>
         <td>
-          <div th:text="#{privacyNotice.registrar.otherInfo}" class="label">Muut yhteystiedot</div>
-          <div th:text="${registrarOtherInfo}" class="preserve-line-breaks"></div>
+          <div th:text="#{privacyNotice.controller.otherInfo}" class="label">Muut yhteystiedot</div>
+          <div th:text="${controllerOtherInfo}" class="preserve-line-breaks"></div>
         </td>
       </tr>
+
       <tr>
         <th>
           <h2>
@@ -190,10 +174,14 @@
           </h2>
         </th>
         <td>
-          <div th:text="${description}" class="preserve-line-breaks"></div>
+          <div th:if="${description}"
+               th:text="${description}"
+               class="preserve-line-breaks"></div>
+          <br th:if="${description}" />
           <div th:text="${purposeOfPersonRegister}" class="preserve-line-breaks"></div>
         </td>
       </tr>
+
       <tr>
         <th>
           <h2>
@@ -204,37 +192,87 @@
           </h2>
         </th>
         <td>
-          <div th:text="${#strings.defaultString(partiesAndSharingOfResponsibilityInCollaborativeStudy,#messages.msg('scientificPrivacyNotice.partiesAndSharingOfResponsibilityInCollaborativeStudy.defaultText'))}" class="preserve-line-breaks"></div>
+          <div th:if="not ${partiesAndSharingOfResponsibilityInCollaborativeStudy}"
+               th:text="#{scientificPrivacyNotice.partiesAndSharingOfResponsibilityInCollaborativeStudy.defaultText}"
+               class="preserve-line-breaks"></div>
+          <div th:if="${partiesAndSharingOfResponsibilityInCollaborativeStudy}">
+            <div th:if="${organizationsAreJointControllers}">
+              <div th:text="${partiesAndSharingOfResponsibilityInCollaborativeStudy}"
+                   class="preserve-line-breaks">Tässä kuvataan osapuolten vastuunjako.</div>
+              <br/>
+              <div th:text="#{scientificPrivacyNotice.jointControllers(${contactPersonNameAndContactInformation})}"
+                   class="preserve-line-breaks">Kohdassa 1 luetellut organisaatiot toimivat tässä tutkimuksessa yhteisrekisterinpitäjinä, eli ne määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot.
+
+              Tutkittavat voivat tehdä kaikki tähän tutkimukseen liittyvät pyynnöt rekisteröidyn oikeuksien käyttämiseksi alla olevalle yhteyshenkilölle:
+
+              [TÄHÄN AINEISTON YHTEYSHENKILÖN YHTEYSTIEDOT]
+
+              Yhteyshenkilö välittää tarvittaessa pyynnön myös muille yhteisrekisterinpitäjinä toimiville organisaatioille.
+
+              Tutkittava voi käyttää tietosuoja-asetuksen mukaisia oikeuksiaan suhteessa kuhunkin rekisterinpitäjään. Tällöin vastaanottaja voi tarvittaessa välittää pyynnön tai vaatimuksen myös muille yhteisrekisterinpitäjille.</div>
+              <br/>
+            </div>
+          </div>
         </td>
       </tr>
+
       <tr>
-        <th><h2>4<br/><span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2></th>
+        <th><h2>4<br/><span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2></th>
         <td>
+          <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
+          <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}"
+               th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
+          <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}"
+               th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
+        </td>
+      </tr>
+
+      <tr>
+        <th><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson.contactInfo}">Tietosuojavastaavan yhteystiedot</span></h2></th>
+        <td>
+          <br/>
+          <div th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}"
+               th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
+            Organisaation tietosuojavastaavan sähköpostiosoite on {0}
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <th><h2>6<br/><span th:text="#{scientificPrivacyNotice.studyPerformers}">Tutkimuksen suorittajat</span></h2></th>
+        <td>
+          <div th:text="${studyPerformers}" class="preserve-line-breaks"></div>
+        </td>
+      </tr>
+
+      <tr>
+        <th rowspan="3"><h2>7<br/><span th:text="#{scientificPrivacyNotice.NameNatureAndDuration}">Tutkimuksen nimi, luonne ja kestoaika</span></h2></th>
+        <td>
+          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.name}" class="label">Nimi</div>
           <div th:text="${studyName}"></div>
         </td>
       </tr>
       <tr>
-        <th rowspan="2"><h2>5<br/><span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2></th>
         <td>
-          <div th:text="#{scientificPrivacyNotice.principalInvestigator.name}" class="label">Tutkimuksen vastuullinen johtajan tai ryhmän nimi</div>
-          <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{scientificPrivacyNotice.principalInvestigator.contact}" class="label">Tutkimuksen vastuullinen johtajan tai ryhmän yhteystiedot</div>
-          <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}" th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
-          <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}" th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
-        </td>
-      </tr>
-      <tr>
-        <th><h2>5<br/><span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2></th>
-        <td>
-          <div th:if="${purposeOfPersonRegister != null}" th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
-            Käsittelemme henkilötietojasi {0}
+          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.studyType}" class="label">Tutkimuksen tyyppi</div>
+          <div>
+            <span th:if="${studyType.isPresent()}" th:text="#{ 'scientificPrivacyNotice.studyType.' + ${studyType.get()} }"></span>
           </div>
         </td>
       </tr>
+      <tr>
+        <td>
+          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.duration}" class="label">Tutkimuksen kestoaika (kuinka kauan henkilötietoja käsitellään)</div>
+          <div>
+            <span th:if="${dataProcessingStartDate.isPresent() || dataProcessingEndDate.isPresent()}">
+              <span th:if="${dataProcessingStartDate.isPresent()}" th:text="${#temporals.format(dataProcessingStartDate.get(), 'dd.MM.yyyy')}"></span>
+              –
+              <span th:if="${dataProcessingEndDate.isPresent()}" th:text="${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')}"></span>
+            </span>
+          </div>
+        </td>
+      </tr>
+
       <tr>
         <th><h2>8<br/><span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2></th>
         <td>
@@ -285,110 +323,62 @@
       </tr>
 
       <tr>
-        <th rowspan="1"><h2>5<br/><span th:text="#{privacyNotice.dataProtectionPerson.contactInfo}">Tietosuojavastaavan yhteystiedot</span></h2></th>
+        <th><h2>10<br/><span>Mitä henkilötietoja tutkimus sisältää</span></h2></th>
         <td>
-          <br/>
-          <div th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}"
-               th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
-            Organisaation tietosuojavastaavan sähköpostiosoite on {0}
-          </div>
+          TODO
         </td>
       </tr>
+
       <tr>
-        <th><h2>5<br/><span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2></th>
+        <th><h2>11<br/><span>Mistä lähteistä henkilötietoja kerätään</span></h2></th>
         <td>
-          <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>
+          TODO
         </td>
       </tr>
-      <tr>
-        <th><h2>6<br/><span th:text="#{scientificPrivacyNotice.studyPerformers}">Tutkimuksen suorittajat</span></h2></th>
-        <td>
-          <div th:text="${studyPerformers}" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
-        <th><h2>7<br/><span th:text="#{privacyNotice.registerSources}">Säännönmukaiset tietolähteet</span></h2></th>
-        <td>
-          <div th:text="${registerSources}" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
-        <th rowspan="3"><h2>7<br/><span th:text="#{scientificPrivacyNotice.NameNatureAndDuration}">Tutkimuksen nimi, luonne ja kestoaika</span></h2></th>
-        <td>
-          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.name}" class="label">Nimi</div>
-          <div th:text="${studyName}"></div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.studyType}" class="label">Tutkimuksen tyyppi</div>
-          <div>
-            <span th:if="${studyType.isPresent()}" th:text="#{ 'scientificPrivacyNotice.studyType.' + ${studyType.get()} }"></span>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div th:text="#{scientificPrivacyNotice.NameNatureAndDuration.duration}" class="label">Tutkimuksen kestoaika (kuinka kauan henkilötietoja käsitellään)</div>
-          <div>
-            <span th:if="${dataProcessingStartDate.isPresent() || dataProcessingEndDate.isPresent()}">
-              <span th:if="${dataProcessingStartDate.isPresent()}" th:text="${#temporals.format(dataProcessingStartDate.get(), 'dd.MM.yyyy')}"></span>
-              –
-              <span th:if="${dataProcessingEndDate.isPresent()}" th:text="${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')}"></span>
-            </span>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th><h2>9<br/><span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2></th>
-        <td th:switch="${profilingAndAutomation.orElse(null)}">
-          <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
-          <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${registrarName})}" class="preserve-line-breaks"></div>
-          <div th:case="*" class="preserve-line-breaks"></div>
-        </td>
-      </tr>
-      <tr>
-        <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
-        <td class="no-bottom-border">
-          <div th:text="#{privacyNotice.principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>
-          <div>
-            <ul th:unless="${principlesForPhysicalSecurity.isEmpty()}">
-              <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'privacyNotice.principlesForPhysicalSecurity.' + ${principle} }"></li>
-            </ul>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="no-bottom-border">
-          <div th:text="#{privacyNotice.principlesForDigitalSecurity}" class="label">B ATK:lla käsiteltävät tiedot</div>
-          <div>
-            <ul th:unless="${principlesForDigitalSecurity.isEmpty()}">
-              <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>
-            </ul>
-          </div>
-        </td>
-      </tr>
+
       <tr>
         <th><h2>12<br/><span th:text="#{scientificPrivacyNotice.dataTransfers}">Tietojen siirto tai luovuttaminen tutkimusryhmän ulkopuolelle</span></h2></th>
         <td>
           <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
         </td>
       </tr>
+
+      <tr>
+        <th><h2>13<br/><span th:utext="#{scientificPrivacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto tai luovuttaminen<br />EU:n tai Euroopan talousalueen
+ulkopuolelle</span></h2></th>
+        <td>
+          <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
+        </td>
+      </tr>
+
       <tr>
         <th><h2>14<br/><span th:utext="#{scientificPrivacyNotice.automatedDecisionMaking}">Automatisoitu päätöksenteko</span></h2></th>
         <td>
           <div th:text="#{scientificPrivacyNotice.automatedDecisionMaking.body}">Automaattisia päätöksiä ei tehdä tieteellisessä tutkimuksessa</div>
         </td>
       </tr>
+
       <tr>
-        <th><h2>13<br/><span th:utext="#{scientificPrivacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirtäminen ja luovuttaminen<br/> EU:n tai Euroopan talousalueen ulkopuolelle</span></h2></th>
+        <th><h2>15<br/><span>Henkilötietojen suojauksen periaatteet</span></h2></th>
         <td>
-          <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
+          TODO
+        </td>
+      </tr>
+
+      <tr>
+        <th><h2>16<br/><span>Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2></th>
+        <td>
+          TODO
+        </td>
+      </tr>
+
+      <tr>
+        <th><h2>17<br/><span>Rekisteröidyn oikeudet ja niiden mahdollinen rajoittaminen</span></h2></th>
+        <td>
+          TODO
         </td>
       </tr>
     </table>
-
-    <div th:utext="#{privacyNotice.yourRights}"></div>
 
   </body>
 

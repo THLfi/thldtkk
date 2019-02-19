@@ -77,14 +77,17 @@ export class UniverseListComponent implements OnInit {
 
   confirmRemoveUniverse(universe: Universe): void {
     Observable.forkJoin(
-      this.universeService.getUniverseDatasets(universe)
+      this.universeService.getUniverseDatasets(universe),
+      this.universeService.getUniverseStudies(universe),
     ).subscribe(data => {
-      let datasets: Dataset[] = data[0]
 
       let translatedLabel: string = this.langPipe.transform(universe.prefLabel)
       let translationParams: {} = {
         universe: translatedLabel,
-        datasetCount: datasets.length,
+        datasetCount: data[0].length,
+        publishedDatasetCount: data[0].filter(dataset => dataset.published).length,
+        studyCount: data[1].length,
+        publishedStudyCount: data[1].filter(study => study.published).length
       }
 
       this.translateService.get(this.universeRemoveConfirmationKey, translationParams).subscribe(confirmationMessage => {

@@ -7,6 +7,7 @@ import { GrowlMessageService } from '../../../services-common/growl-message.serv
 import { Dataset } from '../../../model2/dataset'
 import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
+import { Study } from '../../../model2/study'
 import { UnitTypeService } from '../../../services-common/unit-type.service'
 import { UnitType } from '../../../model2/unit-type'
 
@@ -79,16 +80,22 @@ export class UnitTypeListComponent implements OnInit {
   confirmRemoveUnitType(unitType: UnitType): void {
     Observable.forkJoin(
       this.unitTypeService.getUnitTypeDatasets(unitType),
-      this.unitTypeService.getUnitTypeInstanceVariables(unitType)
+      this.unitTypeService.getUnitTypeInstanceVariables(unitType),
+      this.unitTypeService.getUnitTypeStudies(unitType)
     ).subscribe(data => {
       let datasets: Dataset[] = data[0]
       let instanceVariables: InstanceVariable[] = data[1]
+      let studies: Study[] = data[2]
 
       let translatedLabel: string = this.langPipe.transform(unitType.prefLabel)
       let translationParams: {} = {
         unitType: translatedLabel,
         datasetCount: datasets.length,
-        instanceVariableCount: instanceVariables.length
+        publishedDatasetCount: datasets.filter(dataset => dataset.published).length,
+        instanceVariableCount: instanceVariables.length,
+        publishedInstanceVariableCount: instanceVariables.filter(variable => variable.published).length,
+        studyCount: studies.length,
+        publishedStudyCount: studies.filter(study => study.published).length
       }
 
       this.translateService.get(this.unitTypeRemoveConfirmationKey, translationParams).subscribe(confirmationMessage => {

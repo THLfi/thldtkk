@@ -2,9 +2,11 @@ package fi.thl.thldtkk.api.metadata.controller;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.domain.UnitType;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
 import fi.thl.thldtkk.api.metadata.service.EditorInstanceVariableService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
@@ -37,6 +39,9 @@ public class UnitTypeController {
   @Autowired
   private EditorInstanceVariableService instanceVariableService;
 
+  @Autowired
+  private EditorStudyService studyService;
+
   @GetJsonMapping
   public List<UnitType> query(@RequestParam(value = "query", defaultValue = "") String query) {
     return unitTypeService.find(query, -1);
@@ -65,4 +70,9 @@ public class UnitTypeController {
     return instanceVariableService.getInstanceVariablesByUnitType(unitTypeId);
   }
 
+  @GetJsonMapping("/{unitTypeId}/studies")
+  public List<Study> getAssociatedStudies(
+    @PathVariable("unitTypeId") UUID unitTypeId) {
+    return studyService.getStudiesByUnitType(unitTypeId);
+  }
 }

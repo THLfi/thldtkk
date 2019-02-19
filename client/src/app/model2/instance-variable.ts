@@ -37,4 +37,5 @@ export interface InstanceVariable {
   instanceQuestions: InstanceQuestion[],
   dataFormat: LangValues
   lastModifiedByUser?: UserInformation
+  published?: boolean
 }

@@ -8,6 +8,7 @@ import { environment as env} from '../../environments/environment'
 import { GrowlMessageService } from './growl-message.service'
 import { Dataset } from '../model2/dataset'
 import { NodeUtils } from '../utils/node-utils'
+import { Study } from '../model2/study'
 import { Universe } from '../model2/universe'
 
 @Injectable()
@@ -72,5 +73,16 @@ export class UniverseService {
 
         return this.http.get(path)
           .map(response => response.json() as Dataset[])
+  }
+
+  getUniverseStudies(universe: Universe): Observable<Study[]> {
+        const path: string = env.contextPath
+          + env.apiPath
+          + '/universes/'
+          + universe.id
+          + '/studies'
+
+        return this.http.get(path)
+          .map(response => response.json() as Study[])
   }
 }

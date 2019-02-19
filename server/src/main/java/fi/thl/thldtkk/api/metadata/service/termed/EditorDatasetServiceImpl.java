@@ -82,7 +82,7 @@ public class EditorDatasetServiceImpl implements EditorDatasetService {
   @Override
   public List<Dataset> getOrganizationUnitDatasets(UUID organizationUnitId) {
     List<Dataset> list =  nodes.query(
-      select("id", "type", "properties.prefLabel"),
+      select("id", "type", "properties.published", "properties.prefLabel"),
       and(keyValue("type.id", Dataset.TERMED_NODE_CLASS),
         keyValue("references.ownerOrganizationUnit.id", organizationUnitId.toString())))
       .map(Dataset::new)

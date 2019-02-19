@@ -25,8 +25,11 @@ public class Role {
     this.id = requireNonNull(id);
   }
 
+  /**
+   * For testing purposes.
+   */
   public Role(UUID id, Map<String, String> prefLabel) {
-    this(id);
+    this.id = id;
     this.prefLabel = prefLabel;
   }
 

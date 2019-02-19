@@ -6,14 +6,18 @@ import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.text.StrBuilder;
 import org.thymeleaf.context.Context;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.trimToNull;
 
 public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
@@ -41,9 +45,9 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     if (study.getOwnerOrganization().isPresent()) {
       Organization organization = study.getOwnerOrganization().get();
-      context.setVariable("registrarName", getRegistrarName(organization, lang));
-      context.setVariable("registrarAddress", organization.getAddressForRegistryPolicy().get("fi"));
-      context.setVariable("registrarOtherInfo", organization.getPhoneNumberForRegistryPolicy().orElse(""));
+      context.setVariable("controllerName", getRegistrarName(organization, lang));
+      context.setVariable("controllerAddress", organization.getAddressForRegistryPolicy().get(lang));
+      context.setVariable("controllerOtherInfo", organization.getPhoneNumberForRegistryPolicy().orElse(""));
     }
 
     if (!study.getPersonInRoles().isEmpty()) {
@@ -54,11 +58,11 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
         .collect(Collectors.toList());
 
       Optional<PersonInRole> contactPerson = personsWithAssociations.stream()
-        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(CONTACT_PERSON))
+        .filter(person -> person.getRole().get().getPrefLabel().get(lang).equals(CONTACT_PERSON))
         .findFirst();
 
       Optional<PersonInRole> registrySupervisor = personsWithAssociations.stream()
-        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(REGISTRY_SUPERVISOR))
+        .filter(person -> person.getRole().get().getPrefLabel().get(lang).equals(REGISTRY_SUPERVISOR))
         .findFirst();
 
       Optional<PersonInRole> shownContactPerson =
@@ -68,10 +72,11 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
         Person unwrappedPerson = shownContactPerson.get().getPerson().get();
         context.setVariable("contactPerson", unwrappedPerson);
         context.setVariable("contactPersonName", getPersonName(unwrappedPerson));
+        context.setVariable("contactPersonNameAndContactInformation", getPersonNameAndContactInformation(unwrappedPerson));
       }
 
       Optional<PersonInRole> dataProtectionPerson = personsWithAssociations.stream()
-        .filter(person -> person.getRole().get().getPrefLabel().get("fi").equals(DATA_PROTECTION_PERSON))
+        .filter(person -> person.getRole().get().getPrefLabel().get(lang).equals(DATA_PROTECTION_PERSON))
         .findFirst();
 
       if (dataProtectionPerson.isPresent()) {
@@ -81,7 +86,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       }
 
       personsWithAssociations.stream()
-        .filter(personInRole -> personInRole.getRole().get().getPrefLabel().get("fi").equals(PRINCIPAL_INVESTIGATOR))
+        .filter(personInRole -> personInRole.getRole().get().getPrefLabel().get(lang).equals(PRINCIPAL_INVESTIGATOR))
         .findFirst()
         .flatMap(PersonInRole::getPerson)
         .ifPresent(principalInvestigator -> {
@@ -91,30 +96,30 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
         });
     }
 
-    context.setVariable("description", study.getDescription().get(lang));
-    context.setVariable("studyName", study.getPrefLabel().get(lang));
+    context.setVariable("description", getLangValue(study.getDescription()));
+    context.setVariable("studyName", getLangValue(study.getPrefLabel()));
     context.setVariable("studyType", study.getStudyType());
-    context.setVariable("purposeOfPersonRegister", study.getPurposeOfPersonRegistry().get(lang));
-    context.setVariable("usageOfPersonalInformation", study.getUsageOfPersonalInformation().get(lang));
+    context.setVariable("purposeOfPersonRegister", getLangValue(study.getPurposeOfPersonRegistry()));
+    context.setVariable("usageOfPersonalInformation", getLangValue(study.getUsageOfPersonalInformation()));
     context.setVariable("legalBasisValues", study.getLegalBasisForHandlingPersonalData());
-    context.setVariable("otherLegalBasisValue", study.getOtherLegalBasisForHandlingPersonalData().get(lang));
+    context.setVariable("otherLegalBasisValue", getLangValue(study.getOtherLegalBasisForHandlingPersonalData()));
     context.setVariable("containsSensitiveData", study.getContainsSensitivePersonalData().orElse(false));
     context.setVariable("legalBasisSensitiveValues", study.getLegalBasisForHandlingSensitivePersonalData());
-    context.setVariable("otherLegalBasisSensitiveValue", study.getOtherLegalBasisForHandlingSensitivePersonalData().get(lang));
+    context.setVariable("otherLegalBasisSensitiveValue", getLangValue(study.getOtherLegalBasisForHandlingSensitivePersonalData()));
     context.setVariable("typeOfSensitivePersonalDataValues", study.getTypeOfSensitivePersonalData());
-    context.setVariable("otherTypeOfSensitivePersonalDataValue", study.getOtherTypeOfSensitivePersonalData().get(lang));
+    context.setVariable("otherTypeOfSensitivePersonalDataValue", getLangValue(study.getOtherTypeOfSensitivePersonalData()));
 
-    context.setVariable("registerContent", study.getRegistryPolicy().get(lang));
-    context.setVariable("registerSources", study.getPersonRegistrySources().get(lang));
-    context.setVariable("dataTransfers", study.getPersonRegisterDataTransfers().get(lang));
-    context.setVariable("dataTransfersOutsideEuOrEea", study.getPersonRegisterDataTransfersOutsideEuOrEta().get(lang));
+    context.setVariable("registerContent", getLangValue(study.getRegistryPolicy()));
+    context.setVariable("registerSources", getLangValue(study.getPersonRegistrySources()));
+    context.setVariable("dataTransfers", getLangValue(study.getPersonRegisterDataTransfers()));
+    context.setVariable("dataTransfersOutsideEuOrEea", getLangValue(study.getPersonRegisterDataTransfersOutsideEuOrEta()));
 
     context.setVariable("studyPerformers", study.getStudyPerformers().get(lang));
 
     Optional<Boolean> profilingAndAutomation = study.getProfilingAndAutomation();
     String profilingAndAutomationDescription = "";
     if (profilingAndAutomation.orElse(false)) {
-        profilingAndAutomationDescription = study.getProfilingAndAutomationDescription().get(lang);
+        profilingAndAutomationDescription = getLangValue(study.getProfilingAndAutomationDescription());
     }
     context.setVariable("profilingAndAutomation", profilingAndAutomation);
     context.setVariable("profilingAndAutomationDescription", profilingAndAutomationDescription);
@@ -125,9 +130,14 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     context.setVariable("dataProcessingStartDate", study.getDataProcessingStartDate());
     context.setVariable("dataProcessingEndDate", study.getDataProcessingEndDate());
 
-    context.setVariable("partiesAndSharingOfResponsibilityInCollaborativeStudy", study.getPartiesAndSharingOfResponsibilityInCollaborativeStudy().get(lang));
+    context.setVariable("partiesAndSharingOfResponsibilityInCollaborativeStudy", getLangValue(study.getPartiesAndSharingOfResponsibilityInCollaborativeStudy()));
+    context.setVariable("organizationsAreJointControllers", study.getOrganizationsAreJointControllers().orElse(false));
 
     return context;
+  }
+
+  private String getLangValue(Map<String, String> langValueMap) {
+    return langValueMap != null ? trimToNull(langValueMap.get(lang)) : null;
   }
 
   private String getRegistrarName(Organization organization, String lang) {
@@ -135,7 +145,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     name.append(organization.getPrefLabel().get(lang));
 
     String abbreviation = organization.getAbbreviation().get(lang);
-    if (StringUtils.hasText(abbreviation)) {
+    if (isNotBlank(abbreviation)) {
       name.append(" (");
       name.append(abbreviation);
       name.append(")");
@@ -152,6 +162,19 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       name.append(person.getLastName().get());
     }
     return name.toString();
+  }
+
+  private String getPersonNameAndContactInformation(Person person) {
+    StrBuilder output = new StrBuilder(getPersonName(person));
+    if (person.getPhone().isPresent()) {
+      output.appendNewLine();
+      output.append(person.getPhone().get());
+    }
+    if (person.getEmail().isPresent()) {
+      output.appendNewLine();
+      output.append(person.getEmail().get());
+    }
+    return output.toString();
   }
 
 }

@@ -4,8 +4,10 @@ import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Role;
 
+import java.util.HashMap;
 import java.util.UUID;
 
+import static fi.thl.thldtkk.api.metadata.test.Constants.DEFAULT_LANG;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 
 public class PersonInRoleBuilder {
@@ -25,6 +27,17 @@ public class PersonInRoleBuilder {
 
   public PersonInRoleBuilder withPerson(Person person) {
     this.person = person;
+    return this;
+  }
+
+  public PersonInRoleBuilder withRole(String rolePrefLabel) {
+    HashMap<String, String> prefLabel = new HashMap<>();
+    prefLabel.put(DEFAULT_LANG, rolePrefLabel);
+    return withRole(new Role(null, prefLabel));
+  }
+
+  public PersonInRoleBuilder withRole(Role role) {
+    this.role = role;
     return this;
   }
 

@@ -33,6 +33,9 @@ public class PersonInRole implements NodeEntity {
     this.id = requireNonNull(id);
   }
 
+  /**
+   * For testing purposes.
+   */
   public PersonInRole(UUID id, Person person, Role role) {
     this.id = id;
     this.person = person;

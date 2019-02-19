@@ -21,10 +21,6 @@ h3 {
     font-weight: 200;
 }
 
-div p {
-    margin-left: 10px;
-}
-
 .field-label,
 .form-group > label {
   font-family: "Open Sans", sans-serif; /* needed to override default font in modals */

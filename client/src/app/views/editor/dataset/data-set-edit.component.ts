@@ -110,6 +110,9 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     isUserAdmin: boolean
     isUserOrganizationAdmin: boolean
+    howManyPersons: number = 0
+    errorFields: any = {}
+    errorFieldsKeys: any = {}
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -157,6 +160,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         datasetObservable.subscribe(dataset => {
           this.dataset = this.initializeDatasetProperties(dataset)
           this.selectedDatasetTypeItems = this.initializeSelectedDatasetTypes(this.dataset)
+          this.howManyPersons = this.dataset.personInRoles ? this.dataset.personInRoles.length : 0
           this.updatePageTitle()
         })
       }
@@ -356,7 +360,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
 
     private validate(data?: any): void {
       this.formErrors = []
-
+      this.errorFields = []
       for (const name in this.currentForm.form.controls) {
         const control: AbstractControl = this.currentForm.form.get(name)
         if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
@@ -368,7 +372,15 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
               ...this.formErrors[name],
               'errors.form.' + errorKey
             ]
+            if (!this.errorFields[name]) {
+              this.errorFields[name] = []
+            }
+            this.errorFields[name] = [
+                ...this.errorFields[name],
+                name
+            ]
           }
+          this.errorFieldsKeys = Object.keys(this.errorFields);
         }
       }
     }
@@ -420,13 +432,17 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       if (!this.dataset.personInRoles) {
           this.dataset.personInRoles = []
       }
+      let nextAvailableNumber = this.howManyPersons
       const personInRole = {
         id: null,
         person: null,
         role: null,
-        public: true
+        public: true,
+        howManyPersons: nextAvailableNumber
       }
       this.dataset.personInRoles = [ ...this.dataset.personInRoles, personInRole ]
+      this.howManyPersons++
+      this.validate()
     }
 
     removePersonInRole(personInRole: PersonInRole) {

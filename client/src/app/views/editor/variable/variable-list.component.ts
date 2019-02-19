@@ -81,7 +81,8 @@ export class VariableListComponent implements OnInit {
       let translatedLabel: string = this.langPipe.transform(variable.prefLabel)
       let translationParams: {} = {
         variable: translatedLabel,
-        instanceVariableAmount: instanceVariables.length
+        instanceVariableAmount: instanceVariables.length,
+        publishedInstanceVariableAmount: instanceVariables.filter(variable => variable.published).length
       }
 
       this.translateService.get(this.variableRemoveConfirmationKey, translationParams).subscribe(confirmationMessage => {

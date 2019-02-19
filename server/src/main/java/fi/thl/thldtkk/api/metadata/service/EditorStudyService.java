@@ -19,6 +19,10 @@ public interface EditorStudyService extends Service<UUID, Study> {
 
   List<Study> getOrganizationUnitStudies(UUID organizationUnitId);
 
+  List<Study> getStudiesByUniverse(UUID universeId);
+
+  List<Study> getStudiesByUnitType(UUID unitTypeId);
+
   Optional<Dataset> getDataset(UUID studyId, UUID datasetId);
 
   Dataset saveDataset(UUID studyId, Dataset dataset);

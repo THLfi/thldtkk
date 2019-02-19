@@ -10,6 +10,7 @@ import { NodeUtils } from '../utils/node-utils'
 import { UnitType } from '../model2/unit-type'
 import { Dataset } from '../model2/dataset'
 import { InstanceVariable } from '../model2/instance-variable'
+import { Study } from '../model2/study'
 
 @Injectable()
 export class UnitTypeService {
@@ -86,4 +87,14 @@ export class UnitTypeService {
       .map(response => response.json() as InstanceVariable[])
   }
 
+  getUnitTypeStudies(unitType: UnitType): Observable<Study[]> {
+    const path: string = env.contextPath
+      + env.apiPath
+      + '/unitTypes/'
+      + unitType.id
+      + '/studies'
+
+    return this.http.get(path)
+      .map(response => response.json() as Study[])
+  }
 }

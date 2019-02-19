@@ -457,20 +457,20 @@
   "organizationAndOrganizationUnitSearchPlaceholder": "Hae organisaatioita ja organisaatioyksiöitä...",
   "personSearchPlaceholder": "Hae henkilöitä...",
   "confirmRemoveCodeListModal": {
-    "message": "Haluatko varmasti poistaa koodiston {{codeList}}? Koodistoa käyttää {{instanceVariableCount}} muuttujaa.",
+    "message": "Haluatko varmasti poistaa koodiston '{{codeList}}'? Koodistoa käyttää {{instanceVariableCount}} muuttujaa ({{publishedInstanceVariableCount}} julkaistua).",
     "header": "Poiston vahvistus",
     "removeButtonLabel": "Poista",
     "cancelButtonLabel": "Peruuta"
   },
   "confirmRemoveUnitTypeModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa havaintoyksikkötyypin '{{unitType}}'? Havaintoyksikkötyyppiä käyttää {{datasetCount}} datasettiä ja {{instanceVariableCount}} muuttujaa.",
+    "message": "Haluatko varmasti poistaa havaintoyksikkötyypin '{{unitType}}'? Havaintoyksikkötyyppiä käyttää {{studyCount}} aineistoa ({{publishedStudyCount}} julkaistua), {{datasetCount}} datasettiä ({{publishedDatasetCount}} julkaistua) ja {{instanceVariableCount}} muuttujaa ({{publishedInstanceVariableCount}} julkaistua).",
     "removeButtonLabel": "Poista",
     "cancelButtonLabel": "Peruuta"
   },
   "confirmRemoveUniverseModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{datasetCount}} datasettiä."
+    "message": "Haluatko varmasti poistaa perusjoukon '{{universe}}'? Perusjoukkoa käyttää {{studyCount}} aineistoa ({{publishedStudyCount}} julkaistua) ja {{datasetCount}} datasettiä ({{publishedDatasetCount}} julkaistua)."
   },
   "confirmRemovePersonModal": {
     "header": "Haluatko varmasti poistaa henkilön?",
@@ -478,7 +478,7 @@
   },
   "confirmRemoveOrganizationUnitModal": {
     "header": "Poiston vahvistus",
-    "message": "Haluatko varmasti poistaa organisaatioyksikön '{{organizationUnit}}'? Organisaatioyksikköön viittaa {{studyCount}} aineistoa ja {{datasetCount}} datasettiä."
+    "message": "Haluatko varmasti poistaa organisaatioyksikön '{{organizationUnit}}'? Organisaatioyksikköön viittaa {{studyCount}} aineistoa ({{publishedStudyCount}} julkaistua) ja {{datasetCount}} datasettiä ({{publishedDatasetCount}} julkaistua)."
   },
   "errors": {
     "form": {
@@ -585,7 +585,7 @@
           "removeButtonLabel": "Poista",
           "cancelButtonLabel": "Peru",
           "header": "Haluatko varmasti poistaa käsitemuuttujan?",
-          "message": "Käsitemuuttujaan '{{variable}}' viittaa {{instanceVariableAmount}} muuttujaa."
+          "message": "Käsitemuuttujaan '{{variable}}' viittaa {{instanceVariableAmount}} muuttujaa ({{publishedInstanceVariableAmount}} julkaistua)."
         },
         "result": {
           "success": "Käsitemuuttuja poistettu"
@@ -1235,7 +1235,6 @@
       }
     }
   },
-  "confirmOrganizationUnitDelete": "Haluatko varmasti poistaa organisaatioyksikön?",
   "confirmPersonDelete": "Haluatko varmasti poistaa henkilön?",
   "people": "Henkilöt",
   "printPrivacyNotice": "Tulosta tietosuojailmoitus",

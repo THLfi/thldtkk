@@ -167,7 +167,9 @@ export class OrganizationListComponent implements OnInit {
       return {
         organizationUnit: label,
         studyCount: data[0].length,
-        datasetCount: data[1].length
+        publishedStudyCount: data[0].filter(study => study.published).length,
+        datasetCount: data[1].length,
+        publishedDatasetCount: data[1].filter(dataset => dataset.published).length
       }
     }).subscribe(translationParams => {
       this.translateService.get('confirmRemoveOrganizationUnitModal.message', translationParams)

@@ -4,7 +4,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorDatasetService;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
 import fi.thl.thldtkk.api.metadata.domain.Universe;
 import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
@@ -29,6 +31,9 @@ public class UniverseController {
   @Autowired
   private EditorDatasetService datasetService;
 
+  @Autowired
+  private EditorStudyService studyService;
+
   @ApiOperation("List all universes")
   @GetJsonMapping
   public List<Universe> query(@RequestParam(value = "query", defaultValue = "") String query) {
@@ -52,4 +57,11 @@ public class UniverseController {
           @PathVariable UUID universeId) {
     return datasetService.getUniverseDatasets(universeId);
   }
+
+  @ApiOperation("List all studies of a universe")
+  @GetJsonMapping("{universeId}/studies")
+  public List<Study> getUniverseStudies(@PathVariable UUID universeId) {
+    return studyService.getStudiesByUniverse(universeId);
+  }
+
 }

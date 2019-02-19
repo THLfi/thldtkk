@@ -82,6 +82,7 @@ export class CodeListListComponent implements OnInit {
       let translationParams: {} = {
         codeList: translatedLabel,
         instanceVariableCount: instanceVariables.length,
+        publishedInstanceVariableCount: instanceVariables.filter(variable => variable.published).length
       }
 
       this.translateService.get(this.codeListRemoveConfirmationKey, translationParams).subscribe(confirmationMessage => {

@@ -651,9 +651,33 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   @Override
   public List<Study> getOrganizationUnitStudies(UUID organizationUnitId) {
     List<Study> list =  nodes.query(
-      select("id", "type", "properties.prefLabel"),
+      select("id", "type", "properties.published", "properties.prefLabel"),
       and(keyValue("type.id", Study.TERMED_NODE_CLASS),
         keyValue("references.ownerOrganizationUnit.id", organizationUnitId.toString())))
+      .map(Study::new)
+      .collect(toList());
+    return list;
+  }
+
+  @AdminOnly
+  @Override
+  public List<Study> getStudiesByUniverse(UUID universeId) {
+    List<Study> list =  nodes.query(
+      select("id", "type", "properties.published", "properties.prefLabel"),
+      and(keyValue("type.id", Study.TERMED_NODE_CLASS),
+        keyValue("references.universe.id", universeId.toString())))
+      .map(Study::new)
+      .collect(toList());
+    return list;
+  }
+
+  @AdminOnly
+  @Override
+  public List<Study> getStudiesByUnitType(UUID unitTypeId) {
+    List<Study> list =  nodes.query(
+      select("id", "type", "properties.published", "properties.prefLabel"),
+      and(keyValue("type.id", Study.TERMED_NODE_CLASS),
+        keyValue("references.unitType.id", unitTypeId.toString())))
       .map(Study::new)
       .collect(toList());
     return list;
@@ -845,4 +869,5 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     return new HttpEntity<>(document, headers);
   }
+
 }

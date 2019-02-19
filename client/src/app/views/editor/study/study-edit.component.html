@@ -197,7 +197,8 @@
               <th translate="functions"></th>
             </tr>
             <tr *ngFor="let personInRole of study.personInRoles; let index = index;"
-                [ngClass]="{ 'bg-danger': formErrors['personInRole-person-' + index] && formErrors['personInRole-person-' + index].length }">
+                [ngClass]="personInRole.howManyPersons == undefined ? {'bg-danger': formErrors['personInRole-person-' + index]} : {'bg-danger': formErrors['personInRole-person-' + (personInRole.howManyPersons)]}">
+
               <td>
                 <p-dropdown *ngIf="allPersonItems && allPersonItems.length"
                             [(ngModel)]="personInRole.person"
@@ -205,7 +206,7 @@
                             filter="true"
                             autoWidth="false"
                             [style]="{ 'max-width': '400px' }"
-                            name="{{ 'personInRole-person-' + index }}"
+                            [name]="personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)"
                             required>
                   <ng-template let-personItem pTemplate="item">
                     <ng-container *ngIf="personItem.value; else nullPersonItem;">
@@ -242,8 +243,8 @@
                   </button>
                 </tr>
 
-                <p *ngFor="let errorKey of formErrors['personInRole-person-' + index]"
-                   class="text-danger">
+                  <p *ngFor="let errorKey of formErrors[personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)]"
+                     class="text-danger"> 
                   <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                   {{ errorKey | translate }}
                 </p>
@@ -266,7 +267,7 @@
                         [(ngModel)]="personInRole.role"
                         [compareWith]="nodeUtils.equals"
                         dataKey="id"
-                        name="{{ 'personInRole-role-' + index }}"
+                        name="personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)"
                         class="form-control">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let role of allRoles"

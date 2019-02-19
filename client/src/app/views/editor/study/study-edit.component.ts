@@ -117,6 +117,9 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     isUserAdmin: boolean
     isUserOrganizationAdmin: boolean
+    howManyPersons: number = 0
+    errorFields: any = {}
+    errorFieldsKeys: any = {}
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -166,6 +169,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                     this.updatePageTitle();
                     this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
                     this.getAvailableOrganizations()
+                    this.howManyPersons = this.study.personInRoles ? this.study.personInRoles.length : 0
                 })
         } else if (copyOfStudyId) {
           this.editorStudyService.getStudy(copyOfStudyId).subscribe(existingStudy => {
@@ -388,7 +392,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     private validate(data?: any): void {
       this.formErrors = { };
-
+      this.errorFields = [];
       for (const name in this.currentForm.form.controls) {
         const control: AbstractControl = this.currentForm.form.get(name);
         if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
@@ -399,6 +403,13 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
             this.formErrors[name] = [
               ...this.formErrors[name],
               'errors.form.' + errorKey
+            ]
+            if (!this.errorFields[name]) {
+              this.errorFields[name] = []
+            }
+            this.errorFields[name] = [
+                ...this.errorFields[name],
+                name
             ]
           }
         }
@@ -441,13 +452,16 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
       if (!this.study.personInRoles) {
           this.study.personInRoles = []
       }
+      let nextAvailableNumber = this.howManyPersons
       const personInRole = {
         id: null,
         person: null,
         role: null,
-        public: true
+        public: true,
+        howManyPersons: nextAvailableNumber
       };
       this.study.personInRoles = [ ...this.study.personInRoles, personInRole ]
+      this.howManyPersons++
     }
 
     removePersonInRole(personInRole: PersonInRole) {

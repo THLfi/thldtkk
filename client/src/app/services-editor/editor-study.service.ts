@@ -81,6 +81,7 @@ export class EditorStudyService {
       'otherLegalBasisForHandlingSensitivePersonalData',
       'otherTypeOfSensitivePersonalData',
       'partiesAndSharingOfResponsibilityInCollaborativeStudy',
+      'studyPerformers',
       'profilingAndAutomationDescription',
       'groundsForConfidentiality'
     ])

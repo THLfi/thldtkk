@@ -1254,5 +1254,8 @@
     "SEXUAL": "seksuaalinen käyttäytyminen tai suuntautuminen",
     "OTHER": "muu, mikä",
     "empty": "Ei määritetty"
-  }
+  },
+  "otherLegalBasisForHandlingPersonalDataLabel": "muu oikeusperuste",
+  "otherTypeOfSensitivePersonalDataLabel": "muu arkaluonteinen henkilötieto",
+  "otherLegalBasisForHandlingSensitivePersonalDataLabel": "muu erityisehto"
 }

@@ -406,3 +406,7 @@ h3 {
 .catalog-helptext-tooltip .ui-tooltip-text  {
   white-space: normal;
 }
+
+form .conditionally-visible {
+  margin-left: 22px;
+}

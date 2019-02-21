@@ -76,7 +76,7 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="study.personRegistry">
+        <div class="conditionally-visible" *ngIf="study.personRegistry">
 
           <div class="row">
             <div class="col-xs-12">
@@ -175,11 +175,18 @@
                                inputId="legalBasisForHandlingPersonalData">
                 </p-multiSelect>
 
-                <input *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1"
-                       [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
-                       id="otherLegalBasisForHandlingPersonalData"
-                       name="otherLegalBasisForHandlingPersonalData"
-                       class="form-control">
+                <div class="form-group" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
+                  <label for="otherLegalBasisForHandlingPersonalData" class="control-label">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
+                         id="otherLegalBasisForHandlingPersonalData"
+                         name="otherLegalBasisForHandlingPersonalData"
+                         class="form-control"
+                         required>
+                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingPersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
               </div>
 
               <div class="form-group">
@@ -209,7 +216,7 @@
                 </div>
               </div>
 
-              <div class="form-group" *ngIf="study.containsSensitivePersonalData && study.isScientificStudy">
+              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData && study.isScientificStudy">
                 <p>
                   <strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong>
                 </p>
@@ -221,14 +228,21 @@
                   inputId="typeOfSensitivePersonalData">
                 </p-multiSelect>
 
-                <input *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1"
-                    [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
-                    id="otherTypeOfSensitivePersonalData"
-                    name="otherTypeOfSensitivePersonalData"
-                    class="form-control">
+                <div class="form-group" *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherTypeOfSensitivePersonalData" class="control-label">{{'otherTypeOfSensitivePersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
+                      id="otherTypeOfSensitivePersonalData"
+                      name="otherTypeOfSensitivePersonalData"
+                      class="form-control"
+                      required>
+                  <p *ngFor="let errorKey of formErrors.otherTypeOfSensitivePersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
               </div>
 
-              <div class="form-group" *ngIf="study.containsSensitivePersonalData">
+              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
                 <p>
                   <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
                 </p>
@@ -240,16 +254,23 @@
                                inputId="legalBasisForHandlingSensitivePersonalData">
                 </p-multiSelect>
 
-                <input *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1"
-                       [(ngModel)]="study.otherLegalBasisForHandlingSensitivePersonalData[language]"
-                       id="otherLegalBasisForHandlingSensitivePersonalData"
-                       name="otherLegalBasisForHandlingSensitivePersonalData"
-                       class="form-control">
+                <div class="form-group" *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherLegalBasisForHandlingSensitivePersonalData" class="control-label">{{'otherLegalBasisForHandlingSensitivePersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherLegalBasisForHandlingSensitivePersonalData[language]"
+                         id="otherLegalBasisForHandlingSensitivePersonalData"
+                         name="otherLegalBasisForHandlingSensitivePersonalData"
+                         class="form-control"
+                         required>
+                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingSensitivePersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-        </ng-container>
           <div class="row">
             <div class="col-xs-12">
               <div class="form-group">
@@ -292,8 +313,7 @@
                 </div>
               </div>
 
-              <ng-container *ngIf="study.isScientificStudy">
-
+              <div class="conditionally-visible" *ngIf="study.isScientificStudy">
                 <div class="form-group">
                   <label for="partiesAndSharingOfResponsibilityInCollaborativeStudy">
                     {{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}
@@ -344,7 +364,7 @@
                   </div>
                 </div>
 
-              </ng-container>
+              </div>
 
               <div class="form-group">
                 <p>
@@ -386,7 +406,7 @@
                 </div>
               </div>
 
-              <ng-container *ngIf="study.profilingAndAutomation">
+            <div class="conditionally-visible" *ngIf="study.profilingAndAutomation">
 
               <div class="form-group">
                 <label for="profiling-and-automation-description" translate="profilingAndAutomation"></label>
@@ -399,7 +419,7 @@
                 </textarea>
               </div>
 
-            </ng-container>
+            </div>
 
           </div>
         </div>
@@ -460,7 +480,7 @@
           </div>
         </div>
 
-        <ng-container *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL">
+        <div class="conditionally-visible" *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL">
 
           <div class="form-group">
             <label for="groundsForConfidentiality" translate="groundsForConfidentiality"></label>
@@ -528,7 +548,7 @@
             </div>
           </div>
 
-        </ng-container>
+        </div>
 
         <div class="form-group">
           <label for="principlesForPhysicalSecurity" translate="principlesForPhysicalSecurity.label"></label>

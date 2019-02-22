@@ -80,16 +80,6 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group">
-                <label for="registryPolicy" translate="registryPolicy"></label>
-                <textarea [(ngModel)]="study.registryPolicy[language]"
-                          thlAutogrow
-                          id="registryPolicy"
-                          name="registryPolicy"
-                          class="form-control"
-                          rows="4">
-                </textarea>
-              </div>
 
               <div class="form-group">
                 <label for="purposeOfPersonRegistry" translate="purposeOfPersonRegistry"></label>
@@ -805,6 +795,17 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <div class="form-group">
+            <label for="registryPolicy" translate="registryPolicy"></label>
+            <textarea [(ngModel)]="study.registryPolicy[language]"
+                      thlAutogrow
+                      id="registryPolicy"
+                      name="registryPolicy"
+                      class="form-control"
+                      rows="4">
+            </textarea>
           </div>
 
       </form>

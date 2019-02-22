@@ -39,7 +39,7 @@
   "abbreviation": "Lyhenne",
   "altLabel": "Vaihtoehtoinen nimi",
   "noInstanceVariables": "Muuttujia ei ole määritelty.",
-  "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten",
+  "registryPolicy": "Rekisterin tietosisältö rekisteriselostetta varten (ei täytetä enää 2/19 alkaen)",
   "usageCondition": "Käyttöehdot",
   "usageConditionAdditionalInformation": "Käyttöehdot, lisätietoja",
   "studyLifecyclePhase": "Aineiston elinkaaren vaihe",

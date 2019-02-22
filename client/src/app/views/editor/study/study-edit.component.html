@@ -267,7 +267,7 @@
                         [(ngModel)]="personInRole.role"
                         [compareWith]="nodeUtils.equals"
                         dataKey="id"
-                        name="personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)"
+                        [name]="personInRole.howManyPersons == undefined ? 'personInRole-role-' + index : 'personInRole-role-' + (personInRole.howManyPersons)"
                         class="form-control">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let role of allRoles"

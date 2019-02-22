@@ -138,8 +138,7 @@
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
 
       <div class="date">
-        <div th:text="#{privacyNotice.date}" class="label">Laatimispäivä</div>
-        <div th:text="${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}">12.02.2019</div>
+        <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
       </div>
 
     </div>

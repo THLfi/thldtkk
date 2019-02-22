@@ -118,7 +118,7 @@
   "dataProtection": "Tietosuoja",
   "dataSecurity": "Tietoturva",
   "archiving": "Arkistointi",
-  "isStudyPersonRegistry": "Onko aineisto henkilörekisteri vai ei",
+  "isStudyPersonRegistry": "Sisältääkö aineisto henkilötietoja?",
   "isScientificStudy": "Onko aineisto tieteellisen tutkimuksen aineisto",
   "phoneNumberForRegistryPolicy":"Rekisterinpitäjän puhelinnumero",
   "addressForRegistryPolicy":"Rekisterinpitäjän osoite",

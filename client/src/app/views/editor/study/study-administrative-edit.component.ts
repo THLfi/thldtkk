@@ -19,6 +19,7 @@ import {SelectItem} from 'primeng/components/common/api'
 import {RetentionPolicy} from '../../../model2/retention-policy';
 import {ExistenceForm} from '../../../model2/existence-form';
 import {Study} from '../../../model2/study';
+import {StudyType} from '../../../model2/study-type';
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 import {System} from '../../../model2/system';
 import {SystemRole} from '../../../model2/system-role';
@@ -34,6 +35,7 @@ import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-per
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
 
     study: Study;
+    StudyType = StudyType;
 
     yearRangeForDataProcessingFields: string =  ('1900:' + (new Date().getFullYear() + 20))
     dataProcessingStartDate: Date

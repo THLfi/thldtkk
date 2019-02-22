@@ -418,8 +418,16 @@ public class Study implements NodeEntity {
     return groupsOfRegistrees;
   }
 
+  public Map<String, String> getOtherGroupsOfRegistrees() {
+    return otherGroupsOfRegistrees;
+  }
+
   public List<ReceivingGroup> getReceivingGroups() {
     return receivingGroups;
+  }
+
+  public Map<String, String> getOtherReceivingGroups() {
+    return otherReceivingGroups;
   }
 
   public Optional<Boolean> getProfilingAndAutomation() {

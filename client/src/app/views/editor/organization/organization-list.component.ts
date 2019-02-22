@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { ConfirmationService } from 'primeng/primeng'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { StringUtils } from '../../../utils/string-utils'
+import { environment } from 'environments/environment';
 
 @Component({
   templateUrl: './organization-list.component.html',
@@ -185,4 +186,8 @@ export class OrganizationListComponent implements OnInit {
     })
   }
 
+  downloadProcessingActivities(organization: Organization) {
+    const downloadProcessingActivitiesUrl = `${environment.contextPath}${environment.apiPath}/editor/organizations/${organization.id}/processing-activities`
+    window.location.href = downloadProcessingActivitiesUrl;
+  }
 }

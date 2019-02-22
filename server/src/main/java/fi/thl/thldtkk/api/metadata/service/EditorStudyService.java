@@ -17,6 +17,8 @@ public interface EditorStudyService extends Service<UUID, Study> {
 
   List<Study> find(UUID organizationId, String query, int max, String sortString);
 
+  List<Study> getOrganizationStudies(UUID organizationId, List<String> includeFields);
+
   List<Study> getOrganizationUnitStudies(UUID organizationUnitId);
 
   List<Study> getStudiesByUniverse(UUID universeId);

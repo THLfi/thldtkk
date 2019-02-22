@@ -103,6 +103,29 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return studyNodes.map(Study::new).collect(toList());
   }
 
+  @Override
+  public List<Study> getOrganizationStudies(UUID organizationId, List<String> includeFields) {
+    List<Criteria> criteria = new ArrayList<>();
+
+    criteria.add(keyValue("type.id", Study.TERMED_NODE_CLASS));
+
+    if (!userHelper.isCurrentUserAdmin()) {
+      criteria.add(getCurrentUserOrganizationCriteria());
+    }
+
+    criteria.add(keyValue("references.ownerOrganization.id", organizationId.toString()));
+
+    Stream<Node> studyNodes;
+    if (includeFields != null) {
+      Select select = new Select(includeFields);
+      studyNodes = this.nodes.query(select, and(criteria));
+    } else {
+      studyNodes = this.nodes.query(and(criteria));
+    }
+
+    return studyNodes.map(Study::new).collect(toList());
+  }
+
   private Criteria getCurrentUserOrganizationCriteria() {
     List<String> organizationIds = userHelper.getCurrentUserOrganizations().stream()
       .map(organization -> organization.getId().toString())

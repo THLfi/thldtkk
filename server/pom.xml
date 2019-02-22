@@ -132,6 +132,12 @@
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.7.0</version>
     </dependency>
+    <!-- For handling Excel files -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>4.0.1</version>
+    </dependency>
 
     <!-- TESTING -->
     <dependency>

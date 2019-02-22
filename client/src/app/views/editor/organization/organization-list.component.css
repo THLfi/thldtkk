@@ -1,6 +1,6 @@
 .organization-list td:last-child,
 .organization-list th:last-child {
-  width: 30%;
+  white-space: nowrap;
   text-align: right;
 }
 

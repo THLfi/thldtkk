@@ -55,6 +55,13 @@
                 </ng-container>
               </td>
               <td>
+                <button 
+                  (click)="downloadProcessingActivities(organization)"
+                  target="_blank"
+                  class="btn btn-default organization-edit-controls">
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                  {{ 'processingActivities' | translate }}
+                </button>
                 <button (click)="showEditOrganizationUnitModal(organization, null)"
                         pTooltip="{{ 'addOrganizationUnitButton.tooltip' | translate }}"
                         tooltipPosition="bottom"

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static fi.thl.thldtkk.api.metadata.test.Constants.DEFAULT_LANG;
+import static fi.thl.thldtkk.api.metadata.Constants.DEFAULT_LANG;
 import static fi.thl.thldtkk.api.metadata.util.UUIDs.nameUUIDFromString;
 import static java.util.Arrays.asList;
 

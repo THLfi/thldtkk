@@ -12,7 +12,6 @@ import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedUnitSymbolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +22,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static fi.thl.thldtkk.api.metadata.Constants.DEFAULT_LANG;
 import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_EXTERNAL;
 import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_INTERNAL;
 import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,7 @@ public class InstanceVariableCsvParser {
     List<ParsingResult<InstanceVariable>> results = new LinkedList<>();
     List<String> messages = new LinkedList<>();
 
-    if (!StringUtils.hasText(encoding)) {
+    if (isBlank(encoding)) {
       messages.add("import.csv.error.noEncoding");
       return done(results, messages);
     }
@@ -125,15 +127,14 @@ public class InstanceVariableCsvParser {
   }
 
   private void handleRow(Map<String, String> row, List<ParsingResult<InstanceVariable>> results) {
-    final String language = "fi";
     InstanceVariable instanceVariable = new InstanceVariable();
     List<String> rowMessages = new LinkedList<>();
 
     boolean isRowValid = true;
 
     String prefLabel = row.get("prefLabel");
-    if (StringUtils.hasText(prefLabel)) {
-      instanceVariable.getPrefLabel().put(language, prefLabel);
+    if (isNotBlank(prefLabel)) {
+      instanceVariable.getPrefLabel().put(DEFAULT_LANG, prefLabel);
     }
     else {
       isRowValid = false;
@@ -141,21 +142,21 @@ public class InstanceVariableCsvParser {
     }
 
     sanitize(row.get("technicalName")).ifPresent(technicalName -> instanceVariable.setTechnicalName(technicalName));
-    sanitize(row.get("description")).ifPresent(description -> instanceVariable.getDescription().put(language,description));
-    sanitize(row.get("partOfGroup")).ifPresent(partOfGroup -> instanceVariable.getPartOfGroup().put(language, partOfGroup));
-    sanitize(row.get("freeConcepts")).ifPresent(freeConcepts -> instanceVariable.getFreeConcepts().put(language, freeConcepts));
+    sanitize(row.get("description")).ifPresent(description -> instanceVariable.getDescription().put(DEFAULT_LANG,description));
+    sanitize(row.get("partOfGroup")).ifPresent(partOfGroup -> instanceVariable.getPartOfGroup().put(DEFAULT_LANG, partOfGroup));
+    sanitize(row.get("freeConcepts")).ifPresent(freeConcepts -> instanceVariable.getFreeConcepts().put(DEFAULT_LANG, freeConcepts));
 
     instanceVariable.setReferencePeriodStart(parseLocalDate(row, "referencePeriodStart", rowMessages));
     instanceVariable.setReferencePeriodEnd(parseLocalDate(row, "referencePeriodEnd", rowMessages));
 
     sanitize(row.get("valueDomainType")).ifPresent(valueDomainType -> instanceVariable.setValueDomainType(valueDomainType));
-    sanitize(row.get("missingValues")).ifPresent((missingValues -> instanceVariable.getMissingValues().put(language, missingValues)));
+    sanitize(row.get("missingValues")).ifPresent((missingValues -> instanceVariable.getMissingValues().put(DEFAULT_LANG, missingValues)));
     sanitize(row.get("defaultMissingValue")).ifPresent(defaultMissingValue -> instanceVariable.setDefaultMissingValue(defaultMissingValue));
-    sanitize(row.get("qualityStatement")).ifPresent(qualityStatement -> instanceVariable.getQualityStatement().put(language, qualityStatement));
+    sanitize(row.get("qualityStatement")).ifPresent(qualityStatement -> instanceVariable.getQualityStatement().put(DEFAULT_LANG, qualityStatement));
 
-    sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
+    sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(DEFAULT_LANG, sourceDescription));
     sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
-    sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(language, dataFormat));
+    sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(DEFAULT_LANG, dataFormat));
 
     Optional<String> codeListType = sanitize(row.get("codeList.codeListType"));
 
@@ -168,9 +169,9 @@ public class InstanceVariableCsvParser {
         Optional<String> codeListReferenceId = sanitize(row.get("codeList.referenceId"));
 
         try {
-            Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, language, rowMessages);
+            Optional<CodeList> codeList = getCodeList(codeListPrefLabel, codeListReferenceId, DEFAULT_LANG, rowMessages);
             if (!codeList.isPresent()) {
-                codeList = createCodeList(rowMessages, language, CODE_LIST_TYPE_EXTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, codeListReferenceId, Optional.empty());
+                codeList = createCodeList(rowMessages, DEFAULT_LANG, CODE_LIST_TYPE_EXTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, codeListReferenceId, Optional.empty());
             }
             codeList.ifPresent(cl -> {
                 instanceVariable.setCodeList(cl);
@@ -184,7 +185,7 @@ public class InstanceVariableCsvParser {
         Optional<String> codeListItems = sanitize(row.get("codeList.codeItems"));
 
         try {
-            Optional<CodeList> codeList = createCodeList(rowMessages, language, CODE_LIST_TYPE_INTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, Optional.empty(), codeListItems);
+            Optional<CodeList> codeList = createCodeList(rowMessages, DEFAULT_LANG, CODE_LIST_TYPE_INTERNAL, codeListPrefLabel, codeListDescription, codeListOwner, Optional.empty(), codeListItems);
 
             codeList.ifPresent(cl -> {
                 instanceVariable.setCodeList(cl);
@@ -205,9 +206,9 @@ public class InstanceVariableCsvParser {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
             Map<String, String> descriptionMap = new LinkedHashMap<>();
 
-            prefLabelMap.put("fi", unitTypePrefLabel.get());
-            if (!StringUtils.isEmpty(unitTypeDescription.get())) {
-                descriptionMap.put("fi", unitTypeDescription.get());
+            prefLabelMap.put(DEFAULT_LANG, unitTypePrefLabel.get());
+            if (isNotBlank(unitTypeDescription.get())) {
+                descriptionMap.put(DEFAULT_LANG, unitTypeDescription.get());
             }
             UnitType unitTypeNew = new UnitType(randomUUID(), prefLabelMap, descriptionMap);
             unitType = Optional.ofNullable(unitTypeService.save(unitTypeNew));
@@ -220,7 +221,7 @@ public class InstanceVariableCsvParser {
         Optional<Quantity> quantity = quantityService.findByPrefLabel(quantityPrefLabel.get());
         if (!quantity.isPresent()) {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
-            prefLabelMap.put("fi", quantityPrefLabel.get());
+            prefLabelMap.put(DEFAULT_LANG, quantityPrefLabel.get());
             Quantity quantityNew = new Quantity(randomUUID(), prefLabelMap);
             quantity = Optional.ofNullable(quantityService.save(quantityNew));
         }
@@ -241,27 +242,28 @@ public class InstanceVariableCsvParser {
     }
 
     Optional<String> variablePrefLabel = sanitize(row.get("variable.prefLabel"));
-    if (variablePrefLabel.isPresent() && !variablePrefLabel.get().isEmpty()) {
-        Optional<String> variableDescription = sanitize(row.get("variable.description"));
+    if (variablePrefLabel.isPresent() && isNotBlank(variablePrefLabel.get())) {
         Optional<Variable> variable = variableService.findByPrefLabel(variablePrefLabel.get());
         if (!variable.isPresent()) {
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
+            prefLabelMap.put(DEFAULT_LANG, variablePrefLabel.get());
+            
             Map<String, String> descriptionMap = new LinkedHashMap<>();
-
-            prefLabelMap.put("fi", variablePrefLabel.get());
-            if (!StringUtils.isEmpty(variableDescription.get())) {
-                descriptionMap.put("fi", variableDescription.get());
+            Optional<String> variableDescription = sanitize(row.get("variable.description"));
+            if (isNotBlank(variableDescription.get())) {
+                descriptionMap.put(DEFAULT_LANG, variableDescription.get());
             }
-            Variable variableNew = new Variable(randomUUID(), prefLabelMap, descriptionMap);
+
+            Variable variableNew = new Variable(null, prefLabelMap, descriptionMap);
             variable = Optional.ofNullable(variableService.save(variableNew));
         }
         variable.ifPresent(instanceVariable::setVariable);
     }
 
-    sanitize(row.get("source.description")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(language, sourceDescription));
+    sanitize(row.get("source.description")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(DEFAULT_LANG, sourceDescription));
 
     Optional<String> instanceQuestionsString = sanitize(row.get("instanceQuestions"));
-    if (instanceQuestionsString.isPresent() && !StringUtils.isEmpty(instanceQuestionsString.get())) {
+    if (instanceQuestionsString.isPresent() && isNotBlank(instanceQuestionsString.get())) {
 
       instanceQuestionsString = encloseInstanceQuestionsWithQuotes(instanceQuestionsString.get());
       String[] instanceQuestions = instanceQuestionsString.get().split(", ");
@@ -271,7 +273,7 @@ public class InstanceVariableCsvParser {
             instanceQuestionString = instanceQuestionString.substring(1, instanceQuestionString.length() - 1);
 
             Map<String, String> prefLabelMap = new LinkedHashMap<>();
-            prefLabelMap.put("fi", instanceQuestionString);
+            prefLabelMap.put(DEFAULT_LANG, instanceQuestionString);
 
             InstanceQuestion instanceQuestion = new InstanceQuestion(randomUUID(), prefLabelMap);
             Optional<InstanceQuestion> savedInstanceQuestion = Optional.of(instanceQuestionService.save(instanceQuestion));
@@ -281,7 +283,7 @@ public class InstanceVariableCsvParser {
     }
 
     Optional<String> conceptsFromSchemeString = sanitize(row.get("conceptsFromScheme"));
-    if (conceptsFromSchemeString.isPresent() && !StringUtils.isEmpty(conceptsFromSchemeString.get())) {
+    if (conceptsFromSchemeString.isPresent() && isNotBlank(conceptsFromSchemeString.get())) {
         String[] conceptsFromScheme = conceptsFromSchemeString.get().split(", ");
         int wordNumber = 1;
         for (String conceptWithSchemeString : conceptsFromScheme) {
@@ -297,7 +299,7 @@ public class InstanceVariableCsvParser {
         }
     }
 
-    parseUnit(row, language, rowMessages).ifPresent(unit -> instanceVariable.setUnit(unit));
+    parseUnit(row, DEFAULT_LANG, rowMessages).ifPresent(unit -> instanceVariable.setUnit(unit));
 
     results.add(new ParsingResult<>(isRowValid ? instanceVariable : null, rowMessages));
   }
@@ -305,7 +307,7 @@ public class InstanceVariableCsvParser {
   private LocalDate parseLocalDate(Map<String, String> row, String field, List<String> rowMessages) {
     String dateString = row.get(field);
     LocalDate date = null;
-    if (StringUtils.hasText(dateString)) {
+    if (isNotBlank(dateString)) {
       try {
         date = LocalDate.parse(dateString);
       }
@@ -353,11 +355,11 @@ public class InstanceVariableCsvParser {
       List<CodeList> codeListsByLabel = new ArrayList<>();
       List<CodeList> codeListsByReferenceId = new ArrayList<>();
 
-      if(label.isPresent() && !StringUtils.isEmpty(label.get())) {
+      if(label.isPresent() && isNotBlank(label.get())) {
          codeListsByLabel = searchCodeListsByLabel(label.get(), language);
       }
 
-      if(referenceId.isPresent() && !StringUtils.isEmpty(referenceId.get())) {
+      if(referenceId.isPresent() && isNotBlank(referenceId.get())) {
          codeListsByReferenceId = searchCodeListsByReferenceId(referenceId.get());
       }
 
@@ -392,7 +394,7 @@ public class InstanceVariableCsvParser {
                                             Optional<String> label, Optional<String> description, Optional<String> owner,
                                             Optional<String> referenceId, Optional<String> codeListItems) throws UndefinedLabelException {
 
-      if(!label.isPresent() || (label.isPresent() && StringUtils.isEmpty(label.get())) ) {
+      if(!label.isPresent() || (label.isPresent() && isBlank(label.get())) ) {
           throw new UndefinedLabelException();
       }
 
@@ -405,7 +407,7 @@ public class InstanceVariableCsvParser {
       description.ifPresent(localizedDescription -> codeList.getDescription().put(language, localizedDescription));
       owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
 
-      if (codeListItems.isPresent() && !StringUtils.isEmpty(codeListItems.get())) {
+      if (codeListItems.isPresent() && isNotBlank(codeListItems.get())) {
           String[] codeListCodeItems = codeListItems.get().split(", ");
 
           int wordNumber = 1;
@@ -453,7 +455,7 @@ public class InstanceVariableCsvParser {
     Optional<String> unitSymbol = sanitize(row.get("unit.symbol"));
     Optional<String> unitLabel = sanitize(row.get("unit.prefLabel"));
 
-    if(unitSymbol.isPresent() && StringUtils.hasText(unitSymbol.get())) {
+    if(unitSymbol.isPresent() && isNotBlank(unitSymbol.get())) {
       try {
         unit = searchUnitBySymbol(unitSymbol.get(), language);
         unit = unit.isPresent() ? unit : Optional.of(createUnit(unitLabel, unitSymbol, language));
@@ -500,12 +502,11 @@ public class InstanceVariableCsvParser {
   }
 
   private Unit createUnit(Optional<String> label, Optional<String> symbol, String language) throws UndefinedLabelException, UndefinedUnitSymbolException {
-
-    if(!label.isPresent() || !StringUtils.hasText(label.get())) {
+    if(!label.isPresent() || isBlank(label.get())) {
       throw new UndefinedLabelException();
     }
 
-    if(!symbol.isPresent() || !StringUtils.hasText(symbol.get())) {
+    if(!symbol.isPresent() || isBlank(symbol.get())) {
       throw new UndefinedUnitSymbolException();
     }
 
@@ -516,7 +517,7 @@ public class InstanceVariableCsvParser {
   }
 
   private BigDecimal getBigDecimalFromString(String numberString, List<String> rowMessages, String field) {
-      if (!StringUtils.isEmpty(numberString)) {
+      if (isNotBlank(numberString)) {
           try {
               return new BigDecimal(numberString.replaceAll(",", "."));
           } catch (NumberFormatException e) {

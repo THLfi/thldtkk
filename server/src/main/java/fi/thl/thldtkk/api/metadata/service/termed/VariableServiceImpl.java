@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static fi.thl.thldtkk.api.metadata.Constants.DEFAULT_LANG;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -71,15 +72,14 @@ public class VariableServiceImpl implements VariableService {
       return Optional.empty();
     }
 
-    prefLabel = "\"" + prefLabel + "\"";
-
     return nodes.query(
       and(
         keyValue("type.id", Variable.TERMED_NODE_CLASS),
-        keyValue("properties.prefLabel", prefLabel)
-      ),
-      1)
+        keyValue("properties.prefLabel", "\"" + prefLabel + "\"")
+      ))
       .map(Variable::new)
+      .filter(concept -> prefLabel.equalsIgnoreCase(concept.getPrefLabel().get(DEFAULT_LANG)))
       .findFirst();
   }
+
 }

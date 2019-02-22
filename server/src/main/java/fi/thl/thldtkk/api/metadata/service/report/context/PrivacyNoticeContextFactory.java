@@ -9,6 +9,7 @@ import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.apache.commons.lang.text.StrBuilder;
 import org.thymeleaf.context.Context;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,6 +43,9 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     Study study = editorStudyService.get(studyId)
       .orElseThrow(NotFoundException.entityNotFound(Study.class, studyId));
+
+
+    context.setVariable("editDate", study.getLastModifiedDate().orElse(new Date()));
 
     if (study.getOwnerOrganization().isPresent()) {
       Organization organization = study.getOwnerOrganization().get();

@@ -36,6 +36,64 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
+              <label for="studyPerformers">
+                {{ 'studyPerformers' | translate }}
+                <editor-help-link [helpTextComponent]="studyPerformersHelpText"></editor-help-link>
+              </label>
+              <textarea [(ngModel)]="study.studyPerformers[language]"
+                        thlAutogrow
+                        id="studyPerformers"
+                        name="studyPerformers"
+                        class="form-control"
+                        rows="3">
+              </textarea>
+              <editor-help-text #studyPerformersHelpText key="editor.study.studyPerformers.helpText"></editor-help-text>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="form-group">
+              <p>
+                <strong class="field-label">{{ 'studyType.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="studyTypeHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #studyTypeHelpText key="editor.study.studyType.helpText"></editor-help-text>
+
+              <div class="radio">
+                <label for="study-type-cross-sectional">
+                  <input [(ngModel)]="study.studyType"
+                        [value]="StudyType.CROSS_SECTIONAL_STUDY"
+                        type="radio"
+                        id="study-type-cross-sectional"
+                        name="study-type">
+                  {{ 'studyType.CROSS_SECTIONAL_STUDY' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="study-type-longitudinal">
+                  <input [(ngModel)]="study.studyType"
+                        [value]="StudyType.LONGITUDINAL_STUDY"
+                        type="radio"
+                        id="study-type-longitudinal"
+                        name="study-type">
+                  {{ 'studyType.LONGITUDINAL_STUDY' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="study-type-undefined" class="radio-empty">
+                  <input [(ngModel)]="study.studyType"
+                        [value]="undefined"
+                        type="radio"
+                        id="study-type-undefined"
+                        name="study-type">
+                  {{ 'undefined' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-12">
+            <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong>
                 <editor-help-link [helpTextComponent]="personRegistryHelpText"></editor-help-link>

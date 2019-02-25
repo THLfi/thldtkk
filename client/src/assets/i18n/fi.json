@@ -1264,5 +1264,16 @@
   },
   "otherLegalBasisForHandlingPersonalDataLabel": "muu oikeusperuste",
   "otherTypeOfSensitivePersonalDataLabel": "muu arkaluonteinen henkilötieto",
-  "otherLegalBasisForHandlingSensitivePersonalDataLabel": "muu erityisehto"
+  "otherLegalBasisForHandlingSensitivePersonalDataLabel": "muu erityisehto",
+  "postStudyRetentionOfPersonalData": {
+    "label": "Henkilötietojen käsittely tutkimuksen päättymisen jälkeen",
+    "ARCHIVE": "Voimassa olevan lainsäädännön perusteella henkilötietoja säilytetään toistaiseksi", 
+    "DISPOSE": "Aineisto hävitetään käsittelyn päätyttyä",
+    "DISPOSE_SCIENTIFIC": "Tutkimusaineisto hävitetään",
+    "ARCHIVE_WITHOUT_IDENTIFIERS": "Aineisto arkistoidaan ilman tunnistetietoja käsittelyn päätyttyä",
+    "ARCHIVE_WITHOUT_IDENTIFIERS_SCIENTIFIC": "Tutkimusaineisto arkistoidaan anonymisoituna ilman suoria tunnistetietoja",
+    "ARCHIVE_WITH_IDENTIFIERS": "Aineisto arkistoidaan tunnistetiedoin käsittelyn päätyttyä",
+    "ARCHIVE_WITH_IDENTIFIERS_SCIENTIFIC": "Tutkimusaineisto arkistoidaan tunnistetiedoin",
+    "empty": "Ei määritelty"
+  }
 }

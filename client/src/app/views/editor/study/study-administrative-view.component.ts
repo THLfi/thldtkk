@@ -14,6 +14,7 @@ import { LegalBasisForHandlingSensitivePersonalData } from '../../../model2/lega
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 import { TypeOfSensitivePersonalData } from '../../../model2/type-of-sensitive-personal-data'
+import { PostStudyRetentionOfPersonalData } from '../../../model2/post-study-retention-of-personal-data'
 
 @Component({
   templateUrl: './study-administrative-view.component.html',
@@ -69,4 +70,9 @@ export class StudyAdministrativeViewComponent implements OnInit {
     }
   }
 
+  postStudyRetentionDisposeNotSelected(): boolean {
+    const selectedValue = this.study.postStudyRetentionOfPersonalData;
+    return PostStudyRetentionOfPersonalData.DISPOSE !== selectedValue &&
+           PostStudyRetentionOfPersonalData.DISPOSE_SCIENTIFIC !== selectedValue;
+  }
 }

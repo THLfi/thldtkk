@@ -157,6 +157,9 @@
       },
       {
         "id": "otherTypeOfSensitivePersonalData"
+      },
+      {
+        "id": "postStudyRetentionOfPersonalData"
       }
     ],
     "referenceAttributes": [

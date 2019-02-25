@@ -90,6 +90,7 @@ public class Study implements NodeEntity {
   private Map<String, String> physicalLocation = new LinkedHashMap<>();
   private String comment;
   private String externalId;
+  private PostStudyRetentionOfPersonalData postStudyRetentionOfPersonalData;
 
   private UserProfile lastModifiedByUser;
   private Organization ownerOrganization;
@@ -189,6 +190,8 @@ public class Study implements NodeEntity {
       ExistenceForm.class, ArrayList::new);
     this.physicalLocation = toLangValueMap(node.getProperties("physicalLocation"));
     this.externalId = PropertyMappings.toString(node.getProperties("externalId"));
+    toOptionalString(node.getProperties("postStudyRetentionOfPersonalData"))
+      .ifPresent(cc -> this.postStudyRetentionOfPersonalData = PostStudyRetentionOfPersonalData.valueOf(cc));
 
     node.getReferencesFirst("lastModifiedByUser")
       .ifPresent(v -> this.lastModifiedByUser = new UserInformation(new UserProfile(v)));
@@ -446,19 +449,19 @@ public class Study implements NodeEntity {
   }
 
   public List<LegalBasisForHandlingPersonalData> getLegalBasisForHandlingPersonalData() {
-	  return legalBasisForHandlingPersonalData;
+    return legalBasisForHandlingPersonalData;
   }
 
   public void setLegalBasisForHandlingPersonalData(List<LegalBasisForHandlingPersonalData> legalBasisForHandlingPersonalData) {
-	  this.legalBasisForHandlingPersonalData = legalBasisForHandlingPersonalData;
+    this.legalBasisForHandlingPersonalData = legalBasisForHandlingPersonalData;
   }
 
   public Map<String, String> getOtherLegalBasisForHandlingPersonalData() {
-	  return otherLegalBasisForHandlingPersonalData;
+    return otherLegalBasisForHandlingPersonalData;
   }
 
   public void setOtherLegalBasisForHandlingPersonalData(Map<String, String> otherLegalBasisForHandlingPersonalData) {
-	  this.otherLegalBasisForHandlingPersonalData = otherLegalBasisForHandlingPersonalData;
+    this.otherLegalBasisForHandlingPersonalData = otherLegalBasisForHandlingPersonalData;
   }
 
   public Optional<Boolean> getContainsSensitivePersonalData() {
@@ -466,35 +469,35 @@ public class Study implements NodeEntity {
   }
 
   public List<LegalBasisForHandlingSensitivePersonalData> getLegalBasisForHandlingSensitivePersonalData() {
-	  return legalBasisForHandlingSensitivePersonalData;
+    return legalBasisForHandlingSensitivePersonalData;
   }
 
   public void setLegalBasisForHandlingSensitivePersonalData(List<LegalBasisForHandlingSensitivePersonalData> legalBasisForHandlingSensitivePersonalData) {
-	  this.legalBasisForHandlingSensitivePersonalData = legalBasisForHandlingSensitivePersonalData;
+    this.legalBasisForHandlingSensitivePersonalData = legalBasisForHandlingSensitivePersonalData;
   }
 
   public Map<String, String> getOtherLegalBasisForHandlingSensitivePersonalData() {
-	  return otherLegalBasisForHandlingSensitivePersonalData;
+    return otherLegalBasisForHandlingSensitivePersonalData;
   }
 
   public void setOtherLegalBasisForHandlingSensitivePersonalData(Map<String, String> otherLegalBasisForHandlingSensitivePersonalData) {
-	  this.otherLegalBasisForHandlingSensitivePersonalData = otherLegalBasisForHandlingSensitivePersonalData;
+    this.otherLegalBasisForHandlingSensitivePersonalData = otherLegalBasisForHandlingSensitivePersonalData;
   }
 
   public List<TypeOfSensitivePersonalData> getTypeOfSensitivePersonalData() {
-	  return typeOfSensitivePersonalData;
+    return typeOfSensitivePersonalData;
   }
 
   public void setTypeOfSensitivePersonalData(List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData) {
-	  this.typeOfSensitivePersonalData = typeOfSensitivePersonalData;
+    this.typeOfSensitivePersonalData = typeOfSensitivePersonalData;
   }
 
   public Map<String, String> getOtherTypeOfSensitivePersonalData() {
-	  return otherTypeOfSensitivePersonalData;
+    return otherTypeOfSensitivePersonalData;
   }
 
   public void setOtherTypeOfSensitivePersonalData(Map<String, String> otherTypeOfSensitivePersonalData) {
-	  this.otherTypeOfSensitivePersonalData = otherTypeOfSensitivePersonalData;
+    this.otherTypeOfSensitivePersonalData = otherTypeOfSensitivePersonalData;
   }
 
   public Map<String, String> getPartiesAndSharingOfResponsibilityInCollaborativeStudy() {
@@ -551,6 +554,14 @@ public class Study implements NodeEntity {
 
   public Map<String, String> getNationalArchivesFinlandArchivalDecision() {
     return nationalArchivesFinlandArchivalDecision;
+  }
+
+  public Optional<PostStudyRetentionOfPersonalData> getPostStudyRetentionOfPersonalData() {
+    return Optional.ofNullable(postStudyRetentionOfPersonalData);
+  }
+
+  public void setPostStudyRetentionOfPersonalData(PostStudyRetentionOfPersonalData postStudyRetentionOfPersonalData) {
+    this.postStudyRetentionOfPersonalData = postStudyRetentionOfPersonalData;
   }
 
   public Map<String, String> getPhysicalLocation() {
@@ -742,6 +753,7 @@ public class Study implements NodeEntity {
     props.putAll("physicalLocation", toPropertyValues(physicalLocation));
     getComment().ifPresent(v -> props.put("comment", toPropertyValue(v)));
     getExternalId().ifPresent(ei -> props.put("externalId", toPropertyValue(ei)));
+    getPostStudyRetentionOfPersonalData().ifPresent(v -> props.put("postStudyRetentionOfPersonalData", toPropertyValue(v.toString())));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getLastModifiedByUser().ifPresent(v -> refs.put("lastModifiedByUser", v.toNode()));
@@ -820,6 +832,7 @@ public class Study implements NodeEntity {
             && Objects.equals(retentionPeriod, study.retentionPeriod)
             && Objects.equals(groundsForRetention, study.groundsForRetention)
             && Objects.equals(nationalArchivesFinlandArchivalDecision, study.nationalArchivesFinlandArchivalDecision)
+            && Objects.equals(postStudyRetentionOfPersonalData, study.postStudyRetentionOfPersonalData)
             && Objects.equals(existenceForms, study.existenceForms)
             && Objects.equals(physicalLocation, study.physicalLocation)
             && Objects.equals(comment, study.comment)
@@ -889,6 +902,7 @@ public class Study implements NodeEntity {
         retentionPeriod,
         groundsForRetention,
         nationalArchivesFinlandArchivalDecision,
+        postStudyRetentionOfPersonalData,
         physicalLocation,
         comment,
         externalId,
@@ -962,6 +976,8 @@ public class Study implements NodeEntity {
     study.retentionPeriod = this.retentionPeriod;
     study.groundsForRetention = this.groundsForRetention;
     study.nationalArchivesFinlandArchivalDecision = this.nationalArchivesFinlandArchivalDecision;
+    study.postStudyRetentionOfPersonalData = this.postStudyRetentionOfPersonalData;
+
     study.existenceForms = this.existenceForms;
     study.ownerOrganization = this.ownerOrganization;
     study.ownerOrganizationUnit = this.ownerOrganizationUnit;

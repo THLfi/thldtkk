@@ -133,6 +133,9 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     context.setVariable("dataProcessingStartDate", study.getDataProcessingStartDate());
     context.setVariable("dataProcessingEndDate", study.getDataProcessingEndDate());
+    context.setVariable("physicalLocation", getLangValue(study.getPhysicalLocation()));
+    context.setVariable("retentionPeriod", getLangValue(study.getRetentionPeriod()));
+    context.setVariable("postStudyRetentionOfPersonalData", study.getPostStudyRetentionOfPersonalData());
 
     context.setVariable("partiesAndSharingOfResponsibilityInCollaborativeStudy", getLangValue(study.getPartiesAndSharingOfResponsibilityInCollaborativeStudy()));
     context.setVariable("organizationsAreJointControllers", study.getOrganizationsAreJointControllers().orElse(false));

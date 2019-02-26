@@ -129,6 +129,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.personInRoles:3",
         "references.person:4",
         "references.role:4",
+        "references.associatedOrganizations:3",
+        "references.organization:4",
         "references.links:3",
         "references.instanceVariable:3",
         "references.variable:3",
@@ -167,6 +169,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.personInRoles",
         "references.role:2",
         "references.person:2",
+        "references.associatedOrganizations",
+        "references.organization:2",
         "references.systemInRoles",
         "references.system:2",
         "references.systemRole:2",
@@ -319,6 +323,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
     study.getPersonInRoles()
       .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
+    study.getAssociatedOrganizations()
+      .forEach(org -> org.setId(firstNonNull(org.getId(), randomUUID())));
     study.getSystemInRoles()
       .forEach(sir -> sir.setId(firstNonNull(sir.getId(), randomUUID())));
 
@@ -468,6 +474,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPopulation().ifPresent(p -> save.add(p.toNode()));
     study.getLinks().forEach(l -> save.add(l.toNode()));
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
+    study.getAssociatedOrganizations().forEach(org -> save.add(org.toNode()));
     study.getSystemInRoles().forEach(sir -> save.add(sir.toNode()));
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
@@ -506,6 +513,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .merge(Changeset.buildChangeset(
         newStudy.getPersonInRoles(),
         oldStudy.getPersonInRoles()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getAssociatedOrganizations(),
+        oldStudy.getAssociatedOrganizations()))
       .merge(Changeset.buildChangeset(
         newStudy.getSystemInRoles(),
         oldStudy.getSystemInRoles()));
@@ -641,6 +651,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPopulation().ifPresent(v -> delete.add(v.toNode()));
     study.getLinks().forEach(v -> delete.add(v.toNode()));
     study.getPersonInRoles().forEach(pir -> delete.add(pir.toNode()));
+    study.getAssociatedOrganizations().forEach(org -> delete.add(org.toNode()));
     study.getSystemInRoles().forEach(sir -> delete.add(sir.toNode()));
     study.getDatasets().forEach(dataset -> delete.addAll(getDatasetRelatedNodesForDelete(dataset)));
 

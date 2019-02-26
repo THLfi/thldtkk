@@ -191,6 +191,12 @@
         }
       },
       {
+        "id": "associatedOrganizations",
+        "range": {
+          "id": "AssociatedOrganization"
+        }
+      },
+      {
         "id": "links",
         "range": {
           "id": "Link"
@@ -635,6 +641,26 @@
         "id": "role",
         "range": {
           "id": "Role",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "AssociatedOrganization",
+    "textAttributes": [
+      {
+        "id": "isRegistryOrganization",
+        "regex": "^(true|false)$"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "organization",
+        "range": {
+          "id": "Organization",
           "graph": {
             "code": "common-graph"
           }

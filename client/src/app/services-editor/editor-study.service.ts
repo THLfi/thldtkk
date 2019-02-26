@@ -54,6 +54,7 @@ export class EditorStudyService {
       systemInRoles: [],
       existenceForms: [],
       personInRoles: [],
+      associatedOrganizations: [],
       links: [],
       conceptsFromScheme: [],
       datasetTypes: [],

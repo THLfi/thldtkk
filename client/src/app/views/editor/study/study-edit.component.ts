@@ -46,6 +46,7 @@ import {Universe} from '../../../model2/universe'
 import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from "../../../model2/usage-condition";
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
+import { AssociatedOrganization } from 'app/model2/associated-organization';
 
 @Component({
     templateUrl: './study-edit.component.html',
@@ -383,7 +384,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {
           this.currentForm = this.studyForm;
-          this.currentForm.valueChanges.subscribe(data => this.validate(data))
+          this.currentForm.valueChanges.subscribe(data => this.validate(data));
         }
       }
     }

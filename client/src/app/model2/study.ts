@@ -12,6 +12,7 @@ import {Node} from './node'
 import {Organization} from './organization';
 import {OrganizationUnit} from './organization-unit';
 import {PersonInRole} from './person-in-role'
+import {AssociatedOrganization} from './associated-organization'
 import {Population} from './population';
 import {PrincipleForPhysicalSecurity} from './principle-for-physical-security'
 import {PrincipleForDigitalSecurity} from './principle-for-digital-security'
@@ -85,6 +86,7 @@ export interface Study extends Node {
   ownerOrganization?: Organization
   ownerOrganizationUnit?: OrganizationUnit
   personInRoles: PersonInRole[]
+  associatedOrganizations: AssociatedOrganization[]
   links: Link[]
   usageCondition?: UsageCondition
   universe?: Universe

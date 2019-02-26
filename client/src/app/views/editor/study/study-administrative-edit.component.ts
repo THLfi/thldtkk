@@ -27,6 +27,9 @@ import {SystemInRole} from '../../../model2/system-in-role';
 import {LegalBasisForHandlingPersonalData} from '../../../model2/legal-basis-for-handling-personal-data';
 import {LegalBasisForHandlingSensitivePersonalData} from '../../../model2/legal-basis-for-handling-sensitive-personal-data';
 import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-personal-data';
+import { Organization } from 'app/model2/organization';
+import { OrganizationService } from 'app/services-common/organization.service';
+import { AssociatedOrganization } from 'app/model2/associated-organization';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
@@ -55,6 +58,10 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
+    allOrganizations: Organization[];
+    availableAssociatedOrganizations: Organization[];
+    newAssociatedOrganization: Organization;
+
     confidentialityClassType = ConfidentialityClass
 
     principlesForPhysicalSecurityItems: SelectItem[] = []
@@ -76,6 +83,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private studyService: EditorStudyService,
         private systemService: EditorSystemService,
         private systemRoleService: EditorSystemRoleService,
+        private organizationService: OrganizationService,
         private growlMessageService: GrowlMessageService,
         private route: ActivatedRoute,
         private router: Router,
@@ -140,6 +148,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.populateExistenceForms()
       this.getAllSystemRoles()
       this.getAllSystems()
+      this.getAllOrganizations()
     }
 
     private getStudy() {
@@ -151,9 +160,11 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.study = this.initializeStudyAdministrativeProperties(study)
             this.updatePageTitle()
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+            this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
           })
       } else {
         this.study = this.studyService.initNew()
+        this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
       }
     }
 
@@ -264,6 +275,46 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           value: system
         }))
       })
+    }
+
+    private getAllOrganizations() {
+      this.organizationService.getAllOrganizations()
+        .subscribe(organizations => {
+          this.allOrganizations = organizations
+          this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+        });
+    }
+
+    private getAvailableAssociatedOrganizations() {
+      if (this.study && this.allOrganizations) {
+        const organizationIds = this.study.associatedOrganizations.map(org => org.organization.id)
+
+        return this.allOrganizations.filter(org => {
+          return !organizationIds.includes(org.id)
+        })
+      }
+
+      return []
+    }
+
+    addAssociatedOrganization() {
+      if (this.newAssociatedOrganization != null) {
+        this.study.associatedOrganizations.push({
+          id: null,
+          organization: this.newAssociatedOrganization,
+          isRegistryOrganization: false
+        })
+      }
+      this.newAssociatedOrganization = null
+      this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+    }
+
+    removeAssociatedOrganization(org: AssociatedOrganization) {
+      this.study.associatedOrganizations =
+        this.study.associatedOrganizations.filter(organization => {
+          return org.id != organization.id;
+        })
+      this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations();
     }
 
     addSystemInRole() {

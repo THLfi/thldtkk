@@ -67,6 +67,34 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'associatedOrganizations.label' | translate }}</strong></p>
+          <table *ngIf="study.associatedOrganizations.length; else noAssociatedOrganizations"
+                 class="table table-striped">
+            <tr>
+              <th translate="organization"></th>
+              <th translate="associatedOrganizations.actAsRegistryOrganization"></th>
+            </tr>
+            <tr *ngFor="let associatedOrganization of study.associatedOrganizations">
+              <td>
+                {{ associatedOrganization.organization.prefLabel | lang }}
+              </td>
+              <td>
+                <p-checkbox
+                name="{{'registryOrganization-' + associatedOrganization.id}}"
+                binary="true"
+                disabled="true"
+                [(ngModel)]="associatedOrganization.isRegistryOrganization"></p-checkbox>
+              </td>
+            </tr>
+          </table>
+          <ng-template #noAssociatedOrganizations>
+            <p translate="associatedOrganizations.noAssociatedOrganizations"></p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <p><strong class="field-label">{{ 'studyPerformers' | translate }}</strong></p>
           <p class="preserve-line-breaks">{{ study.studyPerformers | lang }}</p>
         </div>

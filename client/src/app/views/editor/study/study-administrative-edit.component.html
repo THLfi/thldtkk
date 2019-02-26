@@ -33,6 +33,66 @@
 
         <study-administrative-read-only-fields [study]="study"></study-administrative-read-only-fields>
 
+        <div class="form-group">
+          <label for="associatedOrganizations">
+            {{ 'associatedOrganizations.label' | translate }}
+            <editor-help-link [helpTextComponent]="associatedOrganizationsHelpText"></editor-help-link>
+          </label>
+          <table *ngIf="study.associatedOrganizations.length; else noAssociatedOrganizations;"
+                 id="associatedOrganizations"
+                 class="table table-striped">
+            <tr>
+              <th>{{ 'organization' | translate }}</th>
+              <th>{{ 'associatedOrganizations.registryOrganization' | translate }}</th>
+              <th>{{ 'functions' | translate}}</th>
+            </tr>
+            <tr *ngFor="let associatedOrganization of study.associatedOrganizations">
+              <td>{{ associatedOrganization.organization.prefLabel | lang }}</td>
+              <td>
+                <p-checkbox
+                  name="{{'registryOrganization-' + associatedOrganization.id}}"
+                  binary="true"
+                  [(ngModel)]="associatedOrganization.isRegistryOrganization"></p-checkbox>
+              </td>
+              <td>
+                <button type="button" class="btn btn-default" (click)="removeAssociatedOrganization(associatedOrganization)">
+                  <fa icon="trash-o"></fa>
+                  {{ 'remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </table>
+
+          <ng-template #noassociatedOrganizations>
+            <p translate="associatedOrganizations.noassociatedOrganizations"></p>
+          </ng-template>
+
+          <div class="input-group">
+
+            <select [(ngModel)]="newAssociatedOrganization"
+                    id="newAssociatedOrganization"
+                    name="newAssociatedOrganization"
+                    class="form-control">
+              <option *ngFor="let organization of availableAssociatedOrganizations"
+                      [ngValue]="organization">
+                {{ organization.prefLabel | lang }}
+              </option>
+            </select>
+            <span class="input-group-btn">
+              <button
+                (click)="addAssociatedOrganization()"
+                class="btn btn-default"
+                type="button">
+                <glyphicon icon="plus"></glyphicon>
+                {{ 'associatedOrganizations.addAssociatedOrganization' | translate }}
+              </button>
+            </span>
+
+          </div>
+
+          <editor-help-text #associatedOrganizationsHelpText key="editor.study.associatedOrganizations.helpText"></editor-help-text>
+        </div>
+
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">

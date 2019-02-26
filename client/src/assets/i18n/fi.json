@@ -1212,6 +1212,13 @@
   "editedOrganizationUnit": "Muokattava organisaatioyksikkö",
   "editOrganization": "Muokkaa organisaatiota",
   "editedOrganization": "Muokattava organisaatio",
+  "associatedOrganizations": {
+    "label": "Muut organisaatiot",
+    "addAssociatedOrganization": "Lisää organisaatio",
+    "noAssociatedOrganizations": "Tutkimukseen ei ole liitetty muita organisaatioita",
+    "registryOrganization": "Yhteisrekisterinpitäjä",
+    "actAsRegistryOrganization": "Toimivat yhteisrekisterinpitäjinä"
+  },
   "import": {
     "csv": {
       "error": {

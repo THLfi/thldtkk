@@ -96,6 +96,7 @@ public class Study implements NodeEntity {
   private OrganizationUnit ownerOrganizationUnit;
   @Valid
   private List<PersonInRole> personInRoles = new ArrayList<>();
+  private List<AssociatedOrganization> associatedOrganizations = new ArrayList<>();
   private List<Link> links = new ArrayList<>();
   private UsageCondition usageCondition;
   private Universe universe;
@@ -197,6 +198,8 @@ public class Study implements NodeEntity {
       .ifPresent(oou -> this.ownerOrganizationUnit = new OrganizationUnit(oou));
     node.getReferences("personInRoles")
       .forEach(pir -> this.personInRoles.add(new PersonInRole(pir)));
+    node.getReferences("associatedOrganizations")
+      .forEach(org -> this.associatedOrganizations.add(new AssociatedOrganization(org)));
     node.getReferences("links")
       .forEach(l -> this.links.add(new Link(l)));
     node.getReferencesFirst("usageCondition")
@@ -602,6 +605,10 @@ public class Study implements NodeEntity {
     return personInRoles;
   }
 
+  public List<AssociatedOrganization> getAssociatedOrganizations() {
+    return associatedOrganizations;
+  }
+
   public List<Link> getLinks() {
     return links;
   }
@@ -741,6 +748,7 @@ public class Study implements NodeEntity {
     getOwnerOrganization().ifPresent(oo -> refs.put("ownerOrganization", oo.toNode()));
     getOwnerOrganizationUnit().ifPresent(oou -> refs.put("ownerOrganizationUnit", oou.toNode()));
     getPersonInRoles().forEach(pir -> refs.put("personInRoles", pir.toNode()));
+    getAssociatedOrganizations().forEach(org -> refs.put("associatedOrganizations", org.toNode()));
     getLinks().forEach(l -> refs.put("links", l.toNode()));
     getUsageCondition().ifPresent(uc -> refs.put("usageCondition", uc.toNode()));
     getUniverse().ifPresent(u -> refs.put("universe", u.toNode()));
@@ -972,6 +980,10 @@ public class Study implements NodeEntity {
       if (personInRole.isPublic().isPresent() && personInRole.isPublic().get().equals(Boolean.TRUE)) {
         study.personInRoles.add(personInRole);
       }
+    }
+
+    for (AssociatedOrganization org : this.associatedOrganizations) {
+      study.associatedOrganizations.add(org);
     }
 
     for (Study predecessor : this.predecessors) {

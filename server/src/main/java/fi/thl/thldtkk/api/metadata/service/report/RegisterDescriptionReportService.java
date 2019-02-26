@@ -50,7 +50,7 @@ public class RegisterDescriptionReportService implements StudyReportService {
       PersonInRole pir = study.getPersonInRoles().iterator().next();
       Person contactPerson = pir.getPerson().get();
       context.setVariable("contactPersonName", getPersonName(contactPerson));
-      context.setVariable("contactPersonOtherInfo", getPersonPhoneAndEmail(contactPerson));
+      context.setVariable("contactPersonOtherInfo", contactPerson.getPhoneAndEmail());
 
       for (PersonInRole personInRole : study.getPersonInRoles()) {
         if (personInRole.getRole().isPresent() && personInRole.getPerson().isPresent()
@@ -58,7 +58,7 @@ public class RegisterDescriptionReportService implements StudyReportService {
 
           Person dataProtectionPerson = personInRole.getPerson().get();
           context.setVariable("dataProtectionPersonName", getPersonName(dataProtectionPerson));
-          context.setVariable("dataProtectionPersonContactInfo", getPersonPhoneAndEmail(dataProtectionPerson));
+          context.setVariable("dataProtectionPersonContactInfo", dataProtectionPerson.getPhoneAndEmail());
           break;
         }
       }
@@ -113,16 +113,6 @@ public class RegisterDescriptionReportService implements StudyReportService {
       name.append(person.getLastName().get());
     }
     return name.toString();
-  }
-
-  private String getPersonPhoneAndEmail(Person person) {
-    StrBuilder info = new StrBuilder();
-    person.getPhone().ifPresent(phone -> info.append(phone));
-    person.getEmail().ifPresent(email -> {
-      info.appendSeparator(", ");
-      info.append(email);
-    });
-    return info.toString();
   }
 
 }

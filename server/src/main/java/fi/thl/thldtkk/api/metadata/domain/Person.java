@@ -7,9 +7,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
@@ -49,6 +47,24 @@ public class Person {
 
   public UUID getId() {
     return id;
+  }
+
+  public Optional<String> getPhoneAndEmail() {
+    List<String> parts = new ArrayList<>();
+
+    getPhone().ifPresent(parts::add);
+    getEmail().ifPresent(parts::add);
+
+    return (parts.size() == 0) ? Optional.empty() : Optional.of(String.join(", ", parts));
+  }
+
+  public Optional<String> getFullName() {
+    List<String> parts = new ArrayList<>();
+
+    getFirstName().ifPresent(parts::add);
+    getLastName().ifPresent(parts::add);
+
+    return (parts.size() == 0) ? Optional.empty() : Optional.of(String.join(" ", parts));
   }
 
   public Optional<String> getFirstName() {

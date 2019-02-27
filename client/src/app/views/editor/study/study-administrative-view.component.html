@@ -245,6 +245,21 @@
 
       <div class="row">
         <div class="col-xs-12">
+          <p [ngSwitch]="study.isScientificStudy">
+            <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
+            <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
+          </p>
+          <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
+            <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
+          </ng-container>
+          <ng-template #noPostStudyRetentionOfPersonalData>
+            <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
           <h2>{{ 'dataSecurity' | translate }}</h2>
         </div>
       </div>
@@ -380,18 +395,6 @@
           </div>
         </div>
       </ng-container>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'postStudyRetentionOfPersonalData.label' | translate }}</strong></p>
-          <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
-            <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
-          </ng-container>
-          <ng-template #noPostStudyRetentionOfPersonalData>
-            <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
-          </ng-template>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-xs-12">

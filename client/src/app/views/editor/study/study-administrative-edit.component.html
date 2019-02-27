@@ -499,6 +499,37 @@
 
         <div class="row">
           <div class="col-xs-12">
+            <div class="form-group">
+              <p [ngSwitch]="study.isScientificStudy">
+                <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
+                <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
+              </p>
+              <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
+                <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
+                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                         [value]="retentionType"
+                         type="radio"
+                         id="postStudyRetentionOfPersonalData-{{retentionType}}"
+                         name="postStudyRetentionOfPersonalData">
+                  {{ 'postStudyRetentionOfPersonalData.' + retentionType | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="postStudyRetentionOfPersonalData-empty" class="radio-empty">
+                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                        [value]="undefined"
+                        type="radio"
+                        id="postStudyRetentionOfPersonalData-empty"
+                        name="postStudyRetentionOfPersonalData">
+                  {{ 'postStudyRetentionOfPersonalData.empty' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
             <h2>{{ 'dataSecurity' | translate }}</h2>
           </div>
         </div>
@@ -780,36 +811,6 @@
             </div>
           </div>
         </ng-container>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <p>
-                <strong class="field-label">{{ 'postStudyRetentionOfPersonalData.label' | translate }}</strong>
-              </p>
-              <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
-                <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
-                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
-                         [value]="retentionType"
-                         type="radio"
-                         id="postStudyRetentionOfPersonalData-{{retentionType}}"
-                         name="postStudyRetentionOfPersonalData">
-                  {{ 'postStudyRetentionOfPersonalData.' + retentionType | translate }}
-                </label>
-              </div>
-              <div class="radio">
-                <label for="postStudyRetentionOfPersonalData-empty" class="radio-empty">
-                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
-                        [value]="undefined"
-                        type="radio"
-                        id="postStudyRetentionOfPersonalData-empty"
-                        name="postStudyRetentionOfPersonalData">
-                  {{ 'postStudyRetentionOfPersonalData.empty' | translate }}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div class="row">
           <div class="col-xs-12">

@@ -946,6 +946,9 @@
       }
     },
     "studyAdministrative": {
+      "associatedOrganizations": {
+        "helpText": "<p>Aineistoon liitetyt organisaatiot voidaan merkata yhteisrekisterinpitäjiksi, jolloin merkattujen organisaatioiden tiedot tulostuvavat tieteelliseen tietosuojailmoitukseen.</p>"
+      },
       "personRegistry": {
         "helpText": "<p>Onko aineisto henkilörekisteri vai ei -ohjeet tähän</p>"
       },

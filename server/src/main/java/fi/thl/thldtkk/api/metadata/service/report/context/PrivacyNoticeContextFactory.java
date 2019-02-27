@@ -75,7 +75,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       if (shownContactPerson.isPresent()) {
         Person unwrappedPerson = shownContactPerson.get().getPerson().get();
         context.setVariable("contactPerson", unwrappedPerson);
-        context.setVariable("contactPersonName", getPersonName(unwrappedPerson));
+        context.setVariable("contactPersonName", unwrappedPerson.getFullName().orElse(""));
+        context.setVariable("contactPersonOtherInfo", unwrappedPerson.getPhoneAndEmail().orElse(""));
         context.setVariable("contactPersonNameAndContactInformation", getPersonNameAndContactInformation(unwrappedPerson));
       }
 
@@ -86,7 +87,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       if (dataProtectionPerson.isPresent()) {
         Person unwrappedPerson = dataProtectionPerson.get().getPerson().get();
         context.setVariable("dataProtectionPerson", unwrappedPerson);
-        context.setVariable("dataProtectionPersonName", getPersonName(unwrappedPerson));
+        context.setVariable("dataProtectionPersonName", unwrappedPerson.getFullName().orElse(""));
       }
 
       personsWithAssociations.stream()
@@ -94,7 +95,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
         .findFirst()
         .flatMap(PersonInRole::getPerson)
         .ifPresent(principalInvestigator -> {
-          context.setVariable("principalInvestigatorName", getPersonName(principalInvestigator));
+          context.setVariable("principalInvestigatorName", principalInvestigator.getFullName().orElse(""));
           context.setVariable("principalInvestigatorPhone", principalInvestigator.getPhone().orElse(""));
           context.setVariable("principalInvestigatorEmail", principalInvestigator.getEmail().orElse(""));
         });
@@ -157,18 +158,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     return name.toString();
   }
 
-  private String getPersonName(Person person) {
-    StringBuilder name = new StringBuilder();
-    name.append(person.getFirstName().get());
-    if (person.getLastName().isPresent()) {
-      name.append(' ');
-      name.append(person.getLastName().get());
-    }
-    return name.toString();
-  }
-
   private String getPersonNameAndContactInformation(Person person) {
-    StrBuilder output = new StrBuilder(getPersonName(person));
+    StrBuilder output = new StrBuilder(person.getFirstName().orElse(""));
     if (person.getPhone().isPresent()) {
       output.appendNewLine();
       output.append(person.getPhone().get());

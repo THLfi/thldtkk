@@ -192,7 +192,7 @@
     "MARKED_AS_PUBLIC": "Tutkittava on saattanut käsiteltävät arkaluonteiset tiedot julkisiksi",
     "PUBLIC_INTEREST": "Käsittely on tarpeen tärkeän yleisen edun vuoksi",
     "PUBLIC_HEALTH": "Käsittely on tarpeen kansanterveyteen liittyvän yleisen edun vuoksi",
- 	"OTHER": "Muu, mikä",
+    "OTHER": "Muu, mikä",
     "empty": "Ei määritetty"
   },
   "partiesAndSharingOfResponsibilityInCollaborativeStudy": "Yhteistyöhankkeena tehtävän tutkimuksen osapuolet ja vastuunjako",
@@ -838,6 +838,7 @@
     "noPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
     "confirmRemove": "Haluatko varmasti poistaa aineiston?",
+    "personsInCharge": "HUOM! Tietosuojailmoituksia varten aineistolle on valittava ainakin yhteyshenkilö, tietosuojavastaava ja tutkimuksesta vastaava johtaja",
     "sidebar": {
       "study": "Aineisto",
       "datasetsAndVariables": "Datasetit & muuttujat",

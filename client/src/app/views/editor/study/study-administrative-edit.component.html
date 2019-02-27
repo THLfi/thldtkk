@@ -667,7 +667,35 @@
                          selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
                          inputId="principlesForPhysicalSecurity">
           </p-multiSelect>
+
         </div>
+
+        <div *ngIf="study.principlesForPhysicalSecurity.indexOf('OTHER') != -1"
+             class="form-group">
+          <label for="otherPrinciplesForPhysicalSecurity" translate="securityPrinciple.otherPrinciplesForPhysicalSecurity"></label>
+          <br/>
+          <p-multiSelect [(ngModel)]="study.otherPrinciplesForPhysicalSecurity"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="otherPhysicalSecurityPrinciples"
+                         [filter]="true"
+                         defaultLabel="{{ 'securityPrinciple.selectOther' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
+                         inputId="otherPrinciplesForPhysicalSecurity">
+          </p-multiSelect>
+          <button (click)="showAddPhysicalSecurityPrincipleModal()"
+                  type="button"
+                  class="btn btn-default btn-security-principle-new">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            {{ 'securityPrinciple.addNew' | translate }}
+          </button>
+        </div>
+
+        <security-principle-edit-modal *ngIf="newSupplementaryPhysicalSecurityPrinciple"
+                           [securityPrinciple]="newSupplementaryPhysicalSecurityPrinciple"
+                           (onSave)="savePhysicalSecurityPrinciple($event)"
+                           (onCancel)="closeAddPhysicalSecurityPrincipleModal()">
+        </security-principle-edit-modal>
+
 
         <div class="form-group">
           <label for="principlesForDigitalSecurity" translate="principlesForDigitalSecurity.label"></label>
@@ -683,6 +711,33 @@
                          inputId="principlesForDigitalSecurity">
           </p-multiSelect>
         </div>
+
+        <div *ngIf="study.principlesForDigitalSecurity.indexOf('OTHER') != -1"
+             class="form-group">
+          <label for="otherPrinciplesForDigitalSecurity" translate="securityPrinciple.otherPrinciplesForDigitalSecurity"></label>
+          <br/>
+          <p-multiSelect #otherDigitalSecuritySelect
+                         [(ngModel)]="study.otherPrinciplesForDigitalSecurity"
+                         [ngModelOptions]="{ standalone: true }"
+                         [options]="otherDigitalSecurityPrinciples"
+                         [filter]="true"
+                         defaultLabel="{{ 'securityPrinciple.selectOther' | translate }}"
+                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
+                         inputId="otherPrinciplesForDigitalSecurity">
+          </p-multiSelect>
+          <button (click)="showAddDigitalSecurityPrincipleModal()"
+                  type="button"
+                  class="btn btn-default btn-security-principle-new">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            {{ 'securityPrinciple.addNew' | translate }}
+          </button>
+        </div>
+
+        <security-principle-edit-modal *ngIf="newSupplementaryDigitalSecurityPrinciple"
+                                       [securityPrinciple]="newSupplementaryDigitalSecurityPrinciple"
+                                       (onSave)="saveDigitalSecurityPrinciple($event)"
+                                       (onCancel)="closeAddDigitalSecurityPrincipleModal()">
+        </security-principle-edit-modal>
 
         <div class="row">
           <div class="col-xs-12">

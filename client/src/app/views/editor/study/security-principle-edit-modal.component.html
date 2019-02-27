@@ -1,0 +1,55 @@
+<ng-container *ngIf="securityPrinciple">
+  <p-dialog [visible]="securityPrinciple"
+            (onHide)="doCancel()"
+            modal="modal"
+            draggable="false"
+            resizable="false"
+            closeOnEscape="false"
+            width="500">
+    <p-header>
+      {{ 'securityPrinciple.modal.newSecurityPrinciple' | translate }}
+    </p-header>
+    <form #securityPrincipleForm="ngForm">
+      <div class="container-fluid">
+        <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
+             class="row">
+          <div class="col-xs-12">
+            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
+                 class="form-group">
+              <label for="prefLabel">
+                {{ 'prefLabel' | translate }}
+                <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+              </label>
+              <input [(ngModel)]="securityPrinciple.prefLabel[language]"
+                     id="prefLabel"
+                     name="prefLabel"
+                     type="text"
+                     class="form-control"
+                     required>
+              <p *ngFor="let errorKey of formErrors.prefLabel"
+                 class="text-danger">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                {{ errorKey | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div>
+        <button (click)="doSave()"
+                [disabled]="savingInProgress"
+                class="btn btn-primary">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{ 'save' | translate }}
+        </button>
+        <button (click)="doCancel()"
+                [disabled]="savingInProgress"
+                class="btn btn-default">
+          {{ 'cancel' | translate }}
+        </button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</ng-container>

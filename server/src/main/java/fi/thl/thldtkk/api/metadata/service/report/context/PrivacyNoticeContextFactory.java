@@ -1,12 +1,12 @@
 package fi.thl.thldtkk.api.metadata.service.report.context;
 
-import fi.thl.thldtkk.api.metadata.domain.AssociatedOrganization;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrBuilder;
 import org.thymeleaf.context.Context;
 
@@ -148,7 +148,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     context.setVariable("partiesAndSharingOfResponsibilityInCollaborativeStudy", getLangValue(study.getPartiesAndSharingOfResponsibilityInCollaborativeStudy()));
 
-
+    context.setVariable("otherPrinciplesForPhysicalSecurity", getOtherPrinciplesForPhysicalSecurity(study));
+    context.setVariable("otherPrinciplesForDigitalSecurity", getOtherPrinciplesForDigitalSecurity(study));
 
     return context;
   }
@@ -182,6 +183,22 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       output.append(person.getEmail().get());
     }
     return output.toString();
+  }
+
+  private List<String> getOtherPrinciplesForPhysicalSecurity(Study study) {
+    return study.getOtherPrinciplesForPhysicalSecurity().stream()
+      .map(principle -> principle.getPrefLabel())
+      .map(this::getLangValue)
+      .map(StringUtils::uncapitalize)
+      .collect(Collectors.toList());
+  }
+
+  private List<String> getOtherPrinciplesForDigitalSecurity(Study study) {
+    return study.getOtherPrinciplesForDigitalSecurity().stream()
+      .map(principle -> principle.getPrefLabel())
+      .map(this::getLangValue)
+      .map(StringUtils::uncapitalize)
+      .collect(Collectors.toList());
   }
 
 }

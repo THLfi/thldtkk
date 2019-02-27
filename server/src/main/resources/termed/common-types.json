@@ -236,5 +236,22 @@
         }
       }
     ]
+  },
+  {
+    "id": "SupplementaryPhysicalSecurityPrinciple",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
+  },
+  {
+    "id": "SupplementaryDigitalSecurityPrinciple",
+    "textAttributes": [
+      {
+        "id": "prefLabel"
+      }
+    ]
   }
+
 ]

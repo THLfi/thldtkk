@@ -43,6 +43,8 @@ export class EditorStudyService {
       groundsForConfidentiality: null,
       principlesForPhysicalSecurity: [],
       principlesForDigitalSecurity: [],
+      otherPrinciplesForPhysicalSecurity: [],
+      otherPrinciplesForDigitalSecurity: [],
       legalBasisForHandlingPersonalData: [],
       otherLegalBasisForHandlingPersonalData: null,
       containsSensitivePersonalData: null,

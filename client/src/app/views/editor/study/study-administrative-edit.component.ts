@@ -3,8 +3,10 @@ import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
+import {MultiSelect} from "primeng/primeng";
 import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
+import {SecurityPrincipleService} from "../../../services-common/security-principle.service";
 import {DateUtils} from '../../../utils/date-utils'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {EditorSystemService} from '../../../services-editor/editor-system.service'
@@ -30,10 +32,14 @@ import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-per
 import { Organization } from 'app/model2/organization';
 import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
-import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data';
+import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
+import {SupplementaryDigitalSecurityPrinciple} from "../../../model2/supplementary-digital-security-principle";
+import {SupplementaryPhysicalSecurityPrinciple} from "../../../model2/supplementary-physical-security-principle";
+
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
+    styleUrls: ['./study-administrative-edit.component.css'],
     providers: [LangPipe]
 })
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
@@ -81,6 +87,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     legalBasisForHandlingSensitivePersonalDataOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
 
+    newSupplementaryPhysicalSecurityPrinciple: SupplementaryPhysicalSecurityPrinciple
+    newSupplementaryDigitalSecurityPrinciple: SupplementaryDigitalSecurityPrinciple
+
+    otherPhysicalSecurityPrinciples: SelectItem[]
+    otherDigitalSecurityPrinciples: SelectItem[]
+
+    @ViewChild('otherDigitalSecuritySelect') otherDigitalSecuritySelect: MultiSelect
+
     constructor(
         private studyService: EditorStudyService,
         private systemService: EditorSystemService,
@@ -94,7 +108,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private langPipe: LangPipe,
         private titleService: Title,
         private dateUtils: DateUtils,
-        private nodeUtils: NodeUtils
+        private nodeUtils: NodeUtils,
+        private securityPrincipleService: SecurityPrincipleService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -151,6 +166,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
+      this.getAllSupplementaryPhysicalSecurityPrinciples()
+      this.getAllSupplementaryDigitalSecurityPrinciples()
     }
 
     private getStudy() {
@@ -335,8 +352,70 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       }
       this.study.systemInRoles = [ ...this.study.systemInRoles,systemInRole ]
     }
-    
-    ngAfterContentChecked(): void {
+
+    private getAllSupplementaryPhysicalSecurityPrinciples(): void {
+      this.otherPhysicalSecurityPrinciples = []
+
+      this.securityPrincipleService.getAllSupplementaryPhysicalSecurityPrinciples().subscribe(physicalSecurityPrinciples => {
+        physicalSecurityPrinciples.forEach(principle => {
+          this.otherPhysicalSecurityPrinciples.push({
+            label: this.langPipe.transform((principle.prefLabel)),
+            value: principle
+          })
+        })
+      })
+    }
+
+    private getAllSupplementaryDigitalSecurityPrinciples(): void {
+      this.otherDigitalSecurityPrinciples = []
+
+      this.securityPrincipleService.getAllSupplementaryDigitalSecurityPrinciples().subscribe(digitalSecurityPrinciples => {
+        digitalSecurityPrinciples.forEach(principle => {
+          this.otherDigitalSecurityPrinciples.push({
+            label: this.langPipe.transform((principle.prefLabel)),
+            value: principle
+          })
+        })
+        this.otherDigitalSecuritySelect.ngOnInit()
+      })
+    }
+
+    showAddPhysicalSecurityPrincipleModal(): void {
+      this.newSupplementaryPhysicalSecurityPrinciple = this.securityPrincipleService.initNewSupplementaryPhysicalSecurityPrinciple()
+    }
+
+    showAddDigitalSecurityPrincipleModal(): void {
+      this.newSupplementaryDigitalSecurityPrinciple = this.securityPrincipleService.initNewSupplementaryDigitalSecurityPrinciple()
+    }
+
+    savePhysicalSecurityPrinciple(event): void {
+      this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryPhysicalSecurityPrinciple)
+        .subscribe(savedSecurityPrinciple => {
+          this.getAllSupplementaryPhysicalSecurityPrinciples()
+          this.study.otherPrinciplesForPhysicalSecurity.push(savedSecurityPrinciple)
+          this.closeAddPhysicalSecurityPrincipleModal()
+        })
+    }
+
+    saveDigitalSecurityPrinciple(event): void {
+      this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryDigitalSecurityPrinciple)
+        .subscribe(savedSecurityPrinciple => {
+          this.getAllSupplementaryDigitalSecurityPrinciples()
+          this.study.otherPrinciplesForDigitalSecurity.push(savedSecurityPrinciple)
+          this.closeAddDigitalSecurityPrincipleModal()
+        })
+    }
+
+    closeAddPhysicalSecurityPrincipleModal(): void {
+      this.newSupplementaryPhysicalSecurityPrinciple = null
+    }
+
+    closeAddDigitalSecurityPrincipleModal(): void {
+      this.newSupplementaryDigitalSecurityPrinciple = null
+    }
+
+
+  ngAfterContentChecked(): void {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {
           this.currentForm = this.studyForm
@@ -398,6 +477,16 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.study.groundsForConfidentiality = null
           this.study.securityClassification = null
           this.studyService.initializeProperties(this.study)
+        }
+
+        if(this.study.otherPrinciplesForPhysicalSecurity.length > 0 &&
+          this.study.principlesForPhysicalSecurity.indexOf(PrincipleForPhysicalSecurity.OTHER) == -1) {
+          this.study.otherPrinciplesForPhysicalSecurity = []
+        }
+
+        if(this.study.otherPrinciplesForDigitalSecurity.length > 0 &&
+            this.study.principlesForDigitalSecurity.indexOf(PrincipleForDigitalSecurity.OTHER) == -1) {
+            this.study.otherPrinciplesForDigitalSecurity = []
         }
 
         if (this.currentForm.invalid) {

@@ -78,6 +78,9 @@ public class Study implements NodeEntity {
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
 
+  private List<SupplementaryPhysicalSecurityPrinciple> otherPrinciplesForPhysicalSecurity = new ArrayList<>();
+  private List<SupplementaryDigitalSecurityPrinciple> otherPrinciplesForDigitalSecurity = new ArrayList<>();
+
   // Archiving
   private LocalDate dataProcessingStartDate;
   private LocalDate dataProcessingEndDate;
@@ -225,7 +228,10 @@ public class Study implements NodeEntity {
       .forEach(s -> this.predecessors.add(new Study(s)));
     node.getReferences("systemInRoles")
       .forEach(sir -> this.systemInRoles.add(new SystemInRole(sir)));
-
+    node.getReferences("otherPrinciplesForPhysicalSecurity")
+      .forEach(ops -> this.otherPrinciplesForPhysicalSecurity.add(new SupplementaryPhysicalSecurityPrinciple(ops)));
+    node.getReferences("otherPrinciplesForDigitalSecurity")
+      .forEach(ods -> this.otherPrinciplesForDigitalSecurity.add(new SupplementaryDigitalSecurityPrinciple(ods)));
 
     node.getReferrers("predecessors")
       .forEach(s -> this.successors.add(new Study(s)));
@@ -684,6 +690,14 @@ public class Study implements NodeEntity {
     this.changedAfterPublish = changedAfterPublish;
   }
 
+  public List<SupplementaryPhysicalSecurityPrinciple> getOtherPrinciplesForPhysicalSecurity() {
+    return otherPrinciplesForPhysicalSecurity;
+  }
+
+  public List<SupplementaryDigitalSecurityPrinciple> getOtherPrinciplesForDigitalSecurity() {
+    return otherPrinciplesForDigitalSecurity;
+  }
+
   /**
    * Transforms dataset into node
    */
@@ -760,6 +774,8 @@ public class Study implements NodeEntity {
     getDatasets().forEach(d -> refs.put("dataSets", d.toNode()));
     getPredecessors().forEach(d -> refs.put("predecessors", d.toNode()));
     getSystemInRoles().forEach(sir -> refs.put("systemInRoles", sir.toNode()));
+    getOtherPrinciplesForPhysicalSecurity().forEach(ops -> refs.put("otherPrinciplesForPhysicalSecurity", ops.toNode()));
+    getOtherPrinciplesForDigitalSecurity().forEach(ods -> refs.put("otherPrinciplesForDigitalSecurity", ods.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }
@@ -811,6 +827,8 @@ public class Study implements NodeEntity {
             && Objects.equals(securityClassification, study.securityClassification)
             && Objects.equals(principlesForPhysicalSecurity, study.principlesForPhysicalSecurity)
             && Objects.equals(principlesForDigitalSecurity, study.principlesForDigitalSecurity)
+            && Objects.equals(otherPrinciplesForPhysicalSecurity, study.otherPrinciplesForPhysicalSecurity)
+            && Objects.equals(otherPrinciplesForDigitalSecurity, study.otherPrinciplesForDigitalSecurity)
             // Archiving
             && Objects.equals(dataProcessingStartDate, study.dataProcessingStartDate)
             && Objects.equals(dataProcessingEndDate, study.dataProcessingEndDate)
@@ -906,7 +924,9 @@ public class Study implements NodeEntity {
         studyGroup,
         datasets,
         predecessors,
-        systemInRoles
+        systemInRoles,
+        otherPrinciplesForPhysicalSecurity,
+        otherPrinciplesForDigitalSecurity
       );
   }
 

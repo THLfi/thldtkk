@@ -156,7 +156,8 @@
   },
   "principlesForPhysicalSecurity": {
     "label": "Fyysisen suojauksen periaatteet",
-    "LOCKED_SPACE": "Lukittu tila"
+    "LOCKED_SPACE": "Lukittu tila",
+    "OTHER": "Muu suojausperiaate"
   },
   "principlesForDigitalSecurity": {
     "label": "Digitaalisen suojauksen periaatteet",
@@ -168,7 +169,8 @@
     "ANONYMIZATION": "Anonymisointi",
     "REMOVAL_OF_IDENTIFIABLE_INFORMATION": "Tunnisteiden poisto",
     "MULTI_FACTOR_AUTHENTICATION": "Monivaihetunnistus",
-    "ENCRYPTION_OF_INFORMATION": "Aineiston erillinen salaus"
+    "ENCRYPTION_OF_INFORMATION": "Aineiston erillinen salaus",
+    "OTHER": "Muu suojausperiaate"
   },
   "legalBasisForHandlingPersonalData": {
     "label": "Henkilötietojen käsittelyn oikeusperuste",
@@ -695,6 +697,13 @@
       "save": {
         "result": {
           "success": "Organisaatio tallennettu"
+        }
+      }
+    },
+    "principle": {
+      "save": {
+        "result": {
+          "success": "Suojausperiaate tallennettu"
         }
       }
     }
@@ -1271,7 +1280,7 @@
   "postStudyRetentionOfPersonalData": {
     "commonLabel": "Henkilötietojen säilyttäminen",
     "scientificLabel": "Henkilötietojen käsittely tutkimuksen päättymisen jälkeen",
-    "ARCHIVE": "Voimassa olevan lainsäädännön perusteella henkilötietoja säilytetään toistaiseksi", 
+    "ARCHIVE": "Voimassa olevan lainsäädännön perusteella henkilötietoja säilytetään toistaiseksi",
     "DISPOSE": "Aineisto hävitetään käsittelyn päätyttyä",
     "DISPOSE_SCIENTIFIC": "Tutkimusaineisto hävitetään",
     "ARCHIVE_WITHOUT_IDENTIFIERS": "Aineisto arkistoidaan ilman tunnistetietoja käsittelyn päätyttyä",
@@ -1279,5 +1288,14 @@
     "ARCHIVE_WITH_IDENTIFIERS": "Aineisto arkistoidaan tunnistetiedoin käsittelyn päätyttyä",
     "ARCHIVE_WITH_IDENTIFIERS_SCIENTIFIC": "Tutkimusaineisto arkistoidaan tunnistetiedoin",
     "empty": "Ei määritelty"
+  },
+  "securityPrinciple": {
+    "otherPrinciplesForPhysicalSecurity": "Muut fyysisen suojauksen periaatteet",
+    "otherPrinciplesForDigitalSecurity": "Muut digitaalisen suojauksen periaatteet",
+    "selectOther": "Valitse muut periaatteet",
+    "addNew": "Lisää uusi suojausperiaate",
+    "modal" :{
+      "newSecurityPrinciple": "Uusi suojausperiaate"
+    }
   }
 }

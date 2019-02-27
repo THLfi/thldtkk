@@ -310,6 +310,9 @@
             <li *ngFor="let principle of study.principlesForPhysicalSecurity">
               {{ 'principlesForPhysicalSecurity.' + principle | translate }}
             </li>
+            <li *ngFor="let otherPrinciple of study.otherPrinciplesForPhysicalSecurity">
+              {{ otherPrinciple.prefLabel | lang }}
+            </li>
           </ul>
         </div>
       </div>
@@ -318,8 +321,13 @@
         <div class="col-xs-12">
           <p><strong class="field-label">{{ 'principlesForDigitalSecurity.label' | translate }}</strong></p>
           <ul *ngIf="study.principlesForDigitalSecurity.length">
-            <li *ngFor="let principle of study.principlesForDigitalSecurity">
-              {{ 'principlesForDigitalSecurity.' + principle | translate }}
+            <ng-container *ngFor="let principle of study.principlesForDigitalSecurity">
+              <li *ngIf="!(principle == 'OTHER')">
+                {{ 'principlesForDigitalSecurity.' + principle | translate }}
+              </li>
+            </ng-container>
+            <li *ngFor="let otherPrinciple of study.otherPrinciplesForDigitalSecurity">
+              {{ otherPrinciple.prefLabel | lang }}
             </li>
           </ul>
         </div>

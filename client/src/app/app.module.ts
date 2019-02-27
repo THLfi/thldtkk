@@ -28,6 +28,7 @@ import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
 
 import { environment } from '../environments/environment'
+import {SecurityPrincipleService} from "./services-common/security-principle.service";
 
 // utils
 import { NodeUtils } from './utils/node-utils'
@@ -93,6 +94,7 @@ import { BreadcrumbComponent } from './views/editor/breadcrumb/breadcrumb.compon
 import { CodeListEditModalComponent } from './views/editor/dataset/code-list-edit-modal.component'
 import { CodeListListComponent } from './views/editor/code-list/code-list-list.component'
 import { CurrentUserService } from './services-editor/user.service'
+import { SecurityPrincipleEditModalComponent } from "./views/editor/study/security-principle-edit-modal.component";
 import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
 import { StudyAdministrativeReadOnlyFieldsComponent } from './views/editor/study/study-administrative-read-only-fields.component'
 import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
@@ -233,7 +235,8 @@ export function TranslateHttpLoaderFactory(http: Http) {
         VariableListComponent,
         VariableModalComponent,
         StudyGroupViewComponent,
-        VariableViewComponent
+        VariableViewComponent,
+        SecurityPrincipleEditModalComponent
     ],
     imports: [
         CheckboxModule,
@@ -308,6 +311,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         VariableService,
         BreadcrumbService,
         StudyGroupService,
+        SecurityPrincipleService,
         { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [

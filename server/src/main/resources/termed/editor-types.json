@@ -291,6 +291,24 @@
         "range": {
           "id": "Study"
         }
+      },
+      {
+        "id": "otherPrinciplesForPhysicalSecurity",
+        "range": {
+          "id": "SupplementaryPhysicalSecurityPrinciple",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      },
+      {
+        "id": "otherPrinciplesForDigitalSecurity",
+        "range": {
+          "id": "SupplementaryDigitalSecurityPrinciple",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
       }
     ]
   },
@@ -752,5 +770,4 @@
       }
     ]
   }
-
 ]

@@ -196,6 +196,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.link",
         "references.predecessors",
         "references.studyGroup",
+        "references.otherPrinciplesForPhysicalSecurity",
+        "references.otherPrinciplesForDigitalSecurity",
         "references.predecessors",
         "referrers.predecessors"
       );

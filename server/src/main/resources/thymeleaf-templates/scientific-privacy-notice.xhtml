@@ -433,9 +433,18 @@ ulkopuolelle</span></h2></th>
       </tr>
 
       <tr>
-        <th><h2>16<br/><span>Henkilötietojen suojauksen periaatteet</span></h2></th>
+        <th><h2>16<br/><span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples}">Henkilötietojen suojauksen periaatteet</span></h2></th>
         <td>
-          TODO
+          <div th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.intro}">Tiedot ovat salassa pidettäviä.
+            Rekisterinpitäjä on laatinut tietosuojaa koskevan vaikutusten arvioinnin.
+            Rekisterinpitäjä on sitoutunut noudattamaan alaansa koskevia vahvistettuja käytännesääntöjä.
+          </div>
+
+          <div>
+            <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.physicalSecurity} +': '">Manuaalisen aineiston suojaaminen:</span>
+            <span th:text="${#strings.listJoin(otherPrinciplesForPhysicalSecurity, ',')}">vartija, liiketunnistin</span>
+          </div>
+          <div th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.digitalSecurity}">Tietojärjestelmässä käsiteltävät tiedot</div>
         </td>
       </tr>
 

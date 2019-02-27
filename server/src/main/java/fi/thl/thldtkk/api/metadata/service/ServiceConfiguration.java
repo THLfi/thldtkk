@@ -31,6 +31,8 @@ import fi.thl.thldtkk.api.metadata.service.termed.QuantityServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.RoleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.StudyGroupServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.StudyPublishingServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.SupplementaryDigitalSecurityPrincipleServiceImpl;
+import fi.thl.thldtkk.api.metadata.service.termed.SupplementaryPhysicalSecurityPrincipleServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UnitTypeServiceImpl;
 import fi.thl.thldtkk.api.metadata.service.termed.UniverseServiceImpl;
@@ -239,6 +241,16 @@ public class ServiceConfiguration {
   @Bean
   public NodeRefCountService nodeRefCountService() {
     return new NodeRefCountServiceImpl(commonNodeRepository());
+  }
+
+  @Bean
+  public SupplementaryDigitalSecurityPrincipleService supplementaryDigitalSecurityPrincipleService() {
+    return new SupplementaryDigitalSecurityPrincipleServiceImpl(commonNodeRepository());
+  }
+
+  @Bean
+  public SupplementaryPhysicalSecurityPrincipleService supplementaryPhysicalSecurityPrincipleService() {
+    return new SupplementaryPhysicalSecurityPrincipleServiceImpl(commonNodeRepository());
   }
 
   // lower level termed HTTP APIs

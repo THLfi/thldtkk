@@ -48,6 +48,7 @@ import { Study } from '../../../model2/study'
 <div class="row">
   <div class="col-xs-12">
     <p><strong class="field-label">{{ 'study.personInRolesLabel' | translate }}</strong></p>
+    <p>{{ 'study.personsInCharge' | translate }}</p>
     <table *ngIf="study.personInRoles.length; else noStudyPersonInRoles;"
            class="table table-striped table-hover">
       <tr>

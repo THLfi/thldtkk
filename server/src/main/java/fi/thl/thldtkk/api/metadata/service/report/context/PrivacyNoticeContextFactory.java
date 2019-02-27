@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service.report.context;
 
+import fi.thl.thldtkk.api.metadata.domain.AssociatedOrganization;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
@@ -40,10 +41,10 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
   @Override
   public Context makeContext() {
     Context context = new Context(new Locale(lang));
+    context.setVariable("lang", lang);
 
     Study study = editorStudyService.get(studyId)
       .orElseThrow(NotFoundException.entityNotFound(Study.class, studyId));
-
 
     context.setVariable("editDate", study.getLastModifiedDate().orElse(new Date()));
 
@@ -53,6 +54,14 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
       context.setVariable("controllerAddress", organization.getAddressForRegistryPolicy().get(lang));
       context.setVariable("controllerOtherInfo", organization.getPhoneNumberForRegistryPolicy().orElse(""));
     }
+
+    List<Organization> registryOrganizations = study.getAssociatedOrganizations().stream()
+      .filter(assoc -> assoc.isRegistryOrganization().orElse(false))
+      .map(assoc -> assoc.getOrganization().get())
+      .collect(Collectors.toList());
+
+    context.setVariable("associatedOrganizations", study.getAssociatedOrganizations());
+    context.setVariable("registryOrganizations", registryOrganizations);
 
     if (!study.getPersonInRoles().isEmpty()) {
 
@@ -138,6 +147,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     context.setVariable("postStudyRetentionOfPersonalData", study.getPostStudyRetentionOfPersonalData());
 
     context.setVariable("partiesAndSharingOfResponsibilityInCollaborativeStudy", getLangValue(study.getPartiesAndSharingOfResponsibilityInCollaborativeStudy()));
+
+
 
     return context;
   }

@@ -135,6 +135,10 @@
       }
       ol.alphabetical-list li { counter-increment: section; }
       ol.alphabetical-list li:before { content: counter(section, lower-alpha) ") "; }
+
+      .borderless { border-width: 0 }
+      .marginless { margin: 0 }
+      .paddingless { padding: 0 }
     </style>
   </head>
 
@@ -162,7 +166,7 @@
 
     <table>
       <tr>
-        <th rowspan="3"><h2>1<br/><span th:text="#{scientificPrivacyNotice.controller}">Tutkimuksen rekisterinpitäjä</span></h2></th>
+        <th rowspan="5"><h2>1<br/><span th:text="#{scientificPrivacyNotice.controller}">Tutkimuksen rekisterinpitäjät</span></h2></th>
         <td>
           <div th:text="#{privacyNotice.controller.name}" class="label">Nimi</div>
           <div th:text="${controllerName}"></div>
@@ -198,6 +202,42 @@
         </td>
       </tr>
 
+      <tr>
+        <td>
+          <strong>Muut rekisterinpitäjät</strong>
+        </td>
+      </tr>
+
+      <tr>
+      <td class="paddingless">
+      <table th:each="registryOrganization : ${registryOrganizations}" style="border-top: 2px solid black">
+        <tr>
+          <td>
+            <div th:text="#{privacyNotice.controller.name}" class="label">Nimi</div>
+            <div th:text="${registryOrganization.getPrefLabel().get(lang)}"></div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div th:text="#{privacyNotice.controller.address}" class="label">Osoite</div>
+            <div th:text="${registryOrganization.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <div th:text="#{privacyNotice.controller.otherInfo}" class="label">Muut yhteystiedot</div>
+            <div th:text="${registryOrganization.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+    </table>
+
+
+    <table>
       <tr>
         <th>
           <h2>

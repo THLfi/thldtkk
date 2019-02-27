@@ -30,6 +30,7 @@ import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-per
 import { Organization } from 'app/model2/organization';
 import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
+import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
@@ -39,6 +40,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     study: Study;
     StudyType = StudyType;
+    selectableRetentionOptions: string[] = [];
 
     yearRangeForDataProcessingFields: string =  ('1900:' + (new Date().getFullYear() + 20))
     dataProcessingStartDate: Date
@@ -161,10 +163,12 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.updatePageTitle()
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
             this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+            this.updateSelectableRetentionOptions()
           })
       } else {
         this.study = this.studyService.initNew()
         this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+        this.updateSelectableRetentionOptions()
       }
     }
 
@@ -424,4 +428,21 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.router.navigate(['/editor/studies']);
         }
     }
+
+    private onIsScientificStudyChanged(): void {
+      this.study.postStudyRetentionOfPersonalData = undefined
+      this.updateSelectableRetentionOptions()
+    }
+
+    private updateSelectableRetentionOptions(): void {
+      this.selectableRetentionOptions = (<any>Object).values(PostStudyRetentionOfPersonalData)
+        .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
+    }
+
+    private postStudyRetentionDisposeNotSelected(): boolean {
+      const selectedValue = this.study.postStudyRetentionOfPersonalData;
+      return PostStudyRetentionOfPersonalData.DISPOSE !== selectedValue &&
+             PostStudyRetentionOfPersonalData.DISPOSE_SCIENTIFIC !== selectedValue;
+  }
+
 }

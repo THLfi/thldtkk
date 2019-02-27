@@ -391,6 +391,7 @@
                 <div class="radio">
                   <label for="scientific-study-true">
                     <input [(ngModel)]="study.isScientificStudy"
+                           (change)="onIsScientificStudyChanged()"
                            [value]="true"
                            type="radio"
                            id="scientific-study-true"
@@ -401,6 +402,7 @@
                 <div class="radio">
                   <label for="scientific-study-false">
                     <input [(ngModel)]="study.isScientificStudy"
+                           (change)="onIsScientificStudyChanged()"
                            [value]="false"
                            type="radio"
                            id="scientific-study-false"
@@ -731,48 +733,80 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label for="retentionPeriod" translate="retentionPeriod"></label>
-              <editor-help-link [helpTextComponent]="retentionPeriodHelpText"></editor-help-link>
-              <editor-help-text #retentionPeriodHelpText key="editor.studyAdministrative.retentionPeriod.helpText"></editor-help-text>
-              <textarea [(ngModel)]="study.retentionPeriod[language]"
-                        thlAutogrow
-                        id="retentionPeriod"
-                        name="retentionPeriod"
-                        class="form-control"
-                        rows="4">
-              </textarea>
+        <ng-container *ngIf="postStudyRetentionDisposeNotSelected()">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="retentionPeriod" translate="retentionPeriod"></label>
+                <editor-help-link [helpTextComponent]="retentionPeriodHelpText"></editor-help-link>
+                <editor-help-text #retentionPeriodHelpText key="editor.studyAdministrative.retentionPeriod.helpText"></editor-help-text>
+                <textarea [(ngModel)]="study.retentionPeriod[language]"
+                          thlAutogrow
+                          id="retentionPeriod"
+                          name="retentionPeriod"
+                          class="form-control"
+                          rows="4">
+                </textarea>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="groundsForRetention" translate="groundsForRetention"></label>
+                <editor-help-link [helpTextComponent]="groundsForRetentionHelpText"></editor-help-link>
+                <editor-help-text #groundsForRetentionHelpText key="editor.studyAdministrative.groundsForRetention.helpText"></editor-help-text>
+                <textarea [(ngModel)]="study.groundsForRetention[language]"
+                          thlAutogrow
+                          id="groundsForRetention"
+                          name="groundsForRetention"
+                          class="form-control"
+                          rows="4">
+                </textarea>
+              </div>
             </div>
           </div>
 
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label for="groundsForRetention" translate="groundsForRetention"></label>
-              <editor-help-link [helpTextComponent]="groundsForRetentionHelpText"></editor-help-link>
-              <editor-help-text #groundsForRetentionHelpText key="editor.studyAdministrative.groundsForRetention.helpText"></editor-help-text>
-              <textarea [(ngModel)]="study.groundsForRetention[language]"
-                        thlAutogrow
-                        id="groundsForRetention"
-                        name="groundsForRetention"
-                        class="form-control"
-                        rows="4">
-              </textarea>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="nationalArchivesFinlandArchivalDecision" translate="nationalArchivesFinlandArchivalDecision"></label>
+                <editor-help-link [helpTextComponent]="nationalArchivesFinlandArchivalDecisionHelpText"></editor-help-link>
+                <editor-help-text #nationalArchivesFinlandArchivalDecisionHelpText key="editor.studyAdministrative.nationalArchivesFinlandArchivalDecision.helpText"></editor-help-text>
+                <input [(ngModel)]="study.nationalArchivesFinlandArchivalDecision[language]"
+                          id="nationalArchivesFinlandArchivalDecision"
+                          name="nationalArchivesFinlandArchivalDecision"
+                          class="form-control">
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="nationalArchivesFinlandArchivalDecision" translate="nationalArchivesFinlandArchivalDecision"></label>
-              <editor-help-link [helpTextComponent]="nationalArchivesFinlandArchivalDecisionHelpText"></editor-help-link>
-              <editor-help-text #nationalArchivesFinlandArchivalDecisionHelpText key="editor.studyAdministrative.nationalArchivesFinlandArchivalDecision.helpText"></editor-help-text>
-              <input [(ngModel)]="study.nationalArchivesFinlandArchivalDecision[language]"
-                        id="nationalArchivesFinlandArchivalDecision"
-                        name="nationalArchivesFinlandArchivalDecision"
-                        class="form-control">
+              <p>
+                <strong class="field-label">{{ 'postStudyRetentionOfPersonalData.label' | translate }}</strong>
+              </p>
+              <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
+                <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
+                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                         [value]="retentionType"
+                         type="radio"
+                         id="postStudyRetentionOfPersonalData-{{retentionType}}"
+                         name="postStudyRetentionOfPersonalData">
+                  {{ 'postStudyRetentionOfPersonalData.' + retentionType | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="postStudyRetentionOfPersonalData-empty" class="radio-empty">
+                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                        [value]="undefined"
+                        type="radio"
+                        id="postStudyRetentionOfPersonalData-empty"
+                        name="postStudyRetentionOfPersonalData">
+                  {{ 'postStudyRetentionOfPersonalData.empty' | translate }}
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -797,7 +831,7 @@
           </div>
         </div>
 
-          <div class="row">
+          <div class="row" *ngIf="postStudyRetentionDisposeNotSelected()">
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="physicalLocation" translate="physicalLocation"></label>

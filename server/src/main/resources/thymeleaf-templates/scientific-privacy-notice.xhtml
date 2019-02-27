@@ -400,9 +400,16 @@ ulkopuolelle</span></h2></th>
       </tr>
 
       <tr>
-        <th><h2>17<br/><span>Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2></th>
+        <th><h2>17<br/><span th:text="#{scientificPrivacyNotice.postStudyRetentionOfPersonalData}">Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2></th>
         <td>
-          TODO
+          <div th:if="${postStudyRetentionOfPersonalData.isPresent()}">
+            <p th:text="#{'scientificPrivacyNotice.postStudyRetentionOfPersonalData.' + ${postStudyRetentionOfPersonalData.get()}}"></p>
+            <p th:with="location = ${#strings.defaultString(physicalLocation,'-')},
+                        period = ${#strings.defaultString(retentionPeriod,'-')}" 
+               th:text="#{scientificPrivacyNotice.physicalLocationAndRetentionPeriod(${location}, ${period})}">
+               Mihin aineisto arkistoidaan ja miten pitkäksi aikaa: {0} {1}
+            </p>
+          </div>
         </td>
       </tr>
 

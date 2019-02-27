@@ -267,8 +267,25 @@
           <div th:case="*" class="preserve-line-breaks"></div>
         </td>
       </tr>
+
       <tr>
-        <th rowspan="2" class="no-bottom-border"><h2>10<br/><span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
+        <th><h2>10<br/><span th:text="#{privacyNotice.postStudyRetentionOfPersonalData}">Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2></th>
+        <td>
+          <p th:text="#{privacyNotice.postStudyRetentionOfPersonalData.ingress}"></p>
+          <th:block th:if="${postStudyRetentionOfPersonalData.isPresent()}"
+                    th:with="endDate = ${dataProcessingEndDate.isPresent()} ? ${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')} : '',
+                             postStudyRetentionMessageKey = 'privacyNotice.postStudyRetentionOfPersonalData.' + ${postStudyRetentionOfPersonalData.get()}">
+            <p>
+              <span th:text="#{${postStudyRetentionMessageKey}(${endDate})}"></span><br/>
+              <span th:text="#{privacyNotice.physicalLocation(${physicalLocation})}"></span><br/>
+              <span th:text="#{privacyNotice.retentionPeriod(${retentionPeriod})}"></span>
+            </p>
+          </th:block>
+        </td>
+      </tr>
+
+      <tr>
+        <th rowspan="2" class="no-bottom-border"><h2>11<br/><span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2></th>
         <td class="no-bottom-border">
           <div th:text="#{privacyNotice.principlesForPhysicalSecurity}" class="label">A Manuaalinen aineisto</div>
           <div>

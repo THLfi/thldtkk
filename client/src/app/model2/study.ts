@@ -25,6 +25,7 @@ import {UnitType} from './unit-type';
 import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
 import {UserInformation} from './user-information';
+import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
 
 export interface Study extends Node {
 
@@ -76,6 +77,8 @@ export interface Study extends Node {
   retentionPeriod?: LangValues
   groundsForRetention?: LangValues
   nationalArchivesFinlandArchivalDecision?: LangValues
+  postStudyRetentionOfPersonalData?: PostStudyRetentionOfPersonalData
+
   existenceForms: ExistenceForm[]
   systemInRoles: SystemInRole[]
   physicalLocation?: LangValues

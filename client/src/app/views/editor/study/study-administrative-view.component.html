@@ -343,39 +343,53 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'retentionPeriod' | translate }}</strong></p>
-            <ng-container *ngIf="(study.retentionPeriod | lang).length; else noRetentionPeriod;">
-              <p class="preserve-line-breaks">{{ study.retentionPeriod | lang }}</p>
-            </ng-container>
-            <ng-template #noRetentionPeriod>
-              <p class="preserve-line-breaks">{{ 'noRetentionPeriod' | translate }}</p>
-            </ng-template>
-       </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'groundsForRetention' | translate }}</strong></p>
-            <ng-container *ngIf="(study.groundsForRetention | lang).length; else noGroundsForRetention;">
-              <p class="preserve-line-breaks">{{ study.groundsForRetention | lang }}</p>
-            </ng-container>
-            <ng-template #noGroundsForRetention>
-              <p class="preserve-line-breaks">{{ 'noGroundsForRetention' | translate }}</p>
-            </ng-template>
+      <ng-container *ngIf="postStudyRetentionDisposeNotSelected()">
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'retentionPeriod' | translate }}</strong></p>
+              <ng-container *ngIf="(study.retentionPeriod | lang).length; else noRetentionPeriod;">
+                <p class="preserve-line-breaks">{{ study.retentionPeriod | lang }}</p>
+              </ng-container>
+              <ng-template #noRetentionPeriod>
+                <p class="preserve-line-breaks">{{ 'noRetentionPeriod' | translate }}</p>
+              </ng-template>
+          </div>
         </div>
-      </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'groundsForRetention' | translate }}</strong></p>
+              <ng-container *ngIf="(study.groundsForRetention | lang).length; else noGroundsForRetention;">
+                <p class="preserve-line-breaks">{{ study.groundsForRetention | lang }}</p>
+              </ng-container>
+              <ng-template #noGroundsForRetention>
+                <p class="preserve-line-breaks">{{ 'noGroundsForRetention' | translate }}</p>
+              </ng-template>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'nationalArchivesFinlandArchivalDecision' | translate }}</strong></p>
+              <ng-container *ngIf="(study.nationalArchivesFinlandArchivalDecision | lang).length; else noNationalArchivesFinlandArchivalDecision;">
+                <p class="preserve-line-breaks">{{ study.nationalArchivesFinlandArchivalDecision | lang }}</p>
+              </ng-container>
+              <ng-template #noNationalArchivesFinlandArchivalDecision>
+                <p class="preserve-line-breaks">{{ 'noNationalArchivesFinlandArchivalDecision' | translate }}</p>
+              </ng-template>
+          </div>
+        </div>
+      </ng-container>
 
       <div class="row">
         <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'nationalArchivesFinlandArchivalDecision' | translate }}</strong></p>
-            <ng-container *ngIf="(study.nationalArchivesFinlandArchivalDecision | lang).length; else noNationalArchivesFinlandArchivalDecision;">
-              <p class="preserve-line-breaks">{{ study.nationalArchivesFinlandArchivalDecision | lang }}</p>
-            </ng-container>
-            <ng-template #noNationalArchivesFinlandArchivalDecision>
-              <p class="preserve-line-breaks">{{ 'noNationalArchivesFinlandArchivalDecision' | translate }}</p>
-            </ng-template>
+          <p><strong class="field-label">{{ 'postStudyRetentionOfPersonalData.label' | translate }}</strong></p>
+          <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
+            <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
+          </ng-container>
+          <ng-template #noPostStudyRetentionOfPersonalData>
+            <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
+          </ng-template>
         </div>
       </div>
 
@@ -395,7 +409,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="postStudyRetentionDisposeNotSelected()">
         <div class="col-xs-12">
             <p><strong class="field-label">{{ 'physicalLocation' | translate }}</strong></p>
             <ng-container *ngIf="(study.physicalLocation | lang).length; else noPhysicalLocation;">

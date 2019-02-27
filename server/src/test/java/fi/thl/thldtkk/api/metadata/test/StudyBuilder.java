@@ -31,7 +31,6 @@ public class StudyBuilder {
   private Map<String, String> personRegisterDataTransfers;
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea;
   private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy;
-  private Boolean organizationsAreJointControllers;
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private Organization ownerOrganization;
@@ -158,12 +157,6 @@ public class StudyBuilder {
     return withPartiesAndSharingOfResponsibilityInCollaborativeStudy(langValues);
   }
 
-
-  public StudyBuilder withOrganizationsAreJointControllers(Boolean organizationsAreJointControllers) {
-    this.organizationsAreJointControllers = organizationsAreJointControllers;
-    return this;
-  }
-
   public StudyBuilder withPrinciplesForPhysicalSecurity(PrincipleForPhysicalSecurity... principles) {
     this.principlesForPhysicalSecurity = asList(principles);
     return this;
@@ -209,7 +202,6 @@ public class StudyBuilder {
       principlesForPhysicalSecurity,
       principlesForDigitalSecurity,
       partiesAndSharingOfResponsibilityInCollaborativeStudy,
-      organizationsAreJointControllers,
       ownerOrganization,
       personInRoles,
       datasets,

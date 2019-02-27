@@ -66,7 +66,6 @@ public class Study implements NodeEntity {
   private List<TypeOfSensitivePersonalData> typeOfSensitivePersonalData = new ArrayList<>();
   private Map<String, String> otherTypeOfSensitivePersonalData = new LinkedHashMap<>();
   private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy = new LinkedHashMap<>();
-  private Boolean organizationsAreJointControllers;
   private Map<String, String> studyPerformers = new LinkedHashMap<>();
   private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
@@ -158,7 +157,6 @@ public class Study implements NodeEntity {
     this.typeOfSensitivePersonalData = valuesToEnumCollection(node.getProperties("typeOfSensitivePersonalData"), TypeOfSensitivePersonalData.class, ArrayList::new);
     this.otherTypeOfSensitivePersonalData = toLangValueMap(node.getProperties("otherTypeOfSensitivePersonalData"));
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = toLangValueMap(node.getProperties("partiesAndSharingOfResponsibilityInCollaborativeStudy"));
-    this.organizationsAreJointControllers = PropertyMappings.toBoolean(node.getProperties("organizationsAreJointControllers"), null);
     this.studyPerformers = toLangValueMap(node.getProperties("studyPerformers"));
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
@@ -246,7 +244,6 @@ public class Study implements NodeEntity {
                List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity,
                List<PrincipleForDigitalSecurity> principlesForDigitalSecurity,
                Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy,
-               Boolean organizationsAreJointControllers,
                Organization ownerOrganization,
                List<PersonInRole> personInRoles,
                List<Dataset> datasets,
@@ -264,7 +261,6 @@ public class Study implements NodeEntity {
     this.principlesForPhysicalSecurity = principlesForPhysicalSecurity;
     this.principlesForDigitalSecurity = principlesForDigitalSecurity;
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = partiesAndSharingOfResponsibilityInCollaborativeStudy;
-    this.organizationsAreJointControllers = organizationsAreJointControllers;
     this.ownerOrganization = ownerOrganization;
     this.personInRoles = personInRoles;
     this.datasets = datasets;
@@ -505,14 +501,6 @@ public class Study implements NodeEntity {
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = partiesAndSharingOfResponsibilityInCollaborativeStudy;
   }
 
-  public Optional<Boolean> getOrganizationsAreJointControllers() {
-    return Optional.ofNullable(organizationsAreJointControllers);
-  }
-
-  public void setOrganizationsAreJointControllers(Boolean organizationsAreJointControllers) {
-    this.organizationsAreJointControllers = organizationsAreJointControllers;
-  }
-
   public Map<String, String> getStudyPerformers() {
     return studyPerformers;
   }
@@ -719,7 +707,6 @@ public class Study implements NodeEntity {
     props.putAll("otherTypeOfSensitivePersonalData", toPropertyValues(otherTypeOfSensitivePersonalData));
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
     props.putAll("partiesAndSharingOfResponsibilityInCollaborativeStudy", toPropertyValues(partiesAndSharingOfResponsibilityInCollaborativeStudy));
-    getOrganizationsAreJointControllers().ifPresent(v -> props.put("organizationsAreJointControllers", toPropertyValue(v)));
     props.putAll("studyPerformers", toPropertyValues(studyPerformers));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
@@ -803,7 +790,6 @@ public class Study implements NodeEntity {
             && Objects.equals(typeOfSensitivePersonalData, study.typeOfSensitivePersonalData)
             && Objects.equals(otherTypeOfSensitivePersonalData, study.otherTypeOfSensitivePersonalData)
             && Objects.equals(partiesAndSharingOfResponsibilityInCollaborativeStudy, study.partiesAndSharingOfResponsibilityInCollaborativeStudy)
-            && Objects.equals(organizationsAreJointControllers, study.organizationsAreJointControllers)
             && Objects.equals(isScientificStudy, study.isScientificStudy)
             && Objects.equals(profilingAndAutomation, study.profilingAndAutomation)
             && Objects.equals(profilingAndAutomationDescription, study.profilingAndAutomationDescription)
@@ -879,7 +865,6 @@ public class Study implements NodeEntity {
         typeOfSensitivePersonalData,
         otherTypeOfSensitivePersonalData,
         partiesAndSharingOfResponsibilityInCollaborativeStudy,
-        organizationsAreJointControllers,
         studyPerformers,
         isScientificStudy,
         dataProcessingStartDate,
@@ -942,7 +927,6 @@ public class Study implements NodeEntity {
     study.typeOfSensitivePersonalData = this.typeOfSensitivePersonalData;
     study.otherTypeOfSensitivePersonalData = this.otherTypeOfSensitivePersonalData;
     study.partiesAndSharingOfResponsibilityInCollaborativeStudy = this.partiesAndSharingOfResponsibilityInCollaborativeStudy;
-    study.organizationsAreJointControllers = this.organizationsAreJointControllers;
     study.studyPerformers = this.studyPerformers;
     study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;

@@ -79,7 +79,6 @@ public class ScientificPrivacyNoticeReportServiceTest {
       .withDescription("Tämä on on terveydenhuollon hoitoilmoitusrekisteri.")
       .withPurposeOfPersonRegistry("terveys- ja sosiaalialan tilastointia ja kehittämistä")
       .withPartiesAndSharingOfResponsibilityInCollaborativeStudy("Tässä tutkimuksessa...\n\n...vastuunjako yhteisrekisterinpitäjien kesken tapahtuu tavalla X.")
-      .withOrganizationsAreJointControllers(true)
       .build();
     when(editorStudyService.get(eq(studyId))).thenReturn(Optional.of(study));
 

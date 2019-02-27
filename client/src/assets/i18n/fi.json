@@ -1268,7 +1268,8 @@
   "otherTypeOfSensitivePersonalDataLabel": "muu arkaluonteinen henkilötieto",
   "otherLegalBasisForHandlingSensitivePersonalDataLabel": "muu erityisehto",
   "postStudyRetentionOfPersonalData": {
-    "label": "Henkilötietojen käsittely tutkimuksen päättymisen jälkeen",
+    "commonLabel": "Henkilötietojen säilyttäminen",
+    "scientificLabel": "Henkilötietojen käsittely tutkimuksen päättymisen jälkeen",
     "ARCHIVE": "Voimassa olevan lainsäädännön perusteella henkilötietoja säilytetään toistaiseksi", 
     "DISPOSE": "Aineisto hävitetään käsittelyn päätyttyä",
     "DISPOSE_SCIENTIFIC": "Tutkimusaineisto hävitetään",

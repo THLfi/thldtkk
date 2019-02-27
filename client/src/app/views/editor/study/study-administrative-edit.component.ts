@@ -292,6 +292,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     private getAvailableAssociatedOrganizations() {
       if (this.study && this.allOrganizations) {
         const organizationIds = this.study.associatedOrganizations.map(org => org.organization.id)
+        if (this.study.ownerOrganization) {
+          organizationIds.push(this.study.ownerOrganization.id)
+        }
 
         return this.allOrganizations.filter(org => {
           return !organizationIds.includes(org.id)

@@ -76,7 +76,7 @@
             </tr>
             <tr *ngFor="let associatedOrganization of study.associatedOrganizations">
               <td>
-                {{ associatedOrganization.organization.prefLabel | lang }}
+                <span *ngIf="associatedOrganization.organization">{{ associatedOrganization.organization.prefLabel | lang }}</span>
               </td>
               <td>
                 <p-checkbox

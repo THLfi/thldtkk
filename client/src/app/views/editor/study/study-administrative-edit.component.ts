@@ -162,12 +162,12 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.study = this.initializeStudyAdministrativeProperties(study)
             this.updatePageTitle()
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
-            this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+            this.updateAvailableAssociatedOrganizations()
             this.updateSelectableRetentionOptions()
           })
       } else {
         this.study = this.studyService.initNew()
-        this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+        this.updateAvailableAssociatedOrganizations()
         this.updateSelectableRetentionOptions()
       }
     }
@@ -285,43 +285,43 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.organizationService.getAllOrganizations()
         .subscribe(organizations => {
           this.allOrganizations = organizations
-          this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+          this.updateAvailableAssociatedOrganizations()
         });
     }
 
-    private getAvailableAssociatedOrganizations() {
+    private updateAvailableAssociatedOrganizations() {
       if (this.study && this.allOrganizations) {
-        const organizationIds = this.study.associatedOrganizations.map(org => org.organization.id)
+        const organizationIds = [];
         if (this.study.ownerOrganization) {
           organizationIds.push(this.study.ownerOrganization.id)
         }
 
-        return this.allOrganizations.filter(org => {
+        this.availableAssociatedOrganizations = this.allOrganizations.filter(org => {
           return !organizationIds.includes(org.id)
         })
       }
-
-      return []
     }
 
     addAssociatedOrganization() {
-      if (this.newAssociatedOrganization != null) {
-        this.study.associatedOrganizations.push({
-          id: null,
-          organization: this.newAssociatedOrganization,
-          isRegistryOrganization: false
-        })
-      }
-      this.newAssociatedOrganization = null
-      this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations()
+      this.study.associatedOrganizations.push({
+        id: null,
+        organization: undefined,
+        isRegistryOrganization: false
+      })
     }
 
     removeAssociatedOrganization(org: AssociatedOrganization) {
-      this.study.associatedOrganizations =
-        this.study.associatedOrganizations.filter(organization => {
-          return org.id != organization.id;
-        })
-      this.availableAssociatedOrganizations = this.getAvailableAssociatedOrganizations();
+      const idx = this.study.associatedOrganizations.indexOf(org);
+      if (idx !== -1) {
+        this.study.associatedOrganizations.splice(idx, 1)
+      }
+      this.updateAvailableAssociatedOrganizations()
+    }
+
+    cleanAssociatedOrganizations() {
+      this.study.associatedOrganizations = this.study.associatedOrganizations.filter(assoc => {
+        return (typeof assoc.organization == 'object');
+      })
     }
 
     addSystemInRole() {
@@ -367,6 +367,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     save() {
         this.savingInProgress = true
 
+        this.cleanAssociatedOrganizations()
         this.validate()
 
         if (!this.study.containsSensitivePersonalData) {

@@ -50,6 +50,7 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     if (study.getOwnerOrganization().isPresent()) {
       Organization organization = study.getOwnerOrganization().get();
+      context.setVariable("controller", organization);
       context.setVariable("controllerName", getRegistrarName(organization, lang));
       context.setVariable("controllerAddress", organization.getAddressForRegistryPolicy().get(lang));
       context.setVariable("controllerOtherInfo", organization.getPhoneNumberForRegistryPolicy().orElse(""));

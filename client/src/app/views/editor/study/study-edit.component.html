@@ -613,6 +613,10 @@
                           inputId="referencePeriodEnd"
                           name="referencePeriodEnd">
               </p-calendar>
+              <p *ngIf="referencePeriodStart && referencePeriodEnd && referencePeriodStart > referencePeriodEnd" class="text-danger">
+                <fa icon="exclamation-triangle"></fa>
+                {{'errors.form.endBeforeStartError' | translate}}
+              </p>
               <p *ngFor="let errorKey of formErrors.referencePeriodEnd"
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -670,6 +674,10 @@
                           inputId="collectionEndDate"
                           name="collectionEndDate">
               </p-calendar>
+              <p *ngIf="collectionStartDate && collectionEndDate && collectionStartDate > collectionEndDate" class="text-danger">
+                <fa icon="exclamation-triangle"></fa>
+                {{'errors.form.endBeforeStartError' | translate}}
+              </p>
               <p *ngFor="let errorKey of formErrors.collectionEndDate"
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

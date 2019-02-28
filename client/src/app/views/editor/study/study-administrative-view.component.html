@@ -307,9 +307,11 @@
         <div class="col-xs-12">
           <p><strong class="field-label">{{ 'principlesForPhysicalSecurity.label' | translate }}</strong></p>
           <ul *ngIf="study.principlesForPhysicalSecurity.length">
-            <li *ngFor="let principle of study.principlesForPhysicalSecurity">
-              {{ 'principlesForPhysicalSecurity.' + principle | translate }}
-            </li>
+            <ng-container *ngFor="let principle of study.principlesForPhysicalSecurity">
+              <li *ngIf="!(principle == 'OTHER')">
+                {{ 'principlesForPhysicalSecurity.' + principle | translate }}
+              </li>
+            </ng-container>
             <li *ngFor="let otherPrinciple of study.otherPrinciplesForPhysicalSecurity">
               {{ otherPrinciple.prefLabel | lang }}
             </li>

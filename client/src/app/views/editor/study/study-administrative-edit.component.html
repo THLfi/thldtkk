@@ -716,8 +716,7 @@
              class="form-group">
           <label for="otherPrinciplesForDigitalSecurity" translate="securityPrinciple.otherPrinciplesForDigitalSecurity"></label>
           <br/>
-          <p-multiSelect #otherDigitalSecuritySelect
-                         [(ngModel)]="study.otherPrinciplesForDigitalSecurity"
+          <p-multiSelect [(ngModel)]="study.otherPrinciplesForDigitalSecurity"
                          [ngModelOptions]="{ standalone: true }"
                          [options]="otherDigitalSecurityPrinciples"
                          [filter]="true"

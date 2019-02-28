@@ -190,7 +190,6 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     return study.getOtherPrinciplesForPhysicalSecurity().stream()
       .map(principle -> principle.getPrefLabel())
       .map(this::getLangValue)
-      .map(StringUtils::uncapitalize)
       .collect(Collectors.toList());
   }
 
@@ -198,7 +197,6 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     return study.getOtherPrinciplesForDigitalSecurity().stream()
       .map(principle -> principle.getPrefLabel())
       .map(this::getLangValue)
-      .map(StringUtils::uncapitalize)
       .collect(Collectors.toList());
   }
 

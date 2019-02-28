@@ -328,11 +328,30 @@
         Rekisterinpitäjä on sitoutunut noudattamaan alaansa koskevia vahvistettuja käytännesääntöjä.
       </div>
 
+      <br />
+
       <div>
         <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.physicalSecurity} +': '">Manuaalisen aineiston suojaaminen:</span>
-        <span th:text="${#strings.listJoin(otherPrinciplesForPhysicalSecurity, ',')}">vartija, liiketunnistin</span>
+        <ul>
+          <li th:each="physicalSecurityprinciple: ${principlesForPhysicalSecurity}"
+              th:if="not ${physicalSecurityprinciple.name().equalsIgnoreCase('other')}"
+              th:text="#{'scientificPrivacyNotice.personalDataProtectionPrinciples.physicalSecurity.' + ${physicalSecurityprinciple} }">Lukittu tila</li>
+
+          <li th:each="otherPhysicalSecurityprinciple: ${otherPrinciplesForPhysicalSecurity}" th:text="${otherPhysicalSecurityprinciple}">Liiketunnistin</li>
+        </ul>
       </div>
-      <div th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.digitalSecurity}">Tietojärjestelmässä käsiteltävät tiedot</div>
+
+      <div>
+        <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.digitalSecurity} + ': '">Tietojärjestelmässä käsiteltävät tiedot:</span>
+        <ul>
+          <li th:each="digitalSecurityprinciple: ${principlesForDigitalSecurity}"
+              th:if="not ${digitalSecurityprinciple.name().equalsIgnoreCase('other')}"
+              th:text="#{'scientificPrivacyNotice.personalDataProtectionPrinciples.digitalSecurity.' + ${digitalSecurityprinciple} }">Pseudonymisointi</li>
+
+          <li th:each="otherDigitalSecurityPrinciple: ${otherPrinciplesForDigitalSecurity}" th:text="${otherDigitalSecurityPrinciple}">Tiedon hajautus</li>
+        </ul>
+      </div>
+
     </div>
 
     <div class="section">

@@ -93,8 +93,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     otherPhysicalSecurityPrinciples: SelectItem[]
     otherDigitalSecurityPrinciples: SelectItem[]
 
-    @ViewChild('otherDigitalSecuritySelect') otherDigitalSecuritySelect: MultiSelect
-
     constructor(
         private studyService: EditorStudyService,
         private systemService: EditorSystemService,
@@ -376,7 +374,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             value: principle
           })
         })
-        this.otherDigitalSecuritySelect.ngOnInit()
       })
     }
 

@@ -790,6 +790,10 @@
                           inputId="dataProcessingEndDate"
                           name="dataProcessingEndDate">
               </p-calendar>
+              <p *ngIf="dataProcessingStartDate && dataProcessingEndDate && dataProcessingStartDate > dataProcessingEndDate" class="text-danger">
+                <fa icon="exclamation-triangle"></fa>
+                {{'errors.form.endBeforeStartError' | translate}}
+              </p>
               <p *ngFor="let errorKey of formErrors.dataProcessingEndDate"
                  class="text-danger">
                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>

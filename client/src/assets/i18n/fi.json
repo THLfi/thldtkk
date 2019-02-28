@@ -489,7 +489,8 @@
       "invalidDate": "Virheellinen päivämäärä.",
       "invalidLinkUrlFormat": "Virheellinen URL. Täytä etuliite esim. 'http://osoite.fi'",
       "inconsistentStudyAndSystemOrganizations": "Aineistolla ja liitetyillä tietojärjestelmillä ei ole sama organisaatio. Peru organisaatiomuutos tai poista liitetyt tietojärjestelmät hallinnollisista tiedoista.",
-      "inconsistentSystemAndStudyOrganizations": "Liitetyillä tietojärjestelmillä ja aineistolla ei ole sama organisaatio. Poista järjestelmät, jotka eivät kuulu aineiston organisaatiolle tai vaihda aineiston organisaatio"
+      "inconsistentSystemAndStudyOrganizations": "Liitetyillä tietojärjestelmillä ja aineistolla ei ole sama organisaatio. Poista järjestelmät, jotka eivät kuulu aineiston organisaatiolle tai vaihda aineiston organisaatio",
+      "endBeforeStartError": "Päivämäärä aloitusta aikaisempi"
     },
     "server": {
       "operationFailed": "Toiminto epäonnistui",

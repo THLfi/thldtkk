@@ -10,6 +10,7 @@ import fi.thl.thldtkk.api.metadata.service.*;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.AmbiguousUnitSymbolException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedLabelException;
 import fi.thl.thldtkk.api.metadata.service.csv.exception.UndefinedUnitSymbolException;
+import fi.thl.thldtkk.api.metadata.service.csv.serialize.ConceptSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -154,7 +155,10 @@ public class InstanceVariableCsvParser {
     sanitize(row.get("defaultMissingValue")).ifPresent(defaultMissingValue -> instanceVariable.setDefaultMissingValue(defaultMissingValue));
     sanitize(row.get("qualityStatement")).ifPresent(qualityStatement -> instanceVariable.getQualityStatement().put(DEFAULT_LANG, qualityStatement));
 
+    // "sourceDescription" is legacy format, "source.description" is the new and correct one
     sanitize(row.get("sourceDescription")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(DEFAULT_LANG, sourceDescription));
+    sanitize(row.get("source.description")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(DEFAULT_LANG, sourceDescription));
+
     sanitize(row.get("dataType")).ifPresent(dataType -> instanceVariable.setDataType(dataType));
     sanitize(row.get("dataFormat")).ifPresent(dataFormat -> instanceVariable.getDataFormat().put(DEFAULT_LANG, dataFormat));
 
@@ -260,8 +264,6 @@ public class InstanceVariableCsvParser {
         variable.ifPresent(instanceVariable::setVariable);
     }
 
-    sanitize(row.get("source.description")).ifPresent(sourceDescription -> instanceVariable.getSourceDescription().put(DEFAULT_LANG, sourceDescription));
-
     Optional<String> instanceQuestionsString = sanitize(row.get("instanceQuestions"));
     if (instanceQuestionsString.isPresent() && isNotBlank(instanceQuestionsString.get())) {
 
@@ -284,14 +286,12 @@ public class InstanceVariableCsvParser {
 
     Optional<String> conceptsFromSchemeString = sanitize(row.get("conceptsFromScheme"));
     if (conceptsFromSchemeString.isPresent() && isNotBlank(conceptsFromSchemeString.get())) {
-        String[] conceptsFromScheme = conceptsFromSchemeString.get().split(", ");
+        String[] conceptPrefLabels = conceptsFromSchemeString.get().split(ConceptSerializer.SEPARATOR);
         int wordNumber = 1;
-        for (String conceptWithSchemeString : conceptsFromScheme) {
-            conceptWithSchemeString = conceptWithSchemeString.substring(1, conceptWithSchemeString.length() - 1);
-            String conceptWithoutSchemeString = conceptWithSchemeString.split(" <")[0];
-            Optional<Concept> conceptFromScheme = conceptService.findByPrefLabel(conceptWithoutSchemeString);
-            if (conceptFromScheme.isPresent()) {
-                instanceVariable.addConceptsFromScheme(conceptFromScheme.get());
+        for (String conceptPrefLabel : conceptPrefLabels) {
+            Optional<Concept> concept = conceptService.findByPrefLabel(conceptPrefLabel);
+            if (concept.isPresent()) {
+                instanceVariable.addConceptsFromScheme(concept.get());
             } else {
                 rowMessages.add("import.csv.error.missingRequiredValue.fieldMissingFromDb|conceptFromScheme (" + wordNumber + ")");
             }

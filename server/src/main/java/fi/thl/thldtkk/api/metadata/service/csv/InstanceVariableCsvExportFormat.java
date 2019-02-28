@@ -16,114 +16,141 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@JsonPropertyOrder(value = {"prefLabel", "id", "technicalName", "description",
-  "dataset", "datasetUnitType", "study", "studyUnitType", "freeConcepts", "conceptsFromScheme",
-  "referencePeriodStart", "referencePeriodEnd", "partOfGroup", "published",
-  "unitType", "valueDomainType", "dataFormat", "dataType", "missingValues",
-  "defaultMissingValue", "qualityStatement", "quantity", "unit",
-  "valueRangeMin", "valueRangeMax", "codeList", "instanceQuestions",
-  "source", "sourceDescription", "variable", "lastModifiedDate"})
+// Match order of fields in UI with the exception that "variable" is not the first field
+@JsonPropertyOrder(value = {
+  "prefLabel",
+  "technicalName",
+  "description",
+  "partOfGroup",
+  "conceptsFromScheme",
+  "freeConcepts",
+  "referencePeriodStart",
+  "referencePeriodEnd",
+  "valueDomainType",
+  "quantity",
+  "unit",
+  "valueRangeMin",
+  "valueRangeMax",
+  "codeList",
+  "missingValues",
+  "defaultMissingValue",
+  "qualityStatement",
+  "source",
+  "sourceDescription",
+  "dataType",
+  "dataFormat",
+  "unitType",
+  "datasetUnitType",
+  "studyUnitType",
+  "instanceQuestions",
+  "id",
+  "dataset",
+  "study",
+  "published",
+  "lastModifiedDate",
+  "variable"
+})
 public interface InstanceVariableCsvExportFormat {
 
-  public Optional<String> getTechnicalName();
+  Optional<String> getTechnicalName();
 
-  public Optional<String> getDataType();
+  Optional<String> getDataType();
 
   @JsonProperty("unit.prefLabel")
   @JsonSerialize(using = UnitSerializer.class)
-  public Optional<Unit> getUnit();
+  Optional<Unit> getUnit();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getPrefLabel();
+  Map<String,String> getPrefLabel();
 
   @JsonProperty("codeList.prefLabel")
   @JsonSerialize(using = CodeListSerializer.class)
-  public Optional<CodeList> getCodeList();
+  Optional<CodeList> getCodeList();
 
   @JsonSerialize(using = ConceptSerializer.class)
-  public List<Concept> getConceptsFromScheme();
+  List<Concept> getConceptsFromScheme();
 
   @JsonProperty("dataset.prefLabel")
   @JsonSerialize(using = InstanceVariableDatasetSerializer.class)
-  public Optional<Dataset> getDataset();
+  Optional<Dataset> getDataset();
 
   @JsonProperty("dataset.unitType.prefLabel")
   @JsonSerialize(using = DatasetUnitTypeSerializer.class)
-  public Optional<UnitType> getDatasetUnitType();
+  Optional<UnitType> getDatasetUnitType();
 
   @JsonProperty("study.prefLabel")
   @JsonSerialize(using = StudySerializer.class)
-  public Optional<Study> getStudy();
+  Optional<Study> getStudy();
 
   @JsonProperty("study.unitType.prefLabel")
   @JsonSerialize(using = StudyUnitTypeSerializer.class)
-  public Optional<UnitType> getStudyUnitType();
+  Optional<UnitType> getStudyUnitType();
 
-  public Optional<String> getDefaultMissingValue();
-
-  @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getDescription();
+  Optional<String> getDefaultMissingValue();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getFreeConcepts();
+  Map<String,String> getDescription();
 
-  public UUID getId();
+  @JsonSerialize(using = LangValueSerializer.class)
+  Map<String,String> getFreeConcepts();
+
+  UUID getId();
 
   @JsonSerialize(using = InstanceQuestionSerializer.class)
-  public List<InstanceQuestion> getInstanceQuestions();
+  List<InstanceQuestion> getInstanceQuestions();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getMissingValues();
+  Map<String,String> getMissingValues();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getPartOfGroup();
+  Map<String,String> getPartOfGroup();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getQualityStatement();
+  Map<String,String> getQualityStatement();
 
   @JsonSerialize(using = QuantitySerializer.class)
   @JsonProperty("quantity.prefLabel")
-  public Optional<Quantity> getQuantity();
+  Optional<Quantity> getQuantity();
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  public Optional<LocalDate> getReferencePeriodEnd();
+  Optional<LocalDate> getReferencePeriodEnd();
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  public Optional<LocalDate> getReferencePeriodStart();
+  Optional<LocalDate> getReferencePeriodStart();
 
   @JsonProperty("source.dataset.prefLabel")
   @JsonSerialize(using = SourceDatasetSerializer.class)
-  public Optional<Dataset> getSource();
+  Optional<Dataset> getSource();
 
   @JsonProperty("source.description")
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getSourceDescription();
+  Map<String,String> getSourceDescription();
 
   @JsonProperty("unitType.prefLabel")
   @JsonSerialize(using = UnitTypeSerializer.class)
-  public Optional<UnitType> getUnitType();
+  Optional<UnitType> getUnitType();
 
-  public Optional<String> getValueDomainType();
+  Optional<String> getValueDomainType();
 
-  public Optional<BigDecimal> getValueRangeMax();
+  Optional<BigDecimal> getValueRangeMax();
 
-  public Optional<BigDecimal> getValueRangeMin();
+  Optional<BigDecimal> getValueRangeMin();
 
   @JsonProperty("variable.prefLabel")
   @JsonSerialize (using = VariableSerializer.class)
-  public Optional<Variable> getVariable();
+  Optional<Variable> getVariable();
 
   @JsonProperty(value = "published")
   @JsonSerialize(using = OptionalToStringSerializer.class)
-  public Optional<Boolean> isPublished();
+  Optional<Boolean> isPublished();
 
   @JsonSerialize(using = LangValueSerializer.class)
-  public Map<String,String> getDataFormat();
+  Map<String,String> getDataFormat();
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  public Optional<Date> getLastModifiedDate();
+  Optional<Date> getLastModifiedDate();
 
   @JsonIgnore
-  public Optional<UserProfile> getLastModifiedByUser();
+  Optional<UserProfile> getLastModifiedByUser();
 
 }

@@ -46,11 +46,21 @@
               <th>{{ 'associatedOrganizations.registryOrganization' | translate }}</th>
               <th>{{ 'functions' | translate}}</th>
             </tr>
-            <tr *ngFor="let associatedOrganization of study.associatedOrganizations">
-              <td>{{ associatedOrganization.organization.prefLabel | lang }}</td>
+            <tr *ngFor="let associatedOrganization of study.associatedOrganizations; let idx = index">
+              <td>
+                <select [(ngModel)]="associatedOrganization.organization"
+                        [compareWith]="nodeUtils.equals"
+                        name="{{'associatedOrganization-select-' + idx}}"
+                        dataKey="id"
+                        class="form-control">
+                  <option *ngFor="let organization of availableAssociatedOrganizations; trackBy:id"
+                          [ngValue]="organization">
+                    {{ organization.prefLabel | lang }}
+                  </option>
+                </select>
               <td>
                 <p-checkbox
-                  name="{{'registryOrganization-' + associatedOrganization.id}}"
+                  name="{{'associatedOrganization-isRegistryOrganization-' + idx}}"
                   binary="true"
                   [(ngModel)]="associatedOrganization.isRegistryOrganization"></p-checkbox>
               </td>
@@ -68,16 +78,6 @@
           </ng-template>
 
           <div class="input-group">
-
-            <select [(ngModel)]="newAssociatedOrganization"
-                    id="newAssociatedOrganization"
-                    name="newAssociatedOrganization"
-                    class="form-control">
-              <option *ngFor="let organization of availableAssociatedOrganizations"
-                      [ngValue]="organization">
-                {{ organization.prefLabel | lang }}
-              </option>
-            </select>
             <span class="input-group-btn">
               <button
                 (click)="addAssociatedOrganization()"

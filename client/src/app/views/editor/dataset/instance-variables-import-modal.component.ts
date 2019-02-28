@@ -4,13 +4,13 @@ import {
 } from '@angular/core'
 import swal from 'sweetalert2'
 import { NgForm } from '@angular/forms'
+import { Observable } from 'rxjs/Rx'
+import { PapaParseConfig, PapaParseService } from 'ngx-papaparse'
+import { TranslateService } from '@ngx-translate/core'
 
 import { Dataset } from '../../../model2/dataset'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
-import { PapaParseService } from 'ngx-papaparse';
 import { Study } from '../../../model2/study'
-import {TranslateService} from '@ngx-translate/core';
-import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -38,7 +38,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   importInProgress: boolean = false
   importHasFailed: boolean = false
 
-  parseOptions: Object = {
+  parseOptions: PapaParseConfig = {
       header: true,
       preview: 25,
       skipEmptyLines: true

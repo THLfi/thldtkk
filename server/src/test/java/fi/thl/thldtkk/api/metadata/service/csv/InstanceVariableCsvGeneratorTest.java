@@ -26,7 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
@@ -673,14 +675,11 @@ public class InstanceVariableCsvGeneratorTest {
         DEFAULT_ENCODING);
     
     GeneratorResult result = generator.generate();
-    Map<String, String> columnDataByHeaders = readSingleLineCsvData(result.getData().get());
 
-    assertTrue(columnDataByHeaders.containsKey("conceptsFromScheme"));
-    
-    String expectedConceptsFromScheme = "'Health and Wellness Sector <YSO>', 'Health Education <MeSH>'";
-    String actualConceptsFromScheme = columnDataByHeaders.get("conceptsFromScheme");
-    
-    assertEquals(expectedConceptsFromScheme, actualConceptsFromScheme);    
+    String csvData = new String(result.getData().get(), DEFAULT_ENCODING);
+
+    String expectedConceptsFromScheme = "\"Health and Wellness Sector; Health Education\"";
+    assertThat(csvData, containsString(expectedConceptsFromScheme));
   }
   
   @Test

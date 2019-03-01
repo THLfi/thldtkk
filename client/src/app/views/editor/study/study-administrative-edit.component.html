@@ -671,10 +671,10 @@
         </div>
 
         <div *ngIf="study.principlesForPhysicalSecurity.indexOf('OTHER') != -1"
-             class="form-group">
+             class="form-group conditionally-visible">
           <label for="otherPrinciplesForPhysicalSecurity" translate="securityPrinciple.otherPrinciplesForPhysicalSecurity"></label>
           <br/>
-          <p-multiSelect [(ngModel)]="study.otherPrinciplesForPhysicalSecurity"
+          <p-multiSelect [(ngModel)]="selectedOtherPhysicalSecurityPrinciples"
                          [ngModelOptions]="{ standalone: true }"
                          [options]="otherPhysicalSecurityPrinciples"
                          [filter]="true"
@@ -685,7 +685,7 @@
           <button (click)="showAddPhysicalSecurityPrincipleModal()"
                   type="button"
                   class="btn btn-default btn-security-principle-new">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <glyphicon icon="plus"></glyphicon>
             {{ 'securityPrinciple.addNew' | translate }}
           </button>
         </div>
@@ -713,10 +713,10 @@
         </div>
 
         <div *ngIf="study.principlesForDigitalSecurity.indexOf('OTHER') != -1"
-             class="form-group">
+             class="form-group conditionally-visible">
           <label for="otherPrinciplesForDigitalSecurity" translate="securityPrinciple.otherPrinciplesForDigitalSecurity"></label>
           <br/>
-          <p-multiSelect [(ngModel)]="study.otherPrinciplesForDigitalSecurity"
+          <p-multiSelect [(ngModel)]="selectedOtherDigitalSecurityPrinciples"
                          [ngModelOptions]="{ standalone: true }"
                          [options]="otherDigitalSecurityPrinciples"
                          [filter]="true"
@@ -727,7 +727,7 @@
           <button (click)="showAddDigitalSecurityPrincipleModal()"
                   type="button"
                   class="btn btn-default btn-security-principle-new">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <glyphicon icon="plus"></glyphicon>
             {{ 'securityPrinciple.addNew' | translate }}
           </button>
         </div>

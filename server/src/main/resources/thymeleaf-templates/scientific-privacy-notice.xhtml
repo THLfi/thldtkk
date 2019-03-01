@@ -93,10 +93,6 @@
         border-bottom: 0;
       }
 
-      .legal-rights-section h2 {
-        font-size: 1.2em;
-      }
-
       .legal-rights-section h3 {
         font-weight: 500;
         font-size: 1.1em;
@@ -142,13 +138,19 @@
       <h2>1. <span th:text="#{scientificPrivacyNotice.controller}">Tutkimuksen rekisterinpitäjät</span></h2>
 
       <div style="margin-bottom: 2em">
-        <div><strong th:text="${controller.getPrefLabel().get(lang)}"></strong></div>
+        <div>
+          <strong th:text="${controller.getPrefLabel().get(lang)}"></strong>
+          <strong th:if="${controller.getAbbreviation().get(lang) != null}">(<span th:text="${controller.getAbbreviation().get(lang)}"></span>)</strong>
+        </div>
         <div th:text="${controller.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
         <div th:text="${controller.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
       </div>
 
       <div th:each="registryOrganization : ${registryOrganizations}" style="margin-bottom: 2em">
-        <div><strong th:text="${registryOrganization.getPrefLabel().get(lang)}"></strong></div>
+        <div>
+          <strong th:text="${registryOrganization.getPrefLabel().get(lang)}"></strong>
+          <strong th:if="${registryOrganization.getAbbreviation().get(lang) != null}">(<span th:text="${registryOrganization.getAbbreviation().get(lang)}"></span>)</strong>
+        </div>
         <div th:text="${registryOrganization.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
         <div th:text="${registryOrganization.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
       </div>
@@ -363,13 +365,6 @@
             th:text="#{scientificPrivacyNotice.physicalLocationAndRetentionPeriod(${location}, ${period})}">
             Mihin aineisto arkistoidaan ja miten pitkäksi aikaa: {0} {1}
         </p>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>18. <span>Rekisteröidyn oikeudet ja niiden mahdollinen rajoittaminen</span></h2>
-      <div>
-        TODO
       </div>
     </div>
 

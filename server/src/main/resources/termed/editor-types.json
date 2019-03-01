@@ -90,6 +90,13 @@
         "id": "profilingAndAutomationDescription"
       },
       {
+        "id": "directIdentityInformation",
+        "regex": "^(true|false|^$)$"
+      },
+      {
+        "id": "directIdentityInformationDescription"
+      },
+      {
         "id": "confidentialityClass"
       },
       {

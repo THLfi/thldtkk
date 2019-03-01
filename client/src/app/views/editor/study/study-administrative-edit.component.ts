@@ -90,7 +90,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     newSupplementaryPhysicalSecurityPrinciple: SupplementaryPhysicalSecurityPrinciple
     newSupplementaryDigitalSecurityPrinciple: SupplementaryDigitalSecurityPrinciple
 
+    selectedOtherPhysicalSecurityPrinciples: string[]
     otherPhysicalSecurityPrinciples: SelectItem[]
+    selectedOtherDigitalSecurityPrinciples: string[]
     otherDigitalSecurityPrinciples: SelectItem[]
 
     constructor(
@@ -179,6 +181,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
             this.updateAvailableAssociatedOrganizations()
             this.updateSelectableRetentionOptions()
+            this.selectedOtherPhysicalSecurityPrinciples = study.otherPrinciplesForPhysicalSecurity.map(principal => principal.id)
+            this.selectedOtherDigitalSecurityPrinciples = study.otherPrinciplesForDigitalSecurity.map(principal => principal.id)
           })
       } else {
         this.study = this.studyService.initNew()
@@ -352,27 +356,27 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     private getAllSupplementaryPhysicalSecurityPrinciples(): void {
-      this.otherPhysicalSecurityPrinciples = []
+      this.otherPhysicalSecurityPrinciples = null
 
       this.securityPrincipleService.getAllSupplementaryPhysicalSecurityPrinciples().subscribe(physicalSecurityPrinciples => {
-        physicalSecurityPrinciples.forEach(principle => {
-          this.otherPhysicalSecurityPrinciples.push({
-            label: this.langPipe.transform((principle.prefLabel)),
-            value: principle
-          })
+        this.otherPhysicalSecurityPrinciples = physicalSecurityPrinciples.map(principle => {
+          return {
+            label: this.langPipe.transform(principle.prefLabel),
+            value: principle.id
+          }
         })
       })
     }
 
     private getAllSupplementaryDigitalSecurityPrinciples(): void {
-      this.otherDigitalSecurityPrinciples = []
+      this.otherDigitalSecurityPrinciples = null
 
       this.securityPrincipleService.getAllSupplementaryDigitalSecurityPrinciples().subscribe(digitalSecurityPrinciples => {
-        digitalSecurityPrinciples.forEach(principle => {
-          this.otherDigitalSecurityPrinciples.push({
+        this.otherDigitalSecurityPrinciples = digitalSecurityPrinciples.map(principle => {
+          return {
             label: this.langPipe.transform((principle.prefLabel)),
-            value: principle
-          })
+            value: principle.id
+          }
         })
       })
     }
@@ -389,7 +393,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryPhysicalSecurityPrinciple)
         .subscribe(savedSecurityPrinciple => {
           this.getAllSupplementaryPhysicalSecurityPrinciples()
-          this.study.otherPrinciplesForPhysicalSecurity.push(savedSecurityPrinciple)
+          this.selectedOtherPhysicalSecurityPrinciples.push(savedSecurityPrinciple.id)
           this.closeAddPhysicalSecurityPrincipleModal()
         })
     }
@@ -398,7 +402,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryDigitalSecurityPrinciple)
         .subscribe(savedSecurityPrinciple => {
           this.getAllSupplementaryDigitalSecurityPrinciples()
-          this.study.otherPrinciplesForDigitalSecurity.push(savedSecurityPrinciple)
+          this.selectedOtherDigitalSecurityPrinciples.push(savedSecurityPrinciple.id)
           this.closeAddDigitalSecurityPrincipleModal()
         })
     }
@@ -411,8 +415,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.newSupplementaryDigitalSecurityPrinciple = null
     }
 
-
-  ngAfterContentChecked(): void {
+    ngAfterContentChecked(): void {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {
           this.currentForm = this.studyForm
@@ -477,14 +480,18 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.studyService.initializeProperties(this.study)
         }
 
-        if(this.study.otherPrinciplesForPhysicalSecurity.length > 0 &&
-          this.study.principlesForPhysicalSecurity.indexOf(PrincipleForPhysicalSecurity.OTHER) == -1) {
+        if(this.study.principlesForPhysicalSecurity.indexOf(PrincipleForPhysicalSecurity.OTHER) == -1) {
           this.study.otherPrinciplesForPhysicalSecurity = []
         }
+        else {
+          this.study.otherPrinciplesForPhysicalSecurity = this.selectedOtherPhysicalSecurityPrinciples.map(id => { return { id: id, prefLabel: {} } })
+        }
 
-        if(this.study.otherPrinciplesForDigitalSecurity.length > 0 &&
-            this.study.principlesForDigitalSecurity.indexOf(PrincipleForDigitalSecurity.OTHER) == -1) {
+        if(this.study.principlesForDigitalSecurity.indexOf(PrincipleForDigitalSecurity.OTHER) == -1) {
             this.study.otherPrinciplesForDigitalSecurity = []
+        }
+        else {
+          this.study.otherPrinciplesForDigitalSecurity = this.selectedOtherDigitalSecurityPrinciples.map(id => { return { id: id, prefLabel: {} } })
         }
 
         if (this.currentForm.invalid) {

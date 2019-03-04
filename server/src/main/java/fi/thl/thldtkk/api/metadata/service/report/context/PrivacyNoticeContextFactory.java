@@ -138,6 +138,14 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     context.setVariable("profilingAndAutomation", profilingAndAutomation);
     context.setVariable("profilingAndAutomationDescription", profilingAndAutomationDescription);
 
+    Optional<Boolean> directIdentityInformation = study.getDirectIdentityInformation();
+    String directIdentityInformationDescription = "";
+    if (directIdentityInformation.orElse(false)) {
+        directIdentityInformationDescription = getLangValue(study.getDirectIdentityInformationDescription());
+    }
+    context.setVariable("directIdentityInformation", study.getDirectIdentityInformation().orElse(false));
+    context.setVariable("directIdentityInformationDescription", directIdentityInformationDescription);
+
     context.setVariable("principlesForPhysicalSecurity", study.getPrinciplesForPhysicalSecurity());
     context.setVariable("principlesForDigitalSecurity", study.getPrinciplesForDigitalSecurity());
 

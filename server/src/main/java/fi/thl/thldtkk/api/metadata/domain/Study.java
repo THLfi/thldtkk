@@ -70,6 +70,8 @@ public class Study implements NodeEntity {
   private Boolean isScientificStudy;
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
+  private Boolean directIdentityInformation;
+  private Map<String, String> directIdentityInformationDescription;
 
   // Data security
   private ConfidentialityClass confidentialityClass;
@@ -165,7 +167,8 @@ public class Study implements NodeEntity {
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
-
+    this.directIdentityInformation = PropertyMappings.toBoolean(node.getProperties("directIdentityInformation"), null);
+    this.directIdentityInformationDescription = toLangValueMap(node.getProperties("directIdentityInformationDescription"));
     // Data security
     toOptionalString(node.getProperties("confidentialityClass"))
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
@@ -409,6 +412,14 @@ public class Study implements NodeEntity {
 
   public Map<String, String> getProfilingAndAutomationDescription() {
     return profilingAndAutomationDescription;
+  }
+
+  public Optional<Boolean> getDirectIdentityInformation() {
+    return Optional.ofNullable(directIdentityInformation);
+  }
+
+  public Map<String, String> getDirectIdentityInformationDescription() {
+    return directIdentityInformationDescription;
   }
 
   public Optional<ConfidentialityClass> getConfidentialityClass() {
@@ -735,6 +746,8 @@ public class Study implements NodeEntity {
     props.putAll("studyPerformers", toPropertyValues(studyPerformers));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
     props.putAll("profilingAndAutomationDescription", toPropertyValues(profilingAndAutomationDescription));
+    getDirectIdentityInformation().ifPresent(v -> props.put("directIdentityInformation", toPropertyValue(v)));
+    props.putAll("directIdentityInformationDescription", toPropertyValues(directIdentityInformationDescription));
 
     // Data security
     getConfidentialityClass().ifPresent(cc -> props.put("confidentialityClass", toPropertyValue(cc.toString())));
@@ -821,6 +834,8 @@ public class Study implements NodeEntity {
             && Objects.equals(isScientificStudy, study.isScientificStudy)
             && Objects.equals(profilingAndAutomation, study.profilingAndAutomation)
             && Objects.equals(profilingAndAutomationDescription, study.profilingAndAutomationDescription)
+            && Objects.equals(directIdentityInformation, study.directIdentityInformation)
+            && Objects.equals(directIdentityInformationDescription, study.directIdentityInformationDescription)
             // Data security
             && Objects.equals(confidentialityClass, study.confidentialityClass)
             && Objects.equals(groundsForConfidentiality, study.groundsForConfidentiality)
@@ -965,7 +980,8 @@ public class Study implements NodeEntity {
     study.isScientificStudy = this.isScientificStudy;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;
-
+    study.directIdentityInformation = this.directIdentityInformation;
+    study.directIdentityInformationDescription = this.directIdentityInformationDescription;
     // Data security
     study.confidentialityClass = this.confidentialityClass;
     study.groundsForConfidentiality = this.groundsForConfidentiality;

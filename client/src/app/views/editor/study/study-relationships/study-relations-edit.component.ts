@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core'
-
 import { SelectItem } from 'primeng/components/common/api'
 import { TranslateService } from '@ngx-translate/core'
+import { TruncateCharactersPipe } from 'ng2-truncate/dist/truncate-characters.pipe'
 
-import { Study } from '../../../../model2/study'
-import { StudyRelationType } from './study-relation-type'
 import { EditorStudyService } from '../../../../services-editor/editor-study.service'
 import { LangPipe } from '../../../../utils/lang.pipe'
+import { Study } from '../../../../model2/study'
+import { StudyRelationType } from './study-relation-type'
 
 class StudySelectItem implements SelectItem {
   constructor(
@@ -25,10 +25,9 @@ class StudySelectItem implements SelectItem {
 </label>
 <ng-container *ngIf="study.predecessors.length; else noStudyRelations;">
   <p>{{ 'study.relations.predecessors' | translate }}</p>
-  <ul>
+  <ul *ngIf="availablePredecessors && availablePredecessors.length; else loadingStudies;">
     <li *ngFor="let predecessor of study.predecessors; let index = index;">
-      <p-dropdown *ngIf="availablePredecessors && availablePredecessors.length"
-              [(ngModel)]="study.predecessors[index].id"
+      <p-dropdown [(ngModel)]="study.predecessors[index].id"
               [ngModelOptions]="{ standalone: true }"
               [options]="availablePredecessors"
               filter="true"
@@ -46,11 +45,14 @@ class StudySelectItem implements SelectItem {
       <button (click)="removePredecessor(predecessor)"
               type="button"
               class="btn btn-default btn-sm">
-        <i class="fa fa-times" aria-hidden="true"></i>
+        <fa icon="times"></fa>
         {{ 'remove' | translate }}
       </button>
     </li>
   </ul>
+  <ng-template #loadingStudies>
+    <p><thl-spinner-inline loadingTextKey="study.loading"></thl-spinner-inline></p>
+  </ng-template>
 </ng-container>
 <ng-template #noStudyRelations>
   <p translate="study.relations.noRelations"></p>
@@ -71,6 +73,7 @@ export class StudyRelationsEditComponent implements OnInit {
   constructor(
     private studyService: EditorStudyService,
     private langPipe: LangPipe,
+    private truncatePipe: TruncateCharactersPipe,
     private translateService: TranslateService
   ) { }
 
@@ -103,7 +106,7 @@ export class StudyRelationsEditComponent implements OnInit {
           }
           else {
             this.availablePredecessors.push({
-              label: this.langPipe.transform(study.prefLabel),
+              label: this.truncatePipe.transform(this.langPipe.transform(study.prefLabel), 100),
               value: study.id,
               study: study
             })

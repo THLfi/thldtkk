@@ -15,9 +15,9 @@ import { StudyRelationType } from './study-relation-type'
           class="btn btn-default dropdown-toggle"
           aria-haspopup="true"
           [attr.aria-expanded]="dropdownOpen">
-    <span class="glyphicon glyphicon-plus"></span>
+    <glyphicon icon="plus"></glyphicon>
     {{ 'study.relations.addNew' | translate }}
-    <i class="fa fa-caret-down" aria-hidden="true"></i>
+    <fa icon="caret-down"></fa>
   </button>
   <ul class="dropdown-menu">
     <li><a (click)="selectPredecessor()">{{ 'study.relations.predecessor' | translate }}</a></li>

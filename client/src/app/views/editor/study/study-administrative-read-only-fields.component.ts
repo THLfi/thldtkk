@@ -17,6 +17,7 @@ import { Study } from '../../../model2/study'
   </div>
 </div>
 
+<!--
 <div class="row">
   <div class="col-xs-12">
     <p><strong class="field-label">{{ 'registryOrganizationUnit' | translate }}</strong></p>
@@ -30,6 +31,7 @@ import { Study } from '../../../model2/study'
     </ng-container>
   </div>
 </div>
+-->
 
 <div class="row">
   <div class="col-xs-12">
@@ -88,13 +90,7 @@ import { Study } from '../../../model2/study'
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12">
-    <p><strong class="field-label">{{ 'description' | translate }}</strong></p>
-    <p class="preserve-line-breaks">{{ study.description | lang }}</p>
-  </div>
-</div>
-
+<!--
 <div *ngIf="study.population"
      class="row">
   <div class="col-xs-12">
@@ -117,6 +113,7 @@ import { Study } from '../../../model2/study'
     </p>
   </div>
 </div>
+-->
 `
 })
 export class StudyAdministrativeReadOnlyFieldsComponent {

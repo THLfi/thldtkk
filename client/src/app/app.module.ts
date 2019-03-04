@@ -150,6 +150,7 @@ import { UserMenuComponent } from './views/editor/menu/user-menu.component'
 import { VariableEditModalComponent } from './views/editor/dataset/variable-edit-modal.component'
 import { VariableListComponent } from './views/editor/variable/variable-list.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
+import {StudyAdministrativeEditPrincipleOfProtectionFieldsComponent} from 'app/views/editor/study/study-administrative-edit-principle-of-protection-fields.component';
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -169,6 +170,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         SidebarIconStudy,
         StudyAdministrativeEditComponent,
         StudyAdministrativeReadOnlyFieldsComponent,
+        StudyAdministrativeEditPrincipleOfProtectionFieldsComponent,
         StudyAdministrativeViewComponent,
         DatasetComponent,
         DatasetHeaderComponent,

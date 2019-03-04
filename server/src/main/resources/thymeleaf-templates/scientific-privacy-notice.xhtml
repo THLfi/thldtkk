@@ -8,7 +8,7 @@
 
       @page {
         size: A4 portrait;
-        margin: 4.5em 2em 2.5em 4em;
+        margin: 25mm 20mm 15mm 20mm;
 
         @top-left {
           font-family: Arial, sans-serif;
@@ -26,7 +26,7 @@
       }
 
       @page:first {
-        margin-top: 2em;
+        margin-top: 10mm;
 
         @top-left {
           content: normal;
@@ -43,7 +43,7 @@
 
       .headerMinimum {
         display: block;
-        margin-top: 2em;
+        margin-top: 5mm;
         line-height: 1.1;
       }
       .headerMinimum h1 {
@@ -53,7 +53,7 @@
       body {
         font-family: Arial, sans-serif;
         font-size: 10pt;
-        line-height: 1.5;
+        line-height: 1.35;
       }
 
       h1 {
@@ -86,11 +86,12 @@
 
       h2 {
         font-size: 1.3em;
-        padding-top: .75em;
+        padding-top: 0;
+        margin-top: 1em;
       }
 
       h3 {
-        font-size: 1.1em;
+        font-size: 1.2em;
       }
 
       .section {
@@ -103,11 +104,6 @@
 
       .no-bottom-border {
         border-bottom: 0;
-      }
-
-      .legal-rights-section h3 {
-        font-weight: 500;
-        font-size: 1.1em;
       }
 
       ol.alphabetical-list {
@@ -129,12 +125,14 @@
     <div class="header">
       <h1 th:text="#{scientificPrivacyNotice.title}">TIETEELLISEN TUTKIMUKSEN TIETOSUOJAILMOITUS</h1>
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
+      <div th:text="${studyName}">Aineiston nimi</div>
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
     <div id="pageHeaderMinimum" class="headerMinimum">
       <h1 th:text="#{scientificPrivacyNotice.title}">Tieteellisen tutkimuksen tietosuojailmoitus</h1>
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
+      <div th:text="${studyName}">Aineiston nimi</div>
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
@@ -151,7 +149,7 @@
     <div class="section">
       <h2>1. <span th:text="#{scientificPrivacyNotice.controller}">Tutkimuksen rekisterinpitäjät</span></h2>
 
-      <div style="margin-bottom: 2em">
+      <div style="margin-bottom: 1.5em">
         <div>
           <strong th:text="${controller.getPrefLabel().get(lang)}"></strong>
           <strong th:if="${controller.getAbbreviation().get(lang) != null}">(<span th:text="${controller.getAbbreviation().get(lang)}"></span>)</strong>
@@ -160,7 +158,7 @@
         <div th:text="${controller.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
       </div>
 
-      <div th:each="registryOrganization : ${registryOrganizations}" style="margin-bottom: 2em">
+      <div th:each="registryOrganization : ${registryOrganizations}" style="margin-bottom: 1.5em">
         <div>
           <strong th:text="${registryOrganization.getPrefLabel().get(lang)}"></strong>
           <strong th:if="${registryOrganization.getAbbreviation().get(lang) != null}">(<span th:text="${registryOrganization.getAbbreviation().get(lang)}"></span>)</strong>
@@ -228,11 +226,17 @@
 
     <div class="section">
       <h2>5. <span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2>
-      <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
-      <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}"
-            th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
-      <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}"
-            th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
+      <div style="padding-bottom: 1em">
+        <strong th:if="not ${#strings.isEmpty(principalInvestigatorName)}" th:text="#{scientificPrivacyNotice.principalInvestigator.name}">Tutkimuksen vastuullisen johtajan tai ryhmän nimi</strong>:
+        <div th:if="not ${#strings.isEmpty(principalInvestigatorName)}" th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
+      </div>
+      <div>
+        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.contact}">Tutkimuksen vastuullisen johtajan tai ryhmän yhteystiedot</strong>:
+        <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}"
+              th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
+        <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}"
+              th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
+      </div>
     </div>
 
     <div class="section">

@@ -10,14 +10,12 @@
         size: A4 portrait;
         margin: 4.5em 2em 2.5em 4em;
 
-        @top-center {
-          padding-right: 5em;
-          text-align: right;
+        @top-left {
           font-family: Arial, sans-serif;
           font-size: 12pt;
           font-weight: bold;
           text-transform: uppercase;
-          content:  "[[#{scientificPrivacyNotice.title}]]";
+          content: element(pageHeaderMinimum);
         }
         @top-right {
           text-align: center;
@@ -30,13 +28,26 @@
       @page:first {
         margin-top: 2em;
 
-        @top-center {
+        @top-left {
           content: normal;
         }
 
         @top-right {
           content: normal;
         }
+      }
+
+      #pageHeaderMinimum {
+        position: running(pageHeaderMinimum);
+      }
+
+      .headerMinimum {
+        display: block;
+        margin-top: 2em;
+        line-height: 1.1;
+      }
+      .headerMinimum h1 {
+        font-size: 1.1em;
       }
 
       body {
@@ -53,6 +64,7 @@
 
       .header {
         margin-left: 50%;
+        line-height: 1.2;
       }
 
       .law-reference {
@@ -115,13 +127,15 @@
   <body>
 
     <div class="header">
-
       <h1 th:text="#{scientificPrivacyNotice.title}">TIETEELLISEN TUTKIMUKSEN TIETOSUOJAILMOITUS</h1>
-
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
-
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
+    </div>
 
+    <div id="pageHeaderMinimum" class="headerMinimum">
+      <h1 th:text="#{scientificPrivacyNotice.title}">Tieteellisen tutkimuksen tietosuojailmoitus</h1>
+      <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
+      <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
     <h2 th:text="#{scientificPrivacyNotice.introductionHeader}">Tietoa tutkimukseen osallistuvalle</h2>

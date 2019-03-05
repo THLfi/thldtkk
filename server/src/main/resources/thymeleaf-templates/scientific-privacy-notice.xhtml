@@ -205,37 +205,54 @@
             th:text="#{scientificPrivacyNotice.partiesAndSharingOfResponsibilityInCollaborativeStudy.defaultText}"
             class="preserve-line-breaks"></div>
       <div th:if="${partiesAndSharingOfResponsibilityInCollaborativeStudy}">
-        <div th:if="${false}">
-          <div th:text="${partiesAndSharingOfResponsibilityInCollaborativeStudy}"
-                class="preserve-line-breaks">Tässä kuvataan osapuolten vastuunjako.</div>
-          <br/>
-          <div th:text="#{scientificPrivacyNotice.jointControllers(${contactPersonNameAndContactInformation})}"
-                class="preserve-line-breaks">Kohdassa 1 luetellut organisaatiot toimivat tässä tutkimuksessa yhteisrekisterinpitäjinä, eli ne määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot.
-
+        <p th:text="${partiesAndSharingOfResponsibilityInCollaborativeStudy}"
+              class="preserve-line-breaks">Tässä kuvataan osapuolten vastuunjako.
+        </p>
+        <div th:text="#{scientificPrivacyNotice.jointControllers.head}" class="preserve-line-breaks">
+          Kohdassa 1 luetellut organisaatiot toimivat tässä tutkimuksessa yhteisrekisterinpitäjinä, eli ne määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot.
           Tutkittavat voivat tehdä kaikki tähän tutkimukseen liittyvät pyynnöt rekisteröidyn oikeuksien käyttämiseksi alla olevalle yhteyshenkilölle:
+        </div>
 
-          [TÄHÄN AINEISTON YHTEYSHENKILÖN YHTEYSTIEDOT]
+        <div th:if="${contactPerson != null}" style="margin: 1em 0">
+          <div>
+            <span th:text="#{privacyNotice.contactPerson.name}">Nimi</span>:
+            <span th:text="${contactPersonName}"></span>
+          </div>
+          <div th:if="${contactPerson.getPhone().isPresent()}">
+            <span th:text="#{privacyNotice.contactPerson.phoneNumber}">Puhelinnumero</span>:
+            <span th:text="${contactPerson.getPhone().get()}" class="preserve-line-breaks"></span>
+          </div>
+          <div th:if="${contactPerson.getEmail().isPresent()}">
+            <span th:text="#{privacyNotice.contactPerson.email}">Sähköpostiosoite</span>:
+            <span th:text="${contactPerson.getEmail().get()}" class="preserve-line-breaks"></span>
+          </div>
+        </div>
 
+        <div th:text="#{scientificPrivacyNotice.jointControllers.tail}" class="preserve-line-breaks">
+          Kohdassa 1 luetellut organisaatiot toimivat tässä tutkimuksessa yhteisrekisterinpitäjinä, eli ne määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot.
           Yhteyshenkilö välittää tarvittaessa pyynnön myös muille yhteisrekisterinpitäjinä toimiville organisaatioille.
 
-          Tutkittava voi käyttää tietosuoja-asetuksen mukaisia oikeuksiaan suhteessa kuhunkin rekisterinpitäjään. Tällöin vastaanottaja voi tarvittaessa välittää pyynnön tai vaatimuksen myös muille yhteisrekisterinpitäjille.</div>
-          <br/>
+          Tutkittava voi käyttää tietosuoja-asetuksen mukaisia oikeuksiaan suhteessa kuhunkin rekisterinpitäjään. Tällöin vastaanottaja voi tarvittaessa välittää pyynnön tai vaatimuksen myös muille yhteisrekisterinpitäjille.
         </div>
       </div>
     </div>
 
     <div class="section">
       <h2>5. <span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2>
-      <div style="padding-bottom: 1em">
-        <strong th:if="not ${#strings.isEmpty(principalInvestigatorName)}" th:text="#{scientificPrivacyNotice.principalInvestigator.name}">Tutkimuksen vastuullisen johtajan tai ryhmän nimi</strong>:
-        <div th:if="not ${#strings.isEmpty(principalInvestigatorName)}" th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
+      <div th:unless="${#strings.isEmpty(principalInvestigatorName)}" style="padding-bottom: 1em">
+        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.name}">Tutkimuksen vastuullisen johtajan tai ryhmän nimi:</strong>
+        <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
       </div>
       <div>
-        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.contact}">Tutkimuksen vastuullisen johtajan tai ryhmän yhteystiedot</strong>:
-        <div th:if="not ${#strings.isEmpty(principalInvestigatorPhone)}"
-              th:text="#{scientificPrivacyNotice.principalInvestigator.phone} + ': ' + ${principalInvestigatorPhone}">puhelinnumero: +358294327123</div>
-        <div th:if="not ${#strings.isEmpty(principalInvestigatorEmail)}"
-              th:text="#{scientificPrivacyNotice.principalInvestigator.email} + ': ' + ${principalInvestigatorEmail}">sähköposti: tutkija@tutkijaorganisaatio.fi</div>
+        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.contact}">Tutkimuksen vastuullisen johtajan tai ryhmän yhteystiedot:</strong>
+        <div>
+          <span th:text="#{scientificPrivacyNotice.principalInvestigator.phone}">Puhelinnumero</span>:
+          <span th:text="${principalInvestigatorPhone}">+358294327123</span>
+        </div>
+        <div>
+          <span th:text="#{scientificPrivacyNotice.principalInvestigator.email}">Sähköposti</span>:
+          <span th:text="${principalInvestigatorEmail}">tutkija@tutkijaorganisaatio.fi</span>
+        </div>
       </div>
     </div>
 

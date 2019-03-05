@@ -152,6 +152,7 @@ import { VariableEditModalComponent } from './views/editor/dataset/variable-edit
 import { VariableListComponent } from './views/editor/variable/variable-list.component'
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import {StudyAdministrativeEditPrincipleOfProtectionFieldsComponent} from 'app/views/editor/study/study-administrative-edit-principle-of-protection-fields.component';
+import {StudyAdministrativeViewPrincipleOfProtectionFieldsComponent} from "./views/editor/study/study-administrative-view-principle-of-protection-fields.component";
 
 export function TranslateHttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -173,6 +174,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         StudyAdministrativeReadOnlyFieldsComponent,
         StudyAdministrativeEditPrincipleOfProtectionFieldsComponent,
         StudyAdministrativeViewComponent,
+        StudyAdministrativeViewPrincipleOfProtectionFieldsComponent,
         DatasetComponent,
         DatasetHeaderComponent,
         DataSetEditComponent,

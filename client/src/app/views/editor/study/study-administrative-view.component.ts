@@ -75,4 +75,16 @@ export class StudyAdministrativeViewComponent implements OnInit {
     return PostStudyRetentionOfPersonalData.DISPOSE !== selectedValue &&
            PostStudyRetentionOfPersonalData.DISPOSE_SCIENTIFIC !== selectedValue;
   }
+
+  isNonScientificPersonRegistry() {
+    return this.study.personRegistry && this.study.isScientificStudy !== true;
+  }
+
+  isScientificPersonRegistry() {
+    return this.study.personRegistry && this.study.isScientificStudy;
+  }
+
+  isPersonRegistry() {
+    return this.study.personRegistry;
+  }
 }

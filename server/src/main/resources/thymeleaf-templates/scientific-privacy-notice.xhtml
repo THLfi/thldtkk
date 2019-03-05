@@ -152,7 +152,7 @@
       <div style="margin-bottom: 1.5em">
         <div>
           <strong th:text="${controller.getPrefLabel().get(lang)}"></strong>
-          <strong th:if="${controller.getAbbreviation().get(lang) != null}">(<span th:text="${controller.getAbbreviation().get(lang)}"></span>)</strong>
+          <strong th:if="${controller.getAbbreviation().get(lang) != null}"> (<span th:text="${controller.getAbbreviation().get(lang)}"></span>)</strong>
         </div>
         <div th:text="${controller.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
         <div th:text="${controller.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
@@ -161,7 +161,7 @@
       <div th:each="registryOrganization : ${registryOrganizations}" style="margin-bottom: 1.5em">
         <div>
           <strong th:text="${registryOrganization.getPrefLabel().get(lang)}"></strong>
-          <strong th:if="${registryOrganization.getAbbreviation().get(lang) != null}">(<span th:text="${registryOrganization.getAbbreviation().get(lang)}"></span>)</strong>
+          <strong th:if="${registryOrganization.getAbbreviation().get(lang) != null}"> (<span th:text="${registryOrganization.getAbbreviation().get(lang)}"></span>)</strong>
         </div>
         <div th:text="${registryOrganization.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
         <div th:text="${registryOrganization.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>

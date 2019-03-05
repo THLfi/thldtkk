@@ -176,6 +176,7 @@
                 <label for="scientific-study-empty"
                        class="radio-empty">
                   <input [(ngModel)]="study.isScientificStudy"
+                         (change)="onIsScientificStudyChanged()"
                          [value]="undefined"
                          type="radio"
                          id="scientific-study-empty"

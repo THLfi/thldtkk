@@ -239,12 +239,12 @@
 
     <div class="section">
       <h2>5. <span th:text="#{scientificPrivacyNotice.principalInvestigator}">Tutkimuksen vastuullinen johtaja tai siitä vastaava ryhmä</span></h2>
-      <div th:unless="${#strings.isEmpty(principalInvestigatorName)}" style="padding-bottom: 1em">
-        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.name}">Tutkimuksen vastuullisen johtajan tai ryhmän nimi:</strong>
+      <div style="padding-bottom: 1em">
+        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.name}">Tutkimuksen vastuullisen johtajan tai ryhmän nimi</strong>
         <div th:text="${principalInvestigatorName}">Teuvo Tutkija</div>
       </div>
       <div>
-        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.contact}">Tutkimuksen vastuullisen johtajan tai ryhmän yhteystiedot:</strong>
+        <strong th:text="#{scientificPrivacyNotice.principalInvestigator.contact}">Tutkimuksen vastuullisen johtajan tai ryhmän yhteystiedot</strong>
         <div>
           <span th:text="#{scientificPrivacyNotice.principalInvestigator.phone}">Puhelinnumero</span>:
           <span th:text="${principalInvestigatorPhone}">+358294327123</span>
@@ -334,10 +334,8 @@
     </div>
 
     <div class="section">
-      <h2>11. <span>Mitä henkilötietoja tutkimus sisältää</span></h2>
-      <div>
-        TODO
-      </div>
+      <h2>11. <span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2>
+      <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>
     </div>
 
     <div class="section">

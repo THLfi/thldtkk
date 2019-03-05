@@ -29,15 +29,7 @@
         </div>
         <div class="col-xs-6">
           <div class="pull-right">
-            <a *ngIf="printRegisterDescriptionUrl"
-               href="{{ printRegisterDescriptionUrl }}"
-               target="_blank"
-               class="btn btn-default"
-               style="margin-right:2em;">
-              <i class="fa fa-print" aria-hidden="true"></i>
-              {{ 'printRegisterDescription' | translate }}
-            </a>
-            <a *ngIf="printPrivacyNoticeUrl"
+            <a *ngIf="printPrivacyNoticeUrl && isNonScientificPersonRegistry()"
                href="{{ printPrivacyNoticeUrl }}"
                target="_blank"
                class="btn btn-default"
@@ -45,7 +37,7 @@
               <i class="fa fa-print" aria-hidden="true"></i>
               {{ 'printPrivacyNotice' | translate }}
             </a>
-            <a *ngIf="printScientificPrivacyNoticeUrl"
+            <a *ngIf="printScientificPrivacyNoticeUrl && isScientificPersonRegistry()"
                href="{{ printScientificPrivacyNoticeUrl }}"
                target="_blank"
                class="btn btn-default"
@@ -95,31 +87,64 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'studyPerformers' | translate }}</strong></p>
-          <p class="preserve-line-breaks">{{ study.studyPerformers | lang }}</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label" translate="studyType.label"></strong></p>
-          <p *ngIf="study.studyType">{{ 'studyType.' + study.studyType | translate }}</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
           <p><strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong></p>
           <p>{{ (study.personRegistry === undefined ? 'noPersonRegistry' : '' + study.personRegistry) | translate }}</p>
         </div>
       </div>
 
-      <ng-container *ngIf="study.personRegistry">
+      <div class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'isScientificStudy' | translate }}</strong></p>
+          <p>{{ (study.isScientificStudy === undefined ? 'undefined' : '' + study.isScientificStudy) | translate }}</p>
+        </div>
+      </div>
+
+      <!-- START OF CONDITIONAL BLOCK -->
+      <ng-container *ngIf="isPersonRegistry()">
+        <div class="row" *ngIf="isNonScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <h3>{{ 'infoOfGeneralPrivacyNotice' | translate }}</h3>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <h3>{{ 'infoOfScientificPrivacyNotice' | translate }}</h3>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <p><strong class="field-label" translate="studyType.label"></strong></p>
+            <p *ngIf="study.studyType">{{ 'studyType.' + study.studyType | translate }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'studyDescription' | translate }}</strong></p>
+            <p class="preserve-line-breaks">{{ study.description | lang }}</p>
+          </div>
+        </div>
 
         <div class="row">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'purposeOfPersonRegistry' | translate }}</strong></p>
             <p class="preserve-line-breaks">{{ study.purposeOfPersonRegistry | lang }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}</strong></p>
+            <p class="preserve-line-breaks">{{ study.partiesAndSharingOfResponsibilityInCollaborativeStudy | lang }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'studyPerformers' | translate }}</strong></p>
+            <p class="preserve-line-breaks">{{ study.studyPerformers | lang }}</p>
           </div>
         </div>
 
@@ -142,7 +167,14 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="study.isScientificStudy">
+        <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'containsSensitivePersonalData' | translate }}</strong></p>
+            <p>{{ (study.containsSensitivePersonalData === undefined ? 'undefined' : '' + study.containsSensitivePersonalData) | translate }}</p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="isScientificPersonRegistry() && study.containsSensitivePersonalData">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong></p>
             <p>
@@ -161,7 +193,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="study.containsSensitivePersonalData">
+        <div class="row" *ngIf="study.containsSensitivePersonalData && study.containsSensitivePersonalData">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong></p>
             <p>
@@ -182,7 +214,10 @@
 
         <div class="row">
           <div class="col-xs-12">
-            <p><strong class="field-label">{{ 'usageOfPersonalInformation' | translate }}</strong></p>
+            <p>
+              <strong class="field-label" *ngIf="isNonScientificPersonRegistry()">{{ 'usageOfPersonalInformation' | translate }}</strong>
+              <strong class="field-label" *ngIf="isScientificPersonRegistry()">{{ 'usageOfPersonalInformationInScientificStudy' | translate }}</strong>
+            </p>
             <p class="preserve-line-breaks">{{ study.usageOfPersonalInformation | lang }}</p>
           </div>
         </div>
@@ -208,55 +243,41 @@
           </div>
         </div>
 
-      </ng-container>
-
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'isScientificStudy' | translate }}</strong></p>
-          <p>{{ (study.isScientificStudy === undefined ? 'undefined' : '' + study.isScientificStudy) | translate }}</p>
+        <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'profilingAndAutomationDescription' | translate }}</strong></p>
+            <p *ngIf="study.profilingAndAutomation">
+              {{ study.profilingAndAutomationDescription | lang }}
+            </p>
+            <p *ngIf="!study.profilingAndAutomation">
+              {{ 'profilingAndAutomationNotOccurringByOrg' |
+              translate:{ organization: (study.ownerOrganization && study.ownerOrganization.prefLabel | lang)
+              || 'organization' | translate } }}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <ng-container *ngIf="study.isScientificStudy">
+        <study-administrative-view-principle-of-protection-fields
+          [study]="study"
+          *ngIf="isScientificPersonRegistry()"
+        ></study-administrative-view-principle-of-protection-fields>
 
         <div class="row">
           <div class="col-xs-12">
-            <p><strong class="field-label">{{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}</strong></p>
-            <p class="preserve-line-breaks">{{ study.partiesAndSharingOfResponsibilityInCollaborativeStudy | lang }}</p>
+            <p [ngSwitch]="study.isScientificStudy">
+              <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
+              <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
+            </p>
+            <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
+              <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
+            </ng-container>
+            <ng-template #noPostStudyRetentionOfPersonalData>
+              <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
+            </ng-template>
           </div>
         </div>
 
       </ng-container>
-
-      <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'profilingAndAutomation' | translate }}</strong></p>
-          <p *ngIf="study.profilingAndAutomation">
-            {{ study.profilingAndAutomationDescription | lang }}
-          </p>
-          <p *ngIf="!study.profilingAndAutomation">
-            {{ 'profilingAndAutomationNotOccurringByOrg' |
-               translate:{ organization: (study.ownerOrganization && study.ownerOrganization.prefLabel | lang)
-                                         || 'organization' | translate } }}
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p [ngSwitch]="study.isScientificStudy">
-            <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
-            <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
-          </p>
-          <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
-            <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
-          </ng-container>
-          <ng-template #noPostStudyRetentionOfPersonalData>
-            <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
-          </ng-template>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-xs-12">
@@ -303,37 +324,10 @@
 
       </ng-container>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'principlesForPhysicalSecurity.label' | translate }}</strong></p>
-          <ul *ngIf="study.principlesForPhysicalSecurity.length">
-            <ng-container *ngFor="let principle of study.principlesForPhysicalSecurity">
-              <li *ngIf="!(principle == 'OTHER')">
-                {{ 'principlesForPhysicalSecurity.' + principle | translate }}
-              </li>
-            </ng-container>
-            <li *ngFor="let otherPrinciple of study.otherPrinciplesForPhysicalSecurity">
-              {{ otherPrinciple.prefLabel | lang }}
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'principlesForDigitalSecurity.label' | translate }}</strong></p>
-          <ul *ngIf="study.principlesForDigitalSecurity.length">
-            <ng-container *ngFor="let principle of study.principlesForDigitalSecurity">
-              <li *ngIf="!(principle == 'OTHER')">
-                {{ 'principlesForDigitalSecurity.' + principle | translate }}
-              </li>
-            </ng-container>
-            <li *ngFor="let otherPrinciple of study.otherPrinciplesForDigitalSecurity">
-              {{ otherPrinciple.prefLabel | lang }}
-            </li>
-          </ul>
-        </div>
-      </div>
+      <study-administrative-view-principle-of-protection-fields
+        [study]="study"
+        *ngIf="! isScientificPersonRegistry()"
+      ></study-administrative-view-principle-of-protection-fields>
 
       <div class="row">
         <div class="col-xs-12">
@@ -485,13 +479,21 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="pull-right">
-            <a *ngIf="printRegisterDescriptionUrl"
-               href="{{ printRegisterDescriptionUrl }}"
+            <a *ngIf="printPrivacyNoticeUrl && isNonScientificPersonRegistry()"
+               href="{{ printPrivacyNoticeUrl }}"
                target="_blank"
                class="btn btn-default"
                style="margin-right:2em;">
               <i class="fa fa-print" aria-hidden="true"></i>
-              {{ 'printRegisterDescription' | translate }}
+              {{ 'printPrivacyNotice' | translate }}
+            </a>
+            <a *ngIf="printScientificPrivacyNoticeUrl && isScientificPersonRegistry()"
+               href="{{ printScientificPrivacyNoticeUrl }}"
+               target="_blank"
+               class="btn btn-default"
+               style="margin-right:2em;">
+              <i class="fa fa-print" aria-hidden="true"></i>
+              {{ 'printScientificPrivacyNotice' | translate }}
             </a>
             <button routerLink="/editor/studies/{{ study.id }}/edit-administrative-information"
                     type="button"

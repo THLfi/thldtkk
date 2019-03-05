@@ -364,9 +364,9 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="row" *ngIf="isScientificPersonRegistry() && study.containsSensitivePersonalData">
             <div class="col-xs-12">
-              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
+              <div class="form-group conditionally-visible">
                 <p>
                   <strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong>
                 </p>
@@ -394,9 +394,9 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="isScientificPersonRegistry()">
+          <div class="row" *ngIf="isScientificPersonRegistry() && study.containsSensitivePersonalData">
             <div class="col-xs-12">
-              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
+              <div class="form-group conditionally-visible">
                 <p>
                   <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
                 </p>

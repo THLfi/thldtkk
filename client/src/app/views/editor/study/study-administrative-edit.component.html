@@ -40,6 +40,7 @@
                 {{ 'associatedOrganizations.label' | translate }}
                 <editor-help-link [helpTextComponent]="associatedOrganizationsHelpText"></editor-help-link>
               </label>
+              <editor-help-text #associatedOrganizationsHelpText key="editor.studyAdministrative.associatedOrganizations.helpText"></editor-help-text>
               <table *ngIf="study.associatedOrganizations.length; else noAssociatedOrganizations;"
                      id="associatedOrganizations"
                      class="table table-striped">
@@ -89,10 +90,7 @@
                     {{ 'associatedOrganizations.addAssociatedOrganization' | translate }}
                   </button>
                 </span>
-
               </div>
-
-              <editor-help-text #associatedOrganizationsHelpText key="editor.studyAdministrative.associatedOrganizations.helpText"></editor-help-text>
             </div>
           </div>
         </div>
@@ -102,10 +100,7 @@
             <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong>
-                <editor-help-link [helpTextComponent]="personRegistryHelpText"></editor-help-link>
               </p>
-              <editor-help-text #personRegistryHelpText key="editor.studyAdministrative.personRegistry.helpText"></editor-help-text>
-
               <div class="radio">
                 <label for="person-registry-true">
                   <input [(ngModel)]="study.personRegistry"
@@ -146,10 +141,7 @@
             <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'isScientificStudy' | translate }}</strong>
-                <editor-help-link [helpTextComponent]="scientificStudyHelpText"></editor-help-link>
               </p>
-              <editor-help-text #scientificStudyHelpText key="editor.studyAdministrative.scientificStudy.helpText"></editor-help-text>
-
               <div class="radio">
                 <label for="scientific-study-true">
                   <input [(ngModel)]="study.isScientificStudy"
@@ -209,7 +201,7 @@
                   <strong class="field-label">{{ 'studyType.label' | translate }}</strong>
                   <editor-help-link [helpTextComponent]="studyTypeHelpText"></editor-help-link>
                 </p>
-                <editor-help-text #studyTypeHelpText key="editor.study.studyType.helpText"></editor-help-text>
+                <editor-help-text #studyTypeHelpText key="editor.studyAdministrative.studyType.helpText"></editor-help-text>
 
                 <div class="radio">
                   <label for="study-type-cross-sectional">
@@ -256,6 +248,8 @@
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="purposeOfPersonRegistry" translate="purposeOfPersonRegistry"></label>
+                <editor-help-link [helpTextComponent]="purposeOfPersonRegistryHelpText"></editor-help-link>
+                <editor-help-text #purposeOfPersonRegistryHelpText key="editor.studyAdministrative.purposeOfPersonRegistry.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.purposeOfPersonRegistry[language]"
                           thlAutogrow
                           id="purposeOfPersonRegistry"
@@ -273,6 +267,8 @@
                 <label for="partiesAndSharingOfResponsibilityInCollaborativeStudy">
                   {{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}
                 </label>
+                <editor-help-link [helpTextComponent]="partiesAndSharingOfResponsibilityInCollaborativeStudyHelpText"></editor-help-link>
+                <editor-help-text #partiesAndSharingOfResponsibilityInCollaborativeStudyHelpText key="editor.studyAdministrative.partiesAndSharingOfResponsibilityInCollaborativeStudy.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.partiesAndSharingOfResponsibilityInCollaborativeStudy[language]"
                           thlAutogrow
                           id="partiesAndSharingOfResponsibilityInCollaborativeStudy"
@@ -291,14 +287,14 @@
                   {{ 'studyPerformers' | translate }}
                   <editor-help-link [helpTextComponent]="studyPerformersHelpText"></editor-help-link>
                 </label>
+                <editor-help-text #studyPerformersHelpText key="editor.studyAdministrative.studyPerformers.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.studyPerformers[language]"
                           thlAutogrow
                           id="studyPerformers"
                           name="studyPerformers"
                           class="form-control"
                           rows="3">
-              </textarea>
-                <editor-help-text #studyPerformersHelpText key="editor.study.studyPerformers.helpText"></editor-help-text>
+                </textarea>
               </div>
             </div>
           </div>
@@ -308,6 +304,8 @@
               <div class="form-group">
                 <p>
                   <strong class="field-label">{{ 'legalBasisForHandlingPersonalData.label' | translate }}</strong>
+                  <editor-help-link [helpTextComponent]="legalBasisForHandlingPersonalDataHelpText"></editor-help-link>
+                  <editor-help-text #legalBasisForHandlingPersonalDataHelpText key="editor.studyAdministrative.legalBasisForHandlingPersonalData.helpText"></editor-help-text>
                 </p>
                 <p-multiSelect [(ngModel)]="study.legalBasisForHandlingPersonalData"
                                [ngModelOptions]="{ standalone: true }"
@@ -399,6 +397,8 @@
               <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
                 <p>
                   <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
+                  <editor-help-link [helpTextComponent]="legalBasisForHandlingPersonalDataHelpText"></editor-help-link>
+                  <editor-help-text #legalBasisForHandlingPersonalDataHelpText key="editor.studyAdministrative.legalBasisForHandlingPersonalData.helpText"></editor-help-text>
                 </p>
                 <p-multiSelect [(ngModel)]="study.legalBasisForHandlingSensitivePersonalData"
                                [ngModelOptions]="{ standalone: true }"
@@ -429,6 +429,8 @@
               <div class="form-group">
                 <label *ngIf="isNonScientificPersonRegistry()" for="usageOfPersonalInformation" translate="usageOfPersonalInformation"></label>
                 <label *ngIf="isScientificPersonRegistry()" for="usageOfPersonalInformation" translate="usageOfPersonalInformationInScientificStudy"></label>
+                <editor-help-link [helpTextComponent]="usageOfPersonalInformationHelpText"></editor-help-link>
+                <editor-help-text #usageOfPersonalInformationHelpText key="editor.studyAdministrative.usageOfPersonalInformation.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.usageOfPersonalInformation[language]"
                           thlAutogrow
                           id="usageOfPersonalInformation"
@@ -450,6 +452,8 @@
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="personRegistrySources" translate="personRegistrySources"></label>
+                <editor-help-link [helpTextComponent]="personRegistrySourcesHelpText"></editor-help-link>
+                <editor-help-text #personRegistrySourcesHelpText key="editor.studyAdministrative.personRegistrySources.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.personRegistrySources[language]"
                           thlAutogrow
                           id="personRegistrySources"
@@ -465,6 +469,8 @@
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="personRegisterDataTransfers" translate="personRegisterDataTransfers"></label>
+                <editor-help-link [helpTextComponent]="personRegisterDataTransfersHelpText"></editor-help-link>
+                <editor-help-text #personRegisterDataTransfersHelpText key="editor.studyAdministrative.personRegistryDataTransfers.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.personRegisterDataTransfers[language]"
                           thlAutogrow
                           id="personRegisterDataTransfers"
@@ -500,8 +506,8 @@
                 <p>
                   <strong class="field-label">{{ 'isProfilingAndAutomationHappening' | translate }}</strong>
                   <editor-help-link [helpTextComponent]="profilingAndAutomationHelpText"></editor-help-link>
+                  <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
                 </p>
-                <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
 
                 <div class="radio">
                   <label for="profiling-and-automation-true">
@@ -542,6 +548,8 @@
             <div class="col-xs-12">
               <div class="form-group">
                 <label for="profiling-and-automation-description" translate="profilingAndAutomationDescription"></label>
+                <editor-help-link [helpTextComponent]="profilingAndAutomationHelpText"></editor-help-link>
+                <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.profilingAndAutomationDescription[language]"
                           thlAutogrow
                           id="profiling-and-automation-description"

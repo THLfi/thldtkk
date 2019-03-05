@@ -966,43 +966,70 @@
         "helpText": "<p>Aineistoon liitetyt organisaatiot voidaan merkata yhteisrekisterinpitäjiksi, jolloin merkattujen organisaatioiden tiedot tulostuvavat tieteelliseen tietosuojailmoitukseen.</p>"
       },
       "personRegistry": {
-        "helpText": "<p>Onko aineisto henkilörekisteri vai ei -ohjeet tähän</p>"
+        "helpText": "<p>Onko aineisto henkilörekisteri vai ei?</p>"
+      },
+      "scientificStudy": {
+        "helpText": "<p>Onko aineisto tieteellinen tutkimus vai ei?</p>"
+      },
+      "studyType": {
+        "helpText": "<p>Tässä valitaan onko kyseessä kerta- vai seurantatutkimus.</p>"
+      },
+      "purposeOfPersonRegistry": {
+        "helpText": "<p>Lisää lyhyt kuvaus henkilötietojen käsittelyn tarkoituksesta.</p>"
+      },
+      "partiesAndSharingOfResponsibilityInCollaborativeStudy": {
+        "helpText": "<p>Jos kyseessä on useamman tahon (organisaation/osaston) yhteishanke, kuvaa tässä osapuolten vastuunjako henkilötietojen käsittelyn suhteen. Jos kyse ei ole yhteistyöhankkeesta merkitse 'EI yhteistyöhankkeena tehtävä tutkimus'. Jos tutkimusta yhdessä tekevät organisaatiot käsittelevät tutkimuksessa samoja henkilötietoja ja määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot, ne ovat yhteisrekisterinpitäjiä.</p>"
+      },
+      "studyPerformers": {
+        "helpText": "<p>Tähän kirjataan kaikki ryhmät, joilla on tutkimuksen kuluessa oikeus käsitellä tutkimusrekisterin tietoja. Ei siis ole tarpeen listata yksittäisiä henkilöitä, vaan voi käyttää kategorioita (esim. X yksikön tutkijat ja tutkimusavustajat).</p>"
+      },
+      "legalBasisForHandlingPersonalData": {
+        "helpText": "<p>Tässä valitaan ne lainmukaiset tietosuoja-asetuksen 6 artiklan kohdat, joihin henkilötietojen käsittely perustuu.</p>"
+      },
+      "usageOfPersonalInformation": {
+        "helpText": "<p>Tässä kerrotaan käsitelläänkö arkaluonteisia henkilötietoja, valitaan käsiteltävien arkaluonteisten henkilötietojen tyypit sekä lainmukaiset tietosuoja-asetuksen 9 artiklan 2 kohdan erityisehdot, johon niiden käsittely perustuu.</p>"
+      },
+      "personRegistrySources": {
+        "helpText": "<p>Tässä kuvataan se, mistä lähteistä käsiteltävät tiedot saadaan.</p>"
+      },
+      "personRegistryDataTransfers": {
+        "helpText": "<p>Tässä kuvataan se, siirretäänkö tai luovutetaanko henkilötietoja säännönmukaisesti. Mikäli tietoja luovutetaan, mille tahoille niitä luovutetaan ja mihin luovuttaminen perustuu. Tähän kuvataan myös mahdollinen henkilötietojen siirto käsittelijälle (esim. alihankkija tai tallennus pilvipalveluun).</p>"
       },
       "profilingAndAutomation": {
-        "helpText": "<p>Tehdäänkö profilointia ja päätöksenteko automaattisesti -ohjeet tähän</p>"
+        "helpText": "<p>Tässä valitaan ja kirjataan mahdollinen automaattinen päätöksenteko perustuen mm. henkilöiden profilointiin.</p>"
       },
       "confidentialityClass": {
-        "helpText": "<p>Tietosisällön julkisuusluokka -ohjeet tähän</p>"
+        "helpText": "<p>Tässä valitaan tietosisällön julkisuusluokka.</p>"
       },
       "principlesForPhysicalSecurity": {
-        "helpText": "<p>Fyysisen suojauksen periaatteet -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään kaikki käytetyt fyysisen suojauksen periaatteet, kuten mahdollinen lukittu tila.</p>"
       },
       "principlesForDigitalSecurity": {
-        "helpText": "<p>Digitaalisen suojauksen periaatteet -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään kaikki käytetyt digitaalisen suojauksen periaatteet, kuten käyttäjätunnus ja salasana.</p>"
       },
       "dataProcessingPeriod": {
-        "helpText": "<p>Tietojenkäsittelyn ajankohta -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään tietojenkäsittelyn (myös henkilötietojen) aloitus- ja lopetusajankohdat.</p>"
       },
       "retentionPolicy": {
-        "helpText": "<p>Säilyttäminen -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään tietoja aineiston säilyttämisestä.</p>"
       },
       "retentionPeriod": {
-        "helpText": "<p>Säilytysaika -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään aineiston säilytysaika, esim. viisi vuotta.</p>"
       },
       "groundsForRetention": {
-        "helpText": "<p>Säilytysajan peruste -ohjeet tähän</p>"
+        "helpText": "<p>Tähän merkitään aineiston säilytysajan peruste, kuten esim. tiedonhallintasuunnitelma, lakiviittaus tai kansallisarkiston päätös.</p>"
       },
       "nationalArchivesFinlandArchivalDecision": {
-        "helpText": "<p>Kansallisarkiston pysyvän säilyttämisen päätös -ohjeet tähän</p>"
+        "helpText": "<p>Aineiston mahdollisen Kansallisarkiston pysyvän säilyttämisen päätöksen tiedot kirjataan tähän.</p>"
       },
       "existenceForms": {
-        "helpText": "<p>Aineiston olomuoto -ohjeet tähän</p>"
+        "helpText": "<p>Tässä valitaan aineiston olomuoto.</p>"
       },
       "physicalLocation": {
-        "helpText": "<p>Fyysinen sijaintipaikka -ohjeet tähän</p>"
+        "helpText": "<p>Tähän kirjataan aineiston fyysinen sijaintipaikka ja mahdollinen arkistointipaikka.</p>"
       },
       "systemInRoles": {
-        "helpText": "<p>Tietojärjestelmät -ohjeet tähän</p>"
+        "helpText": "<p>Tähän kirjataan aineistoon mahdollisesti liittyvät tietojärjestelmät.</p>"
       }
     },
     "dataset": {

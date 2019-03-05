@@ -23,6 +23,7 @@ class StudySelectItem implements SelectItem {
   {{ 'study.relations.label' | translate }}
   <editor-help-link [helpTextComponent]="studyRelationsHelpText"></editor-help-link>
 </label>
+<editor-help-text #studyRelationsHelpText key="editor.study.studyRelations.helpText"></editor-help-text>
 <ng-container *ngIf="study.predecessors.length; else noStudyRelations;">
   <p>{{ 'study.relations.predecessors' | translate }}</p>
   <ul *ngIf="availablePredecessors && availablePredecessors.length; else loadingStudies;">
@@ -60,7 +61,6 @@ class StudySelectItem implements SelectItem {
 <study-relation-type-dropdown
   (onSelectType)="addNewStudyRelation($event)">
 </study-relation-type-dropdown>
-<editor-help-text #studyRelationsHelpText key="editor.study.studyRelations.helpText"></editor-help-text>
 `
 })
 export class StudyRelationsEditComponent implements OnInit {

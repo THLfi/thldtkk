@@ -153,6 +153,15 @@
         <div th:text="${controller.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
       </div>
 
+      <div th:each="registryOrganization : ${registryOrganizations}" style="margin-bottom: 1.5em">
+        <div>
+          <strong th:text="${registryOrganization.getPrefLabel().get(lang)}"></strong>
+          <strong th:if="${registryOrganization.getAbbreviation().get(lang) != null}"> (<span th:text="${registryOrganization.getAbbreviation().get(lang)}"></span>)</strong>
+        </div>
+        <div th:text="${registryOrganization.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
+        <div th:text="${registryOrganization.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
+      </div>
+
       <div th:text="#{privacyNotice.controller.controller}">Yllämainittu organisaatio päättää ja vastaa henkilötietojen käsittelystä tässä ilmoituksessa kerrottua tarkoitusta varten eli on näiden tietojen osalta rekisterinpitäjä.</div>
     </div>
 

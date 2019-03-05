@@ -8,7 +8,7 @@
 
       @page {
         size: A4 portrait;
-        margin: 4.5em 2em 2.5em 4em;
+        margin: 25mm 20mm 15mm 20mm;
 
         @top-left {
           font-family: Arial, sans-serif;
@@ -26,7 +26,7 @@
       }
 
       @page:first {
-        margin-top: 2em;
+        margin-top: 10mm;
 
         @top-left {
           content: normal;
@@ -43,7 +43,7 @@
 
       .headerMinimum {
         display: block;
-        margin-top: 2em;
+        margin-top: 5mm;
         line-height: 1.1;
       }
       .headerMinimum h1 {
@@ -53,7 +53,7 @@
       body {
         font-family: Arial, sans-serif;
         font-size: 10pt;
-        line-height: 1.5;
+        line-height: 1.35;
       }
 
       h1 {
@@ -86,11 +86,12 @@
 
       h2 {
         font-size: 1.3em;
-        padding-top: .75em;
+        padding-top: 0;
+        margin-top: 1em;
       }
 
       h3 {
-        font-size: 1.1em;
+        font-size: 1.2em;
       }
 
       .section {
@@ -103,11 +104,6 @@
 
       .no-bottom-border {
         border-bottom: 0;
-      }
-
-      .legal-rights-section h3 {
-        font-weight: 500;
-        font-size: 1.1em;
       }
 
       ol.alphabetical-list {
@@ -128,12 +124,14 @@
     <div class="header">
       <h1 th:text="#{privacyNotice.title}">Tietosuojailmoitus</h1>
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
+      <div th:text="${studyName}">Aineiston nimi</div>
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
     <div id="pageHeaderMinimum" class="headerMinimum">
-      <h1 th:text="#{scientificPrivacyNotice.title}">Tieteellisen tutkimuksen tietosuojailmoitus</h1>
+      <h1 th:text="#{privacyNotice.title}">Tietosuojailmoitus</h1>
       <div th:text="#{privacyNotice.lawReference}" class="law-reference">EU:n yleinen tietosuoja-asetus, 12-14 artikla</div>
+      <div th:text="${studyName}">Aineiston nimi</div>
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
@@ -143,109 +141,144 @@
       Tässä ilmoituksessa kerromme tarkemmin kuinka organisaatio käsittelee henkilötietojasi {1} varten.
     </p>
 
-        <h2>1. <span th:text="#{privacyNotice.controller}">Rekisterinpitäjä</span></h2>
+    <div class="section">
+      <h2>1. <span th:text="#{privacyNotice.controller}">Rekisterinpitäjä</span></h2>
 
-          <div th:text="${controllerName}"></div>
-          <div th:text="#{privacyNotice.controller.controller}">Yllämainittu organisaatio päättää ja vastaa henkilötietojen käsittelystä tässä ilmoituksessa kerrottua tarkoitusta varten eli on näiden tietojen osalta rekisterinpitäjä.</div>
-
-          <div th:text="#{privacyNotice.controller.address}">Osoite</div>
-          <div th:text="${controllerAddress}" class="preserve-line-breaks"></div>
-
-          <div th:text="#{privacyNotice.controller.otherInfo}">Muut yhteystiedot</div>
-          <div th:text="${controllerOtherInfo}" class="preserve-line-breaks"></div>
-
-        <h2>2. <span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2>
-          <div th:text="${contactPersonName}"></div>
-          <div th:text="#{privacyNotice.contactPerson.otherInfo}">Muut yhteystiedot</div>
-          <div th:if="${contactPerson != null}">
-            <div th:if="${contactPerson.getEmail().isPresent()}"><span th:text="${contactPerson.getEmail().get()}"></span></div>
-            <div th:if="${contactPerson.getPhone().isPresent()}"><span th:text="${contactPerson.getPhone().get()}"></span></div>
-          </div>
-
-      <div th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}">
-          <div th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
-            Organisaation tietosuojavastaavan sähköpostiosoite on {0}
-          </div>
+      <div style="margin-bottom: 1.5em">
+        <div>
+          <strong th:text="${controller.getPrefLabel().get(lang)}"></strong>
+          <strong th:if="${controller.getAbbreviation().get(lang) != null}">(<span th:text="${controller.getAbbreviation().get(lang)}"></span>)</strong>
+        </div>
+        <div th:text="${controller.getAddressForRegistryPolicy().get(lang)}" class="preserve-line-breaks"></div>
+        <div th:text="${controller.getPhoneNumberForRegistryPolicy().orElse('')}" class="preserve-line-breaks"></div>
       </div>
 
-        <h2>3. <span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2>
-          <div th:text="${studyName}"></div>
+      <div th:text="#{privacyNotice.controller.controller}">Yllämainittu organisaatio päättää ja vastaa henkilötietojen käsittelystä tässä ilmoituksessa kerrottua tarkoitusta varten eli on näiden tietojen osalta rekisterinpitäjä.</div>
+    </div>
 
-        <h2>4. <span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2>
-          <div th:if="${purposeOfPersonRegister != null}" th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
-            Käsittelemme henkilötietojasi {0}
-          </div>
-
-        <h2>5. <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2>
-          <div>
-            <div th:unless="${legalBasisValues.isEmpty()}">
-              <p>
-                <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.ingress}"></span>
-                <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.body}"></span>
-              </p>
-              <ul>
-                <li th:each="legalBasis : ${legalBasisValues}">
-                  <span th:text="#{'privacyNotice.legalBasisForHandlingPersonalData.' + ${legalBasis} }"></span>
-                  <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisValue} != ''" th:text="${': ' + otherLegalBasisValue}">: Käyttäjän antama peruste</span>
-                </li>
-              </ul>
-
-              <p th:if="${containsSensitiveData}" th:text="#{privacyNotice.legalBasisForHandlingSensitivePersonalData.body}"></p>
-              <ul th:unless="${legalBasisSensitiveValues.isEmpty()}">
-                <li th:each="legalBasis : ${legalBasisSensitiveValues}">
-                  <span th:text="#{'privacyNotice.legalBasisForHandlingSensitivePersonalData.' + ${legalBasis} }"></span>
-                  <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisSensitiveValue} != ''" th:text="${': ' + otherLegalBasisSensitiveValue}">: Käyttäjän antama peruste</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-        <h2>6. <span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2>
-          <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>
-
-        <h2>7. <span th:text="#{privacyNotice.registerSources}">Säännönmukaiset tietolähteet</span></h2>
-          <div th:text="${registerSources}" class="preserve-line-breaks"></div>
-
-        <h2>8. <span th:text="#{privacyNotice.dataTransfers}">Henkilötietojen siirto tai luovuttaminen</span></h2>
-          <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
-
-        <h2>9. <span th:utext="#{privacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto EU:n tai ETA:n ulkopuolelle</span></h2>
-          <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
-
-        <h2>10. <span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2>
-        <div th:switch="${profilingAndAutomation.orElse(null)}">
-          <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
-          <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${controllerName})}" class="preserve-line-breaks"></div>
-          <div th:case="*" class="preserve-line-breaks"></div>
+    <div class="section">
+      <h2>2. <span th:text="#{privacyNotice.contactPerson}">Yhteyshenkilö henkilötietojen käsittelyä koskevissa asioissa</span></h2>
+      <div th:if="${contactPerson != null}" style="margin-bottom: 1em">
+        <div>
+          <span th:text="#{privacyNotice.contactPerson.name}">Nimi</span>:
+          <span th:text="${contactPersonName}"></span>
         </div>
+        <div th:if="${contactPerson.getPhone().isPresent()}">
+          <span th:text="#{privacyNotice.contactPerson.phoneNumber}">Puhelinnumero</span>:
+          <span th:text="${contactPerson.getPhone().get()}" class="preserve-line-breaks"></span>
+        </div>
+        <div th:if="${contactPerson.getEmail().isPresent()}">
+          <span th:text="#{privacyNotice.contactPerson.email}">Sähköpostiosoite</span>:
+          <span th:text="${contactPerson.getEmail().get()}" class="preserve-line-breaks"></span>
+        </div>
+      </div>
 
-        <h2>11. <span th:text="#{privacyNotice.postStudyRetentionOfPersonalData}">Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2>
+      <div th:if="${dataProtectionPerson != null and dataProtectionPerson.getEmail().isPresent()}">
+        <div th:text="#{privacyNotice.contactPerson.dataProtectionPersonEmail(${dataProtectionPerson.getEmail().get()})}">
+          Organisaation tietosuojavastaavan sähköpostiosoite on {0}
+        </div>
+      </div>
+    </div>
 
-          <p th:text="#{privacyNotice.postStudyRetentionOfPersonalData.ingress}"></p>
-          <div th:if="${postStudyRetentionOfPersonalData.isPresent()}"
-                    th:with="endDate = ${dataProcessingEndDate.isPresent()} ? ${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')} : '',
-                             postStudyRetentionMessageKey = 'privacyNotice.postStudyRetentionOfPersonalData.' + ${postStudyRetentionOfPersonalData.get()}">
-            <p>
-              <span th:text="#{${postStudyRetentionMessageKey}(${endDate})}"></span><br/>
-              <span th:text="#{privacyNotice.physicalLocation(${physicalLocation})}"></span><br/>
-              <span th:text="#{privacyNotice.retentionPeriod(${retentionPeriod})}"></span>
-            </p>
-          </div>
+    <div class="section">
+      <h2>3. <span th:text="#{privacyNotice.studyName}">Aineiston nimi</span></h2>
+      <div th:text="${studyName}"></div>
+    </div>
 
-        <h2>12. <span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2>
-          <div th:text="#{privacyNotice.principlesForPhysicalSecurity}">Manuaalinen aineisto</div>
-          <div>
-            <ul th:unless="${principlesForPhysicalSecurity.isEmpty()}">
-              <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'privacyNotice.principlesForPhysicalSecurity.' + ${principle} }"></li>
-            </ul>
-          </div>
+    <div class="section">
+      <h2>4. <span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2>
+      <div th:if="${purposeOfPersonRegister != null}" th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
+        Käsittelemme henkilötietojasi {0}
+      </div>
+    </div>
 
-          <div th:text="#{privacyNotice.principlesForDigitalSecurity}">ATK:lla käsiteltävät tiedot</div>
-          <div>
-            <ul th:unless="${principlesForDigitalSecurity.isEmpty()}">
-              <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>
-            </ul>
-          </div>
+    <div class="section">
+      <h2>5. <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData}">Henkilötietojen käsittelyn oikeusperuste</span></h2>
+      <div>
+        <div th:unless="${legalBasisValues.isEmpty()}">
+          <p>
+            <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.ingress}"></span>
+            <span th:text="#{privacyNotice.legalBasisForHandlingPersonalData.body}"></span>
+          </p>
+          <ul>
+            <li th:each="legalBasis : ${legalBasisValues}">
+              <span th:text="#{'privacyNotice.legalBasisForHandlingPersonalData.' + ${legalBasis} }"></span>
+              <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisValue} != ''" th:text="${': ' + otherLegalBasisValue}">: Käyttäjän antama peruste</span>
+            </li>
+          </ul>
+
+          <p th:if="${containsSensitiveData}" th:text="#{privacyNotice.legalBasisForHandlingSensitivePersonalData.body}"></p>
+          <ul th:unless="${legalBasisSensitiveValues.isEmpty()}">
+            <li th:each="legalBasis : ${legalBasisSensitiveValues}">
+              <span th:text="#{'privacyNotice.legalBasisForHandlingSensitivePersonalData.' + ${legalBasis} }"></span>
+              <span th:if="${legalBasis.name()} == 'OTHER' and ${otherLegalBasisSensitiveValue} != ''" th:text="${': ' + otherLegalBasisSensitiveValue}">: Käyttäjän antama peruste</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>6. <span th:text="#{privacyNotice.usageOfPersonalInformation}">Käsiteltävät henkilötiedot</span></h2>
+      <div th:text="${usageOfPersonalInformation}" class="preserve-line-breaks"></div>
+    </div>
+
+    <div class="section">
+      <h2>7. <span th:text="#{privacyNotice.registerSources}">Säännönmukaiset tietolähteet</span></h2>
+      <div th:text="${registerSources}" class="preserve-line-breaks"></div>
+    </div>
+
+    <div class="section">
+      <h2>8. <span th:text="#{privacyNotice.dataTransfers}">Henkilötietojen siirto tai luovuttaminen</span></h2>
+      <div th:text="${dataTransfers}" class="preserve-line-breaks"></div>
+    </div>
+
+    <div class="section">
+      <h2>9. <span th:utext="#{privacyNotice.dataTransfersOutsideEuOrEea}">Tietojen siirto EU:n tai ETA:n ulkopuolelle</span></h2>
+      <div th:text="${dataTransfersOutsideEuOrEea}" class="preserve-line-breaks"></div>
+    </div>
+
+    <div class="section">
+      <h2>10. <span th:utext="#{privacyNotice.profilingAndAutomation}">Profilointi ja automaattinen päätöksenteko</span></h2>
+      <div th:switch="${profilingAndAutomation.orElse(null)}">
+        <div th:case="true" th:text="${profilingAndAutomationDescription}" class="preserve-line-breaks"></div>
+        <div th:case="false" th:text="#{privacyNotice.profilingAndAutomationNotOccurringByOrg(${controllerName})}" class="preserve-line-breaks"></div>
+        <div th:case="*" class="preserve-line-breaks"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>11. <span th:text="#{privacyNotice.postStudyRetentionOfPersonalData}">Henkilötietojen käsittely tutkimuksen päättymisen jälkeen</span></h2>
+      <p th:text="#{privacyNotice.postStudyRetentionOfPersonalData.ingress}"></p>
+      <div th:if="${postStudyRetentionOfPersonalData.isPresent()}"
+          th:with="endDate = ${dataProcessingEndDate.isPresent()} ? ${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')} : '',
+                   postStudyRetentionMessageKey = 'privacyNotice.postStudyRetentionOfPersonalData.' + ${postStudyRetentionOfPersonalData.get()}">
+        <p>
+          <span th:text="#{${postStudyRetentionMessageKey}(${endDate})}"></span><br/>
+          <span th:text="#{privacyNotice.physicalLocation(${physicalLocation})}"></span><br/>
+          <span th:text="#{privacyNotice.retentionPeriod(${retentionPeriod})}"></span>
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>12. <span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2>
+      <div th:text="#{privacyNotice.principlesForPhysicalSecurity}">Manuaalinen aineisto</div>
+      <div>
+        <ul th:unless="${principlesForPhysicalSecurity.isEmpty()}">
+          <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'privacyNotice.principlesForPhysicalSecurity.' + ${principle} }"></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div th:text="#{privacyNotice.principlesForDigitalSecurity}">ATK:lla käsiteltävät tiedot</div>
+      <div>
+        <ul th:unless="${principlesForDigitalSecurity.isEmpty()}">
+          <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>
+        </ul>
+      </div>
+    </div>
 
     <div th:utext="#{privacyNotice.yourRights}"></div>
   </body>

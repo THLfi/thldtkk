@@ -608,6 +608,47 @@
 
         <div class="row">
           <div class="col-xs-12">
+
+            <div class="form-group">
+              <p>
+                <strong class="field-label">{{ 'directIdentityInformation.label' | translate }}</strong>
+              </p>
+
+              <div class="radio">
+                <label for="directIdentityInformation-removedWhenAnalyzed">
+                  <input [(ngModel)]="study.directIdentityInformation"
+                         [value]="false"
+                         type="radio"
+                         id="directIdentityInformation-true"
+                         name="directIdentityInformation-name">
+                  {{ 'directIdentityInformation.removedWhenAnalyzed' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="directIdentityInformation-notRemovedWhenAnalyzed">
+                  <input [(ngModel)]="study.directIdentityInformation"
+                         [value]="true"
+                         type="radio"
+                         id="directIdentityInformation-false"
+                         name="directIdentityInformation-name">
+                  {{ 'directIdentityInformation.notRemovedWhenAnalyzed' | translate }}
+                </label>
+               </div>
+            </div>
+
+            <ng-container *ngIf="study.directIdentityInformation">
+              <div class="form-group">
+                <label for="directIdentityInformation-description" translate="directIdentityInformation.notRemovedBecause"></label>
+                <textarea [(ngModel)]="study.directIdentityInformationDescription[language]"
+                          thlAutogrow
+                          id="directIdentityInformation-description"
+                          name="directIdentityInformation-description"
+                          class="form-control"
+                          rows="4">
+                </textarea>
+              </div>
+            </ng-container>
+
             <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong>
@@ -657,6 +698,7 @@
                 </label>
               </div>
             </div>
+
           </div>
         </div>
 

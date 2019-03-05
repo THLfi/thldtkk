@@ -137,6 +137,12 @@
   "isProfilingAndAutomationHappening": "Tehdäänkö profilointia ja päätöksenteko automaattisesti",
   "profilingAndAutomationDescription": "Profiloinnin ja automaattisen päätöksenteon kuvaus",
   "profilingAndAutomationNotOccurringByOrg": "{{organization}} ei tee automaattista päätöksentekoa perustuen mm. henkilöiden profilointiin",
+  "directIdentityInformation": {
+    "label": "Suorien tunnistetietojen käsittely",
+    "removedWhenAnalyzed": "Suorat tunnistetiedot poistetaan analysointivaiheessa",
+    "notRemovedWhenAnalyzed": "Aineisto analysoidaan suorin tunnistetiedoin, koska",
+    "notRemovedBecause": "Peruste suorien tietojen säilyttämiselle"
+  },
   "studyType": {
     "label": "Tutkimuksen tyyppi",
     "CROSS_SECTIONAL_STUDY": "Kertatutkimus",

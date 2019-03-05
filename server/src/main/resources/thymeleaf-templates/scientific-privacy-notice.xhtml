@@ -388,7 +388,13 @@
           <li th:each="otherDigitalSecurityPrinciple: ${otherPrinciplesForDigitalSecurity}" th:text="${otherDigitalSecurityPrinciple}">Tiedon hajautus</li>
         </ul>
       </div>
-
+      
+      <div th:switch="${directIdentityInformation} ? true : false">      
+      <span th:text="#{scientificPrivacyNotice.directIdentificationInfo} + ':'">Suorien tunnistetietojen käsittely:</span>
+        <div th:case="${false}" th:text="#{scientificPrivacyNotice.directIdentificationInfoRemovedWhenAnalyzed}">Suorat tunnistetiedot poistetaan analysointivaiheessa</div>
+        <div th:case="${true}" th:text="${directIdentityInformationDescription}"></div>
+        <div th:case="*"></div>
+      </div>
     </div>
 
     <div class="section">

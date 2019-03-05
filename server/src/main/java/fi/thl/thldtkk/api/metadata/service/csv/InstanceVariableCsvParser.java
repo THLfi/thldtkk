@@ -29,6 +29,7 @@ import static fi.thl.thldtkk.api.metadata.domain.CodeList.CODE_LIST_TYPE_INTERNA
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.trimToNull;
 
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ import org.springframework.stereotype.Component;
 public class InstanceVariableCsvParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(InstanceVariableCsvParser.class);
-  private static final int CODE_ITEM_PARTS = 2;
 
   private CodeListService codeListService;
 
@@ -266,22 +266,14 @@ public class InstanceVariableCsvParser {
 
     Optional<String> instanceQuestionsString = sanitize(row.get("instanceQuestions"));
     if (instanceQuestionsString.isPresent() && isNotBlank(instanceQuestionsString.get())) {
-
-      instanceQuestionsString = encloseInstanceQuestionsWithQuotes(instanceQuestionsString.get());
-      String[] instanceQuestions = instanceQuestionsString.get().split(", ");
-
-        for (String instanceQuestionString : instanceQuestions) {
-            // question format 'How healthy do you feel?'
-            instanceQuestionString = instanceQuestionString.substring(1, instanceQuestionString.length() - 1);
-
-            Map<String, String> prefLabelMap = new LinkedHashMap<>();
-            prefLabelMap.put(DEFAULT_LANG, instanceQuestionString);
-
-            InstanceQuestion instanceQuestion = new InstanceQuestion(randomUUID(), prefLabelMap);
-            Optional<InstanceQuestion> savedInstanceQuestion = Optional.of(instanceQuestionService.save(instanceQuestion));
-
-            savedInstanceQuestion.ifPresent(question -> instanceVariable.addInstanceQuestion(question));
-        }
+      String[] instanceQuestions = instanceQuestionsString.get().split(ConceptSerializer.SEPARATOR);
+      for (String instanceQuestionString : instanceQuestions) {
+        Map<String, String> prefLabelMap = new LinkedHashMap<>();
+        prefLabelMap.put(DEFAULT_LANG, instanceQuestionString);
+        InstanceQuestion instanceQuestion = new InstanceQuestion(randomUUID(), prefLabelMap);
+        InstanceQuestion savedInstanceQuestion = instanceQuestionService.save(instanceQuestion);
+        instanceVariable.addInstanceQuestion(savedInstanceQuestion);
+      }
     }
 
     Optional<String> conceptsFromSchemeString = sanitize(row.get("conceptsFromScheme"));
@@ -408,39 +400,25 @@ public class InstanceVariableCsvParser {
       owner.ifPresent(localizedOwner -> codeList.getOwner().put(language, localizedOwner));
 
       if (codeListItems.isPresent() && isNotBlank(codeListItems.get())) {
-          String[] codeListCodeItems = codeListItems.get().split(", ");
+          String[] codeListCodeItems = codeListItems.get().split(ConceptSerializer.SEPARATOR);
 
           int wordNumber = 1;
           for (String codeListCodeItem : codeListCodeItems) {
               String[] codeListCodeItemParts = codeListCodeItem.split(":");
+              String codeItemCode = trimToNull(codeListCodeItemParts[0]);
+              String codeItemPrefLabel = trimToNull(codeListCodeItemParts[1]);
 
-              if (codeListCodeItemParts.length == CODE_ITEM_PARTS) {
-                  String codeItemCode = null, codeItemPrefLabel = null;
+              if (codeListCodeItemParts.length == 2 && codeItemCode != null && codeItemPrefLabel != null) {
+                CodeItem codeItem = new CodeItem(randomUUID());
+                codeItem.setCode(codeListCodeItemParts[0]);
 
-                  String codeItemCodePart = codeListCodeItemParts[0];
-                  if (codeItemCodePart.substring(0, 1).equals("'") && codeItemCodePart.substring(codeItemCodePart.length() - 1).equals("'")) {
-                      codeItemCode = codeItemCodePart.substring(1, codeItemCodePart.length() - 1);
-                  }
+                Map<String, String> prefLabelMap = new LinkedHashMap<>();
+                prefLabelMap.put(language, codeItemPrefLabel);
+                codeItem.setPrefLabel(prefLabelMap);
 
-                  String codeItemPrefLabelPart = codeListCodeItemParts[1];
-                  if (codeItemPrefLabelPart.substring(0, 1).equals("'") && codeItemPrefLabelPart.substring(codeItemPrefLabelPart.length() - 1).equals("'")) {
-                      codeItemPrefLabel = codeItemPrefLabelPart.substring(1, codeItemPrefLabelPart.length() - 1);
-                  }
-
-                  if (codeItemCode != null && codeItemPrefLabel != null) {
-                      CodeItem codeItem = new CodeItem(randomUUID());
-                      codeItem.setCode(codeItemCode);
-
-                      Map<String, String> prefLabelMap = new LinkedHashMap<>();
-                      prefLabelMap.put(language, codeItemPrefLabel);
-                      codeItem.setPrefLabel(prefLabelMap);
-
-                      codeList.addCodeItem(codeItem);
-                  } else {
-                      rowMessages.add("import.csv.warn.codeItemWrongFormat|codeList.codeItems (" + wordNumber + ")");
-                  }
+                codeList.addCodeItem(codeItem);
               } else {
-                  rowMessages.add("import.csv.warn.codeItemWrongFormat|codeList.codeItems (" + wordNumber + ")");
+                rowMessages.add("import.csv.warn.codeItemWrongFormat|codeList.codeItems (" + wordNumber + ")");
               }
               wordNumber++;
           }
@@ -526,18 +504,6 @@ public class InstanceVariableCsvParser {
           }
       }
       return null;
-  }
-
-  private Optional<String> encloseInstanceQuestionsWithQuotes(String instanceQuestionsDelimited) {
-    if(!instanceQuestionsDelimited.startsWith("'")) {
-      instanceQuestionsDelimited = "'" + instanceQuestionsDelimited;
-    }
-
-    if(!instanceQuestionsDelimited.endsWith("'")) {
-      instanceQuestionsDelimited += "'";
-    }
-
-    return Optional.of(instanceQuestionsDelimited);
   }
 
 }

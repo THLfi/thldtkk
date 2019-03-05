@@ -316,7 +316,9 @@ public class InstanceVariableCsvGeneratorTest {
        DEFAULT_ENCODING);
     
     GeneratorResult result = generator.generate();
+
     Map<String, String> columnDataByHeaders = readSingleLineCsvData(result.getData().get());
+    String csvData = new String(result.getData().get(), DEFAULT_ENCODING);
 
     assertTrue(columnDataByHeaders.containsKey("codeList.id"));
     assertTrue(columnDataByHeaders.containsKey("codeList.prefLabel"));
@@ -344,17 +346,13 @@ public class InstanceVariableCsvGeneratorTest {
     String expectedCodeListCodeListType = codeList.getCodeListType().get();
     String actualCodeListCodeListType = columnDataByHeaders.get("codeList.codeListType");
 
-    String expectedCodeListCodeItems = "'1':'Cycling every day', '2':'Cycling every week', '3':'Cycling a few times a month'";
-    String actualCodeListCodeItems = columnDataByHeaders.get("codeList.codeItems");
-        
     assertEquals(expectedCodeListId, actualCodeListId);
     assertEquals(expectedCodeListPrefLabel, actualCodeListPrefLabel);
     assertEquals(expectedCodeListDescription, actualCodeListDescription);
     assertEquals(expectedCodeListReferenceId, actualCodeListReferenceId);
     assertEquals(expectedCodeListOwner, actualCodeListOwner);
     assertEquals(expectedCodeListCodeListType, actualCodeListCodeListType);
-    assertEquals(expectedCodeListCodeItems, actualCodeListCodeItems);
-    
+    assertThat(csvData, containsString("\"1:Cycling every day; 2:Cycling every week; 3:Cycling a few times a month\""));
   }
   
   @Test
@@ -706,15 +704,10 @@ public class InstanceVariableCsvGeneratorTest {
     DEFAULT_ENCODING);
 
     GeneratorResult result = generator.generate();
-    Map<String, String> columnDataByHeaders = readSingleLineCsvData(result.getData().get());
 
-    assertTrue(columnDataByHeaders.containsKey("instanceQuestions"));
-    
-    String expectedInstanceQuestions = "'Do you generally feel healthy?', 'How many people live with you in the same household?'";
-    String actualInstanceQuestions = columnDataByHeaders.get("instanceQuestions");
-    
-    assertEquals(expectedInstanceQuestions, actualInstanceQuestions);
+    String csvData = new String(result.getData().get(), DEFAULT_ENCODING);
+
+    assertThat(csvData, containsString("\"Do you generally feel healthy?; How many people live with you in the same household?\""));
   }
-  
-  
+
 }

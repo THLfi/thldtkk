@@ -70,6 +70,7 @@ import { FontAwesomeComponent } from './views/common/font-awesome.component'
 import { GlyphiconComponent } from './views/common/glyphicon.component'
 import { LangPipe } from './utils/lang.pipe'
 import { LoadingSpinner } from './views/common/loading-spinner.component'
+import { LoadingSpinnerInline } from './views/common/loading-spinner-inline.component'
 import { RequiredFieldIndicator } from './views/common/required-field-indicator.component'
 import { ViewCodeListCodeItemsModalComponent } from './views/editor/dataset/view-code-list-code-items-modal.component'
 import { InfoTooltipComponent } from './views/common/info-tooltip.component'
@@ -201,6 +202,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         LangPipe,
         LastModifiedComponent,
         LoadingSpinner,
+        LoadingSpinnerInline,
         LoginAdviceComponent,
         LogoutMessageComponent,
         OrganizationConsistencyValidator,

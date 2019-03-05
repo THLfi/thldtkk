@@ -840,6 +840,7 @@
     "new":"Uusi aineisto",
     "study":"Aineisto",
     "studies": "Aineistot",
+    "loading": "Ladataan aineistoja...",
     "noStudies": "Aineistoja ei löytynyt",
     "noOrganizationStudies": "Organisaatiollesi ei löytynyt aineistoja",
     "noDatasets":"Aineistolla ei ole datasettejä",

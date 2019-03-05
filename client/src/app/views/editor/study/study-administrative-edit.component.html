@@ -317,7 +317,7 @@
                 </p-multiSelect>
 
                 <div class="form-group conditionally-visible" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
-                  <label for="otherLegalBasisForHandlingPersonalData" class="control-label">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
+                  <label for="otherLegalBasisForHandlingPersonalData" class="control-label lighter">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
                   <input [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
                          id="otherLegalBasisForHandlingPersonalData"
                          name="otherLegalBasisForHandlingPersonalData"
@@ -377,8 +377,8 @@
                                inputId="typeOfSensitivePersonalData">
                 </p-multiSelect>
 
-                <div class="form-group" *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1">
-                  <label for="otherTypeOfSensitivePersonalData" class="control-label">{{'otherTypeOfSensitivePersonalDataLabel' | translate}}</label>
+                <div class="form-group conditionally-visible" *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherTypeOfSensitivePersonalData" class="control-label lighter">{{'otherTypeOfSensitivePersonalDataLabel' | translate}}</label>
                   <input [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
                          id="otherTypeOfSensitivePersonalData"
                          name="otherTypeOfSensitivePersonalData"
@@ -409,8 +409,8 @@
                                inputId="legalBasisForHandlingSensitivePersonalData">
                 </p-multiSelect>
 
-                <div class="form-group" *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1">
-                  <label for="otherLegalBasisForHandlingSensitivePersonalData" class="control-label">{{'otherLegalBasisForHandlingSensitivePersonalDataLabel' | translate}}</label>
+                <div class="form-group conditionally-visible" *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherLegalBasisForHandlingSensitivePersonalData" class="control-label lighter">{{'otherLegalBasisForHandlingSensitivePersonalDataLabel' | translate}}</label>
                   <input [(ngModel)]="study.otherLegalBasisForHandlingSensitivePersonalData[language]"
                          id="otherLegalBasisForHandlingSensitivePersonalData"
                          name="otherLegalBasisForHandlingSensitivePersonalData"

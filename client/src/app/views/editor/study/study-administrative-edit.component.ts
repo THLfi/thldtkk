@@ -39,6 +39,7 @@ import {SupplementaryPhysicalSecurityPrinciple} from "../../../model2/supplement
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
+    styles: ['label.lighter { font-weight: lighter; }'],
     providers: [LangPipe]
 })
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {

@@ -317,7 +317,7 @@
                                inputId="legalBasisForHandlingPersonalData">
                 </p-multiSelect>
 
-                <div class="form-group" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
+                <div class="form-group conditionally-visible" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
                   <label for="otherLegalBasisForHandlingPersonalData" class="control-label">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
                   <input [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
                          id="otherLegalBasisForHandlingPersonalData"

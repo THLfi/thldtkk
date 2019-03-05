@@ -86,7 +86,8 @@ export class EditorStudyService {
       'partiesAndSharingOfResponsibilityInCollaborativeStudy',
       'studyPerformers',
       'profilingAndAutomationDescription',
-      'groundsForConfidentiality'
+      'groundsForConfidentiality',
+      'directIdentityInformationDescription'
     ])
 
     if (!study.population) {

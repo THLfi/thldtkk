@@ -33,125 +33,71 @@
 
         <study-administrative-read-only-fields [study]="study"></study-administrative-read-only-fields>
 
-        <div class="form-group">
-          <label for="associatedOrganizations">
-            {{ 'associatedOrganizations.label' | translate }}
-            <editor-help-link [helpTextComponent]="associatedOrganizationsHelpText"></editor-help-link>
-          </label>
-          <table *ngIf="study.associatedOrganizations.length; else noAssociatedOrganizations;"
-                 id="associatedOrganizations"
-                 class="table table-striped">
-            <tr>
-              <th>{{ 'organization' | translate }}</th>
-              <th>{{ 'associatedOrganizations.registryOrganization' | translate }}</th>
-              <th>{{ 'functions' | translate}}</th>
-            </tr>
-            <tr *ngFor="let associatedOrganization of study.associatedOrganizations; let idx = index">
-              <td>
-                <select [(ngModel)]="associatedOrganization.organization"
-                        [compareWith]="nodeUtils.equals"
-                        name="{{'associatedOrganization-select-' + idx}}"
-                        dataKey="id"
-                        class="form-control">
-                  <option *ngFor="let organization of availableAssociatedOrganizations; trackBy:id"
-                          [ngValue]="organization">
-                    {{ organization.prefLabel | lang }}
-                  </option>
-                </select>
-              <td>
-                <p-checkbox
-                  name="{{'associatedOrganization-isRegistryOrganization-' + idx}}"
-                  binary="true"
-                  [(ngModel)]="associatedOrganization.isRegistryOrganization"></p-checkbox>
-              </td>
-              <td>
-                <button type="button" class="btn btn-default" (click)="removeAssociatedOrganization(associatedOrganization)">
-                  <fa icon="trash-o"></fa>
-                  {{ 'remove' | translate }}
-                </button>
-              </td>
-            </tr>
-          </table>
-
-          <ng-template #noassociatedOrganizations>
-            <p translate="associatedOrganizations.noassociatedOrganizations"></p>
-          </ng-template>
-
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button
-                (click)="addAssociatedOrganization()"
-                class="btn btn-default"
-                type="button">
-                <glyphicon icon="plus"></glyphicon>
-                {{ 'associatedOrganizations.addAssociatedOrganization' | translate }}
-              </button>
-            </span>
-
-          </div>
-
-          <editor-help-text #associatedOrganizationsHelpText key="editor.studyAdministrative.associatedOrganizations.helpText"></editor-help-text>
-        </div>
-
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="studyPerformers">
-                {{ 'studyPerformers' | translate }}
-                <editor-help-link [helpTextComponent]="studyPerformersHelpText"></editor-help-link>
+              <label for="associatedOrganizations">
+                {{ 'associatedOrganizations.label' | translate }}
+                <editor-help-link [helpTextComponent]="associatedOrganizationsHelpText"></editor-help-link>
               </label>
-              <textarea [(ngModel)]="study.studyPerformers[language]"
-                        thlAutogrow
-                        id="studyPerformers"
-                        name="studyPerformers"
-                        class="form-control"
-                        rows="3">
-              </textarea>
-              <editor-help-text #studyPerformersHelpText key="editor.study.studyPerformers.helpText"></editor-help-text>
+              <table *ngIf="study.associatedOrganizations.length; else noAssociatedOrganizations;"
+                     id="associatedOrganizations"
+                     class="table table-striped">
+                <tr>
+                  <th>{{ 'organization' | translate }}</th>
+                  <th>{{ 'associatedOrganizations.registryOrganization' | translate }}</th>
+                  <th>{{ 'functions' | translate}}</th>
+                </tr>
+                <tr *ngFor="let associatedOrganization of study.associatedOrganizations; let idx = index">
+                  <td>
+                    <select [(ngModel)]="associatedOrganization.organization"
+                            [compareWith]="nodeUtils.equals"
+                            name="{{'associatedOrganization-select-' + idx}}"
+                            dataKey="id"
+                            class="form-control">
+                      <option *ngFor="let organization of availableAssociatedOrganizations; trackBy:id"
+                              [ngValue]="organization">
+                        {{ organization.prefLabel | lang }}
+                      </option>
+                    </select>
+                  <td>
+                    <p-checkbox
+                      name="{{'associatedOrganization-isRegistryOrganization-' + idx}}"
+                      binary="true"
+                      [(ngModel)]="associatedOrganization.isRegistryOrganization"></p-checkbox>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-default" (click)="removeAssociatedOrganization(associatedOrganization)">
+                      <fa icon="trash-o"></fa>
+                      {{ 'remove' | translate }}
+                    </button>
+                  </td>
+                </tr>
+              </table>
+
+              <ng-template #noassociatedOrganizations>
+                <p translate="associatedOrganizations.noassociatedOrganizations"></p>
+              </ng-template>
+
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button
+                    (click)="addAssociatedOrganization()"
+                    class="btn btn-default"
+                    type="button">
+                    <glyphicon icon="plus"></glyphicon>
+                    {{ 'associatedOrganizations.addAssociatedOrganization' | translate }}
+                  </button>
+                </span>
+
+              </div>
+
+              <editor-help-text #associatedOrganizationsHelpText key="editor.studyAdministrative.associatedOrganizations.helpText"></editor-help-text>
             </div>
           </div>
+        </div>
 
-          <div class="col-xs-12">
-            <div class="form-group">
-              <p>
-                <strong class="field-label">{{ 'studyType.label' | translate }}</strong>
-                <editor-help-link [helpTextComponent]="studyTypeHelpText"></editor-help-link>
-              </p>
-              <editor-help-text #studyTypeHelpText key="editor.study.studyType.helpText"></editor-help-text>
-
-              <div class="radio">
-                <label for="study-type-cross-sectional">
-                  <input [(ngModel)]="study.studyType"
-                        [value]="StudyType.CROSS_SECTIONAL_STUDY"
-                        type="radio"
-                        id="study-type-cross-sectional"
-                        name="study-type">
-                  {{ 'studyType.CROSS_SECTIONAL_STUDY' | translate }}
-                </label>
-              </div>
-              <div class="radio">
-                <label for="study-type-longitudinal">
-                  <input [(ngModel)]="study.studyType"
-                        [value]="StudyType.LONGITUDINAL_STUDY"
-                        type="radio"
-                        id="study-type-longitudinal"
-                        name="study-type">
-                  {{ 'studyType.LONGITUDINAL_STUDY' | translate }}
-                </label>
-              </div>
-              <div class="radio">
-                <label for="study-type-undefined" class="radio-empty">
-                  <input [(ngModel)]="study.studyType"
-                        [value]="undefined"
-                        type="radio"
-                        id="study-type-undefined"
-                        name="study-type">
-                  {{ 'undefined' | translate }}
-                </label>
-              </div>
-            </div>
-          </div>
-
+        <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
               <p>
@@ -160,45 +106,154 @@
               </p>
               <editor-help-text #personRegistryHelpText key="editor.studyAdministrative.personRegistry.helpText"></editor-help-text>
 
-                <div class="radio">
-                  <label for="person-registry-true">
-                    <input [(ngModel)]="study.personRegistry"
-                           [value]="true"
-                           type="radio"
-                           id="person-registry-true"
-                           name="person-registry">
-                    {{ 'true' | translate }}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label for="person-registry-false">
-                    <input [(ngModel)]="study.personRegistry"
-                           [value]="false"
-                           type="radio"
-                           id="person-registry-false"
-                           name="person-registry">
-                    {{ 'false' | translate }}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label for="person-registry-empty"
-                         class="radio-empty">
-                    <input [(ngModel)]="study.personRegistry"
-                           [value]="undefined"
-                           type="radio"
-                           id="person-registry-empty"
-                           name="person-registry">
-                    {{ 'noPersonRegistry' | translate }}
-                  </label>
-                </div>
+              <div class="radio">
+                <label for="person-registry-true">
+                  <input [(ngModel)]="study.personRegistry"
+                         [value]="true"
+                         type="radio"
+                         id="person-registry-true"
+                         name="person-registry">
+                  {{ 'true' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="person-registry-false">
+                  <input [(ngModel)]="study.personRegistry"
+                         [value]="false"
+                         type="radio"
+                         id="person-registry-false"
+                         name="person-registry">
+                  {{ 'false' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="person-registry-empty"
+                       class="radio-empty">
+                  <input [(ngModel)]="study.personRegistry"
+                         [value]="undefined"
+                         type="radio"
+                         id="person-registry-empty"
+                         name="person-registry">
+                  {{ 'noPersonRegistry' | translate }}
+                </label>
+              </div>
             </div>
           </div>
         </div>
-        <div class="conditionally-visible" *ngIf="study.personRegistry">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <p>
+                <strong class="field-label">{{ 'isScientificStudy' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="scientificStudyHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #scientificStudyHelpText key="editor.studyAdministrative.scientificStudy.helpText"></editor-help-text>
+
+              <div class="radio">
+                <label for="scientific-study-true">
+                  <input [(ngModel)]="study.isScientificStudy"
+                         (change)="onIsScientificStudyChanged()"
+                         [value]="true"
+                         type="radio"
+                         id="scientific-study-true"
+                         name="scientific-study">
+                  {{ 'true' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="scientific-study-false">
+                  <input [(ngModel)]="study.isScientificStudy"
+                         (change)="onIsScientificStudyChanged()"
+                         [value]="false"
+                         type="radio"
+                         id="scientific-study-false"
+                         name="scientific-study">
+                  {{ 'false' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="scientific-study-empty"
+                       class="radio-empty">
+                  <input [(ngModel)]="study.isScientificStudy"
+                         [value]="undefined"
+                         type="radio"
+                         id="scientific-study-empty"
+                         name="scientific-study">
+                  {{ 'undefined' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- START OF CONDITIONAL BLOCK -->
+        <ng-container *ngIf="isPersonRegistry()">
+
+          <div class="row" *ngIf="isNonScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <h3>{{ 'infoOfGeneralPrivacyNotice' | translate }}</h3>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <h3>{{ 'infoOfScientificPrivacyNotice' | translate }}</h3>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <p>
+                  <strong class="field-label">{{ 'studyType.label' | translate }}</strong>
+                  <editor-help-link [helpTextComponent]="studyTypeHelpText"></editor-help-link>
+                </p>
+                <editor-help-text #studyTypeHelpText key="editor.study.studyType.helpText"></editor-help-text>
+
+                <div class="radio">
+                  <label for="study-type-cross-sectional">
+                    <input [(ngModel)]="study.studyType"
+                          [value]="StudyType.CROSS_SECTIONAL_STUDY"
+                          type="radio"
+                          id="study-type-cross-sectional"
+                          name="study-type">
+                    {{ 'studyType.CROSS_SECTIONAL_STUDY' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="study-type-longitudinal">
+                    <input [(ngModel)]="study.studyType"
+                          [value]="StudyType.LONGITUDINAL_STUDY"
+                          type="radio"
+                          id="study-type-longitudinal"
+                          name="study-type">
+                    {{ 'studyType.LONGITUDINAL_STUDY' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="study-type-undefined" class="radio-empty">
+                    <input [(ngModel)]="study.studyType"
+                          [value]="undefined"
+                          type="radio"
+                          id="study-type-undefined"
+                          name="study-type">
+                    {{ 'undefined' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <p><strong class="field-label">{{ 'studyDescription' | translate }}</strong></p>
+              <p class="preserve-line-breaks">{{ study.description | lang }}</p>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-xs-12">
-
               <div class="form-group">
                 <label for="purposeOfPersonRegistry" translate="purposeOfPersonRegistry"></label>
                 <textarea [(ngModel)]="study.purposeOfPersonRegistry[language]"
@@ -212,10 +267,168 @@
             </div>
           </div>
 
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="partiesAndSharingOfResponsibilityInCollaborativeStudy">
+                  {{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}
+                </label>
+                <textarea [(ngModel)]="study.partiesAndSharingOfResponsibilityInCollaborativeStudy[language]"
+                          thlAutogrow
+                          id="partiesAndSharingOfResponsibilityInCollaborativeStudy"
+                          name="partiesAndSharingOfResponsibilityInCollaborativeStudy"
+                          class="form-control"
+                          rows="3">
+                </textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="studyPerformers">
+                  {{ 'studyPerformers' | translate }}
+                  <editor-help-link [helpTextComponent]="studyPerformersHelpText"></editor-help-link>
+                </label>
+                <textarea [(ngModel)]="study.studyPerformers[language]"
+                          thlAutogrow
+                          id="studyPerformers"
+                          name="studyPerformers"
+                          class="form-control"
+                          rows="3">
+              </textarea>
+                <editor-help-text #studyPerformersHelpText key="editor.study.studyPerformers.helpText"></editor-help-text>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <p>
+                  <strong class="field-label">{{ 'legalBasisForHandlingPersonalData.label' | translate }}</strong>
+                </p>
+                <p-multiSelect [(ngModel)]="study.legalBasisForHandlingPersonalData"
+                               [ngModelOptions]="{ standalone: true }"
+                               [options]="legalBasisForHandlingPersonalDataOptions"
+                               [filter]="false"
+                               defaultLabel="{{ 'legalBasisForHandlingSensitivePersonalData.selectLegalBasis' | translate }}"
+                               inputId="legalBasisForHandlingPersonalData">
+                </p-multiSelect>
+
+                <div class="form-group" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
+                  <label for="otherLegalBasisForHandlingPersonalData" class="control-label">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
+                         id="otherLegalBasisForHandlingPersonalData"
+                         name="otherLegalBasisForHandlingPersonalData"
+                         class="form-control"
+                         required>
+                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingPersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <p>
+                  <strong class="field-label">{{ 'containsSensitivePersonalData' | translate }}</strong>
+                </p>
+
+                <div class="radio">
+                  <label for="contains-sensitive-personal-data-true">
+                    <input [(ngModel)]="study.containsSensitivePersonalData"
+                           [value]="true"
+                           type="radio"
+                           id="contains-sensitive-personal-data-true"
+                           name="contains-sensitive-personal-data">
+                    {{ 'true' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="contains-sensitive-personal-data-false">
+                    <input [(ngModel)]="study.containsSensitivePersonalData"
+                           [value]="false"
+                           type="radio"
+                           id="contains-sensitive-personal-data-false"
+                           name="contains-sensitive-personal-data">
+                    {{ 'false' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
+                <p>
+                  <strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong>
+                </p>
+                <p-multiSelect [(ngModel)]="study.typeOfSensitivePersonalData"
+                               [ngModelOptions]="{ standalone: true }"
+                               [options]="typeOfSensitivePersonalDataOptions"
+                               [filter]="false"
+                               defaultLabel="{{ 'typeOfSensitivePersonalData.selectType' | translate }}"
+                               inputId="typeOfSensitivePersonalData">
+                </p-multiSelect>
+
+                <div class="form-group" *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherTypeOfSensitivePersonalData" class="control-label">{{'otherTypeOfSensitivePersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
+                         id="otherTypeOfSensitivePersonalData"
+                         name="otherTypeOfSensitivePersonalData"
+                         class="form-control"
+                         required>
+                  <p *ngFor="let errorKey of formErrors.otherTypeOfSensitivePersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="isScientificPersonRegistry()">
+            <div class="col-xs-12">
+              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
+                <p>
+                  <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
+                </p>
+                <p-multiSelect [(ngModel)]="study.legalBasisForHandlingSensitivePersonalData"
+                               [ngModelOptions]="{ standalone: true }"
+                               [options]="legalBasisForHandlingSensitivePersonalDataOptions"
+                               [filter]="false"
+                               defaultLabel="{{ 'legalBasisForHandlingSensitivePersonalData.selectLegalBasis' | translate }}"
+                               inputId="legalBasisForHandlingSensitivePersonalData">
+                </p-multiSelect>
+
+                <div class="form-group" *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1">
+                  <label for="otherLegalBasisForHandlingSensitivePersonalData" class="control-label">{{'otherLegalBasisForHandlingSensitivePersonalDataLabel' | translate}}</label>
+                  <input [(ngModel)]="study.otherLegalBasisForHandlingSensitivePersonalData[language]"
+                         id="otherLegalBasisForHandlingSensitivePersonalData"
+                         name="otherLegalBasisForHandlingSensitivePersonalData"
+                         class="form-control"
+                         required>
+                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingSensitivePersonalData" class="bg-danger text-danger">
+                    <fa icon="exclamation-triangle"></fa>
+                    {{ errorKey | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="row" [ngClass]="{ 'bg-danger': formErrors.usageOfPersonalInformation}">
             <div class="col-xs-12">
               <div class="form-group">
-                <label for="usageOfPersonalInformation" translate="usageOfPersonalInformation"></label>
+                <label *ngIf="isNonScientificPersonRegistry()" for="usageOfPersonalInformation" translate="usageOfPersonalInformation"></label>
+                <label *ngIf="isScientificPersonRegistry()" for="usageOfPersonalInformation" translate="usageOfPersonalInformationInScientificStudy"></label>
                 <textarea [(ngModel)]="study.usageOfPersonalInformation[language]"
                           thlAutogrow
                           id="usageOfPersonalInformation"
@@ -245,7 +458,11 @@
                           rows="4">
                 </textarea>
               </div>
+            </div>
+          </div>
 
+          <div class="row">
+            <div class="col-xs-12">
               <div class="form-group">
                 <label for="personRegisterDataTransfers" translate="personRegisterDataTransfers"></label>
                 <textarea [(ngModel)]="study.personRegisterDataTransfers[language]"
@@ -256,7 +473,11 @@
                           rows="4">
                 </textarea>
               </div>
+            </div>
+          </div>
 
+          <div class="row">
+            <div class="col-xs-12">
               <div class="form-group">
                 <label for="personRegisterDataTransfersOutsideEuOrEea" translate="personRegisterDataTransfersOutsideEuOrEea"></label>
                 <editor-help-link [helpTextComponent]="personRegisterDataTransfersOutsideEuOrEeaHelpText"></editor-help-link>
@@ -270,175 +491,11 @@
                           rows="4">
                 </textarea>
               </div>
-
-              <div class="form-group">
-                <p>
-                  <strong class="field-label">{{ 'legalBasisForHandlingPersonalData.label' | translate }}</strong>
-                </p>
-                <p-multiSelect [(ngModel)]="study.legalBasisForHandlingPersonalData"
-                               [ngModelOptions]="{ standalone: true }"
-                               [options]="legalBasisForHandlingPersonalDataOptions"
-                               [filter]="false"
-                               defaultLabel="{{ 'legalBasisForHandlingSensitivePersonalData.selectLegalBasis' | translate }}"
-                               inputId="legalBasisForHandlingPersonalData">
-                </p-multiSelect>
-
-                <div class="form-group" *ngIf="study.legalBasisForHandlingPersonalData.indexOf('OTHER') != -1">
-                  <label for="otherLegalBasisForHandlingPersonalData" class="control-label">{{'otherLegalBasisForHandlingPersonalDataLabel' | translate}}</label>
-                  <input [(ngModel)]="study.otherLegalBasisForHandlingPersonalData[language]"
-                         id="otherLegalBasisForHandlingPersonalData"
-                         name="otherLegalBasisForHandlingPersonalData"
-                         class="form-control"
-                         required>
-                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingPersonalData" class="bg-danger text-danger">
-                    <fa icon="exclamation-triangle"></fa>
-                    {{ errorKey | translate }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <p>
-                  <strong class="field-label">{{ 'containsSensitivePersonalData' | translate }}</strong>
-                </p>
-
-                <div class="radio">
-                  <label for="contains-sensitive-personal-data-true">
-                    <input [(ngModel)]="study.containsSensitivePersonalData"
-                           [value]="true"
-                           type="radio"
-                           id="contains-sensitive-personal-data-true"
-                           name="contains-sensitive-personal-data">
-                    {{ 'true' | translate }}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label for="contains-sensitive-personal-data-false">
-                    <input [(ngModel)]="study.containsSensitivePersonalData"
-                           [value]="false"
-                           type="radio"
-                           id="contains-sensitive-personal-data-false"
-                           name="contains-sensitive-personal-data">
-                    {{ 'false' | translate }}
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData && study.isScientificStudy">
-                <p>
-                  <strong class="field-label">{{ 'typeOfSensitivePersonalData.label' | translate }}</strong>
-                </p>
-                <p-multiSelect [(ngModel)]="study.typeOfSensitivePersonalData"
-                  [ngModelOptions]="{ standalone: true }"
-                  [options]="typeOfSensitivePersonalDataOptions"
-                  [filter]="false"
-                  defaultLabel="{{ 'typeOfSensitivePersonalData.selectType' | translate }}"
-                  inputId="typeOfSensitivePersonalData">
-                </p-multiSelect>
-
-                <div class="form-group" *ngIf="study.typeOfSensitivePersonalData.indexOf('OTHER') != -1">
-                  <label for="otherTypeOfSensitivePersonalData" class="control-label">{{'otherTypeOfSensitivePersonalDataLabel' | translate}}</label>
-                  <input [(ngModel)]="study.otherTypeOfSensitivePersonalData[language]"
-                      id="otherTypeOfSensitivePersonalData"
-                      name="otherTypeOfSensitivePersonalData"
-                      class="form-control"
-                      required>
-                  <p *ngFor="let errorKey of formErrors.otherTypeOfSensitivePersonalData" class="bg-danger text-danger">
-                    <fa icon="exclamation-triangle"></fa>
-                    {{ errorKey | translate }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="form-group conditionally-visible" *ngIf="study.containsSensitivePersonalData">
-                <p>
-                  <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
-                </p>
-                <p-multiSelect [(ngModel)]="study.legalBasisForHandlingSensitivePersonalData"
-                               [ngModelOptions]="{ standalone: true }"
-                               [options]="legalBasisForHandlingSensitivePersonalDataOptions"
-                               [filter]="false"
-                               defaultLabel="{{ 'legalBasisForHandlingSensitivePersonalData.selectLegalBasis' | translate }}"
-                               inputId="legalBasisForHandlingSensitivePersonalData">
-                </p-multiSelect>
-
-                <div class="form-group" *ngIf="study.legalBasisForHandlingSensitivePersonalData.indexOf('OTHER') != -1">
-                  <label for="otherLegalBasisForHandlingSensitivePersonalData" class="control-label">{{'otherLegalBasisForHandlingSensitivePersonalDataLabel' | translate}}</label>
-                  <input [(ngModel)]="study.otherLegalBasisForHandlingSensitivePersonalData[language]"
-                         id="otherLegalBasisForHandlingSensitivePersonalData"
-                         name="otherLegalBasisForHandlingSensitivePersonalData"
-                         class="form-control"
-                         required>
-                  <p *ngFor="let errorKey of formErrors.otherLegalBasisForHandlingSensitivePersonalData" class="bg-danger text-danger">
-                    <fa icon="exclamation-triangle"></fa>
-                    {{ errorKey | translate }}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
-        </div>
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group">
-                <p>
-                  <strong class="field-label">{{ 'isScientificStudy' | translate }}</strong>
-                  <editor-help-link [helpTextComponent]="scientificStudyHelpText"></editor-help-link>
-                </p>
-                <editor-help-text #scientificStudyHelpText key="editor.studyAdministrative.scientificStudy.helpText"></editor-help-text>
-
-                <div class="radio">
-                  <label for="scientific-study-true">
-                    <input [(ngModel)]="study.isScientificStudy"
-                           (change)="onIsScientificStudyChanged()"
-                           [value]="true"
-                           type="radio"
-                           id="scientific-study-true"
-                           name="scientific-study">
-                    {{ 'true' | translate }}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label for="scientific-study-false">
-                    <input [(ngModel)]="study.isScientificStudy"
-                           (change)="onIsScientificStudyChanged()"
-                           [value]="false"
-                           type="radio"
-                           id="scientific-study-false"
-                           name="scientific-study">
-                    {{ 'false' | translate }}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label for="scientific-study-empty"
-                         class="radio-empty">
-                    <input [(ngModel)]="study.isScientificStudy"
-                           [value]="undefined"
-                           type="radio"
-                           id="scientific-study-empty"
-                           name="scientific-study">
-                    {{ 'undefined' | translate }}
-                  </label>
-                </div>
-              </div>
-
-              <div class="conditionally-visible" *ngIf="study.isScientificStudy">
-                <div class="form-group">
-                  <label for="partiesAndSharingOfResponsibilityInCollaborativeStudy">
-                    {{ 'partiesAndSharingOfResponsibilityInCollaborativeStudy' | translate }}
-                  </label>
-                  <textarea [(ngModel)]="study.partiesAndSharingOfResponsibilityInCollaborativeStudy[language]"
-                            thlAutogrow
-                            id="partiesAndSharingOfResponsibilityInCollaborativeStudy"
-                            name="partiesAndSharingOfResponsibilityInCollaborativeStudy"
-                            class="form-control"
-                            rows="3">
-                  </textarea>
-                </div>
-
-              </div>
-
               <div class="form-group">
                 <p>
                   <strong class="field-label">{{ 'isProfilingAndAutomationHappening' | translate }}</strong>
@@ -478,11 +535,13 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
-            <div class="conditionally-visible" *ngIf="study.profilingAndAutomation">
-
+          <div class="row" *ngIf="study.profilingAndAutomation">
+            <div class="col-xs-12">
               <div class="form-group">
-                <label for="profiling-and-automation-description" translate="profilingAndAutomation"></label>
+                <label for="profiling-and-automation-description" translate="profilingAndAutomationDescription"></label>
                 <textarea [(ngModel)]="study.profilingAndAutomationDescription[language]"
                           thlAutogrow
                           id="profiling-and-automation-description"
@@ -491,42 +550,46 @@
                           rows="4">
                 </textarea>
               </div>
-
-            </div>
-
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
-              <p [ngSwitch]="study.isScientificStudy">
-                <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
-                <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
-              </p>
-              <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
-                <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
-                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
-                         [value]="retentionType"
-                         type="radio"
-                         id="postStudyRetentionOfPersonalData-{{retentionType}}"
-                         name="postStudyRetentionOfPersonalData">
-                  {{ 'postStudyRetentionOfPersonalData.' + retentionType | translate }}
-                </label>
-              </div>
-              <div class="radio">
-                <label for="postStudyRetentionOfPersonalData-empty" class="radio-empty">
-                  <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
-                        [value]="undefined"
-                        type="radio"
-                        id="postStudyRetentionOfPersonalData-empty"
-                        name="postStudyRetentionOfPersonalData">
-                  {{ 'postStudyRetentionOfPersonalData.empty' | translate }}
-                </label>
-              </div>
             </div>
           </div>
-        </div>
+
+          <study-administrative-edit-principle-of-protection-fields
+            [study]="study"
+            *ngIf="isScientificPersonRegistry()"
+          ></study-administrative-edit-principle-of-protection-fields>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <p [ngSwitch]="study.isScientificStudy">
+                  <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
+                  <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
+                </p>
+                <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
+                  <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
+                    <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                           [value]="retentionType"
+                           type="radio"
+                           id="postStudyRetentionOfPersonalData-{{retentionType}}"
+                           name="postStudyRetentionOfPersonalData">
+                    {{ 'postStudyRetentionOfPersonalData.' + retentionType | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="postStudyRetentionOfPersonalData-empty" class="radio-empty">
+                    <input [(ngModel)]="study.postStudyRetentionOfPersonalData"
+                           [value]="undefined"
+                           type="radio"
+                           id="postStudyRetentionOfPersonalData-empty"
+                           name="postStudyRetentionOfPersonalData">
+                    {{ 'postStudyRetentionOfPersonalData.empty' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- END OF BLOCK OF CONDITIONALS -->
 
         <div class="row">
           <div class="col-xs-12">
@@ -534,209 +597,140 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <p>
-            <strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong>
-            <editor-help-link [helpTextComponent]="confidentialityClassHelpText"></editor-help-link>
-          </p>
-          <editor-help-text #confidentialityClassHelpText key="editor.studyAdministrative.confidentialityClass.helpText"></editor-help-text>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <p>
+                <strong class="field-label">{{ 'confidentialityClass.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="confidentialityClassHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #confidentialityClassHelpText key="editor.studyAdministrative.confidentialityClass.helpText"></editor-help-text>
 
-          <div class="radio">
-            <label for="confidentiality-class-public">
-              <input [(ngModel)]="study.confidentialityClass"
-                     value="PUBLIC"
-                     type="radio"
-                     id="confidentiality-class-public"
-                     name="confidentiality-class">
-              {{ 'confidentialityClass.PUBLIC' | translate }}
-            </label>
-          </div>
-          <div class="radio">
-            <label for="confidentiality-class-partly-confidential">
-              <input [(ngModel)]="study.confidentialityClass"
-                     value="PARTLY_CONFIDENTIAL"
-                     type="radio"
-                     id="confidentiality-class-partly-confidential"
-                     name="confidentiality-class">
-              {{ 'confidentialityClass.PARTLY_CONFIDENTIAL' | translate }}
-            </label>
-          </div>
-          <div class="radio">
-            <label for="confidentiality-class-confidential">
-              <input [(ngModel)]="study.confidentialityClass"
-                     value="CONFIDENTIAL"
-                     type="radio"
-                     id="confidentiality-class-confidential"
-                     name="confidentiality-class">
-              {{ 'confidentialityClass.CONFIDENTIAL' | translate }}
-            </label>
-          </div>
-          <div class="radio">
-            <label for="confidentiality-class-empty"
-                   class="radio-empty">
-              <input [(ngModel)]="study.confidentialityClass"
-                     [value]="undefined"
-                     type="radio"
-                     id="confidentiality-class-empty"
-                     name="confidentiality-class">
-              {{ 'confidentialityClass.empty' | translate }}
-            </label>
+              <div class="radio">
+                <label for="confidentiality-class-public">
+                  <input [(ngModel)]="study.confidentialityClass"
+                         value="PUBLIC"
+                         type="radio"
+                         id="confidentiality-class-public"
+                         name="confidentiality-class">
+                  {{ 'confidentialityClass.PUBLIC' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="confidentiality-class-partly-confidential">
+                  <input [(ngModel)]="study.confidentialityClass"
+                         value="PARTLY_CONFIDENTIAL"
+                         type="radio"
+                         id="confidentiality-class-partly-confidential"
+                         name="confidentiality-class">
+                  {{ 'confidentialityClass.PARTLY_CONFIDENTIAL' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="confidentiality-class-confidential">
+                  <input [(ngModel)]="study.confidentialityClass"
+                         value="CONFIDENTIAL"
+                         type="radio"
+                         id="confidentiality-class-confidential"
+                         name="confidentiality-class">
+                  {{ 'confidentialityClass.CONFIDENTIAL' | translate }}
+                </label>
+              </div>
+              <div class="radio">
+                <label for="confidentiality-class-empty"
+                       class="radio-empty">
+                  <input [(ngModel)]="study.confidentialityClass"
+                         [value]="undefined"
+                         type="radio"
+                         id="confidentiality-class-empty"
+                         name="confidentiality-class">
+                  {{ 'confidentialityClass.empty' | translate }}
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="conditionally-visible" *ngIf="study.confidentialityClass === confidentialityClassType.PARTLY_CONFIDENTIAL || study.confidentialityClass === confidentialityClassType.CONFIDENTIAL">
-
-          <div class="form-group">
-            <label for="groundsForConfidentiality" translate="groundsForConfidentiality"></label>
-            <textarea [(ngModel)]="study.groundsForConfidentiality[language]"
-                      thlAutogrow
-                      id="groundsForConfidentiality"
-                      name="groundsForConfidentiality"
-                      class="form-control"
-                      rows="4">
-            </textarea>
-          </div>
-
-          <div class="form-group">
-            <p><strong class="field-label">{{ 'securityClassification.label' | translate }}</strong></p>
-            <div class="radio">
-              <label for="security-classification-I">
-                <input [(ngModel)]="study.securityClassification"
-                       value="I"
-                       type="radio"
-                       id="security-classification-I"
-                       name="security-classification">
-                {{ 'securityClassification.I' | translate }}
-              </label>
-            </div>
-            <div class="radio">
-              <label for="security-classification-II">
-                <input [(ngModel)]="study.securityClassification"
-                       value="II"
-                       type="radio"
-                       id="security-classification-II"
-                       name="security-classification">
-                {{ 'securityClassification.II' | translate }}
-              </label>
-            </div>
-            <div class="radio">
-              <label for="security-classification-III">
-                <input [(ngModel)]="study.securityClassification"
-                       value="III"
-                       type="radio"
-                       id="security-classification-III"
-                       name="security-classification">
-                {{ 'securityClassification.III' | translate }}
-              </label>
-            </div>
-            <div class="radio">
-              <label for="security-classification-IV">
-                <input [(ngModel)]="study.securityClassification"
-                       value="IV"
-                       type="radio"
-                       id="security-classification-IV"
-                       name="security-classification">
-                {{ 'securityClassification.IV' | translate }}
-              </label>
-            </div>
-            <div class="radio">
-              <label for="security-classification-empty"
-                     class="radio-empty">
-                <input [(ngModel)]="study.securityClassification"
-                       [value]="undefined"
-                       type="radio"
-                       id="security-classification-empty"
-                       name="security-classification">
-                {{ 'securityClassification.empty' | translate }}
-              </label>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label for="groundsForConfidentiality" translate="groundsForConfidentiality"></label>
+                <textarea [(ngModel)]="study.groundsForConfidentiality[language]"
+                          thlAutogrow
+                          id="groundsForConfidentiality"
+                          name="groundsForConfidentiality"
+                          class="form-control"
+                          rows="4">
+                </textarea>
+              </div>
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <p><strong class="field-label">{{ 'securityClassification.label' | translate }}</strong></p>
+                <div class="radio">
+                  <label for="security-classification-I">
+                    <input [(ngModel)]="study.securityClassification"
+                           value="I"
+                           type="radio"
+                           id="security-classification-I"
+                           name="security-classification">
+                    {{ 'securityClassification.I' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="security-classification-II">
+                    <input [(ngModel)]="study.securityClassification"
+                           value="II"
+                           type="radio"
+                           id="security-classification-II"
+                           name="security-classification">
+                    {{ 'securityClassification.II' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="security-classification-III">
+                    <input [(ngModel)]="study.securityClassification"
+                           value="III"
+                           type="radio"
+                           id="security-classification-III"
+                           name="security-classification">
+                    {{ 'securityClassification.III' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="security-classification-IV">
+                    <input [(ngModel)]="study.securityClassification"
+                           value="IV"
+                           type="radio"
+                           id="security-classification-IV"
+                           name="security-classification">
+                    {{ 'securityClassification.IV' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="security-classification-empty"
+                         class="radio-empty">
+                    <input [(ngModel)]="study.securityClassification"
+                           [value]="undefined"
+                           type="radio"
+                           id="security-classification-empty"
+                           name="security-classification">
+                    {{ 'securityClassification.empty' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="principlesForPhysicalSecurity" translate="principlesForPhysicalSecurity.label"></label>
-          <editor-help-link [helpTextComponent]="principlesForPhysicalSecurityHelpText"></editor-help-link>
-          <br>
-          <editor-help-text #principlesForPhysicalSecurityHelpText key="editor.studyAdministrative.principlesForPhysicalSecurity.helpText"></editor-help-text>
-          <p-multiSelect [(ngModel)]="study.principlesForPhysicalSecurity"
-                         [ngModelOptions]="{ standalone: true }"
-                         [options]="principlesForPhysicalSecurityItems"
-                         [filter]="false"
-                         defaultLabel="{{ 'selectPrinciples' | translate }}"
-                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
-                         inputId="principlesForPhysicalSecurity">
-          </p-multiSelect>
-
-        </div>
-
-        <div *ngIf="study.principlesForPhysicalSecurity.indexOf('OTHER') != -1"
-             class="form-group conditionally-visible">
-          <label for="otherPrinciplesForPhysicalSecurity" translate="securityPrinciple.otherPrinciplesForPhysicalSecurity"></label>
-          <br/>
-          <p-multiSelect [(ngModel)]="selectedOtherPhysicalSecurityPrinciples"
-                         [ngModelOptions]="{ standalone: true }"
-                         [options]="otherPhysicalSecurityPrinciples"
-                         [filter]="true"
-                         defaultLabel="{{ 'securityPrinciple.selectOther' | translate }}"
-                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
-                         inputId="otherPrinciplesForPhysicalSecurity">
-          </p-multiSelect>
-          <button (click)="showAddPhysicalSecurityPrincipleModal()"
-                  type="button"
-                  class="btn btn-default btn-security-principle-new">
-            <glyphicon icon="plus"></glyphicon>
-            {{ 'securityPrinciple.addNew' | translate }}
-          </button>
-        </div>
-
-        <security-principle-edit-modal *ngIf="newSupplementaryPhysicalSecurityPrinciple"
-                           [securityPrinciple]="newSupplementaryPhysicalSecurityPrinciple"
-                           (onSave)="savePhysicalSecurityPrinciple($event)"
-                           (onCancel)="closeAddPhysicalSecurityPrincipleModal()">
-        </security-principle-edit-modal>
-
-
-        <div class="form-group">
-          <label for="principlesForDigitalSecurity" translate="principlesForDigitalSecurity.label"></label>
-          <editor-help-link [helpTextComponent]="principlesForDigitalSecurityHelpText"></editor-help-link>
-          <br>
-          <editor-help-text #principlesForDigitalSecurityHelpText key="editor.studyAdministrative.principlesForDigitalSecurity.helpText"></editor-help-text>
-          <p-multiSelect [(ngModel)]="study.principlesForDigitalSecurity"
-                         [ngModelOptions]="{ standalone: true }"
-                         [options]="principlesForDigitalSecurityItems"
-                         [filter]="false"
-                         defaultLabel="{{ 'selectPrinciples' | translate }}"
-                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
-                         inputId="principlesForDigitalSecurity">
-          </p-multiSelect>
-        </div>
-
-        <div *ngIf="study.principlesForDigitalSecurity.indexOf('OTHER') != -1"
-             class="form-group conditionally-visible">
-          <label for="otherPrinciplesForDigitalSecurity" translate="securityPrinciple.otherPrinciplesForDigitalSecurity"></label>
-          <br/>
-          <p-multiSelect [(ngModel)]="selectedOtherDigitalSecurityPrinciples"
-                         [ngModelOptions]="{ standalone: true }"
-                         [options]="otherDigitalSecurityPrinciples"
-                         [filter]="true"
-                         defaultLabel="{{ 'securityPrinciple.selectOther' | translate }}"
-                         selectedItemsLabel="{0} {{ 'amountPrinciplesSelected' | translate }}"
-                         inputId="otherPrinciplesForDigitalSecurity">
-          </p-multiSelect>
-          <button (click)="showAddDigitalSecurityPrincipleModal()"
-                  type="button"
-                  class="btn btn-default btn-security-principle-new">
-            <glyphicon icon="plus"></glyphicon>
-            {{ 'securityPrinciple.addNew' | translate }}
-          </button>
-        </div>
-
-        <security-principle-edit-modal *ngIf="newSupplementaryDigitalSecurityPrinciple"
-                                       [securityPrinciple]="newSupplementaryDigitalSecurityPrinciple"
-                                       (onSave)="saveDigitalSecurityPrinciple($event)"
-                                       (onCancel)="closeAddDigitalSecurityPrincipleModal()">
-        </security-principle-edit-modal>
+        <study-administrative-edit-principle-of-protection-fields
+          [study]="study"
+          *ngIf="! isScientificPersonRegistry()"
+        ></study-administrative-edit-principle-of-protection-fields>
 
         <div class="row">
           <div class="col-xs-12">
@@ -890,118 +884,121 @@
           </div>
         </div>
 
-          <div class="row" *ngIf="postStudyRetentionDisposeNotSelected()">
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="physicalLocation" translate="physicalLocation"></label>
-                <editor-help-link [helpTextComponent]="physicalLocationHelpText"></editor-help-link>
-                <editor-help-text #physicalLocationHelpText key="editor.studyAdministrative.physicalLocation.helpText"></editor-help-text>
-                <textarea [(ngModel)]="study.physicalLocation[language]"
-                          thlAutogrow
-                          id="physicalLocation"
-                          name="physicalLocation"
-                          class="form-control"
-                          rows="4">
-                </textarea>
-              </div>
+        <div class="row" *ngIf="postStudyRetentionDisposeNotSelected()">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="physicalLocation" translate="physicalLocation"></label>
+              <editor-help-link [helpTextComponent]="physicalLocationHelpText"></editor-help-link>
+              <editor-help-text #physicalLocationHelpText key="editor.studyAdministrative.physicalLocation.helpText"></editor-help-text>
+              <textarea [(ngModel)]="study.physicalLocation[language]"
+                        thlAutogrow
+                        id="physicalLocation"
+                        name="physicalLocation"
+                        class="form-control"
+                        rows="4">
+              </textarea>
             </div>
           </div>
+        </div>
           
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="systemInRoles">
-                  {{ 'systemInRoles.label' | translate }}
-                  <editor-help-link [helpTextComponent]="systemInRolesHelpText"></editor-help-link>
-                </label>
-                <editor-help-text #systemInRolesHelpText key="editor.studyAdministrative.systemInRoles.helpText"></editor-help-text>
-                <table *ngIf="study.systemInRoles.length; else noSystemsInRoles;"
-                      id="systemsInRole"
-                      class="table table-striped">
-                  <tr>
-                    <th>
-                      {{ 'systemInRoles.system' | translate }}
-                      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-                    </th>
-                    <th translate="systemInRoles.role"></th>
-                    <th translate="functions"></th>
-                  </tr>
-                  <tr *ngFor="let systemInRole of study.systemInRoles; let index = index;"
-                      [ngClass]="{ 'bg-danger': formErrors['systemInRole-system-' + index] && formErrors['systemInRole-system-' + index].length }">
-                    <td>
-                      <p-dropdown *ngIf="allSystemItems && allSystemItems.length"
-                                  [(ngModel)]="systemInRole.system"
-                                  [options]="allSystemItems"
-                                  filter="true"
-                                  autoWidth="false"
-                                  [style]="{ 'max-width': '400px' }"
-                                  name="{{ 'systemInRole-system-' + index }}"
-                                  required
-                                  [dataKey]="id"
-                                  validateSystemConsistency
-                                  [study]="study">
-                      </p-dropdown>
-                      <button (click)="showAddSystemModal(systemInRole)"
-                              type="button"
-                              class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        {{ 'systemInRoles.addNew' | translate }}
-                      </button>
-                      <p *ngFor="let errorKey of formErrors['systemInRole-system-' + index]"
-                        class="text-danger">
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        {{ errorKey | translate }}
-                      </p>
-                      <system-edit-modal *ngIf="newSystem"
-                                        [system]="newSystem"
-                                        (onSave)="saveSystem($event)"
-                                        (onCancel)="closeAddSystemModal()">
-                      </system-edit-modal>
-                    </td>
-                    <td>
-                      <select *ngIf="allSystemRoles && allSystemRoles.length"
-                              [(ngModel)]="systemInRole.role"
-                              [compareWith]="nodeUtils.equals"
-                              dataKey="id"
-                              name="{{ 'systemInRole-role-' + index }}"
-                              class="form-control">
-                        <option [ngValue]="null"></option>
-                        <option *ngFor="let role of allSystemRoles"
-                                [ngValue]="role">
-                          {{ role.prefLabel | lang }}
-                        </option>
-                      </select>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-default" (click)="removeSystemInRole(systemInRole)">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        {{ 'remove' | translate }}
-                      </button>
-                    </td>
-                  </tr>
-                </table>
-                <ng-template #noSystemsInRoles>
-                  <p translate="systemInRoles.noSystemsInRoles"></p>
-                </ng-template>
-                <button type="button" class="btn btn-default" (click)="addSystemInRole()">
-                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                  {{ 'systemInRoles.add' | translate }}
-                </button>
-              </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="systemInRoles">
+                {{ 'systemInRoles.label' | translate }}
+                <editor-help-link [helpTextComponent]="systemInRolesHelpText"></editor-help-link>
+              </label>
+              <editor-help-text #systemInRolesHelpText key="editor.studyAdministrative.systemInRoles.helpText"></editor-help-text>
+              <table *ngIf="study.systemInRoles.length; else noSystemsInRoles;"
+                    id="systemsInRole"
+                    class="table table-striped">
+                <tr>
+                  <th>
+                    {{ 'systemInRoles.system' | translate }}
+                    <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                  </th>
+                  <th translate="systemInRoles.role"></th>
+                  <th translate="functions"></th>
+                </tr>
+                <tr *ngFor="let systemInRole of study.systemInRoles; let index = index;"
+                    [ngClass]="{ 'bg-danger': formErrors['systemInRole-system-' + index] && formErrors['systemInRole-system-' + index].length }">
+                  <td>
+                    <p-dropdown *ngIf="allSystemItems && allSystemItems.length"
+                                [(ngModel)]="systemInRole.system"
+                                [options]="allSystemItems"
+                                filter="true"
+                                autoWidth="false"
+                                [style]="{ 'max-width': '400px' }"
+                                name="{{ 'systemInRole-system-' + index }}"
+                                required
+                                [dataKey]="id"
+                                validateSystemConsistency
+                                [study]="study">
+                    </p-dropdown>
+                    <button (click)="showAddSystemModal(systemInRole)"
+                            type="button"
+                            class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                      {{ 'systemInRoles.addNew' | translate }}
+                    </button>
+                    <p *ngFor="let errorKey of formErrors['systemInRole-system-' + index]"
+                      class="text-danger">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                      {{ errorKey | translate }}
+                    </p>
+                    <system-edit-modal *ngIf="newSystem"
+                                      [system]="newSystem"
+                                      (onSave)="saveSystem($event)"
+                                      (onCancel)="closeAddSystemModal()">
+                    </system-edit-modal>
+                  </td>
+                  <td>
+                    <select *ngIf="allSystemRoles && allSystemRoles.length"
+                            [(ngModel)]="systemInRole.role"
+                            [compareWith]="nodeUtils.equals"
+                            dataKey="id"
+                            name="{{ 'systemInRole-role-' + index }}"
+                            class="form-control">
+                      <option [ngValue]="null"></option>
+                      <option *ngFor="let role of allSystemRoles"
+                              [ngValue]="role">
+                        {{ role.prefLabel | lang }}
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-default" (click)="removeSystemInRole(systemInRole)">
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      {{ 'remove' | translate }}
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <ng-template #noSystemsInRoles>
+                <p translate="systemInRoles.noSystemsInRoles"></p>
+              </ng-template>
+              <button type="button" class="btn btn-default" (click)="addSystemInRole()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                {{ 'systemInRoles.add' | translate }}
+              </button>
             </div>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="registryPolicy" translate="registryPolicy"></label>
-            <textarea [(ngModel)]="study.registryPolicy[language]"
-                      thlAutogrow
-                      id="registryPolicy"
-                      name="registryPolicy"
-                      class="form-control"
-                      rows="4">
-            </textarea>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="registryPolicy" translate="registryPolicy"></label>
+              <textarea [(ngModel)]="study.registryPolicy[language]"
+                        thlAutogrow
+                        id="registryPolicy"
+                        name="registryPolicy"
+                        class="form-control"
+                        rows="4">
+              </textarea>
+            </div>
           </div>
-
+        </div>
       </form>
 
     </div>

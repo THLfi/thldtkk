@@ -39,7 +39,6 @@ import {SupplementaryPhysicalSecurityPrinciple} from "../../../model2/supplement
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
-    styleUrls: ['./study-administrative-edit.component.css'],
     providers: [LangPipe]
 })
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
@@ -72,9 +71,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     confidentialityClassType = ConfidentialityClass
 
-    principlesForPhysicalSecurityItems: SelectItem[] = []
-    principlesForDigitalSecurityItems: SelectItem[] = []
-
     allSystemRoles: SystemRole[]
     allSystemItems: SelectItem[]
 
@@ -86,14 +82,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     legalBasisForHandlingPersonalDataOptions: SelectItem[] = []
     legalBasisForHandlingSensitivePersonalDataOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
-
-    newSupplementaryPhysicalSecurityPrinciple: SupplementaryPhysicalSecurityPrinciple
-    newSupplementaryDigitalSecurityPrinciple: SupplementaryDigitalSecurityPrinciple
-
-    selectedOtherPhysicalSecurityPrinciples: string[]
-    otherPhysicalSecurityPrinciples: SelectItem[]
-    selectedOtherDigitalSecurityPrinciples: string[]
-    otherDigitalSecurityPrinciples: SelectItem[]
 
     constructor(
         private studyService: EditorStudyService,
@@ -109,7 +97,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private titleService: Title,
         private dateUtils: DateUtils,
         private nodeUtils: NodeUtils,
-        private securityPrincipleService: SecurityPrincipleService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -142,22 +129,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             })
         })
 
-      this.translateService.get('principlesForPhysicalSecurity')
-        .subscribe(translations => {
-          this.principlesForPhysicalSecurityItems = Object.keys(PrincipleForPhysicalSecurity)
-            .map(key => {
-              return { label: translations[key], value: key }
-            })
-        })
-
-      this.translateService.get('principlesForDigitalSecurity')
-        .subscribe(translations => {
-          this.principlesForDigitalSecurityItems = Object.keys(PrincipleForDigitalSecurity)
-            .map(key => {
-              return { label: translations[key], value: key }
-            })
-        })
-
       this.translateService.get('editSystemModal.externalLink')
         .subscribe(translation =>  this.defaultSystemLinkDescription = translation)
 
@@ -166,8 +137,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
-      this.getAllSupplementaryPhysicalSecurityPrinciples()
-      this.getAllSupplementaryDigitalSecurityPrinciples()
     }
 
     private getStudy() {
@@ -181,8 +150,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
             this.updateAvailableAssociatedOrganizations()
             this.updateSelectableRetentionOptions()
-            this.selectedOtherPhysicalSecurityPrinciples = study.otherPrinciplesForPhysicalSecurity.map(principal => principal.id)
-            this.selectedOtherDigitalSecurityPrinciples = study.otherPrinciplesForDigitalSecurity.map(principal => principal.id)
           })
       } else {
         this.study = this.studyService.initNew()
@@ -355,67 +322,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.study.systemInRoles = [ ...this.study.systemInRoles,systemInRole ]
     }
 
-    private getAllSupplementaryPhysicalSecurityPrinciples(): void {
-      this.otherPhysicalSecurityPrinciples = null
-
-      this.securityPrincipleService.getAllSupplementaryPhysicalSecurityPrinciples().subscribe(physicalSecurityPrinciples => {
-        this.otherPhysicalSecurityPrinciples = physicalSecurityPrinciples.map(principle => {
-          return {
-            label: this.langPipe.transform(principle.prefLabel),
-            value: principle.id
-          }
-        })
-      })
-    }
-
-    private getAllSupplementaryDigitalSecurityPrinciples(): void {
-      this.otherDigitalSecurityPrinciples = null
-
-      this.securityPrincipleService.getAllSupplementaryDigitalSecurityPrinciples().subscribe(digitalSecurityPrinciples => {
-        this.otherDigitalSecurityPrinciples = digitalSecurityPrinciples.map(principle => {
-          return {
-            label: this.langPipe.transform((principle.prefLabel)),
-            value: principle.id
-          }
-        })
-      })
-    }
-
-    showAddPhysicalSecurityPrincipleModal(): void {
-      this.newSupplementaryPhysicalSecurityPrinciple = this.securityPrincipleService.initNewSupplementaryPhysicalSecurityPrinciple()
-    }
-
-    showAddDigitalSecurityPrincipleModal(): void {
-      this.newSupplementaryDigitalSecurityPrinciple = this.securityPrincipleService.initNewSupplementaryDigitalSecurityPrinciple()
-    }
-
-    savePhysicalSecurityPrinciple(event): void {
-      this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryPhysicalSecurityPrinciple)
-        .subscribe(savedSecurityPrinciple => {
-          this.getAllSupplementaryPhysicalSecurityPrinciples()
-          this.selectedOtherPhysicalSecurityPrinciples.push(savedSecurityPrinciple.id)
-          this.closeAddPhysicalSecurityPrincipleModal()
-        })
-    }
-
-    saveDigitalSecurityPrinciple(event): void {
-      this.securityPrincipleService.saveSupplementarySecurityPrinciple(this.newSupplementaryDigitalSecurityPrinciple)
-        .subscribe(savedSecurityPrinciple => {
-          this.getAllSupplementaryDigitalSecurityPrinciples()
-          this.selectedOtherDigitalSecurityPrinciples.push(savedSecurityPrinciple.id)
-          this.closeAddDigitalSecurityPrincipleModal()
-        })
-    }
-
-    closeAddPhysicalSecurityPrincipleModal(): void {
-      this.newSupplementaryPhysicalSecurityPrinciple = null
-    }
-
-    closeAddDigitalSecurityPrincipleModal(): void {
-      this.newSupplementaryDigitalSecurityPrinciple = null
-    }
-
-    ngAfterContentChecked(): void {
+  ngAfterContentChecked(): void {
       if (this.studyForm) {
         if (this.studyForm !== this.currentForm) {
           this.currentForm = this.studyForm
@@ -480,20 +387,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.studyService.initializeProperties(this.study)
         }
 
-        if(this.study.principlesForPhysicalSecurity.indexOf(PrincipleForPhysicalSecurity.OTHER) == -1) {
-          this.study.otherPrinciplesForPhysicalSecurity = []
-        }
-        else {
-          this.study.otherPrinciplesForPhysicalSecurity = this.selectedOtherPhysicalSecurityPrinciples.map(id => { return { id: id, prefLabel: {} } })
-        }
-
-        if(this.study.principlesForDigitalSecurity.indexOf(PrincipleForDigitalSecurity.OTHER) == -1) {
-            this.study.otherPrinciplesForDigitalSecurity = []
-        }
-        else {
-          this.study.otherPrinciplesForDigitalSecurity = this.selectedOtherDigitalSecurityPrinciples.map(id => { return { id: id, prefLabel: {} } })
-        }
-
         if (this.currentForm.invalid) {
           this.growlMessageService.buildAndShowMessage('error',
             'operations.common.save.result.fail.summary',
@@ -524,6 +417,18 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         } else {
             this.router.navigate(['/editor/studies']);
         }
+    }
+
+    isNonScientificPersonRegistry() {
+      return this.study.personRegistry && this.study.isScientificStudy !== true;
+    }
+
+    isScientificPersonRegistry() {
+      return this.study.personRegistry && this.study.isScientificStudy;
+    }
+
+    isPersonRegistry() {
+      return this.study.personRegistry;
     }
 
     private onIsScientificStudyChanged(): void {

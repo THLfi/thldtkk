@@ -141,4 +141,12 @@ export class StudyAdministrativeEditPrincipleOfProtectionFieldsComponent impleme
   closeAddDigitalSecurityPrincipleModal(): void {
     this.newSupplementaryDigitalSecurityPrinciple = null
   }
+
+  hasOtherPrinciplesForPhysicalSecurity() {
+    return this.study.principlesForPhysicalSecurity.includes(PrincipleForPhysicalSecurity.OTHER);
+  }
+
+  hasOtherPrinciplesForDigitalSecurity() {
+    return this.study.principlesForDigitalSecurity.includes(PrincipleForDigitalSecurity.OTHER);
+  }
 }

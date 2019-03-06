@@ -131,6 +131,8 @@
       <div th:text="${#dates.format(editDate, 'dd.MM.yyyy')}">12.02.2019</div>
     </div>
 
+    <h1 th:text="#{privacyNotice.dataProtectionInfoTitle}" style="margin-top: 1em">TIETOSUOJAILMOITUS REKISTERöIDYN INFORMOIMISEKSI</h1>
+
     <p th:text="#{privacyNotice.introduction(${controllerName}, ${purposeOfPersonRegister})}">
       {0} käsittelee henkilötietoja lakisääteisten tehtäviensä hoitamista varten. Organisaatio noudattaa henkilötietojen
       käsittelyssä voimassa olevaa tietosuojalainsäädäntöä ja huolehtii, että tietoturva on asianmukaisella tasolla.

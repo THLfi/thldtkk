@@ -262,6 +262,18 @@
           *ngIf="isScientificPersonRegistry()"
         ></study-administrative-view-principle-of-protection-fields>
 
+        <div *ngIf="isScientificPersonRegistry() && study.directIdentityInformation !== undefined" class="row">
+          <div class="col-xs-12">
+            <p><strong class="field-label">{{ 'directIdentityInformation.label' | translate }}</strong></p>
+            <p *ngIf="!study.directIdentityInformation">
+              {{ 'directIdentityInformation.removedWhenAnalyzed'| translate }}
+            </p>
+            <p *ngIf="study.directIdentityInformation">
+              {{ study.directIdentityInformationDescription | lang }}
+            </p>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-xs-12">
             <p [ngSwitch]="study.isScientificStudy">
@@ -278,47 +290,6 @@
         </div>
 
       </ng-container>
-
-      <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
-        <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'profilingAndAutomation' | translate }}</strong></p>
-          <p *ngIf="study.profilingAndAutomation">
-            {{ study.profilingAndAutomationDescription | lang }}
-          </p>
-          <p *ngIf="!study.profilingAndAutomation">
-            {{ 'profilingAndAutomationNotOccurringByOrg' |
-               translate:{ organization: (study.ownerOrganization && study.ownerOrganization.prefLabel | lang)
-                                         || 'organization' | translate } }}
-          </p>
-        </div>
-      </div>
-
-      <div *ngIf="study.directIdentityInformation !== undefined" class="row">
-        <div class="col-xs-12">
-        <p><strong class="field-label">{{ 'directIdentityInformation.label' | translate }}</strong></p>
-        <p *ngIf="!study.directIdentityInformation">
-            {{ 'directIdentityInformation.removedWhenAnalyzed'| translate }}
-        </p>
-        <p *ngIf="study.directIdentityInformation">
-            {{ study.directIdentityInformationDescription | lang }}
-        </p>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-xs-12">
-          <p [ngSwitch]="study.isScientificStudy">
-            <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
-            <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
-          </p>
-          <ng-container *ngIf="study.postStudyRetentionOfPersonalData; else noPostStudyRetentionOfPersonalData;">
-            <p>{{ 'postStudyRetentionOfPersonalData.' + study.postStudyRetentionOfPersonalData | translate }}</p>
-          </ng-container>
-          <ng-template #noPostStudyRetentionOfPersonalData>
-            <p>{{ 'postStudyRetentionOfPersonalData.empty' | translate }}</p>
-          </ng-template>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-xs-12">

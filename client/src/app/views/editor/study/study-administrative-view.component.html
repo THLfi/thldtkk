@@ -246,9 +246,7 @@
         <div *ngIf="study.profilingAndAutomation !== undefined" class="row">
           <div class="col-xs-12">
             <p><strong class="field-label">{{ 'profilingAndAutomationDescription' | translate }}</strong></p>
-            <p *ngIf="study.profilingAndAutomation">
-              {{ study.profilingAndAutomationDescription | lang }}
-            </p>
+            <p *ngIf="study.profilingAndAutomation" class="preserve-line-breaks">{{ study.profilingAndAutomationDescription | lang }}</p>
             <p *ngIf="!study.profilingAndAutomation">
               {{ 'profilingAndAutomationNotOccurringByOrg' |
               translate:{ organization: (study.ownerOrganization && study.ownerOrganization.prefLabel | lang)
@@ -268,9 +266,7 @@
             <p *ngIf="!study.directIdentityInformation">
               {{ 'directIdentityInformation.removedWhenAnalyzed'| translate }}
             </p>
-            <p *ngIf="study.directIdentityInformation">
-              {{ study.directIdentityInformationDescription | lang }}
-            </p>
+            <p *ngIf="study.directIdentityInformation" class="preserve-line-breaks">{{ study.directIdentityInformationDescription | lang }}</p>
           </div>
         </div>
 

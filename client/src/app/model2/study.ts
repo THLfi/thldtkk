@@ -64,6 +64,8 @@ export interface Study extends Node {
   isScientificStudy?: boolean
   profilingAndAutomation?: boolean
   profilingAndAutomationDescription?: LangValues
+  directIdentityInformation?: boolean
+  directIdentityInformationDescription?: LangValues
 
   // Data security
   confidentialityClass?: ConfidentialityClass

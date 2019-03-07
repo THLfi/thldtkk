@@ -3,10 +3,8 @@ import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
-import {MultiSelect} from "primeng/primeng";
 import {BreadcrumbService} from '../../../services-common/breadcrumb.service'
 import {ConfidentialityClass} from '../../../model2/confidentiality-class'
-import {SecurityPrincipleService} from "../../../services-common/security-principle.service";
 import {DateUtils} from '../../../utils/date-utils'
 import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {EditorSystemService} from '../../../services-editor/editor-system.service'
@@ -14,9 +12,7 @@ import {EditorSystemRoleService} from '../../../services-editor/editor-system-ro
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {NodeUtils} from '../../../utils/node-utils';
-import {Observable, Subscription} from 'rxjs';
-import {PrincipleForDigitalSecurity} from '../../../model2/principle-for-digital-security'
-import {PrincipleForPhysicalSecurity} from '../../../model2/principle-for-physical-security'
+import {Observable} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api'
 import {RetentionPolicy} from '../../../model2/retention-policy';
 import {ExistenceForm} from '../../../model2/existence-form';
@@ -33,13 +29,10 @@ import { Organization } from 'app/model2/organization';
 import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
-import {SupplementaryDigitalSecurityPrinciple} from "../../../model2/supplementary-digital-security-principle";
-import {SupplementaryPhysicalSecurityPrinciple} from "../../../model2/supplementary-physical-security-principle";
 
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
-    styles: ['label.lighter { font-weight: lighter; }'],
     providers: [LangPipe]
 })
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
@@ -68,7 +61,6 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     allOrganizations: Organization[];
     availableAssociatedOrganizations: Organization[];
-    newAssociatedOrganization: Organization;
 
     confidentialityClassType = ConfidentialityClass
 

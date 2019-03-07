@@ -410,3 +410,7 @@ h3 {
 form .conditionally-visible {
   margin-left: 22px;
 }
+
+label.lighter {
+  font-weight: lighter;
+}

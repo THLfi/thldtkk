@@ -141,7 +141,7 @@
     "label": "Suorien tunnistetietojen käsittely",
     "removedWhenAnalyzed": "Suorat tunnistetiedot poistetaan analysointivaiheessa",
     "notRemovedWhenAnalyzed": "Aineisto analysoidaan suorin tunnistetiedoin, koska",
-    "notRemovedBecause": "Peruste suorien tietojen säilyttämiselle"
+    "notRemovedBecause": "Peruste suorien tunnistetietojen säilyttämiselle"
   },
   "studyType": {
     "label": "Tutkimuksen tyyppi",
@@ -1288,7 +1288,7 @@
       "warn": {
         "ambiguousCodeList": "lista on epäselvä",
         "ambiguousUnitSymbol": "mittayksikön symbooli on epäselvä",
-        "codeItemWrongFormat": "kenttä on virheellisessä muodossa. Oikea muoto on: 'Koodi1':'Arvo1', 'Koodi2':'Arvo2', ...",
+        "codeItemWrongFormat": "kenttä on virheellisessä muodossa. Oikea muoto on: \"Koodi1:Arvo1; Koodi2:Arvo2; ...\"",
         "invalidDecimalNumber": "desimaaliluku -kenttä on virheellisessä muodossa",
         "invalidIsoDate": "päivämäärä -kenttä on virheellisessä muodossa. Oikea muoto on: vvvv-kk-pp",
         "missingRequiredValue": "arvo puuttuu"

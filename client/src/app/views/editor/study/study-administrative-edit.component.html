@@ -576,7 +576,7 @@
               </p>
 
               <div class="radio">
-                <label for="directIdentityInformation-removedWhenAnalyzed">
+                <label for="directIdentityInformation-true">
                   <input [(ngModel)]="study.directIdentityInformation"
                          [value]="false"
                          type="radio"
@@ -586,7 +586,7 @@
                 </label>
               </div>
               <div class="radio">
-                <label for="directIdentityInformation-notRemovedWhenAnalyzed">
+                <label for="directIdentityInformation-false">
                   <input [(ngModel)]="study.directIdentityInformation"
                          [value]="true"
                          type="radio"
@@ -598,8 +598,8 @@
             </div>
 
             <ng-container *ngIf="study.directIdentityInformation">
-              <div class="form-group">
-                <label for="directIdentityInformation-description" translate="directIdentityInformation.notRemovedBecause"></label>
+              <div class="form-group conditionally-visible">
+                <label for="directIdentityInformation-description" translate="directIdentityInformation.notRemovedBecause" class="lighter"></label>
                 <textarea [(ngModel)]="study.directIdentityInformationDescription[language]"
                           thlAutogrow
                           id="directIdentityInformation-description"

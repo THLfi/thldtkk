@@ -267,25 +267,6 @@
       </div>
     </div>
 
-    <div class="section">
-      <h2>12. <span th:text="#{privacyNotice.principlesForSecurity}">Rekisterin suojauksen periaatteet</span></h2>
-      <div th:text="#{privacyNotice.principlesForPhysicalSecurity}">Manuaalinen aineisto</div>
-      <div>
-        <ul th:unless="${principlesForPhysicalSecurity.isEmpty()}">
-          <li th:each="principle : ${principlesForPhysicalSecurity}" th:text="#{ 'privacyNotice.principlesForPhysicalSecurity.' + ${principle} }"></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="section">
-      <div th:text="#{privacyNotice.principlesForDigitalSecurity}">ATK:lla käsiteltävät tiedot</div>
-      <div>
-        <ul th:unless="${principlesForDigitalSecurity.isEmpty()}">
-          <li th:each="principle : ${principlesForDigitalSecurity}" th:text="#{ 'principlesForDigitalSecurity.' + ${principle} }"></li>
-        </ul>
-      </div>
-    </div>
-
     <div th:utext="#{privacyNotice.yourRights}"></div>
   </body>
 </html>

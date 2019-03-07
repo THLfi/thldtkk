@@ -434,10 +434,4 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
     }
 
-    private postStudyRetentionDisposeNotSelected(): boolean {
-      const selectedValue = this.study.postStudyRetentionOfPersonalData;
-      return PostStudyRetentionOfPersonalData.DISPOSE !== selectedValue &&
-             PostStudyRetentionOfPersonalData.DISPOSE_SCIENTIFIC !== selectedValue;
-  }
-
 }

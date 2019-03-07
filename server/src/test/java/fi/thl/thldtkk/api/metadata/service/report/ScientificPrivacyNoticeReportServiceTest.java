@@ -60,25 +60,45 @@ public class ScientificPrivacyNoticeReportServiceTest {
       .withAddressForRegistryPolicy("Postiosoite: PL 30, 00271 Helsinki\nKäyntiosoite: Mannerheimintie 166, Helsinki")
       .withPhoneNumberForRegistryPolicy("+358 29 524 6000")
       .build();
-    Person person = a.person()
-      .withFirstName("Jutta")
-      .withLastName("Järvelin")
-      .withPhone("+358 50 123 4567")
-      .withEmail("jutta.jarvelin@thl.fi")
+    Person yhteyshenkiloPerson = a.person()
+      .withFirstName("Yrjö")
+      .withLastName("Yhteyshenkilö")
+      .withPhone("+358 40 123 4567")
+      .withEmail("yrjo.yhteyshenkilo@thl.fi")
       .build();
-    PersonInRole pir = new PersonInRoleBuilder()
-      .withPerson(person)
+    PersonInRole yhteyshenkiloPir = new PersonInRoleBuilder()
+      .withPerson(yhteyshenkiloPerson)
       .withRole("Yhteyshenkilö")
+      .build();
+    Person tutkimuksenVastuullinenJohtajaPerson = a.person()
+      .withFirstName("Tiina")
+      .withLastName("Tutkimuksenvastuullinenjohtaja")
+      .withPhone("+358 50 234 5678")
+      .withEmail("tiina.tutkimuksenvastuullinenjohtaja@thl.fi")
+      .build();
+    PersonInRole tutkimuksenVastuullinenJohtajaPir = new PersonInRoleBuilder()
+      .withPerson(tutkimuksenVastuullinenJohtajaPerson)
+      .withRole("Tutkimuksen vastuullinen johtaja")
+      .build();
+    Person tietosuojavastaavaPerson = a.person()
+      .withFirstName("Taina")
+      .withLastName("Tietosuojavastaava")
+      .withPhone("+358 50 354 6789")
+      .withEmail("taina.tietosuojavastaava@thl.fi")
+      .build();
+    PersonInRole tietosuojavastaavaPir = new PersonInRoleBuilder()
+      .withPerson(tietosuojavastaavaPerson)
+      .withRole("Tietosuojavastaava")
       .build();
     Study study = a.study()
       .withId(studyId)
       .withLastModifiedDate(Date.from(ZonedDateTime.parse("2018-01-01T12:00:00+02:00[Europe/Helsinki]").toInstant()))
       .withOwnerOrganization(organization)
-      .withPersonInRoles(pir)
+      .withPersonInRoles(yhteyshenkiloPir, tutkimuksenVastuullinenJohtajaPir, tietosuojavastaavaPir)
       .withPrefLabel("Terveydenhuollon hoitoilmoitusrekisteri")
-      .withDescription("Tämä on on terveydenhuollon hoitoilmoitusrekisteri.")
-      .withPurposeOfPersonRegistry("terveys- ja sosiaalialan tilastointia ja kehittämistä")
-      .withPartiesAndSharingOfResponsibilityInCollaborativeStudy("Tässä tutkimuksessa...\n\n...vastuunjako yhteisrekisterinpitäjien kesken tapahtuu tavalla X.")
+      .withDescription("Nämä tiedot tulevat...\n\n...kentästä 'description'.")
+      .withPurposeOfPersonRegistry("Nämä tiedot tulevat...\n\n...kentästä 'purposeOfPersonRegistry'.")
+      .withPartiesAndSharingOfResponsibilityInCollaborativeStudy("Nämä tiedot tulevat...\n\n...kentästä 'partiesAndSharingOfResponsibilityInCollaborativeStudy'.")
       .build();
     when(editorStudyService.get(eq(studyId))).thenReturn(Optional.of(study));
 

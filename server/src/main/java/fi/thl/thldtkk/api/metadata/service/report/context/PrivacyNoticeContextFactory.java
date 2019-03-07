@@ -6,7 +6,6 @@ import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrBuilder;
 import org.thymeleaf.context.Context;
 

@@ -172,7 +172,7 @@ public class StudyBuilder {
     return this;
   }
 
-  public StudyBuilder withPersonInRoles(PersonInRole pirs) {
+  public StudyBuilder withPersonInRoles(PersonInRole... pirs) {
     this.personInRoles = asList(pirs);
     return this;
   }

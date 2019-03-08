@@ -195,7 +195,7 @@
     <div class="section">
       <h2>4. <span th:text="#{privacyNotice.purposeOfPersonRegister}">Henkilötietojen käsittelyn tarkoitus</span></h2>
       <div th:if="${purposeOfPersonRegister != null}" th:text="#{privacyNotice.purposeOfPersonRegister.body(${purposeOfPersonRegister})}" class="preserve-line-breaks">
-        Käsittelemme henkilötietojasi {0}
+        Käsittelemme henkilötietojasi {0} varten.
       </div>
     </div>
 
@@ -259,11 +259,9 @@
       <p th:text="#{privacyNotice.postStudyRetentionOfPersonalData.ingress}"></p>
       <div th:with="endDate = ${dataProcessingEndDate.isPresent()} ? ${#temporals.format(dataProcessingEndDate.get(), 'dd.MM.yyyy')} : '',
                     postStudyRetentionMessageKey = 'privacyNotice.postStudyRetentionOfPersonalData.' + ${postStudyRetentionOfPersonalData.orElse('UNDEFINED')}">
-        <p>
-          <span th:text="${postStudyRetentionOfPersonalData.isPresent()} ? #{${postStudyRetentionMessageKey}(${endDate})} : #{${postStudyRetentionMessageKey}}"></span><br/>
-          <span class="preserve-line-breaks" th:text="#{privacyNotice.physicalLocation(${physicalLocation})}"></span><br/>
-          <span class="preserve-line-breaks" th:text="#{privacyNotice.retentionPeriod(${retentionPeriod})}"></span>
-        </p>
+        <p th:text="${postStudyRetentionOfPersonalData.isPresent()} ? #{${postStudyRetentionMessageKey}(${endDate})} : #{${postStudyRetentionMessageKey}}"></p>
+        <p class="preserve-line-breaks" th:text="#{privacyNotice.physicalLocation(${physicalLocation})}"></p>
+        <p class="preserve-line-breaks" th:text="#{privacyNotice.retentionPeriod(${retentionPeriod})}"></p>
       </div>
     </div>
 

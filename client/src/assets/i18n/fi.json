@@ -121,7 +121,7 @@
   "infoOfGeneralPrivacyNotice": "Yleisen tietosuojailmoituksen tiedot",
   "infoOfScientificPrivacyNotice": "Tieteellisen tutkimuksen tietosuojailmoituksen tiedot",
   "archiving": "Arkistointi",
-  "isStudyPersonRegistry": "Sisältääkö aineisto henkilötietoja?",
+  "isStudyPersonRegistry": "Sisältääkö aineisto henkilötietoja",
   "isScientificStudy": "Onko aineisto tieteellisen tutkimuksen aineisto",
   "phoneNumberForRegistryPolicy":"Rekisterinpitäjän puhelinnumero",
   "addressForRegistryPolicy":"Rekisterinpitäjän osoite",
@@ -969,19 +969,25 @@
     },
     "studyAdministrative": {
       "associatedOrganizations": {
-        "helpText": "<p>Aineistoon liitetyt organisaatiot voidaan merkata yhteisrekisterinpitäjiksi, jolloin merkattujen organisaatioiden tiedot tulostuvavat tieteelliseen tietosuojailmoitukseen.</p>"
+        "helpText": "<p>Tässä valitaan muut mukana olevat organisaatiot ja rastitaan ne jotka ovat yhteisrekisterinpitäjiä (käsittelevät samoja henkilötietoja ja määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot). Rekisterinpitäjät päättävät ja vastaavat henkilötietojen käsittelystä.</p>"
       },
       "personRegistry": {
         "helpText": "<p>Onko aineisto henkilörekisteri vai ei?</p>"
       },
-      "scientificStudy": {
-        "helpText": "<p>Onko aineisto tieteellinen tutkimus vai ei?</p>"
+      "isStudyPersonRegistry": {
+        "helpText": "<p>Tässä valitaan, sisältääkö aineisto henkilötietoja. Valitsemalla <em>Kyllä</em> voit tulostaa aineistosta Tietosuojailmoituksen tai Tieteellisen tutkimuksen tietosuojailmoituksen (ks. kentän <em>Onko aineisto tieteellisen tutkimuksen aineisto</em> ohje).</p>"
+      },
+      "isScientificStudy": {
+        "helpText": "<p>Tässä valitaan, onko kyseessä tieteellisen tutkimuksen aineisto. <em>Kyllä</em>-valinta tuottaa Tieteellisen tutkimuksen tietosuojailmoituksen.</p>"
       },
       "studyType": {
         "helpText": "<p>Tässä valitaan onko kyseessä kerta- vai seurantatutkimus.</p>"
       },
-      "purposeOfPersonRegistry": {
+      "purposeOfPersonRegistryScientific": {
         "helpText": "<p>Lisää lyhyt kuvaus henkilötietojen käsittelyn tarkoituksesta.</p>"
+      },
+      "purposeOfPersonRegistryCommon": {
+        "helpText": "<p>Lisää lyhyt kuvaus henkilötietojen käsittelyn tarkoituksesta. Kentän sisältö tulostuu tietosuojailmoitukseen muodossa: \"Käsittelemme henkilötietojasi <em>&lt;kentän sisältö&gt;</em> varten.\"</p>"
       },
       "partiesAndSharingOfResponsibilityInCollaborativeStudy": {
         "helpText": "<p>Jos kyseessä on useamman tahon (organisaation/osaston) yhteishanke, kuvaa tässä osapuolten vastuunjako henkilötietojen käsittelyn suhteen. Jos kyse ei ole yhteistyöhankkeesta merkitse 'EI yhteistyöhankkeena tehtävä tutkimus'. Jos tutkimusta yhdessä tekevät organisaatiot käsittelevät tutkimuksessa samoja henkilötietoja ja määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot, ne ovat yhteisrekisterinpitäjiä.</p>"
@@ -989,11 +995,11 @@
       "studyPerformers": {
         "helpText": "<p>Tähän kirjataan kaikki ryhmät, joilla on tutkimuksen kuluessa oikeus käsitellä tutkimusrekisterin tietoja. Ei siis ole tarpeen listata yksittäisiä henkilöitä, vaan voi käyttää kategorioita (esim. X yksikön tutkijat ja tutkimusavustajat).</p>"
       },
-      "legalBasisForHandlingPersonalData": {
-        "helpText": "<p>Tässä valitaan ne lainmukaiset tietosuoja-asetuksen 6 artiklan kohdat, joihin henkilötietojen käsittely perustuu.</p>"
+      "containsSensitivePersonalData": {
+        "helpText": "<p>Tässä kerrotaan käsitelläänkö arkaluonteisia henkilötietoja, valitaan käsiteltävien arkaluonteisten henkilötietojen tyypit sekä lainmukaiset tietosuoja-asetuksen 9 artiklan 2 kohdan erityisehdot, joihin niiden käsittely perustuu.</p>"
       },
       "usageOfPersonalInformation": {
-        "helpText": "<p>Tässä kerrotaan käsitelläänkö arkaluonteisia henkilötietoja, valitaan käsiteltävien arkaluonteisten henkilötietojen tyypit sekä lainmukaiset tietosuoja-asetuksen 9 artiklan 2 kohdan erityisehdot, johon niiden käsittely perustuu.</p>"
+        "helpText": "<p>Tässä kerrotaan ne tiedot tai tietotyypit, jotka tutkittavasta/rekisteröidystä kerätään ja tallennetaan. Henkilön yksilöintitiedot eritellään (nimi, syntymäaika, yhteystiedot) samoin muut tiedot eritellään.</p>"
       },
       "personRegistrySources": {
         "helpText": "<p>Tässä kuvataan se, mistä lähteistä käsiteltävät tiedot saadaan.</p>"
@@ -1001,7 +1007,10 @@
       "personRegistryDataTransfers": {
         "helpText": "<p>Tässä kuvataan se, siirretäänkö tai luovutetaanko henkilötietoja säännönmukaisesti. Mikäli tietoja luovutetaan, mille tahoille niitä luovutetaan ja mihin luovuttaminen perustuu. Tähän kuvataan myös mahdollinen henkilötietojen siirto käsittelijälle (esim. alihankkija tai tallennus pilvipalveluun).</p>"
       },
-      "profilingAndAutomation": {
+      "profilingAndAutomationScientific": {
+        "helpText": "<p>Tässä valitaan ja kirjataan mahdollinen automaattinen päätöksenteko perustuen mm. henkilöiden profilointiin. Tieteelliseen tutkimukseen ei yleensä liity profilointiin perustuvia automaattisia päätöksiä, joilla voi olla tutkittaviin oikeusvaikutuksia tai muita merkittäviä vaikutuksia.</p>"
+      },
+      "profilingAndAutomationCommon": {
         "helpText": "<p>Tässä valitaan ja kirjataan mahdollinen automaattinen päätöksenteko perustuen mm. henkilöiden profilointiin.</p>"
       },
       "confidentialityClass": {
@@ -1012,6 +1021,15 @@
       },
       "principlesForDigitalSecurity": {
         "helpText": "<p>Tähän merkitään kaikki käytetyt digitaalisen suojauksen periaatteet, kuten käyttäjätunnus ja salasana.</p>"
+      },
+      "directIdentityInformation": {
+        "helpText": "<p>Tähän kirjataan suorien tunnistetietojen käsittely ja mahdollinen perustelu.</p>"
+      },
+      "postStudyRetentionOfPersonalDataScientific": {
+        "helpText": "<p>Tässä valitaan henkilötietojen käsittelytapa tutkimuksen päättymisen jälkeen.</p>"
+      },
+      "postStudyRetentionOfPersonalDataCommon": {
+        "helpText": "<p>Tässä valitaan henkilötietojen säilytystapa.</p>"
       },
       "dataProcessingPeriod": {
         "helpText": "<p>Tähän merkitään tietojenkäsittelyn (myös henkilötietojen) aloitus- ja lopetusajankohdat.</p>"

@@ -100,7 +100,9 @@
             <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'isStudyPersonRegistry' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="isStudyPersonRegistryHelpText"></editor-help-link>
               </p>
+              <editor-help-text #isStudyPersonRegistryHelpText key="editor.studyAdministrative.isStudyPersonRegistry.helpText"></editor-help-text>
               <div class="radio">
                 <label for="person-registry-true">
                   <input [(ngModel)]="study.personRegistry"
@@ -141,7 +143,9 @@
             <div class="form-group">
               <p>
                 <strong class="field-label">{{ 'isScientificStudy' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="isScientificStudyHelpText"></editor-help-link>
               </p>
+              <editor-help-text #isScientificStudyHelpText key="editor.studyAdministrative.isScientificStudy.helpText"></editor-help-text>
               <div class="radio">
                 <label for="scientific-study-true">
                   <input [(ngModel)]="study.isScientificStudy"
@@ -250,7 +254,7 @@
               <div class="form-group">
                 <label for="purposeOfPersonRegistry" translate="purposeOfPersonRegistry"></label>
                 <editor-help-link [helpTextComponent]="purposeOfPersonRegistryHelpText"></editor-help-link>
-                <editor-help-text #purposeOfPersonRegistryHelpText key="editor.studyAdministrative.purposeOfPersonRegistry.helpText"></editor-help-text>
+                <editor-help-text #purposeOfPersonRegistryHelpText [key]="'editor.studyAdministrative.purposeOfPersonRegistry' + (study.isScientificStudy ? 'Scientific' : 'Common') + '.helpText'"></editor-help-text>
                 <textarea [(ngModel)]="study.purposeOfPersonRegistry[language]"
                           thlAutogrow
                           id="purposeOfPersonRegistry"
@@ -337,8 +341,9 @@
               <div class="form-group">
                 <p>
                   <strong class="field-label">{{ 'containsSensitivePersonalData' | translate }}</strong>
+                  <editor-help-link [helpTextComponent]="containsSensitivePersonalDataHelpText"></editor-help-link>
                 </p>
-
+                <editor-help-text #containsSensitivePersonalDataHelpText key="editor.studyAdministrative.containsSensitivePersonalData.helpText"></editor-help-text>
                 <div class="radio">
                   <label for="contains-sensitive-personal-data-true">
                     <input [(ngModel)]="study.containsSensitivePersonalData"
@@ -398,8 +403,6 @@
               <div class="form-group conditionally-visible">
                 <p>
                   <strong class="field-label">{{ 'legalBasisForHandlingSensitivePersonalData.label' | translate }}</strong>
-                  <editor-help-link [helpTextComponent]="legalBasisForHandlingPersonalDataHelpText"></editor-help-link>
-                  <editor-help-text #legalBasisForHandlingPersonalDataHelpText key="editor.studyAdministrative.legalBasisForHandlingPersonalData.helpText"></editor-help-text>
                 </p>
                 <p-multiSelect [(ngModel)]="study.legalBasisForHandlingSensitivePersonalData"
                                [ngModelOptions]="{ standalone: true }"
@@ -507,7 +510,7 @@
                 <p>
                   <strong class="field-label">{{ 'isProfilingAndAutomationHappening' | translate }}</strong>
                   <editor-help-link [helpTextComponent]="profilingAndAutomationHelpText"></editor-help-link>
-                  <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
+                  <editor-help-text #profilingAndAutomationHelpText [key]="'editor.studyAdministrative.profilingAndAutomation' + (study.isScientificStudy ? 'Scientific' : 'Common') +'.helpText'"></editor-help-text>
                 </p>
 
                 <div class="radio">
@@ -545,12 +548,10 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="study.profilingAndAutomation">
+          <div *ngIf="study.profilingAndAutomation" class="row">
             <div class="col-xs-12">
-              <div class="form-group">
+              <div class="form-group conditionally-visible">
                 <label for="profiling-and-automation-description" translate="profilingAndAutomationDescription"></label>
-                <editor-help-link [helpTextComponent]="profilingAndAutomationHelpText"></editor-help-link>
-                <editor-help-text #profilingAndAutomationHelpText key="editor.studyAdministrative.profilingAndAutomation.helpText"></editor-help-text>
                 <textarea [(ngModel)]="study.profilingAndAutomationDescription[language]"
                           thlAutogrow
                           id="profiling-and-automation-description"
@@ -569,32 +570,32 @@
 
           <div class="row">
             <div class="col-xs-12">
-
-                            <div class="form-group">
-              <p>
-                <strong class="field-label">{{ 'directIdentityInformation.label' | translate }}</strong>
-              </p>
-
-              <div class="radio">
-                <label for="directIdentityInformation-true">
-                  <input [(ngModel)]="study.directIdentityInformation"
-                         [value]="false"
-                         type="radio"
-                         id="directIdentityInformation-true"
-                         name="directIdentityInformation-name">
-                  {{ 'directIdentityInformation.removedWhenAnalyzed' | translate }}
-                </label>
-              </div>
-              <div class="radio">
-                <label for="directIdentityInformation-false">
-                  <input [(ngModel)]="study.directIdentityInformation"
-                         [value]="true"
-                         type="radio"
-                         id="directIdentityInformation-false"
-                         name="directIdentityInformation-name">
-                  {{ 'directIdentityInformation.notRemovedWhenAnalyzed' | translate }}
-                </label>
-               </div>
+              <div class="form-group">
+                <p>
+                  <strong class="field-label">{{ 'directIdentityInformation.label' | translate }}</strong>
+                  <editor-help-link [helpTextComponent]="directIdentityInformationHelpText"></editor-help-link>
+                </p>
+                <editor-help-text #directIdentityInformationHelpText key="editor.studyAdministrative.directIdentityInformation.helpText"></editor-help-text>
+                <div class="radio">
+                  <label for="directIdentityInformation-true">
+                    <input [(ngModel)]="study.directIdentityInformation"
+                           [value]="false"
+                           type="radio"
+                           id="directIdentityInformation-true"
+                           name="directIdentityInformation-name">
+                    {{ 'directIdentityInformation.removedWhenAnalyzed' | translate }}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label for="directIdentityInformation-false">
+                    <input [(ngModel)]="study.directIdentityInformation"
+                           [value]="true"
+                           type="radio"
+                           id="directIdentityInformation-false"
+                           name="directIdentityInformation-name">
+                    {{ 'directIdentityInformation.notRemovedWhenAnalyzed' | translate }}
+                  </label>
+                </div>
             </div>
 
             <ng-container *ngIf="study.directIdentityInformation">
@@ -611,10 +612,22 @@
             </ng-container>
 
               <div class="form-group">
-                <p [ngSwitch]="study.isScientificStudy">
-                  <strong *ngSwitchCase="true" class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
-                  <strong *ngSwitchDefault class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
-                </p>
+                <ng-container [ngSwitch]="study.isScientificStudy">
+                  <ng-container *ngSwitchCase="true">
+                    <p>
+                      <strong class="field-label">{{ 'postStudyRetentionOfPersonalData.scientificLabel' | translate }}</strong>
+                      <editor-help-link [helpTextComponent]="postStudyRetentionOfPersonalDataScientificHelpText"></editor-help-link>
+                    </p>
+                    <editor-help-text #postStudyRetentionOfPersonalDataScientificHelpText key="editor.studyAdministrative.postStudyRetentionOfPersonalDataScientific.helpText"></editor-help-text>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <p>
+                      <strong class="field-label">{{ 'postStudyRetentionOfPersonalData.commonLabel' | translate }}</strong>
+                      <editor-help-link [helpTextComponent]="postStudyRetentionOfPersonalDataCommonHelpText"></editor-help-link>
+                    </p>
+                    <editor-help-text #postStudyRetentionOfPersonalDataCommonHelpText key="editor.studyAdministrative.postStudyRetentionOfPersonalDataCommon.helpText"></editor-help-text>
+                  </ng-container>
+                </ng-container>
                 <div class="radio" *ngFor="let retentionType of selectableRetentionOptions">
                   <label for="postStudyRetentionOfPersonalData-{{retentionType}}">
                     <input [(ngModel)]="study.postStudyRetentionOfPersonalData"

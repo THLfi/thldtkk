@@ -26,7 +26,7 @@ export class CatalogFrontPageComponent implements OnInit {
         this.isLoadingStudies = true
         this.studyService.getRecentStudies()
             .subscribe(studies => {
-                this.studies = studies.reverse() 
+                this.studies = studies
                 this.isLoadingStudies = false
             });
     }

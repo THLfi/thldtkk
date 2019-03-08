@@ -6,8 +6,13 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Study;
+import fi.thl.thldtkk.api.metadata.test.a;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +41,13 @@ public class GsonConfigurationTest {
       .isNotNull();
     assertThat(gson.fromJson("{}", CodeList.class).getCodeItems())
       .isNotNull();
+  }
+
+  @Test
+  public void dateFormatShouldBeInIsoFormat() {
+    java.util.Date lastModified = Date.from(ZonedDateTime.of(2019, 3, 8, 14, 43, 11, 0, ZoneId.of("Europe/Helsinki")).toInstant());
+    String json = gson.toJson(a.study().withLastModifiedDate(lastModified));
+    assertThat(json).contains("\"lastModifiedDate\": \"2019-03-08T14:43:11.000+02:00\"");
   }
 
 }

@@ -289,9 +289,6 @@ public class Study implements NodeEntity {
     this.id = id;
   }
 
-  // TODO: Add date format? Currently serialized date looks like this: "lastModifiedDate": "Nov 1, 2017 4:26:32 PM"
-  // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
-  // And http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
   public Optional<Date> getLastModifiedDate() {
     return Optional.ofNullable(lastModifiedDate);
   }

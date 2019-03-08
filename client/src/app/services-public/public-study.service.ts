@@ -37,7 +37,7 @@ export class PublicStudyService {
   }
 
   getRecentStudies(max=10): Observable<Study[]> {
-    return this.searchInternal('','', 'lastModifiedDate.sortable', max)
+    return this.searchInternal('','', 'lastModifiedDate.sortable+desc', max)
   }
 
   search(searchText: string, organizationId: string): Observable<Study[]> {

@@ -256,6 +256,7 @@ public class Study implements NodeEntity {
                List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity,
                List<PrincipleForDigitalSecurity> principlesForDigitalSecurity,
                Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy,
+               ConfidentialityClass confidentialityClass,
                Organization ownerOrganization,
                List<PersonInRole> personInRoles,
                List<Dataset> datasets,
@@ -273,6 +274,7 @@ public class Study implements NodeEntity {
     this.principlesForPhysicalSecurity = principlesForPhysicalSecurity;
     this.principlesForDigitalSecurity = principlesForDigitalSecurity;
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = partiesAndSharingOfResponsibilityInCollaborativeStudy;
+    this.confidentialityClass = confidentialityClass;
     this.ownerOrganization = ownerOrganization;
     this.personInRoles = personInRoles;
     this.datasets = datasets;

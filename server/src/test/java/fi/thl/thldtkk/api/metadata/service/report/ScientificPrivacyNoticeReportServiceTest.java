@@ -1,11 +1,10 @@
 package fi.thl.thldtkk.api.metadata.service.report;
 
 import fi.thl.thldtkk.api.metadata.ThymeleafConfiguration;
+import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
-import fi.thl.thldtkk.api.metadata.domain.PrincipleForDigitalSecurity;
-import fi.thl.thldtkk.api.metadata.domain.PrincipleForPhysicalSecurity;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
 import fi.thl.thldtkk.api.metadata.test.PersonInRoleBuilder;
@@ -99,6 +98,7 @@ public class ScientificPrivacyNoticeReportServiceTest {
       .withDescription("Nämä tiedot tulevat...\n\n...kentästä 'description'.")
       .withPurposeOfPersonRegistry("Nämä tiedot tulevat...\n\n...kentästä 'purposeOfPersonRegistry'.")
       .withPartiesAndSharingOfResponsibilityInCollaborativeStudy("Nämä tiedot tulevat...\n\n...kentästä 'partiesAndSharingOfResponsibilityInCollaborativeStudy'.")
+      .withConfidentialityClass(ConfidentialityClass.CONFIDENTIAL)
       .build();
     when(editorStudyService.get(eq(studyId))).thenReturn(Optional.of(study));
 

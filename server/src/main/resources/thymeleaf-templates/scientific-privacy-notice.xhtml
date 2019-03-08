@@ -353,12 +353,15 @@
 
     <div class="section">
       <h2>16. <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples}">Henkilötietojen suojauksen periaatteet</span></h2>
-      <div th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.intro}">Tiedot ovat salassa pidettäviä.
-        Rekisterinpitäjä on laatinut tietosuojaa koskevan vaikutusten arvioinnin.
-        Rekisterinpitäjä on sitoutunut noudattamaan alaansa koskevia vahvistettuja käytännesääntöjä.
-      </div>
 
-      <br />
+      <p>
+        <span th:if="${isConfidential}"
+              th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.confidential}">Tiedot ovat salassa pidettäviä.</span>
+        <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.intro}">
+          Rekisterinpitäjä on laatinut tietosuojaa koskevan vaikutusten arvioinnin.
+          Rekisterinpitäjä on sitoutunut noudattamaan alaansa koskevia vahvistettuja käytännesääntöjä.
+        </span>
+      </p>
 
       <div>
         <span th:text="#{scientificPrivacyNotice.personalDataProtectionPrinciples.physicalSecurity} +': '">Manuaalisen aineiston suojaaminen:</span>

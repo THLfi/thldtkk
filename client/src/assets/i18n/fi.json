@@ -989,6 +989,9 @@
       "purposeOfPersonRegistryCommon": {
         "helpText": "<p>Lisää lyhyt kuvaus henkilötietojen käsittelyn tarkoituksesta. Kentän sisältö tulostuu tietosuojailmoitukseen muodossa: \"Käsittelemme henkilötietojasi <em>&lt;kentän sisältö&gt;</em> varten.\"</p>"
       },
+      "legalBasisForHandlingPersonalData": {
+        "helpText": "<p>Tässä valitaan ne lainmukaiset tietosuoja-asetuksen 6 artiklan kohdat, joihin henkilötietojen käsittely perustuu.</p>"
+      },
       "partiesAndSharingOfResponsibilityInCollaborativeStudy": {
         "helpText": "<p>Jos kyseessä on useamman tahon (organisaation/osaston) yhteishanke, kuvaa tässä osapuolten vastuunjako henkilötietojen käsittelyn suhteen. Jos kyse ei ole yhteistyöhankkeesta merkitse 'EI yhteistyöhankkeena tehtävä tutkimus'. Jos tutkimusta yhdessä tekevät organisaatiot käsittelevät tutkimuksessa samoja henkilötietoja ja määrittelevät yhdessä henkilötietojen käsittelyn tarkoitukset ja keinot, ne ovat yhteisrekisterinpitäjiä.</p>"
       },

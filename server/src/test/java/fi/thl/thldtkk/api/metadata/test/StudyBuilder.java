@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.test;
 
+import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
@@ -31,6 +32,7 @@ public class StudyBuilder {
   private Map<String, String> personRegisterDataTransfers;
   private Map<String, String> personRegisterDataTransfersOutsideEuOrEea;
   private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy;
+  private ConfidentialityClass confidentialityClass;
   private List<PrincipleForPhysicalSecurity> principlesForPhysicalSecurity = new ArrayList<>();
   private List<PrincipleForDigitalSecurity> principlesForDigitalSecurity = new ArrayList<>();
   private Organization ownerOrganization;
@@ -145,9 +147,13 @@ public class StudyBuilder {
     return withPersonRegisterDataTransfersOutsideEuOrEea(langValues);
   }
 
-
   public StudyBuilder withPartiesAndSharingOfResponsibilityInCollaborativeStudy(Map<String, String> value) {
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = value;
+    return this;
+  }
+
+  public StudyBuilder withConfidentialityClass(ConfidentialityClass confidentialityClass) {
+    this.confidentialityClass = confidentialityClass;
     return this;
   }
 
@@ -202,6 +208,7 @@ public class StudyBuilder {
       principlesForPhysicalSecurity,
       principlesForDigitalSecurity,
       partiesAndSharingOfResponsibilityInCollaborativeStudy,
+      confidentialityClass,
       ownerOrganization,
       personInRoles,
       datasets,

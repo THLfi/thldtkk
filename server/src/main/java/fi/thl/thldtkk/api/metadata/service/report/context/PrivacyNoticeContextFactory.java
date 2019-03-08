@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.service.report.context;
 
+import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.Person;
 import fi.thl.thldtkk.api.metadata.domain.PersonInRole;
@@ -129,6 +130,8 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
 
     context.setVariable("studyPerformers", study.getStudyPerformers().get(lang));
 
+    context.setVariable("isConfidential", isConfidential(study));
+
     Optional<Boolean> profilingAndAutomation = study.getProfilingAndAutomation();
     String profilingAndAutomationDescription = "";
     if (profilingAndAutomation.orElse(false)) {
@@ -178,6 +181,12 @@ public class PrivacyNoticeContextFactory implements ReportContextFactory {
     }
 
     return name.toString();
+  }
+
+  private boolean isConfidential(Study study) {
+    ConfidentialityClass confidentialityClass = study.getConfidentialityClass().orElse(null);
+    return ConfidentialityClass.CONFIDENTIAL.equals(confidentialityClass)
+      || ConfidentialityClass.PARTLY_CONFIDENTIAL.equals(confidentialityClass);
   }
 
   private String getPersonNameAndContactInformation(Person person) {

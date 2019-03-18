@@ -275,12 +275,19 @@ public class PublicStudyServiceImpl implements PublicStudyService {
   private Changeset<NodeId, Node> changesetForInsert(Study study,
                                                      boolean includeDatasets,
                                                      boolean includeInstanceVariables) {
-    Changeset changeset = Changeset.empty();
+    Changeset<NodeId, Node> changeset = Changeset.empty();
 
     if (includeDatasets) {
       for (Dataset dataset : study.getDatasets()) {
         changeset = changeset.merge(changesetForInsert(dataset, includeInstanceVariables));
       }
+
+      List<Node> uniqueNodesSaved = changeset.getSave()
+        .stream()
+        .distinct()
+        .collect(toList());
+
+      changeset = new Changeset<>(changeset.getDelete(), uniqueNodesSaved);
     }
     else {
       study.setDatasets(Collections.emptyList());

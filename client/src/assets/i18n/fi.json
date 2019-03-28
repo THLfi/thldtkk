@@ -859,7 +859,7 @@
     "noPersonInRoles": "Aineistoon liittyviä henkilöitä ei ole määritelty.",
     "lifecyclePhase":"Aineiston elinkaaren vaihe",
     "confirmRemove": "Haluatko varmasti poistaa aineiston?",
-    "personsInCharge": "HUOM! Tietosuojailmoituksia varten aineistolle on valittava ainakin yhteyshenkilö, tietosuojavastaava ja tutkimuksesta vastaava johtaja",
+    "personsInCharge": "HUOM! Tietosuojailmoituksia varten aineistolle on valittava ainakin yhteyshenkilö, tietosuojavastaava ja tieteellisen tutkimuksen aineistoissa myös tutkimuksesta vastaava johtaja",
     "sidebar": {
       "study": "Aineisto",
       "datasetsAndVariables": "Datasetit & muuttujat",

@@ -5,7 +5,7 @@ import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UnitTypeService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -54,7 +54,7 @@ public class UnitTypeServiceImpl implements UnitTypeService {
     return nodes.get(new NodeId(id, UnitType.TERMED_NODE_CLASS)).map(UnitType::new);
   }
 
-  @UserCanCreateAdminCanUpdate
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public UnitType save(@P("entity") UnitType unitType) {
     return new UnitType(nodes.save(unitType.toNode()));

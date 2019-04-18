@@ -21,7 +21,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.CodeListService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -97,7 +97,7 @@ public class CodeListServiceImpl implements CodeListService {
     return nodes.get(new NodeId(id, "CodeList")).map(CodeList::new);
   }
 
-  @UserCanCreateAdminCanUpdate
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public CodeList save(@P("entity") CodeList codeList) {
     Optional<CodeList> existingCodeList;

@@ -5,7 +5,7 @@ import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.VariableService;
 import org.springframework.security.access.method.P;
@@ -54,7 +54,7 @@ public class VariableServiceImpl implements VariableService {
     return nodes.get(new NodeId(id, Variable.TERMED_NODE_CLASS)).map(Variable::new);
   }
 
-  @UserCanCreateAdminCanUpdate
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public Variable save(@P("entity") Variable variable) {
     return new Variable(nodes.save(variable.toNode()));

@@ -11,7 +11,7 @@ import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminCanUpdate;
+import fi.thl.thldtkk.api.metadata.security.annotation.UserCanCreateAdminAndOrgAdminCanUpdate;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.service.UniverseService;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
@@ -53,7 +53,7 @@ public class UniverseServiceImpl implements UniverseService {
     return nodes.get(new NodeId(id, "Universe")).map(Universe::new);
   }
 
-  @UserCanCreateAdminCanUpdate
+  @UserCanCreateAdminAndOrgAdminCanUpdate
   @Override
   public Universe save(@P("entity") Universe universe) {
     return new Universe(nodes.save(universe.toNode()));

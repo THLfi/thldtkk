@@ -102,8 +102,13 @@ export class EditorStudyService {
   }
 
   search(searchString: string, maxResults: number): Observable<Study[]> {
-      return this.http.get(env.contextPath + env.apiPath + '/editor/studies?query=' + searchString + '&max=' + maxResults)
-        .map(response => response.json() as Study[])
+      const url = env.contextPath
+      + env.apiPath
+      + '/editor/studies?query='
+      + searchString
+      + '&max='
+      + maxResults
+      return this.http.get(url).map(response => response.json() as Study[]);
   }
 
   getAll(): Observable<Study[]> {

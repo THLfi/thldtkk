@@ -69,6 +69,10 @@ Run dev server:
 UI can be accessed via `http://localhost:8082/`. Changes to source files will
 cause an automatic reload in your browser.
 
+During development, a live testing session can be initiated using:
+
+    ng test
+
 # Virtu configuration
 
 Editor has a built-in feature that allows users to login with

@@ -28,3 +28,4 @@ server/application.properties
 /server/src/main/resources/config/application.properties
 /server/src/main/resources/config/users.properties
 /server/nbactions.xml
+test-results.xml

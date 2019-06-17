@@ -131,6 +131,15 @@ public class EditorStudyController {
     editorStudyService.deleteInstanceVariable(studyId, datasetId, instanceVariableId);
   }
 
+  @ApiOperation("Get previous instance variable for given one")
+  @GetJsonMapping("/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}/previous")
+  public String getPreviousInstanceVariable(
+          @PathVariable("studyId") UUID studyId,
+          @PathVariable("datasetId") UUID datasetId,
+          @PathVariable("instanceVariableId") UUID instanceVariableId) {
+    return editorStudyService.getPreviousInstanceVariable(studyId, datasetId, instanceVariableId);
+  }
+
   @ApiOperation("Get next instance variable for given one")
   @GetJsonMapping("/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}/next")
   public String getNextInstanceVariable(

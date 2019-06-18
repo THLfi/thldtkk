@@ -73,6 +73,12 @@
         "regex": "^(true|false|^$)$"
       },
       {
+        "id": "groupsOfRegistrees"
+      },
+      {
+        "id": "otherGroupsOfRegistrees"
+      },
+      {
         "id": "partiesAndSharingOfResponsibilityInCollaborativeStudy"
       },
       {

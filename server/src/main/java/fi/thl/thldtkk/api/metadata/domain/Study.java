@@ -68,6 +68,8 @@ public class Study implements NodeEntity {
   private Map<String, String> partiesAndSharingOfResponsibilityInCollaborativeStudy = new LinkedHashMap<>();
   private Map<String, String> studyPerformers = new LinkedHashMap<>();
   private Boolean isScientificStudy;
+  private List<GroupOfRegistree> groupsOfRegistrees = new ArrayList<>();
+  private Map<String, String> otherGroupsOfRegistrees = new LinkedHashMap<>();
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
   private Boolean directIdentityInformation;
@@ -165,10 +167,13 @@ public class Study implements NodeEntity {
     this.partiesAndSharingOfResponsibilityInCollaborativeStudy = toLangValueMap(node.getProperties("partiesAndSharingOfResponsibilityInCollaborativeStudy"));
     this.studyPerformers = toLangValueMap(node.getProperties("studyPerformers"));
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
+    this.groupsOfRegistrees = valuesToEnumCollection(node.getProperties("groupsOfRegistrees"), GroupOfRegistree.class, ArrayList::new);
+    this.otherGroupsOfRegistrees = toLangValueMap(node.getProperties("otherGroupsOfRegistrees"));
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
     this.directIdentityInformation = PropertyMappings.toBoolean(node.getProperties("directIdentityInformation"), null);
     this.directIdentityInformationDescription = toLangValueMap(node.getProperties("directIdentityInformationDescription"));
+
     // Data security
     toOptionalString(node.getProperties("confidentialityClass"))
       .ifPresent(cc -> this.confidentialityClass = ConfidentialityClass.valueOf(cc));
@@ -403,6 +408,10 @@ public class Study implements NodeEntity {
 
   public Optional<Boolean> getIsScientificStudy() {
     return Optional.ofNullable(isScientificStudy);
+  }
+
+  public List<GroupOfRegistree> getGroupsOfRegistrees() {
+    return groupsOfRegistrees;
   }
 
   public Optional<Boolean> getProfilingAndAutomation() {
@@ -741,6 +750,8 @@ public class Study implements NodeEntity {
     props.putAll("typeOfSensitivePersonalData", PropertyMappings.enumsToPropertyValues(typeOfSensitivePersonalData));
     props.putAll("otherTypeOfSensitivePersonalData", toPropertyValues(otherTypeOfSensitivePersonalData));
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
+    props.putAll("groupsOfRegistrees", PropertyMappings.enumsToPropertyValues(groupsOfRegistrees));
+    props.putAll("otherGroupsOfRegistrees", toPropertyValues(otherGroupsOfRegistrees));
     props.putAll("partiesAndSharingOfResponsibilityInCollaborativeStudy", toPropertyValues(partiesAndSharingOfResponsibilityInCollaborativeStudy));
     props.putAll("studyPerformers", toPropertyValues(studyPerformers));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
@@ -977,6 +988,8 @@ public class Study implements NodeEntity {
     study.partiesAndSharingOfResponsibilityInCollaborativeStudy = this.partiesAndSharingOfResponsibilityInCollaborativeStudy;
     study.studyPerformers = this.studyPerformers;
     study.isScientificStudy = this.isScientificStudy;
+    study.groupsOfRegistrees = this.groupsOfRegistrees;
+    study.otherGroupsOfRegistrees = this.otherGroupsOfRegistrees;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;
     study.directIdentityInformation = this.directIdentityInformation;

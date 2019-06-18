@@ -28,6 +28,7 @@ import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
 import {UserInformation} from './user-information';
 import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
+import { GroupOfRegistree } from './groupOfRegistree';
 
 export interface Study extends Node {
 
@@ -66,6 +67,7 @@ export interface Study extends Node {
   profilingAndAutomationDescription?: LangValues
   directIdentityInformation?: boolean
   directIdentityInformationDescription?: LangValues
+  groupsOfRegistrees?: GroupOfRegistree[]
 
   // Data security
   confidentialityClass?: ConfidentialityClass

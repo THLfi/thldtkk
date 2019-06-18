@@ -184,6 +184,38 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <p>
+                <strong class="field-label">{{ 'groupsOfRegistrees.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="groupsOfRegistreesHelpText"></editor-help-link>
+                <editor-help-text #legalBasisForHandlingPersonalDataHelpText key="editor.studyAdministrative.groupsOfRegistrees.helpText"></editor-help-text>
+              </p>
+              <p-multiSelect [(ngModel)]="study.groupsOfRegistrees"
+                            [ngModelOptions]="{ standalone: true }"
+                            [options]="groupsOfRegistreesOptions"
+                            [filter]="false"
+                            defaultLabel="{{ 'groupsOfRegistrees.selectGroups' | translate }}"
+                            inputId="groupsOfRegistrees">
+              </p-multiSelect>
+
+              <div class="form-group conditionally-visible" *ngIf="study.groupsOfRegistrees.indexOf('OTHER') != -1">
+                <label for="otherGroupsOfRegistrees" class="control-label lighter">{{'groupsOfRegistrees.otherGroupsLabel' | translate}}</label>
+                <input [(ngModel)]="study.otherGroupsOfRegistrees[language]"
+                      id="otherGroupsOfRegistrees"
+                      name="otherGroupsOfRegistrees"
+                      class="form-control"
+                      required>
+                <p *ngFor="let errorKey of formErrors.otherGroupsOfRegistrees" class="bg-danger text-danger">
+                  <fa icon="exclamation-triangle"></fa>
+                  {{ errorKey | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- START OF CONDITIONAL BLOCK -->
         <ng-container *ngIf="isPersonRegistry()">
 

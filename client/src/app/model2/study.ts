@@ -29,6 +29,7 @@ import {UsageCondition} from './usage-condition';
 import {UserInformation} from './user-information';
 import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
 import { GroupOfRegistree } from './groupOfRegistree';
+import { ReceivingGroup } from './receivingGroup';
 
 export interface Study extends Node {
 
@@ -68,6 +69,9 @@ export interface Study extends Node {
   directIdentityInformation?: boolean
   directIdentityInformationDescription?: LangValues
   groupsOfRegistrees?: GroupOfRegistree[]
+  otherGroupsOfRegistrees?: LangValues
+  receivingGroups?: ReceivingGroup[]
+  otherReceivingGroups?: LangValues
 
   // Data security
   confidentialityClass?: ConfidentialityClass

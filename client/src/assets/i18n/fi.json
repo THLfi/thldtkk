@@ -123,6 +123,26 @@
   "archiving": "Arkistointi",
   "isStudyPersonRegistry": "Sisältääkö aineisto henkilötietoja",
   "isScientificStudy": "Onko aineisto tieteellisen tutkimuksen aineisto",
+  "groupsOfRegistrees": {
+    "label": "Rekisteröityjen ryhmät",
+    "selectGroups": "Valitse ryhmät",
+    "otherGroupsLabel": "Muut rekisteröityjen ryhmät",
+    "SUBJECTS": "Tutkittavat",
+    "CUSTOMERS": "Asiakkaat",
+    "PATIENTS": "Potilaat",
+    "JOB_SEEKERS": "Työnhakijat",
+    "OTHER": "Muu, mikä"
+  },
+  "receivingGroups": {
+    "label": "Vastaanottajaryhmät",
+    "selectGroups": "Valitse ryhmät",
+    "otherGroupsLabel": "Muut vastaanottajaryhmät",
+    "RESEARCH_ORGANIZATIONS": "Tutkimusorganisaatiot",
+    "COMPANIES": "Yritykset",
+    "HEALTHCARE_UNITS": "Terveydenhuollon yksiköt",
+    "SERVICE_PRODUCERS": "Palveluntuottajat",
+    "OTHER": "Muu, mikä"
+  },
   "phoneNumberForRegistryPolicy":"Rekisterinpitäjän puhelinnumero",
   "addressForRegistryPolicy":"Rekisterinpitäjän osoite",
   "noDatasetPersonInRoles": "Datasettiin liittyviä henkilöitä ei ole määritelty.",
@@ -979,6 +999,9 @@
       },
       "isScientificStudy": {
         "helpText": "<p>Tässä valitaan, onko kyseessä tieteellisen tutkimuksen aineisto. <em>Kyllä</em>-valinta tuottaa Tieteellisen tutkimuksen tietosuojailmoituksen.</p>"
+      },
+      "groupsOfRegistrees": {
+        "helpText": "<p>Tässä valitaan rekisteröityjen ryhmät. Listaamattomat ryhmät voidaan lisätä \"Muu ryhmä\"-valinnan kautta ilmestyvään tekstikenttään.</p>"
       },
       "studyType": {
         "helpText": "<p>Tässä valitaan onko kyseessä kerta- vai seurantatutkimus.</p>"

@@ -16,6 +16,7 @@ import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-sectio
 import { TypeOfSensitivePersonalData } from '../../../model2/type-of-sensitive-personal-data'
 import { PostStudyRetentionOfPersonalData } from '../../../model2/post-study-retention-of-personal-data'
 import { GroupOfRegistree } from 'app/model2/groupOfRegistree';
+import { ReceivingGroup } from 'app/model2/receivingGroup';
 
 @Component({
   templateUrl: './study-administrative-view.component.html',
@@ -29,6 +30,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
   sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
   groupOfRegistree = GroupOfRegistree
+  receivingGroup = ReceivingGroup
   confidentialityClassType = ConfidentialityClass
   legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData
   legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData

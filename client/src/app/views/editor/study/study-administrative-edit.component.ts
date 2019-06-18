@@ -30,6 +30,7 @@ import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
 import { GroupOfRegistree } from 'app/model2/groupOfRegistree';
+import { ReceivingGroup } from 'app/model2/receivingGroup';
 
 
 @Component({
@@ -76,6 +77,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     legalBasisForHandlingPersonalDataOptions: SelectItem[] = []
     legalBasisForHandlingSensitivePersonalDataOptions: SelectItem[] = []
     groupsOfRegistreesOptions: SelectItem[] = []
+    receivingGroupsOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
 
     constructor(
@@ -119,6 +121,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.translateService.get('groupsOfRegistrees')
         .subscribe(translations => {
           this.groupsOfRegistreesOptions = Object.keys(GroupOfRegistree)
+            .map(key => {
+              return { label: translations[key], value: key }
+            })
+        })
+
+      this.translateService.get('receivingGroups')
+        .subscribe(translations => {
+          this.receivingGroupsOptions = Object.keys(ReceivingGroup)
             .map(key => {
               return { label: translations[key], value: key }
             })

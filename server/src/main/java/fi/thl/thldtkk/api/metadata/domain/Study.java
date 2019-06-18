@@ -70,6 +70,8 @@ public class Study implements NodeEntity {
   private Boolean isScientificStudy;
   private List<GroupOfRegistree> groupsOfRegistrees = new ArrayList<>();
   private Map<String, String> otherGroupsOfRegistrees = new LinkedHashMap<>();
+  private List<ReceivingGroup> receivingGroups = new ArrayList<>();
+  private Map<String, String> otherReceivingGroups = new LinkedHashMap<>();
   private Boolean profilingAndAutomation;
   private Map<String, String> profilingAndAutomationDescription;
   private Boolean directIdentityInformation;
@@ -169,6 +171,8 @@ public class Study implements NodeEntity {
     this.isScientificStudy = PropertyMappings.toBoolean(node.getProperties("isScientificStudy"), null);
     this.groupsOfRegistrees = valuesToEnumCollection(node.getProperties("groupsOfRegistrees"), GroupOfRegistree.class, ArrayList::new);
     this.otherGroupsOfRegistrees = toLangValueMap(node.getProperties("otherGroupsOfRegistrees"));
+    this.receivingGroups = valuesToEnumCollection(node.getProperties("receivingGroups"), ReceivingGroup.class, ArrayList::new);
+    this.otherReceivingGroups = toLangValueMap(node.getProperties("otherReceivingGroups"));
     this.profilingAndAutomation = PropertyMappings.toBoolean(node.getProperties("profilingAndAutomation"), null);
     this.profilingAndAutomationDescription = toLangValueMap(node.getProperties("profilingAndAutomationDescription"));
     this.directIdentityInformation = PropertyMappings.toBoolean(node.getProperties("directIdentityInformation"), null);
@@ -412,6 +416,10 @@ public class Study implements NodeEntity {
 
   public List<GroupOfRegistree> getGroupsOfRegistrees() {
     return groupsOfRegistrees;
+  }
+
+  public List<ReceivingGroup> getReceivingGroups() {
+    return receivingGroups;
   }
 
   public Optional<Boolean> getProfilingAndAutomation() {
@@ -752,6 +760,8 @@ public class Study implements NodeEntity {
     getIsScientificStudy().ifPresent(v -> props.put("isScientificStudy", toPropertyValue(v)));
     props.putAll("groupsOfRegistrees", PropertyMappings.enumsToPropertyValues(groupsOfRegistrees));
     props.putAll("otherGroupsOfRegistrees", toPropertyValues(otherGroupsOfRegistrees));
+    props.putAll("receivingGroups", PropertyMappings.enumsToPropertyValues(receivingGroups));
+    props.putAll("otherReceivingGroups", toPropertyValues(otherReceivingGroups));
     props.putAll("partiesAndSharingOfResponsibilityInCollaborativeStudy", toPropertyValues(partiesAndSharingOfResponsibilityInCollaborativeStudy));
     props.putAll("studyPerformers", toPropertyValues(studyPerformers));
     getProfilingAndAutomation().ifPresent(v -> props.put("profilingAndAutomation", toPropertyValue(v)));
@@ -990,6 +1000,8 @@ public class Study implements NodeEntity {
     study.isScientificStudy = this.isScientificStudy;
     study.groupsOfRegistrees = this.groupsOfRegistrees;
     study.otherGroupsOfRegistrees = this.otherGroupsOfRegistrees;
+    study.receivingGroups = this.receivingGroups;
+    study.otherReceivingGroups = this.otherReceivingGroups;
     study.profilingAndAutomation = this.profilingAndAutomation;
     study.profilingAndAutomationDescription = this.profilingAndAutomationDescription;
     study.directIdentityInformation = this.directIdentityInformation;

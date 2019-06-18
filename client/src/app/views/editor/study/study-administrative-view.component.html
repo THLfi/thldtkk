@@ -111,6 +111,18 @@
         </div>
       </div>
 
+      <div class="row" *ngIf="study.receivingGroups">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'receivingGroups.label' | translate }}</strong></p>
+            <ul *ngIf="study.receivingGroups.length">
+              <li *ngFor="let group of study.receivingGroups">
+                {{ 'receivingGroups.' + group | translate }}
+                <span *ngIf="group === receivingGroup.OTHER">: {{ study.otherReceivingGroups | lang }}</span>
+              </li>
+            </ul>
+        </div>
+      </div>
+
       <!-- START OF CONDITIONAL BLOCK -->
       <ng-container *ngIf="isPersonRegistry()">
         <div class="row" *ngIf="isNonScientificPersonRegistry()">

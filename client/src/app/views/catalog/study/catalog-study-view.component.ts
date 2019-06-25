@@ -39,10 +39,27 @@ export class CatalogStudyViewComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.loadingStudy = true
-      this.study = null
+      this.loadingStudy = true;
+      this.study = null;
 
-      this.studyService.getStudy(params['id']).subscribe(study => {
+      this.studyService.getStudyWithSelect(params['id'], [
+        'properties.*',
+        'references.studyGroup',
+        'references.ownerOrganization',
+        'references.personInRoles',
+          'references.person:2',
+          'references.role:2',
+        'references.datasetTypes',
+        'references.usageCondition',
+        'references.links',
+        'references.universe',
+        'references.referencePeriodStart',
+        'references.referencePeriodEnd',
+        'references.population',
+        'references.conceptsFromScheme',
+        'references.dataSets',
+          'references.instanceVariable:2'
+      ]).subscribe(study => {
         this.study = study
         this.updatePageTitle()
         this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(study)

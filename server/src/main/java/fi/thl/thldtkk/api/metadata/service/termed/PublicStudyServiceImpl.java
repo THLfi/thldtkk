@@ -7,6 +7,7 @@ import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -17,6 +18,7 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,16 +60,16 @@ public class PublicStudyServiceImpl implements PublicStudyService {
 
   @Override
   public List<Study> findAll() {
-    return find("", -1);
+    return find(null, -1);
   }
 
   @Override
   public List<Study> find(String query, int max) {
-    return find(null, query, max, null);
+    return find(null, query, max, null, null);
   }
 
   @Override
-  public List<Study> find(UUID organizationId, String query, int max, String sortString) {
+  public List<Study> find(UUID organizationId, String query, int max, String sortString, List<String> selectStrings) {
     List<Criteria> criteria = new ArrayList<>();
 
     criteria.add(keyValue("type.id", Study.TERMED_NODE_CLASS));
@@ -81,12 +83,13 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       criteria.add(keyWithAnyValue("properties.prefLabel", tokens));
     }
 
+    Select select = buildSelect(selectStrings);
     Stream<Node> studyNodes;
     if (hasText(sortString)) {
-      studyNodes = this.nodes.query(and(criteria), max, Sort.sort(sortString));
+      studyNodes = this.nodes.query(select, and(criteria), Sort.sort(sortString), max);
     }
     else {
-      studyNodes = this.nodes.query(and(criteria), max);
+      studyNodes = this.nodes.query(select, and(criteria), max);
     }
 
     return studyNodes.map(Study::new).collect(toList());
@@ -130,6 +133,15 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       new NodeId(id, Study.TERMED_NODE_CLASS)).map(Study::new);
 
     return study;
+  }
+
+  @Override
+  public Optional<Study> get(UUID id, List<String> selectStrings) {
+    return nodes.get(
+      buildSelect(selectStrings),
+      new NodeId(id, Study.TERMED_NODE_CLASS)
+    )
+      .map(Study::new);
   }
 
   private void checkUserIsAllowedToAccessStudy(Study study) {
@@ -521,5 +533,21 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       }
     }
     return instanceVariableId.toString();
+  }
+
+  private Select buildSelect(List<String> selectStrings) {
+    if (selectStrings == null) {
+      selectStrings = new ArrayList<>();
+    }
+
+    if (! selectStrings.contains("id")) {
+      selectStrings.add("id");
+    }
+
+    if (! selectStrings.contains("type")) {
+      selectStrings.add("type");
+    }
+
+    return new Select(selectStrings);
   }
 }

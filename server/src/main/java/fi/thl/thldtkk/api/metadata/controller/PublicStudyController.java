@@ -1,5 +1,7 @@
 package fi.thl.thldtkk.api.metadata.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Study;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,14 +37,25 @@ public class PublicStudyController {
       @RequestParam(name = "organizationId", required = false) UUID organizationId,
       @RequestParam(name = "query", defaultValue = "") String query,
       @RequestParam(name = "max", defaultValue = "-1") int max,
-      @RequestParam(name = "sort", defaultValue = "") String sort) {
-    return sanitizeStudyList(publicStudyService.find(organizationId, query, max, sort));
+      @RequestParam(name = "sort", defaultValue = "") String sort,
+      @RequestParam(name = "select", required = false) String selectString
+  ) throws IOException {
+    return sanitizeStudyList(publicStudyService.find(
+      organizationId,
+      query,
+      max,
+      sort,
+      parseSelect(selectString)
+    ));
   }
 
   @ApiOperation("Get one study by ID")
   @GetJsonMapping("/studies/{studyId}")
-  public Study getStudy(@PathVariable UUID studyId) {
-    return sanitizeStudy(publicStudyService.get(studyId)
+  public Study getStudy(
+    @PathVariable UUID studyId,
+    @RequestParam(name = "select", required = false) String selectString
+  ) throws IOException {
+    return sanitizeStudy(publicStudyService.get(studyId, parseSelect(selectString))
       .orElseThrow(entityNotFound(Study.class, studyId)));
   }
 
@@ -77,5 +92,14 @@ public class PublicStudyController {
           @PathVariable("datasetId") UUID datasetId,
           @PathVariable("instanceVariableId") UUID instanceVariableId) {
     return publicStudyService.getNextInstanceVariable(studyId, datasetId, instanceVariableId);
+  }
+
+  private List<String> parseSelect(String selectString) throws IOException {
+    ArrayList<String> select = null;
+    if (selectString != null) {
+      select = new ObjectMapper().readValue(selectString, new TypeReference<ArrayList<String>>() {});
+    }
+
+    return select;
   }
 }

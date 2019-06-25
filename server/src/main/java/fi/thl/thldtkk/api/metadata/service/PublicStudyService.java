@@ -8,8 +8,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PublicStudyService extends Service<UUID, Study> {
-  
-  List<Study> find(UUID organizationId, String query, int max, String sortString);
+
+  Optional<Study> get(UUID id, List<String> select);
+
+  List<Study> find(UUID organizationId, String query, int max, String sortString, List<String> select);
 
   Optional<Dataset> getDataset(UUID studyId, UUID datasetId);
   

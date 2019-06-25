@@ -10,38 +10,56 @@ import 'rxjs/add/operator/map'
 export class PublicStudyService {
 
   constructor(
-    private http: Http) {}
+    private http: Http
+  ) {}
 
-  getAll(): Observable<Study[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/public/studies')
-      .map(response => response.json() as Study[])
-  }
-
-  getStudy(id: string): Observable<Study> {
+  getStudy(id: string) {
     return this.http.get(env.contextPath + env.apiPath + '/public/studies/' + id)
       .map(response => response.json() as Study)
   }
 
-  private searchInternal(searchText: string, organizationId: string, sort: string, max: number): Observable<Study[]> {
-    const url = env.contextPath
-      + env.apiPath
-      + '/public/studies?query='
-      + searchText
-      + '&sort='
-      + sort
-      + '&organizationId='
-      + organizationId
-      + '&max='
-      + max
-    return this.http.get(url).map(response => response.json() as Study[])
+  getStudyWithSelect(id: string, select: string[]) {
+    return this.http.get(env.contextPath + env.apiPath + '/public/studies/' + id, {search: {
+      select: JSON.stringify(select)
+    }})
+      .map(response => response.json() as Study)
   }
 
-  getRecentStudies(max=10): Observable<Study[]> {
-    return this.searchInternal('','', 'lastModifiedDate.sortable+desc', max)
+  private searchInternal(
+    searchText: string,
+    organizationId: string,
+    sort: string,
+    max: number,
+    select: string[]
+  ) {
+    return this.http.get(env.contextPath + env.apiPath + '/public/studies', {search: {
+      query: searchText,
+      sort: sort,
+      organizationId: organizationId,
+      max: max,
+      select: JSON.stringify(select)
+    }})
+      .map(response => response.json() as Study[]);
   }
 
-  search(searchText: string, organizationId: string): Observable<Study[]> {
-    return this.searchInternal(searchText, organizationId, '', -1)
+  getRecentStudies(max=10) {
+    return this.searchInternal(
+      '',
+      '',
+      'lastModifiedDate.sortable desc',
+      max,
+      ['properties.prefLabel']
+    );
+  }
+
+  search(searchText: string, organizationId: string) {
+    return this.searchInternal(
+      searchText,
+      organizationId,
+      '',
+      -1,
+      ['properties.prefLabel']
+    );
   }
 
 }

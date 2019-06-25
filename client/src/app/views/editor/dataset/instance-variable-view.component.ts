@@ -100,9 +100,21 @@ export class InstanceVariableViewComponent implements OnInit {
       })
   }
 
+  goToPreviousInstanceVariable(): void {
+    this.instanceVariableService.getPreviousInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
+      .subscribe(instanceVariableId => {
+        this.navigateToInstanceVariable(instanceVariableId);
+      })
+  }
+
   goToNextInstanceVariable(): void {
     this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
       .subscribe(instanceVariableId => {
+        this.navigateToInstanceVariable(instanceVariableId);
+      })
+  }
+
+  navigateToInstanceVariable(instanceVariableId: string) {
         this.router.navigate([
           '/editor/studies',
           this.study.id,
@@ -110,6 +122,5 @@ export class InstanceVariableViewComponent implements OnInit {
           this.dataset.id,
           'instanceVariables',
           instanceVariableId])
-      })
   }
 }

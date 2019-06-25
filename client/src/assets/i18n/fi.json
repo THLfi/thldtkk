@@ -1343,7 +1343,7 @@
   "people": "Henkilöt",
   "printPrivacyNotice": "Tulosta tietosuojailmoitus",
   "printScientificPrivacyNotice": "Tulosta tieteellinen tietosuojailmoitus",
-  "printProcessingActivities": "Tulosta selite käsittelytoimista",
+  "processingActivities": "Selite käsittelytoimista",
   "typeOfSensitivePersonalData": {
     "label": "Arkaluonteiset henkilötiedot",
     "selectType": "Valitse tyyppi",

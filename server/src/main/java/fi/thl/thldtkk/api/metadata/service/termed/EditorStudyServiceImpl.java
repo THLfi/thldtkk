@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.OrCriteria.or;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
@@ -84,12 +85,14 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
     if (hasText(query)) {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
-      criteria.add(or(keyWithAnyValue("properties.prefLabel", tokens),
-              keyWithAnyValue("r.personInRoles.r.person.p.lastName", tokens),
+
+      criteria.add(or(keyWithAllValues("properties.prefLabel", tokens),
+    	      keyWithAnyValue("r.personInRoles.r.person.p.lastName", tokens),
               keyWithAnyValue("r.personInRoles.r.person.p.firstName", tokens),
               keyWithAnyValue("r.ownerOrganizationUnit.p.prefLabel", tokens),
-              keyWithAnyValue("r.ownerOrganizationUnit.p.abbreviation", tokens),
-              keyWithAnyValue("r.dataSets.p.prefLabel", tokens)));
+              keyWithAllValues("r.ownerOrganizationUnit.p.abbreviation", tokens),
+              keyWithAllValues("r.dataSets.p.prefLabel", tokens)
+    	      ));
     }
 
     Stream<Node> studyNodes;

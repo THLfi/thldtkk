@@ -62,10 +62,15 @@ public class ProcessingActivitiesReportView {
   }
   
   public void renderOrganization(Organization org) {
+    String organization = org.getPrefLabel().get(this.lang);
+    String abbreviation = org.getAbbreviation().get(this.lang);
+    if (abbreviation != null) {
+      organization = String.format("%1$s (%2$s)", organization, abbreviation);
+    }
     this.sheet
-    .getRow(2)
-    .getCell(1)
-    .setCellValue(org.getPrefLabel().get(this.lang));
+      .getRow(2)
+      .getCell(1)
+      .setCellValue(organization);
   }
   
   public void renderStudy(Study study) {

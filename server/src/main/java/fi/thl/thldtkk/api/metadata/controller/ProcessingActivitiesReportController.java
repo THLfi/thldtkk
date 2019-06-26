@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.report.processingactivities.ProcessingActivitiesReportService;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class ProcessingActivitiesReportController {
   @Autowired
   private ProcessingActivitiesReportService processingActivitiesReportService;
 
+  @AdminOnly
   @RequestMapping(value = "/{organizationId}/processing-activities", produces = APPLICATION_XSLX)
   public @ResponseBody byte[] generatePdf(
     @PathVariable UUID organizationId,

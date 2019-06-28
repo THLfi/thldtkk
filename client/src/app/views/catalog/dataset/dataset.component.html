@@ -263,8 +263,30 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12">
-      <h2>{{ 'instanceVariables' | translate }} ({{filteredInstanceVariables.length }} {{'piecesAbbreviation' | translate}})
+
+     <div class="form-group">
+         <label>{{ 'searchWords' | translate }}: </label>
+         <input type="text"  id="inputName" [(ngModel)]="inputName"/>
+         <input class="btn btn-default" type="button" (click)="FilterByName()" value="{{ 'search' | translate }}"/>
+         <input class="btn btn-default" type="button" (click)="resetSearchWords()" value="{{ 'reset' | translate }}"/>
+     </div>
+	 <div class="btn-toolbar" role="toolbar" style="margin: 0;">
+        <div class="btn-group">
+	       <label style="margin-top:10px">Sivu {{currentIndex}}/{{pageNumber}}</label>
+	    </div>
+	    <div class="btn-group pull-right">
+	    <ul class="pagination" >
+	       <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
+	       <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
+	           <a (click)="setPage(page)">{{page}}</a>
+	       </li>
+	       <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
+	    </ul>
+	  </div>
+	</div>
+
+	 <div class="col-xs-12">
+      <h2>{{ 'instanceVariables' | translate }} ({{filteredVariableItems.length }} {{'piecesAbbreviation' | translate}})
       </h2>
 
     <div class="row" *ngIf="allWrappedInstanceVariables.length">
@@ -272,10 +294,15 @@
         <div class="instance-variable-filter-action-bar" [ngClass]="{ 'instance-variable-filter-action-bar-no-results': !filteredInstanceVariables.length }">
           <div class="row" [ngClass]="{ 'instance-variable-group-filters-expanded': showInstanceVariableFilters}">
               <div class="col-sm-3">
-                {{'partOfGroup' | translate}}
-                <button type="button" class="btn btn-default instance-variable-filter-toggle" (click)="toggleShowInstanceVariableFilters()">
-                  <fa icon="{{ showInstanceVariableFilters ? 'angle-up' : 'angle-down' }}" class="instance-variable-filter-toggle-icon"></fa>
-                </button>
+                <p-multiSelect [options]="selectableFilterGroups"
+                     [filter]="true" 
+                     [(ngModel)]="selectedInstanceVariableFilterGroups"
+                     (onChange)="filterInstanceVariables()"
+                     defaultLabel="{{'partOfGroup' | translate}}"
+                     selectedItemsLabel="{0} {{'numberOfSelectedPartOfGroup' | translate}}"
+                     >
+                </p-multiSelect>
+
               </div>
               <div class="col-sm-9">
                 <div class="export-as-csv" [ngClass]="{'export-as-csv-filters-expanded': showInstanceVariableFilters }">
@@ -291,7 +318,7 @@
             <div class="instance-variable-group-filters">
               <div class="col-xs-12">
                 <p-checkbox *ngFor="let groupName of instanceVariableGroupNames" name="instance-variable-filters" label="{{groupName}}" [(ngModel)]="selectedInstanceVariableFilterGroups"
-                  value="{{groupName}}" (onChange)="filterInstanceVariables()" styleClass="instance-variable-filter-checkbox"></p-checkbox>
+                  value="{{groupName}}" (onChange)="filterInstanceVariables()" styleClass="instance-variable-filter-checkbox"><br></p-checkbox>
               </div>
               <div class="col-xs-12">
                 <button type="button" class="btn btn-link instance-variable-group-filter-select-button" (click)="deselectInstanceVariableGroupFilters()" [attr.disabled]="selectedInstanceVariableFilterGroups.length == 0 ?  'disabled' : null">
@@ -308,14 +335,14 @@
       </div>
     </div>
 
-      <ng-container *ngIf="filteredInstanceVariables.length; else noInstanceVariables;">
+      <ng-container *ngIf="variableItems.length; else noInstanceVariables;">
         <table class="table table-striped table-hover">
           <tr>
             <th>{{ 'prefLabel' | translate }}</th>
             <th>{{ 'description' | translate }}</th>
             <th>{{ 'referencePeriod' | translate }}</th>
           </tr>
-          <tr *ngFor="let wrapper of filteredInstanceVariables" routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ wrapper.instanceVariable.id }}"
+          <tr *ngFor="let wrapper of variableItems" routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ wrapper.instanceVariable.id }}"
             style="cursor: pointer;">
             <td>
               <a routerLink="/catalog/studies/{{ study.id }}/datasets/{{ dataset.id }}/instanceVariables/{{ wrapper.instanceVariable.id }}">{{ wrapper.instanceVariable.prefLabel | lang }}</a>
@@ -332,17 +359,43 @@
             </td>
           </tr>
         </table>
-        <a class="btn btn-default"
-           href="{{composeInstanceVariableExportUrl()}}">
-          <fa icon="download"></fa>
-          {{ 'exportInstanceVariablesAsCsvButton' | translate }}
-        </a>
-      </ng-container>
 
+      </ng-container>
+      <div class="col-xs-12">
+         <div class="col-sm-12">
+             <div class="export-as-csv" [ngClass]="{'export-as-csv-filters-expanded': showInstanceVariableFilters }">
+                 <a class="btn btn-default" href="{{composeInstanceVariableExportUrl()}}">
+                    <fa icon="download"></fa>
+                    {{ 'exportInstanceVariablesAsCsvButton' | translate }}
+                 </a>
+              </div>
+          </div>
+      </div>
       <ng-template #noInstanceVariables>
         <p>{{ 'noInstanceVariables' | translate }}</p>
       </ng-template>
 
+     <div class="form-group">
+         <label>{{ 'searchWords' | translate }}: </label>
+         <input type="text"  id="inputName" [(ngModel)]="inputName"/>
+         <input class="btn btn-default" type="button" (click)="FilterByName()" value="{{ 'search' | translate }}"/>
+         <input class="btn btn-default" type="button" (click)="resetSearchWords()" value="{{ 'reset' | translate }}"/>
+     </div>
+     <div class="btn-toolbar" role="toolbar" style="margin: 0;">
+        <div class="btn-group">
+           <label style="margin-top:10px">Sivu {{currentIndex}}/{{pageNumber}}</label>
+        </div>
+        <div class="btn-group pull-right">
+        <ul class="pagination" >
+           <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
+           <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
+               <a (click)="setPage(page)">{{page}}</a>
+           </li>
+           <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
+        </ul>
+      </div>
+    </div>
+    
     </div>
   </div>
 

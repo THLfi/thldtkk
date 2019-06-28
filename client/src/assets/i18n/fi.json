@@ -65,6 +65,10 @@
   "edit": "Muokkaa",
   "remove": "Poista",
   "save": "Tallenna",
+  "prev": "Edellinen",
+  "next": "Seuraava",
+  "reset": "Tyhjennä",
+  "searchWords": "Hakusanat",
   "saveAndGoToNext": "Tallenna ja siirry seuraavaan",
   "goToNext": "Siirry datasetin seuraavaan",
   "cancel": "Peruuta",
@@ -453,6 +457,7 @@
   "searchForVariables":"Hae käsitemuuttujia...",
   "or": "tai",
   "partOfGroup": "Muuttujaryhmä",
+  "numberOfSelectedPartOfGroup": "valittua muuttujaryhmää",
   "lastModified": "Viimeksi muokattu",
   "dataType":"Tietotyyppi",
   "requiredField": "Tieto on pakollinen",
@@ -755,7 +760,7 @@
       "success": "Muuttujien tuonti onnistui!"
     }
   },
-  "exportInstanceVariablesAsCsvButton":"Lataa muuttujat CSV-tiedostona",
+  "exportInstanceVariablesAsCsvButton":"Lataa kaikki muuttujat CSV-tiedostona",
   "instanceQuestions":"Muuttujaan liittyvät kyselykysymykset",
   "noInstanceQuestions": "Muuttujaan liittyviä kyselykysymyksiä ei ole määritelty.",
   "noMatchingInstanceQuestions":"Haulla ei löytynyt kysymyksiä",

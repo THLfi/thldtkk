@@ -1,6 +1,7 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
-import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
 
@@ -62,7 +63,7 @@ export class InstanceVariableComponent implements OnInit {
   }
 
   private updateInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string) {
-    Observable.forkJoin(
+    observableForkJoin(
       this.studyService.getStudy(studyId),
       this.datasetService.getDataset(studyId, datasetId),
       this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)

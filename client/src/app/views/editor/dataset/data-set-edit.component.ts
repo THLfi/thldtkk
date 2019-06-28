@@ -1,10 +1,13 @@
+
+import {forkJoin as observableForkJoin, of as observableOf, Observable, Subscription} from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   Component, OnInit, ViewChild,
   AfterContentChecked
 } from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
-import {Observable, Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
@@ -184,11 +187,11 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         })
       }
       else {
-        datasetObservable = Observable.of(this.datasetService.initNew())
+        datasetObservable = observableOf(this.datasetService.initNew())
         datasetObservable.subscribe(dataset => this.dataset = dataset)
       }
 
-      Observable.forkJoin(
+      observableForkJoin(
         datasetObservable,
         this.editorStudyService.getStudy(studyId)
       ).subscribe(data => {
@@ -279,7 +282,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     private getAllPersons() {
       this.allPersonItems = []
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noPerson'),
         this.personService.getAll()
       ).subscribe(data => {
@@ -322,7 +325,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     private getAllUniverses() {
       this.allUniverseItems = []
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noUniverse'),
         this.universeService.getAll()
       ).subscribe(data => {
@@ -624,10 +627,10 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         // Remove empty/null predecessors
         this.dataset.predecessors = this.dataset.predecessors.filter(predecessor => predecessor && predecessor.id)
 
-        this.editorStudyService.saveDataset(this.study.id, this.dataset)
-          .finally(() => {
+        this.editorStudyService.saveDataset(this.study.id, this.dataset).pipe(
+          finalize(() => {
             this.savingInProgress = false
-          })
+          }))
           .subscribe(savedDataset => {
             this.dataset = savedDataset
             this.goBack();

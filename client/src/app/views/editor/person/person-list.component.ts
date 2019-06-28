@@ -1,6 +1,9 @@
+
+import {of as observableOf, forkJoin as observableForkJoin, Observable, Subject} from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ConfirmationService} from 'primeng/primeng'
-import {Observable, Subject} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
 import {Person} from "../../../model2/person";
@@ -8,11 +11,11 @@ import {PersonInRole} from "../../../model2/person-in-role";
 import {PersonService} from "../../../services-common/person.service";
 import {LangPipe} from '../../../utils/lang.pipe'
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
+
+
+
+
+
 
 @Component({
   templateUrl: './person-list.component.html',
@@ -71,7 +74,7 @@ export class PersonListComponent implements OnInit {
   }
 
   confirmRemovePerson(person: Person): void {
-    Observable.forkJoin(
+    observableForkJoin(
       this.personService.getRoleReferences(person)
     ).subscribe(data => {
       let personInRoles: PersonInRole[] = data[0]
@@ -110,16 +113,16 @@ export class PersonListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingPeople = true;
         return this.personService.search(term)
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<Person[]>([])
-      })
+        return observableOf<Person[]>([])
+      }),)
       .subscribe(people => {
         this.people = people
         this.loadingPeople = false

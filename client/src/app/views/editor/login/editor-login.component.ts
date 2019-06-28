@@ -1,13 +1,13 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { ActivatedRoute, Router} from '@angular/router'
 import { Component, OnInit} from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env} from '../../../../environments/environment'
-
-import { Observable } from 'rxjs'
 import { CurrentUserService } from '../../../services-editor/user.service'
-import { Http } from '@angular/http'
 import { StringUtils } from '../../../utils/string-utils'
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './editor-login.component.html',
@@ -43,12 +43,11 @@ export class EditorLoginComponent implements OnInit {
     private currentUserService: CurrentUserService,
     private router: Router,
     private translateService: TranslateService,
-    private http: Http
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
-    this.http.get(env.contextPath + env.apiPath + '/virtu/idpDirectoryServiceUrl')
-      .map(response => response.json() as string)
+    this.http.get<string>(env.contextPath + env.apiPath + '/virtu/idpDirectoryServiceUrl')
       .subscribe(url => {
         if (StringUtils.isNotBlank(url)) {
           this.virtuIdpDirectoryServiceUrl = url
@@ -67,7 +66,7 @@ export class EditorLoginComponent implements OnInit {
     let shouldShowLogoutSuccessMessage = this.showLogoutSuccessMessage = this.activatedRoute.snapshot.queryParamMap.get('logout') ? true : false
 
     if(shouldShowLogoutSuccessMessage) {
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('editorLoginComponent.logoutSuccess'),
         this.translateService.get('editorLoginComponent.logoutSuccessDetails')
       ).subscribe(data => {
@@ -80,7 +79,7 @@ export class EditorLoginComponent implements OnInit {
     let shouldShowTimeoutMessage = this.showTimeoutMessage = this.activatedRoute.snapshot.queryParamMap.get('timeout') ? true : false
 
     if(shouldShowTimeoutMessage) {
-      Observable.forkJoin(
+      observableForkJoin(
           this.translateService.get('editorLoginComponent.timeout'),
           this.translateService.get('editorLoginComponent.timeoutDetails')
       ).subscribe(data => {

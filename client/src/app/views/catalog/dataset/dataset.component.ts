@@ -1,8 +1,9 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 import { Title } from '@angular/platform-browser'
-import { Observable } from 'rxjs'
 
 import { BreadcrumbService } from '../../../services-common/breadcrumb.service'
 import { Dataset } from '../../../model2/dataset'
@@ -79,7 +80,7 @@ export class DatasetComponent implements OnInit {
     this.dataset = null
     this.allWrappedInstanceVariables = []
 
-    Observable.forkJoin(
+    observableForkJoin(
       this.studyService.getStudy(studyId),
       this.datasetService.getDataset(studyId, datasetId),
       this.translateService.get(this.defaultInstanceVariableGroupName)

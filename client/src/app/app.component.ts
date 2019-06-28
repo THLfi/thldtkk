@@ -1,3 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {mergeMap, map, filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core'
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router'
 import { Title } from '@angular/platform-browser'
@@ -5,10 +9,8 @@ import { TranslateService } from '@ngx-translate/core'
 
 import { PageIdentifier } from './utils/page-identifier'
 
-import { Observable } from 'rxjs'
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+
+
 
 import { BreadcrumbService } from './services-common/breadcrumb.service'
 import { CurrentUserService } from './services-editor/user.service'
@@ -43,15 +45,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events
-      .filter((event) => event instanceof NavigationEnd)
-      .map(() => this.activatedRoute)
-      .map((route) => {
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map((route) => {
         while (route.firstChild) route = route.firstChild;
         return route;
-      })
-      .filter((route) => route.outlet === 'primary')
-      .mergeMap((route) => route.data)
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data),)
       .subscribe(event => {
         let titleTranslationKey: string = event['title']
         let pageType: PageIdentifier = event['pageType']
@@ -112,7 +114,7 @@ export class AppComponent implements OnInit {
 
   private getPageTitleSuffix(pageType:PageIdentifier):Observable<string> {
 
-    let suffix:Observable<string> = Observable.of("")
+    let suffix:Observable<string> = observableOf("")
 
     if(pageType === PageIdentifier.CATALOG) {
       suffix = this.translateService.get('pageTitles.catalog.suffix');

@@ -1,10 +1,11 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env } from '../../environments/environment'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 
 import { Dataset } from '../model2/dataset'
 import { GrowlMessageService } from '../services-common/growl-message.service'
@@ -12,6 +13,7 @@ import { InstanceVariable } from '../model2/instance-variable'
 import { NodeUtils } from '../utils/node-utils'
 import { PopulationService } from '../services-common/population.service'
 import { Study } from '../model2/study'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EditorStudyService {
@@ -21,7 +23,8 @@ export class EditorStudyService {
     private translateService: TranslateService,
     private growlMessageService: GrowlMessageService,
     private nodeUtils: NodeUtils,
-    private http: Http) {}
+    private http: HttpClient
+    ) {}
 
   public initNew(): Study {
     return this.initializeProperties({
@@ -108,32 +111,26 @@ export class EditorStudyService {
       + searchString
       + '&max='
       + maxResults
-      return this.http.get(url).map(response => response.json() as Study[]);
+      return this.http.get<Study[]>(url);
   }
 
   getAll(): Observable<Study[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/studies')
-      .map(response => response.json() as Study[])
+    return this.http.get<Study[]>(env.contextPath + env.apiPath + '/editor/studies');
   }
 
   getStudy(id: string, includeDatasets: boolean = true): Observable<Study> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + id + '?includeDatasets=' + includeDatasets)
-      .map(response => response.json() as Study)
+    return this.http.get<Study>(env.contextPath + env.apiPath + '/editor/studies/' + id + '?includeDatasets=' + includeDatasets);
   }
 
   save(study: Study): Observable<Study> {
-    return this.saveStudyInternal(study)
-      .do(dataset => {
+    return this.saveStudyInternal(study).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.study.save.result.success')
-      })
+      }))
   }
 
   private saveStudyInternal(study: Study): Observable<Study> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
-    return this.http.post(env.contextPath + env.apiPath + '/editor/studies', study, options)
-      .map(response => response.json() as Study)
+    return this.http.post<Study>(env.contextPath + env.apiPath + '/editor/studies', study);
   }
 
   delete(studyId: string): Observable<any> {
@@ -142,29 +139,23 @@ export class EditorStudyService {
       + '/editor/studies/'
       + studyId
 
-    return this.http.delete(path)
-      .map(response => response.json())
-      .do(() => this.growlMessageService.buildAndShowMessage('info', 'operations.study.delete.result.success'))
+    return this.http.delete(path).pipe(
+      tap(() => this.growlMessageService.buildAndShowMessage('info', 'operations.study.delete.result.success')))
   }
 
   saveDataset(studyId: string, dataset: Dataset): Observable<Dataset> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath
+    return this.http.post<Dataset>(env.contextPath
       + env.apiPath
       + '/editor/studies/'
       + studyId
-      + '/datasets', dataset, options)
-      .map(response => response.json() as Dataset)
-      .do(dataset => {
+      + '/datasets', dataset).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.dataset.save.result.success')
-      })
+      }))
   }
 
   saveInstanceVariable(studyId: string, datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
     const url = env.contextPath
       + env.apiPath
@@ -174,11 +165,10 @@ export class EditorStudyService {
       + datasetId
       + '/intanceVariables'
 
-    return this.http.post(url, instanceVariable, options)
-      .map(response => response.json() as InstanceVariable)
-      .do(instanceVariables => {
+    return this.http.post<InstanceVariable>(url, instanceVariable).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
-      })
+      }))
   }
 
   publish(study: Study): Observable<Study> {
@@ -194,10 +184,6 @@ export class EditorStudyService {
   }
 
   private changeStudyState(study: Study, urlPart: string): Observable<Study> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
-    return this.http.post(env.contextPath + env.apiPath + '/editor/study-functions/' + urlPart + '?studyId=' + study.id, {}, options)
-      .map(response => response.json() as Study)
+    return this.http.post<Study>(env.contextPath + env.apiPath + '/editor/study-functions/' + urlPart + '?studyId=' + study.id, {});
   }
 }

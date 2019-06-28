@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import 'rxjs/add/operator/toPromise'
+
 
 import { Dataset } from '../../../model2/dataset'
 import { Organization } from '../../../model2/organization'

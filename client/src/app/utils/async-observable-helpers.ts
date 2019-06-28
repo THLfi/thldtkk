@@ -1,4 +1,4 @@
-import { defer } from "rxjs/observable/defer";
+import { defer } from "rxjs";
 
 /*
  *  Create async observable that emits-once and completes

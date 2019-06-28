@@ -1,7 +1,8 @@
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
-import { Headers, Http, RequestOptions } from '@angular/http'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env} from '../../environments/environment'
@@ -11,6 +12,7 @@ import { NodeUtils } from '../utils/node-utils'
 import { InstanceVariable } from '../model2/instance-variable'
 import { Variable } from '../model2/variable'
 import { Dataset } from '../model2/dataset'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class VariableService {
@@ -19,44 +21,37 @@ export class VariableService {
     private translateService : TranslateService,
     private nodeUtils: NodeUtils,
     private growlMessageService: GrowlMessageService,
-    private http: Http
+    private http: HttpClient
   ) { }
 
   search(searchText = ""): Observable<Variable[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/variables?query=' + searchText + '&max=50')
-      .map(response => response.json() as Variable[])
+    return this.http.get<Variable[]>(env.contextPath + env.apiPath + '/variables?query=' + searchText + '&max=50');
   }
 
   get(variableId: string): Observable<Variable> {
-    return this.http.get(env.contextPath + env.apiPath + '/variables/' + variableId)
-      .map(response => response.json() as Variable)
+    return this.http.get<Variable>(env.contextPath + env.apiPath + '/variables/' + variableId);
   }
 
   getAll(): Observable<Variable[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/variables')
-      .map(response => response.json() as Variable[]);
+    return this.http.get<Variable[]>(env.contextPath + env.apiPath + '/variables');
   }
 
   save(variable: Variable): Observable<Variable> {
     const path: string = env.contextPath + env.apiPath + '/variables'
-    const headers = new Headers({'Content-Type': 'application/json;charset=UTF-8'})
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, variable, options)
-      .map(response => response.json() as Variable)
-      .do(variable => {
+    return this.http.post<Variable>(path, variable).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.variable.save.result.success')
-      })
+      }))
   }
 
   delete(variableId: string): Observable<any> {
     const path: string = env.contextPath + env.apiPath + '/variables/' + variableId
 
-    return this.http.delete(path)
-      .map(response => response.json())
-      .do(() => {
+    return this.http.delete(path).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.variable.delete.result.success')
-      })
+      }))
   }
 
   getInstanceVariables(variableId: string, graph: string): Observable<InstanceVariable[]> {
@@ -65,7 +60,7 @@ export class VariableService {
       + '/' + graph + '/variables/'
       + variableId
       +'/instanceVariables'
-    return this.http.get(url).map(response => response.json() as InstanceVariable[])
+    return this.http.get<InstanceVariable[]>(url);
   }
 
   initNew(): Variable {
@@ -86,8 +81,7 @@ export class VariableService {
         + variable.id
         + '/datasets'
 
-      return this.http.get(path)
-        .map(response => response.json() as Dataset[])
+      return this.http.get<Dataset[]>(path);
     }
 
     getVariableInstanceVariables(variable: Variable): Observable<InstanceVariable[]> {
@@ -97,7 +91,6 @@ export class VariableService {
           + variable.id
           + '/instanceVariables'
 
-        return this.http.get(path)
-          .map(response => response.json() as InstanceVariable[])
+        return this.http.get<InstanceVariable[]>(path);
       }
 }

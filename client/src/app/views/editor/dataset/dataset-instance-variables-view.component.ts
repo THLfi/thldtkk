@@ -1,6 +1,9 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import { OnInit, Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { Observable } from 'rxjs'
 import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -49,7 +52,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
   private getStudyAndDataset() {
     const studyId = this.route.snapshot.params['studyId']
     const datasetId = this.route.snapshot.params['datasetId']
-    Observable.forkJoin(
+    observableForkJoin(
       this.studyService.getStudy(studyId),
       this.datasetService.getDataset(studyId, datasetId)
     ).subscribe(data => {
@@ -89,10 +92,10 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, instanceVariableId)
-            .finally(() => {
+          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, instanceVariableId).pipe(
+            finalize(() => {
               this.deleteInProgress = false
-            })
+            }))
             .subscribe(() => this.getStudyAndDataset())
         }
       })

@@ -1,14 +1,16 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env } from '../../environments/environment'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 
 import { GrowlMessageService } from '../services-common/growl-message.service'
 import { NodeUtils } from '../utils/node-utils'
 import { System } from '../model2/system'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EditorSystemService {
@@ -17,7 +19,8 @@ export class EditorSystemService {
     private translateService: TranslateService,
     private growlMessageService: GrowlMessageService,
     private nodeUtils: NodeUtils,
-    private http: Http) {}
+    private http: HttpClient
+    ) {}
 
   public initNew(): System {
     return this.initializeProperties({
@@ -49,28 +52,23 @@ export class EditorSystemService {
   }
 
   getAll(): Observable<System[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/systems')
-      .map(response => response.json() as System[])
+    return this.http.get<System[]>(env.contextPath + env.apiPath + '/editor/systems');
   }
 
   getSystem(id: string): Observable<System> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/systems/' + id)
-      .map(response => response.json() as System)
+    return this.http.get<System>(env.contextPath + env.apiPath + '/editor/systems/' + id);
   }
 
   save(system: System): Observable<System> {
-    return this.saveSystemInternal(system)
-      .do(dataset => {
+    return this.saveSystemInternal(system).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.system.save.result.success')
-      })
+      }))
   }
 
   private saveSystemInternal(system: System): Observable<System> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(env.contextPath + env.apiPath + '/editor/systems', system, options)
-      .map(response => response.json() as System)
+    return this.http.post<System>(env.contextPath + env.apiPath + '/editor/systems', system);
   }
 
 }

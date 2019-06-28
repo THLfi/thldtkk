@@ -1,17 +1,20 @@
+
+import {of as observableOf,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core'
-import { Observable, Subject } from 'rxjs';
 
 import { Study } from '../../../model2/study'
 import { Organization } from '../../../model2/organization'
 import { OrganizationService } from '../../../services-common/organization.service'
 import { PublicStudyService } from '../../../services-public/public-study.service'
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './catalog-study-list.component.html',
@@ -55,16 +58,16 @@ export class CatalogStudyListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingStudies = true
         return this.studyService.search(term, this.selectedOrganizationId)
-      })
-      .catch(() => {
+      }),
+      catchError(() => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<Study[]>([])
-      })
+        return observableOf<Study[]>([])
+      }),)
       .subscribe(studies => {
         this.studies = studies
         this.loadingStudies = false

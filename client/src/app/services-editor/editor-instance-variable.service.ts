@@ -1,20 +1,22 @@
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
-import { Http, Headers, RequestOptions } from '@angular/http'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/map'
+
+
+
 
 import { environment as env} from '../../environments/environment'
 
 import { GrowlMessageService } from '../services-common/growl-message.service'
 import { InstanceVariable } from '../model2/instance-variable'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class EditorInstanceVariableService {
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private growlMessageService: GrowlMessageService
   ) { }
 
@@ -28,8 +30,7 @@ export class EditorInstanceVariableService {
       + '/instanceVariables/'
       + instanceVariableId
 
-    return this.http.get(path)
-      .map(response => response.json() as InstanceVariable)
+    return this.http.get<InstanceVariable>(path);
   }
 
   saveInstanceVariable(studyId: string, datasetId: string, instanceVariable: InstanceVariable): Observable<InstanceVariable> {
@@ -40,8 +41,6 @@ export class EditorInstanceVariableService {
       + '/datasets/'
       + datasetId
       + '/instanceVariables'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
     if (instanceVariable.valueDomainType != 'described') {
       instanceVariable.quantity = null
@@ -53,11 +52,10 @@ export class EditorInstanceVariableService {
       instanceVariable.codeList = null
     }
 
-    return this.http.post(path, instanceVariable, options)
-      .map(response => response.json() as InstanceVariable)
-      .do(iv => {
+    return this.http.post<InstanceVariable>(path, instanceVariable).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.save.result.success')
-      })
+      }))
   }
 
   deleteInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string): Observable<any> {
@@ -70,11 +68,10 @@ export class EditorInstanceVariableService {
       + '/instanceVariables/'
       + instanceVariableId
 
-    return this.http.delete(path)
-      .map(response => response.json())
-      .do(() => {
+    return this.http.delete(path).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.instanceVariable.delete.result.success')
-      })
+      }))
   }
 
   importInstanceVariablesAsCsv(studyId: string, datasetId: string, file: File, encoding: string, overwrite: boolean): Observable<any> {
@@ -89,14 +86,14 @@ export class EditorInstanceVariableService {
       + datasetId
       + '/instanceVariables?overwrite='
       + overwrite
-    const headers = new Headers({ 'Content-Type': 'text/csv;charset=' + encoding })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, file, options)
-      .map(response => response.json() as InstanceVariable)
-      .do(() => {
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'text/csv;charset=' + encoding);
+
+    return this.http.post(path, file, { headers: headers }).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.instanceVariable.import.result.success')
-      })
+      }))
   }
 
   getInstanceVariableAsCsvExportPath(studyId: string, datasetId: string, encoding = 'ISO-8859-15'): string {
@@ -117,7 +114,7 @@ export class EditorInstanceVariableService {
       + searchText
       + '&max='
       + max
-    return this.http.get(url).map(response => response.json() as InstanceVariable[])
+    return this.http.get<InstanceVariable[]>(url);
   }
 
   getPreviousInstanceVariableId(studyId: string, datasetId: string, instanceVariableId: string): Observable<string> {
@@ -131,8 +128,7 @@ export class EditorInstanceVariableService {
       + instanceVariableId
       + '/previous'
 
-    return this.http.get(path)
-      .map(response => response.json() as string)
+    return this.http.get<string>(path);
   }
 
   getNextInstanceVariableId(studyId: string, datasetId: string, instanceVariableId: string): Observable<string> {
@@ -146,8 +142,7 @@ export class EditorInstanceVariableService {
       + instanceVariableId
       + '/next'
 
-    return this.http.get(path)
-      .map(response => response.json() as string)
+    return this.http.get<string>(path);
   }
 
   downloadExampleInstanceVariableCsv(): string {

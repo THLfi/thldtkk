@@ -1,15 +1,17 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env } from '../../environments/environment'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 import {SupplementaryDigitalSecurityPrinciple} from "../model2/supplementary-digital-security-principle";
 import {SupplementaryPhysicalSecurityPrinciple} from "../model2/supplementary-physical-security-principle";
 
 import { GrowlMessageService } from './growl-message.service'
 import { NodeUtils } from '../utils/node-utils'
+import { HttpClient } from '@angular/common/http';
 
 type SecurityPrinciple = SupplementaryPhysicalSecurityPrinciple | SupplementaryDigitalSecurityPrinciple;
 
@@ -20,7 +22,7 @@ export class SecurityPrincipleService {
     private translateService: TranslateService,
     private growlMessageService: GrowlMessageService,
     private nodeUtils: NodeUtils,
-    private http: Http) {}
+    private http: HttpClient) {}
 
   public initNewSupplementaryPhysicalSecurityPrinciple(): SupplementaryPhysicalSecurityPrinciple {
     return this.initializeProperties(new SupplementaryPhysicalSecurityPrinciple())
@@ -45,36 +47,29 @@ export class SecurityPrincipleService {
   }
 
   getAllSupplementaryPhysicalSecurityPrinciples(): Observable<SupplementaryPhysicalSecurityPrinciple[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/supplementaryPhysicalSecurityPrinciples')
-      .map(response => response.json() as SupplementaryPhysicalSecurityPrinciple[])
+    return this.http.get<SupplementaryPhysicalSecurityPrinciple[]>(env.contextPath + env.apiPath + '/supplementaryPhysicalSecurityPrinciples');
   }
 
   getAllSupplementaryDigitalSecurityPrinciples(): Observable<SupplementaryDigitalSecurityPrinciple[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/supplementaryDigitalSecurityPrinciples')
-      .map(response => response.json() as SupplementaryDigitalSecurityPrinciple[])
+    return this.http.get<SupplementaryDigitalSecurityPrinciple[]>(env.contextPath + env.apiPath + '/supplementaryDigitalSecurityPrinciples');
   }
 
   getSupplementaryPhysicalSecurityPrinciple(id: string): Observable<SupplementaryPhysicalSecurityPrinciple> {
-    return this.http.get(env.contextPath + env.apiPath + '/supplementaryPhysicalSecurityPrinciples/' + id)
-      .map(response => response.json() as SupplementaryPhysicalSecurityPrinciple)
+    return this.http.get<SupplementaryPhysicalSecurityPrinciple>(env.contextPath + env.apiPath + '/supplementaryPhysicalSecurityPrinciples/' + id);
   }
 
   getSupplementaryDigitalSecurityPrinciple(id: string): Observable<SupplementaryDigitalSecurityPrinciple> {
-    return this.http.get(env.contextPath + env.apiPath + '/supplementaryDigitalSecurityPrinciples/' + id)
-      .map(response => response.json() as SupplementaryDigitalSecurityPrinciple)
+    return this.http.get<SupplementaryDigitalSecurityPrinciple>(env.contextPath + env.apiPath + '/supplementaryDigitalSecurityPrinciples/' + id);
   }
 
   saveSupplementarySecurityPrinciple(principle: SecurityPrinciple): Observable<SecurityPrinciple> {
-    return this.saveSupplementarySecurityPrincipleInternal(principle)
-      .do(dataset => {
+    return this.saveSupplementarySecurityPrincipleInternal(principle).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.principle.save.result.success')
-      })
+      }))
   }
 
   private saveSupplementarySecurityPrincipleInternal(principle: SecurityPrinciple): Observable<SecurityPrinciple> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
     let principleEndPointFragment: string
 
     if (principle instanceof SupplementaryPhysicalSecurityPrinciple) {
@@ -84,7 +79,6 @@ export class SecurityPrincipleService {
       principleEndPointFragment = 'supplementaryDigitalSecurityPrinciples'
     }
 
-    return this.http.post(env.contextPath + env.apiPath + '/' + principleEndPointFragment, principle, options)
-      .map(response => response.json() as SecurityPrinciple)
+    return this.http.post<SecurityPrinciple>(env.contextPath + env.apiPath + '/' + principleEndPointFragment, principle);
   }
 }

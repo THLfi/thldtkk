@@ -1,8 +1,8 @@
-import { Http } from '@angular/http'
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/catch'
+
+
 
 import { environment as env } from '../../environments/environment'
 
@@ -12,12 +12,11 @@ import { DatasetType } from '../model2/dataset-type'
 export class DatasetTypeService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getAll(): Observable<DatasetType[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/datasetTypes')
-      .map(response => response.json() as DatasetType[])
+    return this.http.get<DatasetType[]>(env.contextPath + env.apiPath + '/datasetTypes');
   }
 
 }

@@ -2,15 +2,17 @@ import {
   Component, Input, EventEmitter, Output, OnInit,
   ViewChild, AfterContentChecked
 } from '@angular/core'
-import swal from 'sweetalert2'
 import { NgForm } from '@angular/forms'
-import { Observable } from 'rxjs/Rx'
-import { PapaParseConfig, PapaParseService } from 'ngx-papaparse'
+import { forkJoin } from 'rxjs'
+import { PapaParseConfig, Papa } from 'ngx-papaparse'
 import { TranslateService } from '@ngx-translate/core'
+import Swal from 'sweetalert2';
 
 import { Dataset } from '../../../model2/dataset'
 import { EditorInstanceVariableService } from '../../../services-editor/editor-instance-variable.service'
 import { Study } from '../../../model2/study'
+import { finalize } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'instance-variables-import-modal',
@@ -49,7 +51,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
 
   constructor(
     private instanceVariableService: EditorInstanceVariableService,
-    private papaParseService: PapaParseService,
+    private papaParseService: Papa,
     private translateService: TranslateService
   ) { }
 
@@ -116,9 +118,10 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
     }
 
     this.instanceVariableService.importInstanceVariablesAsCsv(this.study.id, this.dataset.id, this.file, this.encoding, this.overwrite)
-      .finally(() => {
-        this.importInProgress = false
-      })
+      .pipe(
+        finalize(() => {
+          this.importInProgress = false
+        }))
       .subscribe(result => {
         this.importInProgress = false
         this.importHasFailed = false
@@ -139,8 +142,8 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
 
         this.file = null
         this.onImport.emit()
-      }, error => {
-        const messages: Array<String> = error.json().messages
+      }, (errorResponse: HttpErrorResponse) => {
+        const messages: Array<String> = errorResponse.error.messages
         if (Array.isArray(messages) && messages.length > 0) {
           this.showSwalErrors(messages)
         }
@@ -177,7 +180,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       reader.readAsText(this.file, this.encoding)
 
       reader.onload = () => {
-        const csvString: string = reader.result.replace(/^.*/, function(m) {
+        const csvString = (reader.result as string).replace(/^.*/, function(m) {
             return m.replace(/\./g, '_')
         })
 
@@ -187,11 +190,11 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
   }
 
   private showSwalSuccess(instanceVariablesImported: number): void {
-    Observable.forkJoin(
+    forkJoin(
       this.translateService.get('importInstanceVariablesModal.result.success'),
       this.translateService.get('importInstanceVariablesModal.result.instanceVariablesImported')
     ).subscribe(data => {
-      swal({
+      Swal.fire({
         title: data[0] as string,
         html: instanceVariablesImported + ' ' + (data[1] as string),
         type: 'success',
@@ -215,7 +218,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
       observableBatch.push(this.translateService.get(message))
     })
 
-    Observable.forkJoin(
+    forkJoin(
       observableBatch
     ).subscribe(data => {
       const translatedMessages: string[] = []
@@ -230,7 +233,7 @@ export class InstanceVariablesImportModalComponent implements OnInit, AfterConte
         }
       }
 
-      swal({
+      Swal.fire({
         title: data[0] as string,
         html: translatedMessages.join('<br><br>'),
         type: 'warning',

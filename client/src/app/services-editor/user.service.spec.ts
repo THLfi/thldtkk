@@ -2,10 +2,10 @@ import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { CurrentUserService } from './user.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { Http } from '@angular/http';
 import { LangPipe } from 'app/utils/lang.pipe';
 import { Router } from '@angular/router';
 import { asyncData } from 'app/utils/async-observable-helpers';
+import { HttpClient } from '@angular/common/http';
 
 const routerSpy = jasmine.createSpyObj('router', ['navigate']);
 const httpMock = jasmine.createSpyObj('HttpModule', ['get', 'post'])
@@ -24,7 +24,7 @@ describe('CurrentUserService', () => {
         CurrentUserService,
         LangPipe,
         { provide: Router, useValue: routerSpy },
-        { provide: Http, useValue: httpMock }
+        { provide: HttpClient, useValue: httpMock }
       ]
     });
     httpMock.get.and.returnValue(asyncData(mockUserResponse));

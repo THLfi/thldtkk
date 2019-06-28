@@ -1,6 +1,9 @@
+
+import {of as observableOf,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime, finalize} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
-import { Observable, Subject } from 'rxjs'
 import { ActivatedRoute, Router, UrlTree } from '@angular/router'
 import { Location } from '@angular/common'
 
@@ -83,8 +86,8 @@ export class EditorStudyListComponent implements OnInit {
       .subscribe((message: string) => {
         if (confirm(message)) {
           this.deleteInProgress = true
-          this.editorStudyService.delete(studyId)
-            .finally(() => this.deleteInProgress = false)
+          this.editorStudyService.delete(studyId).pipe(
+            finalize(() => this.deleteInProgress = false))
             .subscribe(() => this.searchStudies())
         }
       })
@@ -116,18 +119,18 @@ export class EditorStudyListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms:Subject<string> ): void {
-    searchTerms.debounceTime(EditorStudyListComponent.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(EditorStudyListComponent.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.isLoadingStudies = true;
         this.latestLookupTerm = term;
         this.maxResults = EditorStudyListComponent.defaultMaxResults
-        return term || term === '' ? this.searchStudies(term) : Observable.of<Study[]>([])
-      })
-      .catch(error => {
+        return term || term === '' ? this.searchStudies(term) : observableOf<Study[]>([])
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<Study[]>([])
-      })
+        return observableOf<Study[]>([])
+      }),)
       .subscribe(studies => {
         this.updateQueryParam(this.searchText)
         this.studies = studies

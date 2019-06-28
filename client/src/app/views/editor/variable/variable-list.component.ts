@@ -1,5 +1,8 @@
+
+import {of as observableOf,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
@@ -10,12 +13,12 @@ import { LangPipe } from '../../../utils/lang.pipe'
 import { VariableService } from '../../../services-common/variable.service'
 import { Variable } from '../../../model2/variable'
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './variable-list.component.html',
@@ -113,16 +116,16 @@ export class VariableListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingVariables = true;
         return this.variableService.search(term)
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<Variable[]>([])
-      })
+        return observableOf<Variable[]>([])
+      }),)
       .subscribe(variables => {
         this.variables = variables
         this.loadingVariables = false

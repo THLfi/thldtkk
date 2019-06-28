@@ -1,4 +1,4 @@
-import { Http } from '@angular/http'
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 
@@ -10,12 +10,11 @@ import { Concept } from '../model2/concept'
 export class ConceptService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   search(searchText: string): Observable<Concept[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/concepts?query=' + searchText + '&max=50')
-      .map(response => response.json() as Concept[])
+    return this.http.get<Concept[]>(env.contextPath + env.apiPath + '/concepts?query=' + searchText + '&max=50');
   }
 
 }

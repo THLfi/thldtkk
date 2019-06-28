@@ -1,4 +1,5 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
@@ -10,44 +11,39 @@ import { Dataset } from '../model2/dataset'
 import { NodeUtils } from '../utils/node-utils'
 import { Study } from '../model2/study'
 import { Universe } from '../model2/universe'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UniverseService {
 
   constructor(
     private nodeUtils: NodeUtils,
-    private http: Http,
+    private http: HttpClient,
     private growlMessageService: GrowlMessageService,
     private translateService: TranslateService
   ) { }
 
   search(searchText = ""): Observable<Universe[]> {
-      return this.http.get(env.contextPath + env.apiPath + '/universes?query=' + searchText + '&max=50')
-        .map(response => response.json() as Universe[])
+      return this.http.get<Universe[]>(env.contextPath + env.apiPath + '/universes?query=' + searchText + '&max=50');
   }
 
   delete(universeId: string): Observable<any> {
       const path: string = env.contextPath + env.apiPath + '/universes/' + universeId
 
-      return this.http.delete(path)
-        .map(response => response.json())
-        .do(() => {
+      return this.http.delete(path).pipe(
+        tap(() => {
           this.growlMessageService.buildAndShowMessage('info', 'operations.common.delete.result.success')
-        })
+        }))
   }
 
   getAll(): Observable<Universe[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/universes?query=')
-          .map(response => response.json() as Universe[])
+    return this.http.get<Universe[]>(env.contextPath + env.apiPath + '/universes?query=');
   }
 
   save(universe: Universe): Observable<Universe> {
     const path: string = env.contextPath + env.apiPath + '/universes/'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, universe, options)
-      .map(response => response.json() as Universe)
+    return this.http.post<Universe>(path, universe);
   }
 
   initNew(): Universe {
@@ -71,8 +67,7 @@ export class UniverseService {
           + universe.id
           + '/datasets'
 
-        return this.http.get(path)
-          .map(response => response.json() as Dataset[])
+        return this.http.get<Dataset[]>(path);
   }
 
   getUniverseStudies(universe: Universe): Observable<Study[]> {
@@ -82,7 +77,6 @@ export class UniverseService {
           + universe.id
           + '/studies'
 
-        return this.http.get(path)
-          .map(response => response.json() as Study[])
+        return this.http.get<Study[]>(path);
   }
 }

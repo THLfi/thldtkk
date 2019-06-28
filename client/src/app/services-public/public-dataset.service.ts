@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core'
-import { Http } from '@angular/http'
-import 'rxjs/add/operator/map'
+
 
 import { environment as env} from '../../environments/environment'
 import { Observable } from 'rxjs'
 import { Dataset } from '../model2/dataset'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class PublicDatasetService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getDataset(studyId: string, datasetId: string): Observable<Dataset> {
-    return this.http.get(env.contextPath
+    return this.http.get<Dataset>(env.contextPath
       + env.apiPath
       + '/public/studies/'
       + studyId
       + '/datasets/'
-      + datasetId)
-      .map(response => response.json() as Dataset)
+      + datasetId);
   }
 
   search(searchText: string, organizationId?: string, sort?: string, max?: number): Observable<Dataset[]> {
@@ -43,7 +42,7 @@ export class PublicDatasetService {
       + organizationId
       + '&max='
       + max
-    return this.http.get(url).map(response => response.json() as Dataset[])
+    return this.http.get<Dataset[]>(url);
   }
 
   getRecentDatasets(max = 10): Observable<Dataset[]> {

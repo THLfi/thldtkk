@@ -8,6 +8,7 @@ import {TranslateService} from '@ngx-translate/core'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services-common/variable.service'
+import { finalize } from 'rxjs/operators';
 
 @Component({
     templateUrl: './variable-edit-modal.component.html',
@@ -112,9 +113,9 @@ export class VariableEditModalComponent implements OnInit, AfterContentChecked {
         }
 
         this.variableService.save(this.variable)
-            .finally(() => {
+            .pipe(finalize(() => {
               this.savingInProgress = false
-            })
+            }))
             .subscribe(variable => {
                 this.variable = variable
                 this.variableSaved.emit(variable)

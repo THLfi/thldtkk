@@ -1,28 +1,27 @@
 import { environment as env } from '../../environments/environment'
-import { Http } from '@angular/http'
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
 import { Study } from '../model2/study'
 
-import 'rxjs/add/operator/map'
+
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class PublicStudyService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) {}
 
   getStudy(id: string) {
-    return this.http.get(env.contextPath + env.apiPath + '/public/studies/' + id)
-      .map(response => response.json() as Study)
+    return this.http.get<Study>(env.contextPath + env.apiPath + '/public/studies/' + id);
   }
 
   getStudyWithSelect(id: string, select: string[]) {
-    return this.http.get(env.contextPath + env.apiPath + '/public/studies/' + id, {search: {
-      select: JSON.stringify(select)
-    }})
-      .map(response => response.json() as Study)
+    let path = env.contextPath + env.apiPath + '/public/studies/' + id;
+    if (select && select.length) {
+      path += `?select=${encodeURIComponent(JSON.stringify(select))}`;
+    }
+    return this.http.get<Study>(path);
   }
 
   private searchInternal(
@@ -32,14 +31,17 @@ export class PublicStudyService {
     max: number,
     select: string[]
   ) {
-    return this.http.get(env.contextPath + env.apiPath + '/public/studies', {search: {
+    const params = {
       query: searchText,
       sort: sort,
       organizationId: organizationId,
       max: max,
       select: JSON.stringify(select)
-    }})
-      .map(response => response.json() as Study[]);
+    };
+    const paramString = Object.keys(params).map(function(k) {
+      return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+    }).join('&')
+    return this.http.get<Study[]>(env.contextPath + env.apiPath + '/public/studies' + `?${paramString}`);
   }
 
   getRecentStudies(max=10) {

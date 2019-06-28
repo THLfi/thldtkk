@@ -1,10 +1,13 @@
+
+import {forkJoin as observableForkJoin, Observable,Subscription} from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   Component, OnInit, ViewChild,
   AfterContentChecked
 } from '@angular/core'
 import {NgForm} from '@angular/forms'
-import {Observable,Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api';
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
@@ -120,7 +123,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       const instanceVariableId = this.route.snapshot.params['instanceVariableId']
 
       if (instanceVariableId) {
-        Observable.forkJoin(
+        observableForkJoin(
           this.studyService.getStudy(studyId),
           this.datasetService.getDataset(studyId, datasetId),
           this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
@@ -133,7 +136,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         })
        }
       else {
-        Observable.forkJoin(
+        observableForkJoin(
           this.studyService.getStudy(studyId),
           this.datasetService.getDataset(studyId, datasetId)
         ).subscribe(data => {
@@ -217,7 +220,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       this.allQuantityItems = []
       this.allUnitItems = []
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noQuantity'),
         this.quantityService.getAll(),
         this.translateService.get('noUnit'),
@@ -269,7 +272,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     private getAllCodeLists(): void {
       this.allCodeListItems = []
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noCodeList'),
         this.codeListService.getAll()
       ).subscribe(data => {
@@ -529,10 +532,10 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
         this.nullifyEmptySource();
 
-        this.instanceVariableService.saveInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable)
-          .finally(() => {
+        this.instanceVariableService.saveInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable).pipe(
+          finalize(() => {
             this.savingInProgress = false
-          })
+          }))
           .subscribe(instanceVariable => {
             this.initInstanceVariable(instanceVariable)
             this.instanceVariable = instanceVariable

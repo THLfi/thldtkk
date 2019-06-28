@@ -5,7 +5,7 @@ import { CheckboxModule } from 'primeng/primeng'
 import { ChipsModule } from 'primeng/components/chips/chips';
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { HttpModule, Http } from '@angular/http'
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
@@ -22,7 +22,7 @@ import { DataTableModule } from 'primeng/primeng'
 import { SharedModule } from 'primeng/primeng'
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng'
 import { PapaParseModule } from 'ngx-papaparse';
-import { SweetAlert2Module } from '@toverux/ngx-sweetalert2'
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -30,13 +30,16 @@ import { AppRoutingModule } from './app-routing.module'
 import { environment } from '../environments/environment'
 import {SecurityPrincipleService} from "./services-common/security-principle.service";
 
+import { registerLocaleData } from '@angular/common';
+import localeFi from '@angular/common/locales/fi';
+registerLocaleData(localeFi, 'fi');
+
 // utils
 import { NodeUtils } from './utils/node-utils'
 
 // services
 import { BreadcrumbService } from './services-common/breadcrumb.service'
 import { CodeListService3 } from './services-common/code-list.service'
-import { CommonErrorHandlingHttpService } from './services-common/common-error-handling-http.service'
 import { ConceptService } from './services-common/concept.service'
 import { EditorDatasetService } from './services-editor/editor-dataset.service'
 import { EditorSystemService } from './services-editor/editor-system.service'
@@ -153,8 +156,9 @@ import { VariableListComponent } from './views/editor/variable/variable-list.com
 import { VariableModalComponent } from './views/editor/variable/variable-modal.component'
 import {StudyAdministrativeEditPrincipleOfProtectionFieldsComponent} from 'app/views/editor/study/study-administrative-edit-principle-of-protection-fields.component';
 import {StudyAdministrativeViewPrincipleOfProtectionFieldsComponent} from "./views/editor/study/study-administrative-view-principle-of-protection-fields.component";
+import { RequestErrorInterceptor } from './interceptors/request-error.interceptor';
 
-export function TranslateHttpLoaderFactory(http: Http) {
+export function TranslateHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
 }
 
@@ -249,7 +253,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         AutoCompleteModule,
@@ -270,7 +274,7 @@ export function TranslateHttpLoaderFactory(http: Http) {
             loader: {
                 provide: TranslateLoader,
                 useFactory: TranslateHttpLoaderFactory,
-                deps: [Http]
+                deps: [HttpClient]
             }
         }),
         SweetAlert2Module.forRoot({
@@ -281,6 +285,11 @@ export function TranslateHttpLoaderFactory(http: Http) {
         })
     ],
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: RequestErrorInterceptor,
+            multi: true,
+        },
         NodeUtils,
         DatePipe,
         LangPipe,
@@ -318,7 +327,6 @@ export function TranslateHttpLoaderFactory(http: Http) {
         BreadcrumbService,
         StudyGroupService,
         SecurityPrincipleService,
-        { provide: Http, useClass: CommonErrorHandlingHttpService }
     ],
     bootstrap: [
         AppComponent

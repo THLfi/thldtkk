@@ -1,3 +1,7 @@
+
+import {forkJoin as observableForkJoin, Observable} from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
@@ -12,7 +16,6 @@ import {EditorSystemRoleService} from '../../../services-editor/editor-system-ro
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {NodeUtils} from '../../../utils/node-utils';
-import {Observable} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api'
 import {RetentionPolicy} from '../../../model2/retention-policy';
 import {ExistenceForm} from '../../../model2/existence-form';
@@ -265,7 +268,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     private getAllSystems() {
       this.allSystemItems = []
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noSystem'),
         this.systemService.getAll()
       ).subscribe(data => {
@@ -414,10 +417,10 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         this.study.dataProcessingEndDate = this.dataProcessingEndDate ?
           this.dateUtils.convertToIsoDate(this.dataProcessingEndDate) : null
 
-        this.studyService.save(this.study)
-            .finally(() => {
+        this.studyService.save(this.study).pipe(
+            finalize(() => {
               this.savingInProgress = false
-            })
+            }))
             .subscribe(savedStudy => {
                 this.study = savedStudy;
                 this.goBack();

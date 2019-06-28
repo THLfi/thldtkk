@@ -1,6 +1,9 @@
+
+import {of as observableOf,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
-import { Observable, Subject } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 import { Location } from '@angular/common'
 
@@ -9,12 +12,12 @@ import { Variable } from '../../../model2/variable'
 import { PublicInstanceVariableService } from '../../../services-public/public-instance-variable.service'
 
 // Observable operators
-import 'rxjs/add/operator/switchMap'
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/debounceTime'
-import 'rxjs/add/operator/distinctUntilChanged'
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './instance-variable-search.component.html',
@@ -84,7 +87,7 @@ export class InstanceVariableSearchComponent implements OnInit {
   searchInstanceVariables(searchText: string): Observable<InstanceVariable[]> {
     return searchText.length > 2 ? 
       this.instanceVariableService.search(searchText, this.maxResults) :
-      Observable.of<InstanceVariable[]>([])
+      observableOf<InstanceVariable[]>([])
   }
 
   private updateQueryParam(searchText:string): void {
@@ -112,18 +115,18 @@ export class InstanceVariableSearchComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms:Subject<string> ): void {
-    searchTerms.debounceTime(InstanceVariableSearchComponent.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(InstanceVariableSearchComponent.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.searchInProgress = true;
         this.latestLookupTerm = term;
         this.maxResults = InstanceVariableSearchComponent.defaultMaxResults
-        return term ? this.searchInstanceVariables(term) : Observable.of<InstanceVariable[]>([])
-      })
-      .catch(error => {
+        return term ? this.searchInstanceVariables(term) : observableOf<InstanceVariable[]>([])
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<InstanceVariable[]>([])
-      })
+        return observableOf<InstanceVariable[]>([])
+      }),)
       .subscribe(instanceVariables => {
         this.updateQueryParam(this.searchText)
         this.instanceVariables = instanceVariables

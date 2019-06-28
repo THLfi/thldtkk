@@ -1,3 +1,7 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
 import { LangPipe } from '../../../utils/lang.pipe'
@@ -9,7 +13,6 @@ import { CurrentUserService } from '../../../services-editor/user.service'
 import { Dataset } from '../../../model2/dataset'
 import { EditorDatasetService } from '../../../services-editor/editor-dataset.service'
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
-import { Observable } from 'rxjs'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
 
@@ -43,7 +46,7 @@ export class DatasetViewComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.dataset = null
-      Observable.forkJoin(
+      observableForkJoin(
         this.studyService.getStudy(params['studyId']),
         this.datasetService.getDataset(params['studyId'], params['datasetId'])
       ).subscribe(data => {
@@ -69,10 +72,10 @@ export class DatasetViewComponent implements OnInit {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.datasetService.delete(this.study.id, this.dataset.id)
-            .finally(() => {
+          this.datasetService.delete(this.study.id, this.dataset.id).pipe(
+            finalize(() => {
               this.deleteInProgress = false
-            })
+            }))
             .subscribe(() => this.router.navigate(
               ['/editor/studies', this.study.id, 'datasets']))
         }

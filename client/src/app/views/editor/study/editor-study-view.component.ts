@@ -1,3 +1,5 @@
+
+import {finalize} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router'
 import { Component } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
@@ -95,8 +97,8 @@ export class EditorStudyViewComponent {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.editorStudyService.delete(this.study.id)
-            .finally(() => this.deleteInProgress = false)
+          this.editorStudyService.delete(this.study.id).pipe(
+            finalize(() => this.deleteInProgress = false))
             .subscribe(() => this.router.navigate(['/editor/studies']))
         }
       })

@@ -1,8 +1,8 @@
-import { Http } from '@angular/http'
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/catch'
+
+
 
 import { environment as env } from '../../environments/environment'
 
@@ -12,12 +12,11 @@ import { LifecyclePhase } from '../model2/lifecycle-phase'
 export class LifecyclePhaseService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getAll(): Observable<LifecyclePhase[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/lifecyclePhases')
-      .map(response => response.json() as LifecyclePhase[])
+    return this.http.get<LifecyclePhase[]>(env.contextPath + env.apiPath + '/lifecyclePhases');
   }
 
 }

@@ -1,5 +1,8 @@
+
+import {of as observableOf, forkJoin as observableForkJoin,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
@@ -11,12 +14,12 @@ import { Study } from '../../../model2/study'
 import { UnitTypeService } from '../../../services-common/unit-type.service'
 import { UnitType } from '../../../model2/unit-type'
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './unit-type-list.component.html',
@@ -78,7 +81,7 @@ export class UnitTypeListComponent implements OnInit {
   }
 
   confirmRemoveUnitType(unitType: UnitType): void {
-    Observable.forkJoin(
+    observableForkJoin(
       this.unitTypeService.getUnitTypeDatasets(unitType),
       this.unitTypeService.getUnitTypeInstanceVariables(unitType),
       this.unitTypeService.getUnitTypeStudies(unitType)
@@ -126,16 +129,16 @@ export class UnitTypeListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingUnitTypes = true;
         return this.unitTypeService.search(term)
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<UnitType[]>([])
-      })
+        return observableOf<UnitType[]>([])
+      }),)
       .subscribe(unitTypes => {
         this.unitTypes = unitTypes
         this.loadingUnitTypes = false

@@ -1,6 +1,9 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { Component, OnInit } from '@angular/core'
-import { Observable } from 'rxjs'
 import { Title } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -62,7 +65,7 @@ export class InstanceVariableViewComponent implements OnInit {
     const datasetId = this.route.snapshot.params['datasetId']
     const instanceVariableId = this.route.snapshot.params['instanceVariableId']
 
-    Observable.forkJoin(
+    observableForkJoin(
       this.studyService.getStudy(studyId),
       this.datasetService.getDataset(studyId, datasetId),
       this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
@@ -90,10 +93,10 @@ export class InstanceVariableViewComponent implements OnInit {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id)
-            .finally(() => {
+          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id).pipe(
+            finalize(() => {
               this.deleteInProgress = false
-            })
+            }))
             .subscribe(() => this.router.navigate(
               ['/editor/studies', this.study.id, 'datasets', this.dataset.id, 'instanceVariables']))
         }

@@ -1,7 +1,9 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
-import { Http, Headers, RequestOptions } from '@angular/http'
-import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 
 import { environment as env} from '../../environments/environment'
 
@@ -10,6 +12,7 @@ import { GrowlMessageService } from '../services-common/growl-message.service'
 import { NodeUtils } from '../utils/node-utils'
 import { PopulationService } from '../services-common/population.service'
 import { TranslateService } from '@ngx-translate/core'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EditorDatasetService {
@@ -18,38 +21,31 @@ export class EditorDatasetService {
     private populationService: PopulationService,
     private nodeUtils: NodeUtils,
     private growlMessageService: GrowlMessageService,
-    private http: Http,
+    private http: HttpClient,
     private translateService: TranslateService
   ) { }
 
   search(searchText: string): Observable<Dataset[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/datasets?query=' + searchText + '&max=50')
-      .map(response => response.json() as Dataset[])
+    return this.http.get<Dataset[]>(env.contextPath + env.apiPath + '/editor/datasets?query=' + searchText + '&max=50');
   }
 
   getAll(): Observable<Dataset[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/datasets')
-      .map(response => response.json() as Dataset[])
+    return this.http.get<Dataset[]>(env.contextPath + env.apiPath + '/editor/datasets');
   }
 
   getDataset(studyId: string, datasetId: string): Observable<Dataset> {
-    return this.http.get(env.contextPath + env.apiPath + '/editor/studies/' + studyId + '/datasets/' + datasetId)
-      .map(response => response.json() as Dataset)
+    return this.http.get<Dataset>(env.contextPath + env.apiPath + '/editor/studies/' + studyId + '/datasets/' + datasetId);
   }
 
   save(dataset: Dataset): Observable<Dataset> {
-    return this.saveDatasetInternal(dataset)
-      .do(dataset => {
+    return this.saveDatasetInternal(dataset).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.dataset.save.result.success')
-      })
+      }))
   }
 
   private saveDatasetInternal(dataset: Dataset): Observable<Dataset> {
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
-
-    return this.http.post(env.contextPath + env.apiPath + '/editor/datasets', dataset, options)
-      .map(response => response.json() as Dataset)
+    return this.http.post<Dataset>(env.contextPath + env.apiPath + '/editor/datasets', dataset);
   }
 
   delete(studyId: string, datasetId: string): Observable<any> {
@@ -60,15 +56,14 @@ export class EditorDatasetService {
       + '/datasets/'
       + datasetId
 
-    return this.http.delete(path)
-      .map(response => response.json())
-      .do(() => {
+    return this.http.delete(path).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.dataset.delete.result.success')
-      })
+      }))
   }
 
   importDataset(event): Observable<Dataset> {
-    return Observable.throw('Not implemented')
+    return observableThrowError('Not implemented')
   }
 
   initNew(): Dataset {

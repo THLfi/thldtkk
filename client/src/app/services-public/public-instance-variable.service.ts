@@ -1,19 +1,19 @@
-import { Http } from '@angular/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/map'
+
+
+
 
 import { environment as env} from '../../environments/environment'
 
 import { InstanceVariable } from '../model2/instance-variable'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class PublicInstanceVariableService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getInstanceVariable(studyId:string, datasetId: string, instanceVariableId: string): Observable<InstanceVariable> {
@@ -25,7 +25,7 @@ export class PublicInstanceVariableService {
       + datasetId
       + '/instanceVariables/'
       + instanceVariableId
-    return this.http.get(url).map(response => response.json() as InstanceVariable)
+    return this.http.get<InstanceVariable>(url);
   }
 
   search(searchText = '', max = 100): Observable<InstanceVariable[]> {
@@ -35,7 +35,7 @@ export class PublicInstanceVariableService {
       + searchText
       + '&max='
       + max
-    return this.http.get(url).map(response => response.json() as InstanceVariable[])
+    return this.http.get<InstanceVariable[]>(url);
   }
 
   getInstanceVariableAsCsvExportPath(studyId: string, datasetId: string, encoding = 'ISO-8859-15'): string {
@@ -60,7 +60,6 @@ export class PublicInstanceVariableService {
       + instanceVariableId
       + '/next'
 
-    return this.http.get(path)
-      .map(response => response.json() as string)
+    return this.http.get<string>(path);
   }
 }

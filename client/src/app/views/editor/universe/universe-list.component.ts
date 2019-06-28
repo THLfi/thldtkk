@@ -1,5 +1,8 @@
+
+import {of as observableOf, forkJoin as observableForkJoin,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
@@ -9,12 +12,12 @@ import { LangPipe } from '../../../utils/lang.pipe'
 import { UniverseService } from '../../../services-common/universe.service'
 import { Universe } from '../../../model2/universe'
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './universe-list.component.html',
@@ -76,7 +79,7 @@ export class UniverseListComponent implements OnInit {
   }
 
   confirmRemoveUniverse(universe: Universe): void {
-    Observable.forkJoin(
+    observableForkJoin(
       this.universeService.getUniverseDatasets(universe),
       this.universeService.getUniverseStudies(universe),
     ).subscribe(data => {
@@ -118,16 +121,16 @@ export class UniverseListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingUniverses = true;
         return this.universeService.search(term)
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<Universe[]>([])
-      })
+        return observableOf<Universe[]>([])
+      }),)
       .subscribe(universes => {
         this.universes = universes
         this.loadingUniverses = false

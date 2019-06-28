@@ -1,22 +1,21 @@
-import { Http } from '@angular/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
+
 
 import { environment as env } from '../../environments/environment'
 
 import { UsageCondition } from '../model2/usage-condition'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UsageConditionService {
 
   constructor(
-    private http: Http
+    private http: HttpClient
   ) {}
 
   getAll(): Observable<UsageCondition[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/usageConditions')
-      .map(response => response.json() as UsageCondition[])
+    return this.http.get<UsageCondition[]>(env.contextPath + env.apiPath + '/usageConditions');
   }
 
 }

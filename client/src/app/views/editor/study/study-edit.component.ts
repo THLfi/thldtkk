@@ -1,10 +1,13 @@
+
+import {forkJoin as observableForkJoin, Observable, Subscription} from 'rxjs';
+
+import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
   Component, OnInit, ViewChild,
   AfterContentChecked
 } from '@angular/core'
 import {NgForm, AbstractControl} from '@angular/forms'
-import {Observable, Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/components/common/api'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
@@ -158,7 +161,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         const copyOfStudyId = this.route.snapshot.queryParams['copyOf'];
 
         if (studyId) {
-            Observable.forkJoin(
+            observableForkJoin(
                 this.editorStudyService.getStudy(studyId)
             ).subscribe(
                 data => {
@@ -292,7 +295,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     private getAllPersons() {
       this.allPersonItems = [];
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noPerson'),
         this.personService.getAll()
       ).subscribe(data => {
@@ -335,7 +338,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     private getAllUniverses() {
       this.allUniverseItems = [];
 
-      Observable.forkJoin(
+      observableForkJoin(
         this.translateService.get('noUniverse'),
         this.universeService.getAll()
       ).subscribe(data => {
@@ -366,7 +369,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
       this.availableStudyGroupItems = [];
 
       if (this.study.ownerOrganization) {
-        Observable.forkJoin(
+        observableForkJoin(
           this.translateService.get('noStudyGroup'),
           this.studyGroupService.findByOwnerOrganizationId(this.study.ownerOrganization.id)
         ).subscribe(data => {
@@ -696,10 +699,10 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         // Remove empty/null predecessors
         this.study.predecessors = this.study.predecessors.filter(predecessor => predecessor && predecessor.id);
 
-        this.editorStudyService.save(this.study)
-            .finally(() => {
+        this.editorStudyService.save(this.study).pipe(
+            finalize(() => {
               this.savingInProgress = false
-            })
+            }))
             .subscribe(savedStudy => {
                 this.study = savedStudy;
                 this.goBack();

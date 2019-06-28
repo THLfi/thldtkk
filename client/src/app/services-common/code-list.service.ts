@@ -1,4 +1,6 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {tap} from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
@@ -18,12 +20,11 @@ export class CodeListService3 {
     private translateService : TranslateService,
     private growlMessageService: GrowlMessageService,
     private nodeUtils: NodeUtils,
-    private http: Http
+    private http: HttpClient
   ) { }
 
   search(query = ""): Observable<CodeList[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/codeLists?query=' + query)
-      .map(response => response.json() as CodeList[])
+    return this.http.get<CodeList[]>(env.contextPath + env.apiPath + '/codeLists?query=' + query)
   }
 
   getAll(): Observable<CodeList[]> {
@@ -32,8 +33,6 @@ export class CodeListService3 {
 
   save(codeList: CodeList): Observable<CodeList> {
     const path: string = env.contextPath + env.apiPath + '/codeLists'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
     if ('external' == codeList.codeListType) {
       codeList.codeItems = []
@@ -42,11 +41,10 @@ export class CodeListService3 {
       codeList.referenceId = null
     }
 
-    return this.http.post(path, codeList, options)
-      .map(response => response.json() as CodeList)
-      .do(codeList => {
+    return this.http.post<CodeList>(path, codeList).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.codeList.save.result.success')
-      })
+      }))
   }
 
   initNew(): CodeList {
@@ -81,16 +79,15 @@ export class CodeListService3 {
           + '/editor/codeLists/'
           + codeListId
           +'/instanceVariables'
-    return this.http.get(url).map(response => response.json() as InstanceVariable[])
+    return this.http.get<InstanceVariable[]>(url);
   }
 
   delete(codeListId: string): Observable<any>{
     const path: string = env.contextPath + env.apiPath + '/codeLists/' + codeListId
 
-      return this.http.delete(path)
-          .map(response => response.json())
-          .do(() => {
+      return this.http.delete(path).pipe(
+          tap(() => {
             this.growlMessageService.buildAndShowMessage('info', 'operations.common.delete.result.success')
-      })
+      }))
   }
 }

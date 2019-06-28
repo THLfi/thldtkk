@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, NavigationExtras} from '@angular/router'
-import 'rxjs/add/operator/toPromise'
+
 
 import { Dataset } from '../../../model2/dataset'
 import { Study } from '../../../model2/study'

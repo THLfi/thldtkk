@@ -1,6 +1,6 @@
-import { Http, Headers, RequestOptions } from '@angular/http'
+
+import {empty as observableEmpty,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
 
 import { environment as env} from '../../environments/environment'
@@ -9,19 +9,20 @@ import { NodeUtils } from '../utils/node-utils'
 import { StudyGroup } from '../model2/study-group'
 import { StringUtils } from '../utils/string-utils'
 import { Study } from '../model2/study';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class StudyGroupService {
 
   constructor(
     private nodeUtils: NodeUtils,
-    private http: Http,
+    private http: HttpClient,
     private translateService: TranslateService
   ) { }
 
   findByOwnerOrganizationId(organizationId: string): Observable<StudyGroup[]> {
     if (StringUtils.isBlank(organizationId)) {
-      return Observable.empty()
+      return observableEmpty()
     }
     else {
       const url = env.contextPath
@@ -29,18 +30,14 @@ export class StudyGroupService {
         + '/studyGroups?ownerOrganizationId='
         + organizationId
 
-      return this.http.get(url)
-        .map(response => response.json() as StudyGroup[])
+      return this.http.get<StudyGroup[]>(url);
     }
   }
 
   save(studyGroup: StudyGroup): Observable<StudyGroup> {
     const path: string = env.contextPath + env.apiPath + '/studyGroups/'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, studyGroup, options)
-      .map(response => response.json() as StudyGroup)
+    return this.http.post<StudyGroup>(path, studyGroup);
   }
 
   initNew(): StudyGroup {
@@ -58,8 +55,7 @@ export class StudyGroupService {
   }
 
   get(studyGroupId: string): Observable<StudyGroup> {
-    return this.http.get(env.contextPath + env.apiPath + '/studyGroups/' + studyGroupId)
-      .map(response => response.json() as StudyGroup)
+    return this.http.get<StudyGroup>(env.contextPath + env.apiPath + '/studyGroups/' + studyGroupId);
   }
 
   getStudies(studyGroupId: string): Observable<Study[]> {
@@ -68,6 +64,6 @@ export class StudyGroupService {
       + '/public/studyGroups/'
       + studyGroupId
       + '/studies'
-    return this.http.get(url).map(response => response.json() as Study[])
+    return this.http.get<Study[]>(url);
   }
 }

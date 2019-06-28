@@ -7,6 +7,7 @@ import { GrowlMessageService } from '../../../services-common/growl-message.serv
 import { Person } from '../../../model2/person'
 import {TranslateService} from "@ngx-translate/core";
 import {PersonService} from "../../../services-common/person.service";
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'person-edit-modal',
@@ -91,7 +92,7 @@ export class PersonEditModalComponent implements AfterContentChecked {
           this.deleteInProgress = true
 
           this.personService.delete(this.person.id)
-            .finally(() => this.deleteInProgress = false)
+            .pipe(finalize(() => this.deleteInProgress = false))
             .subscribe(() => {})
         }
       })

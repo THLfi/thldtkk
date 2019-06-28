@@ -1,5 +1,7 @@
-import { BehaviorSubject, Observable } from 'rxjs'
-import { Http } from '@angular/http'
+
+import {of as observableOf,  BehaviorSubject, Observable } from 'rxjs';
+
+import {catchError, tap, mergeMap, map, skipWhile} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { NavigationExtras, Router } from '@angular/router'
 
@@ -8,6 +10,7 @@ import { environment as env } from '../../environments/environment'
 import { LangPipe } from '../utils/lang.pipe'
 import { Organization } from '../model2/organization'
 import { User } from '../model2/user'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CurrentUserService {
@@ -16,7 +19,7 @@ export class CurrentUserService {
 
   constructor(
     private langPipe: LangPipe,
-    private http: Http,
+    private http: HttpClient,
     private router: Router
   ) {
     this.currentUserSubject = new BehaviorSubject(null)
@@ -26,34 +29,32 @@ export class CurrentUserService {
   private refreshCurrentUser() {
     this.currentUserSubject.next(null)
 
-    this.http.get(env.contextPath + env.apiPath + '/user-functions/get-current-user')
-      .map(response => response.json() as User)
+    this.http.get<User>(env.contextPath + env.apiPath + '/user-functions/get-current-user')
       .subscribe(user => {
         this.currentUserSubject.next(user)
       })
   }
 
   getCurrentUserObservable(): Observable<User> {
-    return this.currentUserSubject.skipWhile((user) => user === null)
+    return this.currentUserSubject.pipe(skipWhile((user) => user === null))
   }
 
   isUserAdmin(): Observable<boolean> {
-    return this.getCurrentUserObservable()
-      .map(user => user ? user.isAdmin : false)
+    return this.getCurrentUserObservable().pipe(
+      map(user => user ? user.isAdmin : false))
   }
 
   isUserOrganizationAdmin(): Observable<boolean> {
-    return this.getCurrentUserObservable()
-      .map(user => user ? user.isOrganizationAdmin : false)
+    return this.getCurrentUserObservable().pipe(
+      map(user => user ? user.isOrganizationAdmin : false))
   }
 
   getUserOrganizations(): Observable<Organization[]> {
-    return this.getCurrentUserObservable()
-      .flatMap((user: User) => {
+    return this.getCurrentUserObservable().pipe(
+      mergeMap((user: User) => {
         if (user && user.isLoggedIn) {
-          return this.http.post(env.contextPath + env.apiPath + '/user-functions/list-current-user-organizations', {})
-            .map(response => response.json() as Organization[])
-            .do(organizations => {
+          return this.http.post<Organization[]>(env.contextPath + env.apiPath + '/user-functions/list-current-user-organizations', {}).pipe(
+            tap(organizations => {
               organizations.forEach(organization => {
                 organization.organizationUnit.sort((one, two) => {
                   const onePrefLabel = this.langPipe.transform(one.prefLabel)
@@ -61,12 +62,12 @@ export class CurrentUserService {
                   return onePrefLabel.localeCompare(twoPrefLabel)
                 })
               })
-            })
+            }))
         }
         else {
-          return Observable.of([])
+          return observableOf([])
         }
-      })
+      }))
   }
 
   login(username: string, password: string): Observable<boolean> {
@@ -74,19 +75,19 @@ export class CurrentUserService {
     formData.append('username', username)
     formData.append('password', password)
 
-    return this.http.post(env.contextPath + env.apiPath + '/user-functions/login', formData)
-      .map(response => response.status == 204)
-      .catch(() => Observable.of(false))
-      .do(loginSuccessful => {
+    return this.http.post(env.contextPath + env.apiPath + '/user-functions/login', formData, { observe: 'response' }).pipe(
+      map(response => response.status == 204),
+      catchError(() => observableOf(false)),
+      tap(loginSuccessful => {
         if (loginSuccessful) {
           this.refreshCurrentUser()
         }
-      })
+      }),)
   }
 
   logout() {
     this.http.post(env.contextPath + env.apiPath + '/user-functions/logout', {})
-      .subscribe(response => {
+      .subscribe(() => {
         this.refreshCurrentUser()
 
         const extras: NavigationExtras = {

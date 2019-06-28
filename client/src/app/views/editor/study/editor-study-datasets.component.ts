@@ -1,3 +1,5 @@
+
+import {finalize} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Title } from '@angular/platform-browser'
@@ -69,10 +71,10 @@ export class EditorStudyDatasetsComponent implements OnInit {
         if (confirm(message)) {
           this.deleteInProgress = true
 
-          this.editorDatasetService.delete(this.study.id, datasetId)
-            .finally(() => {
+          this.editorDatasetService.delete(this.study.id, datasetId).pipe(
+            finalize(() => {
               this.deleteInProgress = false
-            })
+            }))
             .subscribe(() => this.getStudy(this.study.id))
         }
       })

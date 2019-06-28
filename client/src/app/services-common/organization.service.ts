@@ -1,8 +1,9 @@
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
-import { Headers, Http, RequestOptions} from '@angular/http'
 import { Observable } from 'rxjs'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/catch'
+
+
 
 import { environment as env } from '../../environments/environment'
 
@@ -11,6 +12,7 @@ import { LangPipe } from '../utils/lang.pipe'
 import { Organization } from '../model2/organization'
 import { NodeUtils } from '../utils/node-utils'
 import { TranslateService } from '@ngx-translate/core'
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable()
@@ -22,16 +24,15 @@ export class OrganizationService {
     private langPipe: LangPipe,
     private nodeUtils: NodeUtils,
     private growlMessageService: GrowlMessageService,
-    private http: Http,
+    private http: HttpClient,
     private translateService: TranslateService
   ) {
     this.language = this.translateService.currentLang
   }
 
   getAllOrganizations(): Observable<Organization[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/organizations')
-      .map(response => response.json() as Organization[])
-      .do(organizations => {
+    return this.http.get<Organization[]>(env.contextPath + env.apiPath + '/organizations').pipe(
+      tap(organizations => {
         organizations.forEach(organization => {
           organization.organizationUnit.sort((one, two) => {
             const onePrefLabel = this.langPipe.transform(one.prefLabel)
@@ -39,24 +40,20 @@ export class OrganizationService {
             return onePrefLabel.localeCompare(twoPrefLabel)
           })
         })
-      })
+      }))
   }
 
   get(id: string): Observable<Organization> {
-    return this.http.get(env.contextPath + env.apiPath + '/organizations/' + id)
-      .map(response => response.json() as Organization)
+    return this.http.get<Organization>(env.contextPath + env.apiPath + '/organizations/' + id);
   }
 
   save(organization: Organization): Observable<Organization> {
     const path: string = env.contextPath + env.apiPath + '/organizations/'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, organization, options)
-      .map(response => response.json() as Organization)
-      .do(organization => {
+    return this.http.post<Organization>(path, organization).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.organization.save.result.success')
-      })
+      }))
   }
 
   initNew(): Organization {

@@ -1,5 +1,8 @@
+
+import {of as observableOf,  Observable, Subject } from 'rxjs';
+
+import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core';
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
@@ -9,12 +12,12 @@ import { LangPipe } from '../../../utils/lang.pipe'
 import { CodeListService3 } from '../../../services-common/code-list.service'
 import { CodeList } from '../../../model2/code-list'
 
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
-import 'rxjs/add/observable/of';
+
+
+
+
+
 
 @Component({
   templateUrl: './code-list-list.component.html',
@@ -113,16 +116,16 @@ export class CodeListListComponent implements OnInit {
   }
 
   private initSearchSubscription(searchTerms: Subject<string>): void {
-    searchTerms.debounceTime(this.searchDelay)
-      .distinctUntilChanged()
-      .switchMap(term => {
+    searchTerms.pipe(debounceTime(this.searchDelay),
+      distinctUntilChanged(),
+      switchMap(term => {
         this.loadingCodeLists = true;
         return this.codeListService.search(term)
-      })
-      .catch(error => {
+      }),
+      catchError(error => {
         this.initSearchSubscription(searchTerms)
-        return Observable.of<CodeList[]>([])
-      })
+        return observableOf<CodeList[]>([])
+      }),)
       .subscribe(codeLists => {
         this.codeLists = codeLists
         this.loadingCodeLists = false

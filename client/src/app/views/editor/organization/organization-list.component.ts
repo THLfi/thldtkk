@@ -1,5 +1,8 @@
+
+import {forkJoin as observableForkJoin,  BehaviorSubject, Observable, Subscription } from 'rxjs';
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core'
-import { BehaviorSubject, Observable, Subscription } from 'rxjs'
 
 import { CurrentUserService } from '../../../services-editor/user.service'
 import { Organization } from '../../../model2/organization'
@@ -161,10 +164,10 @@ export class OrganizationListComponent implements OnInit {
       label += (' (' + abbreviation + ')')
     }
 
-    Observable.forkJoin(
+    observableForkJoin(
       this.organizationUnitService.getOrganizationUnitStudies(organizationUnit),
       this.organizationUnitService.getOrganizationUnitDatasets(organizationUnit)
-    ).map(data => {
+    ).pipe(map(data => {
       return {
         organizationUnit: label,
         studyCount: data[0].length,
@@ -172,7 +175,7 @@ export class OrganizationListComponent implements OnInit {
         datasetCount: data[1].length,
         publishedDatasetCount: data[1].filter(dataset => dataset.published).length
       }
-    }).subscribe(translationParams => {
+    })).subscribe(translationParams => {
       this.translateService.get('confirmRemoveOrganizationUnitModal.message', translationParams)
         .subscribe((confirmationMessage: string) => {
           this.confirmationService.confirm({

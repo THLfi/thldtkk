@@ -1,4 +1,5 @@
-import { Http, Headers, RequestOptions } from '@angular/http';
+
+import {tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 
@@ -7,30 +8,27 @@ import { environment as env} from '../../environments/environment'
 import { GrowlMessageService } from './growl-message.service'
 import { Person } from '../model2/person'
 import { PersonInRole } from "../model2/person-in-role";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class PersonService {
 
   constructor(
     private growlMessageService: GrowlMessageService,
-    private http: Http
+    private http: HttpClient
   ) { }
 
   getAll(): Observable<Person[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/persons')
-      .map(response => response.json() as Person[])
+    return this.http.get<Person[]>(env.contextPath + env.apiPath + '/persons');
   }
 
   save(person: Person): Observable<Person> {
     const path: string = env.contextPath + env.apiPath + '/persons/'
-    const headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' })
-    const options = new RequestOptions({ headers: headers })
 
-    return this.http.post(path, person, options)
-      .map(response => response.json() as Person)
-      .do(person => {
+    return this.http.post<Person>(path, person).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('success', 'operations.person.save.result.success')
-      })
+      }))
   }
 
   initNew(): Person {
@@ -46,22 +44,17 @@ export class PersonService {
   delete(personId: string): Observable<any> {
     const path: string = env.contextPath + env.apiPath + '/persons/' + personId
 
-    return this.http.delete(path)
-      .map(response => response.json())
-      .do(() => {
+    return this.http.delete(path).pipe(
+      tap(() => {
         this.growlMessageService.buildAndShowMessage('info', 'operations.person.delete.result.success')
-      })
+      }))
   }
 
   getRoleReferences(person: Person): Observable<PersonInRole[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/persons/' + person.id + '/roles/')
-      .map(response => response.json() as PersonInRole[])
+    return this.http.get<PersonInRole[]>(env.contextPath + env.apiPath + '/persons/' + person.id + '/roles/');
   }
 
   search(searchText = ""): Observable<Person[]> {
-    return this.http.get(env.contextPath + env.apiPath + '/persons?query=' + searchText + '&max=-1')
-      .map(response => response.json() as Person[])
+    return this.http.get<Person[]>(env.contextPath + env.apiPath + '/persons?query=' + searchText + '&max=-1');
   }
-
-
 }

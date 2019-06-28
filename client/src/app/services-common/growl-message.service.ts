@@ -1,5 +1,6 @@
+
+import {of as observableOf, forkJoin as observableForkJoin,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
 import { Message } from 'primeng/primeng'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -18,9 +19,9 @@ export class GrowlMessageService {
    * @param detailKey Message key for growl message details. Optional.
    */
   buildAndShowMessage(severity: 'success' | 'info' | 'warn' | 'error', summaryKey: string, detailKey?: string) {
-    Observable.forkJoin(
+    observableForkJoin(
       this.translateService.get(summaryKey),
-      detailKey ? this.translateService.get(detailKey) : Observable.of('')
+      detailKey ? this.translateService.get(detailKey) : observableOf('')
     ).subscribe(data => {
       this.showMessage({
         severity: severity,

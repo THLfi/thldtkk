@@ -18,6 +18,8 @@ import fi.thl.thldtkk.api.metadata.service.PublicDatasetService;
 import fi.thl.thldtkk.api.metadata.service.PublicInstanceVariableService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -94,4 +96,27 @@ public class PublicInstanceVariableServiceImpl implements PublicInstanceVariable
         new NodeId(id, InstanceVariable.TERMED_NODE_CLASS)).map(InstanceVariable::new);
   }
 
+  @Override
+  public Optional<InstanceVariable> get(UUID id, List<String> select) {
+    return nodes.get(
+      buildSelect(select),
+      new NodeId(id, InstanceVariable.TERMED_NODE_CLASS)
+    ).map(InstanceVariable::new);
+  }
+
+  private Select buildSelect(List<String> selectStrings) {
+    if (selectStrings == null) {
+      selectStrings = new ArrayList<>();
+    }
+
+    if (! selectStrings.contains("id")) {
+      selectStrings.add("id");
+    }
+
+    if (! selectStrings.contains("type")) {
+      selectStrings.add("type");
+    }
+
+    return new Select(selectStrings);
+  }
 }

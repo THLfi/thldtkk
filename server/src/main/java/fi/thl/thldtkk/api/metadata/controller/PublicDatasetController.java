@@ -5,7 +5,11 @@ import fi.thl.thldtkk.api.metadata.util.spring.annotation.GetJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.io.Console;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,8 +44,18 @@ public class PublicDatasetController {
 
   @ApiOperation("Get one published dataset by ID")
   @GetJsonMapping("/{datasetId}")
-  public Dataset getDataset(@PathVariable("datasetId") UUID datasetId) {
-    return sanitizeDataset(publicDatasetService.get(datasetId).orElseThrow(NotFoundException::new));
+  public Dataset getDataset(
+    @PathVariable("datasetId") UUID datasetId,
+    @RequestParam(name = "select", required = false) String selectString
+  ) throws IOException {
+    Optional<Dataset> dataset;
+    if (selectString == null) {
+      dataset = publicDatasetService.get(datasetId);
+    } else {
+      dataset = publicDatasetService.get(datasetId, ControllerUtils.parseSelect(selectString));
+    }
+
+    return sanitizeDataset(dataset.orElseThrow(NotFoundException::new));
   }
 
 }

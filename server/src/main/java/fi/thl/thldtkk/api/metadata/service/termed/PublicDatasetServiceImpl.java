@@ -15,6 +15,7 @@ import fi.thl.thldtkk.api.metadata.domain.Dataset;
 import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
@@ -52,6 +53,14 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
         "references.role:2",
         "referrers.predecessor"),
         new NodeId(id, Dataset.TERMED_NODE_CLASS)).map(Dataset::new);
+  }
+
+  @Override
+  public Optional<Dataset> get(UUID id, List<String> select) {
+    return nodes.get(
+      buildSelect(select),
+      new NodeId(id, Dataset.TERMED_NODE_CLASS)
+    ).map(Dataset::new);
   }
 
   @Override
@@ -250,6 +259,22 @@ public class PublicDatasetServiceImpl implements PublicDatasetService {
     dataset.getPersonInRoles().forEach(pir -> delete.add(pir.toNode()));
 
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));
+  }
+
+  private Select buildSelect(List<String> selectStrings) {
+    if (selectStrings == null) {
+      selectStrings = new ArrayList<>();
+    }
+
+    if (! selectStrings.contains("id")) {
+      selectStrings.add("id");
+    }
+
+    if (! selectStrings.contains("type")) {
+      selectStrings.add("type");
+    }
+
+    return new Select(selectStrings);
   }
 
 }

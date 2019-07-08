@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-
-
-
-
 import { environment as env} from '../../environments/environment'
 
 import { InstanceVariable } from '../model2/instance-variable'
@@ -26,6 +22,18 @@ export class PublicInstanceVariableService {
       + '/instanceVariables/'
       + instanceVariableId
     return this.http.get<InstanceVariable>(url);
+  }
+
+  getInstanceVariableWithSelect(instanceVariableId: string, select: string[]) {
+    const url = env.contextPath
+      + env.apiPath
+      + '/public/instanceVariables/'
+      + instanceVariableId
+    return this.http.get<InstanceVariable>(url, {
+      params: {
+        select: JSON.stringify(select)
+      }
+    });
   }
 
   search(searchText = '', max = 100): Observable<InstanceVariable[]> {

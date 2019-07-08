@@ -22,6 +22,17 @@ export class PublicDatasetService {
       + datasetId);
   }
 
+  getDatasetWithSelect(datasetId: string, select: string[]) {
+    return this.http.get<Dataset>(env.contextPath
+      + env.apiPath
+      + '/public/datasets/'
+      + datasetId, {
+        params: {
+          select: JSON.stringify(select)
+        }
+    });
+  }
+
   search(searchText: string, organizationId?: string, sort?: string, max?: number): Observable<Dataset[]> {
     return this.searchInternal(
       searchText,

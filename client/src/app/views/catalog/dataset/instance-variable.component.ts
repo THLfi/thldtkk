@@ -64,13 +64,29 @@ export class InstanceVariableComponent implements OnInit {
 
   private updateInstanceVariable(studyId: string, datasetId: string, instanceVariableId: string) {
     observableForkJoin(
-      this.studyService.getStudy(studyId),
-      this.datasetService.getDataset(studyId, datasetId),
-      this.instanceVariableService.getInstanceVariable(studyId, datasetId, instanceVariableId)
+      this.studyService.getStudyWithSelect(studyId, [
+        'properties.*',
+        'references.unitType'
+      ]),
+      this.datasetService.getDatasetWithSelect(datasetId, [
+        'properties.*',
+        'references.unitType'
+      ]),
+      this.instanceVariableService.getInstanceVariableWithSelect(instanceVariableId,[
+        'properties.*',
+        'references.conceptsFromScheme',
+        'references.unit',
+        'references.codeList',
+        'references.codeItems:2',
+        'references.variable',
+        'references.source', // TODO: WHY THIS IS NOT WORKING? WHY CANNOT GET REFERENCE 'SOURCE' FROM TERMED API??
+        'references.unitType',
+        'references.instanceQuestions'
+      ])
     ).subscribe(data => {
-      this.study = data[0]
-      this.dataset = data[1]
-      this.instanceVariable = data[2]
+      this.study = data[0];
+      this.dataset = data[1];
+      this.instanceVariable = data[2];
       this.updatePageTitle()
       this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(this.study, this.dataset, this.instanceVariable)
       this.updateReferencePeriod()

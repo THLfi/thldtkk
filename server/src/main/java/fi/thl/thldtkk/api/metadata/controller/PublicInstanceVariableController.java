@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.sanitizeInstanceVariable;
@@ -36,8 +38,18 @@ public class PublicInstanceVariableController {
   @GetJsonMapping({
       "/datasets/{datasetId}/instanceVariables/{id}",
       "/instanceVariables/{id}"})
-  public InstanceVariable getInstanceVariable(@PathVariable("id") UUID id) {
-    return sanitizeInstanceVariable(instanceVariableService.get(id).orElseThrow(NotFoundException::new));
+  public InstanceVariable getInstanceVariable(
+    @PathVariable("id") UUID id,
+    @RequestParam(name = "select", required = false) String selectString
+  ) throws IOException {
+    Optional<InstanceVariable> variable;
+    if (selectString == null) {
+      variable = instanceVariableService.get(id);
+    } else {
+      variable = instanceVariableService.get(id, ControllerUtils.parseSelect(selectString));
+    }
+
+    return sanitizeInstanceVariable(variable.orElseThrow(NotFoundException::new));
   }
 
   @ApiOperation("List all instances of given variable")

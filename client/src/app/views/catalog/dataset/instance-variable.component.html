@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.valueRangeMin"
+  <div *ngIf="instanceVariable.valueRangeMin != null && instanceVariable.valueRangeMin != undefined"
        class="row" >
     <div class="col-xs-12">
       <h2>
@@ -176,7 +176,7 @@
     </div>
   </div>
 
-  <div *ngIf="instanceVariable.valueRangeMax"
+  <div *ngIf="instanceVariable.valueRangeMax != null && instanceVariable.valueRangeMax != undefined"
        class="row" >
     <div class="col-xs-12">
       <h2>
@@ -247,7 +247,7 @@
       </div>
     </div>
 
-  <div *ngIf="instanceVariable.sourceDescription && (instanceVariable.sourceDescription | lang)"
+    <div *ngIf="instanceVariable.sourceDescription && (instanceVariable.sourceDescription | lang)"
          class="row" >
       <div class="col-xs-12">
         <p>{{ instanceVariable.sourceDescription | lang }}</p>

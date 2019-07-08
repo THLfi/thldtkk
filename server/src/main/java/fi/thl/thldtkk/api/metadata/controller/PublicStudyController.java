@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static fi.thl.thldtkk.api.metadata.util.PublicFieldIgnoreUtil.*;
@@ -45,7 +46,7 @@ public class PublicStudyController {
       query,
       max,
       sort,
-      parseSelect(selectString)
+      ControllerUtils.parseSelect(selectString)
     ));
   }
 
@@ -55,15 +56,22 @@ public class PublicStudyController {
     @PathVariable UUID studyId,
     @RequestParam(name = "select", required = false) String selectString
   ) throws IOException {
-    return sanitizeStudy(publicStudyService.get(studyId, parseSelect(selectString))
-      .orElseThrow(entityNotFound(Study.class, studyId)));
+    Optional<Study> study;
+    if (selectString == null) {
+      study = publicStudyService.get(studyId);
+    } else {
+      study = publicStudyService.get(studyId, ControllerUtils.parseSelect(selectString));
+    }
+
+    return sanitizeStudy(study.orElseThrow(entityNotFound(Study.class, studyId)));
   }
 
   @ApiOperation("Get one dataset by study ID and dataset ID")
   @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}")
   public Dataset getDataset(
     @PathVariable UUID studyId,
-    @PathVariable UUID datasetId) {
+    @PathVariable UUID datasetId
+  ) {
     return sanitizeDataset(publicStudyService.getDataset(studyId, datasetId)
       .orElseThrow(entityNotFound(Dataset.class, datasetId)));
   }
@@ -92,14 +100,5 @@ public class PublicStudyController {
           @PathVariable("datasetId") UUID datasetId,
           @PathVariable("instanceVariableId") UUID instanceVariableId) {
     return publicStudyService.getNextInstanceVariable(studyId, datasetId, instanceVariableId);
-  }
-
-  private List<String> parseSelect(String selectString) throws IOException {
-    ArrayList<String> select = null;
-    if (selectString != null) {
-      select = new ObjectMapper().readValue(selectString, new TypeReference<ArrayList<String>>() {});
-    }
-
-    return select;
   }
 }

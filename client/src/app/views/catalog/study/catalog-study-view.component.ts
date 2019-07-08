@@ -9,6 +9,7 @@ import { Study } from '../../../model2/study'
 import { StudyDetailHighlight } from './study-detail-highlight'
 import { StringUtils } from '../../../utils/string-utils'
 import { Title } from '@angular/platform-browser'
+import {forkJoin} from "rxjs";
 
 @Component({
   templateUrl: './catalog-study-view.component.html',
@@ -24,7 +25,8 @@ export class CatalogStudyViewComponent {
   readonly datasetLabelTruncateLength: number = 70
 
   StudyDetailHighlight = StudyDetailHighlight
-  highlights: StudyDetailHighlight[] = []
+  highlights: StudyDetailHighlight[] = [];
+  instanceVariableCounts: {[id: string]: number} = {};
 
   constructor(
     private studyService: PublicStudyService,
@@ -42,30 +44,39 @@ export class CatalogStudyViewComponent {
       this.loadingStudy = true;
       this.study = null;
 
-      this.studyService.getStudyWithSelect(params['id'], [
-        'properties.*',
-        'references.studyGroup',
-        'references.ownerOrganization',
-        'references.personInRoles',
+      forkJoin([
+        this.studyService.getStudyWithSelect(params['id'], [
+          'properties.*',
+          'references.studyGroup',
+          'references.ownerOrganization',
+          'references.personInRoles',
           'references.person:2',
           'references.role:2',
-        'references.datasetTypes',
-        'references.usageCondition',
-        'references.links',
-        'references.universe',
-        'references.referencePeriodStart',
-        'references.referencePeriodEnd',
-        'references.population',
-        'references.conceptsFromScheme',
-        'references.dataSets',
+          'references.datasetTypes',
+          'references.usageCondition',
+          'references.links',
+          'references.universe',
+          'references.referencePeriodStart',
+          'references.referencePeriodEnd',
+          'references.population',
+          'references.conceptsFromScheme',
+          'references.dataSets'
+        ]),
+        this.studyService.getStudyWithSelect(params['id'], [
+          'references.dataSets',
           'references.instanceVariable:2'
-      ]).subscribe(study => {
-        this.study = study
-        this.updatePageTitle()
-        this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(study)
-        this.pickHighlightedDetails()
-        this.loadingStudy = false
-      })
+        ])
+      ])
+        .subscribe(fork => {
+          this.study = fork[0];
+          fork[1].datasets
+            .forEach(dataset => this.instanceVariableCounts[dataset.id] = dataset.instanceVariables.length);
+
+          this.updatePageTitle()
+          this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
+          this.pickHighlightedDetails()
+          this.loadingStudy = false
+        })
     })
   }
 
@@ -93,5 +104,4 @@ export class CatalogStudyViewComponent {
       }
     }
   }
-
 }

@@ -1,5 +1,6 @@
 export enum GroupOfRegistree {
     SUBJECTS = "SUBJECTS",
+    EMPLOYEES = "EMPLOYEES",
     CUSTOMERS = "CUSTOMERS",
     PATIENTS = "PATIENTS",
     JOB_SEEKERS = "JOB_SEEKERS",

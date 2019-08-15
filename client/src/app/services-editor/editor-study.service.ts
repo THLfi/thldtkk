@@ -65,7 +65,8 @@ export class EditorStudyService {
       datasetTypes: [],
       datasets: [],
       predecessors: [],
-      successors: []
+      successors: [],
+      studyForms: []
     })
   }
 

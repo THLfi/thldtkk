@@ -448,6 +448,22 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xs-12">
+          <p><strong class="field-label">{{ 'studyForm.label' | translate }}</strong></p>
+          <ng-container *ngIf="study.studyForms.length; else noExistenceForm;">
+            <ul>
+              <li *ngFor="let form of study.studyForms">
+                {{ 'studyForm.' + form.type | translate }}
+              </li>
+            </ul>
+          </ng-container>
+          <ng-template #noExistenceForm>
+            <p>{{ 'studyForm.noStudyForms' | translate }}</p>
+          </ng-template>
+        </div>
+      </div>
+
       <div class="row" *ngIf="postStudyRetentionDisposeNotSelected()">
         <div class="col-xs-12">
             <p><strong class="field-label">{{ 'physicalLocation' | translate }}</strong></p>

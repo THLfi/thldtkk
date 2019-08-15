@@ -1014,6 +1014,72 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
+              <label for="studyForms">
+                {{ 'studyForm.label' | translate }}
+              </label>
+              <table
+                *ngIf="study.studyForms && study.studyForms.length; else noStudyForms;"
+                id="studyForms"
+                class="table table-striped"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      {{ 'studyForm.type' | translate }}
+                      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                    </th>
+                    <th translate="functions"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let studyForm of study.studyForms; let index = index;"
+                    [ngClass]="{
+                      'bg-danger': formErrors['studyForm-type-' + index] &&
+                        formErrors['studyForm-type-' + index].length
+                     }"
+                  >
+                    <td>
+                      <p-dropdown
+                        *ngIf="studyFormTypeOptions"
+                        [(ngModel)]="studyForm.type"
+                        [options]="studyFormTypeOptions"
+                        filter="true"
+                        [autoDisplayFirst]="false"
+                        name="{{ 'studyForm-type-' + index }}"
+                        required
+                      ></p-dropdown>
+                      <p
+                        *ngFor="let errorKey of formErrors['studyForm-type-' + index]"
+                        class="text-danger"
+                      >
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ errorKey | translate }}
+                      </p>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-default" (click)="removeStudyForm(studyForm)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        {{ 'remove' | translate }}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ng-template #noStudyForms>
+                <p translate="studyForm.noStudyForms"></p>
+              </ng-template>
+              <button type="button" class="btn btn-default" (click)="addStudyForm()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                {{ 'studyForm.add' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
               <label for="physicalLocation" translate="physicalLocation"></label>
               <editor-help-link [helpTextComponent]="physicalLocationHelpText"></editor-help-link>
               <editor-help-text #physicalLocationHelpText key="editor.studyAdministrative.physicalLocation.helpText"></editor-help-text>
@@ -1027,7 +1093,7 @@
             </div>
           </div>
         </div>
-          
+
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">

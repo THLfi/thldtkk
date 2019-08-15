@@ -225,6 +225,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.otherPrinciplesForPhysicalSecurity",
         "references.otherPrinciplesForDigitalSecurity",
         "references.predecessors",
+        "references.studyForms",
         "referrers.predecessors"
       );
     }
@@ -355,6 +356,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .forEach(org -> org.setId(firstNonNull(org.getId(), randomUUID())));
     study.getSystemInRoles()
       .forEach(sir -> sir.setId(firstNonNull(sir.getId(), randomUUID())));
+    study.getStudyForms()
+      .forEach(form -> form.setId(firstNonNull(form.getId(), randomUUID())));
 
     if (isNotPersonRegistry(study)) {
       study.setRegistryPolicy(emptyMap());
@@ -504,6 +507,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
     study.getAssociatedOrganizations().forEach(org -> save.add(org.toNode()));
     study.getSystemInRoles().forEach(sir -> save.add(sir.toNode()));
+    study.getStudyForms().forEach(form -> save.add(form.toNode()));
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
     return changeset;
@@ -546,7 +550,11 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         oldStudy.getAssociatedOrganizations()))
       .merge(Changeset.buildChangeset(
         newStudy.getSystemInRoles(),
-        oldStudy.getSystemInRoles()));
+        oldStudy.getSystemInRoles()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getStudyForms(),
+        oldStudy.getStudyForms()
+      ));
 
     if (includeDatasets) {
       // Dataset updates
@@ -674,7 +682,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     Study study = get(id).orElseThrow(entityNotFound(Study.class, id));
 
     List<Node> delete = new ArrayList<>();
-    
+
     delete.add(study.toNode());
     study.getPopulation().ifPresent(v -> delete.add(v.toNode()));
     study.getLinks().forEach(v -> delete.add(v.toNode()));

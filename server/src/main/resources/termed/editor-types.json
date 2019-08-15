@@ -328,6 +328,12 @@
             "code": "common-graph"
           }
         }
+      },
+      {
+        "id": "studyForms",
+        "range": {
+          "id": "StudyForm"
+        }
       }
     ]
   },
@@ -786,6 +792,14 @@
         "range": {
           "id": "SystemRole"
         }
+      }
+    ]
+  },
+  {
+    "id": "StudyForm",
+    "textAttributes": [
+      {
+        "id": "type"
       }
     ]
   }

@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, Observable} from 'rxjs';
+import {forkJoin as observableForkJoin} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -34,7 +34,8 @@ import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
 import { GroupOfRegistree } from 'app/model2/groupOfRegistree';
 import { ReceivingGroup } from 'app/model2/receivingGroup';
-
+import {StudyFormType} from '../../../model2/study-form-type';
+import {StudyForm} from '../../../model2/study-form';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
@@ -59,8 +60,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     language: string;
 
-    savingInProgress: boolean = false
-    savingHasFailed: boolean = false
+    savingInProgress = false
+    savingHasFailed = false
 
     sidebarActiveSection = StudySidebarActiveSection.ADMINISTRATIVE_INFORMATION
 
@@ -82,6 +83,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     groupsOfRegistreesOptions: SelectItem[] = []
     receivingGroupsOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
+    studyFormTypeOptions: SelectItem[] = [];
 
     constructor(
         private studyService: EditorStudyService,
@@ -150,6 +152,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
       this.populateRetentionPolicies()
       this.populateExistenceForms()
+      this.populateStudyFormTypes()
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
@@ -174,11 +177,11 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       }
     }
 
-    private updatePageTitle():void {
-        if(this.study.prefLabel) {
-            let translatedLabel:string = this.langPipe.transform(this.study.prefLabel)
-            let bareTitle:string = this.titleService.getTitle();
-            this.titleService.setTitle(translatedLabel + " - " + bareTitle)
+    private updatePageTitle() {
+        if (this.study.prefLabel) {
+            const translatedLabel = this.langPipe.transform(this.study.prefLabel)
+            const bareTitle = this.titleService.getTitle();
+            this.titleService.setTitle(translatedLabel + ' - ' + bareTitle);
         }
     }
 
@@ -193,15 +196,14 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     private populateRetentionPolicies() {
-      for(let policy in RetentionPolicy) {
-        this.translateService.get('retentionPolicy.'+policy).subscribe(policyLabel => {
-          if(policy == RetentionPolicy.UNDEFINED.toString()) {
+      for (const policy in RetentionPolicy) {
+        this.translateService.get('retentionPolicy.' + policy).subscribe(policyLabel => {
+          if (policy === RetentionPolicy.UNDEFINED.toString()) {
             this.retentionPolicies.push({
                 label: policyLabel,
                 value: null
               })
-          }
-          else {
+          } else {
             this.retentionPolicies.push({
               label: policyLabel,
               value: policy
@@ -212,8 +214,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     private populateExistenceForms() {
-      for(let form in ExistenceForm) {
-        this.translateService.get('existenceForm.'+form).subscribe(formLabel => {
+      for (const form in ExistenceForm) {
+        this.translateService.get('existenceForm.' + form).subscribe(formLabel => {
             this.existenceForms.push({
               label: formLabel,
               value: form
@@ -222,15 +224,35 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       }
     }
 
+    private populateStudyFormTypes() {
+      for (const formType in StudyFormType) {
+        this.translateService
+          .get('studyForm.' + formType)
+          .subscribe(label => {
+            this.studyFormTypeOptions.push({
+              label: label,
+              value: formType
+            });
+          });
+      }
+    }
+
     private getAllSystemRoles() {
-      this.systemRoleService.getAll().subscribe(systemRoles => 
+      this.systemRoleService.getAll().subscribe(systemRoles =>
         this.allSystemRoles = systemRoles)
     }
 
     removeSystemInRole(systemInRole: SystemInRole) {
-      let index: number = this.study.systemInRoles.indexOf(systemInRole)
+      const index: number = this.study.systemInRoles.indexOf(systemInRole)
       if (index !== -1) {
         this.study.systemInRoles.splice(index, 1)
+      }
+    }
+
+    removeStudyForm(studyForm: StudyForm) {
+      const index = this.study.studyForms.indexOf(studyForm);
+      if (index !== -1) {
+        this.study.studyForms.splice(index, 1);
       }
     }
 
@@ -246,7 +268,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     saveSystem(event): void {
-      if(this.newSystem.link && this.newSystem.link.linkUrl) {
+      if (this.newSystem.link && this.newSystem.link.linkUrl) {
         this.newSystem.link.prefLabel[this.language] = this.defaultSystemLinkDescription
       }
 
@@ -322,7 +344,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     cleanAssociatedOrganizations() {
       this.study.associatedOrganizations = this.study.associatedOrganizations.filter(assoc => {
-        return (typeof assoc.organization == 'object');
+        return (typeof assoc.organization === 'object');
       })
     }
 
@@ -335,7 +357,18 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         system: null,
         systemRole: null,
       }
-      this.study.systemInRoles = [ ...this.study.systemInRoles,systemInRole ]
+      this.study.systemInRoles = [ ...this.study.systemInRoles, systemInRole ]
+    }
+
+    addStudyForm() {
+      if (! this.study.studyForms) {
+        this.study.studyForms = [];
+      }
+
+      this.study.studyForms.push({
+        id: null,
+        type: null
+      } as StudyForm);
     }
 
   ngAfterContentChecked(): void {

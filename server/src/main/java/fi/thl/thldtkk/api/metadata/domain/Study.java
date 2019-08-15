@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
@@ -76,6 +77,7 @@ public class Study implements NodeEntity {
   private Map<String, String> profilingAndAutomationDescription;
   private Boolean directIdentityInformation;
   private Map<String, String> directIdentityInformationDescription;
+  private List<StudyForm> studyForms;
 
   // Data security
   private ConfidentialityClass confidentialityClass;
@@ -240,6 +242,11 @@ public class Study implements NodeEntity {
       .forEach(s -> this.predecessors.add(new Study(s)));
     node.getReferences("systemInRoles")
       .forEach(sir -> this.systemInRoles.add(new SystemInRole(sir)));
+    this.studyForms = node
+      .getReferences("studyForms")
+      .stream()
+      .map(StudyForm::new)
+      .collect(Collectors.toList());
     node.getReferences("otherPrinciplesForPhysicalSecurity")
       .forEach(ops -> this.otherPrinciplesForPhysicalSecurity.add(new SupplementaryPhysicalSecurityPrinciple(ops)));
     node.getReferences("otherPrinciplesForDigitalSecurity")
@@ -733,6 +740,14 @@ public class Study implements NodeEntity {
     return otherPrinciplesForDigitalSecurity;
   }
 
+  public List<StudyForm> getStudyForms() {
+    return studyForms;
+  }
+
+  public void setStudyForms(List<StudyForm> studyForms) {
+    this.studyForms = studyForms;
+  }
+
   /**
    * Transforms dataset into node
    */
@@ -817,6 +832,7 @@ public class Study implements NodeEntity {
     getSystemInRoles().forEach(sir -> refs.put("systemInRoles", sir.toNode()));
     getOtherPrinciplesForPhysicalSecurity().forEach(ops -> refs.put("otherPrinciplesForPhysicalSecurity", ops.toNode()));
     getOtherPrinciplesForDigitalSecurity().forEach(ods -> refs.put("otherPrinciplesForDigitalSecurity", ods.toNode()));
+    getStudyForms().forEach(form -> refs.put("studyForms", form.toNode()));
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }

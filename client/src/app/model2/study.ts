@@ -30,6 +30,7 @@ import {UserInformation} from './user-information';
 import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
 import { GroupOfRegistree } from './groupOfRegistree';
 import { ReceivingGroup } from './receivingGroup';
+import {StudyForm} from "./study-form";
 
 export interface Study extends Node {
 
@@ -113,6 +114,7 @@ export interface Study extends Node {
   datasets: Dataset[]
   predecessors: Study[]
   successors: Study[]
+  studyForms: StudyForm[];
   changedAfterPublish?: boolean
 
 }

@@ -257,6 +257,19 @@
     "PAPER": "Paperi",
     "SAMPLE": "Näyte"
   },
+  "studyForm": {
+    "label": "Aineiston olomuoto",
+    "type": "Olomuoto",
+    "add": "Lisää uusi olomuoto",
+    "noStudyForms": "Aineistolla ei ole olomuotoja",
+    "DIGITAL": "Digitaalinen",
+    "PAPER": "Paperi",
+    "HUMAN_SAMPLE": "Ihmisperäiset näytteet",
+    "MICROBE_SAMPLE": "Mikrobinäytteet",
+    "ENVIRONMENTAL_SAMPLE": "Ympäristönäyteet",
+    "ANIMAL_SAMPLE": "Eläinperäiset näytteet",
+    "CELL_SAMPLE": "Solukannat"
+  },
   "physicalLocation": "Fyysinen sijaintipaikka",
   "noPhysicalLocation": "Ei määritetty",
   "addNewPersonInRole": "Lisää henkilö",

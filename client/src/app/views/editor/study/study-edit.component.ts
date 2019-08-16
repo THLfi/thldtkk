@@ -107,19 +107,19 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     availableStudyGroupItems: SelectItem[] = [];
     newStudyGroup: StudyGroup;
 
-    savingInProgress: boolean = false;
-    savingHasFailed: boolean = false;
+    savingInProgress = false;
+    savingHasFailed = false;
 
     sidebarActiveSection = StudySidebarActiveSection.STUDY;
 
-    urlFieldValidatorPattern: string = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*';
-    urlSchemeHttpPrefix: string = "http://";
+    urlFieldValidatorPattern = '[a-zA-Z][a-zA-Z0-9]*:\/\/.*';
+    urlSchemeHttpPrefix = 'http://';
     partiallyValidUrlSchemeExpression: RegExp = /^[a-zA-Z][a-zA-Z0-9]*[:|\/]/; // e.g. 'http:/thl.fi'
     validUrlExpression: RegExp;
 
     isUserAdmin: boolean
     isUserOrganizationAdmin: boolean
-    howManyPersons: number = 0
+    howManyPersons = 0;
     errorFields: any = {}
     errorFieldsKeys: any = {}
 
@@ -153,7 +153,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
 
     ngOnInit() {
         this.getStudy();
-        this.validUrlExpression = new RegExp("/^" + this.urlFieldValidatorPattern + "$/")
+        this.validUrlExpression = new RegExp('/^' + this.urlFieldValidatorPattern + '$/')
     }
 
     private getStudy() {
@@ -181,7 +181,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
             this.study.published = false;
             this.translateService.get('copy').subscribe(msg => {
               this.study.prefLabel[this.language] =
-                this.study.prefLabel[this.language] + " (" + msg + ")"
+                this.study.prefLabel[this.language] + ' (' + msg + ')'
             });
             this.study.population.id = null;
             this.study.links.forEach(l => l.id = null);
@@ -272,8 +272,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
                 this.availableOrganizations = organizations;
                 this.extractOrganizationUnits(organizations)
               })
-          }
-          else {
+          } else {
               this.userService.getUserOrganizations()
               .subscribe(organizations => {
                 // Pre-select organization for a new study

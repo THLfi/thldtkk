@@ -6,8 +6,8 @@ import {LangValues} from './lang-values';
 import {LifecyclePhase} from './lifecycle-phase';
 import {LegalBasisForHandlingPersonalData} from './legal-basis-for-handling-personal-data';
 import {LegalBasisForHandlingSensitivePersonalData} from './legal-basis-for-handling-sensitive-personal-data';
-import {SupplementaryDigitalSecurityPrinciple} from "./supplementary-digital-security-principle";
-import {SupplementaryPhysicalSecurityPrinciple} from "./supplementary-physical-security-principle";
+import {SupplementaryDigitalSecurityPrinciple} from './supplementary-digital-security-principle';
+import {SupplementaryPhysicalSecurityPrinciple} from './supplementary-physical-security-principle';
 import {TypeOfSensitivePersonalData} from './type-of-sensitive-personal-data';
 import {Link} from './link';
 import {Node} from './node'
@@ -30,7 +30,7 @@ import {UserInformation} from './user-information';
 import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
 import { GroupOfRegistree } from './groupOfRegistree';
 import { ReceivingGroup } from './receivingGroup';
-import {StudyForm} from "./study-form";
+import {StudyForm} from './study-form';
 
 export interface Study extends Node {
 

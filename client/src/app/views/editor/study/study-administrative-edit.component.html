@@ -1028,6 +1028,7 @@
                       {{ 'studyForm.type' | translate }}
                       <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
                     </th>
+                    <th>{{ 'studyForm.unitInCharge' | translate }}</th>
                     <th translate="functions"></th>
                   </tr>
                 </thead>
@@ -1056,6 +1057,27 @@
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         {{ errorKey | translate }}
                       </p>
+                    </td>
+                    <td>
+                      <select
+                        [(ngModel)]="studyForm.unitInCharge"
+                        [compareWith]="nodeUtils.equals"
+                        name="studyForm-unitInCharge-{{ index }}"
+                        class="form-control"
+                      >
+                        <option [ngValue]="null"></option>
+                        <ng-container *ngIf="study.ownerOrganization">
+                          <option
+                            *ngFor="let organizationUnit of study.ownerOrganization.organizationUnit"
+                            [ngValue]="organizationUnit"
+                          >
+                            {{ organizationUnit.prefLabel | lang }}
+                            <ng-container *ngIf="organizationUnit.abbreviation | lang">
+                              ({{ organizationUnit.abbreviation | lang }})
+                            </ng-container>
+                          </option>
+                        </ng-container>
+                      </select>
                     </td>
                     <td>
                       <button type="button" class="btn btn-default" (click)="removeStudyForm(studyForm)">

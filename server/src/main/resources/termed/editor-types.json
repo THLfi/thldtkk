@@ -801,6 +801,17 @@
       {
         "id": "type"
       }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "unitInCharge",
+        "range": {
+          "id": "OrganizationUnit",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
+      }
     ]
   }
 ]

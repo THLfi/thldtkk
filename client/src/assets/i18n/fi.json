@@ -260,6 +260,7 @@
   "studyForm": {
     "label": "Aineiston olomuoto",
     "type": "Olomuoto",
+    "unitInCharge": "Vastuuyksikkö",
     "add": "Lisää uusi olomuoto",
     "noStudyForms": "Aineistolla ei ole olomuotoja",
     "DIGITAL": "Digitaalinen",

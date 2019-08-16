@@ -3,7 +3,7 @@
     <div class="col-sm-6 col-sm-push-6 editor-login-actions">
       <div class="row editor-login-actions-content-container">
         <div class="col-xs-12 col-sm-offset-3 col-sm-6">
-          <h2>{{'editorLoginComponent.loginHeading' | translate}}</h2>
+          <h2 id="login-heading">{{'editorLoginComponent.loginHeading' | translate}}</h2>
         </div>
 
         <div class="col-xs-12 col-sm-offset-3 col-sm-6 login-option-button-container">
@@ -17,6 +17,7 @@
 
           <button (click)="toggleThlLoginExpanded()"
                   type="button"
+                  id="thl-login-expansion-button"
                   class="btn btn-default login-option-button">
             {{'editorLoginComponent.loginOptionThl' | translate}}
             <i *ngIf="!thlLoginExpanded" class="fa fa-angle-down expand-collapse-icon" aria-hidden="true"></i>
@@ -63,6 +64,7 @@
 
                 <div class="col-xs-12 col-sm-offset-1 col-sm-10">
                   <button [disabled]="thlLoginInProgress"
+                          id="login-button"
                           type="submit"
                           class="btn btn-default thl-login-button">
                     {{ 'editorLoginComponent.loginButton' | translate | uppercase}}

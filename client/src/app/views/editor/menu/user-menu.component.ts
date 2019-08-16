@@ -14,6 +14,7 @@ import { User } from '../../../model2/user'
   <li [ngClass]="{ 'dropdown': true, 'open' : dropdownOpen }">
     <a #dropdownToggle
        (click)="toggleDropdownVisibility($event)"
+       id="user-menu-toggle"
        class="dropdown-toggle"
        role="button"
        aria-haspopup="true"
@@ -23,7 +24,7 @@ import { User } from '../../../model2/user'
     </a>
     <ul class="dropdown-menu">
       <li>
-        <a (click)="logout($event)"
+        <a id="user-menu-logout-link" (click)="logout($event)"
            href="#">
           {{ 'mainMenu.userMenu.logoutLink' | translate }}
         </a>

@@ -19,6 +19,8 @@ public interface PublicStudyService extends Service<UUID, Study> {
 
   List<Study> getStudiesByStudyGroup(UUID studyGroupId);
 
+  String getPreviousInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
+
   String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId);
 
 }

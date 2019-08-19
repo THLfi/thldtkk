@@ -3,11 +3,19 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="pull-right">
+        <button (click)="goToPreviousInstanceVariable()"
+                [disabled]="deleteInProgress"
+                class="btn btn-default"
+                style="margin-right: 8px;"
+                >
+          <span class="glyphicon glyphicon-arrow-left"></span>
+          {{ 'goToPrevious' | translate }}
+        </button>
         <button (click)="goToNextInstanceVariable()"
                 [disabled]="deleteInProgress"
                 class="btn btn-default">
-          <span class="glyphicon glyphicon-play"></span>
           {{ 'goToNext' | translate }}
+          <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
       </div>
     </div>

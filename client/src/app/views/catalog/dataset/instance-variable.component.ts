@@ -105,9 +105,21 @@ export class InstanceVariableComponent implements OnInit {
     this.referencePeriod = new InstanceVariableReferencePeriod(this.study, this.dataset, this.instanceVariable)
   }
 
+  goToPreviousInstanceVariable(): void {
+    this.instanceVariableService.getPreviousInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
+      .subscribe(instanceVariableId => {
+        this.navigateToInstanceVariable(instanceVariableId);
+      })
+  }
+
   goToNextInstanceVariable(): void {
     this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
       .subscribe(instanceVariableId => {
+        this.navigateToInstanceVariable(instanceVariableId);
+      })
+  }
+
+  navigateToInstanceVariable(instanceVariableId: string) {
         this.router.navigate([
           '/catalog/studies',
           this.study.id,
@@ -115,6 +127,5 @@ export class InstanceVariableComponent implements OnInit {
           this.dataset.id,
           'instanceVariables',
           instanceVariableId])
-      })
   }
 }

@@ -21,10 +21,10 @@
           {{ 'datasetEditor' | translate }}
         </a>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
-          <li [routerLinkActive]="['active']"><a routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>
+          <li [routerLinkActive]="['active']"><a id="studies-link" routerLink="/editor/studies/">{{ 'study.studies' | translate }}</a></li>
         </ul>
         <ul *ngIf="currentUser && currentUser.isLoggedIn" class="nav navbar-nav">
-          <li [routerLinkActive]="['active']"><a routerLink="/editor/instancevariables/">{{ 'instanceVariables' | translate }}</a></li>
+          <li [routerLinkActive]="['active']"><a id="instance-variables-link" routerLink="/editor/instancevariables/">{{ 'instanceVariables' | translate }}</a></li>
         </ul>
         <adminMenu [currentUser]="currentUser">
         </adminMenu>

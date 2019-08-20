@@ -1696,6 +1696,48 @@
     }
   },
   {
+    "id": "8aa48eb9-2d1a-4641-a14e-adc32d1ca930",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Yksikön päällikkö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "3aa48eb9-231a-4141-a14e-aab32d1ca930",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Näytehallintapäällikkö"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1aa38e39-131a-4841-a144-aab32d11a920",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Näytehallintakoordinaattori"
+        }
+      ]
+    }
+  },
+  {
     "id": "0286f4cf-9f77-4718-9a41-2155b8a14821",
     "type": {
       "id": "Role"

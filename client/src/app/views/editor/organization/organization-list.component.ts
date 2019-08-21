@@ -35,7 +35,7 @@ export class OrganizationListComponent implements OnInit {
   parentOrganizationForEditOrganizationUnit: Organization
   editOrganizationUnit: OrganizationUnit
 
-  isUserAdmin: boolean = false
+  isUserAdmin = false
 
   constructor(
     private confirmationService: ConfirmationService,

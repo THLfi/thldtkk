@@ -149,6 +149,9 @@
     "textAttributes": [
       {
         "id": "prefLabel"
+      },
+      {
+        "id": "associations"
       }
     ]
   },
@@ -179,6 +182,30 @@
         "id": "organizationUnit",
         "range": {
           "id": "OrganizationUnit"
+        }
+      },
+      {
+        "id": "personInRoles",
+        "range": {
+          "id": "OrganizationPersonInRole"
+        }
+      }
+    ]
+  },
+  {
+    "id": "OrganizationPersonInRole",
+    "textAttributes": [],
+    "referenceAttributes": [
+      {
+        "id": "person",
+        "range": {
+          "id": "Person"
+        }
+      },
+      {
+        "id": "role",
+        "range": {
+          "id": "Role"
         }
       }
     ]
@@ -253,5 +280,4 @@
       }
     ]
   }
-
 ]

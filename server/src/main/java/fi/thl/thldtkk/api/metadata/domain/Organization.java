@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
@@ -34,6 +35,7 @@ public class Organization implements NodeEntity, Serializable {
   private transient List<String> virtuIds = new ArrayList<>();
   private List<OrganizationUnit> organizationUnit = new ArrayList<>();
   private String phoneNumberForRegistryPolicy;
+  private List<OrganizationPersonInRole> personInRoles = new ArrayList<>();
 
   public Organization() { }
 
@@ -49,8 +51,12 @@ public class Organization implements NodeEntity, Serializable {
     this.addressForRegistryPolicy = toLangValueMap(node.getProperties("addressForRegistryPolicy"));
     this.virtuIds = valuesToStringCollection(node.getProperties("virtuIds"), ArrayList::new);
     this.phoneNumberForRegistryPolicy = PropertyMappings.toString(node.getProperties("phoneNumberForRegistryPolicy"));
+
     node.getReferences("organizationUnit")
       .forEach(v -> this.organizationUnit.add(new OrganizationUnit(v)));
+    this.personInRoles = node.getReferences("personInRoles").stream()
+      .map(OrganizationPersonInRole::new)
+      .collect(Collectors.toList());
   }
 
   public Organization(UUID id,
@@ -69,6 +75,10 @@ public class Organization implements NodeEntity, Serializable {
 
   public UUID getId() {
     return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public Map<String, String> getPrefLabel() {
@@ -111,6 +121,14 @@ public class Organization implements NodeEntity, Serializable {
     return addressForRegistryPolicy;
   }
 
+  public void setPersonInRoles(List<OrganizationPersonInRole> personInRoles) {
+    this.personInRoles = personInRoles;
+  }
+
+  public List<OrganizationPersonInRole> getPersonInRoles() {
+    return personInRoles;
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
 
@@ -123,6 +141,7 @@ public class Organization implements NodeEntity, Serializable {
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getOrganizationUnits().forEach(ou -> refs.put("organizationUnit", ou.toNode()));
+    getPersonInRoles().forEach(personInRole -> refs.put("personInRoles", personInRole.toNode()));
 
     return new Node(id, "Organization", props, refs);
   }
@@ -142,13 +161,14 @@ public class Organization implements NodeEntity, Serializable {
       Objects.equals(virtuIds, that.virtuIds) &&
       Objects.equals(organizationUnit, that.organizationUnit) &&
       Objects.equals(phoneNumberForRegistryPolicy, that.phoneNumberForRegistryPolicy) &&
-      Objects.equals(addressForRegistryPolicy, that.addressForRegistryPolicy);
+      Objects.equals(addressForRegistryPolicy, that.addressForRegistryPolicy) &&
+      Objects.equals(personInRoles, that.personInRoles);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, prefLabel, abbreviation, virtuIds, organizationUnit, phoneNumberForRegistryPolicy,
-        addressForRegistryPolicy);
+        addressForRegistryPolicy, personInRoles);
   }
 
 }

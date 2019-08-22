@@ -1,13 +1,9 @@
-
-import {forkJoin as observableForkJoin, Observable, Subscription} from 'rxjs';
+import {forkJoin as observableForkJoin, Subscription} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  Component, OnInit, ViewChild,
-  AfterContentChecked
-} from '@angular/core'
-import {NgForm, AbstractControl} from '@angular/forms'
+import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core'
+import {AbstractControl, NgForm} from '@angular/forms'
 import {SelectItem} from 'primeng/components/common/api'
 import {Title} from '@angular/platform-browser'
 import {TranslateService} from '@ngx-translate/core';
@@ -26,14 +22,14 @@ import {DateUtils} from '../../../utils/date-utils'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {LangValues} from '../../../model2/lang-values'
-import {LifecyclePhase} from "../../../model2/lifecycle-phase";
+import {LifecyclePhase} from '../../../model2/lifecycle-phase';
 import {LifecyclePhaseService} from '../../../services-common/lifecycle-phase.service'
-import {Link} from "../../../model2/link";
+import {Link} from '../../../model2/link';
 import {NodeUtils} from '../../../utils/node-utils';
-import {Organization} from "../../../model2/organization";
+import {Organization} from '../../../model2/organization';
 import {OrganizationService} from '../../../services-common/organization.service'
 import {OrganizationUnitService} from '../../../services-common/organization-unit.service'
-import {OrganizationUnit} from "../../../model2/organization-unit";
+import {OrganizationUnit} from '../../../model2/organization-unit';
 import {Person} from '../../../model2/person'
 import {PersonService} from '../../../services-common/person.service'
 import {PersonInRole} from '../../../model2/person-in-role'
@@ -43,13 +39,13 @@ import {StudyGroup} from '../../../model2/study-group'
 import {StudyGroupService} from '../../../services-common/study-group.service'
 import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 import {StringUtils} from '../../../utils/string-utils'
-import {UnitType} from "../../../model2/unit-type";
+import {UnitType} from '../../../model2/unit-type';
 import {UnitTypeService} from '../../../services-common/unit-type.service'
 import {Universe} from '../../../model2/universe'
 import {UniverseService} from '../../../services-common/universe.service'
-import {UsageCondition} from "../../../model2/usage-condition";
+import {UsageCondition} from '../../../model2/usage-condition';
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
-import { AssociatedOrganization } from 'app/model2/associated-organization';
+import {RoleAssociation} from '../../../model2/role-association';
 
 @Component({
     templateUrl: './study-edit.component.html',
@@ -325,7 +321,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     private getAllRoles() {
-      this.roleService.getAll()
+      this.roleService.getAllByAssociation(RoleAssociation.STUDY)
         .subscribe(roles => this.allRoles = roles)
     }
 

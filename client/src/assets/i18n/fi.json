@@ -89,6 +89,8 @@
     "label": "Lisää yksikkö...",
     "tooltip": "Lisää orgaanisaatiolle uusi organisaatioyksikkö"
   },
+  "organizationPersons": "Organisaatioon liittyvät henkilöt",
+  "organizationNoPersons": "Organisaatioon liittyviä henkilöitä ei ole määritelty",
   "confirmPublishDataset": "Haluatko varmasti julkaista datasetin?",
   "confirmWithdrawDataset": "Haluatko varmasti perua datasetin julkaisun?",
   "functions": "Toiminnot",

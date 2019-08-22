@@ -63,6 +63,7 @@ export class OrganizationService {
       prefLabel: null,
       abbreviation: null,
       organizationUnit: [],
+      personInRoles: [],
       phoneNumberForRegistryPolicy: null,
       addressForRegistryPolicy: null
     }

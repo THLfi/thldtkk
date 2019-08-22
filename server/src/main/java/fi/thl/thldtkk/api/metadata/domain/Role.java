@@ -3,14 +3,10 @@ package fi.thl.thldtkk.api.metadata.domain;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.validator.ContainsAtLeastOneNonBlankValue;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.*;
 import static java.util.Objects.requireNonNull;
 
 public class Role {
@@ -20,6 +16,7 @@ public class Role {
   private UUID id;
   @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
+  private List<RoleAssociation> associations = new ArrayList<>();
 
   public Role(UUID id) {
     this.id = requireNonNull(id);
@@ -37,6 +34,11 @@ public class Role {
     this(node.getId());
     checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
+    this.associations = valuesToEnumCollection(
+      node.getProperties("associations"),
+      RoleAssociation.class,
+      ArrayList::new
+    );
   }
 
   public UUID getId() {
@@ -63,12 +65,13 @@ public class Role {
     }
     Role that = (Role) o;
     return Objects.equals(id, that.id)
-      && Objects.equals(prefLabel, that.prefLabel);
+      && Objects.equals(prefLabel, that.prefLabel)
+      && Objects.equals(associations, that.associations);
   }
 
   @Override
    public int hashCode() {
-    return Objects.hash(id, prefLabel);
+    return Objects.hash(id, prefLabel, associations);
   }
 
 }

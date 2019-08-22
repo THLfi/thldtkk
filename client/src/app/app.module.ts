@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from 'primeng/primeng'
 import { ChipsModule } from 'primeng/components/chips/chips';
 import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms'
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
@@ -252,6 +252,7 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
         CheckboxModule,
         BrowserModule,
         BrowserAnimationsModule,
+        ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
         AppRoutingModule,

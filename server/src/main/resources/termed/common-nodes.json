@@ -1566,6 +1566,14 @@
           "lang": "fi",
           "value": "Yhteyshenkilö"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value": "DATASET"
+        }
       ]
     }
   },
@@ -1579,6 +1587,14 @@
         {
           "lang": "fi",
           "value": "Rekisterivastaava"
+        }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
         }
       ]
     }
@@ -1594,6 +1610,14 @@
           "lang": "fi",
           "value": "Tilastovastaava"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
       ]
     }
   },
@@ -1607,6 +1631,14 @@
         {
           "lang": "fi",
           "value": "Tutkimuksen vastuullinen johtaja"
+        }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
         }
       ]
     }
@@ -1622,6 +1654,14 @@
           "lang": "fi",
           "value": "Tutkimuksesta vastaava henkilö (TVH)"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
       ]
     }
   },
@@ -1635,6 +1675,14 @@
         {
           "lang": "fi",
           "value": "Näytevastaava"
+        }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
         }
       ]
     }
@@ -1650,6 +1698,14 @@
           "lang": "fi",
           "value": "Tiedonhallintavastaava"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
       ]
     }
   },
@@ -1663,6 +1719,14 @@
         {
           "lang": "fi",
           "value": "Tekijä"
+        }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
         }
       ]
     }
@@ -1678,6 +1742,14 @@
           "lang": "fi",
           "value": "Tiedon käsittelijä"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
       ]
     }
   },
@@ -1692,11 +1764,41 @@
           "lang": "fi",
           "value": "Tietosuojavastaava"
         }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
       ]
     }
   },
   {
-    "id": "8aa48eb9-2d1a-4641-a14e-adc32d1ca930",
+    "id": "0286f4cf-9f77-4718-9a41-2155b8a14821",
+    "type": {
+      "id": "Role"
+    },
+    "properties": {
+      "prefLabel": [
+        {
+          "lang": "fi",
+          "value": "Vastaava tutkija"
+        }
+      ],
+      "associations": [
+        {
+          "value": "STUDY"
+        },
+        {
+          "value":  "DATASET"
+        }
+      ]
+    }
+  },
+  {
+    "id": "59ba5402-df5c-4d50-b92e-a349ce9b8300",
     "type": {
       "id": "Role"
     },
@@ -1705,6 +1807,11 @@
         {
           "lang": "fi",
           "value": "Yksikön päällikkö"
+        }
+      ],
+      "associations": [
+        {
+          "value": "ORGANIZATION"
         }
       ]
     }
@@ -1720,6 +1827,11 @@
           "lang": "fi",
           "value": "Näytehallintapäällikkö"
         }
+      ],
+      "associations": [
+        {
+          "value": "ORGANIZATION_UNIT"
+        }
       ]
     }
   },
@@ -1734,19 +1846,10 @@
           "lang": "fi",
           "value": "Näytehallintakoordinaattori"
         }
-      ]
-    }
-  },
-  {
-    "id": "0286f4cf-9f77-4718-9a41-2155b8a14821",
-    "type": {
-      "id": "Role"
-    },
-    "properties": {
-      "prefLabel": [
+      ],
+      "associations": [
         {
-          "lang": "fi",
-          "value": "Vastaava tutkija"
+          "value": "ORGANIZATION_UNIT"
         }
       ]
     }

@@ -1,81 +1,107 @@
-import { AfterContentChecked, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core'
-import { NgForm } from '@angular/forms'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms'
 
-import { GrowlMessageService } from '../../../services-common/growl-message.service'
-import { Organization } from '../../../model2/organization'
-import { TranslateService } from "@ngx-translate/core";
-import { ConfirmationService } from "primeng/primeng";
+import {GrowlMessageService} from '../../../services-common/growl-message.service'
+import {Organization} from '../../../model2/organization'
+import {TranslateService} from '@ngx-translate/core';
+import {NodeUtils} from '../../../utils/node-utils';
+import {RoleService} from '../../../services-common/role.service';
+import {RoleAssociation} from '../../../model2/role-association';
+import {Role} from '../../../model2/role';
+import {Person} from '../../../model2/person';
+import {PersonService} from '../../../services-common/person.service';
 
 @Component({
   selector: 'organization-edit-modal',
   templateUrl: './organization-edit-modal.component.html'
 })
-export class OrganizationEditModalComponent implements AfterContentChecked {
+export class OrganizationEditModalComponent implements OnInit {
+  @Input() organization: Organization;
 
-  @Input() organization: Organization
+  form: FormGroup;
+  showErrors = false;
 
-  @ViewChild('organizationForm') organizationForm: NgForm
-  currentForm: NgForm
-  formErrors: any = {
-    'prefLabel': []
-  }
+  language: string;
+  roles: Role[];
+  people: Person[];
 
-  language: string
-
-  savingInProgress: boolean = false
-  savingHasFailed: boolean = false
-
-  @Output() onSave: EventEmitter<Organization> = new EventEmitter<Organization>()
-  @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
+  @Output() onSave: EventEmitter<Organization> = new EventEmitter<Organization>();
+  @Output() onCancel: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(
+    public nodeUtils: NodeUtils,
     private growlMessageService: GrowlMessageService,
     private translateService: TranslateService,
+    private roleService: RoleService,
+    private personService: PersonService,
+    private formBuilder: FormBuilder
   ) {
-    this.language = translateService.currentLang
+    this.language = translateService.currentLang;
+
+    this.roleService
+      .getAllByAssociation(RoleAssociation.ORGANIZATION)
+      .subscribe(roles => this.roles = roles);
+
+    this.personService
+      .getAll()
+      .subscribe(people => this.people = people);
   }
 
-  ngAfterContentChecked(): void {
-    if (this.organizationForm) {
-      if (this.organizationForm !== this.currentForm) {
-        this.currentForm = this.organizationForm
-        this.currentForm.valueChanges.subscribe(data => this.validate(data))
-      }
-    }
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      prefLabel: [this.organization.prefLabel[this.language], Validators.required],
+      abbreviation: [this.organization.abbreviation[this.language]],
+      personInRoles: this.formBuilder.array(this.organization.personInRoles
+        .map(personInRole => this.formBuilder.group({
+          person: [personInRole.person, Validators.required],
+          role: [personInRole.role, Validators.required]
+        }))
+      )
+    });
   }
 
-  private validate(data?: any): void {
-    for (const field in this.formErrors) {
-      this.formErrors[field] = []
-      const control = this.currentForm.form.get(field)
-      if (control && control.invalid && (this.savingInProgress || this.savingHasFailed)) {
-        for (const key in control.errors) {
-          this.formErrors[field] = [ ...this.formErrors[field], 'errors.form.' + key ]
-        }
-      }
-    }
+  get prefLabel() {
+    return this.form.get('prefLabel');
   }
 
-  doSave() {
-    this.savingInProgress = true
+  get abbreviation() {
+    return this.form.get('abbreviation');
+  }
 
-    this.validate()
+  get personInRoles() {
+    return this.form.get('personInRoles') as FormArray;
+  }
 
-    if (this.currentForm.invalid) {
-      this.growlMessageService.buildAndShowMessage('error',
+  hasVisibleError(control: AbstractControl) {
+    return this.showErrors && control.invalid;
+  }
+
+  addPersonInRole() {
+    this.personInRoles.push(this.formBuilder.group({
+      person: ['', Validators.required],
+      role: ['', Validators.required]
+    }));
+  }
+
+  onSubmit() {
+    if (this.form.invalid) {
+      this.showErrors = true;
+      this.growlMessageService.buildAndShowMessage(
+        'error',
         'operations.common.save.result.fail.summary',
-        'operations.common.save.result.fail.detail')
-      this.savingInProgress = false
-      this.savingHasFailed = true
-      return
+        'operations.common.save.result.fail.detail'
+      );
+
+      return;
     }
 
-    this.savingInProgress = false
+    this.showErrors = false;
 
-    this.onSave.emit(this.organization)
-  }
+    const values = this.form.value;
+    this.organization.prefLabel[this.language] = values.prefLabel;
+    this.organization.abbreviation[this.language] = values.abbreviation;
+    this.organization.personInRoles = values.personInRoles;
 
-  doCancel() {
-    this.onCancel.emit()
+    this.onSave.emit(this.organization);
   }
 }

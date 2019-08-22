@@ -1,6 +1,8 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
+import fi.thl.thldtkk.api.metadata.domain.OrganizationPersonInRole;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
@@ -8,10 +10,9 @@ import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static java.util.stream.Collectors.toList;
@@ -31,6 +32,8 @@ public class OrganizationServiceImpl implements OrganizationService {
       "properties.*",
       "references.*",
       "referrers.*",
+      "references.person:2",
+      "references.role:2",
       "lastModifiedDate"), keyValue("type.id", "Organization"))
       .map(Organization::new)
       .collect(toList());
@@ -62,30 +65,28 @@ public class OrganizationServiceImpl implements OrganizationService {
   @AdminOnly
   @Override
   public Organization save(Organization organization) {
-    if (organization.getId() == null) {
-      return saveNewOrganization(organization);
+    Organization old = null;
+    if (organization.getId() != null) {
+      old = get(organization.getId()).orElse(null);
+    } else {
+      organization.setId(UUID.randomUUID());
     }
 
-    // As we can only edit abbreviation and preferred label, check for existing organization entity
-    // and merge changes. If that fails, make new organization with just that information
-    try {
-      return updateOldOrganization(organization);
-    } catch (NotFoundException e) {
-      return saveNewOrganization(organization);
-    }
+    Changeset<NodeId, Node> changeset = saveForPersonInRoles(organization, old);
+    changeset = changeset.merge(new Changeset<>(Collections.emptyList(), Collections.singletonList(organization.toNode())));
+
+    nodes.post(changeset);
+    return get(organization.getId()).get();
   }
 
-  private Organization saveNewOrganization(Organization organization) {
-    return new Organization(nodes.save(organization.toNode()));
-  }
+  private Changeset<NodeId, Node> saveForPersonInRoles(Organization organization, Organization old) {
+    organization.getPersonInRoles().stream()
+      .filter(personInRole -> personInRole.getId() == null)
+      .forEach(personInRole -> personInRole.setId(UUID.randomUUID()));
 
-  private Organization updateOldOrganization(Organization organization) {
-    Organization oldOrganization = new Organization(
-      nodes.get(new NodeId(organization.getId(), "Organization"))
-        .orElseThrow(NotFoundException::new));
-    oldOrganization.setPrefLabel(organization.getPrefLabel());
-    oldOrganization.setAbbreviation(organization.getAbbreviation());
-    return new Organization(nodes.save(oldOrganization.toNode()));
+    return Changeset.buildChangeset(
+      organization.getPersonInRoles(),
+      old != null ? old.getPersonInRoles() : Collections.emptyList()
+    );
   }
-
 }

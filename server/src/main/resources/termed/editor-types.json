@@ -800,6 +800,12 @@
     "textAttributes": [
       {
         "id": "type"
+      },
+      {
+        "id": "typeSpecifier"
+      },
+      {
+        "id": "additionalDetails"
       }
     ],
     "referenceAttributes": [

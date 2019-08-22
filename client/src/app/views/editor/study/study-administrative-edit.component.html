@@ -1028,6 +1028,8 @@
                       {{ 'studyForm.type' | translate }}
                       <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
                     </th>
+                    <th>{{ 'studyFormTypeSpecifier.label' | translate }}</th>
+                    <th>{{ 'additionalDetails' | translate }}</th>
                     <th>{{ 'studyForm.unitInCharge' | translate }}</th>
                     <th translate="functions"></th>
                   </tr>
@@ -1043,7 +1045,8 @@
                     <td>
                       <p-dropdown
                         *ngIf="studyFormTypeOptions"
-                        [(ngModel)]="studyForm.type"
+                        [ngModel]="studyForm.type"
+                        (ngModelChange)="onStudyFormTypeChange(studyForm, $event)"
                         [options]="studyFormTypeOptions"
                         filter="true"
                         [autoDisplayFirst]="false"
@@ -1057,6 +1060,25 @@
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         {{ errorKey | translate }}
                       </p>
+                    </td>
+                    <td>
+                      <p-dropdown
+                        *ngIf="studyFormTypeSpecifierOptions"
+                        [(ngModel)]="studyForm.typeSpecifier"
+                        [options]="studyFormTypeSpecifierOptions"
+                        filter="true"
+                        [autoDisplayFirst]="false"
+                        name="{{ 'studyForm-type-specifier-' + index }}"
+                        [disabled]="!isTypeSpecifierFieldEnabled(studyForm)"
+                        required
+                      ></p-dropdown>
+                    </td>
+                    <td>
+                      <textarea
+                        class="additional-details form-control" rows="1"
+                        [(ngModel)]="studyForm.additionalDetails[language]"
+                        name="{{ 'studyForm-additional-details-' + index }}"
+                        ></textarea>
                     </td>
                     <td>
                       <select

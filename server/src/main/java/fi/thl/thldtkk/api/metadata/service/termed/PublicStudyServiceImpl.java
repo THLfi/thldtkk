@@ -513,6 +513,31 @@ public class PublicStudyServiceImpl implements PublicStudyService {
   }
 
   @Override
+  public String getPreviousInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
+
+    Optional<Dataset> dataset = getDataset(studyId, datasetId);
+    UUID previousInstanceId = instanceVariableId;
+
+    if (dataset.isPresent()) {
+      List<InstanceVariable> instanceVariables = dataset.get().getInstanceVariables();
+      Optional<InstanceVariable> matchingVariable = instanceVariables.stream().filter(var -> var.getId().equals(instanceVariableId)).findFirst();
+
+      if (matchingVariable.isPresent()) {
+        int currentIndex = instanceVariables.indexOf(matchingVariable.get());
+        if (currentIndex > 0) {
+          // Set previous item
+          previousInstanceId = instanceVariables.get(currentIndex - 1).getId();
+        } else {
+          // Loop back to the last item
+          previousInstanceId = instanceVariables.get(instanceVariables.size() - 1).getId();
+        }
+      }
+    }
+
+    return previousInstanceId.toString();
+  }
+
+  @Override
   public String getNextInstanceVariable(UUID studyId, UUID datasetId, UUID instanceVariableId) {
 
     Optional<Dataset> dataset = getDataset(studyId, datasetId);

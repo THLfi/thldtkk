@@ -93,6 +93,15 @@ public class PublicStudyController {
     return sanitizeStudyList(publicStudyService.getStudiesByStudyGroup(studyGroupId));
   }
 
+  @ApiOperation("Get previous instance variable for given one")
+  @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}/previous")
+  public String getPreviousInstanceVariable(
+          @PathVariable("studyId") UUID studyId,
+          @PathVariable("datasetId") UUID datasetId,
+          @PathVariable("instanceVariableId") UUID instanceVariableId) {
+    return publicStudyService.getPreviousInstanceVariable(studyId, datasetId, instanceVariableId);
+  }
+
   @ApiOperation("Get next instance variable for given one")
   @GetJsonMapping("/studies/{studyId}/datasets/{datasetId}/instanceVariables/{instanceVariableId}/next")
   public String getNextInstanceVariable(

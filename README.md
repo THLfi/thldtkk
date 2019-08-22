@@ -35,6 +35,10 @@ Configure server properties:
     - sso.url=<THL SSO api url>
     - sso.application=aineistoeditori<-qa>
     - sso.secretKey=<secret key, obtainable from THL SSO admin user interface>
+    - spring.mail.host=mail-hub.thl.fi (You may wanna use dev smtp servers like https://github.com/mailslurper/mailslurper or https://mailcatcher.me/ so that test mails are not sent to real email addresses)
+    - spring.mail.from=info@aineistokatalogi.fi
+    - spring.mail.port=25
+
     Save the file and exit the editor.
 
 Add users to user properties file you configured above. See

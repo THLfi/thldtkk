@@ -91,7 +91,18 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
   @Override
   public OrganizationUnit save(UUID organizationId, @P("entity") OrganizationUnit organizationUnit) {
     Organization organization = new Organization(
-      nodes.get(new NodeId(organizationId, "Organization")).orElseThrow(NotFoundException::new));
+      nodes.get(
+        select(
+          "id",
+          "type",
+          "properties.*",
+          "references.*",
+          "references.person:2",
+          "references.role:2"
+        ),
+        new NodeId(organizationId, "Organization")
+      ).orElseThrow(NotFoundException::new)
+    );
 
     organization.addOrganizationUnit(organizationUnit);
 

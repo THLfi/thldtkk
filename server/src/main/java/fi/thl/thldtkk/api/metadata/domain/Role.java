@@ -16,6 +16,7 @@ public class Role {
   private UUID id;
   @ContainsAtLeastOneNonBlankValue
   private Map<String, String> prefLabel = new LinkedHashMap<>();
+  private RoleLabel label;
   private List<RoleAssociation> associations = new ArrayList<>();
 
   public Role(UUID id) {
@@ -34,6 +35,8 @@ public class Role {
     this(node.getId());
     checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
     this.prefLabel = toLangValueMap(node.getProperties("prefLabel"));
+    toOptionalString(node.getProperties("label"))
+      .ifPresent(label -> this.label = RoleLabel.valueOf(label));
     this.associations = valuesToEnumCollection(
       node.getProperties("associations"),
       RoleAssociation.class,
@@ -47,6 +50,10 @@ public class Role {
 
   public Map<String, String> getPrefLabel() {
     return prefLabel;
+  }
+
+  public RoleLabel getLabel() {
+    return label;
   }
 
   public Node toNode() {
@@ -66,12 +73,13 @@ public class Role {
     Role that = (Role) o;
     return Objects.equals(id, that.id)
       && Objects.equals(prefLabel, that.prefLabel)
+      && Objects.equals(label, that.label)
       && Objects.equals(associations, that.associations);
   }
 
   @Override
    public int hashCode() {
-    return Objects.hash(id, prefLabel, associations);
+    return Objects.hash(id, prefLabel, label, associations);
   }
 
 }

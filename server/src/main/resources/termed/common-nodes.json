@@ -1809,6 +1809,11 @@
           "value": "Yksikön päällikkö"
         }
       ],
+      "label": [
+        {
+          "value": "HEAD_OF_ORGANIZATION"
+        }
+      ],
       "associations": [
         {
           "value": "ORGANIZATION_UNIT"

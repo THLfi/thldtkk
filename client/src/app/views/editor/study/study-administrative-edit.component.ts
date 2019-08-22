@@ -32,10 +32,10 @@ import { Organization } from 'app/model2/organization';
 import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
-import { GroupOfRegistree } from 'app/model2/groupOfRegistree';
-import { ReceivingGroup } from 'app/model2/receivingGroup';
 import {StudyFormType} from '../../../model2/study-form-type';
 import {StudyForm} from '../../../model2/study-form';
+import { GroupOfRegistree } from 'app/model2/group-of-registree';
+import { ReceivingGroup } from 'app/model2/receiving-group';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',

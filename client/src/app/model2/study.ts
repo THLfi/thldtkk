@@ -28,9 +28,9 @@ import {Universe} from './universe'
 import {UsageCondition} from './usage-condition';
 import {UserInformation} from './user-information';
 import {PostStudyRetentionOfPersonalData} from './post-study-retention-of-personal-data'
-import { GroupOfRegistree } from './groupOfRegistree';
-import { ReceivingGroup } from './receivingGroup';
 import {StudyForm} from './study-form';
+import { GroupOfRegistree } from './group-of-registree';
+import { ReceivingGroup } from './receiving-group';
 
 export interface Study extends Node {
 

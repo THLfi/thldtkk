@@ -15,8 +15,8 @@ import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 import { TypeOfSensitivePersonalData } from '../../../model2/type-of-sensitive-personal-data'
 import { PostStudyRetentionOfPersonalData } from '../../../model2/post-study-retention-of-personal-data'
-import { GroupOfRegistree } from 'app/model2/groupOfRegistree';
-import { ReceivingGroup } from 'app/model2/receivingGroup';
+import { GroupOfRegistree } from 'app/model2/group-of-registree';
+import { ReceivingGroup } from 'app/model2/receiving-group';
 
 @Component({
   templateUrl: './study-administrative-view.component.html',

@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
@@ -12,6 +13,7 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import org.springframework.security.access.method.P;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,6 +38,8 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
                               "type",
                               "properties.*",
                               "references.*",
+                              "references.person:2",
+                              "references.role:2",
                               "referrers.*",
                               "lastModifiedDate"), keyValue("type.id", "OrganizationUnit"))
         .map(OrganizationUnit::new)
@@ -53,6 +57,8 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
                             "type",
                             "properties.*",
                             "references.*",
+                            "references.person:2",
+                            "references.role:2",
                             "referrers.*",
                             "referrers.organization:2",
                             "lastModifiedDate") , new NodeId(id, "OrganizationUnit")).map(OrganizationUnit::new);
@@ -89,11 +95,20 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
 
     organization.addOrganizationUnit(organizationUnit);
 
-    if (organizationUnit.getId() == null) {
-      organizationUnit.setId(randomUUID());
+    OrganizationUnit old = null;
+    if (organizationUnit.getId() != null) {
+      old = get(organization.getId()).orElse(null);
+    } else {
+      organizationUnit.setId(UUID.randomUUID());
     }
 
-    nodes.save(asList(organization.toNode(), organizationUnit.toNode()));
+    Changeset<NodeId, Node> changeset = saveForPersonInRoles(organizationUnit, old);
+    changeset = changeset.merge(new Changeset<>(
+      Collections.emptyList(),
+      asList(organization.toNode(), organizationUnit.toNode())
+    ));
+
+    nodes.post(changeset);
 
     return organizationUnit;
   }
@@ -112,4 +127,16 @@ public class OrganizationUnitServiceImpl implements OrganizationUnitService {
     nodes.save(organization.toNode());
     nodes.delete(new NodeId(id, "OrganizationUnit"), true);
   }
+
+  private Changeset<NodeId, Node> saveForPersonInRoles(OrganizationUnit unit, OrganizationUnit old) {
+    unit.getPersonInRoles().stream()
+      .filter(personInRole -> personInRole.getId() == null)
+      .forEach(personInRole -> personInRole.setId(UUID.randomUUID()));
+
+    return Changeset.buildChangeset(
+      unit.getPersonInRoles(),
+      old != null ? old.getPersonInRoles() : Collections.emptyList()
+    );
+  }
+
 }

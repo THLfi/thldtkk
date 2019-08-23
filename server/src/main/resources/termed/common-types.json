@@ -219,6 +219,14 @@
       {
         "id": "abbreviation"
       }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "personInRoles",
+        "range": {
+          "id": "OrganizationPersonInRole"
+        }
+      }
     ]
   },
   {

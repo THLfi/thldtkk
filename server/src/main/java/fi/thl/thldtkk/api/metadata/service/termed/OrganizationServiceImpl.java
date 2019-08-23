@@ -32,8 +32,9 @@ public class OrganizationServiceImpl implements OrganizationService {
       "properties.*",
       "references.*",
       "referrers.*",
-      "references.person:2",
-      "references.role:2",
+      "references.personInRoles:2",
+      "references.person:3",
+      "references.role:3",
       "lastModifiedDate"), keyValue("type.id", "Organization"))
       .map(Organization::new)
       .collect(toList());

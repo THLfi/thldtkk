@@ -1,11 +1,11 @@
 <ng-container *ngIf="organizationUnit">
   <p-dialog [visible]="organizationUnit"
-            (onHide)="doCancel()"
+            (onHide)="onCancel.emit()"
             modal="modal"
             draggable="false"
             resizable="false"
             closeOnEscape="false"
-            width="500">
+            width="700">
     <p-header>
       <ng-container *ngIf="!organizationUnit.id; else existingOrganizationUnit;">
         {{ 'newOrganizationUnit' | translate }}
@@ -14,7 +14,7 @@
         {{ 'editOrganizationUnit' | translate }}
       </ng-template>
     </p-header>
-    <form #organizationUnitForm="ngForm">
+    <form [formGroup]="form">
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-12">
@@ -27,26 +27,33 @@
             </p>
           </div>
         </div>
-        <div [ngClass]="{ 'bg-danger': formErrors.prefLabel && formErrors.prefLabel.length }"
-             class="row">
+        <div
+          [ngClass]="{'bg-danger': hasVisibleError(prefLabel)}"
+          class="row"
+        >
           <div class="col-xs-12">
-            <div [ngClass]="{ 'has-error': formErrors.prefLabel && formErrors.prefLabel.length }"
-                 class="form-group">
+            <div
+              [ngClass]="{'has-error': hasVisibleError(prefLabel)}"
+              class="form-group"
+            >
               <label for="prefLabel">
                 {{ 'prefLabel' | translate }}
                 <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
               </label>
-              <input [(ngModel)]="organizationUnit.prefLabel[language]"
-                     id="prefLabel"
-                     name="prefLabel"
-                     type="text"
-                     class="form-control"
-                     required>
-              <p *ngFor="let errorKey of formErrors.prefLabel"
-                 class="text-danger">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                {{ errorKey | translate }}
-              </p>
+              <input
+                id="prefLabel"
+                formControlName="prefLabel"
+                type="text"
+                class="form-control"
+                required
+              >
+              <ng-container *ngIf="hasVisibleError(prefLabel)">
+                <p *ngFor="let error of prefLabel.errors | keyvalue"
+                   class="text-danger">
+                  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                  {{ 'errors.form.' + error.key | translate }}
+                </p>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -56,11 +63,98 @@
               <label for="abbreviation">
                 {{ 'abbreviation' | translate }}
               </label>
-              <input [(ngModel)]="organizationUnit.abbreviation[language]"
-                     id="abbreviation"
-                     name="abbreviation"
-                     type="text"
-                     class="form-control">
+              <input
+                id="abbreviation"
+                formControlName="abbreviation"
+                type="text"
+                class="form-control"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label>
+                {{ 'organizationUnitPersons' | translate }}
+              </label>
+              <table
+                *ngIf="personInRoles.length; else noPersonInRoles;"
+                class="table table-striped"
+              >
+                <thead>
+                <tr>
+                  <th>
+                    {{ 'personInRoles.person' | translate }}
+                    <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                  </th>
+                  <th>
+                    {{ 'personInRoles.role' | translate }}
+                    <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                  </th>
+                  <th translate="functions"></th>
+                </tr>
+                </thead>
+                <tbody formArrayName="personInRoles">
+                <tr
+                  [formGroupName]="index.toString()"
+                  *ngFor="let personInRole of personInRoles.controls; let index = index"
+                >
+                  <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('person'))}">
+                    <select
+                      formControlName="person"
+                      [compareWith]="nodeUtils.equals"
+                      class="form-control"
+                      required
+                    >
+                      <option [ngValue]="null"></option>
+                      <option *ngFor="let person of people" [ngValue]="person">
+                        {{ person.firstName }} {{ person.lastName }} ({{ person.email }})
+                      </option>
+                    </select>
+                    <ng-container *ngIf="hasVisibleError(personInRole.get('person'))">
+                      <p *ngFor="let error of personInRole.get('person').errors | keyvalue" class="text-danger">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ 'errors.form.' + error.key | translate }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('role'))}">
+                    <select
+                      formControlName="role"
+                      [compareWith]="nodeUtils.equals"
+                      class="form-control"
+                      required
+                    >
+                      <option [ngValue]="null"></option>
+                      <option *ngFor="let role of roles" [ngValue]="role">
+                        {{ role.prefLabel | lang }}
+                      </option>
+                    </select>
+                    <ng-container *ngIf="hasVisibleError(personInRole.get('role'))">
+                      <p *ngFor="let error of personInRole.get('role').errors | keyvalue"
+                         class="text-danger">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ 'errors.form.' + error.key | translate }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-default" (click)="personInRoles.removeAt(index)">
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      {{ 'remove' | translate }}
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <ng-template #noPersonInRoles>
+                <p translate="organizationUnitNoPersons"></p>
+              </ng-template>
+              <button type="button" class="btn btn-default" (click)="addPersonInRole()">
+                <glyphicon icon="plus"></glyphicon>
+                {{ 'addNewPersonInRole' | translate }}
+              </button>
             </div>
           </div>
         </div>
@@ -68,15 +162,12 @@
     </form>
     <p-footer>
       <div>
-        <button (click)="doSave()"
-                [disabled]="savingInProgress"
-                class="btn btn-primary">
+        <button (click)="onSubmit()" type="submit" class="btn btn-primary">
           <span class="glyphicon glyphicon-floppy-disk"></span>
           {{ 'save' | translate }}
         </button>
-        <button (click)="doCancel()"
-                [disabled]="savingInProgress"
-                class="btn btn-default">
+        &nbsp;
+        <button (click)="onCancel.emit()" class="btn btn-default">
           {{ 'cancel' | translate }}
         </button>
       </div>

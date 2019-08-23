@@ -5,14 +5,15 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangV
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrganizationUnit implements NodeEntity, Serializable {
 
@@ -20,6 +21,7 @@ public class OrganizationUnit implements NodeEntity, Serializable {
   private UUID parentOrganizationId;
   private Map<String, String> prefLabel = new LinkedHashMap<>();
   private Map<String, String> abbreviation = new LinkedHashMap<>();
+  private List<OrganizationPersonInRole> personInRoles = new ArrayList<>();
 
   /**
    * Required by GSON deserialization.
@@ -54,6 +56,11 @@ public class OrganizationUnit implements NodeEntity, Serializable {
     } catch (Exception e) {
       this.parentOrganizationId = null;
     }
+
+    this.personInRoles = node.getReferences("personInRoles").stream()
+      .map(OrganizationPersonInRole::new)
+      .collect(Collectors.toList());
+
   }
 
   public UUID getId() {
@@ -74,11 +81,24 @@ public class OrganizationUnit implements NodeEntity, Serializable {
     return abbreviation;
   }
 
+  public void setPersonInRoles(List<OrganizationPersonInRole> personInRoles) {
+    this.personInRoles = personInRoles;
+  }
+
+  public List<OrganizationPersonInRole> getPersonInRoles() {
+    return personInRoles;
+  }
+
+
   public Node toNode() {
-    Node node = new Node(id, "OrganizationUnit");
-    node.addProperties("prefLabel", toPropertyValues(prefLabel));
-    node.addProperties("abbreviation", toPropertyValues(abbreviation));
-    return node;
+    Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
+    props.putAll("prefLabel", toPropertyValues(prefLabel));
+    props.putAll("abbreviation", toPropertyValues(abbreviation));
+
+    Multimap<String, Node> refs = LinkedHashMultimap.create();
+    getPersonInRoles().forEach(personInRole -> refs.put("personInRoles", personInRole.toNode()));
+
+    return new Node(id, "OrganizationUnit", props, refs);
   }
 
   @Override
@@ -91,11 +111,12 @@ public class OrganizationUnit implements NodeEntity, Serializable {
     }
     OrganizationUnit that = (OrganizationUnit) o;
     return Objects.equals(id, that.id) &&
-      Objects.equals(prefLabel, that.prefLabel);
+      Objects.equals(prefLabel, that.prefLabel) &&
+      Objects.equals(personInRoles, that.personInRoles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, prefLabel);
+    return Objects.hash(id, prefLabel, personInRoles);
   }
 }

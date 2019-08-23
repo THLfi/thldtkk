@@ -1811,7 +1811,7 @@
       ],
       "associations": [
         {
-          "value": "ORGANIZATION"
+          "value": "ORGANIZATION_UNIT"
         }
       ]
     }
@@ -1830,7 +1830,7 @@
       ],
       "associations": [
         {
-          "value": "ORGANIZATION_UNIT"
+          "value": "ORGANIZATION"
         }
       ]
     }
@@ -1849,7 +1849,7 @@
       ],
       "associations": [
         {
-          "value": "ORGANIZATION_UNIT"
+          "value": "ORGANIZATION"
         }
       ]
     }

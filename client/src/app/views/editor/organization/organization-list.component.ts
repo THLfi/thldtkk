@@ -21,21 +21,21 @@ import { environment } from 'environments/environment';
 })
 export class OrganizationListComponent implements OnInit {
 
-  organizations: Organization[] = []
-  filteredOrganizations: Organization[] = []
-  filteredOrganizationUnits: { [organizationId: string]: OrganizationUnit[] } = {}
+  organizations: Organization[] = [];
+  filteredOrganizations: Organization[] = [];
+  filteredOrganizationUnits: { [organizationId: string]: OrganizationUnit[] } = {};
 
-  loadingOrganizations: boolean
+  loadingOrganizations: boolean;
 
-  searchTermSubject: BehaviorSubject<string> = new BehaviorSubject<string>('')
-  filterOrganizationWhenSearchTermChangesSubscription: Subscription
+  searchTermSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  filterOrganizationWhenSearchTermChangesSubscription: Subscription;
 
-  editOrganization: Organization
+  editOrganization: Organization;
 
-  parentOrganizationForEditOrganizationUnit: Organization
-  editOrganizationUnit: OrganizationUnit
+  parentOrganizationForEditOrganizationUnit: Organization;
+  editOrganizationUnit: OrganizationUnit;
 
-  isUserAdmin = false
+  isUserAdmin = false;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -51,32 +51,31 @@ export class OrganizationListComponent implements OnInit {
   }
 
   refreshOrganizations() {
-    this.loadingOrganizations = true
+    this.loadingOrganizations = true;
 
-    this.organizations = []
-    this.filteredOrganizations = []
-    this.filteredOrganizationUnits = {}
+    this.organizations = [];
+    this.filteredOrganizations = [];
+    this.filteredOrganizationUnits = {};
     if (this.filterOrganizationWhenSearchTermChangesSubscription) {
       this.filterOrganizationWhenSearchTermChangesSubscription.unsubscribe()
     }
 
     this.currentUserService.getCurrentUserObservable().subscribe(user => {
-      let organizationsObservable: Observable<Organization[]>
+      let organizationsObservable: Observable<Organization[]>;
 
-      this.isUserAdmin = user && user.isAdmin
+      this.isUserAdmin = user && user.isAdmin;
 
       if (this.isUserAdmin) {
         organizationsObservable = this.organizationService.getAllOrganizations()
-      }
-      else {
+      } else {
         organizationsObservable = this.currentUserService.getUserOrganizations()
       }
 
       organizationsObservable
         .subscribe(organizations => {
-          this.organizations = organizations
+          this.organizations = organizations;
           this.filterOrganizationWhenSearchTermChangesSubscription = this.searchTermSubject.subscribe(searchTerm => {
-            let filteredOrganizations = this.organizations.filter(organization => {
+            const filteredOrganizations = this.organizations.filter(organization => {
               if (StringUtils.isBlank(searchTerm)) {
                 return true
               }
@@ -92,7 +91,7 @@ export class OrganizationListComponent implements OnInit {
               else {
                 return false
               }
-            })
+            });
 
             filteredOrganizations.forEach(organization => {
               this.filteredOrganizationUnits[organization.id] = organization.organizationUnit.filter(organizationUnit => {
@@ -100,10 +99,10 @@ export class OrganizationListComponent implements OnInit {
                   || this.langPipe.transform(organizationUnit.prefLabel).toLowerCase().indexOf(searchTerm) > -1
                   || this.langPipe.transform(organizationUnit.abbreviation).toLowerCase().indexOf(searchTerm) > -1
               })
-            })
+            });
 
             this.filteredOrganizations = filteredOrganizations
-          })
+          });
           this.loadingOrganizations = false
         })
     })
@@ -124,7 +123,7 @@ export class OrganizationListComponent implements OnInit {
 
   saveOrganization(organization: Organization) {
     this.organizationService.save(organization).subscribe(() => {
-      this.refreshOrganizations()
+      this.refreshOrganizations();
       this.closeOrganizationModal()
     })
   }
@@ -134,11 +133,10 @@ export class OrganizationListComponent implements OnInit {
   }
 
   showEditOrganizationUnitModal(organization: Organization, organizationUnit: OrganizationUnit) {
-    this.parentOrganizationForEditOrganizationUnit = organization
+    this.parentOrganizationForEditOrganizationUnit = organization;
     if (organizationUnit) {
       this.editOrganizationUnit = organizationUnit
-    }
-    else {
+    } else {
       this.editOrganizationUnit = this.organizationUnitService.initNew()
     }
   }
@@ -146,7 +144,7 @@ export class OrganizationListComponent implements OnInit {
   saveOrganizationUnit(organizationUnit) {
     this.organizationUnitService.save(organizationUnit)
       .subscribe(() => {
-        this.refreshOrganizations()
+        this.refreshOrganizations();
         this.closeOrganizationUnitModal()
       })
   }
@@ -156,10 +154,10 @@ export class OrganizationListComponent implements OnInit {
   }
 
   confirmRemoveOrganizationUnit(organizationUnit: OrganizationUnit): void {
-    const prefLabel = this.langPipe.transform(organizationUnit.prefLabel)
-    const abbreviation = this.langPipe.transform(organizationUnit.abbreviation)
+    const prefLabel = this.langPipe.transform(organizationUnit.prefLabel);
+    const abbreviation = this.langPipe.transform(organizationUnit.abbreviation);
 
-    let label = prefLabel
+    let label = prefLabel;
     if (StringUtils.isNotBlank(abbreviation)) {
       label += (' (' + abbreviation + ')')
     }
@@ -190,7 +188,7 @@ export class OrganizationListComponent implements OnInit {
   }
 
   downloadProcessingActivities(organization: Organization) {
-    const downloadProcessingActivitiesUrl = `${environment.contextPath}${environment.apiPath}/editor/organizations/${organization.id}/processing-activities`
+    const downloadProcessingActivitiesUrl = `${environment.contextPath}${environment.apiPath}/editor/organizations/${organization.id}/processing-activities`;
     window.location.href = downloadProcessingActivitiesUrl;
   }
 }

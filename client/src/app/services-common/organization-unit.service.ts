@@ -54,8 +54,9 @@ export class OrganizationUnitService {
       id: null,
       parentOrganizationId: null,
       prefLabel: null,
-      abbreviation: null
-    }
+      abbreviation: null,
+      personInRoles: []
+    };
 
     this.initProperties(newOrganizationUnit, ['prefLabel', 'abbreviation'])
 

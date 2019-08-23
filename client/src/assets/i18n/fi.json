@@ -83,6 +83,8 @@
   "confirmInstanceVariableDelete": "Haluatko varmasti poistaa muuttujan?",
   "organizations": "Organisaatiot",
   "organizationUnit": "Organisaatioyksikkö",
+  "organizationUnitPersons": "Organisaatioyksikköön liittyvät henkilöt",
+  "organizationUnitNoPersons": "Organisaatioyksikköön liittyviä henkilöitä ei ole määritelty",
   "organizationsAndOrganizationUnits": "Organisaatiot ja yksiköt",
   "addOrganization": "Lisää organisaatio...",
   "addOrganizationUnitButton": {

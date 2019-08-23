@@ -35,6 +35,7 @@ import { UnitTypeListComponent } from './views/editor/unittype/unit-type-list.co
 import { UniverseListComponent } from "./views/editor/universe/universe-list.component"
 import { VariableListComponent } from "./views/editor/variable/variable-list.component"
 import { VariableViewComponent} from './views/catalog/variable/variable-view.component'
+import { CanDeactivateGuard } from './views/common/can-deactivate-guard.service';
 
 const routes: Routes = [
     {
@@ -143,7 +144,8 @@ const routes: Routes = [
             data: {
               title: 'pageTitles.editor.newStudy',
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:id/edit',
@@ -151,7 +153,8 @@ const routes: Routes = [
             data: {
               title: 'pageTitles.editor.editStudy',
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:id',
@@ -172,7 +175,8 @@ const routes: Routes = [
             component: StudyAdministrativeEditComponent,
             data: {
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:id/datasets',
@@ -187,7 +191,8 @@ const routes: Routes = [
             data: {
               title: 'pageTitles.editor.newDataset',
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:studyId/datasets/:datasetId',
@@ -202,14 +207,16 @@ const routes: Routes = [
             data: {
               title: 'pageTitles.editor.editDataset',
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:studyId/datasets/:datasetId/instanceVariables/new',
             component: InstanceVariableEditComponent,
             data: {
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:studyId/datasets/:datasetId/instanceVariables/:instanceVariableId',
@@ -223,7 +230,8 @@ const routes: Routes = [
             component: InstanceVariableEditComponent,
             data: {
               hasSidebar: true
-            }
+            },
+            canDeactivate: [CanDeactivateGuard]
           },
           {
             path: 'studies/:studyId/datasets/:datasetId/instanceVariables',
@@ -266,7 +274,7 @@ const routes: Routes = [
       component: IndexComponent,
       pathMatch: 'full',
       canActivate: [IndexRedirectGuard]
-    }
+    },
 ];
 
 @NgModule({

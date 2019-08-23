@@ -157,6 +157,9 @@ import { VariableModalComponent } from './views/editor/variable/variable-modal.c
 import {StudyAdministrativeEditPrincipleOfProtectionFieldsComponent} from 'app/views/editor/study/study-administrative-edit-principle-of-protection-fields.component';
 import {StudyAdministrativeViewPrincipleOfProtectionFieldsComponent} from "./views/editor/study/study-administrative-view-principle-of-protection-fields.component";
 import { RequestErrorInterceptor } from './interceptors/request-error.interceptor';
+import { ConfirmDialogService } from './views/common/confirm.dialog.service';
+import { CanDeactivateGuard } from './views/common/can-deactivate-guard.service';
+
 
 export function TranslateHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.contextPath + '/assets/i18n/', '.json')
@@ -328,6 +331,8 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
         BreadcrumbService,
         StudyGroupService,
         SecurityPrincipleService,
+        ConfirmDialogService,
+        CanDeactivateGuard
     ],
     bootstrap: [
         AppComponent

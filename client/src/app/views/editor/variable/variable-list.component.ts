@@ -13,17 +13,11 @@ import { LangPipe } from '../../../utils/lang.pipe'
 import { VariableService } from '../../../services-common/variable.service'
 import { Variable } from '../../../model2/variable'
 
-
-
-
-
-
-
-
 @Component({
   templateUrl: './variable-list.component.html',
   styleUrls: ['./variable-list.component.css']
 })
+
 export class VariableListComponent implements OnInit {
 
   variables: Variable[] = []

@@ -1,4 +1,4 @@
-import {forkJoin as observableForkJoin, Subscription} from 'rxjs';
+import {forkJoin as observableForkJoin, Subscription, Observable} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -46,6 +46,9 @@ import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from '../../../model2/usage-condition';
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
 import {RoleAssociation} from '../../../model2/role-association';
+import { AssociatedOrganization } from 'app/model2/associated-organization';
+import { ConfirmationService } from 'primeng/primeng'
+import { ConfirmDialogService } from '../../common/confirm.dialog.service';
 
 @Component({
     templateUrl: './study-edit.component.html',
@@ -118,6 +121,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     howManyPersons = 0;
     errorFields: any = {}
     errorFieldsKeys: any = {}
+    private showUnsavedMessage: boolean = true;
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -142,7 +146,9 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
         private roleService: RoleService,
         private userService: CurrentUserService,
         private breadcrumbService: BreadcrumbService,
-        private studyGroupService: StudyGroupService
+        private studyGroupService: StudyGroupService,
+        private confirmationService: ConfirmationService,
+        private confirmDialogService: ConfirmDialogService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -150,6 +156,14 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     ngOnInit() {
         this.getStudy();
         this.validUrlExpression = new RegExp('/^' + this.urlFieldValidatorPattern + '$/')
+        
+        window.addEventListener('beforeunload', (event) => {
+            if(this.currentForm.form.dirty && this.showUnsavedMessage){
+                event.returnValue = 'Are you sure you want to leave?';
+            } else {
+                return;
+            }
+          });
     }
 
     private getStudy() {
@@ -705,10 +719,22 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
     }
 
     goBack() {
+        this.showUnsavedMessage = false;
         if (this.study.id) {
             this.router.navigate(['/editor/studies', this.study.id]);
         } else {
             this.router.navigate(['/editor/studies']);
         }
     }
+    
+    canDeactivate(): Observable<boolean> | boolean {
+        let confirmQuestionText: string = '';
+        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          })
+
+        if(this.currentForm.form.dirty && this.showUnsavedMessage)
+           return this.confirmDialogService.confirm(confirmQuestionText);
+        return true;
+     }   
 }

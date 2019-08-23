@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin} from 'rxjs';
+import {forkJoin as observableForkJoin, Observable} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -37,6 +37,7 @@ import {StudyFormTypeSpecifier} from '../../../model2/study-form-type-specifier'
 import {StudyForm} from '../../../model2/study-form';
 import { GroupOfRegistree } from 'app/model2/group-of-registree';
 import { ReceivingGroup } from 'app/model2/receiving-group';
+import { ConfirmDialogService } from '../../common/confirm.dialog.service';
 import {LangValues} from '../../../model2/lang-values';
 
 @Component({
@@ -87,6 +88,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     receivingGroupsOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
     studyFormTypeOptions: SelectItem[] = [];
+    private showUnsavedMessage: boolean = true;
     studyFormTypeSpecifierOptions: SelectItem[] = [];
 
     constructor(
@@ -103,6 +105,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private titleService: Title,
         private dateUtils: DateUtils,
         private nodeUtils: NodeUtils,
+        private confirmDialogService: ConfirmDialogService,
     ) {
         this.language = this.translateService.currentLang
     }
@@ -161,8 +164,16 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
+      
+      window.addEventListener('beforeunload', (event) => {
+          if(this.currentForm.form.dirty && this.showUnsavedMessage){
+              event.returnValue = 'Are you sure you want to leave?';
+          } else {
+              return;
+          }
+        });
     }
-
+    
     private getStudy() {
       const studyId = this.route.snapshot.params['studyId']
       if (studyId) {
@@ -495,6 +506,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     goBack() {
+        this.showUnsavedMessage = false;
         if (this.study.id) {
             this.router.navigate(['/editor/studies', this.study.id, 'administrative-information']);
         } else {
@@ -529,6 +541,19 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.selectableRetentionOptions = (<any>Object).values(PostStudyRetentionOfPersonalData)
         .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
     }
+    
+    canDeactivate(): Observable<boolean> | boolean {
+
+        let confirmQuestionText: string = '';
+        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          });
+    
+        if(this.currentForm.form.dirty && this.showUnsavedMessage)
+           return this.confirmDialogService.confirm(confirmQuestionText);
+        return true;
+
+     }   
 
     onStudyFormTypeChange(studyForm: StudyForm, formType: StudyFormType) {
       studyForm.type = formType;

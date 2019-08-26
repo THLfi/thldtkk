@@ -1028,9 +1028,17 @@
                       {{ 'studyForm.type' | translate }}
                       <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
                     </th>
-                    <th>{{ 'studyFormTypeSpecifier.label' | translate }}</th>
+                    <th>
+                      {{ 'studyFormTypeSpecifier.label' | translate }}
+                      <thl-info-tooltip key="additionalDetailsWhenOtherIsChosen"></thl-info-tooltip>
+                    </th>
                     <th>{{ 'additionalDetails' | translate }}</th>
-                    <th>{{ 'studyForm.unitInCharge' | translate }}</th>
+                    <th>
+                      {{ 'studyForm.unitInCharge' | translate }}
+                      <thl-info-tooltip key="selectionIsSentForHandling"></thl-info-tooltip>
+                    </th>
+                    <th>{{ 'retentionPeriod' | translate }}</th>
+                    <th>{{ 'disposed' | translate }}</th>
                     <th translate="functions"></th>
                   </tr>
                 </thead>
@@ -1102,6 +1110,34 @@
                       </select>
                     </td>
                     <td>
+                      <p-calendar [(ngModel)]="studyForm._retentionPeriod"
+                                  dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                                  monthNavigator="true"
+                                  yearNavigator="true"
+                                  [yearRange]="yearRangeForDataProcessingFields"
+                                  showIcon="true"
+                                  [locale]="dateUtils.getLocaleSettings() | async"
+                                  placeholder="dd.mm.yyyy"
+                                  [inputStyle]="{'width': '85px'}"
+                                  [style]="{'white-space': 'nowrap'}"
+                                  name="{{'study-form-retention-period-' + index}}">
+                      </p-calendar>
+                    </td>
+                    <td>
+                      <p-calendar [(ngModel)]="studyForm._disposalDate"
+                                  dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
+                                  monthNavigator="true"
+                                  yearNavigator="true"
+                                  [yearRange]="yearRangeForDataProcessingFields"
+                                  showIcon="true"
+                                  [locale]="dateUtils.getLocaleSettings() | async"
+                                  placeholder="dd.mm.yyyy"
+                                  [style]="{'white-space': 'nowrap'}"
+                                  [inputStyle]="{'width': '85px'}"
+                                  name="{{'study-form-disposal-date-' + index}}">
+                      </p-calendar>
+                    </td>
+                    <td>
                       <button type="button" class="btn btn-default" (click)="removeStudyForm(studyForm)">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                         {{ 'remove' | translate }}
@@ -1113,7 +1149,7 @@
               <ng-template #noStudyForms>
                 <p translate="studyForm.noStudyForms"></p>
               </ng-template>
-              <button type="button" class="btn btn-default" (click)="addStudyForm()">
+              <button type="button" style="margin-top: 8px" class="btn btn-default" (click)="addStudyForm()">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 {{ 'studyForm.add' | translate }}
               </button>

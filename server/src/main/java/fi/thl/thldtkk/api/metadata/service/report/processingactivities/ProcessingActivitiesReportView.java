@@ -20,7 +20,7 @@ import fi.thl.thldtkk.api.metadata.domain.Study;
 import fi.thl.thldtkk.api.metadata.service.report.processingactivities.model.ProcessingActivitiesModel;
 
 public class ProcessingActivitiesReportView {
-  
+
   private static final int STARTING_ROW = 9;
   private static final int STUDY_NAME_COL = 0;
   private static final int PURPOSE_OF_REGISTRY_COL = 1;
@@ -33,15 +33,15 @@ public class ProcessingActivitiesReportView {
   private static final int DATA_TRANSFERS_SECURITY_COL = 8;
   private static final int DATA_RETENTION_COL = 9;
   private static final int SECURITY_MEASURES_COL = 10;
-  
+
   private final ProcessingActivitiesModel model;
   private final Sheet sheet;
   private final String lang;
   private final Locale locale;
   private final ResourceBundle messages;
-  
+
   private int currentRow = STARTING_ROW;
-  
+
   public ProcessingActivitiesReportView(ProcessingActivitiesModel model, Sheet sheet, String lang) {
     this.model = model;
     this.sheet = sheet;
@@ -49,18 +49,24 @@ public class ProcessingActivitiesReportView {
     this.locale = new Locale(lang);
     this.messages = ResourceBundle.getBundle("i18n/processing-activities", locale);
   }
-  
+
   public void render() {
     Optional<Organization> org = this.model.getOrganization();
     if (org.isPresent()) {
       renderOrganization(org.get());
     }
     this.model.getStudies().stream().forEach(study -> {
+
+      if (!study.getPersonRegistry().orElse(false)) {
+        // Don't render studies that are not person registries
+        return;
+      }
+
       renderStudy(study);
       this.currentRow++;
     });
   }
-  
+
   public void renderOrganization(Organization org) {
     String organization = org.getPrefLabel().get(this.lang);
     String abbreviation = org.getAbbreviation().get(this.lang);
@@ -72,7 +78,7 @@ public class ProcessingActivitiesReportView {
       .getCell(1)
       .setCellValue(organization);
   }
-  
+
   public void renderStudy(Study study) {
     Row row = this.sheet.createRow(currentRow);
     row.createCell(STUDY_NAME_COL).setCellValue(study.getPrefLabel().get(lang));
@@ -83,17 +89,17 @@ public class ProcessingActivitiesReportView {
 
     String associatedOrganizations = renderAssociatedOrganizations(study.getAssociatedOrganizations());
     row.createCell(SHARED_REGISTRY_HOLDER_COL).setCellValue(associatedOrganizations);
-    
+
     String otherGroupsOfRegistrees = study.getOtherGroupsOfRegistrees().get(lang);
     String groupsOfRegistrees = this.renderGroupsOfRegistrees(study.getGroupsOfRegistrees(), otherGroupsOfRegistrees);
     row.createCell(REGISTREE_GROUPS_COL).setCellValue(groupsOfRegistrees);
-    
+
     row.createCell(PERSONAL_INFORMATION_GROUPS_COL).setCellValue(study.getUsageOfPersonalInformation().get(lang));
-    
+
     String otherReceivingGroups = study.getOtherReceivingGroups().get(lang);
     String receivingGroups = this.renderReceivingGroups(study.getReceivingGroups(), otherReceivingGroups);
     row.createCell(RECEIVING_GROUPS_COL).setCellValue(receivingGroups);
-    
+
     row.createCell(DATA_TRANSFERS_COL).setCellValue(study.getPersonRegisterDataTransfers().get(lang));
     row.createCell(DATA_TRANSFERS_SECURITY_COL).setCellValue(study.getPersonRegisterDataTransfersOutsideEuOrEta().get(lang));
     row.createCell(DATA_RETENTION_COL).setCellValue(study.getRetentionPeriod().get(lang));
@@ -146,7 +152,7 @@ private String renderLegalBasis(List<LegalBasisForHandlingPersonalData> legalBas
       }
     return String.join(", ", groupStrings);
   }
-  
+
   public String renderReceivingGroups(List<ReceivingGroup> groups, String otherGroups) {
     List<String> groupStrings = new ArrayList<>();
     for (ReceivingGroup group : groups) {

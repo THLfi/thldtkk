@@ -33,12 +33,15 @@ import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
 import {StudyFormType} from '../../../model2/study-form-type';
+import {StudyFormTypeSpecifier} from '../../../model2/study-form-type-specifier';
 import {StudyForm} from '../../../model2/study-form';
 import { GroupOfRegistree } from 'app/model2/group-of-registree';
 import { ReceivingGroup } from 'app/model2/receiving-group';
+import {LangValues} from '../../../model2/lang-values';
 
 @Component({
     templateUrl: './study-administrative-edit.component.html',
+    styleUrls: ['./study-administrative-edit.component.css'],
     providers: [LangPipe]
 })
 export class StudyAdministrativeEditComponent implements OnInit, AfterContentChecked {
@@ -84,6 +87,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     receivingGroupsOptions: SelectItem[] = []
     typeOfSensitivePersonalDataOptions: SelectItem[] = []
     studyFormTypeOptions: SelectItem[] = [];
+    studyFormTypeSpecifierOptions: SelectItem[] = [];
 
     constructor(
         private studyService: EditorStudyService,
@@ -153,6 +157,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.populateRetentionPolicies()
       this.populateExistenceForms()
       this.populateStudyFormTypes()
+      this.populateStudyFormTypeSpecifiers()
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
@@ -232,6 +237,19 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
             this.studyFormTypeOptions.push({
               label: label,
               value: formType
+            });
+          });
+      }
+    }
+
+    private populateStudyFormTypeSpecifiers() {
+      for (const typeSpecifier in StudyFormTypeSpecifier) {
+        this.translateService
+          .get('studyFormTypeSpecifier.' + typeSpecifier)
+          .subscribe(label => {
+            this.studyFormTypeSpecifierOptions.push({
+              label: label,
+              value: typeSpecifier
             });
           });
       }
@@ -367,7 +385,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
       this.study.studyForms.push({
         id: null,
-        type: null
+        type: null,
+        typeSpecifier: StudyFormTypeSpecifier.NONE,
+        additionalDetails: {} as LangValues
       } as StudyForm);
     }
 
@@ -490,4 +510,38 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
     }
 
+    onStudyFormTypeChange(studyForm: StudyForm, formType: StudyFormType) {
+      studyForm.type = formType;
+      if (!this.isTypeSpecifierFieldEnabled(studyForm)) {
+        studyForm.typeSpecifier = StudyFormTypeSpecifier.NONE;
+      }
+    }
+
+    isTypeSpecifierFieldEnabled(studyForm: StudyForm) {
+      if (studyForm.type === null) {
+        return false;
+      }
+
+      let isEnabled = false;
+
+      switch (studyForm.type.valueOf()) {
+        case StudyFormType.HUMAN_SAMPLE.valueOf():
+          isEnabled = true;
+          break;
+        case StudyFormType.CELL_SAMPLE.valueOf():
+          isEnabled = true;
+          break;
+        case StudyFormType.MICROBE_SAMPLE.valueOf():
+          isEnabled = true;
+          break;
+        case StudyFormType.ANIMAL_SAMPLE.valueOf():
+          isEnabled = true;
+          break;
+        case StudyFormType.ENVIRONMENTAL_SAMPLE.valueOf():
+          isEnabled = true;
+          break;
+      }
+
+      return isEnabled;
+    }
 }

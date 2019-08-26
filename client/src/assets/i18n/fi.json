@@ -261,6 +261,7 @@
     "PAPER": "Paperi",
     "SAMPLE": "Näyte"
   },
+  "disposed": "Hävitetty",
   "studyForm": {
     "label": "Aineiston olomuoto",
     "type": "Olomuoto",
@@ -335,6 +336,8 @@
     "MOTHERS_MILK_SAMPLES": "Äidinmaitonäytteet",
     "OTHER": "Muu, mikä"
   },
+  "additionalDetailsWhenOtherIsChosen": "\"Muu, mikä\"-valinnassa kirjoita tarkenne Lisätiedot-kenttään",
+  "selectionIsSentForHandling": "Valinta lähetetään käsiteltäväksi",
   "physicalLocation": "Fyysinen sijaintipaikka",
   "noPhysicalLocation": "Ei määritetty",
   "addNewPersonInRole": "Lisää henkilö",

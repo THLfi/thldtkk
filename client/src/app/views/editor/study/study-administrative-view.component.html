@@ -452,11 +452,48 @@
         <div class="col-xs-12">
           <p><strong class="field-label">{{ 'studyForm.label' | translate }}</strong></p>
           <ng-container *ngIf="study.studyForms.length; else noExistenceForm;">
-            <ul>
-              <li *ngFor="let form of study.studyForms">
-                {{ 'studyForm.' + form.type | translate }}
-              </li>
-            </ul>
+            <table
+              id="studyForms"
+              class="table table-striped"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    {{ 'studyForm.type' | translate }}
+                    <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                  </th>
+                  <th>{{ 'studyFormTypeSpecifier.label' | translate }}</th>
+                  <th>{{ 'additionalDetails' | translate }}</th>
+                  <th>{{ 'studyForm.unitInCharge' | translate }}</th>
+                  <th>{{ 'retentionPeriod' | translate }}</th>
+                  <th>{{ 'disposed' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let studyForm of study.studyForms; let index = index;">
+                  <td>
+                    {{ 'studyForm.' + studyForm.type | translate  }}
+                  </td>
+                  <td>
+                    {{ 'studyFormTypeSpecifier.' + studyForm.typeSpecifier | translate  }}
+                  </td>
+                  <td>
+                    {{ studyForm.additionalDetails[language] }}
+                  </td>
+                  <td>
+                    <span *ngIf="studyForm.unitInCharge">
+                      {{ studyForm.unitInCharge.prefLabel[lang] }} <span *ngIf="studyForm.unitInCharge.abbreviation[lang]">({{ studyForm.unitInCharge.abbreviation[lang] }})</span>
+                    </span>
+                  </td>
+                  <td>
+                    {{ studyForm.retentionPeriod }}
+                  </td>
+                  <td>
+                    {{ studyForm.disposalDate }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </ng-container>
           <ng-template #noExistenceForm>
             <p>{{ 'studyForm.noStudyForms' | translate }}</p>

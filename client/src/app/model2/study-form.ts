@@ -8,5 +8,7 @@ export interface StudyForm extends Node {
   type: StudyFormType;
   typeSpecifier: StudyFormTypeSpecifier;
   additionalDetails: LangValues;
+  retentionPeriod: string;
+  disposalDate: string;
   unitInCharge: OrganizationUnit;
 }

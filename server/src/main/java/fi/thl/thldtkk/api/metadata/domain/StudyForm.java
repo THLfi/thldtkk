@@ -11,11 +11,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.valueToEnum;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangValueMap;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static java.util.Objects.requireNonNull;
 
 public class StudyForm implements NodeEntity {
@@ -26,6 +29,8 @@ public class StudyForm implements NodeEntity {
   private StudyFormType type;
   private StudyFormTypeSpecifier typeSpecifier;
   private Map<String, String> additionalDetails = new LinkedHashMap<>();
+  private LocalDate retentionPeriod;
+  private LocalDate disposalDate;
   private OrganizationUnit unitInCharge;
 
   /**
@@ -44,6 +49,8 @@ public class StudyForm implements NodeEntity {
     this.type = valueToEnum(node.getProperties("type"), StudyFormType.class);
     this.typeSpecifier = valueToEnum(node.getProperties("typeSpecifier"), StudyFormTypeSpecifier.class);
     this.additionalDetails = toLangValueMap(node.getProperties("additionalDetails"));
+    this.retentionPeriod = toLocalDate(node.getProperties("retentionPeriod"), null);
+    this.disposalDate = toLocalDate(node.getProperties("disposalDate"), null);
 
     node.getReferencesFirst("unitInCharge")
       .ifPresent(unit -> this.unitInCharge = new OrganizationUnit(unit));
@@ -65,11 +72,21 @@ public class StudyForm implements NodeEntity {
     return Optional.ofNullable(unitInCharge);
   }
 
+  public Optional<LocalDate> getRetentionPeriod() {
+    return Optional.ofNullable(retentionPeriod);
+  }
+
+  public Optional<LocalDate> getDisposalDate() {
+    return Optional.ofNullable(disposalDate);
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
     props.put("type", PropertyMappings.enumToPropertyValue(type));
     props.put("typeSpecifier", PropertyMappings.enumToPropertyValue(typeSpecifier));
     props.putAll("additionalDetails", toPropertyValues(additionalDetails));
+    getRetentionPeriod().ifPresent(v -> props.put("retentionPeriod", toPropertyValue(v)));
+    getDisposalDate().ifPresent(v -> props.put("disposalDate", toPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getUnitInCharge().ifPresent(unit -> refs.put("unitInCharge", unit.toNode()));
@@ -90,6 +107,8 @@ public class StudyForm implements NodeEntity {
       && Objects.equals(type, study.type)
       && Objects.equals(typeSpecifier, study.typeSpecifier)
       && Objects.equals(additionalDetails, study.additionalDetails)
+      && Objects.equals(retentionPeriod, study.retentionPeriod)
+      && Objects.equals(disposalDate, study.disposalDate)
       && Objects.equals(unitInCharge, study.unitInCharge);
   }
 
@@ -100,6 +119,8 @@ public class StudyForm implements NodeEntity {
       type,
       typeSpecifier,
       additionalDetails,
+      retentionPeriod,
+      disposalDate,
       unitInCharge
     );
   }

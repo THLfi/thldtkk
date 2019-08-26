@@ -1,5 +1,9 @@
 .additional-details {
-  max-width: 300px;
+  max-width: 150px;
   margin: 0 !important;
   height: 34px;
+}
+
+#studyForms {
+  margin: 0;
 }

@@ -170,6 +170,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           .subscribe(study => {
             this.study = this.studyService.initializeProperties(study)
             this.study = this.initializeStudyAdministrativeProperties(study)
+            this.initializeSampleFormMetadata(study);
             this.updatePageTitle()
             this.breadcrumbService.updateEditorBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
             this.updateAvailableAssociatedOrganizations()
@@ -198,6 +199,17 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           this.dataProcessingEndDate = new Date(study.dataProcessingEndDate)
         }
         return study;
+    }
+
+    private initializeSampleFormMetadata(study: Study) {
+      study.studyForms.forEach(studyForm => {
+        if (studyForm.retentionPeriod) {
+          studyForm['_retentionPeriod'] = new Date(studyForm.retentionPeriod);
+        }
+        if (studyForm.disposalDate) {
+          studyForm['_disposalDate'] = new Date(studyForm.disposalDate);
+        }
+      })
     }
 
     private populateRetentionPolicies() {
@@ -465,10 +477,12 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           return
         }
 
-        this.study.dataProcessingStartDate = this.dataProcessingStartDate ?
-          this.dateUtils.convertToIsoDate(this.dataProcessingStartDate) : null
-        this.study.dataProcessingEndDate = this.dataProcessingEndDate ?
-          this.dateUtils.convertToIsoDate(this.dataProcessingEndDate) : null
+        this.study.dataProcessingStartDate = this.convertDate(this.dataProcessingStartDate);
+        this.study.dataProcessingEndDate = this.convertDate(this.dataProcessingEndDate);
+        this.study.studyForms.forEach(studyForm => {
+          studyForm.retentionPeriod = this.convertDate(studyForm['_retentionPeriod']);
+          studyForm.disposalDate = this.convertDate(studyForm['_disposalDate']);
+        })
 
         this.studyService.save(this.study).pipe(
             finalize(() => {
@@ -486,6 +500,12 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         } else {
             this.router.navigate(['/editor/studies']);
         }
+    }
+
+    private convertDate(date: Date) {
+      if (date) {
+        return this.dateUtils.convertToIsoDate(date);
+      }
     }
 
     isNonScientificPersonRegistry() {

@@ -72,6 +72,10 @@ public class UserProfile implements Serializable {
       .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
   public UUID getId() {
     return id;
   }

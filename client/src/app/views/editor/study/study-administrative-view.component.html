@@ -434,22 +434,6 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <p><strong class="field-label">{{ 'existenceForm.label' | translate }}</strong></p>
-          <ng-container *ngIf="study.existenceForms.length; else noExistenceForm;">
-            <ul>
-              <li *ngFor="let form of study.existenceForms">
-                {{ 'existenceForm.' + form | translate }}
-              </li>
-            </ul>
-          </ng-container>
-          <ng-template #noExistenceForm>
-            <p>{{ 'noExistenceForm' | translate }}</p>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12">
           <p><strong class="field-label">{{ 'studyForm.label' | translate }}</strong></p>
           <ng-container *ngIf="study.studyForms.length; else noExistenceForm;">
             <table

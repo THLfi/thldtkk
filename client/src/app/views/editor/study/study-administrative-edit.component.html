@@ -994,26 +994,6 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <p>
-                <strong class="field-label">{{ 'existenceForm.label' | translate }}</strong>
-                <editor-help-link [helpTextComponent]="existenceFormsHelpText"></editor-help-link>
-              </p>
-              <editor-help-text #existenceFormsHelpText key="editor.studyAdministrative.existenceForms.helpText"></editor-help-text>
-              <p-multiSelect [(ngModel)]="study.existenceForms"
-                        [ngModelOptions]="{ standalone: true }"
-                        [options]="existenceForms"
-                        [filter]="false"
-                        defaultLabel="{{ 'selectExistenceForms' | translate }}"
-                        selectedItemsLabel="{0} {{ 'amountExistenceFormsSelected' | translate }}"
-                        inputId="existenceForms">
-              </p-multiSelect>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="form-group">
               <label for="studyForms">
                 {{ 'studyForm.label' | translate }}
               </label>

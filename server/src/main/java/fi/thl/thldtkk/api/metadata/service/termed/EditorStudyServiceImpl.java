@@ -59,6 +59,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   @Autowired
   private PublicStudyService publicStudyService;
 
+  @Autowired
+  private EmailService emailService;
+
   @Override
   public List<Study> findAll() {
     return find("", -1);
@@ -427,6 +430,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       changeset = changesetForUpdate(study, old.get(), includeDatasets, includeInstanceVariables);
     }
 
+    sendEmail(study, old.orElse(null));
     nodes.post(changeset);
 
     return get(study.getId())
@@ -678,6 +682,32 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   private Supplier<IllegalStateException> studyNotFoundAfterSave(UUID studyId) {
     return () -> new IllegalStateException("Study '" + studyId
       + "' was not found after saving, it might have been updated simultaneously by another user");
+  }
+
+  private void sendEmail(Study study, Study old) {
+    List<OrganizationUnit> units = study.getStudyForms().stream()
+      .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
+      .filter(newStudyForm -> {
+        if (old == null) {
+          return true;
+        }
+
+        Optional<StudyForm> oldStudyForm = old.getStudyForms().stream()
+          .filter(iterOldStudyForm -> iterOldStudyForm.getId().equals(newStudyForm.getId()))
+          .findFirst();
+
+        if (! oldStudyForm.isPresent() || ! oldStudyForm.get().getUnitInCharge().isPresent()) {
+          return true;
+        }
+
+        UUID newId = newStudyForm.getUnitInCharge().get().getId();
+        UUID oldId = oldStudyForm.get().getUnitInCharge().get().getId();
+        return ! newId.equals(oldId);
+      })
+      .map(studyForm -> studyForm.getUnitInCharge().get())
+      .collect(toList());
+
+    units.forEach(unit -> emailService.sendUnitInChargeConfirmationMessage(study, unit));
   }
 
   @AdminOnly

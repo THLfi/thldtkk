@@ -152,6 +152,9 @@
       },
       {
         "id": "associations"
+      },
+      {
+        "id": "label"
       }
     ]
   },

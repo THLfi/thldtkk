@@ -1,20 +1,15 @@
 package fi.thl.thldtkk.api.metadata.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.annotations.SerializedName;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
 import static java.util.Objects.requireNonNull;
 
 public class OrganizationPersonInRole implements NodeEntity {
@@ -55,24 +50,24 @@ public class OrganizationPersonInRole implements NodeEntity {
     this.id = id;
   }
 
-  public Optional<Person> getPerson() {
-    return Optional.ofNullable(this.person);
+  public Person getPerson() {
+    return this.person;
   }
 
   public void setPerson(Person person) {
     this.person = person;
   }
 
-  public Optional<Role> getRole() {
-    return Optional.ofNullable(this.role);
+  public Role getRole() {
+    return this.role;
   }
 
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
-    getPerson().ifPresent(p -> refs.put("person", p.toNode()));
-    getRole().ifPresent(r -> refs.put("role", r.toNode()));
+    refs.put("person", getPerson().toNode());
+    refs.put("role", getRole().toNode());
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }

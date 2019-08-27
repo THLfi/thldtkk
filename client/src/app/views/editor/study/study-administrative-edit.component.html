@@ -1088,6 +1088,12 @@
                           </option>
                         </ng-container>
                       </select>
+                      <administrative-confirmation
+                        [pendingAcceptance]="false"
+                        [isAccepted]="false"
+                        [isUserAuthorized]="false"
+                        (onConfirmation)="confirmUnitTransfer($event)"
+                      ></administrative-confirmation>
                     </td>
                     <td>
                       <p-calendar [(ngModel)]="studyForm._retentionPeriod"
@@ -1102,6 +1108,12 @@
                                   [style]="{'white-space': 'nowrap'}"
                                   name="{{'study-form-retention-period-' + index}}">
                       </p-calendar>
+                      <administrative-confirmation
+                        [pendingAcceptance]="false"
+                        [isAccepted]="true"
+                        [isUserAuthorized]="true"
+                        (onConfirmation)="confirmRetentionPeriod($event)"
+                      ></administrative-confirmation>
                     </td>
                     <td>
                       <p-calendar [(ngModel)]="studyForm._disposalDate"

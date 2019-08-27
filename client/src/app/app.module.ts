@@ -102,6 +102,7 @@ import { SecurityPrincipleEditModalComponent } from "./views/editor/study/securi
 import { StudyAdministrativeEditComponent } from './views/editor/study/study-administrative-edit.component'
 import { StudyAdministrativeReadOnlyFieldsComponent } from './views/editor/study/study-administrative-read-only-fields.component'
 import { StudyAdministrativeViewComponent } from './views/editor/study/study-administrative-view.component'
+import { AdministrativeConfirmationComponent } from './views/editor/study/administrative-confirmation.component'
 import { SystemEditModalComponent } from './views/editor/study/system-edit-modal.component'
 import { DataSetEditComponent } from './views/editor/dataset/data-set-edit.component'
 import { DatasetHeaderComponent } from './views/editor/dataset/dataset-header.component'
@@ -182,6 +183,7 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
         StudyAdministrativeEditPrincipleOfProtectionFieldsComponent,
         StudyAdministrativeViewComponent,
         StudyAdministrativeViewPrincipleOfProtectionFieldsComponent,
+        AdministrativeConfirmationComponent,
         DatasetComponent,
         DatasetHeaderComponent,
         DataSetEditComponent,

@@ -1472,5 +1472,10 @@
       "newSecurityPrinciple": "Uusi suojausperiaate"
     }
   },
-  "confirmExitIfUnsavedChanges": "Muutoksia ei ole tallennettu. Haluatko poistua?"
+  "confirmExitIfUnsavedChanges": "Muutoksia ei ole tallennettu. Haluatko poistua?",
+  "waitingForAcceptance": "Odottaa hyväksyntää",
+  "accept": "Hyväksy",
+  "accepted": "Hyväksytty",
+  "reject": "Hylkää",
+  "rejected": "Hylätty"
 }

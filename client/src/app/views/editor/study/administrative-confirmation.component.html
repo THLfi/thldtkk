@@ -1,0 +1,28 @@
+<div class="administrative-confirmation">
+  <div *ngIf="pendingAcceptance; else responseGiven">
+    <div class="accept-buttons" *ngIf="isUserAuthorized; else waitingForAcceptance">
+      <button class="btn btn-success" (click)="respond(true)">{{ 'accept' | translate }}</button>
+      <button class="btn btn-danger" (click)="respond(false)">{{ 'reject' | translate }}</button>
+    </div>
+    <ng-template #waitingForAcceptance>
+      <i class="fa fa-clock-o"></i>
+      {{ 'waitingForAcceptance' | translate }}
+    </ng-template>
+  </div>
+
+  <ng-template #responseGiven>
+    <div *ngIf="isAccepted">
+      <div class="text-success">
+        <i class="fa fa-check"></i> {{ 'accepted' | translate }}
+      </div>
+      <p *ngIf="isUserAuthorized">
+        <a style="cursor: pointer;" (click)="canceConfirmation()">{{ 'cancel' | translate }}</a>
+      </p>
+    </div>
+    <div *ngIf="!isAccepted">
+      <p class="text-danger">
+        <i class="fa fa-times"></i> {{ 'rejected' | translate }}
+      </p>
+    </div>
+  </ng-template>
+</div>

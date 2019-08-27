@@ -174,7 +174,6 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
       List<StudyForm> allForms = study.getStudyForms().stream()
         .peek(form -> form.setTypeSpecifier(StudyFormTypeSpecifier.NONE))
         .collect(Collectors.toList());
-
       study.setStudyForms(allForms);
 
       List<Node> saves = forms.stream()

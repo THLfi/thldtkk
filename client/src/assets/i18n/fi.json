@@ -272,6 +272,7 @@
     "noStudyForms": "Aineistolla ei ole olomuotoja",
     "DIGITAL": "Digitaalinen",
     "PAPER": "Paperi",
+    "SAMPLE": "Näyte (poistunut, tarkenna)",
     "HUMAN_SAMPLE": "Ihmisperäiset näytteet",
     "MICROBE_SAMPLE": "Mikrobinäytteet",
     "ENVIRONMENTAL_SAMPLE": "Ympäristönäyteet",

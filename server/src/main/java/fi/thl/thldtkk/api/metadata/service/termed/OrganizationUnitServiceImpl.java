@@ -21,7 +21,6 @@ import java.util.UUID;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 public class OrganizationUnitServiceImpl implements OrganizationUnitService {

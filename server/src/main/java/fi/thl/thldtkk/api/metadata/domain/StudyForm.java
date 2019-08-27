@@ -64,6 +64,18 @@ public class StudyForm implements NodeEntity {
     this.id = id;
   }
 
+  public void setType(StudyFormType type) {
+    this.type = type;
+  }
+
+  public StudyFormType getType() {
+    return type;
+  }
+
+  public void setTypeSpecifier(StudyFormTypeSpecifier typeSpecifier) {
+    this.typeSpecifier = typeSpecifier;
+  }
+
   public Map<String, String> getAdditionalDetails() {
     return additionalDetails;
   }

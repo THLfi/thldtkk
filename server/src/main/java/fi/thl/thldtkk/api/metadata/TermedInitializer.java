@@ -1,5 +1,7 @@
 package fi.thl.thldtkk.api.metadata;
 
+import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.ResourceUtils.resourceToString;
 import static fi.thl.thldtkk.api.metadata.util.json.GsonJsonElementFactory.array;
 import static fi.thl.thldtkk.api.metadata.util.json.GsonJsonElementFactory.concat;
@@ -13,7 +15,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jayway.jsonpath.JsonPath;
-import java.util.UUID;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import fi.thl.thldtkk.api.metadata.domain.*;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +54,12 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
   private UUID editorGraphId;
   @Value("${termed.publicGraphId}")
   private UUID publicGraphId;
+
+  @Autowired
+  private Repository<NodeId, Node> editorNodeRepository;
+
+  @Autowired
+  private Repository<NodeId, Node> publicNodeRepository;
 
   @Autowired
   private Gson gson;
@@ -98,6 +114,10 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
         .build();
 
     termedRestTemplate.exchange("/restore", POST, new HttpEntity<>(dump), JsonObject.class);
+
+
+    // Data migrations are currently handled here
+    runMigrations();
   }
 
   // convert each ref attr range graph code to an actual UUID
@@ -107,4 +127,58 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
         ImmutableMap.of("id", commonGraphId.toString())).jsonString();
   }
 
+  private void runMigrations() {
+    this.migrateOldExistenceFormsToStudyForms(this.editorNodeRepository);
+    this.migrateOldExistenceFormsToStudyForms(this.publicNodeRepository);
+  }
+
+  private void migrateOldExistenceFormsToStudyForms(Repository<NodeId, Node> repository) {
+    List<Study> studies = repository.query(
+      select(
+        "id",
+        "type",
+        "properties.*",
+        "references.*"
+      ),
+      keyValue("type.id", "Study")
+    )
+      .map(Study::new)
+      .filter(study -> study.getExistenceForms().size() > 0)
+      .collect(Collectors.toList());
+
+    for (Study study : studies) {
+      List<StudyForm> forms = study.getExistenceForms().stream()
+        .map(exForm -> {
+          StudyForm form = new StudyForm(UUID.randomUUID());
+
+          switch (exForm) {
+            case PAPER:
+              form.setType(StudyFormType.PAPER);
+              break;
+            case DIGITAL:
+              form.setType(StudyFormType.DIGITAL);
+              break;
+            case SAMPLE:
+              form.setType(StudyFormType.SAMPLE);
+              break;
+          }
+
+          form.setTypeSpecifier(StudyFormTypeSpecifier.NONE);
+
+          return form;
+        })
+        .collect(Collectors.toList());
+
+      study.setExistenceForms(Collections.emptyList());
+      study.getStudyForms().addAll(forms);
+
+      List<Node> saves = forms.stream()
+        .map(StudyForm::toNode)
+        .collect(Collectors.toList());
+
+      saves.add(study.toNode());
+
+      this.editorNodeRepository.save(saves);
+    }
+  }
 }

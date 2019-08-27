@@ -248,7 +248,8 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           .subscribe(label => {
             this.studyFormTypeOptions.push({
               label: label,
-              value: formType
+              value: formType,
+              disabled: formType === StudyFormType.SAMPLE
             });
           });
       }

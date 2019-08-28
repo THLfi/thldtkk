@@ -178,7 +178,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.lifecyclePhase:2",
         "references.population:2",
         "references.universe:2",
-        "references.datasetTypes:2",
+        "references.datasetType:2",
         "references.organizationUnit:2",
         "references.unitInCharge:2",
         "references.ownerOrganization:4",

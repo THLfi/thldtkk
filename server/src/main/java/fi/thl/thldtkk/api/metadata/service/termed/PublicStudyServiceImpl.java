@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static fi.thl.thldtkk.api.metadata.util.Tokenizer.tokenizeAndMap;
@@ -80,7 +80,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
 
     if (hasText(query)) {
       List<String> tokens = tokenizeAndMap(query, t -> t + "*");
-      criteria.add(keyWithAnyValue("properties.prefLabel", tokens));
+      criteria.add(keyWithAllValues("properties.prefLabel", tokens));
     }
 
     Select select = buildSelect(selectStrings);

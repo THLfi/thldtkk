@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Component } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -32,6 +32,7 @@ export class CatalogStudyViewComponent {
     private studyService: PublicStudyService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
+    private router: Router,
     private translateService: TranslateService,
     private titleService: Title,
     private langPipe: LangPipe) {
@@ -76,7 +77,10 @@ export class CatalogStudyViewComponent {
           this.breadcrumbService.updateCatalogBreadcrumbsForStudyDatasetAndInstanceVariable(this.study)
           this.pickHighlightedDetails()
           this.loadingStudy = false
-        })
+        }, 
+          e => {
+            this.router.navigate(['/catalog'])
+          })
     })
   }
 

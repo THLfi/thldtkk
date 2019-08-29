@@ -38,6 +38,7 @@ import {UnitType} from '../../../model2/unit-type'
 import {UnitTypeService} from '../../../services-common/unit-type.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services-common/variable.service'
+import { ConfirmDialogService } from '../../common/confirm.dialog.service';
 
 @Component({
     templateUrl: './instance-variable-edit.component.html'
@@ -90,6 +91,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
 
     savingInProgress: boolean = false
     savingHasFailed: boolean = false
+    private showUnsavedMessage: boolean = true;
 
     readonly sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
 
@@ -112,7 +114,8 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private router: Router,
         private translateService: TranslateService,
         private langPipe: LangPipe,
-        private dateUtils: DateUtils
+        private dateUtils: DateUtils,
+        private confirmDialogService: ConfirmDialogService
     ) {
         this.language = translateService.currentLang
     }
@@ -121,6 +124,14 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       const studyId = this.route.snapshot.params['studyId']
       const datasetId = this.route.snapshot.params['datasetId']
       const instanceVariableId = this.route.snapshot.params['instanceVariableId']
+      
+      window.addEventListener('beforeunload', (event) => {
+          if(this.currentForm.form.dirty && this.showUnsavedMessage){
+              event.returnValue = 'Are you sure you want to leave?';
+          } else {
+              return;
+          }
+        });
 
       if (instanceVariableId) {
         observableForkJoin(
@@ -549,6 +560,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     goToNext(): void {
+      this.showUnsavedMessage = false;
       this.instanceVariableService.getNextInstanceVariableId(this.study.id, this.dataset.id, this.instanceVariable.id)
         .subscribe(instanceVariableId => {
           this.router.navigate([
@@ -606,6 +618,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
     }
 
     goBack(): void {
+      this.showUnsavedMessage = false;
       if (this.route.snapshot.params['instanceVariableId'] || (this.instanceVariable && this.instanceVariable.id)) {
         this.goBackToViewInstanceVariable()
       }
@@ -633,4 +646,15 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         'instanceVariables'
       ])
     }
+
+    canDeactivate(): Observable<boolean> | boolean {
+        let confirmQuestionText: string = '';
+        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          })
+    
+        if(this.currentForm.form.dirty && this.showUnsavedMessage)
+           return this.confirmDialogService.confirm(confirmQuestionText);
+        return true;
+     } 
 }

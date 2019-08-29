@@ -44,6 +44,7 @@ import {UniverseService} from '../../../services-common/universe.service'
 import {UsageCondition} from '../../../model2/usage-condition';
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
 import {RoleAssociation} from '../../../model2/role-association';
+import { ConfirmDialogService } from '../../common/confirm.dialog.service';
 
 @Component({
     templateUrl: './data-set-edit.component.html',
@@ -113,6 +114,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     howManyPersons: number = 0
     errorFields: any = {}
     errorFieldsKeys: any = {}
+    private showUnsavedMessage: boolean = true;
 
     constructor(
         private editorStudyService: EditorStudyService,
@@ -137,7 +139,8 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private personService: PersonService,
         private roleService: RoleService,
         private userService: CurrentUserService,
-        private breadcrumbService: BreadcrumbService
+        private breadcrumbService: BreadcrumbService,
+        private confirmDialogService: ConfirmDialogService
     ) {
         this.language = this.translateService.currentLang
     }
@@ -145,6 +148,14 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     ngOnInit() {
       this.getDatasetAndStudy()
       this.getOtherStuff()
+      
+        window.addEventListener('beforeunload', (event) => {
+            if(this.currentForm.form.dirty && this.showUnsavedMessage){
+                event.returnValue = 'Are you sure you want to leave?';
+            } else {
+                return;
+            }
+          });
     }
 
     private getDatasetAndStudy() {
@@ -635,6 +646,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
     }
 
     goBack() {
+      this.showUnsavedMessage = false;
       if(this.dataset && this.dataset.id) {
         this.router.navigate([
           '/editor/studies',
@@ -652,4 +664,15 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         ])
       }
     }
+    
+    canDeactivate(): Observable<boolean> | boolean {
+        let confirmQuestionText: string = '';
+        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          })
+    
+        if(this.currentForm.form.dirty && this.showUnsavedMessage)
+           return this.confirmDialogService.confirm(confirmQuestionText);
+        return true;
+     }  
 }

@@ -1466,5 +1466,6 @@
     "modal" :{
       "newSecurityPrinciple": "Uusi suojausperiaate"
     }
-  }
+  },
+  "confirmExitIfUnsavedChanges": "Muutoksia ei ole tallennettu. Haluatko poistua?"
 }

@@ -17,6 +17,8 @@ import { Study } from '../../../model2/study'
 import { StringUtils } from '../../../utils/string-utils'
 import { DatasetDetailHighlight } from './dataset-detail-highlight'
 
+import {MultiSelect, SelectItem} from "primeng/primeng";
+
 class InstanceVariableWrapper {
 
   constructor(
@@ -53,6 +55,21 @@ export class DatasetComponent implements OnInit {
   
   showInstanceVariableFilters: boolean
   selectedInstanceVariableFilterGroups: string[] = []
+  
+  // Pasi
+
+  pages : number = 7;
+  PAGEINDEXTOSHOW = 7;
+  ROWSTOSHOW : number = 25;
+  pageNumber : number = 0;
+  currentIndex : number = 1;
+  variableItems: InstanceVariableWrapper[];
+  filteredVariableItems : InstanceVariableWrapper[];
+  pagesIndex : Array<number>;
+  pageStart : number = 1;
+  inputName : string = '';
+  
+  selectableFilterGroups: SelectItem[];
 
   constructor(
     private studyService: PublicStudyService,
@@ -67,6 +84,7 @@ export class DatasetComponent implements OnInit {
     this.language = this.translateService.currentLang
     this.defaultInstanceVariableGroupName = 'catalog.dataset.defaultInstanceVariableGroupName'
     this.showInstanceVariableFilters = false
+    this.selectableFilterGroups = [];
   }
 
   ngOnInit() {
@@ -74,6 +92,7 @@ export class DatasetComponent implements OnInit {
       this.updateDataset(params['studyId'], params['datasetId'])
     })
   }
+  
 
   private updateDataset(studyId: string, datasetId: string): void {
     this.study = null
@@ -94,8 +113,24 @@ export class DatasetComponent implements OnInit {
       this.updateWrappedInstanceVariables()
       this.groupInstanceVariables()
       this.resetInstanceVariableGroupFilters()
-      this.pickHighlightedDetails()
+      this.pickHighlightedDetails()     
+      this.updatePaginationIndex();
+      this.refreshItems();
     })
+  }
+  
+  updatePaginationIndex(){
+      this.variableItems = this.filteredVariableItems;
+      this.pages = (this.variableItems.length / this.ROWSTOSHOW > this.PAGEINDEXTOSHOW) ? this.PAGEINDEXTOSHOW : Math.ceil(this.variableItems.length / this.ROWSTOSHOW);
+      this.pageNumber = parseInt(""+ (this.variableItems.length / this.ROWSTOSHOW));
+      if(this.variableItems.length % this.ROWSTOSHOW != 0){
+         this.pageNumber ++;
+      }
+
+      if(this.pageNumber < this.pages){
+            this.pages =  this.pageNumber;
+      }
+      this.refreshItems();
   }
 
   private updatePageTitle(): void {
@@ -194,24 +229,32 @@ export class DatasetComponent implements OnInit {
       this.instanceVariableGroupNames.splice(defaultGroupNameIndex, 1)
       this.instanceVariableGroupNames.push(this.defaultInstanceVariableGroupName)
     }
-    
+    this.instanceVariableGroupNames.forEach(groupName => {this.selectableFilterGroups.push({label: groupName, value: groupName});})
+    this.selectableFilterGroups = this.selectableFilterGroups.sort();
+    this.selectableFilterGroups.map((item) => {this.selectedInstanceVariableFilterGroups.push(item.value);});
+    this.selectedInstanceVariableFilterGroups.forEach(groupName => {
+        this.groupedInstanceVariables[groupName]
+          .map(wrappedInstanceVariable => this.filteredInstanceVariables.push(wrappedInstanceVariable))
+      })
   }
 
   filterInstanceVariables() {
+    this.currentIndex = 1;
+    this.pageStart = 1;
     let allGroupsSelected: boolean = this.selectedInstanceVariableFilterGroups.length == this.instanceVariableGroupNames.length
 
     if (allGroupsSelected) {
       this.filteredInstanceVariables = this.allWrappedInstanceVariables
-    }
-
-    else {
+    } else {
       this.filteredInstanceVariables = []
-
       this.selectedInstanceVariableFilterGroups.forEach(groupName => {
         this.groupedInstanceVariables[groupName]
           .map(wrappedInstanceVariable => this.filteredInstanceVariables.push(wrappedInstanceVariable))
       })
     }
+    this.filteredVariableItems = this.filteredInstanceVariables;
+    this.updatePaginationIndex();
+    this.refreshItems();
   }
 
   resetInstanceVariableGroupFilters() {
@@ -227,4 +270,87 @@ export class DatasetComponent implements OnInit {
   toggleShowInstanceVariableFilters() {
     this.showInstanceVariableFilters = !this.showInstanceVariableFilters 
   }
+  
+  resetSearchWords(){
+      this.inputName = "";
+      this.FilterByName();
+  }
+  
+  // Pasi
+  FilterByName(){
+     this.filteredVariableItems = [];
+
+     if(this.inputName != ""){
+         var searchWithTheseWords = this.inputName.split(" ");
+         var searchWithTheseWordsArray = new Array();
+         for(var i = 0; i < searchWithTheseWords.length; i++){
+             if(searchWithTheseWords[i].length > 0)
+             searchWithTheseWordsArray.push(searchWithTheseWords[i]);
+         }
+         
+         this.filteredInstanceVariables.forEach(element => {
+             for (let i = 0; i < searchWithTheseWordsArray.length; i++) {
+                 var searchThisWord = searchWithTheseWordsArray[i];
+                 if((element.instanceVariable.prefLabel.fi.toString().toUpperCase().indexOf(searchThisWord.toUpperCase()) >= 0) ||
+                         (element.instanceVariable.description.fi.toString().toUpperCase().indexOf(searchThisWord.toUpperCase()) >= 0)      
+                      ){
+                     
+                     if(this.filteredVariableItems.indexOf(element) == -1){
+                        this.filteredVariableItems.push(element);
+                     }
+                     
+                 }else{
+                     var index = this.filteredVariableItems.indexOf(element);
+                     if (index > -1) {
+                         this.filteredVariableItems.splice(index, 1);
+                     }
+                     break;
+                 }
+             }
+           });
+     } else {
+        this.filteredVariableItems = this.filteredInstanceVariables;
+        
+     }
+     this.currentIndex = 1;
+     this.pageStart = 1;
+     this.updatePaginationIndex();
+     this.refreshItems();
+     
+  }
+  fillArray(): any{
+     var obj = new Array();
+     for(var index = this.pageStart; index < this.pageStart + this.pages; index++) {
+                 obj.push(index);
+     }
+     return obj;
+  }
+  refreshItems(){
+      this.variableItems = this.filteredVariableItems.slice((this.currentIndex - 1) * this.ROWSTOSHOW, (this.currentIndex) * this.ROWSTOSHOW);
+      this.pagesIndex =  this.fillArray();
+  }
+  prevPage(){
+     if(this.currentIndex>1){
+        this.currentIndex--;
+     } 
+     if(this.currentIndex < this.pageStart){
+        this.pageStart = this.currentIndex;
+     }
+     this.refreshItems();
+  }
+  nextPage(){
+     if(this.currentIndex < this.pageNumber){
+           this.currentIndex++;
+     }
+     if(this.currentIndex >= (this.pageStart + this.pages)){
+        this.pageStart = this.currentIndex - this.pages + 1;
+     }
+     this.refreshItems();
+  }
+   setPage(index : number){
+        this.currentIndex = index;
+        this.refreshItems();
+   }
+  // Pasi
+  
 }

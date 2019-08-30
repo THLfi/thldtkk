@@ -174,7 +174,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.getAllSystemRoles()
       this.getAllSystems()
       this.getAllOrganizations()
-      
+
       window.addEventListener('beforeunload', (event) => {
           if(this.currentForm.form.dirty && this.showUnsavedMessage){
               event.returnValue = 'Are you sure you want to leave?';
@@ -183,7 +183,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
           }
         });
     }
-    
+
     private getStudy() {
       const studyId = this.route.snapshot.params['studyId']
       if (studyId) {
@@ -552,19 +552,19 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       this.selectableRetentionOptions = (<any>Object).values(PostStudyRetentionOfPersonalData)
         .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
     }
-    
+
     canDeactivate(): Observable<boolean> | boolean {
 
         let confirmQuestionText: string = '';
         this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });
-    
+
         if(this.currentForm.form.dirty && this.showUnsavedMessage)
            return this.confirmDialogService.confirm(confirmQuestionText);
         return true;
 
-     }   
+     }
 
     onStudyFormTypeChange(studyForm: StudyForm, formType: StudyFormType) {
       studyForm.type = formType;
@@ -610,12 +610,16 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     }
 
     isUserHeadOfUnit(organizationUnit: OrganizationUnit): boolean {
-      if (!this.currentUser) {
+      if (!this.currentUser || !this.currentUser.email) {
+        return false;
+      }
+
+      if (!organizationUnit || !organizationUnit.personInRoles) {
         return false;
       }
 
       const headOfOrganization =
-        organizationUnit.personInRoles.find(pir => pir.role.label === RoleLabel.HEAD_OF_ORGANIZATION)
+        organizationUnit.personInRoles.find(pir => pir.role && pir.role.label === RoleLabel.HEAD_OF_ORGANIZATION)
 
       if (headOfOrganization && headOfOrganization.person.email === this.currentUser.email) {
         return true;

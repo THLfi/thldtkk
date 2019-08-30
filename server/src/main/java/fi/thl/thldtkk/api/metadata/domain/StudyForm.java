@@ -19,6 +19,7 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangV
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
+import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
 import static java.util.Objects.requireNonNull;
 
 public class StudyForm implements NodeEntity {
@@ -32,6 +33,8 @@ public class StudyForm implements NodeEntity {
   private LocalDate retentionPeriod;
   private LocalDate disposalDate;
   private OrganizationUnit unitInCharge;
+  private StudyFormConfirmationState unitInChargeConfirmationState;
+  private StudyFormConfirmationState retentionPeriodConfirmationState;
 
   /**
    * Required by GSON deserialization.
@@ -51,6 +54,8 @@ public class StudyForm implements NodeEntity {
     this.additionalDetails = toLangValueMap(node.getProperties("additionalDetails"));
     this.retentionPeriod = toLocalDate(node.getProperties("retentionPeriod"), null);
     this.disposalDate = toLocalDate(node.getProperties("disposalDate"), null);
+    this.unitInChargeConfirmationState = valueToEnum(node.getProperties("unitInChargeConfirmationState"), StudyFormConfirmationState.class);
+    this.retentionPeriodConfirmationState = valueToEnum(node.getProperties("retentionPeriodConfirmationState"), StudyFormConfirmationState.class);
 
     node.getReferencesFirst("unitInCharge")
       .ifPresent(unit -> this.unitInCharge = new OrganizationUnit(unit));
@@ -92,6 +97,22 @@ public class StudyForm implements NodeEntity {
     return Optional.ofNullable(disposalDate);
   }
 
+  public Optional<StudyFormConfirmationState> getUnitInChargeConfirmationState() {
+    return Optional.ofNullable(unitInChargeConfirmationState);
+  }
+
+  public void setUnitInChargeConfirmationState(StudyFormConfirmationState unitInChargeConfirmationState) {
+    this.unitInChargeConfirmationState = unitInChargeConfirmationState;
+  }
+
+  public Optional<StudyFormConfirmationState> getRetentionPeriodConfirmationState() {
+    return Optional.ofNullable(retentionPeriodConfirmationState);
+  }
+
+  public void setRetentionPeriodConfirmationState(StudyFormConfirmationState retentionPeriodConfirmationState) {
+    this.retentionPeriodConfirmationState = retentionPeriodConfirmationState;
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
     props.put("type", PropertyMappings.enumToPropertyValue(type));
@@ -99,6 +120,9 @@ public class StudyForm implements NodeEntity {
     props.putAll("additionalDetails", toPropertyValues(additionalDetails));
     getRetentionPeriod().ifPresent(v -> props.put("retentionPeriod", toPropertyValue(v)));
     getDisposalDate().ifPresent(v -> props.put("disposalDate", toPropertyValue(v)));
+
+    getUnitInChargeConfirmationState().ifPresent(v -> props.put("unitInChargeConfirmationState", PropertyMappings.enumToPropertyValue(v)));
+    getRetentionPeriodConfirmationState().ifPresent(v -> props.put("retentionPeriodConfirmationState", PropertyMappings.enumToPropertyValue(v)));
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getUnitInCharge().ifPresent(unit -> refs.put("unitInCharge", unit.toNode()));
@@ -121,6 +145,8 @@ public class StudyForm implements NodeEntity {
       && Objects.equals(additionalDetails, study.additionalDetails)
       && Objects.equals(retentionPeriod, study.retentionPeriod)
       && Objects.equals(disposalDate, study.disposalDate)
+      && Objects.equals(unitInChargeConfirmationState, study.unitInChargeConfirmationState)
+      && Objects.equals(retentionPeriodConfirmationState, study.retentionPeriodConfirmationState)
       && Objects.equals(unitInCharge, study.unitInCharge);
   }
 
@@ -133,6 +159,8 @@ public class StudyForm implements NodeEntity {
       additionalDetails,
       retentionPeriod,
       disposalDate,
+      unitInChargeConfirmationState,
+      retentionPeriodConfirmationState,
       unitInCharge
     );
   }

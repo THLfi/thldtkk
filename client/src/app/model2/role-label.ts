@@ -1,0 +1,3 @@
+export enum RoleLabel {
+  HEAD_OF_ORGANIZATION = 'HEAD_OF_ORGANIZATION'
+}

@@ -14,6 +14,7 @@ import {EditorStudyService} from '../../../services-editor/editor-study.service'
 import {EditorSystemService} from '../../../services-editor/editor-system.service'
 import {EditorSystemRoleService} from '../../../services-editor/editor-system-role.service'
 import {GrowlMessageService} from '../../../services-common/growl-message.service'
+import { CurrentUserService } from '../../../services-editor/user.service'
 import {LangPipe} from '../../../utils/lang.pipe'
 import {NodeUtils} from '../../../utils/node-utils';
 import {SelectItem} from 'primeng/components/common/api'
@@ -25,15 +26,19 @@ import {StudySidebarActiveSection} from './sidebar/study-sidebar-active-section'
 import {System} from '../../../model2/system';
 import {SystemRole} from '../../../model2/system-role';
 import {SystemInRole} from '../../../model2/system-in-role';
+import { User } from '../../../model2/user';
 import {LegalBasisForHandlingPersonalData} from '../../../model2/legal-basis-for-handling-personal-data';
 import {LegalBasisForHandlingSensitivePersonalData} from '../../../model2/legal-basis-for-handling-sensitive-personal-data';
 import {TypeOfSensitivePersonalData} from '../../../model2/type-of-sensitive-personal-data';
 import { Organization } from 'app/model2/organization';
+import { OrganizationUnit } from 'app/model2/organization-unit';
+import { RoleLabel } from 'app/model2/role-label'
 import { OrganizationService } from 'app/services-common/organization.service';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import {PostStudyRetentionOfPersonalData} from '../../../model2/post-study-retention-of-personal-data'
 import {StudyFormType} from '../../../model2/study-form-type';
 import {StudyFormTypeSpecifier} from '../../../model2/study-form-type-specifier';
+import {StudyFormConfirmationState} from '../../../model2/study-form-confirmation-state';
 import {StudyForm} from '../../../model2/study-form';
 import { GroupOfRegistree } from 'app/model2/group-of-registree';
 import { ReceivingGroup } from 'app/model2/receiving-group';
@@ -90,6 +95,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
     studyFormTypeOptions: SelectItem[] = [];
     private showUnsavedMessage: boolean = true;
     studyFormTypeSpecifierOptions: SelectItem[] = [];
+    StudyFormConfirmationState = StudyFormConfirmationState;
+
+    currentUser: User;
 
     constructor(
         private studyService: EditorStudyService,
@@ -106,6 +114,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private dateUtils: DateUtils,
         private nodeUtils: NodeUtils,
         private confirmDialogService: ConfirmDialogService,
+        private currentUserService: CurrentUserService,
     ) {
         this.language = this.translateService.currentLang
     }
@@ -113,6 +122,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
 
     ngOnInit() {
       this.getStudy()
+      this.currentUserService.getCurrentUserObservable().subscribe(user => this.currentUser = user);
 
       this.translateService.get('legalBasisForHandlingPersonalData')
         .subscribe(translations => {
@@ -589,5 +599,26 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
       }
 
       return isEnabled;
+    }
+
+    isUserAdmin(): boolean {
+      if (!this.currentUser) {
+        return false;
+      }
+
+      return this.currentUser.isAdmin;
+    }
+
+    isUserHeadOfUnit(organizationUnit: OrganizationUnit): boolean {
+      if (!this.currentUser) {
+        return false;
+      }
+
+      const headOfOrganization =
+        organizationUnit.personInRoles.find(pir => pir.role.label === RoleLabel.HEAD_OF_ORGANIZATION)
+
+      if (headOfOrganization && headOfOrganization.person.email === this.currentUser.email) {
+        return true;
+      }
     }
 }

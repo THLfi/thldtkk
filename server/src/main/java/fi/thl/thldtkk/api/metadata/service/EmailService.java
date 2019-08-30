@@ -5,4 +5,5 @@ import fi.thl.thldtkk.api.metadata.domain.Study;
 
 public interface EmailService {
   void sendUnitInChargeConfirmationMessage(Study study, OrganizationUnit unit);
+  void sendRetentionPeriodConfirmationMessage(Study study, OrganizationUnit unit);
 }

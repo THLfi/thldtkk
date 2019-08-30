@@ -17,6 +17,7 @@ import { TypeOfSensitivePersonalData } from '../../../model2/type-of-sensitive-p
 import { PostStudyRetentionOfPersonalData } from '../../../model2/post-study-retention-of-personal-data'
 import { GroupOfRegistree } from 'app/model2/group-of-registree';
 import { ReceivingGroup } from 'app/model2/receiving-group';
+import { StudyFormConfirmationState } from '../../../model2/study-form-confirmation-state'
 
 @Component({
   templateUrl: './study-administrative-view.component.html',
@@ -35,6 +36,7 @@ export class StudyAdministrativeViewComponent implements OnInit {
   legalBasisForHandlingPersonalData = LegalBasisForHandlingPersonalData
   legalBasisForHandlingSensitivePersonalData = LegalBasisForHandlingSensitivePersonalData
   typeOfSensitivePersonalData = TypeOfSensitivePersonalData
+  StudyFormConfirmationState = StudyFormConfirmationState;
 
   printRegisterDescriptionUrl: string
   printPrivacyNoticeUrl: string

@@ -8,6 +8,7 @@ import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.UserWithProfile;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.*;
 import org.slf4j.Logger;
@@ -22,10 +23,14 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
@@ -389,6 +394,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       Collections.sort(study.getExistenceForms());
     }
 
+    overrideStudyFormConfirmationState(study, old);
+
     if (includeDatasets) {
       study.getDatasets()
         .forEach(dataset -> {
@@ -685,8 +692,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   }
 
   private void sendEmail(Study study, Study old) {
-    List<OrganizationUnit> units = study.getStudyForms().stream()
+    study.getStudyForms().stream()
       .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
+      .filter(studyForm -> studyForm.getUnitInChargeConfirmationState().get().equals(StudyFormConfirmationState.PENDING))
       .filter(newStudyForm -> {
         if (old == null) {
           return true;
@@ -705,9 +713,35 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         return ! newId.equals(oldId);
       })
       .map(studyForm -> studyForm.getUnitInCharge().get())
-      .collect(toList());
+      .forEach(unit -> emailService.sendUnitInChargeConfirmationMessage(study, unit));
 
-    units.forEach(unit -> emailService.sendUnitInChargeConfirmationMessage(study, unit));
+    study.getStudyForms().stream()
+      .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
+      .filter(studyForm ->
+        studyForm.getRetentionPeriod().isPresent()
+        && studyForm.getRetentionPeriodConfirmationState().get().equals(StudyFormConfirmationState.PENDING))
+      .filter(newStudyForm -> {
+        if (old == null) {
+          return true;
+        }
+
+        Optional<StudyForm> oldStudyForm = old.getStudyForms().stream()
+          .filter(iterOldStudyForm -> iterOldStudyForm.getId().equals(newStudyForm.getId()))
+          .findFirst();
+
+        // Send email if retention period was not set before
+        if (!oldStudyForm.isPresent() || !oldStudyForm.get().getRetentionPeriod().isPresent()) {
+          return true;
+        }
+
+        LocalDate newRetentionPeriod = newStudyForm.getRetentionPeriod().get();
+        LocalDate oldRetentionPeriod = oldStudyForm.get().getRetentionPeriod().get();
+
+        // Send email if retention period differs from the current one
+        return !newRetentionPeriod.equals(oldRetentionPeriod);
+      })
+      .map(studyForm -> studyForm.getUnitInCharge().get())
+      .forEach(unit -> emailService.sendRetentionPeriodConfirmationMessage(study, unit));
   }
 
   @AdminOnly
@@ -818,8 +852,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   @Override
   public Dataset saveDatasetAndInstanceVariables(UUID studyId, Dataset dataset) {
-    return saveDatasetInternal(studyId, dataset, true);
-  }
+    return saveDatasetInternal(studyId, dataset, true); }
 
   private Supplier<IllegalStateException> datasetNotFoundAfterSave(UUID datasetId, UUID studyId) {
     return () -> new IllegalStateException("Dataset '" + datasetId + "' was not found after saving, study '"
@@ -975,4 +1008,113 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     return new HttpEntity<>(document, headers);
   }
 
+  private void overrideStudyFormConfirmationState(Study study, Optional<Study> oldStudy) {
+    study.getStudyForms().stream().forEach(studyForm -> {
+      Optional<StudyForm> oldStudyForm = Optional.empty();
+      if (oldStudy.isPresent()) {
+        oldStudyForm = oldStudy.get().getStudyForms().stream()
+          .filter(sf -> sf.getId().equals(studyForm.getId()))
+          .findFirst();
+      }
+      overrideUnitInChargeConfirmationState(studyForm, oldStudyForm);
+      overrideRetentionPeriodConfirmationState(studyForm, oldStudyForm);
+    });
+  }
+
+  private void overrideUnitInChargeConfirmationState(StudyForm studyForm, Optional<StudyForm> oldStudyForm) {
+      UserWithProfile user = userHelper.getCurrentUser().get();
+
+      Optional<OrganizationUnit> existingUnit = Optional.empty();
+      if (oldStudyForm.isPresent()) {
+        existingUnit = oldStudyForm.get().getUnitInCharge();
+      }
+
+      Optional<OrganizationUnit> newUnit = studyForm.getUnitInCharge();
+
+      if (!newUnit.isPresent()) {
+        // No unit is set
+        studyForm.setUnitInChargeConfirmationState(StudyFormConfirmationState.PENDING);
+
+        return;
+      }
+
+      if (!existingUnit.isPresent() || !existingUnit.get().getId().equals(newUnit.get().getId())) {
+        // Earlier unit is different from the new unit or doesn't exist
+        studyForm.setUnitInChargeConfirmationState(StudyFormConfirmationState.PENDING);
+
+        return;
+      }
+
+      if (!(userHelper.isCurrentUserAdmin() || isUserHeadOfOrganizationUnit(user, newUnit.get()))) {
+        // User is not authorized to alter confirmation state
+        setEarlierStudyFormStateOrPending(oldStudyForm, studyForm);
+
+        return;
+      }
+
+      // Allow values to pass unaltered
+  }
+
+  private void overrideRetentionPeriodConfirmationState(StudyForm studyForm, Optional<StudyForm> oldStudyForm) {
+      UserWithProfile user = userHelper.getCurrentUser().get();
+
+      Optional<LocalDate> existingRetentionPeriod = Optional.empty();
+      if (oldStudyForm.isPresent()) {
+        existingRetentionPeriod = oldStudyForm.get().getRetentionPeriod();
+      }
+
+      Optional<LocalDate> newRetentionPeriod = studyForm.getRetentionPeriod();
+
+      if (!newRetentionPeriod.isPresent()) {
+        // No retention period is set
+        studyForm.setRetentionPeriodConfirmationState(StudyFormConfirmationState.PENDING);
+
+        return;
+      }
+
+      if (!existingRetentionPeriod.isPresent() || !existingRetentionPeriod.get().equals(newRetentionPeriod.get())) {
+        // Earlier retention period is different from the new or doesn't exist
+        studyForm.setRetentionPeriodConfirmationState(StudyFormConfirmationState.PENDING);
+
+        return;
+      }
+
+      Optional<OrganizationUnit> organizationUnit = studyForm.getUnitInCharge();
+      if (!(userHelper.isCurrentUserAdmin() || (organizationUnit.isPresent() && isUserHeadOfOrganizationUnit(user, organizationUnit.get())))) {
+        // User is not authorized to alter confirmation state
+        setEarlierStudyFormStateOrPending(oldStudyForm, studyForm);
+
+        return;
+      }
+
+      // Allow values to pass unaltered
+  }
+
+  private void setEarlierStudyFormStateOrPending(Optional<StudyForm> oldStudyForm, StudyForm newStudyForm) {
+    if (oldStudyForm.isPresent()) {
+      StudyForm existingStudyForm = oldStudyForm.get();
+      newStudyForm.setRetentionPeriodConfirmationState(
+        existingStudyForm.getRetentionPeriodConfirmationState().orElse(StudyFormConfirmationState.PENDING));
+      newStudyForm.setUnitInChargeConfirmationState(
+        existingStudyForm.getUnitInChargeConfirmationState().orElse(StudyFormConfirmationState.PENDING));
+    } else {
+      newStudyForm.setRetentionPeriodConfirmationState(StudyFormConfirmationState.PENDING);
+      newStudyForm.setUnitInChargeConfirmationState(StudyFormConfirmationState.PENDING);
+    }
+  }
+
+  private boolean isUserHeadOfOrganizationUnit(UserWithProfile user, OrganizationUnit unit) {
+    String userEmail = user.getUserProfile().getEmail().orElse(null);
+
+    if (Strings.isNullOrEmpty(userEmail)) {
+      // Unable to link user to head of organization without email
+      return false;
+    }
+
+    return unit.getPersonInRoles().stream()
+      .filter(pir -> pir.getRole().getLabel().equals(RoleLabel.HEAD_OF_ORGANIZATION))
+      .filter(pir -> Objects.equals(pir.getPerson().getEmail().orElse(null), userEmail))
+      .findFirst()
+      .isPresent();
+  }
 }

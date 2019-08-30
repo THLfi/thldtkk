@@ -442,10 +442,7 @@
             >
               <thead>
                 <tr>
-                  <th>
-                    {{ 'studyForm.type' | translate }}
-                    <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-                  </th>
+                  <th>{{ 'studyForm.type' | translate }}</th>
                   <th>{{ 'studyFormTypeSpecifier.label' | translate }}</th>
                   <th>{{ 'additionalDetails' | translate }}</th>
                   <th>{{ 'studyForm.unitInCharge' | translate }}</th>
@@ -465,12 +462,42 @@
                     {{ studyForm.additionalDetails[language] }}
                   </td>
                   <td>
-                    <span *ngIf="studyForm.unitInCharge">
-                      {{ studyForm.unitInCharge.prefLabel[language] }} <span *ngIf="studyForm.unitInCharge.abbreviation[language]">({{ studyForm.unitInCharge.abbreviation[language] }})</span>
-                    </span>
+                    <div *ngIf="studyForm.unitInCharge">
+                      <div>
+                        {{ studyForm.unitInCharge.prefLabel[language] }} <span *ngIf="studyForm.unitInCharge.abbreviation[language]">({{ studyForm.unitInCharge.abbreviation[language] }})</span>
+                      </div>
+                      <small>
+                        <div class="text-success" *ngIf="studyForm.unitInChargeConfirmationState === StudyFormConfirmationState.ACCEPTED.valueOf()">
+                          <i class="fa fa-check"></i> {{ 'accepted' | translate }}
+                        </div>
+                        <div class="text-danger" *ngIf="studyForm.unitInChargeConfirmationState === StudyFormConfirmationState.REJECTED.valueOf()">
+                          <i class="fa fa-times"></i> {{ 'rejected' | translate }}
+                        </div>
+                        <div *ngIf="studyForm.unitInChargeConfirmationState === StudyFormConfirmationState.PENDING.valueOf()">
+                          <i class="fa fa-clock-o"></i>
+                          {{ 'waitingForAcceptance' | translate }}
+                        </div>
+                      </small>
+                    </div>
                   </td>
                   <td>
-                    {{ studyForm.retentionPeriod }}
+                    <div *ngIf="studyForm.retentionPeriod">
+                      <div>
+                        {{ studyForm.retentionPeriod }}
+                      </div>
+                      <small>
+                        <div class="text-success" *ngIf="studyForm.retentionPeriodConfirmationState === StudyFormConfirmationState.ACCEPTED.valueOf()">
+                          <i class="fa fa-check"></i> {{ 'accepted' | translate }}
+                        </div>
+                        <div class="text-danger" *ngIf="studyForm.retentionPeriodConfirmationState === StudyFormConfirmationState.REJECTED.valueOf()">
+                          <i class="fa fa-times"></i> {{ 'rejected' | translate }}
+                        </div>
+                        <div *ngIf="studyForm.retentionPeriodConfirmationState === StudyFormConfirmationState.PENDING.valueOf()">
+                          <i class="fa fa-clock-o"></i>
+                          {{ 'waitingForAcceptance' | translate }}
+                        </div>
+                      </small>
+                    </div>
                   </td>
                   <td>
                     {{ studyForm.disposalDate }}

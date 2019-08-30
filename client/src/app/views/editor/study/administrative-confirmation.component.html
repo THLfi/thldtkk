@@ -1,28 +1,47 @@
 <div class="administrative-confirmation">
-  <div *ngIf="pendingAcceptance; else responseGiven">
+  <div *ngIf="isUserAuthorized; else viewStateOnly">
     <div class="accept-buttons" *ngIf="isUserAuthorized; else waitingForAcceptance">
-      <button class="btn btn-success" (click)="respond(true)">{{ 'accept' | translate }}</button>
-      <button class="btn btn-danger" (click)="respond(false)">{{ 'reject' | translate }}</button>
+      <div class="radio">
+        <label>
+          <input
+            name="{{ confirmationName + '-accepted' }}"
+            type="radio"
+            [value]="StudyFormConfirmationState.ACCEPTED"
+            [(ngModel)]="confirmationState"
+            (ngModelChange)="onStateChange($event)"
+          >
+          {{ 'accept' | translate }}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input
+            name="{{ confirmationName + '-rejected' }}"
+            type="radio"
+            [value]="StudyFormConfirmationState.REJECTED"
+            [(ngModel)]="confirmationState"
+            (ngModelChange)="onStateChange($event)"
+          >
+          {{ 'reject' | translate }}
+        </label>
+      </div>
     </div>
-    <ng-template #waitingForAcceptance>
-      <i class="fa fa-clock-o"></i>
-      {{ 'waitingForAcceptance' | translate }}
-    </ng-template>
   </div>
 
-  <ng-template #responseGiven>
-    <div *ngIf="isAccepted">
+  <ng-template #viewStateOnly>
+    <div *ngIf="confirmationState === StudyFormConfirmationState.ACCEPTED.valueOf()">
       <div class="text-success">
         <i class="fa fa-check"></i> {{ 'accepted' | translate }}
       </div>
-      <p *ngIf="isUserAuthorized">
-        <a style="cursor: pointer;" (click)="canceConfirmation()">{{ 'cancel' | translate }}</a>
-      </p>
     </div>
-    <div *ngIf="!isAccepted">
+    <div *ngIf="confirmationState === StudyFormConfirmationState.REJECTED.valueOf()">
       <p class="text-danger">
         <i class="fa fa-times"></i> {{ 'rejected' | translate }}
       </p>
+    </div>
+    <div *ngIf="confirmationState === StudyFormConfirmationState.PENDING.valueOf()">
+      <i class="fa fa-clock-o"></i>
+      {{ 'waitingForAcceptance' | translate }}
     </div>
   </ng-template>
 </div>

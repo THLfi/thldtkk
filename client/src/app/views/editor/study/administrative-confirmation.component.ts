@@ -1,34 +1,31 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
-import {LangPipe} from '../../../utils/lang.pipe'
+
+import { StudyFormConfirmationState } from '../../../model2/study-form-confirmation-state';
 
 @Component({
   selector: 'administrative-confirmation',
   templateUrl: './administrative-confirmation.component.html',
   styles: [`
-  .accept-buttons {
-    display: flex;
-    flex-direction: column;
-    padding: 6px 0 0 0;
+  .radio {
+    margin: 0;
+    padding-top: 4px;
   }
-  .accept-buttons button + button { margin-top: 6px; }
   `]
   })
 export class AdministrativeConfirmationComponent {
 
-  @Input() pendingAcceptance: boolean;
-  @Input() isAccepted: boolean;
+  @Input() confirmationState: StudyFormConfirmationState;
   @Input() isUserAuthorized: boolean;
+  @Input() confirmationName: string;
 
-  @Output() onConfirmation = new EventEmitter<boolean>();
-  @Output() onCancel = new EventEmitter();
+  @Output() confirmationStateChange = new EventEmitter<StudyFormConfirmationState>();
+
+  StudyFormConfirmationState = StudyFormConfirmationState;
 
   constructor() { }
 
-  respond(response: boolean) {
-    this.onConfirmation.emit(response);
-  }
-
-  cancelConfirmation() {
-    this.onCancel.emit();
+  onStateChange(confirmationState: StudyFormConfirmationState) {
+    this.confirmationState = confirmationState;
+    this.confirmationStateChange.emit(confirmationState);
   }
 }

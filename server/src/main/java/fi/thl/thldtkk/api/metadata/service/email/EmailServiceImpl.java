@@ -22,13 +22,7 @@ public class EmailServiceImpl implements EmailService {
   private String from;
 
   public void sendUnitInChargeConfirmationMessage(Study study, OrganizationUnit unit) {
-    List<Person> headsOfOrganization = unit.getPersonInRoles().stream()
-      .filter(personInRole ->
-        personInRole.getRole().getLabel() == RoleLabel.HEAD_OF_ORGANIZATION
-      )
-      .map(OrganizationPersonInRole::getPerson)
-      .filter(person -> person.getEmail().isPresent() && ! person.getEmail().get().isEmpty())
-      .collect(Collectors.toList());
+    List<Person> headsOfOrganization = getHeadsOfOrganization(unit);
 
     String subject = "Aineiston vastuutus";
     String text =
@@ -40,14 +34,44 @@ public class EmailServiceImpl implements EmailService {
       study.getId() +
       "/edit-administrative-information";
 
-    headsOfOrganization.forEach(headOfOrganization -> {
+      sendEmails(headsOfOrganization, text, subject);
+  }
+
+  public void sendRetentionPeriodConfirmationMessage(Study study, OrganizationUnit unit) {
+    List<Person> headsOfOrganization = getHeadsOfOrganization(unit);
+
+    String subject = "Aineiston säilytysajan hyväksyminen";
+    String text =
+      "Sinun yksikkösi on merkitty vastuuseen aineiston " +
+      study.getPrefLabel().get("fi") +
+      " olomuodosta. Aineiston säilytysaikaa on muutettu ja muutos on hyväksyttyvä osoitteessa: " +
+      ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() +
+      "/editor/studies/" +
+      study.getId() +
+      "/edit-administrative-information";
+
+      sendEmails(headsOfOrganization, text, subject);
+  }
+
+  private void sendEmails(List<Person> recipients, String content, String subject) {
+    recipients.forEach(headOfOrganization -> {
       SimpleMailMessage message = new SimpleMailMessage();
       //noinspection OptionalGetWithoutIsPresent
       message.setTo(headOfOrganization.getEmail().get());
       message.setSubject(subject);
-      message.setText(text);
+      message.setText(content);
       message.setFrom(from);
       emailSender.send(message);
     });
+  }
+
+  private List<Person> getHeadsOfOrganization(OrganizationUnit unit) {
+    return unit.getPersonInRoles().stream()
+      .filter(personInRole ->
+        personInRole.getRole().getLabel() == RoleLabel.HEAD_OF_ORGANIZATION
+      )
+      .map(OrganizationPersonInRole::getPerson)
+      .filter(person -> person.getEmail().isPresent() && ! person.getEmail().get().isEmpty())
+      .collect(Collectors.toList());
   }
 }

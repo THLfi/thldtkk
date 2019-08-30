@@ -1071,6 +1071,7 @@
                     <td>
                       <select
                         [(ngModel)]="studyForm.unitInCharge"
+                        (ngModelChange)="studyForm.unitInChargeConfirmationState = StudyFormConfirmationState.PENDING"
                         [compareWith]="nodeUtils.equals"
                         name="studyForm-unitInCharge-{{ index }}"
                         class="form-control"
@@ -1089,14 +1090,15 @@
                         </ng-container>
                       </select>
                       <administrative-confirmation
-                        [pendingAcceptance]="false"
-                        [isAccepted]="false"
-                        [isUserAuthorized]="false"
-                        (onConfirmation)="confirmUnitTransfer($event)"
+                        *ngIf="studyForm.unitInCharge"
+                        confirmationName="{{  'unitInCharge-confirmation-' + index }}"
+                        [(confirmationState)]="studyForm.unitInChargeConfirmationState"
+                        [isUserAuthorized]="isUserAdmin() || isUserHeadOfUnit()"
                       ></administrative-confirmation>
                     </td>
                     <td>
                       <p-calendar [(ngModel)]="studyForm._retentionPeriod"
+                                  (ngModelChange)="studyForm.retentionPeriodConfirmationState = StudyFormConfirmationState.PENDING"
                                   dateFormat="{{ 'pcalendar.dateFormat' | translate }}"
                                   monthNavigator="true"
                                   yearNavigator="true"
@@ -1109,10 +1111,10 @@
                                   name="{{'study-form-retention-period-' + index}}">
                       </p-calendar>
                       <administrative-confirmation
-                        [pendingAcceptance]="false"
-                        [isAccepted]="true"
-                        [isUserAuthorized]="true"
-                        (onConfirmation)="confirmRetentionPeriod($event)"
+                        *ngIf="studyForm._retentionPeriod"
+                        confirmationName="{{  'retentionPeriod-confirmation-' + index }}"
+                        [(confirmationState)]="studyForm.retentionPeriodConfirmationState"
+                        [isUserAuthorized]="isUserAdmin() || isUserHeadOfUnit()"
                       ></administrative-confirmation>
                     </td>
                     <td>

@@ -52,6 +52,8 @@ public class OrganizationServiceImpl implements OrganizationService {
       "properties.*",
       "references.*",
       "referrers.*",
+      "references.person:2",
+      "references.role:2",
       "lastModifiedDate"),new NodeId(id, "Organization")).map(Organization::new);
   }
 

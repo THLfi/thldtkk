@@ -182,7 +182,7 @@ public class TermedInitializer implements ApplicationListener<ContextRefreshedEv
 
       saves.add(study.toNode());
 
-      this.editorNodeRepository.save(saves);
+      repository.save(saves);
     }
   }
 }

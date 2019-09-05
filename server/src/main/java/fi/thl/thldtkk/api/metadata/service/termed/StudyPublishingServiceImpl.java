@@ -28,10 +28,9 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
 
   @Override
   public Study publish(UUID studyId) {
+
     Study study = editorStudyService.get(studyId).orElseThrow(NotFoundException::new);
-
     log.info("Publishing study '{}'", studyId);
-
     study.setPublished(true);
     Study savedEditorStudy = editorStudyService.save(study);
 
@@ -42,7 +41,6 @@ public class StudyPublishingServiceImpl implements StudyPublishingService {
     }
     catch (Exception e) {
       log.warn("Failed to save study '{}' into public graph", studyId, e);
-
       study.setPublished(false);
       savedEditorStudy = editorStudyService.save(study);
     }

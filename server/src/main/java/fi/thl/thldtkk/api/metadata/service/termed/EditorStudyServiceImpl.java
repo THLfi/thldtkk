@@ -312,7 +312,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   public Study save(Study study) {
     Study savedStudy = saveStudyInternal(study, false, false);
 
-    LOG.info("Saved study '{}' (externalId = {})", savedStudy.getId(), savedStudy.getExternalId().get());
+    LOG.info("Saved study '{}' (externalId = '{}')", savedStudy.getId(), savedStudy.getExternalId().get());
 
     return savedStudy;
   }

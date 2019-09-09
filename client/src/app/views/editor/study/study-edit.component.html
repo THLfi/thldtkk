@@ -206,7 +206,7 @@
                             [options]="allPersonItems"
                             filter="true"
                             autoWidth="false"
-                            [style]="{ 'max-width': '400px' }"
+                            [style]="{ 'max-width': '300px' }"
                             [name]="personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)"
                             required>
                   <ng-template let-personItem pTemplate="item">
@@ -228,23 +228,7 @@
                     </ng-template>
                   </ng-template>
                 </p-dropdown>
-                <tr>
-                  <button (click)="showAddPersonModal(personInRole)"
-                          type="button"
-                          class="btn btn-default btn-sm">
-                    <glyphicon icon="plus"></glyphicon>
-                    {{ 'addNewPerson' | translate }}
-                  </button>
-                  <button *ngIf="isUserAdmin"
-                          (click)="showEditPersonModal(personInRole)"
-                          type="button"
-                          class="btn btn-default btn-sm">
-                    <glyphicon icon="pencil"></glyphicon>
-                    {{ 'editPerson' | translate }}
-                  </button>
-                </tr>
-
-                  <p *ngFor="let errorKey of formErrors[personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)]"
+                <p *ngFor="let errorKey of formErrors[personInRole.howManyPersons == undefined ? 'personInRole-person-' + index : 'personInRole-person-' + (personInRole.howManyPersons)]"
                      class="text-danger"> 
                   <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                   {{ errorKey | translate }}
@@ -289,6 +273,14 @@
                 </div>
               </td>
               <td>
+              <button *ngIf="isUserAdmin"
+                      [disabled]="personInRole.person == null"
+                      (click)="showEditPersonModal(personInRole)"
+                      type="button"
+                      class="btn btn-default">
+                    <glyphicon icon="pencil"></glyphicon>
+                    {{ 'editPerson' | translate }}
+                  </button>
                 <button type="button" class="btn btn-default" (click)="removePersonInRole(personInRole)">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                   {{ 'remove' | translate }}
@@ -302,6 +294,13 @@
           <button type="button" class="btn btn-default" (click)="addPersonInRole()">
             <glyphicon icon="plus"></glyphicon>
             {{ 'addNewPersonInRole' | translate }}
+          </button>
+          <button (click)="showAddPersonModal(personInRole)"
+            type="button"
+            class="btn btn-default">
+            <glyphicon icon="plus-sm"></glyphicon>
+            <glyphicon icon="glyphicon-plus glyphicon-user"></glyphicon>
+            {{ 'addNewPerson' | translate }}
           </button>
         </div>
 

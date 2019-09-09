@@ -631,7 +631,7 @@
           "success": "Tallennus onnistui",
           "fail": {
             "summary": "Tallennus epäonnistui",
-            "detail": "Tarkista syötetyt tiedot."
+            "detail": "Tarkista, että pakolliset kentät on täytetty."
           }
         }
       },

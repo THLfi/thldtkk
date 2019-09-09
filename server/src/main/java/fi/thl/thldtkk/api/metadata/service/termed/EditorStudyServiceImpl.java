@@ -251,7 +251,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         Optional<Study> catalogStudy = publicStudyService.get(id);
 
         if (catalogStudy.isPresent()) {
-          if (!study.get().getSimplified().equals(catalogStudy.get().getSimplified())) {
+          if((catalogStudy.get().getLastModifiedDate().get().before(study.get().getLastModifiedDate().get()))) {
             study.get().setChangedAfterPublish(true);
           }
         }

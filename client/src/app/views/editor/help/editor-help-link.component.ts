@@ -9,20 +9,17 @@ import { EditorHelpTextComponent } from './editor-help-text.component'
    [ngClass]="{ active: helpTextComponent.visible }"
    href="#"
    class="help-link">
-  {{ 'helpLink' | translate }}
+  {{ '?' | translate }}
 </a>
 `,
   styles: [`
 a {
-  display: inline-block;
-  margin-left: .3em;
-  border-bottom: 1px dotted #ccc;
-  border-radius: 2px;
-  color: #01837A;
-  font-size: 12px;
-  font-weight: 400;
-  text-transform: uppercase;
-  text-decoration: none;
+    border-radius: 10px;
+    color: #fff;
+    padding: 0 6px;
+    font-weight: 700;
+    font-size: 12px;
+    background: #02837a;
 }
 
 a.active {

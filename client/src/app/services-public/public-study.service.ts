@@ -58,7 +58,7 @@ export class PublicStudyService {
     return this.searchInternal(
       searchText,
       organizationId,
-      '',
+      'properties.prefLabel.sortable',
       -1,
       ['properties.prefLabel']
     );

@@ -194,9 +194,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
   @Override
   public Study save(Study study) {
     Study savedStudy = saveStudyInternal(study, true, true);
-
     LOG.info("Saved study '{}'", savedStudy.getId());
-
     return savedStudy;
   }
 
@@ -263,6 +261,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     }
 
     Changeset<NodeId, Node> changeset;
+    
     if (!old.isPresent()) {
       changeset = changesetForInsert(study, includeDatasets, includeInstanceVariables);
     }
@@ -293,23 +292,22 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       for (Dataset dataset : study.getDatasets()) {
         changeset = changeset.merge(changesetForInsert(dataset, includeInstanceVariables));
       }
-
       List<Node> uniqueNodesSaved = changeset.getSave()
         .stream()
         .distinct()
         .collect(toList());
-
       changeset = new Changeset<>(changeset.getDelete(), uniqueNodesSaved);
     }
     else {
       study.setDatasets(Collections.emptyList());
     }
-
     List<Node> save = new ArrayList<>();
     save.add(study.toNode());
     study.getPopulation().ifPresent(p -> save.add(p.toNode()));
     study.getLinks().forEach(l -> save.add(l.toNode()));
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
+    study.getAssociatedOrganizations().forEach(gao -> save.add(gao.toNode())); 
+    study.getStudyForms().forEach(gsf -> save.add(gsf.toNode()));
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
     return changeset;

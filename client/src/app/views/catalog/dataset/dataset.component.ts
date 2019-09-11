@@ -52,11 +52,10 @@ export class DatasetComponent implements OnInit {
 
   instanceVariableGroupNames: string[] = []
   defaultInstanceVariableGroupName: string
-  
+
   showInstanceVariableFilters: boolean
   selectedInstanceVariableFilterGroups: string[] = []
-  
-  // Pasi
+
 
   pages : number = 7;
   PAGEINDEXTOSHOW = 7;
@@ -67,8 +66,7 @@ export class DatasetComponent implements OnInit {
   filteredVariableItems : InstanceVariableWrapper[];
   pagesIndex : Array<number>;
   pageStart : number = 1;
-  inputName : string = '';
-  
+
   selectableFilterGroups: SelectItem[];
 
   constructor(
@@ -92,7 +90,7 @@ export class DatasetComponent implements OnInit {
       this.updateDataset(params['studyId'], params['datasetId'])
     })
   }
-  
+
 
   private updateDataset(studyId: string, datasetId: string): void {
     this.study = null
@@ -113,12 +111,12 @@ export class DatasetComponent implements OnInit {
       this.updateWrappedInstanceVariables()
       this.groupInstanceVariables()
       this.resetInstanceVariableGroupFilters()
-      this.pickHighlightedDetails()     
+      this.pickHighlightedDetails()
       this.updatePaginationIndex();
       this.refreshItems();
     })
   }
-  
+
   updatePaginationIndex(){
       this.variableItems = this.filteredVariableItems;
       this.pages = (this.variableItems.length / this.ROWSTOSHOW > this.PAGEINDEXTOSHOW) ? this.PAGEINDEXTOSHOW : Math.ceil(this.variableItems.length / this.ROWSTOSHOW);
@@ -221,10 +219,10 @@ export class DatasetComponent implements OnInit {
     })
 
     this.instanceVariableGroupNames = this.instanceVariableGroupNames.sort()
-    
+
     let defaultGroupNameIndex = this.instanceVariableGroupNames.indexOf(this.defaultInstanceVariableGroupName)
-    
-    // default group as last group 
+
+    // default group as last group
     if(defaultGroupNameIndex != -1) {
       this.instanceVariableGroupNames.splice(defaultGroupNameIndex, 1)
       this.instanceVariableGroupNames.push(this.defaultInstanceVariableGroupName)
@@ -268,56 +266,9 @@ export class DatasetComponent implements OnInit {
   }
 
   toggleShowInstanceVariableFilters() {
-    this.showInstanceVariableFilters = !this.showInstanceVariableFilters 
+    this.showInstanceVariableFilters = !this.showInstanceVariableFilters
   }
-  
-  resetSearchWords(){
-      this.inputName = "";
-      this.FilterByName();
-  }
-  
-  // Pasi
-  FilterByName(){
-     this.filteredVariableItems = [];
 
-     if(this.inputName != ""){
-         var searchWithTheseWords = this.inputName.split(" ");
-         var searchWithTheseWordsArray = new Array();
-         for(var i = 0; i < searchWithTheseWords.length; i++){
-             if(searchWithTheseWords[i].length > 0)
-             searchWithTheseWordsArray.push(searchWithTheseWords[i]);
-         }
-         
-         this.filteredInstanceVariables.forEach(element => {
-             for (let i = 0; i < searchWithTheseWordsArray.length; i++) {
-                 var searchThisWord = searchWithTheseWordsArray[i];
-                 if((element.instanceVariable.prefLabel.fi.toString().toUpperCase().indexOf(searchThisWord.toUpperCase()) >= 0) ||
-                         (element.instanceVariable.description.fi.toString().toUpperCase().indexOf(searchThisWord.toUpperCase()) >= 0)      
-                      ){
-                     
-                     if(this.filteredVariableItems.indexOf(element) == -1){
-                        this.filteredVariableItems.push(element);
-                     }
-                     
-                 }else{
-                     var index = this.filteredVariableItems.indexOf(element);
-                     if (index > -1) {
-                         this.filteredVariableItems.splice(index, 1);
-                     }
-                     break;
-                 }
-             }
-           });
-     } else {
-        this.filteredVariableItems = this.filteredInstanceVariables;
-        
-     }
-     this.currentIndex = 1;
-     this.pageStart = 1;
-     this.updatePaginationIndex();
-     this.refreshItems();
-     
-  }
   fillArray(): any{
      var obj = new Array();
      for(var index = this.pageStart; index < this.pageStart + this.pages; index++) {
@@ -332,7 +283,7 @@ export class DatasetComponent implements OnInit {
   prevPage(){
      if(this.currentIndex>1){
         this.currentIndex--;
-     } 
+     }
      if(this.currentIndex < this.pageStart){
         this.pageStart = this.currentIndex;
      }
@@ -351,6 +302,5 @@ export class DatasetComponent implements OnInit {
         this.currentIndex = index;
         this.refreshItems();
    }
-  // Pasi
-  
+
 }

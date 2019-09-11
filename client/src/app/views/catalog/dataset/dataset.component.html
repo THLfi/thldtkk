@@ -263,27 +263,26 @@
   </div>
 
   <div class="row">
+    <div class="col-xs-12">
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group navbar-btn">
+          <label style="margin-top:10px">{{'page' | translate}} {{currentIndex}}/{{pageNumber}}</label>
+        </div>
+        <div class="btn-group pull-right">
+          <ul class="pagination" >
+            <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
+            <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
+              <a (click)="setPage(page)">{{page}}</a>
+            </li>
+            <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
-     <div class="form-group">
-         <label>{{ 'searchWords' | translate }}: </label>
-         <input type="text"  id="inputName" [(ngModel)]="inputName"/>
-         <input class="btn btn-default" type="button" (click)="FilterByName()" value="{{ 'search' | translate }}"/>
-         <input class="btn btn-default" type="button" (click)="resetSearchWords()" value="{{ 'reset' | translate }}"/>
-     </div>
-	 <div class="btn-toolbar" role="toolbar" style="margin: 0;">
-        <div class="btn-group">
-	       <label style="margin-top:10px">Sivu {{currentIndex}}/{{pageNumber}}</label>
-	    </div>
-	    <div class="btn-group pull-right">
-	    <ul class="pagination" >
-	       <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
-	       <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
-	           <a (click)="setPage(page)">{{page}}</a>
-	       </li>
-	       <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
-	    </ul>
-	  </div>
-	</div>
+  <div class="row">
+
 
 	 <div class="col-xs-12">
       <h2>{{ 'instanceVariables' | translate }} ({{filteredVariableItems.length }} {{'piecesAbbreviation' | translate}})
@@ -295,7 +294,7 @@
           <div class="row" [ngClass]="{ 'instance-variable-group-filters-expanded': showInstanceVariableFilters}">
               <div class="col-sm-3">
                 <p-multiSelect [options]="selectableFilterGroups"
-                     [filter]="true" 
+                     [filter]="true"
                      [(ngModel)]="selectedInstanceVariableFilterGroups"
                      (onChange)="filterInstanceVariables()"
                      defaultLabel="{{'partOfGroup' | translate}}"
@@ -375,27 +374,25 @@
         <p>{{ 'noInstanceVariables' | translate }}</p>
       </ng-template>
 
-     <div class="form-group">
-         <label>{{ 'searchWords' | translate }}: </label>
-         <input type="text"  id="inputName" [(ngModel)]="inputName"/>
-         <input class="btn btn-default" type="button" (click)="FilterByName()" value="{{ 'search' | translate }}"/>
-         <input class="btn btn-default" type="button" (click)="resetSearchWords()" value="{{ 'reset' | translate }}"/>
+     <div class="row">
+       <div class="col-xs-12">
+         <div class="btn-toolbar" role="toolbar">
+           <div class="btn-group navbar-btn">
+             <label style="margin-top:10px">{{'page' | translate}} {{currentIndex}}/{{pageNumber}}</label>
+           </div>
+           <div class="btn-group pull-right">
+             <ul class="pagination" >
+               <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
+               <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
+                 <a (click)="setPage(page)">{{page}}</a>
+               </li>
+               <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
+             </ul>
+           </div>
+         </div>
+       </div>
      </div>
-     <div class="btn-toolbar" role="toolbar" style="margin: 0;">
-        <div class="btn-group">
-           <label style="margin-top:10px">Sivu {{currentIndex}}/{{pageNumber}}</label>
-        </div>
-        <div class="btn-group pull-right">
-        <ul class="pagination" >
-           <li [ngClass]="{'disabled': (currentIndex == 1 || pageNumber == 0)}" ><a  (click)="prevPage()">{{ 'prev' | translate }}</a></li>
-           <li *ngFor="let page of pagesIndex"  [ngClass]="{'active': (currentIndex == page)}">
-               <a (click)="setPage(page)">{{page}}</a>
-           </li>
-           <li [ngClass]="{'disabled': (currentIndex == pageNumber || pageNumber == 0)}" ><a (click)="nextPage()">{{ 'next' | translate }}</a></li>
-        </ul>
-      </div>
-    </div>
-    
+
     </div>
   </div>
 

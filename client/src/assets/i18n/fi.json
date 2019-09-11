@@ -69,7 +69,6 @@
   "prev": "Edellinen",
   "next": "Seuraava",
   "reset": "Tyhjennä",
-  "searchWords": "Hakusanat",
   "saveAndGoToNext": "Tallenna ja siirry seuraavaan",
   "goToPrevious": "Siirry datasetin edelliseen",
   "goToNext": "Siirry datasetin seuraavaan",
@@ -1477,5 +1476,6 @@
   "accept": "Hyväksy",
   "accepted": "Hyväksytty",
   "reject": "Hylkää",
-  "rejected": "Hylätty"
+  "rejected": "Hylätty",
+  "page": "Sivu"
 }

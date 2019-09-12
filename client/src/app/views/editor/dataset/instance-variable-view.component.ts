@@ -16,6 +16,7 @@ import { InstanceVariable } from '../../../model2/instance-variable'
 import { LangPipe } from '../../../utils/lang.pipe'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl: './instance-variable-view.component.html'
@@ -40,6 +41,7 @@ export class InstanceVariableViewComponent implements OnInit {
     private langPipe: LangPipe,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmationService: ConfirmationService,
     private translateService: TranslateService
   ) {
     this.language = this.translateService.currentLang
@@ -88,11 +90,11 @@ export class InstanceVariableViewComponent implements OnInit {
   }
 
   confirmRemove(): void {
-    this.translateService.get('confirmInstanceVariableDelete')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
+    this.translateService.get('confirmInstanceVariableDelete').subscribe(confirmationMessage => {
+      this.confirmationService.confirm({
+        message: confirmationMessage,
+        accept: () => {
           this.deleteInProgress = true
-
           this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, this.instanceVariable.id).pipe(
             finalize(() => {
               this.deleteInProgress = false
@@ -101,6 +103,7 @@ export class InstanceVariableViewComponent implements OnInit {
               ['/editor/studies', this.study.id, 'datasets', this.dataset.id, 'instanceVariables']))
         }
       })
+    })
   }
 
   goToPreviousInstanceVariable(): void {

@@ -1,4 +1,4 @@
-import {forkJoin as observableForkJoin, Subscription, Observable} from 'rxjs';
+import {forkJoin as observableForkJoin, Subscription, Observable, Observer} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -49,12 +49,14 @@ import {RoleAssociation} from '../../../model2/role-association';
 import { AssociatedOrganization } from 'app/model2/associated-organization';
 import { ConfirmationService } from 'primeng/primeng'
 import { ConfirmDialogService } from '../../common/confirm.dialog.service';
+import { CanComponentDeactivate } from '../../common/can-deactivate-guard.service';
+
 
 @Component({
     templateUrl: './study-edit.component.html',
     providers: [LangPipe]
 })
-export class StudyEditComponent implements OnInit, AfterContentChecked {
+export class StudyEditComponent implements OnInit, AfterContentChecked, CanComponentDeactivate {
 
     study: Study;
 
@@ -726,15 +728,30 @@ export class StudyEditComponent implements OnInit, AfterContentChecked {
             this.router.navigate(['/editor/studies']);
         }
     }
-    
-    canDeactivate(): Observable<boolean> | boolean {
-        let confirmQuestionText: string = '';
-        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
-            confirmQuestionText = translatedText;
-          })
 
-        if(this.currentForm.form.dirty && this.showUnsavedMessage)
-           return this.confirmDialogService.confirm(confirmQuestionText);
-        return true;
-     }   
-}
+    confirmLeavingPage(): boolean {
+        if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
+            return true;
+        }
+        let confirmQuestionText: string = '';
+    
+        this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          });
+    
+        return Observable.create((observer: Observer<boolean>) => {
+            this.confirmationService.confirm({
+                message: confirmQuestionText,
+                accept: () => {
+                    observer.next(true);
+                    observer.complete();
+                },
+                reject: () => {
+                    observer.next(false);
+                    observer.complete();
+                }
+            });
+        });
+      }
+    }
+

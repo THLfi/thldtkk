@@ -11,6 +11,7 @@ import { LangPipe  } from '../../../utils/lang.pipe'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
 import { Study } from '../../../model2/study'
 import { Title } from '@angular/platform-browser'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl:'./editor-study-view.component.html',
@@ -24,6 +25,7 @@ export class EditorStudyViewComponent {
   language: string
 
   deleteInProgress: boolean = false
+  public publishAction: boolean = false
 
   constructor(
     private editorStudyService: EditorStudyService,
@@ -33,6 +35,7 @@ export class EditorStudyViewComponent {
     private titleService: Title,
     private breadcrumbService: BreadcrumbService,
     private langPipe: LangPipe,
+    private confirmationService: ConfirmationService,
     public currentUserService: CurrentUserService
   ) {
       this.sidebarActiveSection = StudySidebarActiveSection.STUDY
@@ -62,46 +65,57 @@ export class EditorStudyViewComponent {
   }
 
   confirmPublish(): void {
-    this.translateService.get('study.confirmPublish')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.editorStudyService.publish(this.study)
-            .subscribe(study => this.study = study)
-        }
-    })
+      this.publishAction = true;
+      this.translateService.get('study.confirmPublish').subscribe(confirmationMessage => {
+          this.confirmationService.confirm({
+            message: confirmationMessage,
+            accept: () => {
+                this.editorStudyService.publish(this.study)
+                .subscribe(study => this.study = study)
+              }
+            })
+          })
   }
 
   confirmWithdraw(): void {
-    this.translateService.get('study.confirmWithdraw')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.editorStudyService.withdraw(this.study)
-            .subscribe(study => this.study = study)
-        }
-    })
+      this.publishAction = true;
+      this.translateService.get('study.confirmWithdraw').subscribe(confirmationMessage => {
+          this.confirmationService.confirm({
+            message: confirmationMessage,
+            accept: () => {
+                this.editorStudyService.withdraw(this.study)
+                .subscribe(study => this.study = study)
+              }
+            })
+          })
   }
 
   confirmReissue(): void {
-    this.translateService.get('study.confirmReissue')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.editorStudyService.reissue(this.study)
-            .subscribe(study => this.study = study)
-        }
-    })
+      this.publishAction = true;
+      this.translateService.get('study.confirmReissue').subscribe(confirmationMessage => {
+          this.confirmationService.confirm({
+            message: confirmationMessage,
+            accept: () => {
+                this.editorStudyService.reissue(this.study)
+                .subscribe(study => this.study = study)
+              }
+            })
+          })
   }
 
   confirmRemove(): void {
-    this.translateService.get('study.confirmRemove')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.deleteInProgress = true
-
-          this.editorStudyService.delete(this.study.id).pipe(
-            finalize(() => this.deleteInProgress = false))
-            .subscribe(() => this.router.navigate(['/editor/studies']))
+    this.publishAction = false;
+    this.translateService.get('study.confirmRemove').subscribe(confirmationMessage => {
+    this.confirmationService.confirm({
+      message: confirmationMessage,
+      accept: () => {
+        this.deleteInProgress = true
+        this.editorStudyService.delete(this.study.id).pipe(
+        finalize(() => this.deleteInProgress = false))
+          .subscribe(() => this.router.navigate(['/editor/studies']))
         }
       })
+    })
   }
 
 }

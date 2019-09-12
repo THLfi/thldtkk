@@ -414,7 +414,10 @@
       </div>
     </div>
   </div>
-
+  <p-confirmDialog header="{{(publishAction ? 'actionConfirmation' : 'removeConfirmation') | translate}}"
+                   acceptLabel="{{(publishAction ? 'true' : 'remove') | translate}}"
+                   rejectLabel="{{'cancel' | translate}}">
+  </p-confirmDialog>
 </ng-container>
 
 <ng-template #loadingStudy>

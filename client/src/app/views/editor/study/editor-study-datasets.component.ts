@@ -12,6 +12,7 @@ import { EditorStudyService } from '../../../services-editor/editor-study.servic
 import { LangPipe  } from '../../../utils/lang.pipe'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from './sidebar/study-sidebar-active-section'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl: './editor-study-datasets.component.html'
@@ -32,6 +33,7 @@ export class EditorStudyDatasetsComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private langPipe: LangPipe,
     private translateService: TranslateService,
+    private confirmationService: ConfirmationService,
     public currentUserService: CurrentUserService
   ) {
     this.sidebarActiveSection = StudySidebarActiveSection.DATASETS_AND_VARIABLES
@@ -65,10 +67,10 @@ export class EditorStudyDatasetsComponent implements OnInit {
 
   confirmRemoveDataset(event: any, datasetId: string): void {
     event.stopPropagation()
-
-    this.translateService.get('confirmDatasetDelete')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
+    this.translateService.get('confirmDatasetDelete').subscribe(confirmationMessage => {
+      this.confirmationService.confirm({
+        message: confirmationMessage,
+        accept: () => {
           this.deleteInProgress = true
 
           this.editorDatasetService.delete(this.study.id, datasetId).pipe(
@@ -76,8 +78,9 @@ export class EditorStudyDatasetsComponent implements OnInit {
               this.deleteInProgress = false
             }))
             .subscribe(() => this.getStudy(this.study.id))
-        }
-      })
+         }
+       })
+     })
   }
 
 }

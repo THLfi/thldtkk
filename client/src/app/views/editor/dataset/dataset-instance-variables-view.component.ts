@@ -15,6 +15,7 @@ import { EditorStudyService } from '../../../services-editor/editor-study.servic
 import { LangPipe } from '../../../utils/lang.pipe'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl: './dataset-instance-variables-view.component.html'
@@ -40,6 +41,7 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
     private langPipe: LangPipe,
     private route: ActivatedRoute,
     private translateService: TranslateService,
+    private confirmationService: ConfirmationService,
     private titleService: Title
   ) {
     this.language = this.translateService.currentLang
@@ -89,15 +91,19 @@ export class DatasetInstanceVariablesViewComponent implements OnInit {
 
     this.translateService.get('confirmInstanceVariableDelete')
       .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.deleteInProgress = true
-
-          this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, instanceVariableId).pipe(
-            finalize(() => {
-              this.deleteInProgress = false
-            }))
-            .subscribe(() => this.getStudyAndDataset())
-        }
+        this.translateService.get('confirmInstanceVariableDelete').subscribe(confirmationMessage => {
+          this.confirmationService.confirm({
+            message: confirmationMessage,
+            accept: () => {
+              this.deleteInProgress = true
+              this.instanceVariableService.deleteInstanceVariable(this.study.id, this.dataset.id, instanceVariableId).pipe(
+              finalize(() => {
+                this.deleteInProgress = false
+              }))
+              .subscribe(() => this.getStudyAndDataset())
+            }
+          })
+        })
       })
   }
 

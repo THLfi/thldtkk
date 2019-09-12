@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, Observable,Subscription} from 'rxjs';
+import {forkJoin as observableForkJoin, Observable,Subscription, Observer} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -38,6 +38,7 @@ import {UnitType} from '../../../model2/unit-type'
 import {UnitTypeService} from '../../../services-common/unit-type.service'
 import {Variable} from '../../../model2/variable'
 import {VariableService} from '../../../services-common/variable.service'
+import { ConfirmationService } from 'primeng/primeng'
 import { ConfirmDialogService } from '../../common/confirm.dialog.service';
 
 @Component({
@@ -115,6 +116,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         private translateService: TranslateService,
         private langPipe: LangPipe,
         private dateUtils: DateUtils,
+        private confirmationService: ConfirmationService,
         private confirmDialogService: ConfirmDialogService
     ) {
         this.language = translateService.currentLang
@@ -647,14 +649,28 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       ])
     }
 
-    canDeactivate(): Observable<boolean> | boolean {
+    confirmLeavingPage(): boolean {
+        if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
+            return true;
+        }
         let confirmQuestionText: string = '';
-        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
-            confirmQuestionText = translatedText;
-          })
     
-        if(this.currentForm.form.dirty && this.showUnsavedMessage)
-           return this.confirmDialogService.confirm(confirmQuestionText);
-        return true;
-     } 
+        this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          });
+
+        return Observable.create((observer: Observer<boolean>) => {
+            this.confirmationService.confirm({
+                message: confirmQuestionText,
+                accept: () => {
+                    observer.next(true);
+                    observer.complete();
+                },
+                reject: () => {
+                    observer.next(false);
+                    observer.complete();
+                }
+            });
+        });
+      }
 }

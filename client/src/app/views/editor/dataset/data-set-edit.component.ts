@@ -1,4 +1,4 @@
-import {forkJoin as observableForkJoin, Observable, of as observableOf, Subscription} from 'rxjs';
+import {forkJoin as observableForkJoin, Observable, of as observableOf, Subscription, Observer} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -45,12 +45,14 @@ import {UsageCondition} from '../../../model2/usage-condition';
 import {UsageConditionService} from '../../../services-common/usage-condition.service'
 import {RoleAssociation} from '../../../model2/role-association';
 import { ConfirmDialogService } from '../../common/confirm.dialog.service';
+import { ConfirmationService } from 'primeng/primeng'
+import { CanComponentDeactivate } from "app/views/common/can-deactivate-guard.service";
 
 @Component({
     templateUrl: './data-set-edit.component.html',
     providers: [LangPipe]
 })
-export class DataSetEditComponent implements OnInit, AfterContentChecked {
+export class DataSetEditComponent implements OnInit, AfterContentChecked, CanComponentDeactivate {
 
     study: Study
     dataset: Dataset
@@ -140,6 +142,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
         private roleService: RoleService,
         private userService: CurrentUserService,
         private breadcrumbService: BreadcrumbService,
+        private confirmationService: ConfirmationService,
         private confirmDialogService: ConfirmDialogService
     ) {
         this.language = this.translateService.currentLang
@@ -665,14 +668,28 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked {
       }
     }
     
-    canDeactivate(): Observable<boolean> | boolean {
+    confirmLeavingPage(): boolean {
+        if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
+            return true;
+        }
         let confirmQuestionText: string = '';
-        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
-            confirmQuestionText = translatedText;
-          })
     
-        if(this.currentForm.form.dirty && this.showUnsavedMessage)
-           return this.confirmDialogService.confirm(confirmQuestionText);
-        return true;
-     }  
+        this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
+            confirmQuestionText = translatedText;
+          });
+
+        return Observable.create((observer: Observer<boolean>) => {
+            this.confirmationService.confirm({
+                message: confirmQuestionText,
+                accept: () => {
+                    observer.next(true);
+                    observer.complete();
+                },
+                reject: () => {
+                    observer.next(false);
+                    observer.complete();
+                }
+            });
+        });
+      }
 }

@@ -1,5 +1,5 @@
 
-import {forkJoin as observableForkJoin, Observable} from 'rxjs';
+import {forkJoin as observableForkJoin, Observable, Observer} from 'rxjs';
 
 import {finalize} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -43,6 +43,7 @@ import {StudyForm} from '../../../model2/study-form';
 import { GroupOfRegistree } from 'app/model2/group-of-registree';
 import { ReceivingGroup } from 'app/model2/receiving-group';
 import { ConfirmDialogService } from '../../common/confirm.dialog.service';
+import { ConfirmationService } from 'primeng/primeng'
 import {LangValues} from '../../../model2/lang-values';
 
 @Component({
@@ -114,6 +115,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         private dateUtils: DateUtils,
         private nodeUtils: NodeUtils,
         private confirmDialogService: ConfirmDialogService,
+        private confirmationService: ConfirmationService,
         private currentUserService: CurrentUserService,
     ) {
         this.language = this.translateService.currentLang
@@ -553,18 +555,31 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         .filter(option => this.study.isScientificStudy ? /SCIENTIFIC/.test(option) : !/SCIENTIFIC/.test(option))
     }
 
-    canDeactivate(): Observable<boolean> | boolean {
-
+    confirmLeavingPage(): boolean {
+        if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
+            return true;
+        }
+        
         let confirmQuestionText: string = '';
-        this.translateService.get('confirmExitIfUnsavedChanges').subscribe(translatedText => {
+    
+        this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });
 
-        if(this.currentForm.form.dirty && this.showUnsavedMessage)
-           return this.confirmDialogService.confirm(confirmQuestionText);
-        return true;
-
-     }
+        return Observable.create((observer: Observer<boolean>) => {
+               this.confirmationService.confirm({
+                 message: confirmQuestionText,
+                 accept: () => {
+                   observer.next(true);
+                   observer.complete();
+                 },
+                 reject: () => {
+                   observer.next(false);
+                   observer.complete();
+                 }
+               });
+             });
+    }
 
     onStudyFormTypeChange(studyForm: StudyForm, formType: StudyFormType) {
       studyForm.type = formType;

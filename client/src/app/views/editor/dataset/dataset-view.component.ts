@@ -15,6 +15,7 @@ import { EditorDatasetService } from '../../../services-editor/editor-dataset.se
 import { EditorStudyService } from '../../../services-editor/editor-study.service'
 import { Study } from '../../../model2/study'
 import { StudySidebarActiveSection } from '../study/sidebar/study-sidebar-active-section'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl: './dataset-view.component.html'
@@ -38,6 +39,7 @@ export class DatasetViewComponent implements OnInit {
     private titleService: Title,
     private langPipe: LangPipe,
     private breadcrumbService: BreadcrumbService,
+    private confirmationService: ConfirmationService,
     public currentUserService: CurrentUserService
   ) {
     this.language = this.translateService.currentLang
@@ -67,11 +69,11 @@ export class DatasetViewComponent implements OnInit {
   }
 
   confirmRemove(): void {
-    this.translateService.get('confirmDatasetDelete')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
+    this.translateService.get('confirmDatasetDelete').subscribe(confirmationMessage => {
+      this.confirmationService.confirm({
+        message: confirmationMessage,
+        accept: () => {
           this.deleteInProgress = true
-
           this.datasetService.delete(this.study.id, this.dataset.id).pipe(
             finalize(() => {
               this.deleteInProgress = false
@@ -80,6 +82,7 @@ export class DatasetViewComponent implements OnInit {
               ['/editor/studies', this.study.id, 'datasets']))
         }
       })
+    })
   }
 
 }

@@ -1471,11 +1471,14 @@
       "newSecurityPrinciple": "Uusi suojausperiaate"
     }
   },
-  "confirmExitIfUnsavedChanges": "Muutoksia ei ole tallennettu. Haluatko poistua?",
+  "unsavedChanges": "Tallentamattomia muutoksia",
+  "unsavedChangesMessage": "Muutoksia ei ole tallennettu. Haluatko poistua?",
   "waitingForAcceptance": "Odottaa hyväksyntää",
   "accept": "Hyväksy",
   "accepted": "Hyväksytty",
   "reject": "Hylkää",
   "rejected": "Hylätty",
-  "page": "Sivu"
+  "page": "Sivu",
+  "removeConfirmation": "Poiston vahvistus",
+  "actionConfirmation": "Toiminnon vahvistus"
 }

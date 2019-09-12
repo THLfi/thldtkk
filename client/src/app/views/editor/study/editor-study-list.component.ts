@@ -13,6 +13,7 @@ import { EditorStudyService } from '../../../services-editor/editor-study.servic
 import { Organization } from '../../../model2/organization'
 import { Study } from '../../../model2/study'
 import { User } from '../../../model2/user'
+import {ConfirmationService} from 'primeng/primeng'
 
 @Component({
   templateUrl: './editor-study-list.component.html'
@@ -43,6 +44,7 @@ export class EditorStudyListComponent implements OnInit {
     private translateService: TranslateService,
     private route: ActivatedRoute,
     private location: Location,
+    private confirmationService: ConfirmationService,
     private router: Router
   ) {
     this.searchTerms = new Subject<string>()
@@ -81,16 +83,17 @@ export class EditorStudyListComponent implements OnInit {
 
   confirmRemove(event: any, studyId: string): void {
     event.stopPropagation()
-
-    this.translateService.get('study.confirmRemove')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.deleteInProgress = true
-          this.editorStudyService.delete(studyId).pipe(
-            finalize(() => this.deleteInProgress = false))
-            .subscribe(() => this.searchStudies())
+    this.translateService.get('study.confirmRemove').subscribe(confirmationMessage => {
+      this.confirmationService.confirm({
+        message: confirmationMessage,
+        accept: () => {
+            this.deleteInProgress = true
+            this.editorStudyService.delete(studyId).pipe(
+              finalize(() => this.deleteInProgress = false))
+              .subscribe(() => this.searchStudies())
         }
       })
+    })
   }
 
   delayedSearchStudies(searchText:string): void {

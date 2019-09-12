@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Changeset<K, V> {
 
@@ -36,12 +37,9 @@ public class Changeset<K, V> {
     List<T> newNodeEntities,
     List<T> oldNodeEntities) {
 
-    Map<UUID, T> newNodeEntitiesById = index(newNodeEntities, T::getId);
-    Map<UUID, T> oldNodeEntitiesById = index(oldNodeEntities, T::getId);
-
-    List<NodeId> deleted = difference(newNodeEntitiesById, oldNodeEntitiesById)
-      .entriesOnlyOnRight()
-      .values().stream().map(T::toNode).map(NodeId::new)
+    List<NodeId> deleted = getDeletedNodes(newNodeEntities, oldNodeEntities).stream()
+      .map(T::toNode)
+      .map(NodeId::new)
       .collect(toList());
 
     List<Node> saved = newNodeEntities.stream()
@@ -50,8 +48,19 @@ public class Changeset<K, V> {
     return new Changeset<>(deleted, saved);
   }
 
-  public Changeset() {
+  public static <T extends NodeEntity> List<T> getDeletedNodes(
+    List<T> newNodeEntities,
+    List<T> oldNodeEntities) {
+
+    Map<UUID, T> newNodeEntitiesById = index(newNodeEntities, T::getId);
+    Map<UUID, T> oldNodeEntitiesById = index(oldNodeEntities, T::getId);
+
+    return difference(newNodeEntitiesById, oldNodeEntitiesById)
+      .entriesOnlyOnRight()
+      .values().stream().collect(Collectors.toList());
   }
+
+  public Changeset() { }
 
   public Changeset(List<K> delete) {
     this.delete = delete;

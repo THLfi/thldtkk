@@ -1,41 +1,9 @@
 package fi.thl.thldtkk.api.metadata.service.termed;
 
-import fi.thl.thldtkk.api.metadata.domain.*;
-import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
-import fi.thl.thldtkk.api.metadata.domain.query.Select;
-import fi.thl.thldtkk.api.metadata.domain.query.Sort;
-import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
-import fi.thl.thldtkk.api.metadata.domain.termed.Node;
-import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
-import fi.thl.thldtkk.api.metadata.security.UserHelper;
-import fi.thl.thldtkk.api.metadata.security.UserWithProfile;
-import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
-import fi.thl.thldtkk.api.metadata.service.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.access.AccessDeniedException;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Strings;
-
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.AndCriteria.and;
-import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAllValues;
+import static fi.thl.thldtkk.api.metadata.domain.query.CriteriaUtils.keyWithAnyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.OrCriteria.or;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
@@ -46,6 +14,67 @@ import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.StringUtils.hasText;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.google.common.base.Strings;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.AccessDeniedException;
+
+import fi.thl.thldtkk.api.metadata.domain.ConfidentialityClass;
+import fi.thl.thldtkk.api.metadata.domain.Dataset;
+import fi.thl.thldtkk.api.metadata.domain.NotificationSubject;
+import fi.thl.thldtkk.api.metadata.domain.InstanceQuestion;
+import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
+import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
+import fi.thl.thldtkk.api.metadata.domain.NotificationMessageState;
+import fi.thl.thldtkk.api.metadata.domain.OrganizationPersonInRole;
+import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
+import fi.thl.thldtkk.api.metadata.domain.Person;
+import fi.thl.thldtkk.api.metadata.domain.Population;
+import fi.thl.thldtkk.api.metadata.domain.RecipientNotificationState;
+import fi.thl.thldtkk.api.metadata.domain.RoleLabel;
+import fi.thl.thldtkk.api.metadata.domain.Study;
+import fi.thl.thldtkk.api.metadata.domain.StudyForm;
+import fi.thl.thldtkk.api.metadata.domain.StudyFormConfirmationState;
+import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
+import fi.thl.thldtkk.api.metadata.domain.query.Sort;
+import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
+import fi.thl.thldtkk.api.metadata.domain.termed.Node;
+import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
+import fi.thl.thldtkk.api.metadata.security.UserHelper;
+import fi.thl.thldtkk.api.metadata.security.UserWithProfile;
+import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
+import fi.thl.thldtkk.api.metadata.service.EditorStudyService;
+import fi.thl.thldtkk.api.metadata.service.EmailService;
+import fi.thl.thldtkk.api.metadata.service.PublicStudyService;
+import fi.thl.thldtkk.api.metadata.service.Repository;
+import fi.thl.thldtkk.api.metadata.service.email.StudyFormEmailTemplateFactory;
 
 public class EditorStudyServiceImpl implements EditorStudyService {
 
@@ -66,6 +95,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   @Autowired
   private EmailService emailService;
+
+  @Autowired
+  private StudyFormEmailTemplateFactory emailTemplateFactory;
 
   @Override
   public List<Study> findAll() {
@@ -161,14 +193,16 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "properties.*",
         "references.*",
         "references.personInRoles:3",
-        "references.person:4",
-        "references.role:4",
+        "references.personInRole:4",
+        "references.person:5",
+        "references.role:5",
         "references.associatedOrganizations:3",
         "references.organization:4",
         "references.links:3",
         "references.instanceVariable:3",
         "references.variable:3",
         "references.conceptsFromScheme:3",
+        "StudyForm.references.notificationStates:2",
         // Disabled because increases load times too much
         //"references.inScheme:4",
         "references.quantity:3",
@@ -202,9 +236,10 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "type",
         "lastModifiedDate",
         "properties.*",
-        "references.personInRoles",
-        "references.role:2",
-        "references.person:2",
+        "references.personInRoles:3",
+        "references.personInRole:4",
+        "references.role:5",
+        "references.person:5",
         "references.associatedOrganizations",
         "references.organization:2",
         "references.systemInRoles",
@@ -238,6 +273,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         "references.otherPrinciplesForDigitalSecurity",
         "references.predecessors",
         "references.studyForms",
+        "StudyForm.references.notificationStates:2",
         "referrers.predecessors"
       );
     }
@@ -429,6 +465,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     }
 
     study.setLastModifiedByUser(userHelper.getCurrentUser().get().getUserProfile());
+    sendEmail(study, old.orElse(null));
+
     Changeset<NodeId, Node> changeset;
     if (!old.isPresent()) {
       changeset = changesetForInsert(study, includeDatasets, includeInstanceVariables);
@@ -437,7 +475,6 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       changeset = changesetForUpdate(study, old.get(), includeDatasets, includeInstanceVariables);
     }
 
-    sendEmail(study, old.orElse(null));
     nodes.post(changeset);
 
     return get(study.getId())
@@ -550,6 +587,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   private Changeset<NodeId, Node> changesetForUpdate(Study newStudy,
                                                      Study oldStudy,
                                                      boolean includeDatasets, boolean includeInstanceVariables) {
+    List<StudyForm> deletedStudyForms =
+     Changeset.getDeletedNodes(newStudy.getStudyForms(), oldStudy.getStudyForms());
+
     Changeset<NodeId, Node> studyChangeset = Changeset.<NodeId, Node>empty()
       .merge(buildChangeset(
         newStudy.getPopulation().orElse(null),
@@ -568,7 +608,18 @@ public class EditorStudyServiceImpl implements EditorStudyService {
         oldStudy.getSystemInRoles()))
       .merge(Changeset.buildChangeset(
         newStudy.getStudyForms(),
-        oldStudy.getStudyForms()
+        oldStudy.getStudyForms()))
+      .merge(Changeset.buildChangeset(
+        // Save new notificationstates, but only delete if studyform is removed
+        // (prevents race conditions if edited by multiple users/scheduler)
+        newStudy.getStudyForms().stream()
+          .map(StudyForm::getNotificationStates)
+          .flatMap(List::stream)
+         .collect(Collectors.toList()),
+        deletedStudyForms.stream()
+          .map(StudyForm::getNotificationStates)
+          .flatMap(List::stream)
+          .collect(Collectors.toList())
       ));
 
     if (includeDatasets) {
@@ -692,57 +743,136 @@ public class EditorStudyServiceImpl implements EditorStudyService {
   }
 
   private void sendEmail(Study study, Study old) {
+    sendUnitInChargeConfirmationEmail(study, old);
+    sendRetentionPeriodConfirmationEmail(study, old);
+  }
+
+  private static Optional<StudyForm> findMatchingStudyForm(Study study, UUID studyFormId) {
+    return study.getStudyForms().stream()
+      .filter(iterOldStudyForm -> iterOldStudyForm.getId().equals(studyFormId))
+      .findFirst();
+  }
+
+  private Predicate<StudyForm> unitInChargeHasChangedBetweenStudies(Study study, Study comparedStudy) {
+    return studyForm -> {
+      if (comparedStudy == null) {
+        return true;
+      }
+
+      Optional<StudyForm> oldStudyForm = findMatchingStudyForm(comparedStudy, study.getId());
+
+      if (!oldStudyForm.isPresent() || !oldStudyForm.get().getUnitInCharge().isPresent()) {
+        return true;
+      }
+
+      UUID newId = studyForm.getUnitInCharge().get().getId();
+      UUID oldId = oldStudyForm.get().getUnitInCharge().get().getId();
+      return !newId.equals(oldId);
+    };
+  }
+
+  private void sendUnitInChargeConfirmationEmail(Study study, Study old) {
+    Predicate<StudyForm> unitInChargeHasChanged = unitInChargeHasChangedBetweenStudies(study, old);
+    Predicate<StudyForm> unitInChargeConfirmationIsPending =
+      studyForm -> Objects.equals(studyForm.getUnitInChargeConfirmationState().orElse(null), StudyFormConfirmationState.PENDING);
+
     study.getStudyForms().stream()
+      .filter(unitInChargeConfirmationIsPending)
       .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
-      .filter(studyForm -> studyForm.getUnitInChargeConfirmationState().get().equals(StudyFormConfirmationState.PENDING))
-      .filter(newStudyForm -> {
-        if (old == null) {
+      .filter(unitInChargeHasChanged)
+      .map(studyForm -> cleanStudyFormNotificationStates(studyForm, NotificationSubject.UNIT_IN_CHARGE_CONFIRMATION))
+      .forEach(studyForm -> {
+        OrganizationUnit unitInCharge = studyForm.getUnitInCharge().get();
+        Predicate<OrganizationPersonInRole> rolePredicate = isHeadOfUnit();
+        List<OrganizationPersonInRole> personsToBeNotified = unitInCharge.getPersonInRoles().stream()
+          .filter(rolePredicate)
+          .filter(pir -> pir.getPerson().getEmail().isPresent())
+          .collect(Collectors.toList());
+
+        List<Person> recipients = personsToBeNotified.stream()
+          .map(OrganizationPersonInRole::getPerson)
+          .collect(Collectors.toList());
+
+        emailService.sendEmails(
+          recipients,
+          emailTemplateFactory.makeUnitInChargeConfirmationMessage(study, unitInCharge)
+          );
+
+        List<RecipientNotificationState> notifications = personsToBeNotified.stream()
+          .map(personInRole -> {
+            RecipientNotificationState notification = new RecipientNotificationState(randomUUID());
+            notification.setPersonInRole(personInRole);
+            notification.setNotificationState(NotificationMessageState.SENT);
+            notification.setSubject(NotificationSubject.UNIT_IN_CHARGE_CONFIRMATION);
+            return notification;
+          }).collect(Collectors.toList());
+        studyForm.getNotificationStates().addAll(notifications);
+      });
+  }
+
+  private Predicate<StudyForm> retentionPeriodHasChangedBetweenStudies(Study study, Study comparedStudy) {
+    return  studyForm -> {
+        if (comparedStudy == null) {
           return true;
         }
 
-        Optional<StudyForm> oldStudyForm = old.getStudyForms().stream()
-          .filter(iterOldStudyForm -> iterOldStudyForm.getId().equals(newStudyForm.getId()))
-          .findFirst();
-
-        if (! oldStudyForm.isPresent() || ! oldStudyForm.get().getUnitInCharge().isPresent()) {
-          return true;
-        }
-
-        UUID newId = newStudyForm.getUnitInCharge().get().getId();
-        UUID oldId = oldStudyForm.get().getUnitInCharge().get().getId();
-        return ! newId.equals(oldId);
-      })
-      .map(studyForm -> studyForm.getUnitInCharge().get())
-      .forEach(unit -> emailService.sendUnitInChargeConfirmationMessage(study, unit));
-
-    study.getStudyForms().stream()
-      .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
-      .filter(studyForm ->
-        studyForm.getRetentionPeriod().isPresent()
-        && studyForm.getRetentionPeriodConfirmationState().get().equals(StudyFormConfirmationState.PENDING))
-      .filter(newStudyForm -> {
-        if (old == null) {
-          return true;
-        }
-
-        Optional<StudyForm> oldStudyForm = old.getStudyForms().stream()
-          .filter(iterOldStudyForm -> iterOldStudyForm.getId().equals(newStudyForm.getId()))
-          .findFirst();
+        Optional<StudyForm> oldStudyForm = findMatchingStudyForm(comparedStudy, studyForm.getId());
 
         // Send email if retention period was not set before
         if (!oldStudyForm.isPresent() || !oldStudyForm.get().getRetentionPeriod().isPresent()) {
           return true;
         }
 
-        LocalDate newRetentionPeriod = newStudyForm.getRetentionPeriod().get();
+        LocalDate newRetentionPeriod = studyForm.getRetentionPeriod().get();
         LocalDate oldRetentionPeriod = oldStudyForm.get().getRetentionPeriod().get();
 
         // Send email if retention period differs from the current one
         return !newRetentionPeriod.equals(oldRetentionPeriod);
-      })
-      .map(studyForm -> studyForm.getUnitInCharge().get())
-      .forEach(unit -> emailService.sendRetentionPeriodConfirmationMessage(study, unit));
+    };
   }
+
+  private void sendRetentionPeriodConfirmationEmail(Study study, Study old) {
+    Predicate<StudyForm> retentionPeriodHasChanged = retentionPeriodHasChangedBetweenStudies(study, old);
+    Predicate<StudyForm> retentionPeriodConfirmationIsPending =
+      studyForm ->
+        studyForm.getRetentionPeriod().isPresent() && studyForm.getRetentionPeriodConfirmationState().get().equals(StudyFormConfirmationState.PENDING);
+
+    study.getStudyForms().stream()
+      .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
+      .filter(retentionPeriodHasChanged)
+      .filter(retentionPeriodConfirmationIsPending)
+      .map(studyForm -> cleanStudyFormNotificationStates(studyForm, NotificationSubject.STUDY_FORM_RETENTION_CONFIRMATION))
+      .forEach(studyForm -> {
+        OrganizationUnit unitInCharge = studyForm.getUnitInCharge().get();
+
+        Predicate<OrganizationPersonInRole> rolePredicate = isHeadOfUnit();
+        List<OrganizationPersonInRole> personsToBeNotified = unitInCharge.getPersonInRoles().stream()
+          .filter(rolePredicate)
+          .filter(pir -> pir.getPerson().getEmail().isPresent())
+          .collect(Collectors.toList());
+
+        List<Person> recipients = personsToBeNotified.stream()
+          .map(OrganizationPersonInRole::getPerson)
+          .collect(Collectors.toList());
+
+        emailService.sendEmails(
+          recipients,
+          emailTemplateFactory.makeRetentionPeriodConfirmationMessage(study, unitInCharge)
+          );
+
+        List<RecipientNotificationState> notifications = personsToBeNotified.stream()
+          .map(personInRole -> {
+            RecipientNotificationState notification = new RecipientNotificationState(randomUUID());
+            notification.setPersonInRole(personInRole);
+            notification.setNotificationState(NotificationMessageState.SENT);
+            notification.setSubject(NotificationSubject.STUDY_FORM_RETENTION_CONFIRMATION);
+            return notification;
+          }).collect(Collectors.toList());
+
+        studyForm.getNotificationStates().addAll(notifications);
+      });
+  }
+
 
   @AdminOnly
   @Override
@@ -1016,12 +1146,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
           .filter(sf -> sf.getId().equals(studyForm.getId()))
           .findFirst();
       }
-      overrideUnitInChargeConfirmationState(studyForm, oldStudyForm);
+      overrideUnitInChargeValues(studyForm, oldStudyForm);
       overrideRetentionPeriodConfirmationState(studyForm, oldStudyForm);
     });
   }
 
-  private void overrideUnitInChargeConfirmationState(StudyForm studyForm, Optional<StudyForm> oldStudyForm) {
+  private void overrideUnitInChargeValues(StudyForm studyForm, Optional<StudyForm> oldStudyForm) {
       UserWithProfile user = userHelper.getCurrentUser().get();
 
       Optional<OrganizationUnit> existingUnit = Optional.empty();
@@ -1041,6 +1171,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       if (!existingUnit.isPresent() || !existingUnit.get().getId().equals(newUnit.get().getId())) {
         // Earlier unit is different from the new unit or doesn't exist
         studyForm.setUnitInChargeConfirmationState(StudyFormConfirmationState.PENDING);
+        List<RecipientNotificationState> validNotifications =
+          removeNotificationsWithSubject(studyForm.getNotificationStates(), NotificationSubject.UNIT_IN_CHARGE_CONFIRMATION);
+        studyForm.setNotificationStates(validNotifications);
 
         return;
       }
@@ -1075,6 +1208,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       if (!existingRetentionPeriod.isPresent() || !existingRetentionPeriod.get().equals(newRetentionPeriod.get())) {
         // Earlier retention period is different from the new or doesn't exist
         studyForm.setRetentionPeriodConfirmationState(StudyFormConfirmationState.PENDING);
+        List<RecipientNotificationState> validNotifications =
+          removeNotificationsWithSubject(studyForm.getNotificationStates(), NotificationSubject.STUDY_FORM_EXPIRATION);
+        studyForm.setNotificationStates(validNotifications);
 
         return;
       }
@@ -1090,6 +1226,12 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       // Allow values to pass unaltered
   }
 
+  private List<RecipientNotificationState> removeNotificationsWithSubject(List<RecipientNotificationState> notifications, NotificationSubject subject) {
+    return notifications.stream()
+      .filter(notification -> Objects.equals(notification.getSubject().orElse(null), subject))
+      .collect(Collectors.toList());
+  }
+
   private void setEarlierStudyFormStateOrPending(Optional<StudyForm> oldStudyForm, StudyForm newStudyForm) {
     if (oldStudyForm.isPresent()) {
       StudyForm existingStudyForm = oldStudyForm.get();
@@ -1103,7 +1245,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
     }
   }
 
-  private boolean isUserHeadOfOrganizationUnit(UserWithProfile user, OrganizationUnit unit) {
+  private static final boolean isUserHeadOfOrganizationUnit(UserWithProfile user, OrganizationUnit unit) {
     String userEmail = user.getUserProfile().getEmail().orElse(null);
 
     if (Strings.isNullOrEmpty(userEmail)) {
@@ -1116,5 +1258,23 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .filter(pir -> Objects.equals(pir.getPerson().getEmail().orElse(null), userEmail))
       .findFirst()
       .isPresent();
+  }
+
+  private static final Predicate<OrganizationPersonInRole> isHeadOfUnit() {
+    return pir -> pir.getRole().getLabel() == RoleLabel.HEAD_OF_ORGANIZATION;
+  }
+
+  private static final Predicate<OrganizationPersonInRole> isHeadOfSampleManagement() {
+    return pir -> pir.getRole().getLabel() == RoleLabel.HEAD_OF_SAMPLE_MANAGEMENT;
+  }
+
+  private StudyForm cleanStudyFormNotificationStates(StudyForm studyForm, NotificationSubject subjectToBeCleaned) {
+    List<RecipientNotificationState> cleanedStates = studyForm.getNotificationStates().stream()
+      .filter(notificationState ->
+        notificationState.getSubject().map(subject -> !subject.equals(subjectToBeCleaned)).orElse(false))
+      .collect(Collectors.toList());
+
+    studyForm.setNotificationStates(cleanedStates);
+    return studyForm;
   }
 }

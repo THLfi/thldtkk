@@ -9,8 +9,11 @@ import fi.thl.thldtkk.api.metadata.domain.termed.StrictLangValue;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -19,7 +22,6 @@ import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLangV
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValues;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toLocalDate;
 import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toPropertyValue;
-import static fi.thl.thldtkk.api.metadata.domain.termed.PropertyMappings.toBoolean;
 import static java.util.Objects.requireNonNull;
 
 public class StudyForm implements NodeEntity {
@@ -35,6 +37,7 @@ public class StudyForm implements NodeEntity {
   private OrganizationUnit unitInCharge;
   private StudyFormConfirmationState unitInChargeConfirmationState;
   private StudyFormConfirmationState retentionPeriodConfirmationState;
+  private List<RecipientNotificationState> notificationStates = new ArrayList<>();
 
   /**
    * Required by GSON deserialization.
@@ -56,6 +59,10 @@ public class StudyForm implements NodeEntity {
     this.disposalDate = toLocalDate(node.getProperties("disposalDate"), null);
     this.unitInChargeConfirmationState = valueToEnum(node.getProperties("unitInChargeConfirmationState"), StudyFormConfirmationState.class);
     this.retentionPeriodConfirmationState = valueToEnum(node.getProperties("retentionPeriodConfirmationState"), StudyFormConfirmationState.class);
+
+    this.notificationStates = node.getReferences("notificationStates").stream()
+      .map(RecipientNotificationState::new)
+      .collect(Collectors.toList());
 
     node.getReferencesFirst("unitInCharge")
       .ifPresent(unit -> this.unitInCharge = new OrganizationUnit(unit));
@@ -113,6 +120,14 @@ public class StudyForm implements NodeEntity {
     this.retentionPeriodConfirmationState = retentionPeriodConfirmationState;
   }
 
+  public List<RecipientNotificationState> getNotificationStates() {
+    return notificationStates;
+  }
+
+  public void setNotificationStates(List<RecipientNotificationState> notificationStates) {
+    this.notificationStates = notificationStates;
+  }
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
     props.put("type", PropertyMappings.enumToPropertyValue(type));
@@ -126,6 +141,10 @@ public class StudyForm implements NodeEntity {
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
     getUnitInCharge().ifPresent(unit -> refs.put("unitInCharge", unit.toNode()));
+
+    if (notificationStates != null) {
+      notificationStates.forEach(notificationState -> refs.put("notificationStates", notificationState.toNode()));
+    }
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }
@@ -147,6 +166,7 @@ public class StudyForm implements NodeEntity {
       && Objects.equals(disposalDate, study.disposalDate)
       && Objects.equals(unitInChargeConfirmationState, study.unitInChargeConfirmationState)
       && Objects.equals(retentionPeriodConfirmationState, study.retentionPeriodConfirmationState)
+      && Objects.equals(notificationStates, study.notificationStates)
       && Objects.equals(unitInCharge, study.unitInCharge);
   }
 
@@ -161,6 +181,7 @@ public class StudyForm implements NodeEntity {
       disposalDate,
       unitInChargeConfirmationState,
       retentionPeriodConfirmationState,
+      notificationStates,
       unitInCharge
     );
   }

@@ -1833,6 +1833,11 @@
           "value": "Näytehallintapäällikkö"
         }
       ],
+      "label": [
+        {
+          "value": "HEAD_OF_SAMPLE_MANAGEMENT"
+        }
+      ],
       "associations": [
         {
           "value": "ORGANIZATION"

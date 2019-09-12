@@ -2,6 +2,7 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.OrganizationPersonInRole;
+import fi.thl.thldtkk.api.metadata.domain.RecipientNotificationState;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
@@ -11,6 +12,7 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
@@ -19,20 +21,24 @@ import static java.util.stream.Collectors.toList;
 
 public class OrganizationServiceImpl implements OrganizationService {
 
-  private Repository<NodeId, Node> nodes;
+  private Repository<NodeId, Node> commonRepository;
+  private Repository<NodeId, Node> editorRepository;
 
-  public OrganizationServiceImpl(Repository<NodeId, Node> nodes) {
-    this.nodes = nodes;
+  public OrganizationServiceImpl(Repository<NodeId, Node> commonRepository, Repository<NodeId, Node> editorRepository) {
+    this.commonRepository = commonRepository;
+    this.editorRepository = editorRepository;
   }
 
   @Override
   public List<Organization> findAll() {
-    return nodes.query(select("id",
+    return commonRepository.query(select("id",
       "type",
       "properties.*",
       "references.*",
       "referrers.*",
       "references.personInRoles:2",
+      "OrganizationPersonInRole.referrers.personInRole:2",
+      "OrganizationPersonInRole.referrers.personsInRole:2",
       "references.person:3",
       "references.role:3",
       "lastModifiedDate"), keyValue("type.id", "Organization"))
@@ -47,13 +53,14 @@ public class OrganizationServiceImpl implements OrganizationService {
 
   @Override
   public Optional<Organization> get(UUID id) {
-    return nodes.get(select("id",
+    return commonRepository.get(select("id",
       "type",
       "properties.*",
       "references.*",
       "referrers.*",
       "references.person:2",
       "references.role:2",
+      "OrganizationPersonInRole.referrers.personInRole:2",
       "lastModifiedDate"),new NodeId(id, "Organization")).map(Organization::new);
   }
 
@@ -76,9 +83,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     Changeset<NodeId, Node> changeset = saveForPersonInRoles(organization, old);
-    changeset = changeset.merge(new Changeset<>(Collections.emptyList(), Collections.singletonList(organization.toNode())));
+    changeset = changeset.merge(
+      new Changeset<>(Collections.emptyList(), Collections.singletonList(organization.toNode())));
 
-    nodes.post(changeset);
+    commonRepository.post(changeset);
     return get(organization.getId()).get();
   }
 
@@ -87,9 +95,25 @@ public class OrganizationServiceImpl implements OrganizationService {
       .filter(personInRole -> personInRole.getId() == null)
       .forEach(personInRole -> personInRole.setId(UUID.randomUUID()));
 
-    return Changeset.buildChangeset(
+    Changeset<NodeId, Node> changes = Changeset.buildChangeset(
       organization.getPersonInRoles(),
       old != null ? old.getPersonInRoles() : Collections.emptyList()
     );
+
+    if (old != null) {
+      List<OrganizationPersonInRole> deletedPersons =
+        Changeset.getDeletedNodes(organization.getPersonInRoles(), old.getPersonInRoles());
+      
+      List<NodeId> orphanedNotifications = deletedPersons.stream()
+        .map(OrganizationPersonInRole::getNotifications)
+        .flatMap(List::stream)
+        .map(RecipientNotificationState::toNode)
+        .map(NodeId::new)
+        .collect(Collectors.toList());
+
+      editorRepository.delete(orphanedNotifications);
+    }
+
+    return changes;
   }
 }

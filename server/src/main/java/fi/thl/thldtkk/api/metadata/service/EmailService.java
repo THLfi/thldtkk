@@ -1,9 +1,12 @@
 package fi.thl.thldtkk.api.metadata.service;
 
-import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
-import fi.thl.thldtkk.api.metadata.domain.Study;
+import java.util.List;
+
+import org.springframework.mail.SimpleMailMessage;
+
+import fi.thl.thldtkk.api.metadata.domain.Person;
 
 public interface EmailService {
-  void sendUnitInChargeConfirmationMessage(Study study, OrganizationUnit unit);
-  void sendRetentionPeriodConfirmationMessage(Study study, OrganizationUnit unit);
+  void sendEmail(Person recipient, SimpleMailMessage message);
+  void sendEmails(List<Person> recipient, SimpleMailMessage message);
 }

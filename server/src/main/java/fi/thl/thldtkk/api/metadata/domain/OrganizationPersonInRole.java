@@ -12,6 +12,11 @@ import java.util.UUID;
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 public class OrganizationPersonInRole implements NodeEntity {
 
   private static final String TERMED_NODE_CLASS = "OrganizationPersonInRole";
@@ -21,6 +26,8 @@ public class OrganizationPersonInRole implements NodeEntity {
   private Person person;
   @NotNull
   private Role role;
+
+  private List<RecipientNotificationState> notifications = new ArrayList<>();
 
   public OrganizationPersonInRole(UUID id) {
     this.id = requireNonNull(id);
@@ -40,6 +47,8 @@ public class OrganizationPersonInRole implements NodeEntity {
     checkArgument(Objects.equals(node.getTypeId(), TERMED_NODE_CLASS));
     node.getReferencesFirst("person").ifPresent(p -> this.person = new Person(p));
     node.getReferencesFirst("role").ifPresent(p -> this.role = new Role(p));
+    node.getReferrers("personInRole").forEach(notification ->
+      this.notifications.add(new RecipientNotificationState(notification)));
   }
 
   public UUID getId() {
@@ -62,12 +71,25 @@ public class OrganizationPersonInRole implements NodeEntity {
     return this.role;
   }
 
+  public List<RecipientNotificationState> getNotifications() {
+    return notifications;
+  }
+
+  public void setNotifications(List<RecipientNotificationState> notifications) {
+    this.notifications = notifications;
+  }
+
+
   public Node toNode() {
     Multimap<String, StrictLangValue> props = LinkedHashMultimap.create();
 
     Multimap<String, Node> refs = LinkedHashMultimap.create();
-    refs.put("person", getPerson().toNode());
-    refs.put("role", getRole().toNode());
+    if (person != null) {
+      refs.put("person", getPerson().toNode());
+    }
+    if (role != null) {
+      refs.put("role", getRole().toNode());
+    }
 
     return new Node(id, TERMED_NODE_CLASS, props, refs);
   }

@@ -6,6 +6,7 @@ import fi.thl.thldtkk.api.metadata.domain.InstanceVariable;
 import fi.thl.thldtkk.api.metadata.domain.NodeEntity;
 import fi.thl.thldtkk.api.metadata.domain.Population;
 import fi.thl.thldtkk.api.metadata.domain.Study;
+import fi.thl.thldtkk.api.metadata.domain.StudyForm;
 import fi.thl.thldtkk.api.metadata.domain.query.Criteria;
 import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.query.Sort;
@@ -110,6 +111,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         "references.instanceVariable:3",
         "references.variable:3",
         "references.conceptsFromScheme:3",
+        "StudyForm.references.notificationStates:2",
         // Disabled because increases load times too much
         //"references.inScheme:4",
         "references.quantity:3",
@@ -310,7 +312,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     study.getLinks().forEach(l -> save.add(l.toNode()));
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
     study.getAssociatedOrganizations().forEach(ao -> save.add(ao.toNode()));
-    study.getStudyForms().forEach(gsf -> save.add(gsf.toNode()));
+    study.getStudyForms().forEach(gsf -> {
+      gsf.getNotificationStates().forEach(ns -> save.add(ns.toNode()));
+      save.add(gsf.toNode());
+    });
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
     return changeset;
@@ -353,7 +358,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         oldStudy.getAssociatedOrganizations()))
       .merge(Changeset.buildChangeset(
         newStudy.getStudyForms(),
-        oldStudy.getStudyForms()
+        oldStudy.getStudyForms()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getStudyForms().stream().map(StudyForm::getNotificationStates).flatMap(List::stream).collect(Collectors.toList()),
+        oldStudy.getStudyForms().stream().map(StudyForm::getNotificationStates).flatMap(List::stream).collect(Collectors.toList())
       ));
 
     if (includeDatasets) {

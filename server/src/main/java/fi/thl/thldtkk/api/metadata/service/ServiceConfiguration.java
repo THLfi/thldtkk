@@ -45,9 +45,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.thymeleaf.TemplateEngine;
 
 @Configuration
+@EnableScheduling
 public class ServiceConfiguration {
 
   @Value("${termed.apiUrl}")
@@ -185,7 +187,7 @@ public class ServiceConfiguration {
 
   @Bean
   public OrganizationService organizationService() {
-    return new OrganizationServiceImpl(commonNodeRepository());
+    return new OrganizationServiceImpl(commonNodeRepository(), editorNodeRepository());
   }
 
   @Bean
@@ -255,7 +257,8 @@ public class ServiceConfiguration {
 
   // lower level termed HTTP APIs
 
-  @Bean
+  @Bean()
+  @Qualifier("editor-node-repository")
   public Repository<NodeId, Node> editorNodeRepository() {
     return new NodeHttpRepository(apiUrl, editorGraphId, username, password);
   }

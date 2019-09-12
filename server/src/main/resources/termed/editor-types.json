@@ -831,6 +831,34 @@
             "code": "common-graph"
           }
         }
+      },
+      {
+        "id": "notificationStates",
+        "range": {
+          "id": "RecipientNotificationState"
+        }
+      }
+    ]
+  },
+  {
+    "id": "RecipientNotificationState",
+    "textAttributes": [
+      {
+        "id": "subject"
+      },
+      {
+        "id": "notificationState"
+      }
+    ],
+    "referenceAttributes": [
+      {
+        "id": "personInRole",
+        "range": {
+          "id": "OrganizationPersonInRole",
+          "graph": {
+            "code": "common-graph"
+          }
+        }
       }
     ]
   }

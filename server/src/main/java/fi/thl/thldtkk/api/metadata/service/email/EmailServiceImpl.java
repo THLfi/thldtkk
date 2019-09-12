@@ -4,74 +4,65 @@ import fi.thl.thldtkk.api.metadata.domain.*;
 import fi.thl.thldtkk.api.metadata.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class EmailServiceImpl implements EmailService {
 
-  @Autowired
-  public JavaMailSender emailSender;
+  public Optional<JavaMailSender> emailSender;
 
-  @Value("${spring.mail.from}")
+  @Value("${spring.mail.from: info@aineistokatalogi.fi}")
   private String from;
 
-  public void sendUnitInChargeConfirmationMessage(Study study, OrganizationUnit unit) {
-    List<Person> headsOfOrganization = getHeadsOfOrganization(unit);
+  private static final Logger LOG = LoggerFactory.getLogger(EmailServiceImpl.class);
 
-    String subject = "Aineiston vastuutus";
-    String text =
-      "Sinun yksikkösi on merkitty vastuuseen aineiston " +
-      study.getPrefLabel().get("fi") +
-      " olomuodosta. Käy hyväksymässä vastuutus: " +
-      ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() +
-      "/editor/studies/" +
-      study.getId() +
-      "/edit-administrative-information";
-
-      sendEmails(headsOfOrganization, text, subject);
+  public EmailServiceImpl(Optional<JavaMailSender> emailSender) {
+    this.emailSender = emailSender;
   }
 
-  public void sendRetentionPeriodConfirmationMessage(Study study, OrganizationUnit unit) {
-    List<Person> headsOfOrganization = getHeadsOfOrganization(unit);
+  public void sendEmail(Person recipient, SimpleMailMessage message) {
+    if (!recipient.getEmail().isPresent()) {
+      LOG.warn(String.format("Attempted to send email to person without email address: %1$s %2$s",
+         recipient.getFirstName().orElse(""), recipient.getLastName().orElse("")));
+      return;
+    }
 
-    String subject = "Aineiston säilytysajan hyväksyminen";
-    String text =
-      "Sinun yksikkösi on merkitty vastuuseen aineiston " +
-      study.getPrefLabel().get("fi") +
-      " olomuodosta. Aineiston säilytysaikaa on muutettu ja muutos on hyväksyttyvä osoitteessa: " +
-      ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() +
-      "/editor/studies/" +
-      study.getId() +
-      "/edit-administrative-information";
+    if (!emailSender.isPresent()) {
+      LOG.warn("Unable to send email: Email server is not configured");
+      return;
+    }
 
-      sendEmails(headsOfOrganization, text, subject);
+    try {
+      new InternetAddress(recipient.getEmail().get());
+    } catch (AddressException ex) {
+      LOG.warn(String.format("Attempted to send email to person with invalid email address: %1$s %2$s",
+         recipient.getFirstName().orElse(""), recipient.getLastName().orElse("")));
+      return;
+    }
+
+    message.setTo(recipient.getEmail().get());
+    message.setFrom(from);
+
+    try {
+      emailSender.get().send(message);
+    } catch (MailSendException ex) {
+      LOG.error("Unable to send email: " + ex.getMessage());
+    }
   }
 
-  private void sendEmails(List<Person> recipients, String content, String subject) {
-    recipients.forEach(headOfOrganization -> {
-      SimpleMailMessage message = new SimpleMailMessage();
-      //noinspection OptionalGetWithoutIsPresent
-      message.setTo(headOfOrganization.getEmail().get());
-      message.setSubject(subject);
-      message.setText(content);
-      message.setFrom(from);
-      emailSender.send(message);
-    });
-  }
-
-  private List<Person> getHeadsOfOrganization(OrganizationUnit unit) {
-    return unit.getPersonInRoles().stream()
-      .filter(personInRole ->
-        personInRole.getRole().getLabel() == RoleLabel.HEAD_OF_ORGANIZATION
-      )
-      .map(OrganizationPersonInRole::getPerson)
-      .filter(person -> person.getEmail().isPresent() && ! person.getEmail().get().isEmpty())
-      .collect(Collectors.toList());
+  public void sendEmails(List<Person> recipients, SimpleMailMessage message) {
+    recipients.forEach(recipient -> sendEmail(recipient, message));
   }
 }

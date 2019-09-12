@@ -39,6 +39,8 @@ Configure server properties:
     - spring.mail.from=info@aineistokatalogi.fi
     - spring.mail.port=25
     - spring.mail.default-encoding=UTF-8
+    - host.url=localhost:8082 # Used to build a link to emails. Use publicly accessible URL here
+    - scheduledTasks.interval=3600000 # Interval between scheduled task runs (e.g. RetentionPeriodNotifier) set to reasonably long period in prod (36 000 000ms = 1h)
 
     Save the file and exit the editor.
 

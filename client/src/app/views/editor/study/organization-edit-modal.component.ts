@@ -53,6 +53,7 @@ export class OrganizationEditModalComponent implements OnInit {
       abbreviation: [this.organization.abbreviation[this.language]],
       personInRoles: this.formBuilder.array(this.organization.personInRoles
         .map(personInRole => this.formBuilder.group({
+          id: personInRole.id,
           person: [personInRole.person, Validators.required],
           role: [personInRole.role, Validators.required]
         }))

@@ -1060,6 +1060,13 @@
                         [disabled]="!isTypeSpecifierFieldEnabled(studyForm)"
                         required
                       ></p-dropdown>
+                      <p
+                        *ngFor="let errorKey of formErrors['studyForm-type-specifier-' + index]"
+                        class="text-danger"
+                      >
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ errorKey | translate }}
+                      </p>
                     </td>
                     <td>
                       <textarea

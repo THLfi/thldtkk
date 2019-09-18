@@ -18,7 +18,6 @@ import fi.thl.thldtkk.api.metadata.service.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -229,6 +228,10 @@ public class PublicStudyServiceImpl implements PublicStudyService {
       .forEach(v -> v.setId(firstNonNull(v.getId(), randomUUID())));
     study.getPersonInRoles()
       .forEach(pir -> pir.setId(firstNonNull(pir.getId(), randomUUID())));
+    study.getAssociatedOrganizations()
+      .forEach(ao -> ao.setId(firstNonNull(ao.getId(), randomUUID())));
+    study.getStudyForms()
+      .forEach(sf -> sf.setId(firstNonNull(sf.getId(), randomUUID())));
 
     if (includeDatasets) {
       study.getDatasets()
@@ -261,7 +264,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     }
 
     Changeset<NodeId, Node> changeset;
-    
+
     if (!old.isPresent()) {
       changeset = changesetForInsert(study, includeDatasets, includeInstanceVariables);
     }
@@ -306,7 +309,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     study.getPopulation().ifPresent(p -> save.add(p.toNode()));
     study.getLinks().forEach(l -> save.add(l.toNode()));
     study.getPersonInRoles().forEach(pir -> save.add(pir.toNode()));
-    study.getAssociatedOrganizations().forEach(gao -> save.add(gao.toNode())); 
+    study.getAssociatedOrganizations().forEach(ao -> save.add(ao.toNode()));
     study.getStudyForms().forEach(gsf -> save.add(gsf.toNode()));
     changeset = changeset.merge(new Changeset(Collections.emptyList(), save));
 
@@ -331,7 +334,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
 
     return new Changeset(Collections.emptyList(), save);
   }
-  
+
   private Changeset<NodeId, Node> changesetForUpdate(Study newStudy,
                                                      Study oldStudy,
                                                      boolean includeDatasets, boolean includeInstanceVariables) {
@@ -344,7 +347,14 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         oldStudy.getLinks()))
       .merge(Changeset.buildChangeset(
         newStudy.getPersonInRoles(),
-        oldStudy.getPersonInRoles()));
+        oldStudy.getPersonInRoles()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getAssociatedOrganizations(),
+        oldStudy.getAssociatedOrganizations()))
+      .merge(Changeset.buildChangeset(
+        newStudy.getStudyForms(),
+        oldStudy.getStudyForms()
+      ));
 
     if (includeDatasets) {
       // Dataset updates
@@ -416,7 +426,7 @@ public class PublicStudyServiceImpl implements PublicStudyService {
         newDataset.getInstanceVariables(),
         oldDataset.getInstanceVariables()))
           .merge(buildChangesetForInstanceQuestions(
-                  newDataset.getInstanceVariables(), 
+                  newDataset.getInstanceVariables(),
                   oldDataset.getInstanceVariables()));
     }
     return changeset;
@@ -441,22 +451,22 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     }
     return Changeset.empty();
   }
-      
+
   private Changeset<NodeId, Node> buildChangesetForInstanceQuestions(List<InstanceVariable> newInstanceVariables,
                                                  List<InstanceVariable> oldInstanceVariables) {
-    
+
     List<InstanceQuestion> newInstanceQuestions = newInstanceVariables
             .stream()
             .flatMap(niv -> niv.getInstanceQuestions().stream())
             .distinct()
             .collect(Collectors.toList());
-    
+
     List<InstanceQuestion> oldInstanceQuestions = oldInstanceVariables
             .stream()
             .flatMap(oiv -> oiv.getInstanceQuestions().stream())
             .distinct()
             .collect(Collectors.toList());
-    
+
     return Changeset.<NodeId, Node>empty().merge(
                     Changeset.buildChangeset(newInstanceQuestions, oldInstanceQuestions));
   }
@@ -481,6 +491,8 @@ public class PublicStudyServiceImpl implements PublicStudyService {
     study.getLinks().forEach(v -> delete.add(v.toNode()));
     study.getPersonInRoles().forEach(pir -> delete.add(pir.toNode()));
     study.getDatasets().forEach(dataset -> delete.addAll(getDatasetRelatedNodesForDelete(dataset)));
+    study.getAssociatedOrganizations().forEach(ao -> delete.add(ao.toNode()));
+    study.getStudyForms().forEach(sf -> delete.add(sf.toNode()));
 
     nodes.delete(delete.stream().map(NodeId::new).collect(toList()));
   }

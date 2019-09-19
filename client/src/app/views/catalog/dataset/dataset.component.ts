@@ -53,7 +53,6 @@ export class DatasetComponent implements OnInit {
   instanceVariableGroupNames: string[] = []
   defaultInstanceVariableGroupName: string
 
-  showInstanceVariableFilters: boolean
   selectedInstanceVariableFilterGroups: string[] = []
 
 
@@ -81,7 +80,6 @@ export class DatasetComponent implements OnInit {
   ) {
     this.language = this.translateService.currentLang
     this.defaultInstanceVariableGroupName = 'catalog.dataset.defaultInstanceVariableGroupName'
-    this.showInstanceVariableFilters = false
     this.selectableFilterGroups = [];
   }
 
@@ -263,10 +261,6 @@ export class DatasetComponent implements OnInit {
   deselectInstanceVariableGroupFilters() {
     this.selectedInstanceVariableFilterGroups = []
     this.filterInstanceVariables()
-  }
-
-  toggleShowInstanceVariableFilters() {
-    this.showInstanceVariableFilters = !this.showInstanceVariableFilters
   }
 
   fillArray(): any{

@@ -291,33 +291,24 @@
     <div class="row" *ngIf="allWrappedInstanceVariables.length">
       <div class="col-xs-12">
         <div class="instance-variable-filter-action-bar" [ngClass]="{ 'instance-variable-filter-action-bar-no-results': !filteredInstanceVariables.length }">
-          <div class="row" [ngClass]="{ 'instance-variable-group-filters-expanded': showInstanceVariableFilters}">
+          <div class="row">
               <div class="col-sm-3">
                 <p-multiSelect [options]="selectableFilterGroups"
                      [filter]="true"
                      [(ngModel)]="selectedInstanceVariableFilterGroups"
                      (onChange)="filterInstanceVariables()"
-                     defaultLabel="{{'partOfGroup' | translate}}"
+                     defaultLabel="{{ 'noSelection' | translate }}"
                      selectedItemsLabel="{0} {{'numberOfSelectedPartOfGroup' | translate}}"
                      >
                 </p-multiSelect>
-
               </div>
               <div class="col-sm-9">
-                <div class="export-as-csv" [ngClass]="{'export-as-csv-filters-expanded': showInstanceVariableFilters }">
+                <div class="export-as-csv">
                   <a class="btn btn-default" href="{{composeInstanceVariableExportUrl()}}">
                     <fa icon="download"></fa>
                     {{ 'exportInstanceVariablesAsCsvButton' | translate }}
                   </a>
                 </div>
-              </div>
-          </div>
-
-          <div class="row" *ngIf="showInstanceVariableFilters">
-            <div class="instance-variable-group-filters">
-              <div class="col-xs-12">
-                <p-checkbox *ngFor="let groupName of instanceVariableGroupNames" name="instance-variable-filters" label="{{groupName}}" [(ngModel)]="selectedInstanceVariableFilterGroups"
-                  value="{{groupName}}" (onChange)="filterInstanceVariables()" styleClass="instance-variable-filter-checkbox"><br></p-checkbox>
               </div>
               <div class="col-xs-12">
                 <button type="button" class="btn btn-link instance-variable-group-filter-select-button" (click)="deselectInstanceVariableGroupFilters()" [attr.disabled]="selectedInstanceVariableFilterGroups.length == 0 ?  'disabled' : null">
@@ -328,7 +319,6 @@
                   {{'catalog.dataset.instanceVariableFilterSelectAll' | translate}}
                 </button>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -362,7 +352,7 @@
       </ng-container>
       <div class="col-xs-12">
          <div class="col-sm-12">
-             <div class="export-as-csv" [ngClass]="{'export-as-csv-filters-expanded': showInstanceVariableFilters }">
+             <div class="export-as-csv">
                  <a class="btn btn-default" href="{{composeInstanceVariableExportUrl()}}">
                     <fa icon="download"></fa>
                     {{ 'exportInstanceVariablesAsCsvButton' | translate }}

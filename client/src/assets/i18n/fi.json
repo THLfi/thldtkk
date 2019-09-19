@@ -81,6 +81,7 @@
   "true": "Kyllä",
   "undefined": "Ei määritetty",
   "confirmDatasetDelete": "Haluatko varmasti poistaa datasetin?",
+  "noSelection": "Ei valintaa",
   "inputDateFormat": "vvvv-kk-pp",
   "addInstanceVariable": "Lisää muuttuja",
   "newInstanceVariable": "Uusi muuttuja",

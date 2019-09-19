@@ -318,10 +318,6 @@ h3 {
 
 /* Table format of e.g. the variable table in catalog  */
 
-.table {
-    margin-left: 10px;
-}
-
 .data-table-plain {
     margin-top: 2em;
     border: none;

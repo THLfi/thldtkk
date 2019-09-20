@@ -40,7 +40,7 @@ export class CatalogStudyListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.organizationService.getAllOrganizations()
+    this.organizationService.getAllOrganizations(false)
       .subscribe(organizations => {
         this.organizations = organizations
       })

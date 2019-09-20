@@ -3,6 +3,7 @@ package fi.thl.thldtkk.api.metadata.service.termed;
 import fi.thl.thldtkk.api.metadata.domain.Organization;
 import fi.thl.thldtkk.api.metadata.domain.OrganizationPersonInRole;
 import fi.thl.thldtkk.api.metadata.domain.RecipientNotificationState;
+import fi.thl.thldtkk.api.metadata.domain.query.Select;
 import fi.thl.thldtkk.api.metadata.domain.termed.Changeset;
 import fi.thl.thldtkk.api.metadata.domain.termed.Node;
 import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
@@ -29,19 +30,34 @@ public class OrganizationServiceImpl implements OrganizationService {
     this.editorRepository = editorRepository;
   }
 
+
   @Override
   public List<Organization> findAll() {
-    return commonRepository.query(select("id",
+    return findAllSelectively(Arrays.asList("includeReferences"));
+  }
+
+  @Override
+  public List<Organization> findAllSelectively(List<String> queryFlags) {
+    Select select = select(
+      "id",
       "type",
-      "properties.*",
-      "references.*",
-      "referrers.*",
-      "references.personInRoles:2",
-      "OrganizationPersonInRole.referrers.personInRole:2",
-      "OrganizationPersonInRole.referrers.personsInRole:2",
-      "references.person:3",
-      "references.role:3",
-      "lastModifiedDate"), keyValue("type.id", "Organization"))
+      "properties.*"
+      );
+
+    if (queryFlags.contains("includeReferences")) {
+      select = select.add(
+        "references.*",
+        "referrers.*",
+        "references.personInRoles:2",
+        "OrganizationPersonInRole.referrers.personInRole:2",
+        "OrganizationPersonInRole.referrers.personsInRole:2",
+        "references.person:3",
+        "references.role:3",
+        "lastModifiedDate"
+        );
+    }
+
+    return commonRepository.query(select, keyValue("type.id", "Organization"))
       .map(Organization::new)
       .collect(toList());
   }

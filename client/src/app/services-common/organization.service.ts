@@ -30,8 +30,9 @@ export class OrganizationService {
     this.language = this.translateService.currentLang
   }
 
-  getAllOrganizations(): Observable<Organization[]> {
-    return this.http.get<Organization[]>(env.contextPath + env.apiPath + '/organizations').pipe(
+  getAllOrganizations(includeReferences = true): Observable<Organization[]> {
+    const path = `${env.contextPath}${env.apiPath}/organizations?includeReferences=${includeReferences}`;
+    return this.http.get<Organization[]>(path).pipe(
       tap(organizations => {
         organizations.forEach(organization => {
           organization.organizationUnit.sort((one, two) => {

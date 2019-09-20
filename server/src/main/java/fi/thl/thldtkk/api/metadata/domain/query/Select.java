@@ -5,6 +5,8 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Select {
 
@@ -27,6 +29,14 @@ public class Select {
 
   public List<String> getFields() {
     return fields;
+  }
+
+  public Select add(String... newFields) {
+    this.fields = Stream.concat(this.fields.stream(), asList(newFields).stream())
+      .distinct()
+      .collect(Collectors.toList());
+
+    return this;
   }
 
   @Override
@@ -59,6 +69,4 @@ public class Select {
     return true;
   }
 
-  
-  
 }

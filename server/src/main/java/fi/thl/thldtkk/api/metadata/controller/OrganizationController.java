@@ -8,12 +8,15 @@ import fi.thl.thldtkk.api.metadata.util.spring.annotation.PostJsonMapping;
 import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -30,8 +33,12 @@ public class OrganizationController {
 
   @ApiOperation("List all organizations")
   @GetJsonMapping
-  public List<Organization> queryOrganizations() {
-    return organizationService.findAll();
+  public List<Organization> queryOrganizations(@RequestParam(defaultValue="true") boolean includeReferences) {
+    List<String> queryFlags = new ArrayList<>();
+    if (includeReferences) {
+      queryFlags.add("includeReferences");
+    }
+    return organizationService.findAllSelectively(queryFlags);
   }
 
   @ApiOperation("Get a single organization based on its id")

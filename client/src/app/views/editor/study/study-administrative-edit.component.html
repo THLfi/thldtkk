@@ -190,7 +190,7 @@
               <p>
                 <strong class="field-label">{{ 'groupsOfRegistrees.label' | translate }}</strong>
                 <editor-help-link [helpTextComponent]="groupsOfRegistreesHelpText"></editor-help-link>
-                <editor-help-text #GroupsOfRegistreesHelpText key="editor.studyAdministrative.groupsOfRegistrees.helpText"></editor-help-text>
+                <editor-help-text #groupsOfRegistreesHelpText key="editor.studyAdministrative.groupsOfRegistrees.helpText"></editor-help-text>
               </p>
               <p-multiSelect [(ngModel)]="study.groupsOfRegistrees"
                             [ngModelOptions]="{ standalone: true }"
@@ -223,7 +223,7 @@
               <p>
                 <strong class="field-label">{{ 'receivingGroups.label' | translate }}</strong>
                 <editor-help-link [helpTextComponent]="receivingGroupsHelpText"></editor-help-link>
-                <editor-help-text #ReceivingGroupsHelpText key="editor.studyAdministrative.receivingGroups.helpText"></editor-help-text>
+                <editor-help-text #receivingGroupsHelpText key="editor.studyAdministrative.receivingGroups.helpText"></editor-help-text>
               </p>
               <p-multiSelect [(ngModel)]="study.receivingGroups"
                             [ngModelOptions]="{ standalone: true }"
@@ -994,9 +994,11 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group">
-              <label for="studyForms">
-                {{ 'studyForm.label' | translate }}
-              </label>
+              <p>
+                <strong class="field-label">{{ 'studyForm.label' | translate }}</strong>
+                <editor-help-link [helpTextComponent]="studyFormHelpText"></editor-help-link>
+              </p>
+              <editor-help-text #studyFormHelpText key="editor.studyAdministrative.studyForm.helpText"></editor-help-text>
               <table
                 *ngIf="study.studyForms && study.studyForms.length; else noStudyForms;"
                 id="studyForms"

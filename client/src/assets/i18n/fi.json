@@ -1091,7 +1091,10 @@
         "helpText": "<p>Tässä valitaan, onko kyseessä tieteellisen tutkimuksen aineisto. <em>Kyllä</em>-valinta tuottaa Tieteellisen tutkimuksen tietosuojailmoituksen.</p>"
       },
       "groupsOfRegistrees": {
-        "helpText": "<p>Tässä valitaan rekisteröityjen ryhmät. Listaamattomat ryhmät voidaan lisätä \"Muu ryhmä\"-valinnan kautta ilmestyvään tekstikenttään.</p>"
+        "helpText": "<p>Ne ihmisryhmät, joista on kerätty tietoja aineistossa.</p>"
+      },
+      "receivingGroups": {
+        "helpText": "<p>Ne ryhmät, joille henkilötietoja on luovutettu tai luovutetaan.</p>"
       },
       "studyType": {
         "helpText": "<p>Tässä valitaan onko kyseessä kerta- vai seurantatutkimus.</p>"
@@ -1121,7 +1124,7 @@
         "helpText": "<p>Tässä kuvataan se, mistä lähteistä käsiteltävät tiedot saadaan.</p>"
       },
       "personRegistryDataTransfers": {
-        "helpText": "<p>Tässä kuvataan se, siirretäänkö tai luovutetaanko henkilötietoja säännönmukaisesti. Mikäli tietoja luovutetaan, mille tahoille niitä luovutetaan ja mihin luovuttaminen perustuu. Tähän kuvataan myös mahdollinen henkilötietojen siirto käsittelijälle (esim. alihankkija tai tallennus pilvipalveluun).</p>"
+        "helpText": "<p>Tässä kuvataan se, siirretäänkö tai luovutetaanko henkilötietoja säännönmukaisesti. Mikäli tietoja luovutetaan, mille tahoille (ml. kolmannet maat ja kansainväliset järjestöt ja elimet kuten WHO tai ECDC) niitä luovutetaan ja mihin luovuttaminen perustuu. Tähän kuvataan myös mahdollinen henkilötietojen siirto käsittelijälle (esim. alihankkija tai tallennus pilvipalveluun).</p>"
       },
       "profilingAndAutomationScientific": {
         "helpText": "<p>Tässä valitaan ja kirjataan mahdollinen automaattinen päätöksenteko perustuen mm. henkilöiden profilointiin. Tieteelliseen tutkimukseen ei yleensä liity profilointiin perustuvia automaattisia päätöksiä, joilla voi olla tutkittaviin oikeusvaikutuksia tai muita merkittäviä vaikutuksia.</p>"
@@ -1162,8 +1165,8 @@
       "nationalArchivesFinlandArchivalDecision": {
         "helpText": "<p>Aineiston mahdollisen Kansallisarkiston pysyvän säilyttämisen päätöksen tiedot kirjataan tähän.</p>"
       },
-      "existenceForms": {
-        "helpText": "<p>Tässä valitaan aineiston olomuoto.</p>"
+      "studyForm": {
+        "helpText": "<p>Näyteaineistojen näytteet kirjataan aineiston olomuotoon valitsemalla olomuodoksi ihmisperäiset näytteet, mikrobinäytteet, ympäristönäytteet, eläinperäiset näytteet tai solukannat. Valitse tarkenteeseen sopiva näytetyyppi. Voit tarvittaessa tarkentaa näytteiden tyyppiä tai käyttötarkoitusta lisätietokentässä.</p><p>Vastuuyksiköksi valitaan näytteet omistava yksikkö.</p><p>Säilytysajaksi valitaan päivämäärä, johon asti olomuotokokonaisuutta on tarkoitus säilyttää. Jos säilytys on pysyvää, voidaan säilytysaika määrittää 5 vuodeksi eteenpäin. Vastuuyksikön päällikkö saa tiedon rivin lisäämisestä sähköpostilla ja hyväksyy näytteiden säilytysvastuun. Näytehallintapäällikkö/näytehallintakoordinaattori hyväksyy tämän jälkeen säilytysajan.</p><p>Olomuotokokonaisuuksiksi kannattaa valita loogisia kokonaisuuksia esimerkiksi näytetyypeittäin. Kun aineistosta on hävitetty kaikki olomuotorivin tarkoittamat näytteet, kirjataan hävityspäivämäärä hävitetty kenttään. Säilytysajan umpeutuessa käyttäjää muistutetaan säilytystarpeen tarkastamisesta, jolloin näytteet voidaan kirjata hävitetyksi tai anoa uutta säilytysaikaa.</p>"
       },
       "physicalLocation": {
         "helpText": "<p>Tähän kirjataan aineiston fyysinen sijaintipaikka ja mahdollinen arkistointipaikka.</p>"

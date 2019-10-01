@@ -6,7 +6,7 @@
 
   <groupId>fi.thl.thldtkk</groupId>
   <artifactId>server</artifactId>
-  <version>1.3.0</version>
+  <version>1.4.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>DTKK</name>
   <description>Digitaalisten tietoaineistojen kansallinen kuvausjärjestelmä</description>

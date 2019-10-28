@@ -251,7 +251,7 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
 
   @Bean
   public static SAMLBootstrap samlBootstrap() {
-    return new SAMLBootstrap();
+    return new StrongHashSAMLBootstrap();
   }
 
   @Bean

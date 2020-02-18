@@ -13,6 +13,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.springframework.util.StringUtils.hasText;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -38,6 +40,9 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Strings;
 
+import fi.thl.thldtkk.api.metadata.domain.Organization;
+import fi.thl.thldtkk.api.metadata.service.OrganizationService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +97,9 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
   @Autowired
   private PublicStudyService publicStudyService;
+
+  @Autowired
+  private OrganizationService organizationService;
 
   @Autowired
   private EmailService emailService;
@@ -777,15 +785,15 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       studyForm -> Objects.equals(studyForm.getUnitInChargeConfirmationState().orElse(null), StudyFormConfirmationState.PENDING);
 
     study.getStudyForms().stream()
+      .filter(IsStudyFormSamplePredicate.INSTANCE)
       .filter(unitInChargeConfirmationIsPending)
       .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
       .filter(unitInChargeHasChanged)
       .map(studyForm -> cleanStudyFormNotificationStates(studyForm, NotificationSubject.UNIT_IN_CHARGE_CONFIRMATION))
       .forEach(studyForm -> {
         OrganizationUnit unitInCharge = studyForm.getUnitInCharge().get();
-        Predicate<OrganizationPersonInRole> rolePredicate = isHeadOfUnit();
         List<OrganizationPersonInRole> personsToBeNotified = unitInCharge.getPersonInRoles().stream()
-          .filter(rolePredicate)
+          .filter(isInRole(RoleLabel.HEAD_OF_ORGANIZATION))
           .filter(pir -> pir.getPerson().getEmail().isPresent())
           .collect(Collectors.toList());
 
@@ -837,17 +845,22 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       studyForm ->
         studyForm.getRetentionPeriod().isPresent() && studyForm.getRetentionPeriodConfirmationState().get().equals(StudyFormConfirmationState.PENDING);
 
+    Map<UUID, Organization> organizationsByOrganizationUnitId = organizationService.findAll().stream()
+      .flatMap(o -> o.getOrganizationUnits().stream().map(ou -> Pair.of(ou.getId(), o)))
+      .collect(toMap(Pair::getKey, Pair::getValue));
+
     study.getStudyForms().stream()
+      .filter(IsStudyFormSamplePredicate.INSTANCE)
       .filter(studyForm -> studyForm.getUnitInCharge().isPresent())
       .filter(retentionPeriodHasChanged)
       .filter(retentionPeriodConfirmationIsPending)
       .map(studyForm -> cleanStudyFormNotificationStates(studyForm, NotificationSubject.STUDY_FORM_RETENTION_CONFIRMATION))
-      .forEach(studyForm -> {
-        OrganizationUnit unitInCharge = studyForm.getUnitInCharge().get();
+      .forEach(sampleStudyForm -> {
+        OrganizationUnit unitInCharge = sampleStudyForm.getUnitInCharge().get();
+        Organization organizationInCharge = organizationsByOrganizationUnitId.get(unitInCharge.getId());
 
-        Predicate<OrganizationPersonInRole> rolePredicate = isHeadOfUnit();
-        List<OrganizationPersonInRole> personsToBeNotified = unitInCharge.getPersonInRoles().stream()
-          .filter(rolePredicate)
+        List<OrganizationPersonInRole> personsToBeNotified = organizationInCharge.getPersonInRoles().stream()
+          .filter(isInRole(RoleLabel.HEAD_OF_SAMPLE_MANAGEMENT).or(isInRole(RoleLabel.SAMPLE_MANAGEMENT_COORDINATOR)))
           .filter(pir -> pir.getPerson().getEmail().isPresent())
           .collect(Collectors.toList());
 
@@ -857,7 +870,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
 
         emailService.sendEmails(
           recipients,
-          emailTemplateFactory.makeRetentionPeriodConfirmationMessage(study, unitInCharge)
+          emailTemplateFactory.makeRetentionPeriodConfirmationMessage(study)
           );
 
         List<RecipientNotificationState> notifications = personsToBeNotified.stream()
@@ -869,7 +882,7 @@ public class EditorStudyServiceImpl implements EditorStudyService {
             return notification;
           }).collect(Collectors.toList());
 
-        studyForm.getNotificationStates().addAll(notifications);
+        sampleStudyForm.getNotificationStates().addAll(notifications);
       });
   }
 
@@ -1260,12 +1273,8 @@ public class EditorStudyServiceImpl implements EditorStudyService {
       .isPresent();
   }
 
-  private static final Predicate<OrganizationPersonInRole> isHeadOfUnit() {
-    return pir -> pir.getRole().getLabel() == RoleLabel.HEAD_OF_ORGANIZATION;
-  }
-
-  private static final Predicate<OrganizationPersonInRole> isHeadOfSampleManagement() {
-    return pir -> pir.getRole().getLabel() == RoleLabel.HEAD_OF_SAMPLE_MANAGEMENT;
+  private static final Predicate<OrganizationPersonInRole> isInRole(RoleLabel role) {
+    return pir -> role.equals(pir.getRole().getLabel());
   }
 
   private StudyForm cleanStudyFormNotificationStates(StudyForm studyForm, NotificationSubject subjectToBeCleaned) {

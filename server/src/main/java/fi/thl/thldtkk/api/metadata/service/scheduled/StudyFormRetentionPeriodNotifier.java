@@ -16,6 +16,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import fi.thl.thldtkk.api.metadata.service.termed.IsStudyFormSamplePredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
@@ -57,7 +58,7 @@ public class StudyFormRetentionPeriodNotifier {
   /**
    * Poll termed for all studies, scan them for expired retentionPeriods, and
    * send notification emails when appropriate.
-   * 
+   *
    * NOTE: Interval should be reasonably long due to query being quite
    * demanding. If additional performance is required, there should be room for
    * improvement by adding a termed native WHERE clause to only pick studyforms
@@ -86,17 +87,18 @@ public class StudyFormRetentionPeriodNotifier {
   }
 
   private void checkStudyForExpiration(Study study) {
-    List<StudyForm> expiredStudyForms =
+    List<StudyForm> expiredSampleStudyForms =
       study.getStudyForms().stream()
+        .filter(IsStudyFormSamplePredicate.INSTANCE)
         .filter(retentionPeriodIsConfirmed())
         .filter(retentionPeriodIsExpired())
         .collect(Collectors.toList());
 
-    expiredStudyForms.stream()
+    expiredSampleStudyForms.stream()
       .filter(unitInChargeIsConfirmed())
       .forEach(studyForm -> sendMailToHeadOfUnit(study, studyForm));
 
-    expiredStudyForms.stream()
+    expiredSampleStudyForms.stream()
       .forEach(studyForm -> sendMailToHeadOfSampleManagement(study, studyForm));
   }
 
@@ -214,7 +216,7 @@ public class StudyFormRetentionPeriodNotifier {
 
   private static Predicate<OrganizationPersonInRole> personHasRoleLabel(RoleLabel label) {
     return personInRole -> {
-      Optional<RoleLabel> recipientLabel = 
+      Optional<RoleLabel> recipientLabel =
         Optional.of(personInRole)
           .map(OrganizationPersonInRole::getRole)
           .map(Role::getLabel);

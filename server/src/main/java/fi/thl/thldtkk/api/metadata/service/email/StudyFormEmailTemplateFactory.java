@@ -3,7 +3,6 @@ package fi.thl.thldtkk.api.metadata.service.email;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import fi.thl.thldtkk.api.metadata.domain.OrganizationUnit;
 import fi.thl.thldtkk.api.metadata.domain.Study;
@@ -28,9 +27,9 @@ public class StudyFormEmailTemplateFactory {
     return message;
   }
 
-  public final SimpleMailMessage makeRetentionPeriodConfirmationMessage(Study study, OrganizationUnit unit) {
+  public final SimpleMailMessage makeRetentionPeriodConfirmationMessage(Study study) {
     String template =
-      "Sinun yksikkösi on merkitty vastuuseen aineiston %1$s olomuodosta. Aineiston säilytysaikaa on muutettu ja muutos on hyväksyttyvä osoitteessa: %2$s";
+      "Aineiston %1$s säilytysaikaa on muutettu, käy hyväksymässä ehdotettu säilytysaika osoitteessa: %2$s";
     String content =
       String.format(template, study.getPrefLabel().get("fi"), generateEditorLink(study));
 
@@ -46,7 +45,6 @@ public class StudyFormEmailTemplateFactory {
       "Aineiston %1$s olomuodon säilytysaika on umpeutunut. Tarkista näytteiden säilytystarve ja tarvittaessa päivitä säilytysaika uuteen osoitteessa: %2$s";
     String content =
       String.format(template, study.getPrefLabel().get("fi"), generateEditorLink(study));
-
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setText(content);

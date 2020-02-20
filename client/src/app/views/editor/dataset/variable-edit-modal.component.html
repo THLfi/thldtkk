@@ -4,8 +4,9 @@
     draggable="false"
     resizable="false"
     closeOnEscape="false"
-    width="500"
+    [style]="{ 'width': '500px' }"
     [(visible)]="showDialog"
+    (visibleChange)="hide()"
     (onHide)="clear()">
 
   <form #variableForm="ngForm" *ngIf="variable">
@@ -64,6 +65,7 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
         {{ 'save' | translate }}
       </button>
+      &nbsp;
       <button class="btn btn-default" (click)="hide()">
         {{ 'cancel' | translate }}
       </button>

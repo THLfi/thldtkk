@@ -1,5 +1,4 @@
-
-import {of as observableOf, forkJoin as observableForkJoin, Observable, Subject} from 'rxjs';
+import {of as observableOf, Subject} from 'rxjs';
 
 import {catchError, switchMap, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
@@ -7,15 +6,7 @@ import {ConfirmationService} from 'primeng/primeng'
 import {TranslateService} from '@ngx-translate/core';
 
 import {Person} from "../../../model2/person";
-import {PersonInRole} from "../../../model2/person-in-role";
 import {PersonService} from "../../../services-common/person.service";
-import {LangPipe} from '../../../utils/lang.pipe'
-
-
-
-
-
-
 
 @Component({
   templateUrl: './person-list.component.html',
@@ -37,8 +28,7 @@ export class PersonListComponent implements OnInit {
   constructor(
     private personService: PersonService,
     private confirmationService: ConfirmationService,
-    private translateService: TranslateService,
-    private langPipe: LangPipe,
+    private translateService: TranslateService
   ) {
     this.searchTerms = new Subject<string>()
   }
@@ -74,10 +64,7 @@ export class PersonListComponent implements OnInit {
   }
 
   confirmRemovePerson(person: Person): void {
-    observableForkJoin(
-      this.personService.getRoleReferences(person)
-    ).subscribe(data => {
-      let personInRoles: PersonInRole[] = data[0]
+    this.personService.getRoleReferences(person).subscribe(personInRoles => {
       let name:string = person.lastName ? person.firstName + ' ' + person.lastName : person.firstName
 
       let translationParams: {} = {

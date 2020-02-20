@@ -493,9 +493,7 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         }
 
         if (this.currentForm.invalid) {
-          this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail.summary',
-            'operations.common.save.result.fail.detail')
+          this.growlMessageService.showCommonSaveFailedMessage()
           this.savingInProgress = false
           this.savingHasFailed = true
           return
@@ -559,9 +557,9 @@ export class StudyAdministrativeEditComponent implements OnInit, AfterContentChe
         if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
             return true;
         }
-        
+
         let confirmQuestionText: string = '';
-    
+
         this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });

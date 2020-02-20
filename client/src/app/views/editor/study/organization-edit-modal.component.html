@@ -1,11 +1,12 @@
 <ng-container *ngIf="organization">
   <p-dialog [visible]="organization"
             (onHide)="onCancel.emit()"
+            (visibleChange)="onCancel.emit()"
             modal="modal"
             draggable="false"
             resizable="false"
             closeOnEscape="false"
-            width="700">
+            [style]="{ 'width': '700px' }">
     <p-header>
       {{ 'editedOrganization' | translate }}
     </p-header>
@@ -62,83 +63,90 @@
               <label>
                 {{ 'organizationPersons' | translate }}
               </label>
-              <table
-                *ngIf="personInRoles.length; else noPersonInRoles;"
-                class="table table-striped"
-              >
-                <thead>
-                  <tr>
-                    <th>
-                      {{ 'personInRoles.person' | translate }}
-                      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-                    </th>
-                    <th>
-                      {{ 'personInRoles.role' | translate }}
-                      <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
-                    </th>
-                    <th translate="functions"></th>
-                  </tr>
-                </thead>
-                <tbody formArrayName="personInRoles">
-                  <tr
-                    [formGroupName]="index.toString()"
-                    *ngFor="let personInRole of personInRoles.controls; let index = index"
-                  >
-                    <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('person'))}">
-                      <select
-                        formControlName="person"
-                        [compareWith]="nodeUtils.equals"
-                        class="form-control"
-                        required
-                      >
-                        <option [ngValue]="null"></option>
-                        <option *ngFor="let person of people" [ngValue]="person">
-                          {{ person.firstName }} {{ person.lastName }} ({{ person.email }})
-                        </option>
-                      </select>
-                      <ng-container *ngIf="hasVisibleError(personInRole.get('person'))">
-                        <p *ngFor="let error of personInRole.get('person').errors | keyvalue" class="text-danger">
-                          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                          {{ 'errors.form.' + error.key | translate }}
-                        </p>
-                      </ng-container>
-                    </td>
-                    <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('role'))}">
-                      <select
-                        formControlName="role"
-                        [compareWith]="nodeUtils.equals"
-                        class="form-control"
-                        required
-                      >
-                        <option [ngValue]="null"></option>
-                        <option *ngFor="let role of roles" [ngValue]="role">
-                          {{ role.prefLabel | lang }}
-                        </option>
-                      </select>
-                      <ng-container *ngIf="hasVisibleError(personInRole.get('role'))">
-                        <p *ngFor="let error of personInRole.get('role').errors | keyvalue"
-                           class="text-danger">
-                          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                          {{ 'errors.form.' + error.key | translate }}
-                        </p>
-                      </ng-container>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-default" (click)="personInRoles.removeAt(index)">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        {{ 'remove' | translate }}
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <ng-template #noPersonInRoles>
-                <p translate="organizationNoPersons"></p>
+              <ng-container *ngIf="people && roles; else loadingPeopleAndRoles;">
+                <table
+                  *ngIf="personInRoles.length; else noPersonInRoles;"
+                  class="table table-striped"
+                >
+                  <thead>
+                    <tr>
+                      <th>
+                        {{ 'personInRoles.person' | translate }}
+                        <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                      </th>
+                      <th>
+                        {{ 'personInRoles.role' | translate }}
+                        <thl-requiredFieldIndicator></thl-requiredFieldIndicator>
+                      </th>
+                      <th translate="functions"></th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="personInRoles">
+                    <tr
+                      [formGroupName]="index.toString()"
+                      *ngFor="let personInRole of personInRoles.controls; let index = index"
+                    >
+                      <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('person'))}">
+                        <select
+                          formControlName="person"
+                          [compareWith]="nodeUtils.equals"
+                          class="form-control"
+                          required
+                        >
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let person of people" [ngValue]="person">
+                            {{ person.firstName }} {{ person.lastName }} ({{ person.email }})
+                          </option>
+                        </select>
+                        <ng-container *ngIf="hasVisibleError(personInRole.get('person'))">
+                          <p *ngFor="let error of personInRole.get('person').errors | keyvalue" class="text-danger">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            {{ 'errors.form.' + error.key | translate }}
+                          </p>
+                        </ng-container>
+                      </td>
+                      <td [ngClass]="{'bg-danger': hasVisibleError(personInRole.get('role'))}">
+                        <select
+                          formControlName="role"
+                          [compareWith]="nodeUtils.equals"
+                          class="form-control"
+                          required
+                        >
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let role of roles" [ngValue]="role">
+                            {{ role.prefLabel | lang }}
+                          </option>
+                        </select>
+                        <ng-container *ngIf="hasVisibleError(personInRole.get('role'))">
+                          <p *ngFor="let error of personInRole.get('role').errors | keyvalue"
+                             class="text-danger">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            {{ 'errors.form.' + error.key | translate }}
+                          </p>
+                        </ng-container>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-default" (click)="personInRoles.removeAt(index)">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          {{ 'remove' | translate }}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <ng-template #noPersonInRoles>
+                  <p translate="organizationNoPersons"></p>
+                </ng-template>
+                <button type="button" class="btn btn-default" (click)="addPersonInRole()">
+                  <glyphicon icon="plus"></glyphicon>
+                  {{ 'addNewPersonInRole' | translate }}
+                </button>
+              </ng-container>
+              <ng-template #loadingPeopleAndRoles>
+                <div>
+                  <thl-spinner-inline></thl-spinner-inline>
+                </div>
               </ng-template>
-              <button type="button" class="btn btn-default" (click)="addPersonInRole()">
-                <glyphicon icon="plus"></glyphicon>
-                {{ 'addNewPersonInRole' | translate }}
-              </button>
             </div>
           </div>
         </div>
@@ -146,12 +154,17 @@
     </form>
     <p-footer>
       <div>
-        <button (click)="onSubmit()" type="submit" class="btn btn-primary">
-          <span class="glyphicon glyphicon-floppy-disk"></span>
-          {{ 'save' | translate }}
+        <button (click)="onSubmit()" [disabled]="saveInProgress" type="submit" class="btn btn-primary">
+          <ng-container *ngIf="!saveInProgress; else savingInProgress;">
+            <span class="glyphicon glyphicon-floppy-disk"></span>
+            {{ 'save' | translate }}
+          </ng-container>
+          <ng-template #savingInProgress>
+            <thl-spinner-inline loadingTextKey="saving" showLoadingText="false"></thl-spinner-inline>
+          </ng-template>
         </button>
         &nbsp;
-        <button (click)="onCancel.emit()" class="btn btn-default">
+        <button (click)="onCancel.emit()" [disabled]="saveInProgress" class="btn btn-default">
           {{ 'cancel' | translate }}
         </button>
       </div>

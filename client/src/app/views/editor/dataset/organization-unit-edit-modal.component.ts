@@ -27,6 +27,8 @@ export class OrganizationUnitEditModalComponent implements OnInit {
   roles: Role[];
   people: Person[];
 
+  saveInProgress = false;
+
   @Output() onSave: EventEmitter<OrganizationUnit> = new EventEmitter<OrganizationUnit>();
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>();
 
@@ -46,7 +48,10 @@ export class OrganizationUnitEditModalComponent implements OnInit {
 
     this.personService
       .getAll()
-      .subscribe(people => this.people = people);
+      .subscribe(people => {
+        people.sort((one, two) => one.firstName.localeCompare(two.firstName))
+        this.people = people
+      });
   }
 
   ngOnInit() {
@@ -86,14 +91,12 @@ export class OrganizationUnitEditModalComponent implements OnInit {
   }
 
   onSubmit() {
+    this.saveInProgress = true;
+
     if (this.form.invalid) {
       this.showErrors = true;
-      this.growlMessageService.buildAndShowMessage(
-        'error',
-        'operations.common.save.result.fail.summary',
-        'operations.common.save.result.fail.detail'
-      );
-
+      this.growlMessageService.showCommonSaveFailedMessage();
+      this.saveInProgress = false;
       return;
     }
 

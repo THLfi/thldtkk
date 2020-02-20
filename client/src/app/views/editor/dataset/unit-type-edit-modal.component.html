@@ -1,11 +1,12 @@
 <ng-container *ngIf="unitType">
   <p-dialog [visible]="unitType"
           (onHide)="doCancel()"
+          (visibleChange)="doCancel()"
           modal="true"
           draggable="false"
           resizable="false"
           closeOnEscape="false"
-          width="500">
+          [style]="{ 'width': '500px'}">
     <p-header>
       <ng-container *ngIf="unitType.id;else newUnitType">
         {{'editUnitType' | translate}}
@@ -63,6 +64,7 @@
           <span class="glyphicon glyphicon-floppy-disk"></span>
           {{ 'save' | translate }}
         </button>
+        &nbsp;
         <button (click)="doCancel()" class="btn btn-default">
           {{ 'cancel' | translate }}
         </button>

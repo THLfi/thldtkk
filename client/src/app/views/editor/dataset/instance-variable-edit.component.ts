@@ -126,7 +126,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
       const studyId = this.route.snapshot.params['studyId']
       const datasetId = this.route.snapshot.params['datasetId']
       const instanceVariableId = this.route.snapshot.params['instanceVariableId']
-      
+
       window.addEventListener('beforeunload', (event) => {
           if(this.currentForm.form.dirty && this.showUnsavedMessage){
               event.returnValue = 'Are you sure you want to leave?';
@@ -524,9 +524,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
         this.validate()
 
         if (this.currentForm.invalid) {
-          this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail.summary',
-            'operations.common.save.result.fail.detail')
+          this.growlMessageService.showCommonSaveFailedMessage()
           this.savingInProgress = false
           this.savingHasFailed = true
           return
@@ -654,7 +652,7 @@ export class InstanceVariableEditComponent implements OnInit, AfterContentChecke
             return true;
         }
         let confirmQuestionText: string = '';
-    
+
         this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });

@@ -158,7 +158,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked, CanCompo
     ngOnInit() {
         this.getStudy();
         this.validUrlExpression = new RegExp('/^' + this.urlFieldValidatorPattern + '$/')
-        
+
         window.addEventListener('beforeunload', (event) => {
             if(this.currentForm.form.dirty && this.showUnsavedMessage){
                 event.returnValue = 'Are you sure you want to leave?';
@@ -684,9 +684,7 @@ export class StudyEditComponent implements OnInit, AfterContentChecked, CanCompo
         this.validate();
 
         if (this.currentForm.invalid) {
-          this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail.summary',
-            'operations.common.save.result.fail.detail');
+          this.growlMessageService.showCommonSaveFailedMessage();
           this.savingInProgress = false;
           this.savingHasFailed = true;
           return
@@ -734,11 +732,11 @@ export class StudyEditComponent implements OnInit, AfterContentChecked, CanCompo
             return true;
         }
         let confirmQuestionText: string = '';
-    
+
         this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });
-    
+
         return Observable.create((observer: Observer<boolean>) => {
             this.confirmationService.confirm({
                 message: confirmQuestionText,

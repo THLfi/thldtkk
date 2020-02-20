@@ -64,9 +64,7 @@ export class VariableModalComponent implements AfterContentChecked {
     this.validate()
 
     if (this.currentForm.invalid) {
-      this.growlMessageService.buildAndShowMessage('error',
-        'operations.common.save.result.fail.summary',
-        'operations.common.save.result.fail.detail')
+      this.growlMessageService.showCommonSaveFailedMessage()
       this.savingInProgress = false
       this.savingHasFailed = true
       return

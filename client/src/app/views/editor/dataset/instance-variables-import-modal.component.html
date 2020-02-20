@@ -1,11 +1,12 @@
 <ng-container *ngIf="study && dataset">
   <p-dialog [visible]="study && dataset"
             (onHide)="doCancel()"
+            (visibleChange)="doCancel()"
             modal="true"
             draggable="false"
             resizable="false"
             closeOnEscape="false"
-            width="900"
+            [style]="{ 'width': '900px'}"
             positionTop="70"
             [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
     <p-header class="import-instancevariables-modal-header">
@@ -147,6 +148,7 @@
                 class="btn btn-primary">
           {{ 'importInstanceVariablesModal.buttons.import' | translate }}
         </button>
+        &nbsp;
         <button (click)="doCancel()"
                 [disabled]="importInProgress"
                 class="btn btn-default">

@@ -5,9 +5,6 @@ import { NgForm } from '@angular/forms'
 
 import { GrowlMessageService } from '../../../services-common/growl-message.service'
 import { Person } from '../../../model2/person'
-import {TranslateService} from "@ngx-translate/core";
-import {PersonService} from "../../../services-common/person.service";
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'person-edit-modal',
@@ -23,23 +20,16 @@ export class PersonEditModalComponent implements AfterContentChecked {
   formErrors: any = {
     'firstName': []
   }
-  // TODO: Add email validation?
 
   savingInProgress: boolean = false
   savingHasFailed: boolean = false
-  deleteInProgress: boolean = false
 
   @Output() onSave: EventEmitter<Person> = new EventEmitter<Person>()
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>()
-  @Output() onDelete: EventEmitter<void> = new EventEmitter<void>()
-
 
   constructor(
-    private growlMessageService: GrowlMessageService,
-    private translateService: TranslateService,
-    private personService: PersonService
-  ) {
-  }
+    private growlMessageService: GrowlMessageService
+  ) { }
 
   ngAfterContentChecked(): void {
     if (this.personForm) {
@@ -68,9 +58,7 @@ export class PersonEditModalComponent implements AfterContentChecked {
     this.validate()
 
     if (this.currentForm.invalid) {
-      this.growlMessageService.buildAndShowMessage('error',
-        'operations.common.save.result.fail.summary',
-        'operations.common.save.result.fail.detail')
+      this.growlMessageService.showCommonSaveFailedMessage()
       this.savingInProgress = false
       this.savingHasFailed = true
       return
@@ -83,20 +71,6 @@ export class PersonEditModalComponent implements AfterContentChecked {
 
   doCancel() {
     this.onCancel.emit()
-  }
-
-  confirmRemove() {
-    this.translateService.get('confirmPersonDelete')
-      .subscribe((message: string) => {
-        if (confirm(message)) {
-          this.deleteInProgress = true
-
-          this.personService.delete(this.person.id)
-            .pipe(finalize(() => this.deleteInProgress = false))
-            .subscribe(() => {})
-        }
-      })
-    this.onDelete.emit()
   }
 
 }

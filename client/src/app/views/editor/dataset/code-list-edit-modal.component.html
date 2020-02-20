@@ -2,9 +2,10 @@
           modal="true"
           draggable="false"
           (onHide)="doCancel()"
+          (visibleChange)="doCancel()"
           resizable="false"
           closeOnEscape="false"
-          width="600"
+          [style]="{ 'width': '600px'}"
           positionTop="50"
           [style]="{'max-height':'95%', 'overflow-y':'scroll'}">
   <p-header>
@@ -157,7 +158,7 @@
                 <p>{{ 'noCodeItems' | translate }}</p>
               </ng-template>
               <button (click)="addCodeItem()"
-                      class="btn btn-default btn-xs">
+                      class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 {{ 'addCodeItem' | translate }}
               </button>
@@ -176,6 +177,7 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
         {{ 'save' | translate }}
       </button>
+      &nbsp;
       <button (click)="doCancel()"
               [disabled]="savingInProgress"
               class="btn btn-default">

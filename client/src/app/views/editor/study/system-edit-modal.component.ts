@@ -30,7 +30,7 @@ export class SystemEditModalComponent implements AfterContentChecked {
   constructor(
     private growlMessageService: GrowlMessageService,
     private translateService: TranslateService
-  ) { 
+  ) {
       this.language = this.translateService.currentLang
   }
 
@@ -61,9 +61,7 @@ export class SystemEditModalComponent implements AfterContentChecked {
     this.validate()
 
     if (this.currentForm.invalid) {
-      this.growlMessageService.buildAndShowMessage('error',
-        'operations.common.save.result.fail.summary',
-        'operations.common.save.result.fail.detail')
+      this.growlMessageService.showCommonSaveFailedMessage()
       this.savingInProgress = false
       this.savingHasFailed = true
       return

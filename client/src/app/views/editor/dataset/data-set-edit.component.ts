@@ -151,7 +151,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked, CanCom
     ngOnInit() {
       this.getDatasetAndStudy()
       this.getOtherStuff()
-      
+
         window.addEventListener('beforeunload', (event) => {
             if(this.currentForm.form.dirty && this.showUnsavedMessage){
                 event.returnValue = 'Are you sure you want to leave?';
@@ -612,9 +612,7 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked, CanCom
         this.validate()
 
         if (this.currentForm.invalid) {
-          this.growlMessageService.buildAndShowMessage('error',
-            'operations.common.save.result.fail.summary',
-            'operations.common.save.result.fail.detail')
+          this.growlMessageService.showCommonSaveFailedMessage()
           this.savingInProgress = false
           this.savingHasFailed = true
           return
@@ -667,13 +665,13 @@ export class DataSetEditComponent implements OnInit, AfterContentChecked, CanCom
         ])
       }
     }
-    
+
     confirmLeavingPage(): boolean {
         if(!this.currentForm.form.dirty || !this.showUnsavedMessage){
             return true;
         }
         let confirmQuestionText: string = '';
-    
+
         this.translateService.get('unsavedChangesMessage').subscribe(translatedText => {
             confirmQuestionText = translatedText;
           });

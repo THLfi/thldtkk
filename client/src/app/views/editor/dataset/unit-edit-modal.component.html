@@ -1,11 +1,12 @@
 <ng-container *ngIf="unit">
   <p-dialog [visible]="unit"
             (onHide)="doCancel()"
+            (visibleChange)="doCancel()"
             modal="modal"
             draggable="false"
             resizable="false"
             closeOnEscape="false"
-            width="500">
+            [style]="{ 'width': '500px'}">
     <p-header>
       {{ 'newUnit' | translate }}
     </p-header>
@@ -67,6 +68,7 @@
           <span class="glyphicon glyphicon-floppy-disk"></span>
           {{ 'save' | translate }}
         </button>
+        &nbsp;
         <button (click)="doCancel()"
                 [disabled]="savingInProgress"
                 class="btn btn-default">

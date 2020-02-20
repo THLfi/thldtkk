@@ -381,6 +381,7 @@
   "selectDatasetType": "Valitse aineistotyyppi",
   "amountDatasetTypesSelected": "aineistotyyppiä valittuna",
   "loading": "Ladataan...",
+  "saving": "Tallennetaan...",
   "loadMoreResults": "Näytä lisää hakutuloksia",
   "uploadFromFile": "Datasetin tuonti tiedostosta (HUOM: datasetin tuonti tyhjentää kaikki kentät)",
   "uploadDataset": "Datasetin tuonti",

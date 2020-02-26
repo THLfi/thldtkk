@@ -10,12 +10,11 @@ import fi.thl.thldtkk.api.metadata.domain.termed.NodeId;
 import fi.thl.thldtkk.api.metadata.security.annotation.AdminOnly;
 import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.Repository;
-import fi.thl.thldtkk.api.metadata.util.spring.exception.NotFoundException;
+import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
 import static fi.thl.thldtkk.api.metadata.domain.query.KeyValueCriteria.keyValue;
 import static fi.thl.thldtkk.api.metadata.domain.query.Select.select;
 import static java.util.stream.Collectors.toList;
@@ -91,11 +90,19 @@ public class OrganizationServiceImpl implements OrganizationService {
   @AdminOnly
   @Override
   public Organization save(Organization organization) {
+    return saveInternal(organization);
+  }
+
+  private Organization saveInternal(Organization organization) {
     Organization old = null;
     if (organization.getId() != null) {
       old = get(organization.getId()).orElse(null);
     } else {
       organization.setId(UUID.randomUUID());
+    }
+
+    if (old != null) {
+      organization.setVirtuIds(old.getVirtuIds());
     }
 
     Changeset<NodeId, Node> changeset = saveForPersonInRoles(organization, old);
@@ -119,7 +126,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     if (old != null) {
       List<OrganizationPersonInRole> deletedPersons =
         Changeset.getDeletedNodes(organization.getPersonInRoles(), old.getPersonInRoles());
-      
+
       List<NodeId> orphanedNotifications = deletedPersons.stream()
         .map(OrganizationPersonInRole::getNotifications)
         .flatMap(List::stream)
@@ -132,4 +139,13 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     return changes;
   }
+
+  // Not restricted to users/admins because during Virtu login user has not been logged id yet.
+  @Override
+  public Organization saveNewOrganizationDuringVirtuLogin(Organization organization) {
+    Assert.isNull(organization.getId(), "This method can only be used to save new organizations");
+    Assert.notEmpty(organization.getVirtuIds(), "This method can only be used save to new organizations which have virtu IDs");
+    return saveInternal(organization);
+  }
+
 }

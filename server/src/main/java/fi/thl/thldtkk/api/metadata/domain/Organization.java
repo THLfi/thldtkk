@@ -101,6 +101,10 @@ public class Organization implements NodeEntity, Serializable {
     return virtuIds != null ? virtuIds : Collections.emptyList();
   }
 
+  public void setVirtuIds(List<String> virtuIds) {
+    this.virtuIds = virtuIds;
+  }
+
   public List<OrganizationUnit> getOrganizationUnits() {
     return organizationUnit;
   }

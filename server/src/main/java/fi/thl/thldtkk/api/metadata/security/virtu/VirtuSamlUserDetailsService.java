@@ -139,11 +139,13 @@ public class VirtuSamlUserDetailsService implements SAMLUserDetailsService {
       name = virtuId;
     }
 
+    LOG.info("Creating new organization '{}' ('{}')", name, virtuId);
+
     Map<String, String> prefLabel = new LinkedHashMap<>();
     prefLabel.put("fi",  name);
 
     Organization newOrganization = new Organization(
-      UUID.randomUUID(),
+      null,
       prefLabel,
       new LinkedHashMap<>(),
       new LinkedHashMap<>(),
@@ -151,9 +153,9 @@ public class VirtuSamlUserDetailsService implements SAMLUserDetailsService {
       asList(virtuId)
     );
 
-    Organization savedOrganization = organizationService.save(newOrganization);
+    Organization savedOrganization = organizationService.saveNewOrganizationDuringVirtuLogin(newOrganization);
 
-    LOG.info("Created new organization '{}' ('{}')", name, virtuId);
+    LOG.info("New organization '{}' ('{}', {}) saved", name, virtuId, savedOrganization.getId());
 
     return savedOrganization;
   }

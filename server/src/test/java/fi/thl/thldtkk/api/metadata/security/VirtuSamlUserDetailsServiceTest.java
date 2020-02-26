@@ -127,7 +127,7 @@ public class VirtuSamlUserDetailsServiceTest {
 
     ArgumentCaptor<Organization> newOrganizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
     Organization organizationAfterSave = an.organization().build();
-    when(organizationService.save(newOrganizationArgumentCaptor.capture())).thenReturn(organizationAfterSave);
+    when(organizationService.saveNewOrganizationDuringVirtuLogin(newOrganizationArgumentCaptor.capture())).thenReturn(organizationAfterSave);
 
     ArgumentCaptor<UserProfile> newUserProfileArgumentCaptor = ArgumentCaptor.forClass(UserProfile.class);
     when(userProfileService.save(newUserProfileArgumentCaptor.capture()))
@@ -136,7 +136,7 @@ public class VirtuSamlUserDetailsServiceTest {
     service.loadUserBySAML(credential);
 
     Organization savedOrganization = newOrganizationArgumentCaptor.getValue();
-    assertThat(savedOrganization.getId()).isNotNull();
+    assertThat(savedOrganization.getId()).isNull();
     assertThat(savedOrganization.getPrefLabel().get("fi")).isEqualTo("New Org");
     assertThat(savedOrganization.getAbbreviation()).isNotNull().isEmpty();
     assertThat(savedOrganization.getVirtuIds()).containsExactly("neworg.fi");
@@ -161,7 +161,7 @@ public class VirtuSamlUserDetailsServiceTest {
 
     ArgumentCaptor<Organization> newOrganizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
     Organization organizationAfterSave = an.organization().build();
-    when(organizationService.save(newOrganizationArgumentCaptor.capture())).thenReturn(organizationAfterSave);
+    when(organizationService.saveNewOrganizationDuringVirtuLogin(newOrganizationArgumentCaptor.capture())).thenReturn(organizationAfterSave);
 
     ArgumentCaptor<UserProfile> newUserProfileArgumentCaptor = ArgumentCaptor.forClass(UserProfile.class);
     when(userProfileService.save(newUserProfileArgumentCaptor.capture()))
@@ -170,7 +170,7 @@ public class VirtuSamlUserDetailsServiceTest {
     service.loadUserBySAML(credential);
 
     Organization savedOrganization = newOrganizationArgumentCaptor.getValue();
-    assertThat(savedOrganization.getId()).isNotNull();
+    assertThat(savedOrganization.getId()).isNull();
     assertThat(savedOrganization.getPrefLabel().get("fi")).isEqualTo("neworg.fi");
     assertThat(savedOrganization.getVirtuIds()).containsExactly("neworg.fi");
 

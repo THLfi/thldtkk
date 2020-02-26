@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface OrganizationService extends Service<UUID, Organization> {
   Optional<Organization> getByVirtuId(String virtuId);
 
+  Organization saveNewOrganizationDuringVirtuLogin(Organization organization);
+
   /**
    * Find all values with implementation specific flags that can be used to
    * restrict or expand the amount of requested data. For a more solid, but

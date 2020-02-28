@@ -5,11 +5,13 @@ import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import fi.thl.thldtkk.api.metadata.controller.API;
+import fi.thl.thldtkk.api.metadata.security.log.AuthenticationEventLogger;
 import fi.thl.thldtkk.api.metadata.security.UserRoles;
 import fi.thl.thldtkk.api.metadata.security.thlsso.ThlSsoRestAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -101,6 +103,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(new Http401AuthenticationEntryPoint("unauthorized"))
             .accessDeniedHandler((request, response, accessDeniedException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN));
     }
+  }
+
+  @Bean
+  public AuthenticationEventLogger authenticationEventLogger() {
+    return new AuthenticationEventLogger();
   }
 
 }

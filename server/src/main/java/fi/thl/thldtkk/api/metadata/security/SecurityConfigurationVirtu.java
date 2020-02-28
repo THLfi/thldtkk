@@ -1,5 +1,6 @@
 package fi.thl.thldtkk.api.metadata.security;
 
+import fi.thl.thldtkk.api.metadata.security.log.VirtuSamlLogger;
 import fi.thl.thldtkk.api.metadata.security.virtu.VirtuSamlUserDetailsService;
 import fi.thl.thldtkk.api.metadata.service.OrganizationService;
 import fi.thl.thldtkk.api.metadata.service.UserProfileService;
@@ -14,6 +15,7 @@ import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.SignatureValidationFilter;
 import org.opensaml.xml.parse.StaticBasicParserPool;
+import org.opensaml.xml.signature.SignatureConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +33,7 @@ import org.springframework.security.saml.SAMLProcessingFilter;
 import org.springframework.security.saml.context.SAMLContextProviderImpl;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
-import org.springframework.security.saml.log.SAMLDefaultLogger;
+import org.springframework.security.saml.log.SAMLLogger;
 import org.springframework.security.saml.metadata.CachingMetadataManager;
 import org.springframework.security.saml.metadata.ExtendedMetadata;
 import org.springframework.security.saml.metadata.ExtendedMetadataDelegate;
@@ -273,7 +275,7 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
     extendedMetadata.setRequireArtifactResolveSigned(true);
     extendedMetadata.setSignMetadata(true);
     extendedMetadata.setSigningKey(spCertificateAliasInKeystore);
-    extendedMetadata.setSigningAlgorithm("http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+    extendedMetadata.setSigningAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
 
     extendedMetadata.setIdpDiscoveryEnabled(true);
     extendedMetadata.setIdpDiscoveryURL(idpDiscoveryServiceUrl);
@@ -325,8 +327,8 @@ public class SecurityConfigurationVirtu extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public SAMLDefaultLogger samlLogger() {
-    return new SAMLDefaultLogger();
+  public SAMLLogger samlLogger() {
+    return new VirtuSamlLogger();
   }
 
   @Bean

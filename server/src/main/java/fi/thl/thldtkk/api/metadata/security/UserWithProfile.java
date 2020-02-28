@@ -79,4 +79,9 @@ public class UserWithProfile implements UserDetails {
     return delegate.isEnabled();
   }
 
+  @Override
+  public String toString() {
+    return getUsername();
+  }
+
 }

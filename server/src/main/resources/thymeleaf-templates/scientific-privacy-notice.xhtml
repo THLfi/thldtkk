@@ -384,8 +384,8 @@
           <li th:each="otherDigitalSecurityPrinciple: ${otherPrinciplesForDigitalSecurity}" th:text="${otherDigitalSecurityPrinciple}">Tiedon hajautus</li>
         </ul>
       </div>
-      
-      <div th:switch="${directIdentityInformation} ? true : false">      
+
+      <div th:switch="${directIdentityInformation} ? true : false">
       <span th:text="#{scientificPrivacyNotice.directIdentificationInfo} + ':'">Suorien tunnistetietojen käsittely:</span>
         <div th:case="${false}" th:text="#{scientificPrivacyNotice.directIdentificationInfoRemovedWhenAnalyzed}">Suorat tunnistetiedot poistetaan analysointivaiheessa</div>
         <div th:case="${true}" th:text="${directIdentityInformationDescription}" class="preserve-line-breaks"></div>
@@ -520,8 +520,8 @@
         <p th:text="#{scientificPrivacyNotice.yourRights.contactDetails.title}">Yhteystiedot:</p>
         <p th:utext="#{scientificPrivacyNotice.yourRights.contactDetails.body}">
           <strong>Tietosuojavaltuutetun toimisto</strong><br/>
-          Käyntiosoite: Ratapihantie 9, 6. krs, 00520 Helsinki<br/>
-          Postiosoite: PL 800, 00521 Helsinki<br/>
+          Käyntiosoite: Lintulahdenkuja 4, 00530 Helsinki<br/>
+          Postiosoite: PL 800, 00531 Helsinki<br/>
           Vaihde: 029 56 66700<br/>
           Faksi: 029 56 66735<br/>
           Sähköposti: <a href="mailto:tietosuoja@om.fi">tietosuoja@om.fi</a>

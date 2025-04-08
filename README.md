@@ -1,3 +1,7 @@
+# This repository is not actively maintained
+
+You can request the up to date source code via email from **info(at)aineistokatalogi.fi**
+
 # Development
 
 Development instructions are written mainly for macOS but are applicable to
